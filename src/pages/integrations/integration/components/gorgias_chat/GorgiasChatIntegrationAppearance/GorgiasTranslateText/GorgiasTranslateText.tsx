@@ -26,7 +26,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
@@ -82,7 +82,7 @@ type OwnProps = {
 const mapStateToProps = (state: RootState) => {
     return {
         domain: state.currentAccount.get('domain'),
-        hasAutomationAddOn: getHasAutomationAddOn(state),
+        hasAutomate: getHasAutomate(state),
         getIntegrationsByTypes:
             integrationSelectors.makeGetIntegrationsByTypes(state),
         gorgiasChatExtraState:

@@ -649,9 +649,9 @@ exports[`billing selectors getCurrentAutomationFullAmount() should return the fu
 
 exports[`billing selectors getCurrentAutomationFullAmount() should return undefined when no Automate amount or discount exists 1`] = `undefined`;
 
-exports[`billing selectors getCurrentHelpdeskAutomationAddonAmount() should return the amount of Automate 1`] = `30`;
+exports[`billing selectors getCurrentHelpdeskAutomateAmount() should return the amount of Automate 1`] = `30`;
 
-exports[`billing selectors getCurrentHelpdeskAutomationAddonAmount() should return undefined when addon does not exist 1`] = `undefined`;
+exports[`billing selectors getCurrentHelpdeskAutomateAmount() should return undefined when addon does not exist 1`] = `undefined`;
 
 exports[`billing selectors getCurrentProductsFeatures should return the current features 1`] = `
 {

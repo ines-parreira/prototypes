@@ -3,19 +3,19 @@ import {Redirect} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    getHasAutomationAddOn,
-    getHasLegacyAutomationAddOnFeatures,
+    getHasAutomate,
+    getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 
 import ReturnOrderFlowView from './ReturnOrderFlowView'
 
 const ReturnOrderFlowViewContainer = () => {
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const hasLegacyAutomationAddOnFeatures = useAppSelector(
-        getHasLegacyAutomationAddOnFeatures
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const hasLegacyAutomateFeatures = useAppSelector(
+        getHasLegacyAutomateFeatures
     )
 
-    if (!hasAutomationAddOn && !hasLegacyAutomationAddOnFeatures) {
+    if (!hasAutomate && !hasLegacyAutomateFeatures) {
         return <Redirect to="/app/automation/order-management" />
     }
 

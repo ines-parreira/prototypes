@@ -6,8 +6,8 @@ import {SegmentEvent} from 'common/segment'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {
     getCurrentProducts,
-    getHasAutomationAddOn,
-    getHasLegacyAutomationAddOnFeatures,
+    getHasAutomate,
+    getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
@@ -34,11 +34,9 @@ export const AutomationStatsSelfServiceMetric = ({
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
     )
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const hasAutomationLegacy = useAppSelector(
-        getHasLegacyAutomationAddOnFeatures
-    )
-    const hasAccessToSelfService = hasAutomationLegacy || hasAutomationAddOn
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const hasAutomationLegacy = useAppSelector(getHasLegacyAutomateFeatures)
+    const hasAccessToSelfService = hasAutomationLegacy || hasAutomate
 
     const account = useAppSelector(getCurrentAccountState)
     const currentProducts = useAppSelector(getCurrentProducts)
@@ -91,7 +89,7 @@ export const AutomationStatsSelfServiceMetric = ({
         )
     }
 
-    const automationAddonPaywall = () => {
+    const automatePaywall = () => {
         return (
             <>
                 <AutomationSubscriptionModal
@@ -141,7 +139,7 @@ export const AutomationStatsSelfServiceMetric = ({
                 ) : (
                     <KeyMetricCell id={id} {...props} />
                 ))}
-            {!hasAutomationAddOn && automationAddonPaywall()}
+            {!hasAutomate && automatePaywall()}
         </>
     )
 }

@@ -2,7 +2,7 @@ import React, {useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -51,9 +51,9 @@ export default function WorkflowsViewContainer() {
     const quickResponsesUrl = `/app/automation/${shopType}/${shopName}/quick-responses`
     const connectedChannelsUrl = `/app/automation/${shopType}/${shopName}/connected-channels`
 
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
-    if (!hasAutomationAddOn) {
+    if (!hasAutomate) {
         return (
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
         )

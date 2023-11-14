@@ -8,7 +8,7 @@ export const PAGE_TITLE_OVERVIEW = 'Overview'
 export const PAGE_TITLE_AUTOMATE_PAYWALL = 'Automate overview'
 export const GORGIAS_AUTOMATE_BADGE = 'GORGIAS AUTOMATE'
 
-export const ROUTE_AUTOMATION_ADD_ON_FEATURES = 'automation-add-on-features'
+export const ROUTE_OLD_PERFORMANCE_BY_FEATURES = 'automation-add-on-features'
 export const ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES = 'performance-by-features'
 export const ROUTE_AUTOMATE_OVERVIEW = 'automate-overview'
 

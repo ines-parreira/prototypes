@@ -36,7 +36,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {changeContactFormId} from 'state/ui/contactForm'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
@@ -54,7 +54,7 @@ const ContactFormSettingsView = (): JSX.Element => {
     const {fetchContactFormById, isReady} = useContactFormApi()
     const {id: contactFormId, isValid: isIdValid} = useContactFormIdParam()
     const contactForm = useAppSelector(getCurrentContactForm)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
 
@@ -129,7 +129,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                 }
             >
                 <div className={css.header}>
-                    {hasAutomationAddOn ? (
+                    {hasAutomate ? (
                         contactForm.shop_name ? (
                             <Button
                                 fillStyle="ghost"

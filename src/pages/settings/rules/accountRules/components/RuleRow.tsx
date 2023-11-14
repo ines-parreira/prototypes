@@ -15,7 +15,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 
 import {deactivateRule, createRule, deleteRule} from 'models/rule/resources'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -66,7 +66,7 @@ export function RuleRow({
 }: Props) {
     const dispatch = useAppDispatch()
     const [error, setError] = useState<string>()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
     const helpCenters = useAppSelector(getActiveHelpCenterList)
     const hasAgentPrivileges = useHasAgentPrivileges()
@@ -152,12 +152,12 @@ export function RuleRow({
     })
 
     const handleActivate = useCallback(() => {
-        if (!hasAutomationAddOn && rule.type === RuleType.Managed) {
+        if (!hasAutomate && rule.type === RuleType.Managed) {
             handleUpgrade(rule.id)
             return
         }
         void onActivate(rule.id)
-    }, [hasAutomationAddOn, rule, onActivate, handleUpgrade])
+    }, [hasAutomate, rule, onActivate, handleUpgrade])
 
     const handleDeactivate = async () => {
         try {

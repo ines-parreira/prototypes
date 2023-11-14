@@ -3,7 +3,7 @@ import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
@@ -57,7 +57,7 @@ const OrderManagementView = () => {
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const {channels} = useOrderManagementPreviewContext()
     const previewHistory = useMemo(
         () => createMemoryHistory(),
@@ -120,7 +120,7 @@ const OrderManagementView = () => {
         }
     }
     const getAlert = (flow: PolicyKey) => {
-        if (!hasAutomationAddOn || !selfServiceConfiguration?.[flow].enabled) {
+        if (!hasAutomate || !selfServiceConfiguration?.[flow].enabled) {
             return null
         }
 
@@ -158,7 +158,7 @@ const OrderManagementView = () => {
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
                     alert={getAlert('track_order_policy')}
-                    {...(!hasAutomationAddOn
+                    {...(!hasAutomate
                         ? {action: <AutomationSubscriptionAction />}
                         : {
                               onClick: () => {
@@ -228,7 +228,7 @@ const OrderManagementView = () => {
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
                     alert={getAlert('report_issue_policy')}
-                    {...(!hasAutomationAddOn
+                    {...(!hasAutomate
                         ? {action: <AutomationSubscriptionAction />}
                         : {
                               onClick: () => {

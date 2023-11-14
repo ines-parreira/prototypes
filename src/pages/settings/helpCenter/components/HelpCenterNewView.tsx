@@ -21,7 +21,7 @@ import {
     helpCenterCreated,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters/actions'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -87,7 +87,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
     const history = useHistory()
     const location = useLocation()
     const locales = useSupportedLocales()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const shopifyShopsOptions = useShopifyStoreWithChatConnectionsOptions({
         option: css['select-option'],
         icon: css['shopify-icon'],
@@ -196,7 +196,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 setNewHelpCenter((prevNewHelpCenter) => ({
                     ...prevNewHelpCenter,
                     shop_name: value,
-                    self_service_deactivated: !hasAutomationAddOn,
+                    self_service_deactivated: !hasAutomate,
                 }))
 
                 return
@@ -208,7 +208,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 self_service_deactivated: undefined,
             }))
         },
-        [setNewHelpCenter, hasAutomationAddOn]
+        [setNewHelpCenter, hasAutomate]
     )
 
     const navigateToStartView = () =>

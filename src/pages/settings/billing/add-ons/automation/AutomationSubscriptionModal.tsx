@@ -12,7 +12,7 @@ import {
     getAutomationProduct,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
-    getHasAutomationAddOn,
+    getHasAutomate,
     getHelpdeskPrices,
 } from 'state/billing/selectors'
 import {updateSubscription} from 'state/currentAccount/actions'
@@ -104,7 +104,7 @@ const AutomationSubscriptionModal = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const isTrialingSubscription = useAppSelector(isTrialing)
@@ -137,7 +137,7 @@ const AutomationSubscriptionModal = ({
         }, [])
     const header = headerDescription
         ? headerDescription
-        : hasAutomationAddOn
+        : hasAutomate
         ? 'Manage Automate'
         : 'Subscribe to Automate'
 
@@ -210,7 +210,7 @@ const AutomationSubscriptionModal = ({
                 <ModalBody
                     className={css.modalBody}
                     data-candu-id={
-                        hasAutomationAddOn
+                        hasAutomate
                             ? 'cancel-automation-addon-modal-body'
                             : 'manage-automation-addon-modal-body'
                     }
@@ -246,7 +246,7 @@ const AutomationSubscriptionModal = ({
                         />
                     )}
                 </ModalBody>
-                {hasAutomationAddOn ? (
+                {hasAutomate ? (
                     <ModalFooter
                         className={classnames(
                             css.footer,

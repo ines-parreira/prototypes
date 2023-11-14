@@ -11,7 +11,7 @@ import {RuleRecipe} from 'models/ruleRecipe/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import history from 'pages/history'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     AnyManagedRuleSettings,
@@ -72,10 +72,9 @@ export const RuleRecipeModal = ({
             ? [InstallationError.MaxRulesReached]
             : []
     )
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
-    const isBehindPaywall =
-        rule.type === RuleType.Managed && !hasAutomationAddOn
+    const isBehindPaywall = rule.type === RuleType.Managed && !hasAutomate
 
     const handleSubscription = () => {
         if (!managedRuleId) {

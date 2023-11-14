@@ -9,7 +9,7 @@ export default function AutomationSubscriptionButton({
     position = 'left',
     ...rest
 }: ComponentProps<typeof UpgradeButton>) {
-    const automationAddOnState = useMemo<typeof state>(() => {
+    const automateState = useMemo<typeof state>(() => {
         return state as unknown
     }, [state])
 
@@ -18,7 +18,7 @@ export default function AutomationSubscriptionButton({
             {...rest}
             label={label}
             onClick={onClick}
-            state={automationAddOnState}
+            state={automateState}
             position={position}
         />
     )

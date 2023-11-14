@@ -11,7 +11,7 @@ import {user} from 'fixtures/users'
 import {
     account,
     automationSubscriptionProductPrices,
-    legacyWithoutAutomationAddOnProductPrices,
+    legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
 import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
 import {RootState} from 'state/types'
@@ -145,8 +145,7 @@ describe('<AutomationNavbar />', () => {
                             ...account,
                             current_subscription: {
                                 ...account.current_subscription,
-                                products:
-                                    legacyWithoutAutomationAddOnProductPrices,
+                                products: legacyWithoutAutomateProductPrices,
                             },
                         }),
                         billing: fromJS({
@@ -238,8 +237,7 @@ describe('<AutomationNavbar />', () => {
                             ...account,
                             current_subscription: {
                                 ...account.current_subscription,
-                                products:
-                                    legacyWithoutAutomationAddOnProductPrices,
+                                products: legacyWithoutAutomateProductPrices,
                             },
                         }),
                         billing: fromJS({

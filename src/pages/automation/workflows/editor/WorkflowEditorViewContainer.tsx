@@ -4,7 +4,7 @@ import {ulid} from 'ulidx'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {Notification} from 'state/notifications/types'
@@ -23,7 +23,7 @@ export default function WorkflowEditorViewContainer() {
     }>()
     const history = useHistory()
     const dispatch = useAppDispatch()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const goToWorkflowsListPage = useCallback(() => {
         history.push(`/app/automation/${shopType}/${shopName}/flows`)
@@ -48,7 +48,7 @@ export default function WorkflowEditorViewContainer() {
         [dispatch]
     )
 
-    if (!hasAutomationAddOn) {
+    if (!hasAutomate) {
         return <Redirect to="/app/automation" />
     }
 

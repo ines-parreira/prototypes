@@ -35,7 +35,7 @@ import {assumeMock} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
-import AutomationAddonOverview, {
+import AutomateOverview, {
     AAO_TIPS_VISIBILITY_KEY,
     automationRate,
 } from '../AutomateOverview'
@@ -95,7 +95,7 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 jest.mock('services/reporting/automateOverviewReportingService')
 const saveReportMock = assumeMock(saveReport)
 
-describe('<AutomationAddonOverview />', () => {
+describe('<AutomateOverview />', () => {
     function getIntegration(id: number, type: IntegrationType) {
         return {
             id,
@@ -255,7 +255,7 @@ describe('<AutomationAddonOverview />', () => {
         } as RootState
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationAddonOverview />
+                <AutomateOverview />
             </Provider>
         )
 
@@ -264,7 +264,7 @@ describe('<AutomationAddonOverview />', () => {
     it('should display AAO', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationAddonOverview />
+                <AutomateOverview />
             </Provider>
         )
 
@@ -273,7 +273,7 @@ describe('<AutomationAddonOverview />', () => {
     it('should send event to segment and call saveReport on download data button click', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationAddonOverview />
+                <AutomateOverview />
             </Provider>
         )
         fireEvent.click(getByText(/Download data/))
@@ -291,7 +291,7 @@ describe('<AutomationAddonOverview />', () => {
         it('should show tips by default', () => {
             const {getByText} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <AutomationAddonOverview />
+                    <AutomateOverview />
                 </Provider>
             )
 
@@ -303,7 +303,7 @@ describe('<AutomationAddonOverview />', () => {
 
             const {getByText} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <AutomationAddonOverview />
+                    <AutomateOverview />
                 </Provider>
             )
 
@@ -318,7 +318,7 @@ describe('<AutomationAddonOverview />', () => {
 
             const {getByText, queryAllByText} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <AutomationAddonOverview />
+                    <AutomateOverview />
                 </Provider>
             )
 
@@ -344,7 +344,7 @@ describe('<AutomationAddonOverview />', () => {
                 })
                 const screen = render(
                     <Provider store={mockStore(defaultState)}>
-                        <AutomationAddonOverview />
+                        <AutomateOverview />
                     </Provider>
                 )
 
@@ -366,7 +366,7 @@ describe('<AutomationAddonOverview />', () => {
             })
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
-                    <AutomationAddonOverview />
+                    <AutomateOverview />
                 </Provider>
             )
             fireEvent.click(screen.getByText(/Show tips/))
@@ -387,7 +387,7 @@ describe('<AutomationAddonOverview />', () => {
                 })
                 const screen = render(
                     <Provider store={mockStore(defaultState)}>
-                        <AutomationAddonOverview />
+                        <AutomateOverview />
                     </Provider>
                 )
                 fireEvent.click(screen.getByText(/Show tips/))
@@ -410,7 +410,7 @@ describe('<AutomationAddonOverview />', () => {
                 })
                 const screen = render(
                     <Provider store={mockStore(defaultState)}>
-                        <AutomationAddonOverview />
+                        <AutomateOverview />
                     </Provider>
                 )
                 fireEvent.click(screen.getByText(/Show tips/))
@@ -431,7 +431,7 @@ describe('<AutomationAddonOverview />', () => {
             })
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
-                    <AutomationAddonOverview />
+                    <AutomateOverview />
                 </Provider>
             )
             fireEvent.click(screen.getByText(/Show tips/))

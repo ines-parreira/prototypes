@@ -7,12 +7,12 @@ import {ShopType} from 'models/selfServiceConfiguration/types'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
 
-import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
-import css from './AutomationNavbarAddOnSectionBlock.less'
+import AutomationNavbarPaywallNavbarLink from './AutomationNavbarPaywallNavbarLink'
+import css from './AutomationNavbarSectionBlock.less'
 import {
     ARTICLE_RECOMMENDATION,
     CHANNELS,
@@ -29,12 +29,12 @@ type Props = {
     isExpanded: boolean
 }
 const FROM_LOCATION = 'automate-left-menu'
-const AutomationNavbarAddOnSectionBlock = ({
+const AutomationNavbarSectionBlock = ({
     shopType,
     shopName,
     ...props
 }: Props) => {
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -57,7 +57,7 @@ const AutomationNavbarAddOnSectionBlock = ({
             className={css.section}
             {...props}
         >
-            {hasAutomationAddOn ? (
+            {hasAutomate ? (
                 <>
                     <div
                         className={classNames(
@@ -96,20 +96,20 @@ const AutomationNavbarAddOnSectionBlock = ({
                 </>
             ) : (
                 <>
-                    <AutomationNavbarAddOnPaywallNavbarLink
+                    <AutomationNavbarPaywallNavbarLink
                         to="/app/automation/flows"
                         isNested
                     >
                         <span className={cssNavbar['item-name']}>{FLOWS}</span>
-                    </AutomationNavbarAddOnPaywallNavbarLink>
-                    <AutomationNavbarAddOnPaywallNavbarLink
+                    </AutomationNavbarPaywallNavbarLink>
+                    <AutomationNavbarPaywallNavbarLink
                         to="/app/automation/quick-responses"
                         isNested
                     >
                         <span className={cssNavbar['item-name']}>
                             {QUICK_RESPONSES}
                         </span>
-                    </AutomationNavbarAddOnPaywallNavbarLink>
+                    </AutomationNavbarPaywallNavbarLink>
                 </>
             )}
             {shopType === 'shopify' && (
@@ -131,7 +131,7 @@ const AutomationNavbarAddOnSectionBlock = ({
                     </NavbarLink>
                 </div>
             )}
-            {hasAutomationAddOn ? (
+            {hasAutomate ? (
                 <div
                     className={classNames(
                         cssNavbar['link-wrapper'],
@@ -150,14 +150,14 @@ const AutomationNavbarAddOnSectionBlock = ({
                     </NavbarLink>
                 </div>
             ) : (
-                <AutomationNavbarAddOnPaywallNavbarLink
+                <AutomationNavbarPaywallNavbarLink
                     to="/app/automation/article-recommendation"
                     isNested
                 >
                     <span className={cssNavbar['item-name']}>
                         {ARTICLE_RECOMMENDATION}
                     </span>
-                </AutomationNavbarAddOnPaywallNavbarLink>
+                </AutomationNavbarPaywallNavbarLink>
             )}
             <div
                 className={classNames(
@@ -178,4 +178,4 @@ const AutomationNavbarAddOnSectionBlock = ({
     )
 }
 
-export default AutomationNavbarAddOnSectionBlock
+export default AutomationNavbarSectionBlock

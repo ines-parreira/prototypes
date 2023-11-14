@@ -35,7 +35,7 @@ import {sectionCreated} from 'state/entities/sections/actions'
 import {createSection} from 'models/section/resources'
 
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -84,10 +84,9 @@ function RuleRecipeCard({
         Partial<AnyManagedRuleSettings>
     >({})
     const [isModalOpen, setModalOpen] = useState(isModalOpenOnLoad)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const {rule, tags, recipe_tag, views_per_section} = recipe
-    const isBehindPaywall =
-        rule.type === RuleType.Managed && !hasAutomationAddOn
+    const isBehindPaywall = rule.type === RuleType.Managed && !hasAutomate
 
     const handleCodeAst = (
         _path: List<any>,

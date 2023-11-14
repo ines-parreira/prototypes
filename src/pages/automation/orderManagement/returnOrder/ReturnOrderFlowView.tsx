@@ -8,7 +8,7 @@ import {
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
@@ -31,7 +31,7 @@ const ReturnOrderFlowView = () => {
         selfServiceConfiguration,
         handleReturnOrderFlowUpdate,
     } = useReturnOrderFlow(shopName)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyReturnOrderFlow, setDirtyReturnOrderFlow] =
@@ -136,7 +136,7 @@ const ReturnOrderFlowView = () => {
                         eligibility={dirtyReturnOrderFlow?.eligibilities[0]}
                         onChange={handleEligibilityChange}
                     />
-                    {hasAutomationAddOn && (
+                    {hasAutomate && (
                         <ReturnOrderAction
                             action={dirtyReturnAction}
                             onChange={handleActionChange}

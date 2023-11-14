@@ -6,7 +6,7 @@ import {useTheme} from 'theme'
 import shopify from 'assets/img/integrations/shopify.png'
 
 import Button from 'pages/common/components/button/Button'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -42,7 +42,7 @@ export const ConnectToShopSection = ({
         setSelectedShop(shopName)
     }, [shopName])
 
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
 
@@ -166,8 +166,7 @@ export const ConnectToShopSection = ({
                             onClick={() => {
                                 onUpdate({
                                     shop_name: selectedShop,
-                                    self_service_deactivated:
-                                        !hasAutomationAddOn,
+                                    self_service_deactivated: !hasAutomate,
                                 })
 
                                 setConnectModalOpen(false)

@@ -60,7 +60,7 @@ describe('useGroupedElements', () => {
     it('should always return the header', () => {
         mockUseAppSelector
             .mockReturnValueOnce([]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         const {result} = renderHook(() => useGroupedElements())
@@ -70,7 +70,7 @@ describe('useGroupedElements', () => {
     it('should return elements that are arrays', () => {
         mockUseAppSelector
             .mockReturnValueOnce([[]]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         const {result} = renderHook(() => useGroupedElements())
@@ -80,7 +80,7 @@ describe('useGroupedElements', () => {
     it('should not return rule suggestion elements without an automation addon', () => {
         mockUseAppSelector
             .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
-            .mockReturnValueOnce(false) // hasAutomationAddOn
+            .mockReturnValueOnce(false) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         mockIsTicketRuleSuggestion.mockReturnValue(true)
@@ -92,7 +92,7 @@ describe('useGroupedElements', () => {
     it('should not return rule suggestion elements that are empty', () => {
         mockUseAppSelector
             .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         mockIsTicketRuleSuggestion.mockReturnValue(true)
@@ -105,7 +105,7 @@ describe('useGroupedElements', () => {
     it('should return rule suggestion elements that have content', () => {
         mockUseAppSelector
             .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map({ticket: true})) // ticket
 
         mockIsTicketRuleSuggestion.mockReturnValue(true)
@@ -127,7 +127,7 @@ describe('useGroupedElements', () => {
     it('should return elements that are not ticket events', () => {
         mockUseAppSelector
             .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         mockIsTicketEvent.mockReturnValue(false)
@@ -139,7 +139,7 @@ describe('useGroupedElements', () => {
     it('should return audit log events that have content', () => {
         mockUseAppSelector
             .mockReturnValueOnce([{type: 'audit-log-event'}]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         const {result} = renderHook(() => useGroupedElements())
@@ -149,7 +149,7 @@ describe('useGroupedElements', () => {
     it('should return phone events that have content', () => {
         mockUseAppSelector
             .mockReturnValueOnce([{type: 'phone-event'}]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         const {result} = renderHook(() => useGroupedElements())
@@ -161,7 +161,7 @@ describe('useGroupedElements', () => {
             .mockReturnValueOnce([
                 {data: {action_name: 'private-reply-action'}},
             ]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         const {result} = renderHook(() => useGroupedElements())
@@ -174,7 +174,7 @@ describe('useGroupedElements', () => {
     it('should return elements that have an action config', () => {
         mockUseAppSelector
             .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
-            .mockReturnValueOnce(true) // hasAutomationAddOn
+            .mockReturnValueOnce(true) // hasAutomate
             .mockReturnValueOnce(Map()) // ticket
 
         mockGetActionByName.mockReturnValue({

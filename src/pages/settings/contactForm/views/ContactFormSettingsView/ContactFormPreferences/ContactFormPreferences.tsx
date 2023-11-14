@@ -33,7 +33,7 @@ import {LocaleCode} from 'models/helpCenter/types'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import {ConnectContactFormToShopSection} from 'pages/settings/contactForm/components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 
 const ContactFormPreferences = (): JSX.Element => {
     const {
@@ -56,7 +56,7 @@ const ContactFormPreferences = (): JSX.Element => {
         >
     >({})
 
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const onConnectedShopChange = ({shop_name}: {shop_name: string | null}) => {
         setUpdateContactFormDto((prev) => ({
@@ -260,7 +260,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     />
                 </section>
 
-                {hasAutomationAddOn && (
+                {hasAutomate && (
                     <ConnectContactFormToShopSection
                         onUpdate={onConnectedShopChange}
                         shopName={contactForm.shop_name}

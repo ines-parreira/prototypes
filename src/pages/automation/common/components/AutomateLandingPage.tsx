@@ -4,8 +4,8 @@ import {Redirect} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    getHasAutomationAddOn,
-    getHasLegacyAutomationAddOnFeatures,
+    getHasAutomate,
+    getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 
 import {compare} from 'utils'
@@ -16,9 +16,9 @@ import AutomatePaywallView from './AutomatePaywallView'
 import StoreIntegrationView from './StoreIntegrationView'
 
 const AutomateLandingPage = () => {
-    const hasAutomateFeature = useAppSelector(getHasAutomationAddOn)
+    const hasAutomateFeature = useAppSelector(getHasAutomate)
     const hasLegacyAutomateFeatures = useAppSelector(
-        getHasLegacyAutomationAddOnFeatures
+        getHasLegacyAutomateFeatures
     )
     const storeIntegrations = useStoreIntegrations()
     if (hasAutomateFeature || hasLegacyAutomateFeatures) {

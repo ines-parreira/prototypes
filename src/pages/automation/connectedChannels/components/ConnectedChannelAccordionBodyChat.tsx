@@ -6,7 +6,7 @@ import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ChannelLanguage} from 'pages/automation/common/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -45,7 +45,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         enabledQuickResponsesCount,
         quickResponsesUrl,
     } = useConnectedChannelsViewContext()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const applicationAutomationSettings =
         applicationsAutomationSettings[applicationId]
@@ -62,7 +62,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
             })
 
     const renderArticleRecommendationAction = () => {
-        if (!hasAutomationAddOn) {
+        if (!hasAutomate) {
             return <AutomationSubscriptionAction />
         }
 
@@ -145,10 +145,10 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 onChange={updateSettings('quickResponses')}
                 disabled={
                     isUpdatePending ||
-                    !hasAutomationAddOn ||
+                    !hasAutomate ||
                     cantReactivateQuickResponses
                 }
-                action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
+                action={!hasAutomate && <AutomationSubscriptionAction />}
                 tooltipMessage={
                     cantReactivateQuickResponses
                         ? 'Disable individual Flows and Quick Responses to have a maximum of 6 Flows between them in order to turn on Quick Response again.'
@@ -183,7 +183,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 disabled={
                     isUpdatePending ||
                     !articleRecommendationHelpCenterId ||
-                    !hasAutomationAddOn
+                    !hasAutomate
                 }
                 action={renderArticleRecommendationAction()}
             />

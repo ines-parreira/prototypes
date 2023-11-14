@@ -26,7 +26,7 @@ import {
 } from 'fixtures/productPrices'
 import {
     automationSubscriptionProductPrices,
-    legacyWithoutAutomationAddOnProductPrices,
+    legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {PlanInterval} from 'models/billing/types'
@@ -152,10 +152,10 @@ describe('billing selectors', () => {
         ).toBe(true)
     })
 
-    describe('getCurrentHelpdeskAutomationAddonAmount()', () => {
+    describe('getCurrentHelpdeskAutomateAmount()', () => {
         it('should return the amount of Automate', () => {
             expect(
-                selectors.getCurrentHelpdeskAutomationAddonAmount(state)
+                selectors.getCurrentHelpdeskAutomateAmount(state)
             ).toMatchSnapshot()
         })
 
@@ -172,7 +172,7 @@ describe('billing selectors', () => {
                 }),
             }
             expect(
-                selectors.getCurrentHelpdeskAutomationAddonAmount(state)
+                selectors.getCurrentHelpdeskAutomateAmount(state)
             ).toMatchSnapshot()
         })
     })
@@ -224,10 +224,10 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getHasAutomationAddOn()', () => {
+    describe('getHasAutomate()', () => {
         it('should return true', () => {
             expect(
-                selectors.getHasAutomationAddOn({
+                selectors.getHasAutomate({
                     ...state,
                     currentAccount: fromJS({
                         current_subscription: {
@@ -239,26 +239,26 @@ describe('billing selectors', () => {
         })
 
         it('should return false', () => {
-            expect(selectors.getHasAutomationAddOn(state)).toBeFalsy()
+            expect(selectors.getHasAutomate(state)).toBeFalsy()
         })
     })
 
-    describe('getHasLegacyAutomationAddOnFeatures', () => {
-        const automationAddonLaunchDate = '2021-10-04T00:00:00Z'
+    describe('getHasLegacyAutomateFeatures', () => {
+        const automateLaunchDate = '2021-10-04T00:00:00Z'
         const productsWithLegacy = _cloneDeep(products)
         productsWithLegacy[0].prices.push(legacyBasicHelpdeskPrice)
         productsWithLegacy[1].prices.push(legacyBasicAutomationPrice)
 
         it('should return true when the account was created before the add-on launch date and has legacy features', () => {
             expect(
-                selectors.getHasLegacyAutomationAddOnFeatures({
+                selectors.getHasLegacyAutomateFeatures({
                     ...state,
                     currentAccount: fromJS({
                         created_datetime: moment
-                            .utc(automationAddonLaunchDate)
+                            .utc(automateLaunchDate)
                             .subtract(10, 'd'),
                         current_subscription: {
-                            products: legacyWithoutAutomationAddOnProductPrices,
+                            products: legacyWithoutAutomateProductPrices,
                         },
                     }),
                     billing: fromJS({
@@ -271,11 +271,11 @@ describe('billing selectors', () => {
 
         it('should return false when the account was created before the add-on launch date and does not have legacy features', () => {
             expect(
-                selectors.getHasLegacyAutomationAddOnFeatures({
+                selectors.getHasLegacyAutomateFeatures({
                     ...state,
                     currentAccount: fromJS({
                         created_datetime: moment
-                            .utc(automationAddonLaunchDate)
+                            .utc(automateLaunchDate)
                             .subtract(10, 'd'),
                     }),
                     billing: fromJS({
@@ -288,14 +288,14 @@ describe('billing selectors', () => {
 
         it('should return false when the account was created after the add-on launch date and has legacy features', () => {
             expect(
-                selectors.getHasLegacyAutomationAddOnFeatures({
+                selectors.getHasLegacyAutomateFeatures({
                     ...state,
                     currentAccount: fromJS({
                         current_subscription: {
-                            products: legacyWithoutAutomationAddOnProductPrices,
+                            products: legacyWithoutAutomateProductPrices,
                         },
                         created_datetime: moment
-                            .utc(automationAddonLaunchDate)
+                            .utc(automateLaunchDate)
                             .add(10, 'd'),
                     }),
                     billing: fromJS({
@@ -308,11 +308,11 @@ describe('billing selectors', () => {
 
         it('should return false when the account was created after the add-on launch date and does not legacy features', () => {
             expect(
-                selectors.getHasLegacyAutomationAddOnFeatures({
+                selectors.getHasLegacyAutomateFeatures({
                     ...state,
                     currentAccount: fromJS({
                         created_datetime: moment
-                            .utc(automationAddonLaunchDate)
+                            .utc(automateLaunchDate)
                             .add(10, 'd'),
                     }),
                     billing: fromJS({

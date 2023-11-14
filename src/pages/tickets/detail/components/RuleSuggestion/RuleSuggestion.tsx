@@ -3,7 +3,7 @@ import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
 import {Spinner, Tooltip} from 'reactstrap'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import Button from 'pages/common/components/button/Button'
 import {ActionStatus, Ticket} from 'models/ticket/types'
 import {actionsConfig} from 'pages/common/components/ast/actions/config'
@@ -85,7 +85,7 @@ export const isSuggestionEmpty = ({
 
 export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     const dispatch = useAppDispatch()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const recipes = useRuleRecipes()
     const emailChannels = useAppSelector(getEmailChannels)
     const currentUser = useAppSelector(getCurrentUser)
@@ -96,7 +96,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     const suggestion = ticket.meta.rule_suggestion
     const {actions, text} = getRuleSuggestionContent(ticket)
 
-    if (!hasAutomationAddOn || isSuggestionEmpty({actions, text})) return null
+    if (!hasAutomate || isSuggestionEmpty({actions, text})) return null
 
     const channel = getPreferredChannel(
         TicketMessageSourceType.Email,

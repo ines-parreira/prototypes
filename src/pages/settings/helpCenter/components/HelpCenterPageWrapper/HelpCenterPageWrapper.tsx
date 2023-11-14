@@ -14,7 +14,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {validLocaleCode} from 'models/helpCenter/utils'
 
 import settingsCss from 'pages/settings/settings.less'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -61,7 +61,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [showCloseModal, setShowCloseModal] = useState(false)
     const [locale, setLocale] = useState(viewLanguage)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const helpCenterUrl = useMemo(() => {
@@ -113,7 +113,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 }
             >
                 <div className={css.header}>
-                    {hasAutomationAddOn ? (
+                    {hasAutomate ? (
                         helpCenter.shop_name ? (
                             <Button
                                 fillStyle="ghost"

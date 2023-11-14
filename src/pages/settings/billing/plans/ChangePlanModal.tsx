@@ -10,9 +10,9 @@ import classnames from 'classnames'
 import ArrowForward from 'assets/img/icons/arrow-forward.svg'
 import {getFormattedAmount} from 'models/billing/utils'
 import {
-    getCurrentHelpdeskAutomationAddonAmount,
+    getCurrentHelpdeskAutomateAmount,
     getCurrentAutomationFullAmount,
-    getHasAutomationAddOn,
+    getHasAutomate,
     getCurrentHelpdeskProduct,
     getCurrentAutomationProduct,
     getAutomationPricesMap,
@@ -64,7 +64,7 @@ export const ChangePlanModal = ({
     const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
     const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
     const automationPrices = useAppSelector(getAutomationPricesMap)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const currentHelpdeskAddons = useAppSelector(getCurrentHelpdeskAddons)
     const features = useMemo(
         () =>
@@ -74,8 +74,8 @@ export const ChangePlanModal = ({
         [currentHelpdeskPrice]
     )
 
-    const currentHelpdeskAutomationAddonAmount = useAppSelector(
-        getCurrentHelpdeskAutomationAddonAmount
+    const currentHelpdeskAutomateAmount = useAppSelector(
+        getCurrentHelpdeskAutomateAmount
     )
     const currentAutomationFullAmount = useAppSelector(
         getCurrentAutomationFullAmount
@@ -140,7 +140,7 @@ export const ChangePlanModal = ({
                                             <>
                                                 <AutomationAmount
                                                     addOnAmount={
-                                                        currentHelpdeskAutomationAddonAmount
+                                                        currentHelpdeskAutomateAmount
                                                     }
                                                     currency={
                                                         currentHelpdeskPrice.currency
@@ -153,12 +153,12 @@ export const ChangePlanModal = ({
                                                         currentAutomationFullAmount
                                                     }
                                                     isAutomationChecked={
-                                                        hasAutomationAddOn
+                                                        hasAutomate
                                                     }
                                                 />
                                                 <TotalAmount
                                                     addOnAmount={
-                                                        currentHelpdeskAutomationAddonAmount
+                                                        currentHelpdeskAutomateAmount
                                                     }
                                                     amount={formattedAmount}
                                                     currency={
@@ -168,7 +168,7 @@ export const ChangePlanModal = ({
                                                         currentHelpdeskPrice.interval
                                                     }
                                                     isAutomationChecked={
-                                                        hasAutomationAddOn
+                                                        hasAutomate
                                                     }
                                                 />
                                             </>

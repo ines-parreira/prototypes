@@ -7,7 +7,7 @@ import {
 
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 
@@ -15,7 +15,7 @@ export const useEnableArticleRecommendation = () => {
     const helpCenterList = useAppSelector(getHelpCenterList).filter(
         (helpCenter) => !helpCenter.deactivated_datetime
     )
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
     )
@@ -26,7 +26,7 @@ export const useEnableArticleRecommendation = () => {
         )
 
         if (
-            !hasAutomationAddOn ||
+            !hasAutomate ||
             !newHelpCenter.shop_name ||
             hasHelpCenterWithSameStore
         ) {

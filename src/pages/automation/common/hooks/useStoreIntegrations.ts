@@ -3,14 +3,14 @@ import {useMemo} from 'react'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 
 const useStoreIntegrations = () => {
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const getStoreIntegrations = useMemo(
         () =>
             getIntegrationsByTypes(
-                hasAutomationAddOn
+                hasAutomate
                     ? [
                           IntegrationType.Shopify,
                           IntegrationType.BigCommerce,
@@ -18,7 +18,7 @@ const useStoreIntegrations = () => {
                       ]
                     : [IntegrationType.Shopify]
             ),
-        [hasAutomationAddOn]
+        [hasAutomate]
     )
 
     return useAppSelector(getStoreIntegrations) as StoreIntegration[]

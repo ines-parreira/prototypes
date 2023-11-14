@@ -73,7 +73,7 @@ export const AUTOMATION_FLOW = 'automation-flow'
 export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
 export const SELF_SERVICE_OVERVIEW_V2 = 'self-service-overview-v2'
-export const AUTOMATION_ADD_ON_OVERVIEW = 'automation-add-on-overview'
+export const AUTOMATE_PERFORMANCE_BY_FEATURE = 'automate-performance-by-feature'
 export const SELF_SERVICE_VOLUME_PER_FLOW = 'self-service-volume-per-flow'
 export const SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE =
     'self-service-article-recommendation-performance'
@@ -1466,7 +1466,7 @@ export const stats = toImmutable<
             },
         ],
     },
-    [AUTOMATION_ADD_ON_OVERVIEW]: {
+    [AUTOMATE_PERFORMANCE_BY_FEATURE]: {
         // TODO:Sufiyan Remove it This has been remove As part of the new automation statistics page page
         style: 'key-metrics',
         api_resource_name: SELF_SERVICE_OVERVIEW_V2,

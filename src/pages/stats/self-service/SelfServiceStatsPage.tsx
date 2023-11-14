@@ -11,7 +11,7 @@ import {
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
-    AUTOMATION_ADD_ON_OVERVIEW,
+    AUTOMATE_PERFORMANCE_BY_FEATURE,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
@@ -308,7 +308,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             data={immutableOverview.getIn(['data', 'data'])}
                             meta={immutableOverview.get('meta')}
                             loading={isFetchingOverview}
-                            config={statsConfig.get(AUTOMATION_ADD_ON_OVERVIEW)}
+                            config={statsConfig.get(
+                                AUTOMATE_PERFORMANCE_BY_FEATURE
+                            )}
                         />
                     </KeyMetricStatWrapper>
                     {allSectionsNoData && !noActivityAlertDismissed && (

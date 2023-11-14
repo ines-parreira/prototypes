@@ -90,16 +90,16 @@ export const automationSubscriptionProductPrices = {
     [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPrice.price_id,
 }
 
-export const discountedAutomationAddOnProductPrices = {
+export const discountedAutomateProductPrices = {
     [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
     [AUTOMATION_PRODUCT_ID]: basicDiscountedAutomationPrice.price_id,
 }
 
-export const legacyWithAutomationAddOnProductPrices = {
+export const legacyWithAutomateProductPrices = {
     [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPrice.price_id,
     [AUTOMATION_PRODUCT_ID]: legacyBasicAutomationPrice.price_id,
 }
 
-export const legacyWithoutAutomationAddOnProductPrices = {
+export const legacyWithoutAutomateProductPrices = {
     [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPrice.price_id,
 }

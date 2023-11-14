@@ -298,31 +298,28 @@ export const getAutomationPricesMap = createSelector(
         }, {})
 )
 
-export const getHasAutomationAddOn = createSelector(
+export const getHasAutomate = createSelector(
     getCurrentAutomationProduct,
     (price) => !!price
 )
 
-export const getHasLegacyAutomationAddOnFeatures = createSelector(
+export const getHasLegacyAutomateFeatures = createSelector(
     getCurrentAccountState,
     getCurrentHelpdeskProduct,
     (accountState, product) => {
-        const automationAddonLaunchDate = '2021-10-04T00:00:00Z'
-        const accountCreatedBeforeAutomationAddonLaunch = moment
+        const automateLaunchDate = '2021-10-04T00:00:00Z'
+        const accountCreatedBeforeAutomateLaunch = moment
             .utc(accountState.get('created_datetime'))
-            .isBefore(moment.utc(automationAddonLaunchDate))
+            .isBefore(moment.utc(automateLaunchDate))
 
-        const hasLegacyAutomationAddonFeatures =
+        const hasLegacyAutomateFeatures =
             !!product?.legacy_automation_addon_features
 
-        return (
-            accountCreatedBeforeAutomationAddonLaunch &&
-            hasLegacyAutomationAddonFeatures
-        )
+        return accountCreatedBeforeAutomateLaunch && hasLegacyAutomateFeatures
     }
 )
 
-export const getCurrentHelpdeskAutomationAddonAmount = createSelector(
+export const getCurrentHelpdeskAutomateAmount = createSelector(
     getPricesMap,
     getCurrentHelpdeskProduct,
     getCurrentAutomationProduct,

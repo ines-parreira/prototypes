@@ -2,7 +2,7 @@ import React, {useCallback} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import WorkflowTemplatesView from './WorkflowTemplatesView'
@@ -26,9 +26,9 @@ const WorkflowTemplatesViewContainer = () => {
         [history, newWorkflowUrl]
     )
 
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
-    if (!hasAutomationAddOn) {
+    if (!hasAutomate) {
         return <Redirect to="/app/automation" />
     }
 

@@ -8,13 +8,13 @@ import Navbar from 'pages/common/components/Navbar'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    getHasAutomationAddOn,
-    getHasLegacyAutomationAddOnFeatures,
+    getHasAutomate,
+    getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 import {hasAgentPrivileges} from 'utils'
 import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
-import AutomationNavbarAddOnPaywallView from './AutomationNavbarAddOnPaywallView'
-import AutomationNavbarAddOnView from './AutomationNavbarAddOnView'
+import AutomationNavbarPaywallView from './AutomationNavbarPaywallView'
+import AutomationNavbarView from './AutomationNavbarView'
 import css from './AutomationNavbar.less'
 
 type MenuItem = {
@@ -78,9 +78,9 @@ const MenuItem = ({menu}: {menu: MenuItem}) => {
 
 const AutomationNavbar = () => {
     const currentUser = useAppSelector(getCurrentUser)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const hasLegacyAutomationAddOnFeatures = useAppSelector(
-        getHasLegacyAutomationAddOnFeatures
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const hasLegacyAutomateFeatures = useAppSelector(
+        getHasLegacyAutomateFeatures
     )
 
     const menus = [
@@ -112,10 +112,10 @@ const AutomationNavbar = () => {
             </div>
 
             {hasAgentPrivileges(currentUser) &&
-                (hasAutomationAddOn || hasLegacyAutomationAddOnFeatures ? (
-                    <AutomationNavbarAddOnView />
+                (hasAutomate || hasLegacyAutomateFeatures ? (
+                    <AutomationNavbarView />
                 ) : (
-                    <AutomationNavbarAddOnPaywallView />
+                    <AutomationNavbarPaywallView />
                 ))}
         </Navbar>
     )

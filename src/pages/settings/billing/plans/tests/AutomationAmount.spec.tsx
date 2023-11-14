@@ -71,7 +71,7 @@ describe('<AutomationAmount />', () => {
             />
         )
 
-        fireEvent.click(getByLabelText(/Automation/))
+        fireEvent.click(getByLabelText(/Automate/))
 
         expect(minProps.onAutomationChange).toHaveBeenCalled()
     })

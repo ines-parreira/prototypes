@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import {useHistory} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 
@@ -34,7 +34,7 @@ export function RuleLibrary({
     autoInstall,
 }: Props) {
     const history = useHistory()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const [filteredRecipes, setFilteredRecipes] = useState(recipes)
     const [installedSlugs, setInstalledSlugs] = useState<string[]>([])
     const [installedManagedRules, setInstalledManagedRules] = useState<
@@ -118,7 +118,7 @@ export function RuleLibrary({
                         tickets. Available only to Automate subscribers.
                     </p>
                 </div>
-                {!hasAutomationAddOn && (
+                {!hasAutomate && (
                     <div>
                         <AutomationSubscriptionButton
                             label="Get Automate Features"

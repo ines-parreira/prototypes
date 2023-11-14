@@ -1,4 +1,4 @@
-import {automationAddOnDefaultFilters} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomationQueryFactory'
+import {automateDefaultFilters} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomationQueryFactory'
 import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventDimension,
@@ -12,7 +12,7 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
-    AutomationAddonStatsFiltersMembers,
+    AutomateStatsFiltersMembers,
     getFilterDateRange,
     statsFiltersToReportingFilters,
 } from 'utils/reporting'
@@ -24,7 +24,7 @@ export const automationRateQueryFactory = (
     measures: [AutomationBillingEventMeasure.AutomationRate],
     dimensions: [],
     timezone,
-    filters: automationAddOnDefaultFilters(filters),
+    filters: automateDefaultFilters(filters),
 })
 
 export const automationRateTimeSeriesQueryFactory = (
@@ -41,10 +41,7 @@ export const automationRateTimeSeriesQueryFactory = (
         },
     ],
     filters: [
-        ...statsFiltersToReportingFilters(
-            AutomationAddonStatsFiltersMembers,
-            filters
-        ),
+        ...statsFiltersToReportingFilters(AutomateStatsFiltersMembers, filters),
         {
             member: AutomationBillingEventMember.PeriodEnd,
             operator: ReportingFilterOperator.BeforeDate,

@@ -6,14 +6,14 @@ import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 
-import css from './AutomationNavbarAddOnPaywallNavbarLink.less'
+import css from './AutomationNavbarPaywallNavbarLink.less'
 
 type Props = {
     children: ReactNode
     isNested?: boolean
 } & NavbarLinkProps
 
-const AutomationNavbarAddOnPaywallNavbarLink = ({
+const AutomationNavbarPaywallNavbarLink = ({
     children,
     isNested,
     ...props
@@ -36,4 +36,4 @@ const AutomationNavbarAddOnPaywallNavbarLink = ({
     )
 }
 
-export default AutomationNavbarAddOnPaywallNavbarLink
+export default AutomationNavbarPaywallNavbarLink

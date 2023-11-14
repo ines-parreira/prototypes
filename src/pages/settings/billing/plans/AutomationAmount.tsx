@@ -12,7 +12,7 @@ import css from './AutomationAmount.less'
 const AutomationLabel = ({id}: {id: string}) => {
     return (
         <div className={classnames('align-middle', css.checkboxLabel)}>
-            <span id={`automation-text-${id}`}>Automation Add-on</span>
+            <span id={`automation-text-${id}`}>Automate</span>
         </div>
     )
 }
@@ -97,7 +97,7 @@ const AutomationAmount = ({
                             css.checkboxLabel
                         )}
                     >
-                        Automation Add-on
+                        Automate
                     </div>
                     <div className={css.amountContainer}>
                         {typeof addOnAmount === 'number' &&

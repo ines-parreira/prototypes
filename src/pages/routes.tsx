@@ -121,7 +121,7 @@ import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBil
 import EditTicketField from 'pages/settings/ticketFields/EditTicketField'
 import {RevenueAddonApiClientProvider} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
 import {
-    ROUTE_AUTOMATION_ADD_ON_FEATURES,
+    ROUTE_OLD_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from 'pages/stats/self-service/constants'
@@ -696,7 +696,7 @@ export function StatsRoutes() {
 
                 <Route
                     exact
-                    path={`${path}/${ROUTE_AUTOMATION_ADD_ON_FEATURES}`}
+                    path={`${path}/${ROUTE_OLD_PERFORMANCE_BY_FEATURES}`}
                 >
                     {isAutomateRebranding ? (
                         <Redirect

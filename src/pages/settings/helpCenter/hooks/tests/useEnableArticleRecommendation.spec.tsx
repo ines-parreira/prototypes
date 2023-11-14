@@ -13,7 +13,7 @@ import {
     fetchSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/resources'
 
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {useEnableArticleRecommendation} from '../useEnableArticleRecommendation'
 
 jest.mock('state/billing/selectors')
@@ -61,7 +61,7 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should call updateSelfServiceConfiguration', async () => {
-        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
         ;(fetchSelfServiceConfiguration as jest.Mock).mockResolvedValue({
             article_recommendation_help_center_id: null,
         })
@@ -82,7 +82,7 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should not call if there is already a help-center with the same store', async () => {
-        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper({
@@ -107,8 +107,8 @@ describe('useEnableArticleRecommendation', () => {
         expect(updateSelfServiceConfiguration).not.toHaveBeenCalled()
     })
 
-    it('Should not call if AutomationAddOn is not enabled', async () => {
-        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(false)
+    it('Should not call if Automate is not enabled', async () => {
+        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(false)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper(),
@@ -122,7 +122,7 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should not call if there is already a article_recommendation_help_center_id', async () => {
-        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
         ;(fetchSelfServiceConfiguration as jest.Mock).mockResolvedValue({
             article_recommendation_help_center_id: 2,
         })
@@ -139,7 +139,7 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should not call if they are not related to the same shop', async () => {
-        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper(),

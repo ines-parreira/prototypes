@@ -13,7 +13,7 @@ import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 
-describe('Automation add-on', () => {
+describe('Automate', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {

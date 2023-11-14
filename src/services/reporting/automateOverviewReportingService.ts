@@ -29,7 +29,7 @@ interface Fetching<T> {
     data?: T
 }
 
-export interface AutomationAddonReportData {
+export interface AutomateReportData {
     automationRateTimeSeries: Fetching<TimeSeriesDataItem[][]>
     automatedInteractionTimeSeries: Fetching<TimeSeriesDataItem[][]>
     automatedInteractionByEventTypesTimeSeries: Fetching<TimeSeriesDataItem[][]>
@@ -39,10 +39,7 @@ export interface AutomationAddonReportData {
     automatedInterationTrend: MetricTrend
 }
 
-export const saveReport = async (
-    data: AutomationAddonReportData,
-    period: Period
-) => {
+export const saveReport = async (data: AutomateReportData, period: Period) => {
     const {
         automationRateTimeSeries,
         automatedInteractionTimeSeries,

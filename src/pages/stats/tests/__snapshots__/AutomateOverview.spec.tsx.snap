@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutomationAddonOverview /> Performance Tips light-error should show tips with sentiment  1`] = `
+exports[`<AutomateOverview /> Performance Tips light-error should show tips with sentiment  1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -1509,7 +1509,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
 }
 `;
 
-exports[`<AutomationAddonOverview /> Performance Tips light-success should show tips with sentiment  1`] = `
+exports[`<AutomateOverview /> Performance Tips light-success should show tips with sentiment  1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -3018,7 +3018,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
 }
 `;
 
-exports[`<AutomationAddonOverview /> Performance Tips success should show tips with sentiment  1`] = `
+exports[`<AutomateOverview /> Performance Tips success should show tips with sentiment  1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -4527,7 +4527,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
 }
 `;
 
-exports[`<AutomationAddonOverview /> should display AAO 1`] = `
+exports[`<AutomateOverview /> should display AAO 1`] = `
 <div
   class="full-width"
 >
@@ -5214,7 +5214,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
 </div>
 `;
 
-exports[`<AutomationAddonOverview /> should display paywall 1`] = `
+exports[`<AutomateOverview /> should display paywall 1`] = `
 <div
   class="full-width pageWrapper"
 >

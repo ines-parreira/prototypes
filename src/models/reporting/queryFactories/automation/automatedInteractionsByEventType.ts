@@ -11,7 +11,7 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
-    AutomationAddonStatsFiltersMembers,
+    AutomateStatsFiltersMembers,
     getFilterDateRange,
     statsFiltersToReportingFilters,
 } from 'utils/reporting'
@@ -40,10 +40,7 @@ export const automatedInteractionsByEventTypeQueryFactory = (
     ],
     timezone,
     filters: [
-        ...statsFiltersToReportingFilters(
-            AutomationAddonStatsFiltersMembers,
-            filters
-        ),
+        ...statsFiltersToReportingFilters(AutomateStatsFiltersMembers, filters),
         {
             member: AutomationBillingEventMember.PeriodEnd,
             operator: ReportingFilterOperator.BeforeDate,

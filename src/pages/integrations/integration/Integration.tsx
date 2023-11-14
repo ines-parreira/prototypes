@@ -10,7 +10,7 @@ import classNames from 'classnames'
 
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 import * as IntegrationsActions from 'state/integrations/actions'
-import {getHasAutomationAddOn, makeHasFeature} from 'state/billing/selectors'
+import {getHasAutomate, makeHasFeature} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
@@ -120,7 +120,7 @@ export const IntegrationDetail = ({
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const isIntegrationId = ![
         'new',
@@ -272,10 +272,10 @@ export const IntegrationDetail = ({
         if (appId) {
             setArticleRecommendationEnabled(
                 applicationsAutomationSettings[appId]?.articleRecommendation
-                    ?.enabled && hasAutomationAddOn
+                    ?.enabled && hasAutomate
             )
         }
-    }, [hasAutomationAddOn, chatApplicationIds, applicationsAutomationSettings])
+    }, [hasAutomate, chatApplicationIds, applicationsAutomationSettings])
 
     useUpdateEffect(() => {
         if (integrationId && isIntegrationId) {

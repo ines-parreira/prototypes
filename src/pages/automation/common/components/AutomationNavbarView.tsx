@@ -10,7 +10,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {compare} from 'utils'
 import navbarCss from 'assets/css/navbar.less'
 import {useIsAutomateRebranding} from '../hooks/useIsAutomateRebranding'
-import AutomationNavbarAddOnSectionBlock from './AutomationNavbarAddOnSectionBlock'
+import AutomationNavbarSectionBlock from './AutomationNavbarSectionBlock'
 
 import {
     AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY,
@@ -25,7 +25,7 @@ const getSectionKeyFromStoreIntegration = (
     return `${integration.type}:${getShopNameFromStoreIntegration(integration)}`
 }
 
-const AutomationNavbarAddOnView = () => {
+const AutomationNavbarView = () => {
     const match = useRouteMatch<{shopType?: string; shopName: string}>({
         path: [
             '/app/automation/:shopType/:shopName/flows',
@@ -101,7 +101,7 @@ const AutomationNavbarAddOnView = () => {
                     const key: SectionKey = `${shopType}:${shopName}`
 
                     return (
-                        <AutomationNavbarAddOnSectionBlock
+                        <AutomationNavbarSectionBlock
                             key={key}
                             name={storeIntegration.name}
                             shopType={shopType}
@@ -130,4 +130,4 @@ const AutomationNavbarAddOnView = () => {
     )
 }
 
-export default AutomationNavbarAddOnView
+export default AutomationNavbarView

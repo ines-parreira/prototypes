@@ -9,7 +9,7 @@ import {
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
@@ -32,7 +32,7 @@ const CancelOrderFlowView = () => {
         selfServiceConfiguration,
         handleCancelOrderFlowUpdate,
     } = useCancelOrderFlow(shopName)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyCancelOrderFlow, setDirtyCancelOrderFlow] =
@@ -143,7 +143,7 @@ const CancelOrderFlowView = () => {
                         eligibility={dirtyCancelOrderFlow?.eligibilities[0]}
                         onChange={handleEligibilityChange}
                     />
-                    {hasAutomationAddOn && (
+                    {hasAutomate && (
                         <CancelOrderResponseMessageContent
                             responseMessageContent={
                                 dirtyCancelOrderFlow?.action

@@ -12,7 +12,7 @@ import {
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import useAppSelector from '../../../../hooks/useAppSelector'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+import {getHasAutomate} from '../../../../state/billing/selectors'
 import {FeatureFlagKey} from '../../../../config/featureFlags'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
@@ -31,7 +31,7 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
     const {automationSettings, handleContactFormAutomationSettingsUpdate} =
         useContactFormsAutomationSettings(channel.value.id)
 
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const {workflowsEntrypoints: availableWorkflowsEntrypoints} =
         useConnectedChannelsViewContext()
@@ -86,15 +86,13 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                         automationSettings?.order_management?.enabled ?? false
                     }
                     name={ORDER_MANAGEMENT}
-                    disabled={!hasAutomationAddOn}
+                    disabled={!hasAutomate}
                     onChange={(enabled) => {
                         void handleContactFormAutomationSettingsUpdate({
                             order_management: {enabled},
                         })
                     }}
-                    action={
-                        !hasAutomationAddOn && <AutomationSubscriptionAction />
-                    }
+                    action={!hasAutomate && <AutomationSubscriptionAction />}
                 />
             )}
         </>

@@ -10,7 +10,7 @@ import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
@@ -29,7 +29,7 @@ type Props = {
 const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const {automationSettings, handleHelpCenterAutomationSettingsUpdate} =
         useHelpCentersAutomationSettings(channel.value.id)
@@ -122,9 +122,9 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
             <ConnectedChannelFeatureToggle
                 name={ORDER_MANAGEMENT}
                 value={channel.value.self_service_deactivated_datetime === null}
-                disabled={updatingHelpCenter || !hasAutomationAddOn}
+                disabled={updatingHelpCenter || !hasAutomate}
                 onChange={updateHelpCenter}
-                action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
+                action={!hasAutomate && <AutomationSubscriptionAction />}
             />
         </>
     )

@@ -23,7 +23,7 @@ import {
 } from 'fixtures/productPrices'
 import {
     automationSubscriptionProductPrices,
-    legacyWithoutAutomationAddOnProductPrices,
+    legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
 
@@ -107,7 +107,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             {
                 currentAccount: fromJS({
                     current_subscription: {
-                        products: legacyWithoutAutomationAddOnProductPrices,
+                        products: legacyWithoutAutomateProductPrices,
                     },
                 }),
                 billing: fromJS({

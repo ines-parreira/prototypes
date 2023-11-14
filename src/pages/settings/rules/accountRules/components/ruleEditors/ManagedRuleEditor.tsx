@@ -22,7 +22,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import RuleItemButtons from 'pages/settings/rules/components/RuleItemButtons'
 import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {ruleUpdated} from 'state/entities/rules/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -105,7 +105,7 @@ export const ManagedRuleEditor = (
         useState<InstallationError | null>()
 
     const dispatch = useAppDispatch()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const hasAgentPrivileges = useHasAgentPrivileges()
     const [
         showAutomationSubscriptionModal,
@@ -113,7 +113,7 @@ export const ManagedRuleEditor = (
     ] = useState(false)
 
     const toggleActivation = () => {
-        if (!hasAutomationAddOn) {
+        if (!hasAutomate) {
             setShowAutomationSubscriptionModal(true)
             return
         }
@@ -181,7 +181,7 @@ export const ManagedRuleEditor = (
     }, [settings, deactivatedDatetime])
 
     const handleChange = () => {
-        if (!hasAutomationAddOn) {
+        if (!hasAutomate) {
             void dispatch(
                 notify({
                     message:
@@ -231,7 +231,7 @@ export const ManagedRuleEditor = (
                         !editorHasError &&
                         hasAgentPrivileges &&
                         !isSubmitting &&
-                        hasAutomationAddOn &&
+                        hasAutomate &&
                         !installationError
                     }
                     canDuplicate={false}

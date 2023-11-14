@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import {useHistory} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
@@ -20,12 +20,12 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
     const history = useHistory()
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const integrationId = integration.get('id') as string
     const shopName = integration.getIn(['meta', 'shop_name']) as string | null
     const shopType = integration.getIn(['meta', 'shop_type']) as string | null
 
-    if (!hasAutomationAddOn) {
+    if (!hasAutomate) {
         return (
             <>
                 <AutomationSubscriptionButton
