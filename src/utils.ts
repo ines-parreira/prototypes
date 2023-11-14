@@ -45,7 +45,7 @@ import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
-import {envVars, isProduction} from './utils/environment'
+import {envVars, isProduction, isStaging} from './utils/environment'
 import {linkify} from './utils/editor'
 import {GorgiasApiResponseDataError} from './models/api/types'
 
@@ -416,6 +416,33 @@ export function stripHTML(text: string): Maybe<string> {
         console.error(`Failed stripHTML: ${e as string}`, text)
         return text
     }
+}
+
+export const replaceAttachmentURL = (url: string) => {
+    const ATTACHMENT_PATH = 'api/attachment/download'
+    const accountDomain = window.GORGIAS_STATE.currentAccount.domain
+
+    if (isProduction()) {
+        return url.replace(
+            'uploads.gorgias.io',
+            `${accountDomain}.gorgias.com/${ATTACHMENT_PATH}`
+        )
+    }
+
+    if (isStaging()) {
+        return url.replace(
+            'uploads.gorgias.xyz',
+            `${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
+        )
+    }
+
+    // TODO: add back in after 'gorgis.us' bucket is fixed to not use the 'development' path
+    // return url.replace(
+    //     'uploads.gorgi.us',
+    //     `${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
+    // )
+
+    return url
 }
 
 const _proxyImageSignedURL = (url: string): string => {

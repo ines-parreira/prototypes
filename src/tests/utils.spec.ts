@@ -6,6 +6,8 @@ import * as esprima from 'esprima'
 import * as utils from 'utils'
 import * as envUtils from 'utils/environment'
 import schemasJSON from 'fixtures/openapi.json'
+import {Account} from 'state/currentAccount/types'
+import {isProduction, isStaging} from 'utils/environment'
 import {
     ADMIN_ROLE,
     AGENT_ROLE,
@@ -453,6 +455,51 @@ describe('global utils', () => {
                 'containsAll'
             )
         })
+    })
+
+    describe('replaceAttachmentURL', () => {
+        beforeAll(() => {
+            window.GORGIAS_STATE.currentAccount = {
+                domain: 'acme',
+            } as Account
+        })
+
+        it('should replace attachment url for production environment', () => {
+            ;(isProduction as jest.Mock).mockReturnValueOnce(true)
+
+            expect(
+                utils.replaceAttachmentURL(
+                    'https://uploads.gorgias.io/foo/bar.pdf'
+                )
+            ).toBe(
+                'https://acme.gorgias.com/api/attachment/download/foo/bar.pdf'
+            )
+        })
+
+        it('should replace attachment url for staging environment', () => {
+            ;(isStaging as jest.Mock).mockReturnValueOnce(true)
+
+            expect(
+                utils.replaceAttachmentURL(
+                    'https://uploads.gorgias.xyz/foo/bar.pdf'
+                )
+            ).toBe(
+                'https://acme.gorgias.xyz/api/attachment/download/foo/bar.pdf'
+            )
+        })
+
+        // TODO: add back in after 'gorgis.us' bucket is fixed to not use the 'development' path
+        // it('should replace attachment url for development environment', () => {
+        //     ;(isDevelopment as jest.Mock).mockReturnValueOnce(true)
+        //
+        //     expect(
+        //         utils.replaceAttachmentURL(
+        //             'https://uploads.gorgi.us/foo/bar.pdf'
+        //         )
+        //     ).toBe(
+        //         'https://acme.gorgias.docker/api/attachment/download/foo/bar.pdf'
+        //     )
+        // })
     })
 
     describe('proxifyImages', () => {

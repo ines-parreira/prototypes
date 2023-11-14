@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 
+import {Account} from 'state/currentAccount/types'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {RootState, StoreDispatch} from 'state/types'
 import {user} from 'fixtures/users'
@@ -21,6 +22,9 @@ describe('<PhoneEventDetails/>', () => {
     beforeEach(() => {
         store = mockStore({currentUser: fromJS(user)})
         Date.now = jest.fn(() => 42)
+        window.GORGIAS_STATE.currentAccount = {
+            domain: 'acme',
+        } as Account
     })
     afterAll(() => {
         Date.now = realDateNow

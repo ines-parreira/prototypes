@@ -12,7 +12,7 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {saveFileAsDownloaded} from 'utils/file'
 import * as currentUserSelectors from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
-import {hasRole} from 'utils'
+import {hasRole, replaceAttachmentURL} from 'utils'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {appQueryClient} from 'api/queryClient'
@@ -164,23 +164,28 @@ const DownloadableDeletableRecording = ({
     deleteRecordingURL,
     currentUser,
     callId,
-}: OwnProps): JSX.Element => (
-    <div className={css['recording-wrapper']}>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <audio
-            controls
-            src={downloadRecordingURL}
-            className={css['recording-controls']}
-        />
-        {hasRole(currentUser, UserRole.BasicAgent) && (
-            <DownloadButton url={downloadRecordingURL} />
-        )}
+}: OwnProps): JSX.Element => {
+    const replacedDownloadRecordingURL =
+        replaceAttachmentURL(downloadRecordingURL)
 
-        {hasRole(currentUser, UserRole.Admin) && (
-            <DeleteButton url={deleteRecordingURL} callId={callId} />
-        )}
-    </div>
-)
+    return (
+        <div className={css['recording-wrapper']}>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <audio
+                controls
+                src={replacedDownloadRecordingURL}
+                className={css['recording-controls']}
+            />
+            {hasRole(currentUser, UserRole.BasicAgent) && (
+                <DownloadButton url={replacedDownloadRecordingURL} />
+            )}
+
+            {hasRole(currentUser, UserRole.Admin) && (
+                <DeleteButton url={deleteRecordingURL} callId={callId} />
+            )}
+        </div>
+    )
+}
 
 const mapStateToProps = (state: RootState) => {
     return {

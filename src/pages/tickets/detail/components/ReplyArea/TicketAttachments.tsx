@@ -7,7 +7,7 @@ import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {fileIconFromContentType} from 'pages/tickets/common/utils'
 import shortcutManager from 'services/shortcutManager/index'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {proxifyURL} from 'utils'
+import {proxifyURL, replaceAttachmentURL} from 'utils'
 
 import css from './TicketAttachments.less'
 
@@ -199,7 +199,7 @@ export default class TicketAttachments extends Component<Props, State> {
     ) {
         return (
             <a
-                href={attachment.get('url') || '#'}
+                href={replaceAttachmentURL(attachment.get('url')) || '#'}
                 target="_blank"
                 className={classnames(css.item, {
                     [css.hasPreview]: this.isImage(attachment),

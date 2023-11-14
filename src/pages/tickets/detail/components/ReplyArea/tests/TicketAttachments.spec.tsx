@@ -4,10 +4,18 @@ import {mount, ReactWrapper, shallow, ShallowWrapper} from 'enzyme'
 import _noop from 'lodash/noop'
 // aphrodite is required by react-images
 import {StyleSheetTestUtils} from 'aphrodite'
+
+import {Account} from 'state/currentAccount/types'
 import TicketAttachments from '../TicketAttachments'
 import {proxifyURL} from '../../../../../../utils'
 
 describe('TicketAttachments component', () => {
+    beforeAll(() => {
+        window.GORGIAS_STATE.currentAccount = {
+            domain: 'acme',
+        } as Account
+    })
+
     // attachments is an immutable list of pojos
     const attachments: ComponentProps<typeof TicketAttachments>['attachments'] =
         fromJS([

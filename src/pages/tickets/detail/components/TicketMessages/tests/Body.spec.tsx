@@ -9,6 +9,7 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
+import {Account} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import Body from '../Body'
 
@@ -21,6 +22,12 @@ const store = mockStore({
 } as RootState)
 
 describe('Body', () => {
+    beforeAll(() => {
+        window.GORGIAS_STATE.currentAccount = {
+            domain: 'acme',
+        } as Account
+    })
+
     it("should display the Facebook carousel if there's matching metadata", () => {
         const facebookCarouselMessage: TicketMessage = {
             ...defaultMessage,
