@@ -787,9 +787,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             )
         }
 
+        const showPrivacyPolicyDisclaimer =
+            !!flags?.[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
+
         const previewRenderPrivacyPolicyDisclaimer = (preview: string) => {
             return (
                 preview === PREVIEW_PRIVACY_POLICY_DISCLAIMER &&
+                showPrivacyPolicyDisclaimer &&
                 privacyPolicyDisclaimerEnabled &&
                 selfServiceConfigurationEnabled
             )
@@ -1386,7 +1390,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
                                         {privacyPolicyDisclaimerEnabled &&
                                             this.state
-                                                .privacyPolicyDisclaimerText && (
+                                                .privacyPolicyDisclaimerText !==
+                                                undefined && (
                                                 <TicketRichField
                                                     // className={
                                                     //     css.richTextareaWrapper
