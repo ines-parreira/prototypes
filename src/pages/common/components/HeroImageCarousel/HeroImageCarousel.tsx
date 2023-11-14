@@ -3,7 +3,7 @@ import Slider from 'react-slick'
 import classNames from 'classnames'
 
 import Button from '../button/Button'
-import css from './PaywallCarousel.less'
+import css from './HeroImageCarousel.less'
 export type CarouselData = {
     imageUrl: string
     description?: string
@@ -15,7 +15,7 @@ type Props = {
     onSingleSlideButtonTitleClick?: () => void
 }
 
-const PaywallCarousel = ({
+const HeroImageCarousel = ({
     slides,
     singleSlideButtonTitle,
     onSingleSlideButtonTitleClick,
@@ -109,4 +109,4 @@ const PaywallCarousel = ({
         </div>
     )
 }
-export default PaywallCarousel
+export default HeroImageCarousel

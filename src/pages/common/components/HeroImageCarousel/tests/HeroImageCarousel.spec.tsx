@@ -1,9 +1,9 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import {assetsUrl} from 'utils'
-import PaywallCarousel from '../PaywallCarousel'
+import HeroImageCarousel from '../HeroImageCarousel'
 
-describe('<PaywallCarousel />', () => {
+describe('<HeroImageCarousel />', () => {
     const buttonLabel = 'Hey I am the button label'
 
     it('should render with minimal props', () => {
@@ -16,7 +16,7 @@ describe('<PaywallCarousel />', () => {
             },
         ]
         const {container, queryByText} = render(
-            <PaywallCarousel
+            <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
             />
@@ -45,7 +45,7 @@ describe('<PaywallCarousel />', () => {
             },
         ]
         const {container, getByText, queryByText} = render(
-            <PaywallCarousel
+            <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
             />
@@ -75,7 +75,7 @@ describe('<PaywallCarousel />', () => {
             },
         ]
         const {container, getByText, queryByText} = render(
-            <PaywallCarousel
+            <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
             />
@@ -103,7 +103,7 @@ describe('<PaywallCarousel />', () => {
         ]
         const buttonClick = jest.fn()
         const {container, getByText} = render(
-            <PaywallCarousel
+            <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
                 onSingleSlideButtonTitleClick={buttonClick}

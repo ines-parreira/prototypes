@@ -1,5 +1,5 @@
 import {assetsUrl} from 'utils'
-import {CarouselData} from 'pages/common/components/PaywallCarousel/PaywallCarousel'
+import {CarouselData} from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import {AutomateFeatures} from '../types'
 
 export const AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY =

@@ -9,7 +9,7 @@ import automateIcon from 'assets/img/self-service/automate-logo.svg'
 import Button from 'pages/common/components/button/Button'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import PaywallCarousel from 'pages/common/components/PaywallCarousel/PaywallCarousel'
+import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import {AutomateFeatures} from '../types'
 import css from './AutomatePaywallView.less'
 import {PaywallConfig} from './constants'
@@ -82,7 +82,7 @@ const AutomatePaywallView = ({
                     </div>
                 </div>
                 <div className={css.rightContainer}>
-                    <PaywallCarousel slides={slidesData} />
+                    <HeroImageCarousel slides={slidesData} />
                 </div>
             </div>
             <AutomationSubscriptionModal
