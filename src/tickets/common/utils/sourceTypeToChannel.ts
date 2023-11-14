@@ -5,6 +5,7 @@ import {
 } from 'business/types/ticket'
 import {TicketMessage} from 'models/ticket/types'
 import {DEFAULT_CHANNEL} from 'tickets/common/config'
+import {isTicketChannel} from 'models/ticket/predicates'
 
 import isSystemType from './isSystemType'
 import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'
@@ -29,6 +30,11 @@ export default function sourceTypeToChannel(
         if (lastMessage.get('via') === TicketVia.Twilio) {
             return TicketChannel.Phone
         }
+
+        if (!isTicketChannel(lastMessage.get('channel'))) {
+            return sourceType
+        }
+
         const lastSourceType = lastMessage.getIn(['source', 'type'])
         return sourceTypeToChannel(lastSourceType, messages)
     }

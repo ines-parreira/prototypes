@@ -33,6 +33,14 @@ describe('sourceTypeToChannel()', () => {
         expect(channel).toBe(TicketChannel.Phone)
     })
 
+    it('should return the InternalNote if the last message channel is not a legacy channel', () => {
+        const channel = sourceTypeToChannel(
+            TicketMessageSourceType.InternalNote,
+            [{channel: 'tiktok-shop'} as unknown as TicketMessage]
+        )
+        expect(channel).toBe(TicketChannel.InternalNote)
+    })
+
     it.each([
         TicketMessageSourceType.FacebookMentionPost,
         TicketMessageSourceType.FacebookMentionComment,
