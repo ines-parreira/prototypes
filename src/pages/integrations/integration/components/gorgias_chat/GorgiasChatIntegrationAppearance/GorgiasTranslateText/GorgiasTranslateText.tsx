@@ -61,6 +61,7 @@ import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
 import css from './GorgiasTranslateText.less'
 import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
 import formProps from './translations-available-keys'
+import isEqualTextsPerLanguage from './utils/CompareTextsPerLanguage'
 
 const generalKeys = Object.keys(formProps.general)
 const generalLegacySoloLanguage = Object.keys(
@@ -74,6 +75,9 @@ const contactFormComfirmationEmailKeys = Object.keys(
 const dynamicWaitTimeKeys = Object.keys(formProps.dynamicWaitTime)
 const emailCaptureKeys = Object.keys(formProps.emailCapture)
 const autoResponderKeys = Object.keys(formProps.autoResponder)
+const privacyPolicyDisclaimerKeys = Object.keys(
+    formProps.privacyPolicyDisclaimer
+)
 
 type OwnProps = {
     integration: Map<any, any>
@@ -128,6 +132,8 @@ function GorgiasTranslateText({
 
     const renameContactFormEnabled =
         useFlags()[FeatureFlagKey.ChatRenameContactForm]
+    const chatPrivacPolicyDisclaimerEnabled =
+        useFlags()[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
 
     const integrationChat = integration.toJS() as GorgiasChatIntegration
 
@@ -517,12 +523,16 @@ function GorgiasTranslateText({
 
     const saveKeyValue = useCallback(
         (key: string, value: string) => {
-            setHasChanges(true)
-            setTextsOfSelectedLanguage(
-                produce(textsOfSelectedLanguage, (textsDraft) => {
-                    set(textsDraft, key, value || undefined)
-                })
-            )
+            const draft = produce(textsOfSelectedLanguage, (textsDraft) => {
+                set(textsDraft, key, value || undefined)
+            })
+
+            // We only flag as changed if the current state is different from the one in DB.
+            // We do this because focusing and unfocusing a field (both <TextArea/> and <TicketRichField/>) without editing will trigger a saveKeyValue() call.
+            if (!isEqualTextsPerLanguage(draft, textsOfSelectedLanguage)) {
+                setHasChanges(true)
+                setTextsOfSelectedLanguage(draft)
+            }
         },
         [textsOfSelectedLanguage, setTextsOfSelectedLanguage, setHasChanges]
     )
@@ -931,8 +941,21 @@ function GorgiasTranslateText({
                         trackInputMethod={trackInput}
                     />
 
+                    {chatPrivacPolicyDisclaimerEnabled && (
+                        <GorgiasTranslateInputGroup
+                            title="Privacy policy disclaimer"
+                            keys={privacyPolicyDisclaimerKeys}
+                            filtersForKeys={{}}
+                            textsPerLanguage={textsOfSelectedLanguage}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={formProps.privacyPolicyDisclaimer}
+                            trackInputMethod={trackInput}
+                        />
+                    )}
+
                     <GorgiasTranslateInputGroup
-                        title="Auto-responder"
+                        title="Autoresponder"
                         keys={autoResponderKeys}
                         filtersForKeys={{}}
                         textsPerLanguage={textsOfSelectedLanguage}

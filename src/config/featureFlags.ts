@@ -20,6 +20,7 @@ export enum FeatureFlagKey {
     ChatShowOrHideOnSelectedUrls = 'chat-show-or-hide-on-selected-urls',
     ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
+    ChatPrivacyPolicyDisclaimer = 'chat-privacy-policy-disclaimer',
     ChatQuickRepliesSunset = 'chat-quick-replies-sunset',
     ChatQuickRepliesSunsetAlert = 'chat-quick-replies-sunset-alert',
     ChatQuickRepliesSunsetModal = 'chat-quick-replies-sunset-modal',

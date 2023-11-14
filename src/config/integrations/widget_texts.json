@@ -64,22 +64,23 @@
         "thanksForReachingOut": "Thanks for reaching out!",
         "waitTimeMediumReply": "Thanks for reaching out! Leave us your email and an agent will get back to you in about {waitTime} minutes.",
         "waitTimeShortEmailCaptured": "Thanks for reaching out! An agent will get back to you soon.",
-        "chatWithUs": "Chat with us"
+        "chatWithUs": "Chat with us",
+        "privacyPolicyDisclaimer": "By using this chat, you consent to our Privacy Policy."
     },
     "fr-FR": {
         "automated": "Automatisé",
         "previewAgentInitialMessage": "Bonjour, merci pour votre patience ! Bien sûr, laisse-moi vérifier. Quel est votre numéro de commande ?",
-        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider :",
-        "previewArticleRecommendationArticleSummary": "Vous ne savez pas quelle taille vous conviendra ? Consultez notre guide des tailles situé au-dessus des tailles proposées sur chaque page produit…",
-        "previewArticleRecommendationArticleTitle": "Quelle taille dois-je commander ?",
-        "previewArticleRecommendationCustomerInitialMessage": "Quelle est ma taille ?",
+        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider :",
+        "previewArticleRecommendationArticleSummary": "Vous ne savez pas quelle taille vous conviendra ? Consultez notre guide des tailles situé au-dessus des tailles proposées sur chaque page produit…",
+        "previewArticleRecommendationArticleTitle": "Quelle taille dois-je commander ?",
+        "previewArticleRecommendationCustomerInitialMessage": "Quelle est ma taille ?",
         "previewCustomerInitialMessage": "Bonjour, pouvez-vous me donner une mise à jour de l'état de ma commande ?",
         "productQuestionShort": "Question produit",
         "replyTimeMoments": "Nous allons vous répondre dans quelques instants.",
         "emailCaptureTriggerTextBase": "Laissez-nous votre adresse e-mail et nous vous recontacterons.",
         "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
         "emailCaptureTriggerTypicalReplyMinutes": "Nous répondons généralement en quelques minutes.",
-        "contactFormAskSubject": "En quoi pouvons-nous vous aider ?",
+        "contactFormAskSubject": "En quoi pouvons-nous vous aider ?",
         "contactFormIntro": "Laissez-nous un message et nous vous répondrons par e-mail quand nous serons en ligne.",
         "introductionText": "Comment pouvons-nous vous aider ?",
         "offlineIntroductionText": "De retour demain !",
@@ -130,78 +131,13 @@
         "thanksForReachingOut": "Merci de nous avoir contactés !",
         "waitTimeMediumReply": "Merci de nous avoir contactés ! Laissez-nous votre e-mail et nous vous répondrons dans environ {waitTime} minutes.",
         "waitTimeShortEmailCaptured": "Merci de nous avoir contactés ! Nous allons vous répondre dans quelques instants. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire.",
-        "chatWithUs": "Discutez avec nous"
-    },
-    "fr": {
-        "automated": "Automatisé",
-        "previewAgentInitialMessage": "Bonjour, merci pour votre patience ! Bien sûr, laisse-moi vérifier. Quel est votre numéro de commande ?",
-        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider :",
-        "previewArticleRecommendationArticleSummary": "Vous ne savez pas quelle taille vous conviendra ? Consultez notre guide des tailles situé au-dessus des tailles proposées sur chaque page produit…",
-        "previewArticleRecommendationArticleTitle": "Quelle taille dois-je commander ?",
-        "previewArticleRecommendationCustomerInitialMessage": "Quelle est ma taille ?",
-        "previewCustomerInitialMessage": "Bonjour, pouvez-vous me donner une mise à jour de l'état de ma commande ?",
-        "productQuestionShort": "Question produit",
-        "replyTimeMoments": "Nous allons vous répondre dans quelques instants.",
-        "emailCaptureTriggerTextBase": "Laissez-nous votre adresse e-mail et nous vous recontacterons.",
-        "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
-        "emailCaptureTriggerTypicalReplyMinutes": "Nous répondons généralement en quelques minutes.",
-        "contactFormAskSubject": "En quoi pouvons-nous vous aider ?",
-        "contactFormIntro": "Laissez-nous un message et nous vous répondrons par e-mail quand nous serons en ligne.",
-        "introductionText": "Comment pouvons-nous vous aider ?",
-        "offlineIntroductionText": "De retour demain !",
-        "actionPostbackError": "Une erreur est survenue pendant l'exécution de votre action. Veuillez rééssayer.",
-        "clickToRetry": "Message non reçu. Cliquez pour rééssayer.",
-        "conversationTimestampHeaderFormat": "D MMMM",
-        "fetchHistory": "Charger plus",
-        "fetchingHistory": "Récupération de l'historique en cours...",
-        "invalidFileError": "Seules les images sont supportées. Choisissez un fichier avec une extension supportée (jpg, jpeg, png, gif, ou bmp).",
-        "messageError": "Une erreur est survenue pendant l'envoi de votre message. Veuillez rééssayer.",
-        "messageIndicatorTitlePlural": "({count}) Nouveaux messages",
-        "messageIndicatorTitleSingular": "({count}) Nouveau message",
-        "messageRelativeTimeDay": "Il y a {value}j",
-        "messageRelativeTimeHour": "Il y a {value}h",
-        "messageRelativeTimeJustNow": "Maintenant",
-        "messageRelativeTimeMinute": "Il y a {value}mn",
-        "messageTimestampFormat": "h:mm A",
-        "messageSending": "Envoi en cours...",
-        "messageDelivered": "Reçu",
-        "tapToRetry": "Message non reçu. Tapez pour rééssayer.",
-        "unsupportedMessageType": "Format de message non supporté.",
-        "unsupportedActionType": "Format d'action non supporté.",
-        "headerText": "L'équipe Gorgias",
-        "inputPlaceholder": "Tapez votre message...",
-        "emailCapturePlaceholder": "votre@email.com",
-        "emailCaptureInputLabel": "Recevez une notification par e-mail",
-        "emailCaptureOnlineTriggerText": "Laissez-nous votre email et nous vous répondrons rapidement.",
-        "emailCaptureOnlineThanksText": "Merci ! Nous vous enverrons un email à {email} si vous partez.",
-        "emailCaptureOfflineTriggerText": "Nous ne sommes pas là pour le moment. Laissez-nous votre email et nous reviendrons vers vous dès que possible.",
-        "emailCaptureOfflineThanksText": "Merci ! Nous vous enverrons un email à {email} dès que possible.",
-        "emailCaptureRequiredEmailPlaceholder": "Laissez-nous votre adresse email",
-        "emailCaptureRequiredMessagePlaceholder": "Tapez votre message",
-        "requiredEmailCaptureWelcomeMessage": "Bonjour, j'espère que vous allez bien! Laissez-nous votre adresse de courriel, afin que nous puissions vous recontacter.",
-        "backLabelBackInAMinute": "De retour dans 1 minute",
-        "backLabelBackInMinutes": "De retour dans {value} minutes",
-        "backLabelBackInAnHour": "De retour dans 1 heure",
-        "backLabelBackInHours": "De retour dans {value} heures",
-        "backLabelBackInDays": "De retour dans {value} jours",
-        "backLabelBackTomorrow": "De retour demain",
-        "campaignClickToReply": "Cliquez pour répondre",
-        "poweredByGorgias": "Service par Gorgias",
-        "poweredBy": "Service par",
-        "send": "Envoyer",
-        "usualReplyTimeDay": "Répond habituellement en un jour",
-        "usualReplyTimeHours": "Répond habituellement en quelques heures",
-        "usualReplyTimeMinutes": "Répond habituellement en quelques minutes",
-        "backLabelBackAt": "De retour en ligne à {time}",
-        "thanksForReachingOut": "Merci de nous avoir contactés !",
-        "waitTimeMediumReply": "Merci de nous avoir contactés ! Laissez-nous votre e-mail et nous vous répondrons dans environ {waitTime} minutes.",
-        "waitTimeShortEmailCaptured": "Merci de nous avoir contactés ! Nous allons vous répondre dans quelques instants. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire.",
-        "chatWithUs": "Discutez avec nous"
+        "chatWithUs": "Discutez avec nous",
+        "privacyPolicyDisclaimer": "En utilisant ce chat, vous acceptez notre politique de confidentialité."
     },
     "fr-CA": {
         "automated": "Automatisé",
         "previewAgentInitialMessage": "Bonjour, merci pour votre patience! Bien sûr, laissez-moi vérifier. Quel est votre numéro de commande?",
-        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider :",
+        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider:",
         "previewArticleRecommendationArticleSummary": "Vous ne savez pas quelle taille choisir? Consultez notre guide des tailles qui se trouve au-dessus des tailles offertes sur la page de chaque produit...",
         "previewArticleRecommendationArticleTitle": "Quelle taille devrais-je commander?",
         "previewArticleRecommendationCustomerInitialMessage": "Quelle est ma taille?",
@@ -262,7 +198,8 @@
         "thanksForReachingOut": "Merci de nous avoir contactés!",
         "waitTimeMediumReply": "Merci de nous avoir contactés! Laissez-nous votre adresse électronique et un agent vous répondra dans environ {waitTime} minutes. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire",
         "waitTimeShortEmailCaptured": "Merci de nous avoir contactés! Un agent vous répondra dans quelques instants. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire.",
-        "chatWithUs": "Discutez avec nous"
+        "chatWithUs": "Discutez avec nous",
+        "privacyPolicyDisclaimer": "En utilisant ce chat, vous acceptez notre politique de confidentialité."
     },
     "es": {
         "automated": "Automatizado",
@@ -328,7 +265,8 @@
         "thanksForReachingOut": "Gracias por contactar con nosotros!",
         "waitTimeMediumReply": "Merci de nous avoir contactés! Laissez-nous votre adresse électronique et un agent vous répondra dans environ {waitTime} minutes. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire",
         "waitTimeShortEmailCaptured": "Gracias por contactar con nosotros. Un agente se pondrá en contacto contigo en breve.",
-        "chatWithUs": "Chatea con nosotros"
+        "chatWithUs": "Chatea con nosotros",
+        "privacyPolicyDisclaimer": "Aceptas nuestra Política de privacidad al utilizar este chat."
     },
     "da": {
         "automated": "Automatiseret",
@@ -394,7 +332,8 @@
         "thanksForReachingOut": "Tak fordi du har kontaktet os!",
         "waitTimeMediumReply": "Tak fordi du har kontaktet os! Giv os din e-mail, og en agent vil vende tilbage til dig om ca. {waitTime} minutter.",
         "waitTimeShortEmailCaptured": "Tak fordi du har kontaktet os! En agent vil vende tilbage til dig snart.",
-        "chatWithUs": "Chat med os"
+        "chatWithUs": "Chat med os",
+        "privacyPolicyDisclaimer": "Ved at bruge denne chat accepterer du vores privatlivspolitik."
     },
     "sv": {
         "automated": "Automatiserat",
@@ -460,7 +399,8 @@
         "thanksForReachingOut": "Tack för att du tar kontakt!",
         "waitTimeMediumReply": "Tack för att du tar kontakt! Lämna din e-postadress så återkommer en av våra medarbetare till dig om cirka {waitTime} minuter.",
         "waitTimeShortEmailCaptured": "Tack för att du tar kontakt! En av våra medarbetare återkommer till dig snart.",
-        "chatWithUs": "Chatta med oss"
+        "chatWithUs": "Chatta med oss",
+        "privacyPolicyDisclaimer": "Genom att använda denna chatt samtycker du till vår integritetspolicy."
     },
     "nl": {
         "automated": "Geautomatiseerd",
@@ -526,7 +466,8 @@
         "thanksForReachingOut": "Fijn dat u contact met ons opneemt!",
         "waitTimeMediumReply": "Fijn dat u contact met ons opneemt! Laat uw e-mailadres achter, een medewerker is binnen ongeveer {waitTime} minuten beschikbaar.",
         "waitTimeShortEmailCaptured": "Fijn dat u contact met ons opneemt! Een medewerker zal u zo snel mogelijk antwoorden.",
-        "chatWithUs": "Chat met ons"
+        "chatWithUs": "Chat met ons",
+        "privacyPolicyDisclaimer": "Door deze chat te gebruiken, ga je akkoord met ons privacybeleid."
     },
     "it": {
         "automated": "Automatizzato",
@@ -592,7 +533,8 @@
         "thanksForReachingOut": "Grazie per averci contattato!",
         "waitTimeMediumReply": "Grazie per averci contattato! Lasciaci la tua email e un operatore comunicherà con te  tra circa {waitTime} minuti.",
         "waitTimeShortEmailCaptured": "Grazie per averci contattato! Un operatore comunicherà presto con te.",
-        "chatWithUs": "Chatta con noi"
+        "chatWithUs": "Chatta con noi",
+        "privacyPolicyDisclaimer": "Usando questa chat, accetti la nostra Informativa sulla privacy."
     },
     "de": {
         "automated": "Automatisiert",
@@ -658,7 +600,8 @@
         "thanksForReachingOut": "Danke, dass Sie uns kontaktiert haben!",
         "waitTimeMediumReply": "Danke, dass Sie uns kontaktiert haben! Wenn Sie uns Ihre E-Mail-Adresse hinterlassen, wird sich ein Mitarbeiter in ungefähr {waitTime} Minuten bei Ihnen melden.",
         "waitTimeShortEmailCaptured": "Danke, dass Sie uns kontaktiert haben! Ein Mitarbeiter wird sich in Kürze bei Ihnen melden.",
-        "chatWithUs": "Chatten Sie mit uns"
+        "chatWithUs": "Chatten Sie mit uns",
+        "privacyPolicyDisclaimer": "Mit der Nutzung dieses Chats erklären Sie sich mit unserer Datenschutzrichtlinie einverstanden."
     },
     "no": {
         "automated": "Automatisert",
@@ -724,7 +667,8 @@
         "thanksForReachingOut": "Takk for at du tok kontakt!",
         "waitTimeMediumReply": "Takk for at du tok kontakt! Legg igjen e-posten din, og en agent vil komme tilbake til deg om cirka {waitTime} minutter.",
         "waitTimeShortEmailCaptured": "Takk for at du tok kontakt! En agent kommer snart tilbake til deg.",
-        "chatWithUs": "Chatt med oss"
+        "chatWithUs": "Chatt med oss",
+        "privacyPolicyDisclaimer": "Ved å bruke denne chatten samtykker du i Personvernerklæringen vår."
     },
     "cz": {
         "automated": "Automatizováno",
@@ -790,7 +734,8 @@
         "thanksForReachingOut": "Děkujeme, že jste se ozvali!",
         "waitTimeMediumReply": "Děkujeme, že jste se ozvali! Zanechte nám svůj e-mail a agent se s vámi spojí přibližně za {waitTime} minut.",
         "waitTimeShortEmailCaptured": "Děkujeme, že jste se ozvali! Agent se s vámi brzy spojí.",
-        "chatWithUs": "Chatujte s námi"
+        "chatWithUs": "Chatujte s námi",
+        "privacyPolicyDisclaimer": "Využíváním tohoto chatu souhlasíte s našimi Zásadami ochrany osobních údajů."
     },
     "en-GB": {
         "automated": "Automated",
@@ -856,7 +801,8 @@
         "thanksForReachingOut": "Thanks for reaching out!",
         "waitTimeMediumReply": "Thanks for reaching out! Leave us your email and an agent will get back to you in about {waitTime} minutes.",
         "waitTimeShortEmailCaptured": "Thanks for reaching out! An agent will get back to you soon.",
-        "chatWithUs": "Chat with us"
+        "chatWithUs": "Chat with us",
+        "privacyPolicyDisclaimer": "By using this chat, you consent to our Privacy Policy."
     },
     "fi": {
         "automated": "Automaattinen",
@@ -922,7 +868,8 @@
         "thanksForReachingOut": "Kiitos yhteydenotosta!",
         "waitTimeMediumReply": "Kiitos yhteydenotosta! Ilmoita meille sähköpostiosoitteesi, niin edustaja palaa asiaan noin {waitTime} minuutin kuluttua.",
         "waitTimeShortEmailCaptured": "Kiitos yhteydenotosta! Edustaja palaa pian asiaan kanssasi!",
-        "chatWithUs": "Keskustele kanssamme"
+        "chatWithUs": "Keskustele kanssamme",
+        "privacyPolicyDisclaimer": "Käyttäessäsi tätä keskustelua hyväksyt samalla tietosuojakäytäntömme."
     },
     "ja": {
         "automated": "自動送信",
@@ -988,7 +935,8 @@
         "thanksForReachingOut": "お問い合わせいただきありがとうございます。",
         "waitTimeMediumReply": "お問い合わせいただきありがとうございます。メールアドレスを残していただければ,エージェントが {waitTime} 分以内に折り返しご連絡いたします。",
         "waitTimeShortEmailCaptured": "お問い合わせいただきありがとうございます。間もなくエージェントが折り返しご連絡いたします。",
-        "chatWithUs": "チャットで問い合わせる"
+        "chatWithUs": "チャットで問い合わせる",
+        "privacyPolicyDisclaimer": "このチャットを使用すると,当社のプライバシーポリシーに同意したことになります。"
     },
     "pt-BR": {
         "automated": "Automatizado",
@@ -1054,6 +1002,7 @@
         "thanksForReachingOut": "Obrigado por entrar em contato!",
         "waitTimeMediumReply": "Obrigado por entrar em contato! Informe seu e-mail e um agente responderá em cerca de {waitTime} minutos.",
         "waitTimeShortEmailCaptured": "Obrigado por entrar em contato! Um agente responderá em breve.",
-        "chatWithUs": "Fale conosco"
+        "chatWithUs": "Fale conosco",
+        "privacyPolicyDisclaimer": "Ao usar o chat, você concorda com a nossa Política de Privacidade."
     }
 }

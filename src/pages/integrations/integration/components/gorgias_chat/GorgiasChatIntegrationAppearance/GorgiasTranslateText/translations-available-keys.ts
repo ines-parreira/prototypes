@@ -8,6 +8,7 @@ export type FilterProps = {
 }
 export type OptionFormat = {
     maxLength: number
+    isRichText?: boolean
     filteredBy?: (props: FilterProps) => boolean
 }
 
@@ -121,5 +122,8 @@ export default {
             },
         },
         'texts.howCanWeHelpToday': {maxLength: 45},
+    },
+    privacyPolicyDisclaimer: {
+        'texts.privacyPolicyDisclaimer': {maxLength: 500, isRichText: true},
     },
 }

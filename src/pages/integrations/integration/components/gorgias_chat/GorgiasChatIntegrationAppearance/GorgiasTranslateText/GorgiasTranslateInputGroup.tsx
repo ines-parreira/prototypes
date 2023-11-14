@@ -69,6 +69,7 @@ const GorgiasTranslateInputGroup = ({
                                 saveValue={saveValue}
                                 trackInputMethod={trackInputMethod}
                                 isRequired={requiredKeys.includes(key)}
+                                isRichText={!!propOption.isRichText}
                             />
                         </Col>
                     </Row>

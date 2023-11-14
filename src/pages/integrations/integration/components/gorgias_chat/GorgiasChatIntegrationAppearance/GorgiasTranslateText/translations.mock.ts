@@ -83,6 +83,8 @@ export function getTranslations() {
             offlineIntroductionText: "We'll be back soon",
             poweredBy: 'Powered by',
             poweredByGorgias: 'Powered by Gorgias',
+            privacyPolicyDisclaimer:
+                'By using this chat, you consent to our Privacy Policy.',
             productInformation: 'Product information',
             productQuestionShort: 'Product Question',
             requireEmailCaptureIntro:
