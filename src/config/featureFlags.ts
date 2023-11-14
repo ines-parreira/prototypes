@@ -23,6 +23,7 @@ export enum FeatureFlagKey {
     ChatQuickRepliesSunset = 'chat-quick-replies-sunset',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ConvertBilling = 'revenue-billing',
+    ConvertCampaignCapping = 'convert-campaign-capping',
     DecoupleContactForm = 'decouple-contact-form',
     EarlyAdopter = 'early-adopter',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',

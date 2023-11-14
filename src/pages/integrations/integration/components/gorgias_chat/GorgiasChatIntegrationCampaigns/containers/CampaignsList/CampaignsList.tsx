@@ -8,7 +8,7 @@ import Segmented from 'pages/common/components/Segmented'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
-import SetupConvertBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/SetupConvertBanner/SetupConvertBanner'
+import ConvertSetupBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/ConvertSetupBanner/ConvertSetupBanner'
 import {QuickFilters} from '../QuickFilters'
 
 import {QUICK_FILTERS} from '../../constants/filters'
@@ -25,6 +25,7 @@ import {useCampaignListOptions} from '../../hooks/useCampaignListOptions'
 import {ChatCampaign} from '../../types/Campaign'
 
 import CampaignInfobarPaywall from '../../components/CampaignInfobarPaywall/CampaignInfobarPaywall'
+import ConvertLimitBanner from '../../components/ConvertLimitBanner/ConvertLimitBanner'
 import css from './CampaignsList.less'
 
 type Props = {
@@ -183,7 +184,8 @@ export const CampaignsList = ({
                     </div>
                 )}
 
-                <SetupConvertBanner classes={'mt-4'} />
+                <ConvertLimitBanner classes={'mt-4'} />
+                <ConvertSetupBanner classes={'mt-4'} />
 
                 {!isConvertSubscriber && isRevenueBillingEnabled && (
                     <CampaignInfobarPaywall />

@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.2",
+    "openapi": "3.1.0",
     "info": {
         "title": "Revenue Addon API",
         "description": "It's mission is to increase merchants revenue",
@@ -14,7 +14,15 @@
                 "responses": {
                     "200": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Assistant Health Check Get"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -27,7 +35,15 @@
                 "responses": {
                     "200": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Assistant  Get"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -71,6 +87,43 @@
                 }
             }
         },
+        "/assistant/configs/revenue/{revenue_id}": {
+            "get": {
+                "tags": ["configs"],
+                "summary": "Get Config",
+                "operationId": "get_config_by_revenue_id",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {"type": "string", "title": "Revenue Id"},
+                        "name": "revenue_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConfigSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/bundle/health-check": {
             "get": {
                 "tags": ["healthcheck"],
@@ -79,7 +132,15 @@
                 "responses": {
                     "200": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Bundle Health Check Get"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -210,11 +271,11 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "title": "Response List Bundle Installation",
-                                    "type": "array",
                                     "items": {
                                         "$ref": "#/components/schemas/InstallationSchema"
-                                    }
+                                    },
+                                    "type": "array",
+                                    "title": "Response List Bundle Installation"
                                 }
                             }
                         }
@@ -231,7 +292,7 @@
                 "parameters": [
                     {
                         "required": true,
-                        "schema": {"title": "Id", "type": "string"},
+                        "schema": {"type": "string", "title": "Id"},
                         "name": "id",
                         "in": "path"
                     }
@@ -267,7 +328,7 @@
                 "parameters": [
                     {
                         "required": true,
-                        "schema": {"title": "Id", "type": "string"},
+                        "schema": {"type": "string", "title": "Id"},
                         "name": "id",
                         "in": "path"
                     }
@@ -315,7 +376,15 @@
                 "responses": {
                     "200": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Click Tracking Health Check Get"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -328,43 +397,12 @@
                 "responses": {
                     "200": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
-                    }
-                }
-            }
-        },
-        "/track": {
-            "post": {
-                "tags": ["urls"],
-                "summary": "Create",
-                "operationId": "create_track_post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/JWTTokenSchema"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/URLSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check  Get"
                                 }
                             }
                         }
@@ -411,39 +449,6 @@
                 }
             }
         },
-        "/track/bulk": {
-            "post": {
-                "tags": ["urls"],
-                "summary": "Create Bulk",
-                "operationId": "create_bulk_track_bulk_post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/JWTTokenSchema"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/click-tracking/bulk": {
             "post": {
                 "tags": ["urls"],
@@ -462,7 +467,52 @@
                 "responses": {
                     "201": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/URLBulkSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shorten": {
+            "post": {
+                "tags": ["urls"],
+                "summary": "Shorten",
+                "operationId": "shorten_shorten_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/URLCreateBulkSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/URLBulkSchema"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Validation Error",
@@ -498,11 +548,11 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "title": "Response Retrieve Urls By Meta Click Tracking Check Post",
-                                    "type": "array",
                                     "items": {
                                         "$ref": "#/components/schemas/URLWithClicksSchema"
-                                    }
+                                    },
+                                    "type": "array",
+                                    "title": "Response Retrieve Urls By Meta Click Tracking Check Post"
                                 }
                             }
                         }
@@ -528,21 +578,21 @@
                 "parameters": [
                     {
                         "required": true,
-                        "schema": {"title": "Alias", "type": "string"},
+                        "schema": {"type": "string", "title": "Alias"},
                         "name": "alias",
                         "in": "path"
                     },
                     {
                         "required": false,
-                        "schema": {"title": "Referrer", "type": "string"},
+                        "schema": {"type": "string", "title": "Referrer"},
                         "name": "referrer",
                         "in": "header"
                     },
                     {
                         "required": false,
                         "schema": {
-                            "title": "User-Agent",
                             "type": "string",
+                            "title": "User-Agent",
                             "default": ""
                         },
                         "name": "user-agent",
@@ -736,167 +786,320 @@
                 },
                 "security": [{"HTTPBearer": []}]
             }
+        },
+        "/billing/health-check": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_billing_health_check_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Billing Health Check Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/billing/": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_billing__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Billing  Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/billing/subscriptions/account-status": {
+            "get": {
+                "tags": ["subscriptions"],
+                "summary": "Get Status And Usage",
+                "operationId": "get_status_and_usage",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubscriptionUsageAndBundleStatusSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            }
+        },
+        "/billing/subscriptions/account-status/all": {
+            "get": {
+                "tags": ["subscriptions"],
+                "summary": "Get Subscription Statuses",
+                "operationId": "get_subscription_statuses",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Get Subscription Statuses"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"APIKeyHeader": []}]
+            }
+        },
+        "/billing/subscriptions/account-status/{account_id}": {
+            "get": {
+                "tags": ["subscriptions"],
+                "summary": "Get Subscription Status By Account Id",
+                "operationId": "get_subscription_status_by_account_id",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {"type": "integer", "title": "Account Id"},
+                        "name": "account_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubscriptionStatusSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"APIKeyHeader": []}]
+            }
         }
     },
     "components": {
         "schemas": {
+            "BundleOnboardingStatus": {
+                "type": "string",
+                "enum": ["installed", "not_installed"],
+                "title": "BundleOnboardingStatus",
+                "description": "An enumeration."
+            },
             "CampaignSchema": {
-                "title": "CampaignSchema",
-                "required": ["id", "rules"],
-                "type": "object",
                 "properties": {
-                    "id": {"title": "Id", "type": "string"},
+                    "id": {"type": "string", "title": "Id"},
                     "rules": {
-                        "title": "Rules",
+                        "items": {"$ref": "#/components/schemas/RuleSchema"},
                         "type": "array",
-                        "items": {"$ref": "#/components/schemas/RuleSchema"}
+                        "title": "Rules"
                     }
-                }
+                },
+                "type": "object",
+                "required": ["id", "rules"],
+                "title": "CampaignSchema"
+            },
+            "ConfigSchema": {
+                "properties": {
+                    "subscription": {
+                        "$ref": "#/components/schemas/SubscriptionStatusSchema"
+                    }
+                },
+                "type": "object",
+                "required": ["subscription"],
+                "title": "ConfigSchema"
             },
             "CustomDomainOperationSchema": {
-                "title": "CustomDomainOperationSchema",
-                "required": ["hostname"],
-                "type": "object",
                 "properties": {
                     "hostname": {
-                        "title": "Hostname",
+                        "type": "string",
                         "pattern": "^(((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\\.){1,}([a-z]{2,})$",
-                        "type": "string"
+                        "title": "Hostname"
                     }
-                }
+                },
+                "type": "object",
+                "required": ["hostname"],
+                "title": "CustomDomainOperationSchema"
             },
             "CustomDomainSchema": {
-                "title": "CustomDomainSchema",
-                "required": ["hostname", "status"],
-                "type": "object",
                 "properties": {
-                    "hostname": {"title": "Hostname", "type": "string"},
-                    "status": {"title": "Status", "type": "string"}
-                }
+                    "hostname": {"type": "string", "title": "Hostname"},
+                    "status": {"type": "string", "title": "Status"}
+                },
+                "type": "object",
+                "required": ["hostname", "status"],
+                "title": "CustomDomainSchema"
             },
             "EvaluatedCampaignSchema": {
-                "title": "EvaluatedCampaignSchema",
-                "required": ["id", "rules"],
-                "type": "object",
                 "properties": {
-                    "id": {"title": "Id", "type": "string"},
+                    "id": {"type": "string", "title": "Id"},
                     "rules": {
-                        "title": "Rules",
-                        "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/EvaluatedRuleSchema"
-                        }
+                        },
+                        "type": "array",
+                        "title": "Rules"
                     }
-                }
+                },
+                "type": "object",
+                "required": ["id", "rules"],
+                "title": "EvaluatedCampaignSchema"
             },
             "EvaluatedRuleSchema": {
-                "title": "EvaluatedRuleSchema",
-                "required": ["key", "operator", "value", "matches"],
-                "type": "object",
                 "properties": {
                     "key": {"$ref": "#/components/schemas/RuleType"},
                     "operator": {"$ref": "#/components/schemas/RuleOperator"},
-                    "value": {"title": "Value", "type": "string"},
-                    "matches": {"title": "Matches", "type": "boolean"}
-                }
+                    "value": {"type": "string", "title": "Value"},
+                    "matches": {"type": "boolean", "title": "Matches"}
+                },
+                "type": "object",
+                "required": ["key", "operator", "value", "matches"],
+                "title": "EvaluatedRuleSchema"
             },
             "EvaluationRequestSchema": {
-                "title": "EvaluationRequestSchema",
+                "properties": {
+                    "guest_id": {"type": "string", "title": "Guest Id"},
+                    "customer_id": {"type": "integer", "title": "Customer Id"},
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "revenue_addon_id": {
+                        "type": "string",
+                        "title": "Revenue Addon Id"
+                    },
+                    "campaigns": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignSchema"
+                        },
+                        "type": "array",
+                        "title": "Campaigns"
+                    }
+                },
+                "type": "object",
                 "required": [
                     "guest_id",
                     "account_id",
                     "revenue_addon_id",
                     "campaigns"
                 ],
-                "type": "object",
-                "properties": {
-                    "guest_id": {"title": "Guest Id", "type": "string"},
-                    "account_id": {"title": "Account Id", "type": "integer"},
-                    "revenue_addon_id": {
-                        "title": "Revenue Addon Id",
-                        "type": "string"
-                    },
-                    "campaigns": {
-                        "title": "Campaigns",
-                        "type": "array",
-                        "items": {"$ref": "#/components/schemas/CampaignSchema"}
-                    }
-                }
+                "title": "EvaluationRequestSchema"
             },
             "EvaluationResponseSchema": {
-                "title": "EvaluationResponseSchema",
-                "required": ["campaigns"],
-                "type": "object",
                 "properties": {
                     "campaigns": {
-                        "title": "Campaigns",
-                        "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/EvaluatedCampaignSchema"
-                        }
+                        },
+                        "type": "array",
+                        "title": "Campaigns"
                     }
-                }
+                },
+                "type": "object",
+                "required": ["campaigns"],
+                "title": "EvaluationResponseSchema"
             },
             "HTTPValidationError": {
-                "title": "HTTPValidationError",
-                "type": "object",
                 "properties": {
                     "detail": {
-                        "title": "Detail",
-                        "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ValidationError"
-                        }
+                        },
+                        "type": "array",
+                        "title": "Detail"
                     }
-                }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
             },
             "InstallationSchema": {
-                "title": "InstallationSchema",
+                "properties": {
+                    "id": {"type": "string", "title": "Id"},
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "shop_integration_id": {
+                        "type": "integer",
+                        "title": "Shop Integration Id"
+                    },
+                    "script_tag_id": {
+                        "type": "string",
+                        "title": "Script Tag Id"
+                    },
+                    "status": {"$ref": "#/components/schemas/StatusEnum"},
+                    "method": {"$ref": "#/components/schemas/MethodEnum"},
+                    "config": {"type": "object", "title": "Config"},
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "deactivated_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Deactivated Datetime"
+                    },
+                    "bundle_url": {"type": "string", "title": "Bundle Url"}
+                },
+                "type": "object",
                 "required": [
                     "id",
                     "account_id",
                     "shop_integration_id",
                     "status",
+                    "method",
                     "config",
                     "created_datetime"
                 ],
-                "type": "object",
-                "properties": {
-                    "id": {"title": "Id", "type": "string"},
-                    "account_id": {"title": "Account Id", "type": "integer"},
-                    "shop_integration_id": {
-                        "title": "Shop Integration Id",
-                        "type": "integer"
-                    },
-                    "status": {"$ref": "#/components/schemas/StatusEnum"},
-                    "config": {"title": "Config", "type": "object"},
-                    "created_datetime": {
-                        "title": "Created Datetime",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "deactivated_datetime": {
-                        "title": "Deactivated Datetime",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "bundle_url": {"title": "Bundle Url", "type": "string"}
-                }
+                "title": "InstallationSchema"
             },
             "InstallationUpdateConfigSchema": {
-                "title": "InstallationUpdateConfigSchema",
-                "required": ["config"],
+                "properties": {"config": {"type": "object", "title": "Config"}},
                 "type": "object",
-                "properties": {"config": {"title": "Config", "type": "object"}}
+                "required": ["config"],
+                "title": "InstallationUpdateConfigSchema"
             },
             "JWTTokenSchema": {
-                "title": "JWTTokenSchema",
-                "required": ["token"],
+                "properties": {"token": {"type": "string", "title": "Token"}},
                 "type": "object",
-                "properties": {"token": {"title": "Token", "type": "string"}}
+                "required": ["token"],
+                "title": "JWTTokenSchema"
+            },
+            "MethodEnum": {
+                "type": "string",
+                "enum": ["one_click", "manual"],
+                "title": "MethodEnum",
+                "description": "An enumeration."
             },
             "RuleOperator": {
-                "title": "RuleOperator",
+                "type": "string",
                 "enum": [
                     "eq",
                     "neq",
@@ -910,21 +1113,21 @@
                     "containsAny",
                     "notContains"
                 ],
-                "type": "string",
+                "title": "RuleOperator",
                 "description": "An enumeration."
             },
             "RuleSchema": {
-                "title": "RuleSchema",
-                "required": ["key", "operator", "value"],
-                "type": "object",
                 "properties": {
                     "key": {"$ref": "#/components/schemas/RuleType"},
                     "operator": {"$ref": "#/components/schemas/RuleOperator"},
-                    "value": {"title": "Value", "type": "string"}
-                }
+                    "value": {"type": "string", "title": "Value"}
+                },
+                "type": "object",
+                "required": ["key", "operator", "value"],
+                "title": "RuleSchema"
             },
             "RuleType": {
-                "title": "RuleType",
+                "type": "string",
                 "enum": [
                     "orders_count",
                     "amount_spent",
@@ -932,35 +1135,153 @@
                     "customer_tags",
                     "country_code"
                 ],
-                "type": "string",
+                "title": "RuleType",
                 "description": "An enumeration."
             },
             "StatusEnum": {
-                "title": "StatusEnum",
-                "enum": ["draft", "installed", "uninstalled"],
                 "type": "string",
+                "enum": ["draft", "installed", "uninstalled"],
+                "title": "StatusEnum",
                 "description": "An enumeration."
             },
-            "URLClickSchema": {
-                "title": "URLClickSchema",
-                "required": ["created_datetime"],
-                "type": "object",
+            "SubscriptionStatus": {
+                "type": "string",
+                "enum": ["active", "inactive", "trial"],
+                "title": "SubscriptionStatus",
+                "description": "An enumeration."
+            },
+            "SubscriptionStatusSchema": {
                 "properties": {
-                    "client_ip": {"title": "Client Ip", "type": "string"},
-                    "client_agent": {"title": "Client Agent", "type": "string"},
+                    "status": {
+                        "$ref": "#/components/schemas/SubscriptionStatus"
+                    },
+                    "usage_status": {
+                        "$ref": "#/components/schemas/SubscriptionUsageStatus"
+                    }
+                },
+                "type": "object",
+                "required": ["status", "usage_status"],
+                "title": "SubscriptionStatusSchema"
+            },
+            "SubscriptionUsageAndBundleStatusSchema": {
+                "properties": {
+                    "status": {
+                        "$ref": "#/components/schemas/SubscriptionStatus"
+                    },
+                    "usage_status": {
+                        "$ref": "#/components/schemas/SubscriptionUsageStatus"
+                    },
+                    "usage": {"type": "integer", "title": "Usage"},
+                    "limit": {"type": "integer", "title": "Limit"},
+                    "bundle_status": {
+                        "$ref": "#/components/schemas/BundleOnboardingStatus"
+                    }
+                },
+                "type": "object",
+                "required": ["status", "usage_status", "bundle_status"],
+                "title": "SubscriptionUsageAndBundleStatusSchema"
+            },
+            "SubscriptionUsageStatus": {
+                "type": "string",
+                "enum": ["ok", "limit-reached"],
+                "title": "SubscriptionUsageStatus",
+                "description": "An enumeration."
+            },
+            "URLBulkSchema": {
+                "properties": {
+                    "urls": {
+                        "items": {"$ref": "#/components/schemas/URLSchema"},
+                        "type": "array",
+                        "title": "Urls"
+                    }
+                },
+                "type": "object",
+                "required": ["urls"],
+                "title": "URLBulkSchema"
+            },
+            "URLClickSchema": {
+                "properties": {
+                    "client_ip": {"type": "string", "title": "Client Ip"},
+                    "client_agent": {"type": "string", "title": "Client Agent"},
                     "client_referrer": {
-                        "title": "Client Referrer",
-                        "type": "string"
+                        "type": "string",
+                        "title": "Client Referrer"
                     },
                     "created_datetime": {
-                        "title": "Created Datetime",
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "title": "Created Datetime"
                     }
-                }
+                },
+                "type": "object",
+                "required": ["created_datetime"],
+                "title": "URLClickSchema"
+            },
+            "URLCreateBulkSchema": {
+                "properties": {
+                    "urls": {
+                        "items": {
+                            "$ref": "#/components/schemas/URLCreateSchema"
+                        },
+                        "type": "array",
+                        "minItems": 1,
+                        "title": "Urls"
+                    }
+                },
+                "type": "object",
+                "required": ["urls"],
+                "title": "URLCreateBulkSchema"
+            },
+            "URLCreateSchema": {
+                "properties": {
+                    "is_shortened": {
+                        "type": "boolean",
+                        "title": "Is Shortened",
+                        "default": false
+                    },
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "channel": {"type": "string", "title": "Channel"},
+                    "url": {
+                        "type": "string",
+                        "maxLength": 65536,
+                        "minLength": 1,
+                        "format": "uri",
+                        "title": "Url"
+                    },
+                    "meta": {"type": "object", "title": "Meta"}
+                },
+                "type": "object",
+                "required": ["account_id", "url"],
+                "title": "URLCreateSchema"
             },
             "URLSchema": {
-                "title": "URLSchema",
+                "properties": {
+                    "id": {"type": "integer", "title": "Id"},
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "url": {
+                        "type": "string",
+                        "maxLength": 65536,
+                        "minLength": 1,
+                        "format": "uri",
+                        "title": "Url"
+                    },
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "is_shortened": {
+                        "type": "boolean",
+                        "title": "Is Shortened"
+                    },
+                    "alias": {"type": "string", "title": "Alias"},
+                    "short_url": {"type": "string", "title": "Short Url"},
+                    "channel": {"type": "string", "title": "Channel"},
+                    "custom_domain": {
+                        "$ref": "#/components/schemas/CustomDomainSchema"
+                    }
+                },
+                "type": "object",
                 "required": [
                     "id",
                     "account_id",
@@ -969,36 +1290,43 @@
                     "is_shortened",
                     "alias"
                 ],
-                "type": "object",
-                "properties": {
-                    "id": {"title": "Id", "type": "integer"},
-                    "account_id": {"title": "Account Id", "type": "integer"},
-                    "url": {
-                        "title": "Url",
-                        "maxLength": 65536,
-                        "minLength": 1,
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "created_datetime": {
-                        "title": "Created Datetime",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "is_shortened": {
-                        "title": "Is Shortened",
-                        "type": "boolean"
-                    },
-                    "alias": {"title": "Alias", "type": "string"},
-                    "short_url": {"title": "Short Url", "type": "string"},
-                    "channel": {"title": "Channel", "type": "string"},
-                    "custom_domain": {
-                        "$ref": "#/components/schemas/CustomDomainSchema"
-                    }
-                }
+                "title": "URLSchema"
             },
             "URLWithClicksSchema": {
-                "title": "URLWithClicksSchema",
+                "properties": {
+                    "id": {"type": "integer", "title": "Id"},
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "url": {
+                        "type": "string",
+                        "maxLength": 65536,
+                        "minLength": 1,
+                        "format": "uri",
+                        "title": "Url"
+                    },
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "is_shortened": {
+                        "type": "boolean",
+                        "title": "Is Shortened"
+                    },
+                    "alias": {"type": "string", "title": "Alias"},
+                    "short_url": {"type": "string", "title": "Short Url"},
+                    "channel": {"type": "string", "title": "Channel"},
+                    "custom_domain": {
+                        "$ref": "#/components/schemas/CustomDomainSchema"
+                    },
+                    "clicks": {
+                        "items": {
+                            "$ref": "#/components/schemas/URLClickSchema"
+                        },
+                        "type": "array",
+                        "title": "Clicks"
+                    }
+                },
+                "type": "object",
                 "required": [
                     "id",
                     "account_id",
@@ -1008,56 +1336,32 @@
                     "alias",
                     "clicks"
                 ],
-                "type": "object",
-                "properties": {
-                    "id": {"title": "Id", "type": "integer"},
-                    "account_id": {"title": "Account Id", "type": "integer"},
-                    "url": {
-                        "title": "Url",
-                        "maxLength": 65536,
-                        "minLength": 1,
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "created_datetime": {
-                        "title": "Created Datetime",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "is_shortened": {
-                        "title": "Is Shortened",
-                        "type": "boolean"
-                    },
-                    "alias": {"title": "Alias", "type": "string"},
-                    "short_url": {"title": "Short Url", "type": "string"},
-                    "channel": {"title": "Channel", "type": "string"},
-                    "custom_domain": {
-                        "$ref": "#/components/schemas/CustomDomainSchema"
-                    },
-                    "clicks": {
-                        "title": "Clicks",
-                        "type": "array",
-                        "items": {"$ref": "#/components/schemas/URLClickSchema"}
-                    }
-                }
+                "title": "URLWithClicksSchema"
             },
             "ValidationError": {
-                "title": "ValidationError",
-                "required": ["loc", "msg", "type"],
-                "type": "object",
                 "properties": {
                     "loc": {
-                        "title": "Location",
-                        "type": "array",
                         "items": {
                             "anyOf": [{"type": "string"}, {"type": "integer"}]
-                        }
+                        },
+                        "type": "array",
+                        "title": "Location"
                     },
-                    "msg": {"title": "Message", "type": "string"},
-                    "type": {"title": "Error Type", "type": "string"}
-                }
+                    "msg": {"type": "string", "title": "Message"},
+                    "type": {"type": "string", "title": "Error Type"}
+                },
+                "type": "object",
+                "required": ["loc", "msg", "type"],
+                "title": "ValidationError"
             }
         },
-        "securitySchemes": {"HTTPBearer": {"type": "http", "scheme": "bearer"}}
+        "securitySchemes": {
+            "HTTPBearer": {"type": "http", "scheme": "bearer"},
+            "APIKeyHeader": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-Key"
+            }
+        }
     }
 }

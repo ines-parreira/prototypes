@@ -1,5 +1,5 @@
 import React from 'react'
-import {screen, render, waitFor} from '@testing-library/react'
+import {screen, render} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
@@ -12,8 +12,10 @@ import useSearch from 'hooks/useSearch'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
-import * as hasConvertBundleInstalledUtil from 'pages/settings/revenue/utils/hasConvertBundleInstalled'
 import {user} from 'fixtures/users'
+import {assumeMock} from 'utils/testing'
+import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import * as isConvertCampaignCappingEnabledHook from 'pages/settings/revenue/hooks/useIsConvertCampaignCappingEnabled'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
 import {createTrigger} from '../../../utils/createTrigger'
@@ -27,7 +29,9 @@ import {CampaignsList} from '../CampaignsList'
 
 jest.mock('hooks/useSearch')
 jest.mock('../../../hooks/useCampaignListOptions')
+jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 
+const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const campaignsList = Array.from({length: 19}, (_, i) => ({
@@ -297,14 +301,14 @@ describe('<CampaignsList />', () => {
         const buttonText = 'Continue Setup'
         const messageText = 'You have activated the Convert product'
 
-        it('should render setup infobar', async () => {
-            const hasConvertSpy = jest
-                .spyOn(
-                    hasConvertBundleInstalledUtil,
-                    'hasConvertBundleInstalled'
-                )
-                .mockImplementation(() => Promise.resolve(false))
-
+        it('should render setup infobar', () => {
+            useGetConvertStatusMock.mockReturnValue({
+                status: 'active',
+                usage_status: 'ok',
+                usage: 0,
+                limit: 50,
+                bundle_status: 'not_installed',
+            })
             const {queryByText} = render(
                 <Provider store={store}>
                     <CampaignsList
@@ -318,9 +322,40 @@ describe('<CampaignsList />', () => {
                 </Provider>
             )
 
-            await waitFor(() => {
-                expect(hasConvertSpy).toHaveBeenCalled()
+            expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
+            expect(queryByText(buttonText)).toBeInTheDocument()
+        })
+    })
+
+    describe('Usage limit', () => {
+        const buttonText = 'Upgrade'
+        const messageText = "You've reached the limit for your Convert plan"
+
+        it('should render limit reached banner', () => {
+            jest.spyOn(
+                isConvertCampaignCappingEnabledHook,
+                'useIsConvertCampaignCappingEnabled'
+            ).mockImplementation(() => true)
+            useGetConvertStatusMock.mockReturnValue({
+                status: 'active',
+                usage_status: 'limit-reached',
+                usage: 51,
+                limit: 50,
+                bundle_status: 'installed',
             })
+            const {queryByText} = render(
+                <Provider store={store}>
+                    <CampaignsList
+                        currentUser={currentUser}
+                        integration={integration}
+                        campaigns={campaignsList}
+                        onDeleteCampaign={jest.fn()}
+                        onDuplicateCampaign={jest.fn()}
+                        onUpdateCampaign={jest.fn()}
+                    />
+                </Provider>
+            )
+
             expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
             expect(queryByText(buttonText)).toBeInTheDocument()
         })

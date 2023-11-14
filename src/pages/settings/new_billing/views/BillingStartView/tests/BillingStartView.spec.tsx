@@ -32,6 +32,8 @@ jest.mock('state/billing/actions', () => {
     }
 })
 
+jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+
 const WrappedBillingStartView = () => (
     <Provider store={store}>
         <BillingStartView />

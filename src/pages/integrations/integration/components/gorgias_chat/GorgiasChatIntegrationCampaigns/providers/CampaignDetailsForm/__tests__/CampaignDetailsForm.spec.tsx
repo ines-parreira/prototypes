@@ -23,6 +23,7 @@ import {CampaignTriggerKey} from '../../../types/enums/CampaignTriggerKey.enum'
 
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
+jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 jest.mock(
     'pages/settings/new_billing/components/ConvertSubscriptionModal',
     () => {

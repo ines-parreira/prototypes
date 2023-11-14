@@ -18,7 +18,7 @@ import {isDeviceTypeOperators} from '../../types/enums/DeviceTypeOperators.enum'
 import {SingleCampaignInViewOperators} from '../../types/enums/SingleCampaignInViewOperators.enum'
 
 import {TriggersProvider} from '../TriggersProvider'
-import SetupConvertBanner from '../../components/SetupConvertBanner/SetupConvertBanner'
+import ConvertSetupBanner from '../../components/ConvertSetupBanner/ConvertSetupBanner'
 import {AdvancedTriggersTooltip} from '../../components/AdvancedTriggersTooltip'
 
 type Props = {
@@ -99,7 +99,7 @@ export const CampaignAudienceStep = ({
             id={CampaignStepsKeys.Audience}
             title="Choose your audience"
         >
-            <SetupConvertBanner classes={'mb-4'} />
+            <ConvertSetupBanner classes={'mb-4'} />
             <div className="mb-4">
                 {shouldShowContactCsm && (
                     <Alert icon type={AlertType.Warning}>

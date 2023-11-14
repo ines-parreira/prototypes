@@ -1,43 +1,36 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {isAdmin} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {hasConvertBundleInstalled} from 'pages/settings/revenue/utils/hasConvertBundleInstalled'
+import useGetConvertStatus, {
+    BundleOnboardingStatus,
+} from 'pages/settings/revenue/hooks/useGetConvertStatus'
 
 type Props = {
     classes?: string
 }
 
-export const SetupConvertBanner = ({classes}: Props): JSX.Element => {
-    const isConvertSubscriber = useIsConvertSubscriber()
+export const ConvertSetupBanner = ({classes}: Props): JSX.Element => {
     const currentUser = useAppSelector((state) => state.currentUser)
 
-    const [hasBundleInstalled, setBundleInstalled] = useState<boolean | null>(
-        null
-    )
+    const convertStatus = useGetConvertStatus()
 
-    useEffect(() => {
-        if (isConvertSubscriber && hasBundleInstalled === null) {
-            void (async () => {
-                setBundleInstalled(await hasConvertBundleInstalled())
-            })()
-        }
-    }, [isConvertSubscriber, hasBundleInstalled])
-
-    const isVisible = useMemo(
-        () => isConvertSubscriber && hasBundleInstalled === false,
-        [hasBundleInstalled, isConvertSubscriber]
+    const isBundleNotInstalled = useMemo(
+        () =>
+            convertStatus &&
+            convertStatus.bundle_status ===
+                BundleOnboardingStatus.NOT_INSTALLED,
+        [convertStatus]
     )
 
     const isButtonVisible = useMemo(
-        () => isVisible && isAdmin(currentUser),
-        [isVisible, currentUser]
+        () => isBundleNotInstalled && isAdmin(currentUser),
+        [currentUser, isBundleNotInstalled]
     )
 
-    if (!isVisible) return <></>
+    if (!isBundleNotInstalled) return <></>
 
     return (
         <div className={classNames(classes)}>
@@ -63,4 +56,4 @@ export const SetupConvertBanner = ({classes}: Props): JSX.Element => {
     )
 }
 
-export default SetupConvertBanner
+export default ConvertSetupBanner

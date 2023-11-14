@@ -1041,22 +1041,24 @@ export function TicketFieldsRoutes() {
 export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
-            <Switch>
-                <Route
-                    path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
-                    exact
-                    render={() => (
-                        <App
-                            content={memoizedWithUserRoleRequired(
-                                IntegrationDetail,
-                                ADMIN_ROLE,
-                                PageSection.Channels
-                            )}
-                            navbar={SettingsNavbar}
-                        />
-                    )}
-                />
-            </Switch>
+            <RevenueAddonApiClientProvider>
+                <Switch>
+                    <Route
+                        path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
+                        exact
+                        render={() => (
+                            <App
+                                content={memoizedWithUserRoleRequired(
+                                    IntegrationDetail,
+                                    ADMIN_ROLE,
+                                    PageSection.Channels
+                                )}
+                                navbar={SettingsNavbar}
+                            />
+                        )}
+                    />
+                </Switch>
+            </RevenueAddonApiClientProvider>
         </HelpCenterApiClientProvider>
     )
 }
@@ -1761,25 +1763,27 @@ export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
 // TODO(@Irinel) rename to BillingSettingsRoutes once we remove the old billing
 export function NewBillingSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
-        <Switch>
-            <Route
-                path={[
-                    `${path}/`,
-                    `${path}/payment`,
-                    `${path}/payment-history`,
-                ]}
-                render={() => (
-                    <App
-                        content={memoizedWithUserRoleRequired(
-                            NewBilling,
-                            ADMIN_ROLE,
-                            PageSection.NewBilling
-                        )}
-                        navbar={SettingsNavbar}
-                    />
-                )}
-            />
-        </Switch>
+        <RevenueAddonApiClientProvider>
+            <Switch>
+                <Route
+                    path={[
+                        `${path}/`,
+                        `${path}/payment`,
+                        `${path}/payment-history`,
+                    ]}
+                    render={() => (
+                        <App
+                            content={memoizedWithUserRoleRequired(
+                                NewBilling,
+                                ADMIN_ROLE,
+                                PageSection.NewBilling
+                            )}
+                            navbar={SettingsNavbar}
+                        />
+                    )}
+                />
+            </Switch>
+        </RevenueAddonApiClientProvider>
     )
 }
 

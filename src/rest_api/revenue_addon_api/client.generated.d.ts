@@ -9,6 +9,11 @@ import {
 declare namespace Components {
     namespace Schemas {
         /**
+         * BundleOnboardingStatus
+         * An enumeration.
+         */
+        export type BundleOnboardingStatus = 'installed' | 'not_installed'
+        /**
          * CampaignSchema
          */
         export interface CampaignSchema {
@@ -21,7 +26,12 @@ declare namespace Components {
              */
             rules: RuleSchema[]
         }
-
+        /**
+         * ConfigSchema
+         */
+        export interface ConfigSchema {
+            subscription: SubscriptionStatusSchema
+        }
         /**
          * CustomDomainOperationSchema
          */
@@ -31,7 +41,6 @@ declare namespace Components {
              */
             hostname: string // ^(((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.){1,}([a-z]{2,})$
         }
-
         /**
          * CustomDomainSchema
          */
@@ -45,7 +54,6 @@ declare namespace Components {
              */
             status: string
         }
-
         /**
          * EvaluatedCampaignSchema
          */
@@ -59,7 +67,6 @@ declare namespace Components {
              */
             rules: EvaluatedRuleSchema[]
         }
-
         /**
          * EvaluatedRuleSchema
          */
@@ -75,7 +82,6 @@ declare namespace Components {
              */
             matches: boolean
         }
-
         /**
          * EvaluationRequestSchema
          */
@@ -84,6 +90,10 @@ declare namespace Components {
              * Guest Id
              */
             guest_id: string
+            /**
+             * Customer Id
+             */
+            customer_id?: number
             /**
              * Account Id
              */
@@ -97,7 +107,6 @@ declare namespace Components {
              */
             campaigns: CampaignSchema[]
         }
-
         /**
          * EvaluationResponseSchema
          */
@@ -107,7 +116,6 @@ declare namespace Components {
              */
             campaigns: EvaluatedCampaignSchema[]
         }
-
         /**
          * HTTPValidationError
          */
@@ -117,7 +125,6 @@ declare namespace Components {
              */
             detail?: ValidationError[]
         }
-
         /**
          * InstallationSchema
          */
@@ -134,7 +141,12 @@ declare namespace Components {
              * Shop Integration Id
              */
             shop_integration_id: number
+            /**
+             * Script Tag Id
+             */
+            script_tag_id?: string
             status: StatusEnum
+            method: MethodEnum
             /**
              * Config
              */
@@ -152,7 +164,6 @@ declare namespace Components {
              */
             bundle_url?: string
         }
-
         /**
          * InstallationUpdateConfigSchema
          */
@@ -162,7 +173,6 @@ declare namespace Components {
              */
             config: any
         }
-
         /**
          * JWTTokenSchema
          */
@@ -172,7 +182,11 @@ declare namespace Components {
              */
             token: string
         }
-
+        /**
+         * MethodEnum
+         * An enumeration.
+         */
+        export type MethodEnum = 'one_click' | 'manual'
         /**
          * RuleOperator
          * An enumeration.
@@ -189,7 +203,6 @@ declare namespace Components {
             | 'containsAll'
             | 'containsAny'
             | 'notContains'
-
         /**
          * RuleSchema
          */
@@ -201,7 +214,6 @@ declare namespace Components {
              */
             value: string
         }
-
         /**
          * RuleType
          * An enumeration.
@@ -217,7 +229,48 @@ declare namespace Components {
          * An enumeration.
          */
         export type StatusEnum = 'draft' | 'installed' | 'uninstalled'
-
+        /**
+         * SubscriptionStatus
+         * An enumeration.
+         */
+        export type SubscriptionStatus = 'active' | 'inactive' | 'trial'
+        /**
+         * SubscriptionStatusSchema
+         */
+        export interface SubscriptionStatusSchema {
+            status: SubscriptionStatus
+            usage_status: SubscriptionUsageStatus
+        }
+        /**
+         * SubscriptionUsageAndBundleStatusSchema
+         */
+        export interface SubscriptionUsageAndBundleStatusSchema {
+            status: SubscriptionStatus
+            usage_status: SubscriptionUsageStatus
+            /**
+             * Usage
+             */
+            usage?: number
+            /**
+             * Limit
+             */
+            limit?: number
+            bundle_status: BundleOnboardingStatus
+        }
+        /**
+         * SubscriptionUsageStatus
+         * An enumeration.
+         */
+        export type SubscriptionUsageStatus = 'ok' | 'limit-reached'
+        /**
+         * URLBulkSchema
+         */
+        export interface URLBulkSchema {
+            /**
+             * Urls
+             */
+            urls: URLSchema[]
+        }
         /**
          * URLClickSchema
          */
@@ -239,7 +292,40 @@ declare namespace Components {
              */
             created_datetime: string // date-time
         }
-
+        /**
+         * URLCreateBulkSchema
+         */
+        export interface URLCreateBulkSchema {
+            /**
+             * Urls
+             */
+            urls: URLCreateSchema[]
+        }
+        /**
+         * URLCreateSchema
+         */
+        export interface URLCreateSchema {
+            /**
+             * Is Shortened
+             */
+            is_shortened?: boolean
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Channel
+             */
+            channel?: string
+            /**
+             * Url
+             */
+            url: string // uri
+            /**
+             * Meta
+             */
+            meta?: any
+        }
         /**
          * URLSchema
          */
@@ -278,7 +364,6 @@ declare namespace Components {
             channel?: string
             custom_domain?: CustomDomainSchema
         }
-
         /**
          * URLWithClicksSchema
          */
@@ -321,7 +406,6 @@ declare namespace Components {
              */
             clicks: URLClickSchema[]
         }
-
         /**
          * ValidationError
          */
@@ -355,14 +439,7 @@ declare namespace Paths {
     namespace CreateBulkClickTrackingBulkPost {
         export type RequestBody = Components.Schemas.JWTTokenSchema
         namespace Responses {
-            export type $201 = any
-            export type $422 = Components.Schemas.HTTPValidationError
-        }
-    }
-    namespace CreateBulkTrackBulkPost {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
-        namespace Responses {
-            export type $201 = any
+            export type $201 = Components.Schemas.URLBulkSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -387,13 +464,6 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
-    namespace CreateTrackPost {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
-        namespace Responses {
-            export type $201 = Components.Schemas.URLSchema
-            export type $422 = Components.Schemas.HTTPValidationError
-        }
-    }
     namespace EvaluateCampaignRules {
         export type RequestBody = Components.Schemas.EvaluationRequestSchema
         namespace Responses {
@@ -408,13 +478,26 @@ declare namespace Paths {
              */
             export type Id = string
         }
-
         export interface PathParameters {
             id: Parameters.Id
         }
-
         namespace Responses {
             export type $200 = Components.Schemas.InstallationSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetConfigByRevenueId {
+        namespace Parameters {
+            /**
+             * Revenue Id
+             */
+            export type RevenueId = string
+        }
+        export interface PathParameters {
+            revenue_id: Parameters.RevenueId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ConfigSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -423,29 +506,105 @@ declare namespace Paths {
             export type $200 = Components.Schemas.CustomDomainSchema
         }
     }
+    namespace GetStatusAndUsage {
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.SubscriptionUsageAndBundleStatusSchema
+        }
+    }
+    namespace GetSubscriptionStatusByAccountId {
+        namespace Parameters {
+            /**
+             * Account Id
+             */
+            export type AccountId = number
+        }
+        export interface PathParameters {
+            account_id: Parameters.AccountId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.SubscriptionStatusSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetSubscriptionStatuses {
+        namespace Responses {
+            /**
+             * Response Get Subscription Statuses
+             */
+            export interface $200 {
+                [name: string]: string
+            }
+        }
+    }
     namespace HealthCheckAssistantHealthCheckGet {
         namespace Responses {
-            export type $200 = any
+            /**
+             * Response Health Check Assistant Health Check Get
+             */
+            export interface $200 {
+                [name: string]: string
+            }
         }
     }
     namespace HealthCheckAssistant_Get {
         namespace Responses {
-            export type $200 = any
+            /**
+             * Response Health Check Assistant  Get
+             */
+            export interface $200 {
+                [name: string]: string
+            }
+        }
+    }
+    namespace HealthCheckBillingHealthCheckGet {
+        namespace Responses {
+            /**
+             * Response Health Check Billing Health Check Get
+             */
+            export interface $200 {
+                [name: string]: string
+            }
+        }
+    }
+    namespace HealthCheckBilling_Get {
+        namespace Responses {
+            /**
+             * Response Health Check Billing  Get
+             */
+            export interface $200 {
+                [name: string]: string
+            }
         }
     }
     namespace HealthCheckBundleHealthCheckGet {
         namespace Responses {
-            export type $200 = any
+            /**
+             * Response Health Check Bundle Health Check Get
+             */
+            export interface $200 {
+                [name: string]: string
+            }
         }
     }
     namespace HealthCheckClickTrackingHealthCheckGet {
         namespace Responses {
-            export type $200 = any
+            /**
+             * Response Health Check Click Tracking Health Check Get
+             */
+            export interface $200 {
+                [name: string]: string
+            }
         }
     }
     namespace HealthCheck_Get {
         namespace Responses {
-            export type $200 = any
+            /**
+             * Response Health Check  Get
+             */
+            export interface $200 {
+                [name: string]: string
+            }
         }
     }
     namespace ListBundleInstallation {
@@ -461,7 +620,6 @@ declare namespace Paths {
             referrer?: Parameters.Referrer
             'user-agent'?: Parameters.UserAgent
         }
-
         namespace Parameters {
             /**
              * Alias
@@ -476,11 +634,9 @@ declare namespace Paths {
              */
             export type UserAgent = string
         }
-
         export interface PathParameters {
             alias: Parameters.Alias
         }
-
         namespace Responses {
             export type $302 = any
             export type $422 = Components.Schemas.HTTPValidationError
@@ -522,6 +678,13 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace ShortenShortenPost {
+        export type RequestBody = Components.Schemas.URLCreateBulkSchema
+        namespace Responses {
+            export type $201 = Components.Schemas.URLBulkSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace UpdateBundleInstallation {
         namespace Parameters {
             /**
@@ -529,11 +692,9 @@ declare namespace Paths {
              */
             export type Id = string
         }
-
         export interface PathParameters {
             id: Parameters.Id
         }
-
         export type RequestBody =
             Components.Schemas.InstallationUpdateConfigSchema
         namespace Responses {
@@ -552,7 +713,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.HealthCheckAssistantHealthCheckGet.Responses.$200>
-
     /**
      * health_check_assistant__get - Health Check
      */
@@ -561,7 +721,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.HealthCheckAssistant_Get.Responses.$200>
-
     /**
      * evaluate_campaign_rules - Evaluate Campaign Rules
      */
@@ -573,7 +732,17 @@ export interface OperationMethods {
         | Paths.EvaluateCampaignRules.Responses.$200
         | Paths.EvaluateCampaignRules.Responses.$422
     >
-
+    /**
+     * get_config_by_revenue_id - Get Config
+     */
+    'get_config_by_revenue_id'(
+        parameters?: Parameters<Paths.GetConfigByRevenueId.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByRevenueId.Responses.$200
+        | Paths.GetConfigByRevenueId.Responses.$422
+    >
     /**
      * health_check_bundle_health_check_get - Health Check
      */
@@ -582,7 +751,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.HealthCheckBundleHealthCheckGet.Responses.$200>
-
     /**
      * service_installation_status_update_bundle_installations_manage_put - Service Installation Status Update
      */
@@ -594,7 +762,6 @@ export interface OperationMethods {
         | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$200
         | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$422
     >
-
     /**
      * service_installation_get_or_create_bundle_installations_manage_post - Service Installation Get Or Create
      */
@@ -606,7 +773,6 @@ export interface OperationMethods {
         | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$201
         | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$422
     >
-
     /**
      * service_retrieve_installation_bundle_installations_manage_retrieve_post - Service Retrieve Installation
      */
@@ -618,7 +784,6 @@ export interface OperationMethods {
         | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$200
         | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$422
     >
-
     /**
      * list_bundle_installation - Installation List
      */
@@ -627,7 +792,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.ListBundleInstallation.Responses.$200>
-
     /**
      * get_bundle_installation - Retrieve
      */
@@ -639,7 +803,6 @@ export interface OperationMethods {
         | Paths.GetBundleInstallation.Responses.$200
         | Paths.GetBundleInstallation.Responses.$422
     >
-
     /**
      * update_bundle_installation - Update
      */
@@ -651,7 +814,6 @@ export interface OperationMethods {
         | Paths.UpdateBundleInstallation.Responses.$200
         | Paths.UpdateBundleInstallation.Responses.$422
     >
-
     /**
      * health_check_click_tracking_health_check_get - Health Check
      */
@@ -660,7 +822,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.HealthCheckClickTrackingHealthCheckGet.Responses.$200>
-
     /**
      * health_check__get - Health Check
      */
@@ -669,19 +830,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
-
-    /**
-     * create_track_post - Create
-     */
-    'create_track_post'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CreateTrackPost.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.CreateTrackPost.Responses.$201
-        | Paths.CreateTrackPost.Responses.$422
-    >
-
     /**
      * create_click_tracking_post - Create
      */
@@ -693,19 +841,6 @@ export interface OperationMethods {
         | Paths.CreateClickTrackingPost.Responses.$201
         | Paths.CreateClickTrackingPost.Responses.$422
     >
-
-    /**
-     * create_bulk_track_bulk_post - Create Bulk
-     */
-    'create_bulk_track_bulk_post'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CreateBulkTrackBulkPost.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.CreateBulkTrackBulkPost.Responses.$201
-        | Paths.CreateBulkTrackBulkPost.Responses.$422
-    >
-
     /**
      * create_bulk_click_tracking_bulk_post - Create Bulk
      */
@@ -717,7 +852,17 @@ export interface OperationMethods {
         | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
         | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
     >
-
+    /**
+     * shorten_shorten_post - Shorten
+     */
+    'shorten_shorten_post'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.ShortenShortenPost.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.ShortenShortenPost.Responses.$201
+        | Paths.ShortenShortenPost.Responses.$422
+    >
     /**
      * retrieve_urls_by_meta_click_tracking_check_post - Retrieve Urls By Meta
      */
@@ -729,7 +874,6 @@ export interface OperationMethods {
         | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201
         | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$422
     >
-
     /**
      * redirect_r__alias__get - Redirect
      */
@@ -744,7 +888,6 @@ export interface OperationMethods {
         | Paths.RedirectR_Alias_Get.Responses.$302
         | Paths.RedirectR_Alias_Get.Responses.$422
     >
-
     /**
      * get_custom_domain - Retrieve
      */
@@ -753,7 +896,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetCustomDomain.Responses.$200>
-
     /**
      * create_custom_domain - Create
      */
@@ -765,7 +907,6 @@ export interface OperationMethods {
         | Paths.CreateCustomDomain.Responses.$201
         | Paths.CreateCustomDomain.Responses.$422
     >
-
     /**
      * delete_custom_domain - Delete
      */
@@ -774,7 +915,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<any>
-
     /**
      * check_custom_domain - Check
      */
@@ -783,7 +923,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomain.Responses.$200>
-
     /**
      * retrieve_custom_domains_get - Retrieve
      */
@@ -792,7 +931,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.RetrieveCustomDomainsGet.Responses.$200>
-
     /**
      * create_custom_domains_post - Create
      */
@@ -804,7 +942,6 @@ export interface OperationMethods {
         | Paths.CreateCustomDomainsPost.Responses.$201
         | Paths.CreateCustomDomainsPost.Responses.$422
     >
-
     /**
      * delete_custom_domains_delete - Delete
      */
@@ -813,7 +950,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<any>
-
     /**
      * check_custom_domains_check_post - Check
      */
@@ -822,6 +958,49 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
+    /**
+     * health_check_billing_health_check_get - Health Check
+     */
+    'health_check_billing_health_check_get'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.HealthCheckBillingHealthCheckGet.Responses.$200>
+    /**
+     * health_check_billing__get - Health Check
+     */
+    'health_check_billing__get'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.HealthCheckBilling_Get.Responses.$200>
+    /**
+     * get_status_and_usage - Get Status And Usage
+     */
+    'get_status_and_usage'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
+    /**
+     * get_subscription_statuses - Get Subscription Statuses
+     */
+    'get_subscription_statuses'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
+    /**
+     * get_subscription_status_by_account_id - Get Subscription Status By Account Id
+     */
+    'get_subscription_status_by_account_id'(
+        parameters?: Parameters<Paths.GetSubscriptionStatusByAccountId.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetSubscriptionStatusByAccountId.Responses.$200
+        | Paths.GetSubscriptionStatusByAccountId.Responses.$422
+    >
 }
 
 export interface PathsDictionary {
@@ -856,6 +1035,19 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.EvaluateCampaignRules.Responses.$200
             | Paths.EvaluateCampaignRules.Responses.$422
+        >
+    }
+    ['/assistant/configs/revenue/{revenue_id}']: {
+        /**
+         * get_config_by_revenue_id - Get Config
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetConfigByRevenueId.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetConfigByRevenueId.Responses.$200
+            | Paths.GetConfigByRevenueId.Responses.$422
         >
     }
     ['/bundle/health-check']: {
@@ -959,19 +1151,6 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
     }
-    ['/track']: {
-        /**
-         * create_track_post - Create
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CreateTrackPost.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CreateTrackPost.Responses.$201
-            | Paths.CreateTrackPost.Responses.$422
-        >
-    }
     ['/click-tracking']: {
         /**
          * create_click_tracking_post - Create
@@ -985,19 +1164,6 @@ export interface PathsDictionary {
             | Paths.CreateClickTrackingPost.Responses.$422
         >
     }
-    ['/track/bulk']: {
-        /**
-         * create_bulk_track_bulk_post - Create Bulk
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CreateBulkTrackBulkPost.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CreateBulkTrackBulkPost.Responses.$201
-            | Paths.CreateBulkTrackBulkPost.Responses.$422
-        >
-    }
     ['/click-tracking/bulk']: {
         /**
          * create_bulk_click_tracking_bulk_post - Create Bulk
@@ -1009,6 +1175,19 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
             | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
+        >
+    }
+    ['/shorten']: {
+        /**
+         * shorten_shorten_post - Shorten
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.ShortenShortenPost.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.ShortenShortenPost.Responses.$201
+            | Paths.ShortenShortenPost.Responses.$422
         >
     }
     ['/click-tracking/check']: {
@@ -1117,6 +1296,59 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
+    }
+    ['/billing/health-check']: {
+        /**
+         * health_check_billing_health_check_get - Health Check
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.HealthCheckBillingHealthCheckGet.Responses.$200>
+    }
+    ['/billing/']: {
+        /**
+         * health_check_billing__get - Health Check
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.HealthCheckBilling_Get.Responses.$200>
+    }
+    ['/billing/subscriptions/account-status']: {
+        /**
+         * get_status_and_usage - Get Status And Usage
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
+    }
+    ['/billing/subscriptions/account-status/all']: {
+        /**
+         * get_subscription_statuses - Get Subscription Statuses
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
+    }
+    ['/billing/subscriptions/account-status/{account_id}']: {
+        /**
+         * get_subscription_status_by_account_id - Get Subscription Status By Account Id
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetSubscriptionStatusByAccountId.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetSubscriptionStatusByAccountId.Responses.$200
+            | Paths.GetSubscriptionStatusByAccountId.Responses.$422
+        >
     }
 }
 

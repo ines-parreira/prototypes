@@ -32,8 +32,9 @@ jest.mock(
     }
 )
 
+jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/SetupConvertBanner/SetupConvertBanner',
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/ConvertSetupBanner/ConvertSetupBanner',
     () => {
         return jest.fn(() => null)
     }

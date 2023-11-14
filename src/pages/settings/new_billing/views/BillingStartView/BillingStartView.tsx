@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
 import moment from 'moment'
-import {useAsyncFn} from 'react-use'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {BillingBanner, TicketPurpose} from 'state/billing/types'
@@ -36,7 +35,6 @@ import {
 } from 'state/billing/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import {AlertType} from 'pages/common/components/Alert/Alert'
-import {getRevenueAddonApiClient} from 'rest_api/revenue_addon_api/client'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -57,6 +55,11 @@ import BillingInformationView from '../BillingInformationView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
 import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
+import useGetConvertStatus, {
+    BundleOnboardingStatus,
+    UsageStatus,
+} from '../../../revenue/hooks/useGetConvertStatus'
+import {useIsConvertCampaignCappingEnabled} from '../../../revenue/hooks/useIsConvertCampaignCappingEnabled'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
@@ -75,6 +78,9 @@ const BillingStartView = () => {
     const isPaymentShopify = payment === 'shopify'
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
+    const isConvertCampaignCappingEnabled = useIsConvertCampaignCappingEnabled()
+
+    const convertStatus = useGetConvertStatus()
 
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
@@ -261,50 +267,48 @@ const BillingStartView = () => {
         }
     }, [currentUsage, dispatch, isCurrentHelpdeskLegacy, periodEnd])
 
-    const [
-        {loading: isLoadingConvertBundleCheck, value: convertBundleCheckValue},
-        handleConvertBundleCheck,
-    ] = useAsyncFn(async () => {
-        const client = await getRevenueAddonApiClient()
-        const {data: bundleList} = await client.list_bundle_installation()
-        if (bundleList.length > 0) {
-            return true
-        }
-
-        setConvertBanner({
-            description: 'Get started with your Convert plan',
-            type: AlertType.Info,
-        })
-        void dispatch(
-            notify({
-                message: `Your Convert subscription has been activated!`,
-                style: NotificationStyle.Banner,
-                status: NotificationStatus.Success,
-                actionHTML: (
-                    <a
-                        href="/app/settings/convert/installations"
-                        rel="noreferrer"
-                    >
-                        Set Up Convert
-                    </a>
-                ),
-            })
-        )
-
-        return true
-    }, [])
-
     useEffect(() => {
-        if (
-            convertProduct &&
-            !isLoadingConvertBundleCheck &&
-            !convertBundleCheckValue
-        ) {
-            void handleConvertBundleCheck()
+        if (convertProduct && !convertBanner && convertStatus) {
+            if (
+                convertStatus.bundle_status ===
+                BundleOnboardingStatus.NOT_INSTALLED
+            ) {
+                setConvertBanner({
+                    description: 'Get started with your Convert plan',
+                    type: AlertType.Info,
+                })
+                void dispatch(
+                    notify({
+                        id: 'convert-subscription-activated',
+                        message: `Your Convert subscription has been activated!`,
+                        style: NotificationStyle.Banner,
+                        status: NotificationStatus.Success,
+                        actionHTML: (
+                            <a
+                                href="/app/settings/convert/installations"
+                                rel="noreferrer"
+                            >
+                                Set Up Convert
+                            </a>
+                        ),
+                    })
+                )
+            } else if (
+                convertStatus.usage_status === UsageStatus.LIMIT_REACHED &&
+                isConvertCampaignCappingEnabled
+            ) {
+                setConvertBanner({
+                    description:
+                        "You've reached the limit for your Convert. As a result, your campaigns are \n" +
+                        "currently on hold. But there's a solution - upgrade now to bring \n" +
+                        'them back to your website.',
+                    type: AlertType.Error,
+                })
+            }
         }
-        // trigger useEffect only when convertProduct is changed
+        // trigger useEffect only when convertProduct is changed or status was fetched
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [convertProduct])
+    }, [convertProduct, convertStatus])
 
     return (
         <div className="full-width">
