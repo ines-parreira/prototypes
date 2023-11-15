@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
@@ -15,7 +15,15 @@ type OwnProps = {
 
 type Props = OwnProps
 
-export function ViewCountContainer({viewId, isDeactivated, viewCount}: Props) {
+export function ViewCount({viewId, isDeactivated, viewCount}: Props) {
+    const title = useMemo(
+        () =>
+            viewCount && viewCount > 999
+                ? `${viewCount.toString()} tickets`
+                : undefined,
+        [viewCount]
+    )
+
     if (isDeactivated) {
         const id = `deactivated-view-${viewId}`
 
@@ -46,12 +54,12 @@ export function ViewCountContainer({viewId, isDeactivated, viewCount}: Props) {
     const compactCount = compactInteger(viewCount, 1)
 
     return (
-        <>
+        <span title={title}>
             {isMoreThanMaxCount
                 ? `${compactInteger(MAX_TICKET_COUNT_PER_VIEW)}+`
                 : compactCount}
-        </>
+        </span>
     )
 }
 
-export default React.memo(ViewCountContainer)
+export default React.memo(ViewCount)
