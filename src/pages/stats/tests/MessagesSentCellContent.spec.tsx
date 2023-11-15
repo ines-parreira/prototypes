@@ -16,6 +16,8 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TableColumn} from 'state/ui/stats/types'
+import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -30,9 +32,11 @@ const useMessagesSentMetricPerAgentMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<MessagesSentCellContent>', () => {
-    const agentId = 123
+    const agent = {
+        id: 123,
+        name: 'User',
+    } as User
     const messagesSentValue = 1234
-
     const defaultState = {
         stats: initialState,
         ui: {
@@ -49,7 +53,7 @@ describe('<MessagesSentCellContent>', () => {
                 {
                     [HelpdeskMessageMeasure.MessageCount]:
                         String(messagesSentValue),
-                    [TicketDimension.AssigneeUserId]: String(agentId),
+                    [TicketDimension.AssigneeUserId]: String(agent.id),
                 },
             ],
         },
@@ -64,7 +68,10 @@ describe('<MessagesSentCellContent>', () => {
     it('should render value as decimal', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <MessagesSentCellContent agentId={agentId} />
+                <MessagesSentCellContent
+                    column={TableColumn.MessagesSent}
+                    agent={agent}
+                />
             </Provider>
         )
 
@@ -86,7 +93,10 @@ describe('<MessagesSentCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <MessagesSentCellContent agentId={agentId} />
+                <MessagesSentCellContent
+                    column={TableColumn.MessagesSent}
+                    agent={agent}
+                />
             </Provider>
         )
 

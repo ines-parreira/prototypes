@@ -7,10 +7,12 @@ import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {TableLabels} from 'pages/stats/TableConfig'
+import {User} from 'config/types/user'
 
 type CommonMetrics = {
     title?: string
-    dateRange: {
+    dateRange?: {
         end_datetime: string
         start_datetime: string
     }
@@ -27,7 +29,7 @@ type PerformanceOverviewMetrics = {
         | HelpdeskMessageMeasure.MessageCount
 } & CommonMetrics
 
-type AgentsMetrics = {
+export type AgentsMetrics = {
     metricName: TableColumn
     perAgentId: number
 } & CommonMetrics
@@ -68,7 +70,7 @@ export const drillDownSlice = createSlice({
     name: 'drillDown',
     initialState,
     reducers: {
-        setMetricData(state, action: PayloadAction<DrillDownMetric>) {
+        setMetricData(state, action: PayloadAction<DrillDownMetric | null>) {
             state.metricData = action.payload
             state.isOpen = true
         },
@@ -100,3 +102,9 @@ export const getDrillDownMetricOrder = (state: RootState) => {
         ? OrderDirection.Asc
         : OrderDirection.Desc
 }
+
+export const buildAgentMetric = (column: TableColumn, agent: User) => ({
+    title: `${TableLabels[column]} | ${agent.name}`,
+    metricName: column,
+    perAgentId: agent.id,
+})

@@ -12,6 +12,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
+import {TableColumn} from 'state/ui/stats/types'
+import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -26,9 +28,11 @@ const usePercentageOfClosedTicketsMetricPerAgentMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<PercentageOfClosedTicketsCellContent>', () => {
-    const agentId = 123
+    const agent = {
+        id: 123,
+        name: 'User',
+    } as User
     const percentageOfClosedTicketsValue = 2.5
-
     const defaultState = {
         stats: initialState,
         ui: {
@@ -46,7 +50,7 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
                     [TicketMeasure.TicketCount]: String(
                         percentageOfClosedTicketsValue
                     ),
-                    [TicketDimension.AssigneeUserId]: String(agentId),
+                    [TicketDimension.AssigneeUserId]: String(agent.id),
                 },
             ],
         },
@@ -61,7 +65,10 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
     it('should render value as percentage', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <PercentageOfClosedTicketsCellContent agentId={agentId} />
+                <PercentageOfClosedTicketsCellContent
+                    column={TableColumn.PercentageOfClosedTickets}
+                    agent={agent}
+                />
             </Provider>
         )
 
@@ -80,7 +87,10 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <PercentageOfClosedTicketsCellContent agentId={agentId} />
+                <PercentageOfClosedTicketsCellContent
+                    column={TableColumn.PercentageOfClosedTickets}
+                    agent={agent}
+                />
             </Provider>
         )
 
@@ -95,7 +105,10 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <PercentageOfClosedTicketsCellContent agentId={agentId} />
+                <PercentageOfClosedTicketsCellContent
+                    column={TableColumn.PercentageOfClosedTickets}
+                    agent={agent}
+                />
             </Provider>
         )
 

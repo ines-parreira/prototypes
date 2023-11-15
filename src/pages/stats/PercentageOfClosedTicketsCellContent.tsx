@@ -17,13 +17,19 @@ import {
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {TableColumn} from 'state/ui/stats/types'
+import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
+import {User} from 'config/types/user'
+import {DrillDownModalTrigger} from './DrillDownModalTrigger'
 
 export const PercentageOfClosedTicketsCellContent = ({
-    agentId,
+    agent,
     bodyCellProps,
+    column,
 }: {
-    agentId: number
+    agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
+    column: TableColumn
 }) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -33,7 +39,7 @@ export const PercentageOfClosedTicketsCellContent = ({
         cleanStatsFilters,
         userTimezone,
         undefined,
-        String(agentId)
+        String(agent.id)
     )
     const isLoading = isFetching || isMetricLoading
     const isHeatmapMode = useAppSelector(getHeatmapMode)
@@ -54,11 +60,16 @@ export const PercentageOfClosedTicketsCellContent = ({
             {isLoading ? (
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
-                formatMetricValue(
-                    data?.value,
-                    'percent',
-                    NOT_AVAILABLE_PLACEHOLDER
-                )
+                <DrillDownModalTrigger
+                    enabled={!!data.value}
+                    metricData={buildAgentMetric(column, agent)}
+                >
+                    {formatMetricValue(
+                        data?.value,
+                        'percent',
+                        NOT_AVAILABLE_PLACEHOLDER
+                    )}
+                </DrillDownModalTrigger>
             )}
         </BodyCell>
     )

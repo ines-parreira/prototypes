@@ -1,6 +1,6 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -24,13 +24,14 @@ import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
 import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
-
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     getPaginatedAgents,
     getSortedAgents,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {getPageStatsFilters} from 'state/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -44,8 +45,22 @@ jest.mock(
             getPaginatedAgents: jest.fn(),
         } as Record<string, any>)
 )
+jest.mock(
+    'state/stats/selectors',
+    () =>
+        ({
+            ...jest.requireActual('state/stats/selectors'),
+            getPageStatsFilters: jest.fn(),
+        } as Record<string, any>)
+)
+jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
+    DrillDownModalTrigger: ({
+        children,
+    }: ComponentProps<typeof DrillDownModalTrigger>) => children,
+}))
 const getSortedAgentsMock = assumeMock(getSortedAgents)
 const getPaginatedAgentsMock = assumeMock(getPaginatedAgents)
+const getPageStatsFiltersMock = assumeMock(getPageStatsFilters)
 
 jest.mock('pages/stats/MedianFirstResponseTimeCellContent.tsx')
 const MedianFirstResponseTimeCellContentMock = assumeMock(
@@ -114,6 +129,12 @@ describe('<AgentTable>', () => {
         currentPage,
         perPage: 1,
     })
+    getPageStatsFiltersMock.mockReturnValue({
+        period: {
+            start_datetime: '2021-02-03T00:00:00.000Z',
+            end_datetime: '2021-02-03T23:59:59.999Z',
+        },
+    } as any)
     const metricCells = [
         MedianFirstResponseTimeCellContentMock,
         TicketsRepliedCellContentMock,
@@ -161,7 +182,7 @@ describe('<AgentTable>', () => {
         metricCells.forEach((metricCell) => {
             expect(metricCell).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    agentId: paginatedAgents[0].id,
+                    agent: paginatedAgents[0],
                 }),
                 {}
             )

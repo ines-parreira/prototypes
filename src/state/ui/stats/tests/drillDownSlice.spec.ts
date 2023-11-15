@@ -10,7 +10,10 @@ import {
     getDrillDownMetricOrder,
     getDrillDownMetricShow,
     getDrillDownModalState,
+    buildAgentMetric,
 } from 'state/ui/stats/drillDownSlice'
+import {User} from 'config/types/user'
+import {TableLabels} from 'pages/stats/TableConfig'
 
 describe('drillDownSlice', () => {
     const dateRange = {
@@ -135,6 +138,23 @@ describe('drillDownSlice', () => {
 
         it('getDrillDownModalState', () => {
             expect(getDrillDownModalState(state)).toEqual(isOpen)
+        })
+    })
+
+    it('should build agent metric', () => {
+        const agent = {
+            id: 1,
+            name: 'Test',
+        } as User
+
+        expect(
+            buildAgentMetric(TableColumn.CustomerSatisfaction, agent)
+        ).toEqual({
+            title: `${TableLabels[TableColumn.CustomerSatisfaction]} | ${
+                agent.name
+            }`,
+            metricName: TableColumn.CustomerSatisfaction,
+            perAgentId: agent.id,
         })
     })
 })

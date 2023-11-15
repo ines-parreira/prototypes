@@ -13,14 +13,20 @@ import {
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {TableColumn} from 'state/ui/stats/types'
+import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
+import {User} from 'config/types/user'
+import {DrillDownModalTrigger} from './DrillDownModalTrigger'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const MedianFirstResponseTimeCellContent = ({
-    agentId,
+    agent,
     bodyCellProps,
+    column,
 }: {
-    agentId: number
+    agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
+    column: TableColumn
 }) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -30,7 +36,7 @@ export const MedianFirstResponseTimeCellContent = ({
         cleanStatsFilters,
         userTimezone,
         undefined,
-        String(agentId)
+        String(agent.id)
     )
     const metricValue = data?.value
     const isLoading = isFetching || isMetricLoading
@@ -52,11 +58,16 @@ export const MedianFirstResponseTimeCellContent = ({
             {isFetching || isMetricLoading ? (
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
-                formatMetricValue(
-                    metricValue,
-                    'duration',
-                    NOT_AVAILABLE_PLACEHOLDER
-                )
+                <DrillDownModalTrigger
+                    enabled={!!metricValue}
+                    metricData={buildAgentMetric(column, agent)}
+                >
+                    {formatMetricValue(
+                        metricValue,
+                        'duration',
+                        NOT_AVAILABLE_PLACEHOLDER
+                    )}
+                </DrillDownModalTrigger>
             )}
         </BodyCell>
     )

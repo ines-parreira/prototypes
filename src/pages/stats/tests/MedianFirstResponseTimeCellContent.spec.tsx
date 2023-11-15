@@ -16,6 +16,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TableColumn} from 'state/ui/stats/types'
+import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -30,9 +32,11 @@ const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<MedianFirstResponseTimeCellContent>', () => {
-    const agentId = 123
+    const agent = {
+        id: 123,
+        name: 'User',
+    } as User
     const medianFirstResponseTimeValue = 1234
-
     const defaultState = {
         stats: initialState,
         ui: {
@@ -50,7 +54,7 @@ describe('<MedianFirstResponseTimeCellContent>', () => {
                     [TicketMessagesMeasure.MedianFirstResponseTime]: String(
                         medianFirstResponseTimeValue
                     ),
-                    [TicketDimension.AssigneeUserId]: String(agentId),
+                    [TicketDimension.AssigneeUserId]: String(agent.id),
                 },
             ],
         },
@@ -65,7 +69,10 @@ describe('<MedianFirstResponseTimeCellContent>', () => {
     it('should render value as duration', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <MedianFirstResponseTimeCellContent agentId={agentId} />
+                <MedianFirstResponseTimeCellContent
+                    column={TableColumn.MedianFirstResponseTime}
+                    agent={agent}
+                />
             </Provider>
         )
 
@@ -87,7 +94,10 @@ describe('<MedianFirstResponseTimeCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <MedianFirstResponseTimeCellContent agentId={agentId} />
+                <MedianFirstResponseTimeCellContent
+                    column={TableColumn.MedianFirstResponseTime}
+                    agent={agent}
+                />
             </Provider>
         )
 

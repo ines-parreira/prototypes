@@ -7,12 +7,14 @@ import {setMetricData, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import css from './DrillDownModalTrigger.less'
 
 type Props = {
-    metricData: DrillDownMetric
+    metricData: DrillDownMetric | null
+    enabled?: boolean
 }
 
 export const DrillDownModalTrigger = ({
     children,
     metricData,
+    enabled = true,
 }: PropsWithChildren<Props>) => {
     const dispatch = useAppDispatch()
 
@@ -21,7 +23,7 @@ export const DrillDownModalTrigger = ({
 
     return (
         <>
-            {hasAnalyticsDrillDown ? (
+            {hasAnalyticsDrillDown && enabled ? (
                 <span
                     className={css.text}
                     onClick={() => dispatch(setMetricData(metricData))}

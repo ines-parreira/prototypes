@@ -12,6 +12,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
+import {TableColumn} from 'state/ui/stats/types'
+import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -26,9 +28,11 @@ const useCustomerSatisfactionMetricPerAgentMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<CustomerSatisfactionCellContent>', () => {
-    const agentId = 123
+    const agent = {
+        id: 123,
+        name: 'User',
+    } as User
     const avgSurveyScoreValue = 5
-
     const defaultState = {
         stats: initialState,
         ui: {
@@ -45,7 +49,7 @@ describe('<CustomerSatisfactionCellContent>', () => {
                 {
                     [TicketSatisfactionSurveyMeasure.AvgSurveyScore]:
                         String(avgSurveyScoreValue),
-                    [TicketDimension.AssigneeUserId]: String(agentId),
+                    [TicketDimension.AssigneeUserId]: String(agent.id),
                 },
             ],
         },
@@ -60,7 +64,10 @@ describe('<CustomerSatisfactionCellContent>', () => {
     it('should render value as decimal', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <CustomerSatisfactionCellContent agentId={agentId} />
+                <CustomerSatisfactionCellContent
+                    column={TableColumn.CustomerSatisfaction}
+                    agent={agent}
+                />
             </Provider>
         )
 
@@ -74,7 +81,10 @@ describe('<CustomerSatisfactionCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <CustomerSatisfactionCellContent agentId={agentId} />
+                <CustomerSatisfactionCellContent
+                    column={TableColumn.CustomerSatisfaction}
+                    agent={agent}
+                />
             </Provider>
         )
 

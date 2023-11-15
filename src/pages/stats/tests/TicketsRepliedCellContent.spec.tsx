@@ -16,6 +16,8 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TableColumn} from 'state/ui/stats/types'
+import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -30,9 +32,11 @@ const useTicketsRepliedMetricPerAgentMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<TicketsRepliedCellContent>', () => {
-    const agentId = 123
+    const agent = {
+        id: 123,
+        name: 'User',
+    } as User
     const ticketsRepliedValue = 1234
-
     const defaultState = {
         stats: initialState,
         ui: {
@@ -49,7 +53,7 @@ describe('<TicketsRepliedCellContent>', () => {
                 {
                     [HelpdeskMessageMeasure.TicketCount]:
                         String(ticketsRepliedValue),
-                    [TicketDimension.AssigneeUserId]: String(agentId),
+                    [TicketDimension.AssigneeUserId]: String(agent.id),
                 },
             ],
         },
@@ -64,7 +68,10 @@ describe('<TicketsRepliedCellContent>', () => {
     it('should render value as duration', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <TicketsRepliedCellContent agentId={agentId} />
+                <TicketsRepliedCellContent
+                    column={TableColumn.RepliedTickets}
+                    agent={agent}
+                />
             </Provider>
         )
 
@@ -86,7 +93,10 @@ describe('<TicketsRepliedCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <TicketsRepliedCellContent agentId={agentId} />
+                <TicketsRepliedCellContent
+                    column={TableColumn.RepliedTickets}
+                    agent={agent}
+                />
             </Provider>
         )
 

@@ -48,8 +48,9 @@ import {TableColumn} from 'state/ui/stats/types'
 const getCell = (
     column: TableColumn
 ): React.FunctionComponent<{
-    agentId: number
+    agent: User
     bodyCellProps: PropsWithRef<BodyCellProps>
+    column: TableColumn
 }> => {
     switch (column) {
         case TableColumn.RepliedTickets:
@@ -162,7 +163,8 @@ export const AgentsTable = () => {
                                 {TableColumnsOrder.map((column) => (
                                     <React.Fragment key={column}>
                                         {React.createElement(getCell(column), {
-                                            agentId: agent.id,
+                                            agent,
+                                            column,
                                             bodyCellProps: {
                                                 width: getColumnWidth(column),
                                                 justifyContent:

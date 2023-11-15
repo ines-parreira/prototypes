@@ -13,7 +13,7 @@ import {MERGE_STATS_FILTERS} from 'state/stats/constants'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AgentCellContent>', () => {
-    const agentId = agents[0].id
+    const agent = agents[0]
 
     const defaultState = {
         agents: fromJS({
@@ -24,7 +24,7 @@ describe('<AgentCellContent>', () => {
     it('should render agent name', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <AgentCellContent agentId={agentId} />
+                <AgentCellContent agent={agent} />
             </Provider>
         )
 
@@ -35,7 +35,7 @@ describe('<AgentCellContent>', () => {
         const store = mockStore(defaultState)
         render(
             <Provider store={store}>
-                <AgentCellContent agentId={agentId} />
+                <AgentCellContent agent={agent} />
             </Provider>
         )
 

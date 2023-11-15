@@ -68,4 +68,23 @@ describe('<DrillDownModalTrigger />', () => {
 
         expect(store.getActions()).toEqual([])
     })
+
+    it('should not trigger drill down with enabled prop', () => {
+        const store = mockStore(defaultState)
+        const metricData = {
+            metricName: 'someMetric',
+        } as any
+
+        render(
+            <Provider store={store}>
+                <DrillDownModalTrigger enabled={false} metricData={metricData}>
+                    {trigger}
+                </DrillDownModalTrigger>
+            </Provider>
+        )
+
+        fireEvent.click(screen.getByText(trigger))
+
+        expect(store.getActions()).toEqual([])
+    })
 })
