@@ -13,6 +13,7 @@ import {
 } from 'utils/editor'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
+import * as channelsService from 'services/channels'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketReplyEditorContainer} from '../TicketReplyEditor'
@@ -341,5 +342,31 @@ describe('TicketReplyEditor component', () => {
             expect(convertToHTML(newEditorState)).toMatchSnapshot()
             done()
         }, 500)
+    })
+
+    it('should not allow "videos", "shopify products" or "discount codes" for new channels', () => {
+        jest.spyOn(channelsService, 'isNewChannel').mockReturnValue(true)
+        const component = shallow(
+            <TicketReplyEditorContainer
+                {...minProps}
+                newMessage={fromJS({
+                    state: {
+                        contentState: ContentState.createFromText(''),
+                    },
+                    integrations: {
+                        integrations: [{type: 'shopify'}],
+                    },
+                })}
+                newMessageType={'tiktok-shop' as TicketMessageSourceType}
+            />
+        )
+
+        const displayedActions = component
+            .find('ForwardRef(TicketRichField)')
+            .prop('displayedActions')
+
+        expect(displayedActions).not.toContain('VIDEO')
+        expect(displayedActions).not.toContain('PRODUCTPICKER')
+        expect(displayedActions).not.toContain('DISCOUNTCODE')
     })
 })

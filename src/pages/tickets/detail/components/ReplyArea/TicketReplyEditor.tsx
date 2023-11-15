@@ -8,6 +8,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 
+import {isNewChannel} from 'services/channels'
 import {humanize} from 'business/format'
 import {canAddAttachments} from 'business/ticket'
 import {TicketMessageSourceType} from 'business/types/ticket'
@@ -296,6 +297,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             attachmentsMask = 'image/*'
         }
 
+        if (isNewChannel(newMessageType)) {
+            attachmentsMask = 'image/*|video/*'
+        }
+
         return [
             <div className="attachment" key="attachments">
                 <label
@@ -383,7 +388,11 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         ]
 
         if (!isNewMessageRichType) {
-            displayedActions = [ActionName.Emoji, ActionName.ProductPicker]
+            if (!isNewChannel(newMessageType)) {
+                displayedActions = [ActionName.Emoji, ActionName.ProductPicker]
+            } else {
+                displayedActions = [ActionName.Emoji]
+            }
         }
 
         if (isNewMessageFacebookMessengerType) {
@@ -394,12 +403,15 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             displayedActions = [ActionName.Emoji]
         }
 
-        displayedActions.push(ActionName.Video)
+        if (!isNewChannel(newMessageType)) {
+            displayedActions.push(ActionName.Video)
+        }
 
         if (
             !this._isLDFlagActivated(
                 FeatureFlagKey.RevenueHideDiscountCodeButton
-            )
+            ) &&
+            !isNewChannel(newMessageType)
         ) {
             displayedActions.push(ActionName.DiscountCodePicker)
         }
@@ -420,6 +432,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
         if (newMessageType === TicketMessageSourceType.Sms) {
             attachmentsMask = 'image/*'
+        }
+
+        if (isNewChannel(newMessageType)) {
+            attachmentsMask = 'image/*|video/*'
         }
 
         return (
