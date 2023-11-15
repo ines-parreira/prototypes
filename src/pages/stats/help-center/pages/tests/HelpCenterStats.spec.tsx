@@ -109,6 +109,26 @@ describe('<HelpCenterStats />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should show empty state', () => {
+        mockUseHelpCenterList.mockReturnValue({
+            isLoading: false,
+            helpCenters: [
+                {
+                    ...getHelpCentersResponseFixture.data[0],
+                    deactivated_datetime: '2021-01-01T00:00:00Z',
+                },
+            ],
+            hasMore: false,
+            fetchMore: jest.fn(),
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByTestId('help-center-stats-empty-state')
+        ).toBeInTheDocument()
+    })
+
     it('should change help center when filter changed', () => {
         mockUseHelpCenterList.mockReturnValue({
             isLoading: false,

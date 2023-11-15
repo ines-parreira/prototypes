@@ -14,6 +14,7 @@ import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {NonEmptyArray} from 'types'
 import {isNotEmptyArray} from 'utils'
+import {StatsFilters} from 'models/stat/types'
 
 import OverviewCard from '../components/OverviewCard/OverviewCard'
 import {useHelpCenterTrend} from '../hooks/useHelpCenterTrend'
@@ -26,8 +27,8 @@ import HelpCenterFilter from '../components/HelpCenterFilter/HelpCenterFilter'
 import {useStatsFilters} from '../hooks/useStatsFilters'
 import PeriodStatsFilter from '../../PeriodStatsFilter'
 import HelpCenterStatsLoading from '../components/HelpCenterStatsLoading/HelpCenterStatsLoading'
-import {StatsFilters} from '../../../../models/stat/types'
 import {HelpCenterStatsFilters} from '../types'
+import {HelpCenterStatsEmptyState} from '../components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -222,18 +223,30 @@ const HelpCenterStats = () => {
         statsFiltersInitState
     )
 
+    const activeHelpCenters = useMemo(
+        () =>
+            helpCenters.filter(
+                (helpCenter) => helpCenter.deactivated_datetime === null
+            ),
+        [helpCenters]
+    )
+
     if (isLoading || !isHelpCenterStatsFiltersValid(statsFilters)) {
         return <HelpCenterStatsLoading title={PAGE_TITLE_HELP_CENTER} />
     }
 
-    return isNotEmptyArray(helpCenters) ? (
+    return isNotEmptyArray(activeHelpCenters) ? (
         <HelpCenterStatsComponent
-            helpCenters={helpCenters}
+            helpCenters={activeHelpCenters}
             statsFilters={statsFilters}
             setStatsFilters={setStatsFilters}
         />
     ) : (
-        <div>TODO: Implement empty state</div>
+        <HelpCenterStatsEmptyState
+            helpCenterId={
+                helpCenters.length === 1 ? helpCenters[0].id : undefined
+            }
+        />
     )
 }
 
