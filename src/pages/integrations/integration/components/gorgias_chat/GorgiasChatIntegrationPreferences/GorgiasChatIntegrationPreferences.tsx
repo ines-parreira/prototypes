@@ -297,7 +297,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             integrationChat.meta
         )
 
-        void IntegrationsActions.getApplicationTexts(
+        return IntegrationsActions.getApplicationTexts(
             chatApplicationId as string
         ).then((data: Texts) => {
             let textsMultiLanguage: TextsMultiLanguage | undefined = undefined
@@ -338,7 +338,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             integrationChat.meta
         )
 
-        void IntegrationsActions.getTranslations(
+        return IntegrationsActions.getTranslations(
             integrationDefaultLanguage
         ).then((translations) => {
             this.setState({translations})
@@ -363,8 +363,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     _fetchDeps() {
-        void this.fetchTranslations(this.props.integration)
-        void this.fetchApplicationTexts(this.props.integration)
+        void this.fetchTranslations(this.props.integration).then(() => {
+            void this.fetchApplicationTexts(this.props.integration)
+        })
     }
 
     _setEmailCaptureEnabled = (value: boolean) => {
@@ -490,6 +491,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
         this.setState({
             privacyPolicyDisclaimerText: html,
+            preview: PREVIEW_PRIVACY_POLICY_DISCLAIMER,
         })
     }
 
@@ -711,6 +713,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         ) {
             previewChildren = (
                 <ChatHomePreview
+                    mainColor={mainColor}
                     avatar={avatar}
                     title={chatTitle}
                     renderConversation={!controlTicketVolume}
@@ -1443,6 +1446,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                         ActionName.Link,
                                                         ActionName.Emoji,
                                                     ]}
+                                                    canDropFiles={false}
+                                                    canInsertInlineImages={
+                                                        false
+                                                    }
                                                 />
                                             )}
                                     </div>

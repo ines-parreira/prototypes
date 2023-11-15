@@ -128,6 +128,8 @@ const GorgiasTranslateInputField = ({
                                 ActionName.Link,
                                 ActionName.Emoji,
                             ]}
+                            canDropFiles={false}
+                            canInsertInlineImages={false}
                         />
                     )}
                 </Col>

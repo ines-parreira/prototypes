@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import CloseIcon from 'gorgias-design-system/Launcher/icons/CloseIcon'
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import {getTextColorBasedOnBackground} from '../color-utils'
 
 type Variant = 'collapsed' | 'expanded'
 
@@ -51,21 +51,26 @@ const PrivacyPolicyDisclaimerDiv = styled.div<{
 
 interface Props {
     privacyPolicyDisclaimerText: string
+    mainColor?: string
     variant?: Variant
 }
 
 const PrivacyPolicyDisclaimer: React.FC<Props> = ({
     privacyPolicyDisclaimerText,
+    mainColor,
     variant,
-}: Props) => (
-    <PrivacyPolicyDisclaimerDiv variant={variant}>
-        <div
-            dangerouslySetInnerHTML={{__html: privacyPolicyDisclaimerText}}
-        ></div>
-        {variant === 'collapsed' && (
-            <CloseIcon color={gorgiasColors.neutralGrey0} />
-        )}
-    </PrivacyPolicyDisclaimerDiv>
-)
+}: Props) => {
+    const fillColor = getTextColorBasedOnBackground(mainColor)
+
+    return (
+        <PrivacyPolicyDisclaimerDiv variant={variant}>
+            <div
+                style={{color: fillColor}}
+                dangerouslySetInnerHTML={{__html: privacyPolicyDisclaimerText}}
+            />
+            {variant === 'collapsed' && <CloseIcon color={fillColor} />}
+        </PrivacyPolicyDisclaimerDiv>
+    )
+}
 
 export default PrivacyPolicyDisclaimer

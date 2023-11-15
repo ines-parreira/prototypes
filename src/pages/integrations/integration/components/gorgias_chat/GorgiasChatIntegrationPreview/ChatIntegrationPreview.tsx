@@ -310,6 +310,7 @@ const ChatIntegrationPreview = (props: Props) => {
 
                         {renderPrivacyPolicyDisclaimer && (
                             <PrivacyPolicyDisclaimer
+                                mainColor={mainColor}
                                 privacyPolicyDisclaimerText={
                                     privacyPolicyDisclaimerText
                                 }

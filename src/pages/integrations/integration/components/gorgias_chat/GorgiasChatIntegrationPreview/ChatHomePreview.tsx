@@ -27,6 +27,7 @@ const StyledCard = styled(Card)`
 `
 
 type Props = {
+    mainColor?: string
     avatar?: GorgiasChatAvatarSettings
     title: string
     renderConversation: boolean
@@ -38,6 +39,7 @@ type Props = {
 }
 
 const ChatHomePreview: React.FC<Props> = ({
+    mainColor,
     avatar,
     title,
     renderConversation = false,
@@ -76,6 +78,7 @@ const ChatHomePreview: React.FC<Props> = ({
                     <>
                         {renderPrivacyPolicyDisclaimer && (
                             <PrivacyPolicyDisclaimer
+                                mainColor={mainColor}
                                 privacyPolicyDisclaimerText={
                                     privacyPolicyDisclaimerText
                                 }
