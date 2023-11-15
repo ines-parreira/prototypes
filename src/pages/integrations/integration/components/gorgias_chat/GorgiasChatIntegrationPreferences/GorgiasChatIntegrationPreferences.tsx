@@ -165,7 +165,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
     richArea?: RichField | null
 
-    privacPolicyDisclaimerFeatureFlagEnabled = false
+    privacyPolicyDisclaimerFeatureFlagEnabled = false
 
     state: State = {
         autoResponderEnabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -353,7 +353,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     componentDidUpdate() {
-        this.privacPolicyDisclaimerFeatureFlagEnabled =
+        this.privacyPolicyDisclaimerFeatureFlagEnabled =
             !!this.props.flags?.[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
 
         if (!this.state.isInitialized && !this.props.integration.isEmpty()) {
@@ -476,9 +476,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     // TODO. Refactor with `GorgiasTranslateInputField` as they are very similar.
     _onChangeTicketRichField = (value: EditorState) => {
         let html = convertToHTML(value.getCurrentContent())
+
         // Sanitize the HTML to remove unwanted tags coming from draftjs.
-        // This is commomly done in the Helpdesk when extracting the HTML from the rich text editor.
-        // This one is especially usefull to add `noreferrer noopener` to links.
+        // This is commonly done in the Helpdesk when extracting the HTML from the rich text editor.
+        // This one is especially useful to add `noreferrer noopener` to links.
         // TODO. See why `noreferrer noopener` are not added.
         html = sanitizeHtmlDefault(html)
 
@@ -534,7 +535,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         await updateOrCreateIntegration(payload)
 
         // Save `texts`.
-        if (this.privacPolicyDisclaimerFeatureFlagEnabled) {
+        if (this.privacyPolicyDisclaimerFeatureFlagEnabled) {
             const integrationChat = integration.toJS() as GorgiasChatIntegration
             const chatApplicationId = integrationChat?.meta?.app_id
             const integrationDefaultLanguage = getPrimaryLanguageFromChatConfig(
@@ -915,6 +916,20 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             Boolean(flags?.[FeatureFlagKey.RevenueBetaTesters]) ||
             Boolean(convertProduct)
 
+        const privacyPolicyDisclaimerMaxLength =
+            translationsAvailableKeys.privacyPolicyDisclaimer[
+                'texts.privacyPolicyDisclaimer'
+            ].maxLength
+
+        // Synced with https://github.com/gorgias/gorgias-chat/blob/main/packages/api/src/endpoints/applications/applicationSchemas.ts#L542
+        const strippedPrivacyPolicyDisclaimerText = (
+            this.state.privacyPolicyDisclaimerText || ''
+        ).replace(/<[^>]*>?/gm, '')
+
+        const isPrivacyPolicyDisclaimerTextTooLong =
+            strippedPrivacyPolicyDisclaimerText.length >
+            privacyPolicyDisclaimerMaxLength
+
         return (
             <>
                 <NavigatedSuccessModal
@@ -1024,7 +1039,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </p>
                                     </div>
                                 </div>
-
                                 <ControlTicketVolumeControls
                                     integration={integration}
                                     articleRecommendationEnabled={
@@ -1036,7 +1050,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     isToggled={controlTicketVolume}
                                     onToggle={this._setControlTicketVolume}
                                 />
-
                                 <div className={css.formSection}>
                                     <h4 className={css.title}>
                                         Visibility options
@@ -1201,7 +1214,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </div>
                                     )}
                                 </div>
-
                                 <div className={classnames(css.formSection)}>
                                     <h4
                                         className={classnames(
@@ -1240,7 +1252,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         }
                                     />
                                 </div>
-
                                 {SHOW_CHAT_CONVERSATIONS_SECTION && (
                                     <div className={css.formSection}>
                                         <h4 className={css.title}>
@@ -1285,7 +1296,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </div>
                                     </div>
                                 )}
-
                                 <div className={css.formSection}>
                                     <h4
                                         className={classnames(
@@ -1337,9 +1347,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         />
                                     </div>
                                 </div>
-
                                 {this
-                                    .privacPolicyDisclaimerFeatureFlagEnabled && (
+                                    .privacyPolicyDisclaimerFeatureFlagEnabled && (
                                     <div className={css.formSection}>
                                         <div
                                             className={
@@ -1396,6 +1405,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     // className={
                                                     //     css.richTextareaWrapper
                                                     // } // TODO. Sync with GorgiasTranslateInputField.tsx style.
+                                                    className={classnames({
+                                                        [css.hasError]:
+                                                            isPrivacyPolicyDisclaimerTextTooLong,
+                                                    })}
                                                     ref={(richArea) => {
                                                         this.richArea = richArea
                                                     }}
@@ -1409,11 +1422,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                         'privacy policy disclaimer content'
                                                     }
                                                     maxLength={
-                                                        translationsAvailableKeys
-                                                            .privacyPolicyDisclaimer[
-                                                            'texts.privacyPolicyDisclaimer'
-                                                        ].maxLength
+                                                        privacyPolicyDisclaimerMaxLength
                                                     }
+                                                    pattern={`^.{0,${privacyPolicyDisclaimerMaxLength}}$`}
                                                     isRequired={true}
                                                     onChange={
                                                         this
@@ -1436,7 +1447,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             )}
                                     </div>
                                 )}
-
                                 <div className={css.formSection}>
                                     <h4
                                         className={classnames(

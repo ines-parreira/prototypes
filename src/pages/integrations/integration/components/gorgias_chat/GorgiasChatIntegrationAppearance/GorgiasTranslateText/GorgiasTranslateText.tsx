@@ -134,7 +134,7 @@ function GorgiasTranslateText({
 
     const renameContactFormEnabled =
         useFlags()[FeatureFlagKey.ChatRenameContactForm]
-    const privacPolicyDisclaimerFeatureFlagEnabled =
+    const privacyPolicyDisclaimerFeatureFlagEnabled =
         useFlags()[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
 
     const integrationChat = integration.toJS() as GorgiasChatIntegration
@@ -1000,7 +1000,7 @@ function GorgiasTranslateText({
                         trackInputMethod={trackInput}
                     />
 
-                    {privacPolicyDisclaimerFeatureFlagEnabled && (
+                    {privacyPolicyDisclaimerFeatureFlagEnabled && (
                         <GorgiasTranslateInputGroup
                             title="Privacy policy disclaimer"
                             keys={privacyPolicyDisclaimerKeys}

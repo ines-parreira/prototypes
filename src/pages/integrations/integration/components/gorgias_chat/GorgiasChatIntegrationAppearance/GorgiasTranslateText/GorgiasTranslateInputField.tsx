@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {Col, Container, Row} from 'reactstrap'
+import classnames from 'classnames'
 import {EditorState} from 'draft-js'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
@@ -65,6 +66,11 @@ const GorgiasTranslateInputField = ({
         saveValue(keyName, html)
     }
 
+    // Synced with https://github.com/gorgias/gorgias-chat/blob/main/packages/api/src/endpoints/applications/applicationSchemas.ts#L542
+    const strippedValue = value.replace(/<[^>]*>?/gm, '')
+
+    const hasError = strippedValue.length > maxLength
+
     return (
         <Container fluid className={css.inputContainer}>
             <Row>
@@ -104,11 +110,15 @@ const GorgiasTranslateInputField = ({
                     ) : (
                         <TicketRichField
                             //className={css.richTextareaWrapper} // TODO. Fix me https://linear.app/gorgias/issue/AUTWD-1820/bug-fix-tone-of-voice-text-overflow-not-scrolling
+                            className={classnames({
+                                [css.hasError]: hasError,
+                            })}
                             ref={(ref) => setRichArea(ref)}
                             value={{html: value, text: value}}
                             aria-label={defaultValue}
                             placeholder={'Enter customer value'}
                             maxLength={maxLength}
+                            pattern={`^.{0,${maxLength}}$`}
                             isRequired={isRequired}
                             onChange={onChangeTicketRichField}
                             displayedActions={[

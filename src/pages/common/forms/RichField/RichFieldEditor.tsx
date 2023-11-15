@@ -94,6 +94,7 @@ export type Props = {
     canAddVideoPlayer?: boolean
     onInsertVideoAddedFromPastedLink?: () => void
     maxLength?: number
+    pattern?: string
     countCharacters?: boolean
     minHeight?: string | number
     noAutoScroll?: boolean
@@ -413,6 +414,7 @@ export class RichFieldEditor extends Component<Props, State> {
         const {
             className,
             isRequired,
+            pattern,
             displayOnly,
             onFocus,
             emailExtraEnabled,
@@ -483,7 +485,7 @@ export class RichFieldEditor extends Component<Props, State> {
                             suggestions={this.props.mentionSearchResults}
                             canAddMention={!!this.props.canAddMention}
                         />
-                        {isRequired && (
+                        {(isRequired || pattern) && (
                             <input
                                 value={this.props.editorState
                                     .getCurrentContent()
@@ -496,6 +498,7 @@ export class RichFieldEditor extends Component<Props, State> {
                                     overflow: 'hidden',
                                 }}
                                 required={isRequired}
+                                pattern={pattern}
                             />
                         )}
                     </div>
