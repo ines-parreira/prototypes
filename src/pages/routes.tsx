@@ -939,44 +939,8 @@ export function SettingsRoutes() {
                 path={`${path}/ticket-fields`}
                 render={() => <TicketFieldsRoutes />}
             />
-
-            <Route path={`${path}/macros`} exact>
-                <App content={MacrosSettingsContent} navbar={SettingsNavbar} />
-            </Route>
-            <Route path={`${path}/macros/new`} exact>
-                <App
-                    content={memoizedWithUserRoleRequired(
-                        MacrosSettingsForm,
-                        AGENT_ROLE,
-                        PageSection.SidebarSettings
-                    )}
-                    navbar={SettingsNavbar}
-                />
-            </Route>
-
-            <Route path={`${path}/macros/:macroId`} exact>
-                <App content={MacrosSettingsForm} navbar={SettingsNavbar} />
-            </Route>
-            <Route path={`${path}/rules`} exact>
-                <App content={RulesView} navbar={SettingsNavbar} />
-            </Route>
-            <Route path={`${path}/rules/library`} exact>
-                <App content={RulesLibrary} navbar={SettingsNavbar} />
-            </Route>
-
-            <Route path={`${path}/rules/new`} exact>
-                <App
-                    content={memoizedWithUserRoleRequired(
-                        RuleDetailForm,
-                        AGENT_ROLE,
-                        PageSection.SidebarSettings
-                    )}
-                    navbar={SettingsNavbar}
-                />
-            </Route>
-            <Route path={`${path}/rules/:ruleId`} exact>
-                <App content={RuleDetailForm} navbar={SettingsNavbar} />
-            </Route>
+            <Route path={`${path}/macros`} render={MacrosRoutes} />
+            <Route path={`${path}/rules`} render={RulesRoutes} />
             <Route path={`${path}/ticket-assignment`} exact>
                 <App content={TicketAssignment} navbar={SettingsNavbar} />
             </Route>
@@ -1035,6 +999,57 @@ export function TicketFieldsRoutes() {
                 )}
             />
         </Switch>
+    )
+}
+
+export function MacrosRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route path={`${path}`} exact>
+                <App content={MacrosSettingsContent} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/new`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
+                        MacrosSettingsForm,
+                        AGENT_ROLE,
+                        PageSection.SidebarSettings
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/:macroId`} exact>
+                <App content={MacrosSettingsForm} navbar={SettingsNavbar} />
+            </Route>
+        </Switch>
+    )
+}
+
+export function RulesRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route path={`${path}`} exact>
+                    <App content={RulesView} navbar={SettingsNavbar} />
+                </Route>
+                <Route path={`${path}/library`} exact>
+                    <App content={RulesLibrary} navbar={SettingsNavbar} />
+                </Route>
+                <Route path={`${path}/new`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
+                            RuleDetailForm,
+                            AGENT_ROLE,
+                            PageSection.SidebarSettings
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+                <Route path={`${path}/:ruleId`} exact>
+                    <App content={RuleDetailForm} navbar={SettingsNavbar} />
+                </Route>
+            </Switch>
+        </HelpCenterApiClientProvider>
     )
 }
 
