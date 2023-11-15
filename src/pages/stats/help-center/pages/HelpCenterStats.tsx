@@ -28,6 +28,7 @@ import {useStatsFilters} from '../hooks/useStatsFilters'
 import PeriodStatsFilter from '../../PeriodStatsFilter'
 import HelpCenterStatsLoading from '../components/HelpCenterStatsLoading/HelpCenterStatsLoading'
 import {HelpCenterStatsFilters} from '../types'
+import UnpublishedHelpCenterAlert from '../components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 import {HelpCenterStatsEmptyState} from '../components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
@@ -88,11 +89,20 @@ const HelpCenterStatsComponent = ({
                 }
             >
                 <DashboardSection title="" className="pb-0">
-                    <HelpCenterFilter
-                        selectedHelpCenter={selectedHelpCenter}
-                        helpCenters={helpCenters}
-                        setSelectedHelpCenter={setStatsFilters}
-                    />
+                    {selectedHelpCenter.deactivated_datetime !== null && (
+                        <DashboardGridCell>
+                            <UnpublishedHelpCenterAlert
+                                helpCenterId={selectedHelpCenter.id}
+                            />
+                        </DashboardGridCell>
+                    )}
+                    <DashboardGridCell>
+                        <HelpCenterFilter
+                            selectedHelpCenter={selectedHelpCenter}
+                            helpCenters={helpCenters}
+                            setSelectedHelpCenter={setStatsFilters}
+                        />
+                    </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection
                     title="Overview"
@@ -235,9 +245,9 @@ const HelpCenterStats = () => {
         return <HelpCenterStatsLoading title={PAGE_TITLE_HELP_CENTER} />
     }
 
-    return isNotEmptyArray(activeHelpCenters) ? (
+    return activeHelpCenters.length > 0 && isNotEmptyArray(helpCenters) ? (
         <HelpCenterStatsComponent
-            helpCenters={activeHelpCenters}
+            helpCenters={helpCenters}
             statsFilters={statsFilters}
             setStatsFilters={setStatsFilters}
         />

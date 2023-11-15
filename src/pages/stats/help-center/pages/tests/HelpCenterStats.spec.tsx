@@ -129,6 +129,30 @@ describe('<HelpCenterStats />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should show alert when selected help center unpublished', () => {
+        const unpublishedHelpCenter = {
+            ...getHelpCentersResponseFixture.data[0],
+            deactivated_datetime: '2021-01-01T00:00:00.000Z',
+        }
+        mockUseHelpCenterList.mockReturnValue({
+            isLoading: false,
+            helpCenters: [
+                unpublishedHelpCenter,
+                getHelpCentersResponseFixture.data[0],
+            ],
+            hasMore: false,
+            fetchMore: jest.fn(),
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                'Set your Help Center back to live in order to view performance insights.'
+            )
+        ).toBeInTheDocument()
+    })
+
     it('should change help center when filter changed', () => {
         mockUseHelpCenterList.mockReturnValue({
             isLoading: false,
