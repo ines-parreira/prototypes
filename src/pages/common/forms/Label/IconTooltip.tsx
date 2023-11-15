@@ -1,8 +1,7 @@
-import React, {ComponentProps, ReactNode, useContext} from 'react'
+import React, {ComponentProps, ReactNode} from 'react'
 import classnames from 'classnames'
 
 import Tooltip from 'pages/common/components/Tooltip'
-import {InputFieldContext} from 'pages/common/forms/input/InputField'
 import useId from 'hooks/useId'
 
 import css from './IconTooltip.less'
@@ -23,9 +22,8 @@ const IconTooltip = ({
     icon = 'info',
     tooltipProps,
 }: Props) => {
-    const {id: contextId} = useContext(InputFieldContext)
     const id = useId()
-    const tooltipId = (contextId && `${contextId}-tooltip`) || 'tooltip-' + id
+    const tooltipId = 'tooltip-' + id
 
     return (
         <div className={classnames(css.wrapper, className)}>
