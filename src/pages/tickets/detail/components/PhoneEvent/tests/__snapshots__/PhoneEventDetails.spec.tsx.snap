@@ -92,7 +92,7 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
         <audio
           class="recording-controls"
           controls=""
-          src="https://uploads.gorgi.us/development/some-file.mp3"
+          src="http://acme.gorgias.docker/api/attachment/download/some-file.mp3"
         />
         <button
           aria-disabled="false"
@@ -333,7 +333,7 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         <audio
           class="recording-controls"
           controls=""
-          src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/RE6fac6a901e0b886cec366ceb6365a8cd-a358dc82-a84b-4975-baef-7852d7c9c180.mp3"
+          src="http://acme.gorgias.docker/api/attachment/download/Zr1WE86rb6J4Mvgl/RE6fac6a901e0b886cec366ceb6365a8cd-a358dc82-a84b-4975-baef-7852d7c9c180.mp3"
         />
         <button
           aria-disabled="false"

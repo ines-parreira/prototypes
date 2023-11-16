@@ -436,13 +436,10 @@ export const replaceAttachmentURL = (url: string) => {
         )
     }
 
-    // TODO: add back in after 'gorgis.us' bucket is fixed to not use the 'development' path
-    // return url.replace(
-    //     'uploads.gorgi.us',
-    //     `${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
-    // )
-
-    return url
+    return url.replace(
+        'https://uploads.gorgi.us/development',
+        `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
+    )
 }
 
 const _proxyImageSignedURL = (url: string): string => {

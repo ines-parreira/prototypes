@@ -7,7 +7,7 @@ import * as utils from 'utils'
 import * as envUtils from 'utils/environment'
 import schemasJSON from 'fixtures/openapi.json'
 import {Account} from 'state/currentAccount/types'
-import {isProduction, isStaging} from 'utils/environment'
+import {isDevelopment, isProduction, isStaging} from 'utils/environment'
 import {
     ADMIN_ROLE,
     AGENT_ROLE,
@@ -488,18 +488,17 @@ describe('global utils', () => {
             )
         })
 
-        // TODO: add back in after 'gorgis.us' bucket is fixed to not use the 'development' path
-        // it('should replace attachment url for development environment', () => {
-        //     ;(isDevelopment as jest.Mock).mockReturnValueOnce(true)
-        //
-        //     expect(
-        //         utils.replaceAttachmentURL(
-        //             'https://uploads.gorgi.us/foo/bar.pdf'
-        //         )
-        //     ).toBe(
-        //         'https://acme.gorgias.docker/api/attachment/download/foo/bar.pdf'
-        //     )
-        // })
+        it('should replace attachment url for development environment', () => {
+            ;(isDevelopment as jest.Mock).mockReturnValueOnce(true)
+
+            expect(
+                utils.replaceAttachmentURL(
+                    'https://uploads.gorgi.us/development/foo/bar.pdf'
+                )
+            ).toBe(
+                'http://acme.gorgias.docker/api/attachment/download/foo/bar.pdf'
+            )
+        })
     })
 
     describe('proxifyImages', () => {
