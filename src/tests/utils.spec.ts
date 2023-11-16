@@ -16,6 +16,7 @@ import {
     OBSERVER_AGENT_ROLE,
 } from 'config/user'
 import {getCode} from 'utils'
+import {mockProductionEnvironment} from 'utils/testing'
 
 jest.mock('utils/environment')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
@@ -501,25 +502,29 @@ describe('global utils', () => {
         })
     })
 
-    describe('proxifyImages', () => {
+    describe('parseMedia', () => {
         beforeEach(() => {
             window.IMAGE_PROXY_URL = 'http://proxy-url/'
             window.IMAGE_PROXY_SIGN_KEY = 'test-key'
+            window.GORGIAS_STATE.currentAccount = {
+                domain: 'acme',
+            } as Account
+            mockProductionEnvironment()
         })
 
         it('should not touch html with not img', () => {
-            expect(utils.proxifyImages('<span>123</span>')).toMatchSnapshot()
+            expect(utils.parseMedia('<span>123</span>')).toMatchSnapshot()
         })
 
         it('should work with no format', () => {
             expect(
-                utils.proxifyImages('<img src="http://gorgias.io/hello" />')
+                utils.parseMedia('<img src="http://gorgias.io/hello" />')
             ).toMatchSnapshot()
         })
 
         it('should work with format', () => {
             expect(
-                utils.proxifyImages(
+                utils.parseMedia(
                     '<img src="http://gorgias.io/hello" />',
                     '100x100'
                 )
@@ -528,44 +533,40 @@ describe('global utils', () => {
 
         it('should raise if IMAGE_PROXY_URL is not defined', () => {
             window.IMAGE_PROXY_URL = ''
-            expect(() => utils.proxifyImages('<img src="hello" />')).toThrow()
+            expect(() => utils.parseMedia('<img src="hello" />')).toThrow()
         })
 
         it('should work with no src', () => {
-            expect(
-                utils.proxifyImages('<img alt="no-src" />')
-            ).toMatchSnapshot()
+            expect(utils.parseMedia('<img alt="no-src" />')).toMatchSnapshot()
         })
 
         it('should work with direct image', () => {
             expect(
-                utils.proxifyImages('<img src="http://gorgias.io/image.jpg" />')
+                utils.parseMedia('<img src="http://gorgias.io/image.jpg" />')
             ).toMatchSnapshot()
         })
 
         it('should work with pathname', () => {
             expect(
-                utils.proxifyImages(
-                    '<img src="http://gorgias.io/test/x.jpg" />'
-                )
+                utils.parseMedia('<img src="http://gorgias.io/test/x.jpg" />')
             ).toMatchSnapshot()
         })
 
         it('should work with search query but not uri-encode it', () => {
             expect(
-                utils.proxifyImages(
+                utils.parseMedia(
                     '<img src="http://gorgias.io/test/x.jpg?x=123&y=456#123" />'
                 )
             ).toMatchSnapshot()
         })
 
         it('should work with self closing', () => {
-            expect(utils.proxifyImages('<br />')).toMatchSnapshot()
+            expect(utils.parseMedia('<br />')).toMatchSnapshot()
         })
 
         it('should work with richer complex html', () => {
             expect(
-                utils.proxifyImages(`<div class="something">
+                utils.parseMedia(`<div class="something">
 <i>italic</i><b>bold</b><u>under</u>
 <span>xxxxxsp <span>inside <span>inside a span</span></span> </span>
 <uknown-tag>11233</uknown-tag>
@@ -579,10 +580,22 @@ describe('global utils', () => {
 
         it('should not proxify a proxified image', () => {
             expect(
-                utils.proxifyImages(
+                utils.parseMedia(
                     `<img src="${window.IMAGE_PROXY_URL}http://gorgias.io/hello" />`
                 )
             ).toMatchSnapshot()
+        })
+
+        it('should replace source in audio tag', () => {
+            ;(isProduction as jest.Mock).mockReturnValueOnce(true)
+
+            expect(
+                utils.parseMedia(
+                    `<audio src="https://uploads.gorgias.io/hello" />`
+                )
+            ).toBe(
+                '<audio src="https://acme.gorgias.com/api/attachment/download/hello"></audio>'
+            )
         })
     })
 

@@ -7,7 +7,7 @@ import {TicketMessage} from 'models/ticket/types'
 import MessageQuoteContext from 'pages/tickets/detail/components/MessageQuoteContext'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from 'utils/html'
-import {extractGorgiasVideoDivFromHtmlContent, proxifyImages} from 'utils'
+import {extractGorgiasVideoDivFromHtmlContent, parseMedia} from 'utils'
 
 import css from './Content.less'
 
@@ -35,7 +35,7 @@ export class ContentComponent extends Component<Props, State> {
     _getDisplayContent = (content: string, isHtml: boolean): string | null => {
         let displayContent = content
 
-        displayContent = proxifyImages(displayContent, '1000x')
+        displayContent = parseMedia(displayContent, '1000x')
 
         if (!isHtml) {
             displayContent = linkifyString(displayContent)

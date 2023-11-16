@@ -44,21 +44,21 @@ exports[`global utils makeGetPlainJS() should return plain js object from an Imm
 }
 `;
 
-exports[`global utils proxifyImages should not proxify a proxified image 1`] = `"<img src="http://proxy-url/http://gorgias.io/hello"/>"`;
+exports[`global utils parseMedia should not proxify a proxified image 1`] = `"<img src="http://proxy-url/http://gorgias.io/hello"/>"`;
 
-exports[`global utils proxifyImages should not touch html with not img 1`] = `"<span>123</span>"`;
+exports[`global utils parseMedia should not touch html with not img 1`] = `"<span>123</span>"`;
 
-exports[`global utils proxifyImages should work with direct image 1`] = `"<img src="http://proxy-url/1000x,su1wNcUx8KXmK4rhnBqZx5knuRBX020OYFfFx-44vMNQ/http://gorgias.io/image.jpg"/>"`;
+exports[`global utils parseMedia should work with direct image 1`] = `"<img src="http://proxy-url/1000x,su1wNcUx8KXmK4rhnBqZx5knuRBX020OYFfFx-44vMNQ/http://gorgias.io/image.jpg"/>"`;
 
-exports[`global utils proxifyImages should work with format 1`] = `"<img src="http://proxy-url/100x100,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello"/>"`;
+exports[`global utils parseMedia should work with format 1`] = `"<img src="http://proxy-url/100x100,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello"/>"`;
 
-exports[`global utils proxifyImages should work with no format 1`] = `"<img src="http://proxy-url/1000x,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello"/>"`;
+exports[`global utils parseMedia should work with no format 1`] = `"<img src="http://proxy-url/1000x,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello"/>"`;
 
-exports[`global utils proxifyImages should work with no src 1`] = `"<img alt="no-src"/>"`;
+exports[`global utils parseMedia should work with no src 1`] = `"<img alt="no-src"/>"`;
 
-exports[`global utils proxifyImages should work with pathname 1`] = `"<img src="http://proxy-url/1000x,sp0-kh68jT4-ESLYOWw3H5yzvXCK7fTHOamesKjlqNkY/http://gorgias.io/test/x.jpg"/>"`;
+exports[`global utils parseMedia should work with pathname 1`] = `"<img src="http://proxy-url/1000x,sp0-kh68jT4-ESLYOWw3H5yzvXCK7fTHOamesKjlqNkY/http://gorgias.io/test/x.jpg"/>"`;
 
-exports[`global utils proxifyImages should work with richer complex html 1`] = `
+exports[`global utils parseMedia should work with richer complex html 1`] = `
 "<div class="something">
 <i>italic</i><b>bold</b><u>under</u>
 <span>xxxxxsp <span>inside <span>inside a span</span></span> </span>
@@ -70,6 +70,6 @@ exports[`global utils proxifyImages should work with richer complex html 1`] = `
 "
 `;
 
-exports[`global utils proxifyImages should work with search query but not uri-encode it 1`] = `"<img src="http://proxy-url/1000x,sDDTU5QgssPtf_YOih2F4PdxvF_FGjX5S_FJdrOeloH0/http://gorgias.io/test/x.jpg?x=123&y=456"/>"`;
+exports[`global utils parseMedia should work with search query but not uri-encode it 1`] = `"<img src="http://proxy-url/1000x,sDDTU5QgssPtf_YOih2F4PdxvF_FGjX5S_FJdrOeloH0/http://gorgias.io/test/x.jpg?x=123&y=456"/>"`;
 
-exports[`global utils proxifyImages should work with self closing 1`] = `"<br />"`;
+exports[`global utils parseMedia should work with self closing 1`] = `"<br />"`;

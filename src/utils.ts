@@ -476,11 +476,26 @@ export const proxifyURL = (urlStr: string, format = 'cw-1'): string => {
     )}/${escapedURL}`
 }
 
+const proxifyImage = (
+    attributes: Record<string, unknown>,
+    imageFormat: string
+) => {
+    let v: string
+    try {
+        v = proxifyURL(attributes.src as string, imageFormat)
+        return v
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 /**
- * Append a proxy URL before the images src so we can control their width and protect our agents privacy
+ * Parse media in html according to HTML tag
+ * - Append a proxy URL before the images src so we can control their width and protect our agents privacy
+ * - Replace Aircall audio src with the new attachment URL
  */
-export const proxifyImages = (html: string, format = '1000x'): string => {
-    if (html.indexOf('img') === -1) {
+export const parseMedia = (html: string, imageFormat = '1000x'): string => {
+    if (html.indexOf('img') === -1 && html.indexOf('audio') === -1) {
         return html
     }
 
@@ -520,11 +535,10 @@ export const proxifyImages = (html: string, format = '1000x'): string => {
                         window.IMAGE_PROXY_URL
                     ) === -1
                 ) {
-                    try {
-                        v = proxifyURL(attributes.src as string, format)
-                    } catch (error) {
-                        console.error(error)
-                    }
+                    v = proxifyImage(attributes, imageFormat) as string
+                }
+                if (name === 'audio' && k === 'src') {
+                    v = replaceAttachmentURL(attributes.src as string)
                 }
                 attributePairs.push(`${k}="${v}"`)
             })
