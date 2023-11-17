@@ -30,7 +30,12 @@ const _handleDroppedFiles =
         }
 
         // add images inline
-        void insertInlineImages(images, pluginArgs, config.notify)
+        void insertInlineImages(
+            images,
+            pluginArgs,
+            config.notify,
+            config.uploadType
+        )
         // upload other files types
         // only if drag-to-upload is enabled
         if (config.getCanDropFiles()) {

@@ -18,6 +18,7 @@ import React, {
     Component,
 } from 'react'
 
+import {UploadType} from 'common/types'
 import {extractUrlsFromString} from 'utils'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
 import createFlowVariablesPlugin from 'pages/automation/workflows/draftjs/plugins/variables'
@@ -98,6 +99,7 @@ export type Props = {
     countCharacters?: boolean
     minHeight?: string | number
     noAutoScroll?: boolean
+    uploadType?: UploadType
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -163,6 +165,7 @@ export class RichFieldEditor extends Component<Props, State> {
             getAttachFiles: this._getAttachFiles,
             getCanDropFiles: this._getCanDropFiles,
             getCanInsertInlineImages: this._getCanInsertInlineImages,
+            uploadType: props.uploadType,
         }
 
         this.dndPlugin = createDndUploadPlugin(
@@ -420,6 +423,7 @@ export class RichFieldEditor extends Component<Props, State> {
             emailExtraEnabled,
             ticket,
             header,
+            uploadType,
         } = this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
         const {MentionSuggestions} = this.mentionPlugin as {
@@ -515,6 +519,7 @@ export class RichFieldEditor extends Component<Props, State> {
                             typeof Toolbar
                         >)}
                         canDropFiles={!!this.props.canDropFiles}
+                        uploadType={uploadType}
                         {...pluginMethods}
                     />
                 )}

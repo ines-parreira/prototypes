@@ -2,8 +2,9 @@ import React, {useEffect, useMemo, useState} from 'react'
 
 import {EditorState} from 'draft-js'
 import Immutable from 'immutable'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {UploadType} from 'common/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {convertToHTML} from 'utils/editor'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -128,6 +129,7 @@ export default function MessageContentFormField({
                     attachments={attachments}
                     displayedActions={toolbarActions}
                     noAutoScroll
+                    uploadType={UploadType.PublicAttachment}
                 />
 
                 <TicketAttachments

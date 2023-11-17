@@ -9,6 +9,7 @@ import {EditorState} from 'draft-js'
 import {Input} from 'reactstrap'
 import {InputType} from 'reactstrap/lib/Input'
 
+import {UploadType} from 'common/types'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {humanizeChannel} from 'state/ticket/utils'
 import DatePicker from '../../../common/forms/DatePicker'
@@ -248,6 +249,7 @@ export class Widget extends Component<Props, State> {
                 placeholder={(config.placeholder as string) || ''}
                 isRequired={(config.required as boolean) || false}
                 variableTypes={variableTypes}
+                uploadType={config.uploadType as UploadType | undefined}
             />
         )
     }

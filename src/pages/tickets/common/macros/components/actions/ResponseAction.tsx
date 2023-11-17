@@ -10,6 +10,7 @@ import {EditorState} from 'draft-js'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classnames from 'classnames'
 
+import {UploadType} from 'common/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import Tip from 'pages/common/components/tip/Tip'
@@ -293,6 +294,7 @@ const ResponseAction: React.FC<Props> = ({
                 spellCheck
                 disableProductCards
                 placeholder="Type {{ for variables }}"
+                uploadType={UploadType.PublicAttachment}
             />
             {!toolbarOnTop && toolbar}
         </div>

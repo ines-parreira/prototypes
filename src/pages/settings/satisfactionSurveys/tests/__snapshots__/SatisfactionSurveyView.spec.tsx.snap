@@ -573,6 +573,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           allowExternalChanges={true}
                           label="Survey message"
                           onChange={[Function]}
+                          uploadType="public_attachment"
                           value={
                             {
                               "html": "<div><br></div>",
@@ -967,6 +968,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                             <ForwardRef(TicketRichField)
                               allowExternalChanges={true}
                               onChange={[Function]}
+                              uploadType="public_attachment"
                               value={
                                 {
                                   "html": "<div><br></div>",
@@ -979,6 +981,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 canAddVideoPlayer={true}
                                 onChange={[Function]}
                                 onInsertVideoAddedFromPastedLink={[Function]}
+                                uploadType="public_attachment"
                                 value={
                                   {
                                     "html": "<div><br></div>",
@@ -1151,6 +1154,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   onChange={[Function]}
                                   onFocus={[Function]}
                                   onInsertVideoAddedFromPastedLink={[Function]}
+                                  uploadType="public_attachment"
                                   value={
                                     {
                                       "html": "<div><br></div>",
@@ -1324,6 +1328,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     onChange={[Function]}
                                     onFocus={[Function]}
                                     onInsertVideoAddedFromPastedLink={[Function]}
+                                    uploadType="public_attachment"
                                     value={
                                       {
                                         "html": "<div><br></div>",
@@ -1505,6 +1510,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       onLinkOpen={[Function]}
                                       onLinkTextChange={[Function]}
                                       onLinkUrlChange={[Function]}
+                                      uploadType="public_attachment"
                                       value={
                                         {
                                           "html": "<div><br></div>",
@@ -1693,6 +1699,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         onLinkTextChange={[Function]}
                                         onLinkUrlChange={[Function]}
                                         onMentionSearchChange={[Function]}
+                                        uploadType="public_attachment"
                                         value={
                                           {
                                             "html": "<div><br></div>",
@@ -3195,6 +3202,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             onMentionSearchChange={[Function]}
                                             setEditorState={[Function]}
                                             setReadOnly={[Function]}
+                                            uploadType="public_attachment"
                                             value={
                                               {
                                                 "html": "<div><br></div>",
@@ -3884,6 +3892,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   <AddImage
                                                     getEditorState={[Function]}
                                                     setEditorState={[Function]}
+                                                    uploadType="public_attachment"
                                                   >
                                                     <ButtonPopover
                                                       icon="insert_photo"

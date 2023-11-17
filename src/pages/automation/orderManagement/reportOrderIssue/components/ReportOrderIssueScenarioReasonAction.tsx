@@ -2,8 +2,9 @@ import React from 'react'
 import {EditorState} from 'draft-js'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {UploadType} from 'common/types'
 import {ReportIssueCaseReasonAction} from 'models/selfServiceConfiguration/types'
 import {AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} from 'models/selfServiceConfiguration/constants'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -72,6 +73,7 @@ const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
                         [css.hasError]: hasError,
                     })}
                     maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
+                    uploadType={UploadType.PublicAttachment}
                 />
             </ToolbarProvider>
             {showAttachmentUploadDisclaimer && (

@@ -28,7 +28,10 @@ type Props = {
     allowExternalChanges?: boolean
     variableTypes: Array<string>
     onChange: (editorState: EditorState) => void
-} & Pick<ComponentProps<typeof RichField>, 'isRequired' | 'placeholder'>
+} & Pick<
+    ComponentProps<typeof RichField>,
+    'isRequired' | 'placeholder' | 'uploadType'
+>
 
 export default class RichFieldWithVariables extends Component<Props> {
     id?: string
@@ -57,6 +60,7 @@ export default class RichFieldWithVariables extends Component<Props> {
             placeholder,
             value,
             variableTypes,
+            uploadType,
         } = this.props
         const variables = getVariables(variableTypes)
 
@@ -127,6 +131,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                     allowExternalChanges={allowExternalChanges}
                     isRequired={isRequired}
                     placeholder={placeholder}
+                    uploadType={uploadType}
                 />
             </div>
         )

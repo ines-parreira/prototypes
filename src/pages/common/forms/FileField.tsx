@@ -8,6 +8,7 @@ import {AxiosError} from 'axios'
 import {InputType} from 'reactstrap/lib/Input'
 import _omit from 'lodash/omit'
 
+import {UploadType} from 'common/types'
 import {uploadFiles} from 'common/utils'
 import {getFileTooLargeError} from 'utils/file'
 import {notify} from 'state/notifications/actions'
@@ -19,13 +20,6 @@ import DEPRECATED_InputField, {InputFieldProps} from './DEPRECATED_InputField'
 import css from './FileField.less'
 
 const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
-
-export enum UploadType {
-    Attachment = 'attachment',
-    Profile = 'profile_picture',
-    Widget = 'widget_picture',
-    Avatar = 'avatar_team_picture',
-}
 
 export type Props = {
     noPreview?: boolean

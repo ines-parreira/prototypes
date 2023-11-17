@@ -5,6 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import {EditorState} from 'draft-js'
 
+import {UploadType} from 'common/types'
 import {DELAY_SURVEY_FOR} from 'config'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -184,6 +185,7 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                             'survey',
                                         ]}
                                         onChange={this._updateSurveyEmail}
+                                        uploadType={UploadType.PublicAttachment}
                                     />
                                 </FormGroup>
                                 <Button

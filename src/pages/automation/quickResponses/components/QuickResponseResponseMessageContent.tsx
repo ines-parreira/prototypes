@@ -3,6 +3,7 @@ import {EditorState} from 'draft-js'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 
+import {UploadType} from 'common/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import {convertToHTML} from 'utils/editor'
@@ -94,6 +95,7 @@ const QuickResponseResponseMessageContent = ({
                         [css.hasError]: hasError,
                     })}
                     maxLength={QUICK_RESPONSE_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
+                    uploadType={UploadType.PublicAttachment}
                 />
                 <TicketAttachments
                     className={css.attachments}

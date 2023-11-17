@@ -1,9 +1,9 @@
 import React, {DragEvent, ReactNode, useState} from 'react'
 import classnames from 'classnames'
-
 import {EditorState} from 'draft-js'
-import Button from 'pages/common/components/button/Button'
 
+import {UploadType} from 'common/types'
+import Button from 'pages/common/components/button/Button'
 import {insertText} from 'utils'
 import {
     AddDiscountCode,
@@ -38,6 +38,7 @@ type Props = {
     linkIsOpen: boolean
     linkUrl: string
     linkText: string
+    uploadType?: UploadType
     onLinkUrlChange: (url: string) => void
     onLinkTextChange: (text: string) => void
     onLinkOpen: () => void
@@ -66,6 +67,7 @@ const Toolbar = ({
     maxLength,
     editorState,
     linkText,
+    uploadType,
     onLinkUrlChange,
     onLinkTextChange,
     onLinkOpen,
@@ -146,7 +148,11 @@ const Toolbar = ({
                         />
                     )}
                     {isActionDisplayed(ActionName.Image) && (
-                        <AddImage {...actionsProps} attachments={attachments} />
+                        <AddImage
+                            {...actionsProps}
+                            attachments={attachments}
+                            uploadType={uploadType}
+                        />
                     )}
                     {/* Do not display `insert Video` by default if `displayedActions` prop is not set. */}
                     {isActionDisplayed(ActionName.Video) &&

@@ -9,6 +9,7 @@ import React, {
 import {Iterable, List, Map, fromJS} from 'immutable'
 import {Form, FormGroup} from 'reactstrap'
 
+import {UploadType} from 'common/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {PartialTemplate} from 'models/widget/types'
 import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
@@ -17,7 +18,7 @@ import ColorField from 'pages/common/forms/ColorField'
 import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import FileField, {UploadType} from 'pages/common/forms/FileField'
+import FileField from 'pages/common/forms/FileField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
 

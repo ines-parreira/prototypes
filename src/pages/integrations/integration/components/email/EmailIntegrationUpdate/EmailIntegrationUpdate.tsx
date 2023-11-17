@@ -17,6 +17,7 @@ import {
 import copy from 'copy-to-clipboard'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {UploadType} from 'common/types'
 import Button from 'pages/common/components/button/Button'
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
@@ -527,6 +528,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             }}
                             variableTypes={['current_user']}
                             onChange={this._updateSignature}
+                            uploadType={UploadType.PublicAttachment}
                         />
                     </FormGroup>
                     {isGmail && (

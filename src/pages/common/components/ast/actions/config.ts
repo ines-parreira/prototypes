@@ -1,5 +1,6 @@
 import {Map} from 'immutable'
 
+import {UploadType} from 'common/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {templateRegex} from 'pages/common/utils/template'
 import {ManagedRulesSlugs} from 'state/rules/types'
@@ -150,6 +151,7 @@ export type ActionConfig = {
             name: string
             widget: string
             textField: string
+            uploadType?: UploadType
         }
         to?: {
             name: string
@@ -200,6 +202,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
                 name: 'Body',
                 widget: 'rich-field',
                 textField: 'body_text',
+                uploadType: UploadType.PublicAttachment,
             },
         },
         validate: validateBody,
@@ -236,6 +239,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
                 name: 'Body',
                 widget: 'rich-field',
                 textField: 'body_text',
+                uploadType: UploadType.PublicAttachment,
             },
         },
         validate: validateSendEmail,
@@ -251,6 +255,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
                 name: 'Body',
                 widget: 'rich-field',
                 textField: 'body_text',
+                uploadType: UploadType.PublicAttachment,
             },
         },
         validate: validateBody,
@@ -266,6 +271,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
                 name: 'Body',
                 widget: 'rich-field',
                 textField: 'body_text',
+                uploadType: UploadType.PublicAttachment,
             },
         },
         validate: validateBody,

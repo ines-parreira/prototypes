@@ -53,11 +53,8 @@ jest.mock('pages/common/forms/FileField', () => {
         )
     }
 
-    const {UploadType} = jest.requireActual('pages/common/forms/FileField')
-
     return {
         __esModule: true,
-        UploadType,
         default: FileFieldMocked,
     }
 })

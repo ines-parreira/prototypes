@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom'
 import {AxiosError} from 'axios'
 import {fromJS, Map} from 'immutable'
 
+import {UploadType} from 'common/types'
 import {uploadFiles} from 'common/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -80,7 +81,7 @@ const ImportArticlesModal: React.FC<Props> = ({
 
             onImportStart()
 
-            uploadFiles([file]).then(
+            uploadFiles([file], {type: UploadType.PublicAttachment}).then(
                 (files) => {
                     // only one file was uploaded
                     const fileUrl = files[0].url

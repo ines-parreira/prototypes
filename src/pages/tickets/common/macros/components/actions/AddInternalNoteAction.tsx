@@ -10,6 +10,7 @@ import {
 import {List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {UploadType} from 'common/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
@@ -153,6 +154,7 @@ export default function AddInternalNoteAction({
                 spellCheck
                 disableProductCards
                 placeholder="Type {{ for variables }}"
+                uploadType={UploadType.PublicAttachment}
             />
             {renderVariables && (
                 <div className="textarea-toolbar">

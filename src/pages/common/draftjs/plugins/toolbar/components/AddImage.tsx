@@ -1,6 +1,7 @@
 import React, {Component, createRef, KeyboardEvent, RefObject} from 'react'
 import classnames from 'classnames'
 
+import {UploadType} from 'common/types'
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import {ActionInjectedProps} from 'pages/common/draftjs/plugins/toolbar/types'
@@ -13,6 +14,7 @@ import css from './AddImage.less'
 
 type Props = {
     attachments?: File[]
+    uploadType?: UploadType
 } & ActionInjectedProps
 
 type State = {
@@ -132,6 +134,7 @@ export default class AddImage extends Component<Props, State> {
                             onClick={this._updateMaxSize}
                             onChange={this._handleImage}
                             maxSize={this.state.maxSize}
+                            uploadType={this.props.uploadType}
                             returnFiles
                             inline
                             noPreview

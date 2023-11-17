@@ -1,6 +1,7 @@
 import {EditorState, ContentState, ContentBlock} from 'draft-js'
 import {ReactNode, ComponentType, KeyboardEvent} from 'react'
 
+import {UploadType} from 'common/types'
 import {notify} from '../../../../state/notifications/actions'
 import {ConnectedAction} from '../../../../state/types'
 
@@ -15,6 +16,7 @@ export type ImagePluginConfig = {
     getAttachFiles: () => (T: Array<File>) => void
     getCanDropFiles: () => boolean
     getCanInsertInlineImages: () => boolean
+    uploadType?: UploadType
 }
 
 export type DecoratorComponentProps = {

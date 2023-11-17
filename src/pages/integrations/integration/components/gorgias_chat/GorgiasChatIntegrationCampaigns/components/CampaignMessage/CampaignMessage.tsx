@@ -4,8 +4,8 @@ import {List} from 'immutable'
 
 import {EditorState} from 'draft-js'
 
+import {UploadType} from 'common/types'
 import {User} from 'config/types/user'
-
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
@@ -151,6 +151,7 @@ export const CampaignMessage = memo(
                         displayedActions={displayedActions}
                         isRequired
                         countCharacters={isConvertSubscriber}
+                        uploadType={UploadType.PublicAttachment}
                     />
                     <TicketAttachments
                         removable

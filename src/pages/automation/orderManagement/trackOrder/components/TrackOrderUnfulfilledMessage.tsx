@@ -3,6 +3,7 @@ import {EditorState} from 'draft-js'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 
+import {UploadType} from 'common/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {convertToHTML} from 'utils/editor'
 import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
@@ -71,6 +72,7 @@ export default function TrackOrderUnfulfilledMessage({
                         [css.hasError]: hasError,
                     })}
                     maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
+                    uploadType={UploadType.PublicAttachment}
                 />
             </ToolbarProvider>
         </>

@@ -11,6 +11,7 @@ import _get from 'lodash/get'
 import {AxiosError} from 'axios'
 
 import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
+import {UploadType} from 'common/types'
 import {uploadFiles} from 'common/utils'
 import {ConnectedAction} from '../../../../state/types'
 import {notify as notifyAction} from '../../../../state/notifications/actions'
@@ -27,8 +28,8 @@ import {getEntitySelectionState, linkify} from '../../../../utils/editor'
 
 import {PluginMethods} from './types'
 
-const uploadPicture = (file: File) => {
-    return uploadFiles([file])
+const uploadPicture = (file: File, uploadType?: UploadType) => {
+    return uploadFiles([file], uploadType ? {type: uploadType} : null)
         .then((files) => files[0])
         .catch((error) => {
             let errorMessage = (
@@ -98,7 +99,8 @@ export const addImage = (
 export const insertInlineImages = (
     files: Array<File>,
     {getEditorState, setEditorState, getProps}: PluginMethods,
-    notify: ConnectedAction<typeof notifyAction>
+    notify: ConnectedAction<typeof notifyAction>,
+    uploadType?: UploadType
 ) => {
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
@@ -129,7 +131,7 @@ export const insertInlineImages = (
                 const imageKey = contentState.getLastCreatedEntityKey()
 
                 // upload image then replace img src
-                uploadPicture(file)
+                uploadPicture(file, uploadType)
                     .then((res: {url: string}) => {
                         const editorState = getEditorState()
                         const contentState = editorState.getCurrentContent()
