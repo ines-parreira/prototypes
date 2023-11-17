@@ -69,15 +69,14 @@ export const uploadAttachments = async (
         formdata.append('Content-Type', fileType)
         formdata.append('file', file, file.name)
 
-        try {
-            // Post the file to the Google Cloud Storage using XMLHttpRequest
-            const xhr = new XMLHttpRequest()
+        // Post the file to the Google Cloud Storage
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formdata
+        });
 
-            xhr.open('POST', url, true)
-
-            xhr.send(formdata)
-        } catch {
-            throw new Error('Failed to upload file')
+        if (!response.ok) {
+            throw new Error('Failed to upload file');
         }
 
         return {
