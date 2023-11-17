@@ -14,7 +14,12 @@ const _handlePastedFiles =
         }
 
         if (config.getCanInsertInlineImages()) {
-            void insertInlineImages(images, pluginArgs, config.notify)
+            void insertInlineImages(
+                images,
+                pluginArgs,
+                config.notify,
+                config.uploadType
+            )
         } else if (config.getCanDropFiles()) {
             config.getAttachFiles()(images)
         }
