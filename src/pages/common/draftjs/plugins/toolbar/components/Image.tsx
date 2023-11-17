@@ -9,6 +9,8 @@ import {
 } from 'draft-js'
 import _omit from 'lodash/omit'
 
+import {replaceAttachmentURL} from 'utils'
+
 type Props = {
     alt: string
     block: ContentBlock
@@ -55,7 +57,7 @@ class Image extends React.Component<Props> {
             <img
                 alt={alt}
                 {...elementProps}
-                src={src}
+                src={replaceAttachmentURL(src)}
                 role="presentation"
                 className={classnames(theme.image, className)}
             />
