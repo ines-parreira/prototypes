@@ -17,6 +17,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import * as api from 'pages/integrations/integration/components/phone/actions'
 import * as actions from 'state/integrations/actions'
 import {renderWithRouter} from 'utils/testing'
+import {Account} from 'state/currentAccount/types'
 
 import VoiceIntegrationVoicemail from '../VoiceIntegrationVoicemail'
 
@@ -169,6 +170,12 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
 })
 
 describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
+    beforeEach(() => {
+        window.GORGIAS_STATE.currentAccount = {
+            domain: 'acme',
+        } as Account
+    })
+
     const defaultStoreState = {
         currentAccount: fromJS({
             ...accountFixtures.account,

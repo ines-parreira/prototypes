@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import {VoiceMessageType, VoiceMessage} from 'models/integration/types'
 import {RootState, StoreDispatch} from 'state/types'
+import {Account} from 'state/currentAccount/types'
 
 import VoiceMessageField from '../VoiceMessageField'
 
@@ -22,6 +23,9 @@ describe('<VoiceMessageField />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
+        window.GORGIAS_STATE.currentAccount = {
+            domain: 'acme',
+        } as Account
     })
 
     it('should render', () => {
@@ -171,6 +175,9 @@ describe('<VoiceMessageField horizontal="true" />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
+        window.GORGIAS_STATE.currentAccount = {
+            domain: 'acme',
+        } as Account
     })
 
     it('should render', () => {

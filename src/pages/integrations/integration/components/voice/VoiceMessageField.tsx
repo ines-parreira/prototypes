@@ -13,6 +13,7 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Textarea from 'pages/common/forms/TextArea'
 import {countLines} from 'utils/string'
+import {replaceAttachmentURL} from 'utils'
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 
 import css from './VoiceMessageField.less'
@@ -306,7 +307,7 @@ const VoiceRecordingInput = ({
                 // eslint-disable-next-line jsx-a11y/media-has-caption
                 <audio
                     controls
-                    src={voiceRecordingPath}
+                    src={replaceAttachmentURL(voiceRecordingPath)}
                     aria-label={'voice-recording'}
                 />
             )}
