@@ -424,15 +424,15 @@ export const replaceAttachmentURL = (url: string) => {
 
     if (isProduction()) {
         return url.replace(
-            'uploads.gorgias.io',
-            `${accountDomain}.gorgias.com/${ATTACHMENT_PATH}`
+            '//uploads.gorgias.io',
+            `//${accountDomain}.gorgias.com/${ATTACHMENT_PATH}`
         )
     }
 
     if (isStaging()) {
         return url.replace(
-            'uploads.gorgias.xyz',
-            `${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
+            '//uploads.gorgias.xyz',
+            `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
         )
     }
 
