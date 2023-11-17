@@ -6,8 +6,8 @@ import _noop from 'lodash/noop'
 import {StyleSheetTestUtils} from 'aphrodite'
 
 import {Account} from 'state/currentAccount/types'
+import {replaceAttachmentURL} from 'utils'
 import TicketAttachments from '../TicketAttachments'
-import {proxifyURL} from '../../../../../../utils'
 
 describe('TicketAttachments component', () => {
     beforeAll(() => {
@@ -22,7 +22,7 @@ describe('TicketAttachments component', () => {
             {
                 name: 'foo',
                 content_type: 'image/png',
-                url: 'http://gorgias.io/bar',
+                url: 'https://uploads.gorgi.us/bar',
             },
             {
                 name: 'bar',
@@ -75,7 +75,12 @@ describe('TicketAttachments component', () => {
                         style: {backgroundImage: string}
                     }
                 ).style?.backgroundImage
-            ).toBe(`url(${proxifyURL('http://gorgias.io/bar', '120x80')})`)
+            ).toBe(
+                `url(${replaceAttachmentURL(
+                    'https://uploads.gorgi.us/bar',
+                    '120x80'
+                )})`
+            )
         })
 
         it('should not set a preview on the second attachment', () => {
@@ -135,7 +140,7 @@ describe('TicketAttachments component', () => {
             })
 
             expect(document.body.querySelector('img')!.src).toBe(
-                proxifyURL('http://gorgias.io/bar')
+                replaceAttachmentURL('https://uploads.gorgi.us/bar')
             )
         })
 
@@ -165,19 +170,19 @@ describe('TicketAttachments component', () => {
                         {
                             name: 'foo',
                             content_type: 'image/png',
-                            url: 'http://gorgias.io/bar',
+                            url: 'https://uploads.gorgi.us/bar',
                             public: false,
                         },
                         {
                             name: 'bar',
                             content_type: 'image/png',
-                            url: 'http://gorgias.io/baz',
+                            url: 'https://uploads.gorgi.us/baz',
                             public: false,
                         },
                         {
                             name: 'baz',
                             content_type: 'image/png',
-                            url: 'http://gorgias.io/foo',
+                            url: 'https://uploads.gorgi.us/foo',
                             public: false,
                         },
                     ])}
@@ -195,19 +200,19 @@ describe('TicketAttachments component', () => {
                         {
                             name: 'foo',
                             content_type: 'image/png',
-                            url: 'http://gorgias.io/bar',
+                            url: 'https://uploads.gorgi.us/bar',
                             public: true,
                         },
                         {
                             name: 'bar',
                             content_type: 'image/png',
-                            url: 'https://gorgias.io/baz',
+                            url: 'https://uploads.gorgi.us/baz',
                             public: false,
                         },
                         {
                             name: 'baz',
                             content_type: 'image/png',
-                            url: 'http://gorgias.io/foo',
+                            url: 'https://uploads.gorgi.us/foo',
                             public: true,
                         },
                         {

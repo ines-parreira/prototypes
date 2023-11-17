@@ -1,8 +1,9 @@
+import * as esprima from 'esprima'
 import moment from 'moment'
 import {fromJS, Map, List} from 'immutable'
 import randomstring from 'randomstring'
 
-import * as esprima from 'esprima'
+import {isPrivateAsset} from 'common/utils'
 import * as utils from 'utils'
 import * as envUtils from 'utils/environment'
 import schemasJSON from 'fixtures/openapi.json'
@@ -18,7 +19,9 @@ import {
 import {getCode} from 'utils'
 import {mockProductionEnvironment} from 'utils/testing'
 
+jest.mock('common/utils')
 jest.mock('utils/environment')
+const isPrivateAssetMock = isPrivateAsset as jest.Mock
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
 
 describe('global utils', () => {
@@ -584,6 +587,19 @@ describe('global utils', () => {
                     `<img src="${window.IMAGE_PROXY_URL}http://gorgias.io/hello" />`
                 )
             ).toMatchSnapshot()
+        })
+
+        it('should replace a private asset with the correct url', () => {
+            ;(isProduction as jest.Mock).mockReturnValueOnce(true)
+            isPrivateAssetMock.mockReturnValue(true)
+
+            expect(
+                utils.parseMedia(
+                    `<img src="https://uploads.gorgias.io/hello.png" />`
+                )
+            ).toBe(
+                '<img src="https://acme.gorgias.com/api/attachment/download/hello.png?format=1000x"/>'
+            )
         })
 
         it('should replace source in audio tag', () => {

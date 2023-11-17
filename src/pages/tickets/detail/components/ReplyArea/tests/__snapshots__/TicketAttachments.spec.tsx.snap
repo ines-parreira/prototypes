@@ -27,15 +27,15 @@ exports[`TicketAttachments component private should display an error message if 
       [
         {
           "caption": "foo",
-          "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
+          "src": "https://uploads.gorgi.us/bar",
         },
         {
           "caption": "bar",
-          "src": "http://proxy-url/cw-1,seKwRTXuZZfHIF0O-p6Pte13-uEQ7wUFn5tkRNiZDeo8/http://gorgias.io/baz",
+          "src": "https://uploads.gorgi.us/baz",
         },
         {
           "caption": "baz",
-          "src": "http://proxy-url/cw-1,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo",
+          "src": "https://uploads.gorgi.us/foo",
         },
       ]
     }
@@ -81,12 +81,12 @@ exports[`TicketAttachments component private should display both an error messag
   >
     <a
       className="item hasPreview"
-      href="http://gorgias.io/bar"
+      href="https://uploads.gorgi.us/bar"
       onClick={[Function]}
       rel="noopener noreferrer"
       style={
         {
-          "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
+          "backgroundImage": "url(https://uploads.gorgi.us/bar?format=120x80)",
         }
       }
       target="_blank"
@@ -117,12 +117,12 @@ exports[`TicketAttachments component private should display both an error messag
   >
     <a
       className="item hasPreview"
-      href="http://gorgias.io/foo"
+      href="https://uploads.gorgi.us/foo"
       onClick={[Function]}
       rel="noopener noreferrer"
       style={
         {
-          "backgroundImage": "url(http://proxy-url/120x80,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo)",
+          "backgroundImage": "url(https://uploads.gorgi.us/foo?format=120x80)",
         }
       }
       target="_blank"
@@ -221,15 +221,15 @@ exports[`TicketAttachments component private should display both an error messag
       [
         {
           "caption": "foo",
-          "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
+          "src": "https://uploads.gorgi.us/bar",
         },
         {
           "caption": "bar",
-          "src": "http://proxy-url/cw-1,sq2V_C_-Dm_KHtaDdj_L_mXkIrrm2xS7uZ8pLuRDzmZ0/https://gorgias.io/baz",
+          "src": "https://uploads.gorgi.us/baz",
         },
         {
           "caption": "baz",
-          "src": "http://proxy-url/cw-1,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo",
+          "src": "https://uploads.gorgi.us/foo",
         },
       ]
     }
@@ -262,12 +262,12 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
   >
     <a
       className="item hasPreview"
-      href="http://gorgias.io/bar"
+      href="https://uploads.gorgi.us/bar"
       onClick={[Function]}
       rel="noopener noreferrer"
       style={
         {
-          "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
+          "backgroundImage": "url(https://uploads.gorgi.us/bar?format=120x80)",
         }
       }
       target="_blank"
@@ -397,7 +397,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
       [
         {
           "caption": "foo",
-          "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
+          "src": "https://uploads.gorgi.us/bar",
         },
       ]
     }

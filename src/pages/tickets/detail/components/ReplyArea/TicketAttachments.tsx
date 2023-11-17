@@ -91,7 +91,7 @@ export default class TicketAttachments extends Component<Props, State> {
 
         try {
             return {
-                backgroundImage: `url(${proxifyURL(
+                backgroundImage: `url(${replaceAttachmentURL(
                     attachment.get('url') as string,
                     '120x80'
                 )})`,
@@ -269,7 +269,7 @@ export default class TicketAttachments extends Component<Props, State> {
                     images={images
                         .map((image: Map<any, any>) => {
                             return {
-                                src: proxifyURL(image.get('url')),
+                                src: replaceAttachmentURL(image.get('url')),
                                 caption: image.get('name'),
                             }
                         })

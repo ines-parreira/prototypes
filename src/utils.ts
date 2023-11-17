@@ -32,7 +32,7 @@ import {
 import {Route} from 'react-router-dom'
 import URLSafeBase64 from 'urlsafe-base64'
 
-import {fromAST, isImmutable} from 'common/utils'
+import {fromAST, isImmutable, isPrivateAsset} from 'common/utils'
 import {TicketEvent} from 'models/ticket/types'
 import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
@@ -418,27 +418,42 @@ export function stripHTML(text: string): Maybe<string> {
     }
 }
 
-export const replaceAttachmentURL = (url: string) => {
+export const replaceAttachmentURL = (url: string, format?: string) => {
     const ATTACHMENT_PATH = 'api/attachment/download'
     const accountDomain = window.GORGIAS_STATE.currentAccount.domain
 
+    let formatParam = ''
+    if (format) {
+        if (url.includes('?')) {
+            formatParam = `&format=${format}`
+        } else {
+            formatParam = `?format=${format}`
+        }
+    }
+
     if (isProduction()) {
-        return url.replace(
-            '//uploads.gorgias.io',
-            `//${accountDomain}.gorgias.com/${ATTACHMENT_PATH}`
+        return (
+            url.replace(
+                '//uploads.gorgias.io',
+                `//${accountDomain}.gorgias.com/${ATTACHMENT_PATH}`
+            ) + formatParam
         )
     }
 
     if (isStaging()) {
-        return url.replace(
-            '//uploads.gorgias.xyz',
-            `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
+        return (
+            url.replace(
+                '//uploads.gorgias.xyz',
+                `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
+            ) + formatParam
         )
     }
 
-    return url.replace(
-        'https://uploads.gorgi.us/development',
-        `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
+    return (
+        url.replace(
+            'https://uploads.gorgi.us/development',
+            `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
+        ) + formatParam
     )
 }
 
@@ -535,7 +550,14 @@ export const parseMedia = (html: string, imageFormat = '1000x'): string => {
                         window.IMAGE_PROXY_URL
                     ) === -1
                 ) {
-                    v = proxifyImage(attributes, imageFormat) as string
+                    if (isPrivateAsset(attributes.src as string)) {
+                        v = replaceAttachmentURL(
+                            attributes.src as string,
+                            imageFormat
+                        )
+                    } else {
+                        v = proxifyImage(attributes, imageFormat) as string
+                    }
                 }
                 if (name === 'audio' && k === 'src') {
                     v = replaceAttachmentURL(attributes.src as string)
