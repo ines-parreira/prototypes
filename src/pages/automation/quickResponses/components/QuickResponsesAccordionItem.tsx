@@ -1,5 +1,6 @@
 import React, {MouseEvent} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -10,6 +11,8 @@ import Tooltip from 'pages/common/components/Tooltip'
 import {useAccordionItemContext} from 'pages/common/components/accordion/AccordionItemContext'
 import EmptyResponseMessageContentError from 'pages/automation/common/components/EmptyResponseMessageContentError'
 
+import UploadingSensitiveInformationDisclaimer from 'pages/automation/common/components/UploadingSensitiveInformationDisclaimer'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useQuickResponsesViewContext} from '../QuickResponsesViewContext'
 import {
     FLOWS,
@@ -40,6 +43,8 @@ const QuickResponsesAccordionItem = ({
     const {isUpdatePending, hasError, isLimitReached} =
         useQuickResponsesViewContext()
     const {isExpanded} = useAccordionItemContext()
+    const showAttachmentUploadDisclaimer =
+        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
 
     const toggleInputId = `toggle-input-${item.id}`
 
@@ -111,6 +116,9 @@ const QuickResponsesAccordionItem = ({
                     responseMessageContent={item.response_message_content}
                     onChange={handleResponseMessageContentChange}
                 />
+                {showAttachmentUploadDisclaimer && (
+                    <UploadingSensitiveInformationDisclaimer className="mt-2" />
+                )}
                 <div className={css.deleteButtonContainer}>
                     <ConfirmButton
                         confirmationButtonIntent="destructive"

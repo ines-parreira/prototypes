@@ -621,11 +621,11 @@ Sincerely,
               MacroEdit
             </Component>
             <FormGroup
-              className="mt-5"
+              className="mt-3"
               tag="div"
             >
               <div
-                className="mt-5 form-group"
+                className="mt-3 form-group"
               >
                 <ForwardRef(Button)
                   className="mr-2"
@@ -788,7 +788,7 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
         setName={[Function]}
       />
       <FormGroup
-        className="mt-5"
+        className="mt-3"
         tag="div"
       >
         <ForwardRef(Button)

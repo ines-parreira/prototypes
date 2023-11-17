@@ -13,6 +13,7 @@ import {Label} from 'reactstrap'
 import moment from 'moment'
 import _isEqual from 'lodash/isEqual'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {convertFromHTML, convertToHTML} from 'utils/editor'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,6 +31,8 @@ import {NotificationStatus} from 'state/notifications/types'
 import {ManagedRuleSettings, ManagedRulesSlugs} from 'state/rules/types'
 
 import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
+import UploadingSensitiveInformationDisclaimer from 'pages/automation/common/components/UploadingSensitiveInformationDisclaimer'
+import {FeatureFlagKey} from 'config/featureFlags'
 import type {ManagedRuleEditorProps, EditorHandle} from '../RuleFormEditor'
 import AutoCloseSpamEditor from './AutoCloseSpamEditor'
 import AutoReplyWismoEditor from './AutoReplyWismoEditor'
@@ -67,6 +70,12 @@ export type ManagedRuleDetailProps<T> = {
     handleInstallationError?: (error: InstallationError | null) => void
 }
 
+const managedRulesWithAttachments: ManagedRulesSlugs[] = [
+    ManagedRulesSlugs.AutoReplyWismo,
+    ManagedRulesSlugs.AutoReplyFAQ,
+    ManagedRulesSlugs.AutoReplyReturn,
+]
+
 export const ManagedRuleEditor = (
     {
         slug,
@@ -80,6 +89,8 @@ export const ManagedRuleEditor = (
     ref: ForwardedRef<EditorHandle>
 ) => {
     const [measureRef, {height: editorHeight}] = useMeasure()
+    const showAttachmentUploadDisclaimer =
+        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
 
     const componentTypes = {
         [ManagedRulesSlugs.AutoCloseSpam]: AutoCloseSpamEditor,
@@ -224,6 +235,13 @@ export const ManagedRuleEditor = (
                         </Label>
                     </span>
                 </div>
+
+                {showAttachmentUploadDisclaimer &&
+                    managedRulesWithAttachments.includes(slug) && (
+                        <UploadingSensitiveInformationDisclaimer
+                            className={css.disclaimer}
+                        />
+                    )}
 
                 <RuleItemButtons
                     ruleId={rule.id}

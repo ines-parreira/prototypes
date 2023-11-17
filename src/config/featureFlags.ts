@@ -65,4 +65,5 @@ export enum FeatureFlagKey {
     TaapNewReplyMessageChannelSelector = 'taap-new-reply-message-channel-selector',
     DisplayVoiceAnalytics = 'display-voice-analytics',
     AutomateRebranding = 'automate-rebranding',
+    AutomateShowAttachmentUploadDisclaimer = 'automate-show-attachment-upload-disclaimer',
 }
