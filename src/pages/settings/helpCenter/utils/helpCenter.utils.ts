@@ -194,3 +194,13 @@ export const getArticleUrl = ({
 
     return `${url}${slug}-${articleId.toString()}`
 }
+
+// This function is used to replace "uploads.gorgias.io" to "attachments.gorgias.help"
+// Because files in "uploads.gorgias.io" are no longer available
+// TODO: remove this function as soon as we change paths in the DB
+export const replaceUploadUrls = (originalStr: string): string => {
+    return originalStr.replace(
+        /https:\/\/uploads.gorgias.io\//g,
+        'https://attachments.gorgias.help/uploads.gorgias.io/'
+    )
+}

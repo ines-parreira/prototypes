@@ -14,6 +14,7 @@ import {NotificationStatus} from '../../../../../../state/notifications/types'
 import {useEditionManager} from '../../../providers/EditionManagerContext'
 import {uploadAttachments} from '../../../../../../rest_api/help_center_api/uploadAttachments'
 import useCurrentHelpCenter from '../../../hooks/useCurrentHelpCenter'
+import {replaceUploadUrls} from '../../../utils/helpCenter.utils'
 import FroalaEditorComponent from './FroalaEditorComponent.js'
 import {FroalaEditor, config} from './froala-config'
 import {Editor} from './types'
@@ -22,7 +23,6 @@ import {
     HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS,
     createOnCloseEventHandler,
     validateFileAttachments,
-    replaceUploadUrls,
 } from './HelpCenterEditor.utils'
 
 type Props = {

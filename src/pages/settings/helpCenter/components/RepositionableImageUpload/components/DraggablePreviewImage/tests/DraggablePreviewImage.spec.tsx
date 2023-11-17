@@ -45,4 +45,22 @@ describe('<DraggablePreviewImage />', () => {
         fireEvent.click(getByText('Save Position'))
         expect(submitFn).toHaveBeenCalled()
     })
+
+    it('transforms the defaultPreview value when it points to an older attachment bucket', async () => {
+        const oldBucketAttachmentUrl =
+            'https://uploads.gorgias.io/zKB3oxw4pl6rkVOL/delivery-c2fea9c0-f200-434c-b726-bc89ba74d4f9.png'
+
+        const expectedUrl =
+            'https://attachments.gorgias.help/uploads.gorgias.io/zKB3oxw4pl6rkVOL/delivery-c2fea9c0-f200-434c-b726-bc89ba74d4f9.png'
+
+        const {findByAltText} = render(
+            <DraggablePreviewImage
+                {...baseProps}
+                defaultPreview={oldBucketAttachmentUrl}
+                repositioningInProgress
+            />
+        )
+
+        await findByAltText(expectedUrl)
+    })
 })

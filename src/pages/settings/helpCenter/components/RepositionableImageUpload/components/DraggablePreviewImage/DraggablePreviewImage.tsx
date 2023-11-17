@@ -9,6 +9,7 @@ import {
 
 import imageRepositioningModalCss from '../../../ImageRepositioningModal/ImageRepositioningModal.less'
 import css from '../../RepositionableImageUpload.less'
+import {replaceUploadUrls} from '../../../../utils/helpCenter.utils'
 
 export type DraggablePreviewImageProps = {
     defaultPreview?: string
@@ -36,6 +37,10 @@ export const DraggablePreviewImage: FunctionComponent<DraggablePreviewImageProps
     }: DraggablePreviewImageProps) => {
         const [top, setTop] = useState(0)
 
+        const defaultPreviewUrl = defaultPreview
+            ? replaceUploadUrls(defaultPreview)
+            : undefined
+
         return (
             <>
                 <div
@@ -51,8 +56,8 @@ export const DraggablePreviewImage: FunctionComponent<DraggablePreviewImageProps
                             imageRepositioningModalCss.image,
                             css.image
                         )}
-                        alt={defaultPreview}
-                        src={defaultPreview}
+                        alt={defaultPreviewUrl}
+                        src={defaultPreviewUrl}
                         style={{
                             objectPosition: `center ${50 - offset}%`,
                         }}

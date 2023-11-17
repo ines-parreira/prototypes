@@ -9,6 +9,7 @@ import {
     DropZoneProps,
 } from '../../../../common/components/ImageUpload'
 
+import {replaceUploadUrls} from '../../utils/helpCenter.utils'
 import {useLocalImage} from './hooks'
 
 import css from './ImageUpload.less'
@@ -64,6 +65,7 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     )
 
     if (!isTouched && defaultPreview) {
+        const defaultPreviewUrl = replaceUploadUrls(defaultPreview)
         content = (
             <>
                 {closeSpan}
@@ -75,8 +77,8 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
                                 ? css.categoryImagePreview
                                 : css.preview
                         }
-                        alt={defaultPreview}
-                        src={defaultPreview}
+                        alt={defaultPreviewUrl}
+                        src={defaultPreviewUrl}
                     />
                 </div>
             </>
