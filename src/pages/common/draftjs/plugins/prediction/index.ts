@@ -4,6 +4,8 @@ import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
 
 import {debounce} from 'lodash'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
 import {Plugin, PluginMethods} from '../types'
 import {createClient} from '../../../../../models/api/resources'
 
@@ -67,6 +69,8 @@ const requestPrediction = (
     context: Map<any, any>,
     plugin: PluginMethods
 ) => {
+    if (!getLDClient()?.variation(FeatureFlagKey.MLFeaturesKillswitch)) return
+
     return client
         .post<{prediction: string}>(
             window.PHRASE_PREDICTION_URL,

@@ -2,6 +2,7 @@ import {fromJS, Map} from 'immutable'
 import {ContentState, EditorState, SelectionState} from 'draft-js'
 import AxiosMock from 'axios-mock-adapter'
 
+import {getLDClient} from 'utils/launchDarkly'
 import createPredictionPlugin, {clearCache} from '../index'
 import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
@@ -10,6 +11,7 @@ import client from '../../../../../../models/api/resources'
 import {predictionKey} from '../state'
 
 jest.mock('../../../../../../utils/errors')
+jest.mock('utils/launchDarkly', () => ({getLDClient: jest.fn()}))
 
 const axiosMock = new AxiosMock(client)
 
@@ -47,6 +49,7 @@ beforeEach(() => {
     predictionKey.set(null)
     jest.resetAllMocks()
     jest.restoreAllMocks()
+    ;(getLDClient as jest.Mock).mockReturnValue({variation: () => true})
 })
 
 describe('prediction plugin', () => {

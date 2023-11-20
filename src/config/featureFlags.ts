@@ -66,4 +66,5 @@ export enum FeatureFlagKey {
     DisplayVoiceAnalytics = 'display-voice-analytics',
     AutomateRebranding = 'automate-rebranding',
     AutomateShowAttachmentUploadDisclaimer = 'automate-show-attachment-upload-disclaimer',
+    MLFeaturesKillswitch = 'ml-features-killswitch',
 }
