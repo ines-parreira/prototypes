@@ -303,6 +303,9 @@ window.location = JSON.parse(windowLocation)
 window.location.reload = jest.fn()
 
 window.GORGIAS_STATE = {
+    currentAccount: {
+        domain: 'acme',
+    },
     integrations: {
         authentication: {
             email: {

@@ -508,9 +508,11 @@ const proxifyImage = (
  * Parse media in html according to HTML tag
  * - Append a proxy URL before the images src so we can control their width and protect our agents privacy
  * - Replace Aircall audio src with the new attachment URL
+ * - Prefix anchor tags pointing to attachments with a the new attachment URL
  */
 export const parseMedia = (html: string, imageFormat = '1000x'): string => {
-    if (html.indexOf('img') === -1 && html.indexOf('audio') === -1) {
+    const handledTags = ['a', 'audio', 'img']
+    if (!handledTags.some((tag) => html.includes(`<${tag} `))) {
         return html
     }
 
@@ -561,6 +563,9 @@ export const parseMedia = (html: string, imageFormat = '1000x'): string => {
                 }
                 if (name === 'audio' && k === 'src') {
                     v = replaceAttachmentURL(attributes.src as string)
+                }
+                if (name === 'a' && k === 'href') {
+                    v = replaceAttachmentURL(attributes.href as string)
                 }
                 attributePairs.push(`${k}="${v}"`)
             })
