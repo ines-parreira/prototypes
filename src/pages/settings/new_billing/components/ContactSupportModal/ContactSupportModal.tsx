@@ -43,6 +43,7 @@ const ContactSupportModal = ({
 }: ContactSupportModalProps) => {
     const dispatch = useAppDispatch()
     const [message, setMessage] = useState(defaultMessage)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const isFreeTrial = useAppSelector(isTrialing)
     const helpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
     const history = useHistory()
@@ -52,6 +53,8 @@ const ContactSupportModal = ({
     }, [defaultMessage])
 
     const handleSendTicket = async () => {
+        setIsSubmitting(true)
+
         const messageToSend = prepareMessage(message)
         try {
             await sendSupportTicket({
@@ -84,6 +87,7 @@ const ContactSupportModal = ({
         } finally {
             setMessage('')
             handleOnClose()
+            setIsSubmitting(false)
             history.push(BILLING_BASE_PATH)
         }
     }
@@ -113,7 +117,9 @@ const ContactSupportModal = ({
                 <Button intent="secondary" onClick={handleOnClose}>
                     Cancel
                 </Button>
-                <Button onClick={handleSendTicket}>Send</Button>
+                <Button onClick={handleSendTicket} isLoading={isSubmitting}>
+                    Send
+                </Button>
             </ModalActionsFooter>
         </Modal>
     )
