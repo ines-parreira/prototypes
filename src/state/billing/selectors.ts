@@ -114,36 +114,49 @@ export const getCurrentProducts = createSelector(
         Object.entries(currentSubscriptionProducts).forEach(
             ([productId, priceId]) => {
                 if (helpdeskProduct.id === productId) {
-                    currentProducts[ProductType.Helpdesk] =
-                        helpdeskProduct.prices.find(
-                            (price) => price.price_id === priceId
-                        )!
+                    const helpdeskPrice = helpdeskProduct.prices.find(
+                        (price) => price.price_id === priceId
+                    )
+
+                    if (!!helpdeskPrice) {
+                        currentProducts[ProductType.Helpdesk] = helpdeskPrice
+                    }
                 }
 
                 if (automationProduct.id === productId) {
-                    currentProducts[ProductType.Automation] =
-                        automationProduct.prices.find(
-                            (price) => price.price_id === priceId
-                        )!
+                    const autPrice = automationProduct.prices.find(
+                        (price) => price.price_id === priceId
+                    )
+
+                    if (!!autPrice) {
+                        currentProducts[ProductType.Automation] = autPrice
+                    }
                 }
 
                 if (voiceProduct?.id === productId) {
-                    currentProducts[ProductType.Voice] =
-                        voiceProduct.prices.find(
-                            (price) => price.price_id === priceId
-                        )!
+                    const voicePrice = voiceProduct.prices.find(
+                        (price) => price.price_id === priceId
+                    )
+
+                    if (!!voicePrice) {
+                        currentProducts[ProductType.Voice] = voicePrice
+                    }
                 }
 
                 if (smsProduct?.id === productId) {
-                    currentProducts[ProductType.SMS] = smsProduct.prices.find(
+                    const smsPrice = smsProduct.prices.find(
                         (price) => price.price_id === priceId
-                    )!
+                    )
+
+                    if (!!smsPrice) {
+                        currentProducts[ProductType.SMS] = smsPrice
+                    }
                 }
 
                 if (convertProduct?.id === productId) {
                     const convertPrice = convertProduct.prices.find(
                         (price) => price.price_id === priceId
-                    )!
+                    )
 
                     if (!!convertPrice) {
                         currentProducts[ProductType.Convert] = convertPrice
