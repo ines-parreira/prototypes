@@ -2,8 +2,9 @@ import {ConvertPrice} from 'models/billing/types'
 
 const convertPricesMapping: Record<string, string> = {
     Basic: 'convert-01',
-    Pro: 'convert-03',
-    Advanced: 'convert-05',
+    Pro: 'convert-01',
+    Advanced: 'convert-03',
+    Custom: 'convert-03',
 }
 
 export const getDefaultConvertPriceIndex = (

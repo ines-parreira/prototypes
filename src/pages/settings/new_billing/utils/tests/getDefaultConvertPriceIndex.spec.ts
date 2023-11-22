@@ -8,7 +8,9 @@ describe('getDefaultConvertPriceIndex', () => {
         [[], 'Pro', -1],
         [convertProduct.prices, 'Unknown', 1],
         [convertProduct.prices, 'Basic', 1],
-        [convertProduct.prices, 'Pro', 3],
+        [convertProduct.prices, 'Pro', 1],
+        [convertProduct.prices, 'Advanced', 3],
+        [convertProduct.prices, 'Custom', 3],
     ])(
         'should return the correct default convert price index',
         (prices, helpdeskPlanName, expectedValue) => {
