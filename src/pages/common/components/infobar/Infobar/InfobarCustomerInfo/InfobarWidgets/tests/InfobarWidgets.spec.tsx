@@ -1,6 +1,6 @@
 import React from 'react'
 import {List, Map, fromJS} from 'immutable'
-import {render, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -22,11 +22,30 @@ import {WidgetContextType} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
+import {assumeMock} from 'utils/testing'
 import InfobarWidgets from '../InfobarWidgets'
 import {widgetReference} from '../widgetReference'
 import InfobarWidget from '../InfobarWidget'
+import Placeholder from '../widgets/Placeholder'
+
+// mock InfobarWidget component
+jest.mock('../InfobarWidget', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>InfobarWidget</div>),
+}))
+
+jest.mock('../widgets/Placeholder', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>Placeholder</div>),
+}))
+
+const mockedInfobarWidget = assumeMock(InfobarWidget)
+const mockedPlaceholder = assumeMock(Placeholder)
 
 describe('InfobarWidgets component', () => {
+    beforeEach(() => {
+        mockedInfobarWidget.mockClear()
+    })
     const httpIntegrationId = 1
     const shopifyIntegrationId = 2
     const rechargeIntegrationId = 3
@@ -151,7 +170,7 @@ describe('InfobarWidgets component', () => {
                     },
                 ],
             },
-            order: 1,
+            order: 2,
         },
         {
             id: 5,
@@ -175,7 +194,7 @@ describe('InfobarWidgets component', () => {
                     },
                 ],
             },
-            order: 2,
+            order: 3,
         },
         {
             id: 6,
@@ -199,7 +218,7 @@ describe('InfobarWidgets component', () => {
                     },
                 ],
             },
-            order: 3,
+            order: 4,
         },
         {
             id: 7,
@@ -223,7 +242,7 @@ describe('InfobarWidgets component', () => {
                     },
                 ],
             },
-            order: 4,
+            order: 5,
         },
         {
             id: 8,
@@ -248,7 +267,7 @@ describe('InfobarWidgets component', () => {
                     },
                 ],
             },
-            order: 5,
+            order: 6,
         },
         {
             id: 9,
@@ -307,14 +326,41 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
 
-        expect(screen.getAllByText(/shopify/i))
-        expect(screen.getAllByText(/http/i))
-        expect(screen.getAllByText(/standalone/i))
-        expect(screen.getAllByText(/3rd party/i))
-        expect(screen.getAllByText(/WooCommerce Data/i))
+        expect(mockedInfobarWidget.mock.calls[0][0].widget.get('type')).toEqual(
+            baseWidgets.getIn(['0', 'type'])
+        )
+        expect(mockedInfobarWidget.mock.calls[1][0].widget.get('type')).toEqual(
+            baseWidgets.getIn(['1', 'type'])
+        )
+        expect(mockedInfobarWidget.mock.calls[2][0].widget.get('type')).toEqual(
+            baseWidgets.getIn(['2', 'type'])
+        )
+        expect(mockedInfobarWidget.mock.calls[3][0].widget.get('type')).toEqual(
+            baseWidgets.getIn(['5', 'type'])
+        )
+        expect(mockedInfobarWidget.mock.calls[4][0].widget.get('type')).toEqual(
+            baseWidgets.getIn(['6', 'type'])
+        )
+        expect(mockedInfobarWidget.mock.calls.length).toEqual(5)
+    })
 
-        expect(screen.queryAllByText(/recharge/i).length).toBeFalsy()
-        expect(screen.queryAllByText(/bigcommerce/i).length).toBeFalsy()
+    it('should display all possible widgets in editing mode', () => {
+        render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <InfobarWidgets
+                        widgets={baseWidgets}
+                        context={WidgetContextType.Ticket}
+                        source={baseSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+        expect(
+            mockedInfobarWidget.mock.calls.length +
+                mockedPlaceholder.mock.calls.length
+        ).toEqual(baseWidgets.size)
+        expect(widgetReference.Widget).toEqual(InfobarWidget)
     })
 
     it('should replace the empty dummy widget reference with the real InfobarWidget component', () => {
@@ -332,7 +378,7 @@ describe('InfobarWidgets component', () => {
         expect(widgetReference.Widget).toEqual(InfobarWidget)
     })
 
-    it('should display all possible widgets in editing mode', () => {
+    it('should add the templatePath key in the passed template that matches the index', () => {
         render(
             <Provider store={store}>
                 <EditionContext.Provider value={{isEditing: true}}>
@@ -344,14 +390,9 @@ describe('InfobarWidgets component', () => {
                 </EditionContext.Provider>
             </Provider>
         )
-        ;(baseWidgets.toJS() as typeof widgets).map((widget) => {
-            expect(
-                screen.getAllByText(
-                    new RegExp(widget.template.widgets[0].title, 'i')
-                )
-            ).toBeTruthy()
-        })
-        expect(widgetReference.Widget).toEqual(InfobarWidget)
+        expect(
+            mockedInfobarWidget.mock.calls[1][0].template.get('templatePath')
+        ).toEqual('1.template')
     })
 
     it('should not break if data source is null with custom actions', () => {

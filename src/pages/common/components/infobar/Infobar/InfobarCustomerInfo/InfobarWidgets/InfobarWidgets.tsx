@@ -185,16 +185,15 @@ function renderWidgets({
     // We create the components separately from the rest of the function because we want to assign `templatePath`
     // AFTER having sorted the results by `widget.order`.
     return preparedDisplayList.map((item = fromJS({}), index) => {
-        const order = item.getIn(['widget', 'order']) as number
+        if (typeof index === 'undefined') return null
+
         const newItem = item.set(
             'template',
             (item.get('template') as Map<string, unknown>).set(
                 'templatePath',
-                `${order}.template`
+                `${index}.template`
             )
         )
-
-        if (typeof index === 'undefined') return null
 
         if (item.get('type') === 'placeholder') {
             return (
@@ -376,9 +375,7 @@ function getPreparedDisplayList({
 
         const template = (
             widget.get('template', fromJS({})) as Map<string, unknown>
-        )
-            .set('path', sourcePath)
-            .set('templatePath', `${widget.get('order') as number}.template`)
+        ).set('path', sourcePath)
 
         if (!isEditing && !canDisplayWidget(template.toJS(), source)) {
             return
@@ -409,12 +406,7 @@ function getPreparedDisplayList({
             (widget = fromJS({})) => {
                 const template = (
                     widget.get('template', fromJS({})) as Map<string, unknown>
-                )
-                    .set('path', genericSourcePath)
-                    .set(
-                        'templatePath',
-                        `${widget.get('order') as string}.template`
-                    )
+                ).set('path', genericSourcePath)
 
                 return fromJS({
                     widget,
