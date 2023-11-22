@@ -1660,7 +1660,7 @@ export const stats = toImmutable<
             'Automation rate':
                 'Number of interactions resolved by Article Recommendation divided by the total number of times a user is recommended an article.',
             'Served by an agent after article rec':
-                'If a customer is not satisfied with the article and asks for more help, a ticket is created.',
+                'When an interaction is not successfully automated and the customer is served by an agent, it becomes a billable ticket.',
         },
         callbacks: {
             cell: ({value}) => {
@@ -1735,6 +1735,8 @@ export const stats = toImmutable<
                 'If a customer is not satisfied with the automated response, a ticket is created.',
             'Drop off':
                 "Number of times a customer has started the flow, but hasn't reached the end.",
+            'Served by an agent after flow':
+                'When an interaction is not successfully automated and the customer is served by an agent, it becomes a billable ticket.',
         },
         callbacks: {
             cell: ({value}) => {

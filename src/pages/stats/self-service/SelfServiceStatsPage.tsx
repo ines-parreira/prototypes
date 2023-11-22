@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
-import {fromJS, Map} from 'immutable'
 
+import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {assetsUrl} from 'utils'
 import {
     SELF_SERVICE_OVERVIEW,
@@ -52,14 +53,15 @@ import {
     QUICK_RESPONSES,
 } from 'pages/automation/common/components/constants'
 import withEcommerceIntegration from 'pages/automation/common/utils/withStoreIntegrations'
-import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
+import {FeatureFlagKey} from 'config/featureFlags'
 import TableStat from '../common/components/charts/TableStat/TableStat'
-import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
-import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 import PeriodStatsFilter from '../PeriodStatsFilter'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
 
+import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
+import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
+import KeyMetricStat from '../common/components/charts/KeyMetricStat'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
 import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
@@ -73,6 +75,8 @@ import {
 import css from './SelfServiceStatsPage.less'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
+    const isNewAutomateFeatureEnabled =
+        useFlags()[FeatureFlagKey.NewAutomationAddon]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
     const [workflowConfigurations, setWorkflowConfigurations] = useState<
@@ -159,11 +163,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             resourceName: SELF_SERVICE_OVERVIEW,
             statsFilters: pageStatsFilters,
         })
-
     const immutableOverview = useMemo(() => {
         return fromJS(overview || {}) as Map<any, any>
     }, [overview])
-
     const overviewNoData =
         overview?.data.data.every((data) => data.value === 0) || false
 
@@ -303,16 +305,18 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         >
             {pageStatsFilters && (
                 <>
-                    <KeyMetricStatWrapper>
-                        <KeyMetricStat
-                            data={immutableOverview.getIn(['data', 'data'])}
-                            meta={immutableOverview.get('meta')}
-                            loading={isFetchingOverview}
-                            config={statsConfig.get(
-                                AUTOMATE_PERFORMANCE_BY_FEATURE
-                            )}
-                        />
-                    </KeyMetricStatWrapper>
+                    {!isNewAutomateFeatureEnabled && (
+                        <KeyMetricStatWrapper>
+                            <KeyMetricStat
+                                data={immutableOverview.getIn(['data', 'data'])}
+                                meta={immutableOverview.get('meta')}
+                                loading={isFetchingOverview}
+                                config={statsConfig.get(
+                                    AUTOMATE_PERFORMANCE_BY_FEATURE
+                                )}
+                            />
+                        </KeyMetricStatWrapper>
+                    )}
                     {allSectionsNoData && !noActivityAlertDismissed && (
                         <Alert
                             type={AlertType.Error}
@@ -326,24 +330,29 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             or help center may not be properly installed.
                         </Alert>
                     )}
-                    <StatWrapper
-                        stat={volumePerFlow}
-                        statDataLabelOverride="Volume per flow"
-                        isFetchingStat={isFetchingVolumePerFlow}
-                        resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
-                        statsFilters={pageStatsFilters}
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <NormalizedLineStat
-                                data={stat.getIn(['data', 'data'])}
-                                legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(
-                                    SELF_SERVICE_VOLUME_PER_FLOW
-                                )}
-                            />
-                        )}
-                    </StatWrapper>
+                    {!isNewAutomateFeatureEnabled && (
+                        <StatWrapper
+                            stat={volumePerFlow}
+                            statDataLabelOverride="Volume per flow"
+                            isFetchingStat={isFetchingVolumePerFlow}
+                            resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
+                            statsFilters={pageStatsFilters}
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <NormalizedLineStat
+                                    data={stat.getIn(['data', 'data'])}
+                                    legend={stat.getIn(
+                                        ['data', 'legend'],
+                                        null
+                                    )}
+                                    config={statsConfig.get(
+                                        SELF_SERVICE_VOLUME_PER_FLOW
+                                    )}
+                                />
+                            )}
+                        </StatWrapper>
+                    )}
                     <StatWrapper
                         stat={workflowsPerformance}
                         isFetchingStat={isFetchingWorkflowsPerformance}

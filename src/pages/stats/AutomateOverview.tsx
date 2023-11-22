@@ -467,7 +467,7 @@ export function AutomateOverview() {
                                         Set up all{' '}
                                         <a
                                             target="blank"
-                                            href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                                            href="https://link.gorgias.com/aut"
                                         >
                                             Automate features
                                         </a>{' '}
