@@ -1,12 +1,16 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {render} from '@testing-library/react'
 import SatisfactionSurvey from '../SatisfactionSurvey'
+
+jest.mock('pages/common/utils/labels', () => ({
+    DatetimeLabel: () => null,
+}))
 
 describe('SatisfactionSurvey', () => {
     it('should display satisfaction survey', () => {
-        const component = shallow(
+        const {container} = render(
             <SatisfactionSurvey
                 satisfactionSurvey={fromJS({
                     body_text: 'test',
@@ -20,6 +24,6 @@ describe('SatisfactionSurvey', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

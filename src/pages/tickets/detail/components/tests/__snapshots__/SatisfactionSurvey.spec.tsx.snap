@@ -2,11 +2,11 @@
 
 exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
 <div
-  className="component last"
+  class="component last"
   id="satisfactionSurvey"
 >
   <div
-    className="star"
+    class="star"
   >
     <img
       alt="survey rating"
@@ -14,36 +14,32 @@ exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
     />
   </div>
   <div
-    className="body"
+    class="body"
   >
     <div
-      className="header"
+      class="header"
     >
       <div
-        className="headerDetails"
+        class="headerDetails"
       >
         <span
-          className="score"
+          class="score"
         >
           3 stars
         </span>
         from
         <span
-          className="author"
+          class="author"
         >
           test me
         </span>
       </div>
       <span
-        className="date text-faded float-right"
-      >
-        <Connect(DatetimeLabelContainer)
-          dateTime="now"
-        />
-      </span>
+        class="date text-faded float-right"
+      />
     </div>
     <div
-      className="body_text"
+      class="body_text"
     >
       test
     </div>
