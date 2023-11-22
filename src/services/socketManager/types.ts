@@ -69,7 +69,6 @@ export enum SocketEventType {
     MigrationIntegrationInboundVerified = 'email.integration-migration-verified',
     MigrationIntegrationInboundFailed = 'email.integration-migration-failed',
     FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
-    ViewsDeactivated = 'views-deactivated',
     OutboundPhoneCallInitiated = 'outbound-phone-call-initiated',
     MacroParamsUpdated = 'macro-params-updated',
     TwilioEventTriggered = 'twilio-event-triggered',
@@ -280,13 +279,6 @@ export type FacebookIntegrationsReconnected = {
     }
 }
 
-export type ViewsDeactivated = {
-    event: {
-        type: SocketEventType.ViewsDeactivated
-        names: string[]
-    }
-}
-
 export type OutboundPhoneCallInitiated = {
     event: {
         type: SocketEventType.OutboundPhoneCallInitiated
@@ -387,7 +379,6 @@ export type ServerMessage =
     | TicketChatUpdatedEvent
     | EmailIntegrationVerifiedEvent
     | FacebookIntegrationsReconnected
-    | ViewsDeactivated
     | OutboundPhoneCallInitiated
     | MacroParamsUpdatedEvent
     | AgentAvailabilityUpdatedEvent

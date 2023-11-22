@@ -66,7 +66,6 @@ import {
     ViewCreatedEvent,
     ViewDeactivated,
     ViewDeletedEvent,
-    ViewsDeactivated,
     ViewSectionCreatedEvent,
     ViewSectionDeletedEvent,
     ViewSectionUpdatedEvent,
@@ -602,27 +601,6 @@ const receivedEvents: ReceivedEvent[] = [
                                   (json as FacebookIntegrationsReconnected)
                                       .event.total
                               } Facebook pages have been reconnected.`,
-                }) as any
-            )
-        },
-    },
-    {
-        name: SocketEventType.ViewsDeactivated,
-        onReceive: function (json) {
-            const {event} = json as unknown as ViewsDeactivated
-            const namesList = `<ul>${event.names
-                .map((name) => `<li>${name}</li>`)
-                .join('')}</ul>`
-            const message =
-                event.names.length === 1
-                    ? `View "${event.names[0]}" has been deactivated.`
-                    : `${event.names.length} views have been deactivated: ${namesList}`
-
-            reduxStore.dispatch(
-                notificationsActions.notify({
-                    status: NotificationStatus.Warning,
-                    allowHTML: true,
-                    message,
                 }) as any
             )
         },

@@ -634,16 +634,20 @@ describe('receivedEvents', () => {
         })
     })
 
-    describe('VIEWS_DEACTIVATED handler', () => {
+    describe('VIEW_DEACTIVATED handler', () => {
         const handler = _find(receivedEvents, {
-            name: SocketEventType.ViewsDeactivated,
+            name: SocketEventType.ViewDeactivated,
         })
 
-        it.each([[['Foo']], [['Foo', 'Bar']]])('should notify', (names) => {
+        it('should notify', () => {
+            const event = {
+                name: 'Foo',
+            }
+
             const spy = jest.spyOn(notificationActions, 'notify')
 
             if (handler) {
-                handler.onReceive({event: {names}} as any)
+                handler.onReceive({event: event} as any)
             }
 
             expect(spy.mock.calls).toMatchSnapshot()
