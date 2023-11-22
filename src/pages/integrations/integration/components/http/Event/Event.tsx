@@ -33,7 +33,7 @@ export function Event({integrationId, eventId}: Props) {
         isError,
     } = useGetHTTPEvent(
         {integrationId, eventId},
-        {select: (data) => data.data, refetchOnWindowFocus: false}
+        {select: (data) => data.data, refetchOnWindowFocus: true}
     )
 
     if (isLoading) {

@@ -56,7 +56,7 @@ export function Events({integrationId}: Props) {
         isError,
     } = useGetHTTPEvents(Number.parseInt(integrationId, 10), {
         select: (data) => data.data.data,
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: true,
     })
 
     if (isLoading) {
