@@ -250,6 +250,7 @@ export enum SegmentEvent {
     AutomatePaywallModalUpsell = 'automate/paywall-modal-upsell',
     AutomatePaywallLearnMore = 'automate/paywall-learn-more',
     AutomatePaywallFromRuleLibrary = 'automate/paywall-from-rule-library',
+    AutomatePaywallModalUpsellSubscribe = 'automate/paywall-modal-upsell-subscribe',
     SidebarViewsChanged = 'sidebar-views-changed',
 }
 

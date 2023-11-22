@@ -142,6 +142,9 @@ const AutomationSubscriptionModal = ({
         : 'Subscribe to Automate'
 
     const onConfirm = () => {
+        logEvent(SegmentEvent.AutomatePaywallModalUpsellSubscribe, {
+            location: history?.location.pathname,
+        })
         selectedPrice?.price_id &&
             handleSubscriptionUpdate([
                 ...currentPriceIds,
