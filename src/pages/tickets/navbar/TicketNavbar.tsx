@@ -459,7 +459,10 @@ export function TicketNavbarContainer({
             >
                 <RecentChats />
                 {!!systemTopElements.length && (
-                    <div className={navbarCss.category}>
+                    <div
+                        data-appcues="new-system-views"
+                        className={navbarCss.category}
+                    >
                         {systemTopElements.map((element) => (
                             <TicketNavbarViewLink
                                 key={`view-${element.data.id}`}
