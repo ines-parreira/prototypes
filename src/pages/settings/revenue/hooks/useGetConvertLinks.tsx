@@ -78,18 +78,15 @@ const useGetConvertLinks = (): CategoryLink[] => {
                 extra: iconComponent,
                 outerExtra: outerExtra,
             },
-        ]
-
-        if (isConvertSubscriber) {
-            links.push({
+            {
                 requiredRole: ADMIN_ROLE,
                 to: 'convert/installations',
                 text: 'Installations',
-            })
-        }
+            },
+        ]
 
         return links
-    }, [isConvertSubscriber, iconComponent, outerExtra])
+    }, [iconComponent, outerExtra])
 }
 
 export default useGetConvertLinks

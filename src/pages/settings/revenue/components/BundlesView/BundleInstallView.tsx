@@ -28,7 +28,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 
 import client from 'models/api/resources'
 import history from 'pages/history'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import warningIcon from 'assets/img/icons/warning.svg'
 import {transformBundleError} from '../../utils/transformBundleError'
@@ -122,15 +121,6 @@ export const BundleInstallView = () => {
             )
         }
     }, [currentStoreIntegration, currentStoreIntegrationId])
-
-    const isConvertSubscriber = useIsConvertSubscriber()
-    if (!isConvertSubscriber) {
-        return (
-            <div className={css.pageContainer}>
-                You don't have access to this page, please contact your CSM.
-            </div>
-        )
-    }
 
     return (
         <div className="w-100">

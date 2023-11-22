@@ -70,10 +70,9 @@ describe('useGetConvertLinks', () => {
         it('should render upgrade icon and popover with modal for higher plan', () => {
             const {result} = renderHookWithState()
 
-            expect(result.current.length).toBe(1)
+            expect(result.current.length).toBe(2)
 
             const clickTrackingLink = result.current[0]
-
             expect(React.isValidElement(clickTrackingLink.extra)).toBe(true)
             expect((clickTrackingLink.extra as JSX.Element)?.type).toBe(
                 UpgradeIcon
@@ -83,6 +82,12 @@ describe('useGetConvertLinks', () => {
                 true
             )
             expect(clickTrackingLink.outerExtra).toMatchSnapshot()
+
+            const installationLink = result.current[1]
+            expect(installationLink.requiredRole).toBe(ADMIN_ROLE)
+            expect(installationLink.to).toBe('convert/installations')
+            expect(installationLink.text).toBe('Installations')
+            expect(installationLink.outerExtra).toBeUndefined()
         })
     })
 })

@@ -30,7 +30,6 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import {getIconFromType} from 'state/integrations/helpers'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
 import Loader from '../../../../common/components/Loader/Loader'
 import {transformBundleError} from '../../utils/transformBundleError'
@@ -167,15 +166,6 @@ export const BundleDetailView = () => {
                 )
             }
         }, [bundle])
-
-    const isConvertSubscriber = useIsConvertSubscriber()
-    if (!isConvertSubscriber) {
-        return (
-            <div className={css.pageContainer}>
-                You don't have access to this page, please contact your CSM.
-            </div>
-        )
-    }
 
     return loading ? (
         <Loader message="Loading..." minHeight={'400px'} />

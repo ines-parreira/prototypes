@@ -11,7 +11,6 @@ import MockAdapter from 'axios-mock-adapter'
 import {IntegrationType} from 'models/integration/types'
 
 import client from 'models/api/resources'
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {BundleDetailView} from '../BundleDetailView'
 
 const mockStore = configureMockStore([thunk])
@@ -55,13 +54,6 @@ jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => {
 })
 
 describe('<BundleDetailView />', () => {
-    beforeEach(() => {
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-    })
-
     afterEach(() => {
         mockedServer.reset()
     })

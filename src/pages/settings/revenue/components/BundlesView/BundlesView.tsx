@@ -29,7 +29,6 @@ import history from 'pages/history'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {getIconFromType} from 'state/integrations/helpers'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
 import pageCss from './BundlesView.less'
 
@@ -82,15 +81,6 @@ export const BundlesView = () => {
                 (integration) => integration.id === integration_id
             )
         )
-
-    const isConvertSubscriber = useIsConvertSubscriber()
-    if (!isConvertSubscriber) {
-        return (
-            <div className={css.pageContainer}>
-                You don't have access to this page, please contact your CSM.
-            </div>
-        )
-    }
 
     return (
         <div className="w-100">

@@ -13,7 +13,6 @@ import {IntegrationType, ShopifyIntegrationMeta} from 'models/integration/types'
 import client from 'models/api/resources'
 import {flushPromises} from 'utils/testing'
 
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {BundleInstallView} from '../BundleInstallView'
 
 const mockStore = configureMockStore([thunk])
@@ -51,13 +50,6 @@ const defaultStateWithoutScopes = {
 }
 
 describe('<BundleInstallView />', () => {
-    beforeEach(() => {
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-    })
-
     afterEach(() => {
         mockedServer.reset()
     })
