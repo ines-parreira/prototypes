@@ -86,7 +86,8 @@ export class YourProfileView extends Component<Props, State> {
                 preferences: props.preferences.get('data'),
                 hasChangedEmail: false,
                 hasDateAndTimeFormattingUserSetting: getLDClient().variation(
-                    FeatureFlagKey.DateAndTimeFormattingUserSetting || false
+                    FeatureFlagKey.DateAndTimeFormattingUserSetting,
+                    false
                 ),
             },
             this._getForm(props)
@@ -164,7 +165,8 @@ export class YourProfileView extends Component<Props, State> {
         await getLDClient().waitUntilReady()
         this.setState({
             hasDateAndTimeFormattingUserSetting: getLDClient().variation(
-                FeatureFlagKey.DateAndTimeFormattingUserSetting || false
+                FeatureFlagKey.DateAndTimeFormattingUserSetting,
+                false
             ),
         })
     }
