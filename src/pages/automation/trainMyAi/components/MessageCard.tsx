@@ -1,0 +1,51 @@
+import React from 'react'
+import classnames from 'classnames'
+import css from './MessageCard.less'
+
+type Props = {
+    isSelected: boolean
+    onSelect?: () => void
+    isSuccess: boolean
+    message: string
+    articleTitle: string
+}
+
+const MessageCard = ({
+    isSelected,
+    isSuccess,
+    message,
+    articleTitle,
+    onSelect,
+}: Props) => {
+    return (
+        <button
+            className={classnames(css.container, {
+                [css.selected]: isSelected,
+                [css.success]: isSuccess,
+            })}
+            onClick={onSelect}
+        >
+            <div className={css.iconContainer}>
+                {isSuccess ? (
+                    <i
+                        className={classnames(
+                            'material-icons',
+                            css.successIcon
+                        )}
+                    >
+                        check_circle
+                    </i>
+                ) : (
+                    <i className={classnames('material-icons', css.icon)}>
+                        forum
+                    </i>
+                )}
+            </div>
+
+            <div className={css.message}>{message}</div>
+            <div className={css.articleTitle}>{articleTitle}</div>
+        </button>
+    )
+}
+
+export default MessageCard
