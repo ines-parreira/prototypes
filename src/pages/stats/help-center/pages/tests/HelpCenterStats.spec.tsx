@@ -82,18 +82,6 @@ describe('<HelpCenterStats />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should hide tips', () => {
-        renderComponent()
-
-        expect(screen.getByTestId('article-tip')).toBeInTheDocument()
-        expect(screen.getByTestId('searches-tip')).toBeInTheDocument()
-
-        userEvent.click(screen.getByText('Hide tips'))
-
-        expect(screen.queryByTestId('article-tip')).not.toBeInTheDocument()
-        expect(screen.queryByTestId('searches-tip')).not.toBeInTheDocument()
-    })
-
     it('should show loading state', () => {
         mockUseHelpCenterList.mockReturnValue({
             isLoading: true,

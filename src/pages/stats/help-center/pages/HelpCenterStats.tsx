@@ -1,13 +1,11 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import StatsPage from 'pages/stats/StatsPage'
 import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import TipsToggle from 'pages/stats/TipsToggle'
 import {getHelpCenterDomain} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
@@ -16,8 +14,6 @@ import {NonEmptyArray} from 'types'
 import {isNotEmptyArray} from 'utils'
 import {StatsFilters} from 'models/stat/types'
 
-import OverviewCard from '../components/OverviewCard/OverviewCard'
-import {useHelpCenterTrend} from '../hooks/useHelpCenterTrend'
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
@@ -28,6 +24,7 @@ import {useStatsFilters} from '../hooks/useStatsFilters'
 import PeriodStatsFilter from '../../PeriodStatsFilter'
 import HelpCenterStatsLoading from '../components/HelpCenterStatsLoading/HelpCenterStatsLoading'
 import {HelpCenterStatsFilters} from '../types'
+import HelpCenterOverviewSection from '../components/HelpCenterOverviewSection/HelpCenterOverviewSection'
 import UnpublishedHelpCenterAlert from '../components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 import {HelpCenterStatsEmptyState} from '../components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
 
@@ -51,21 +48,6 @@ const HelpCenterStatsComponent = ({
     const timezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
-    const articleViewMetricTrend = useHelpCenterTrend({
-        statsFilters,
-        timezone,
-        metric: HelpCenterTrackingEventMeasures.ArticleView,
-    })
-    const searchesMetricTrend = useHelpCenterTrend({
-        statsFilters,
-        timezone,
-        metric: HelpCenterTrackingEventMeasures.SearchRequestedCount,
-    })
-    const [isTipVisible, setIsTipsVisible] = useState(true)
-
-    const onTipsToggleClick = () => {
-        setIsTipsVisible(!isTipVisible)
-    }
 
     const selectedHelpCenter =
         helpCenters.find((helpCenter) =>
@@ -104,77 +86,12 @@ const HelpCenterStatsComponent = ({
                         />
                     </DashboardGridCell>
                 </DashboardSection>
-                <DashboardSection
-                    title="Overview"
-                    titleExtra={
-                        <TipsToggle
-                            isVisible={isTipVisible}
-                            onClick={onTipsToggleClick}
-                        />
-                    }
-                >
-                    <DashboardGridCell size={6}>
-                        <OverviewCard
-                            showTip={isTipVisible}
-                            isLoading={articleViewMetricTrend.isFetching}
-                            hintTitle="Total number of article views, including duplicate views by the same user"
-                            startDate={statsFilters.period.start_datetime}
-                            endDate={statsFilters.period.end_datetime}
-                            trendValue={articleViewMetricTrend.data?.value}
-                            prevTrendValue={
-                                articleViewMetricTrend.data?.prevValue
-                            }
-                            title="Article views"
-                            tipContent={
-                                <div data-testid="article-tip">
-                                    Check out our{' '}
-                                    <a
-                                        href="https://docs.gorgias.com/en-US"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        Help Docs
-                                    </a>{' '}
-                                    to learn about strategies you can use to
-                                    increase article views for your Help Center.
-                                </div>
-                            }
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <OverviewCard
-                            showTip={isTipVisible}
-                            isLoading={searchesMetricTrend.isFetching}
-                            hintTitle="Total number of searches performed in the Help Center"
-                            startDate={statsFilters.period.start_datetime}
-                            endDate={statsFilters.period.end_datetime}
-                            trendValue={searchesMetricTrend.data?.value}
-                            prevTrendValue={searchesMetricTrend.data?.prevValue}
-                            title="Searches"
-                            tipContent={
-                                <div data-testid="searches-tip">
-                                    <p>
-                                        You can reference the Searched Terms
-                                        table to understand the top queries in
-                                        your Help Center to prioritize refining
-                                        the content of relevant articles or
-                                        creating a new one.
-                                    </p>
-                                    <a
-                                        href="https://docs.gorgias.com/en-US"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        <i className="material-icons">
-                                            menu_book
-                                        </i>{' '}
-                                        How to improve search relevancy
-                                    </a>
-                                </div>
-                            }
-                        />
-                    </DashboardGridCell>
-                </DashboardSection>
+
+                <HelpCenterOverviewSection
+                    statsFilters={statsFilters}
+                    timezone={timezone}
+                />
+
                 <DashboardSection title="Performance">
                     <DashboardGridCell size={12}>
                         <ArticleViewsGraph
