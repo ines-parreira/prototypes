@@ -393,9 +393,8 @@ export function AutomateOverview() {
                     </>
                 }
             >
-                <div className={classnames(css.wrapper)}>
-                    {!hide72HourAlert &&
-                    (hasActivity || isDurationLast3Days) ? (
+                {!hide72HourAlert && (hasActivity || isDurationLast3Days) ? (
+                    <div className={classnames(css.wrapper)}>
                         <Alert
                             type={AlertType.Info}
                             icon
@@ -405,10 +404,12 @@ export function AutomateOverview() {
                             dashboard, as interactions are considered automated
                             after 72 hours have passed without a customer reply.
                         </Alert>
-                    ) : (
-                        noActivityAlert &&
-                        !automatedInterationTrend.isFetching &&
-                        !automatedInterationTrend.data?.value && (
+                    </div>
+                ) : (
+                    noActivityAlert &&
+                    !automatedInterationTrend.isFetching &&
+                    !automatedInterationTrend.data?.value && (
+                        <div className={classnames(css.wrapper)}>
                             <Alert
                                 type={AlertType.Error}
                                 icon
@@ -429,9 +430,10 @@ export function AutomateOverview() {
                                     'There is no activity for these features. Your chat widget or Help Center may not be properly installed.'
                                 )}
                             </Alert>
-                        )
-                    )}
-                </div>
+                        </div>
+                    )
+                )}
+
                 <DashboardSection
                     title="Impact"
                     titleExtra={
