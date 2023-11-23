@@ -88,6 +88,7 @@ export function slugify(value: string): string {
             valueWithoutAccentsAndEmojis
                 .replace(/[/;:.',*?!#]/g, '')
                 .replace(/\$/g, 'dollar') // for SEO
+                .replace(/&/g, 'and') // for SEO
                 .trim()
                 .replace(/ /g, '-')
                 .toLowerCase()

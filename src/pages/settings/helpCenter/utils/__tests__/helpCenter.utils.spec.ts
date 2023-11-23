@@ -71,8 +71,12 @@ describe('slugify()', () => {
     // * read more: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI#description
     describe('it does not encode reserved characters and replace problematic ones', () => {
         expect(slugify(`@ & = + $ - _ ~ ( ) #`)).toEqual(
-            `@-&-=-+-dollar---_-~-(-)`
+            `@-and-=-+-dollar---_-~-(-)`
         )
+    })
+
+    describe('it replaces & with and', () => {
+        expect(slugify('Title & one')).toEqual('title-and-one')
     })
 
     describe('it deletes emojis', () => {
