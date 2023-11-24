@@ -389,10 +389,7 @@ function snapshotTranslations(
     )
     return {
         ...translationsByLang,
-        [currentLanguage]: {
-            ...translationsByLang[currentLanguage],
-            ...translations,
-        },
+        [currentLanguage]: translations,
     }
 }
 
