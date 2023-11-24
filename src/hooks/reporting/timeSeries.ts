@@ -1,8 +1,5 @@
 import {OrderDirection} from 'models/api/types'
 
-import {automatedInteractionsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automation/automatedInteractions'
-import {automatedInteractionsByEventTypeQueryFactory} from 'models/reporting/queryFactories/automation/automatedInteractionsByEventType'
-import {automationRateTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automation/automationRate'
 import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -11,6 +8,9 @@ import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactor
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
+import {automatedInteractionsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
+import {automatedInteractionsByEventTypeQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractionsByEventType'
+import {automationRateTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
 import useTimeSeries, {useTimeSeriesPerDimension} from './useTimeSeries'
 
 export function useTicketsCreatedTimeSeries(

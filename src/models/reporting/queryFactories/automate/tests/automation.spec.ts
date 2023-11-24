@@ -1,17 +1,17 @@
 import moment from 'moment/moment'
 
+import {overallTimeSavedWithAutomationQueryFactory} from 'models/reporting/queryFactories/automate/overallTimeSavedWithAutomation'
+import {resolutionTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomation'
 import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
 } from 'models/reporting/cubes/AutomationBillingEventCube'
-import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automation/automatedInteractions'
-import {automationRateQueryFactory} from 'models/reporting/queryFactories/automation/automationRate'
 import {firstResponseTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomationQueryFactory'
-import {overallTimeSavedWithAutomationQueryFactory} from 'models/reporting/queryFactories/automation/overallTimeSavedWithAutomation'
-import {resolutionTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/automation/resolutionTimeWithAutomation'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
+import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
+import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
 
 describe('Automate', () => {
     const periodStart = formatReportingQueryDate(moment())
