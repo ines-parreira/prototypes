@@ -1,0 +1,59 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        width: 100%;
+        max-height: 70vh;
+        overflow-y: auto;
+
+        thead td {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: var(--neutral-grey-0);
+        }
+    }
+
+    .table tbody td {
+        padding: 0;
+    }
+
+    .headerCell > div {
+        width: 100%;
+    }
+
+    .tableRow {
+        font-weight: 400;
+        transition: background-color 0.3s;
+
+        td > div {
+            padding: @layout-spacing-xs @layout-spacing-s;
+        }
+
+        &:hover {
+            background-color: var(--neutral-grey-1);
+        }
+    }
+
+    .agent > span {
+        font-weight: 400;
+    }
+
+    .isHighlighted {
+        font-weight: 600;
+
+        .agent > span {
+            font-weight: 600;
+        }
+    }
+
+    .noData {
+        color: var(--neutral-grey-3);
+    }
+
+    .pagination {
+        margin-top: @layout-spacing-s;
+        margin-left: @layout-spacing-m;
+        margin-bottom: @layout-spacing-s;
+    }
+}

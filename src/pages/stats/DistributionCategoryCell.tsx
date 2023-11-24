@@ -1,17 +1,15 @@
-import React, {PropsWithRef, useRef, useLayoutEffect, useState} from 'react'
-import classNames from 'classnames'
+import React, {PropsWithRef} from 'react'
 
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import GaugeCellAddon from 'pages/common/components/table/addons/GaugeCellAddon'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     TICKET_CUSTOM_FIELDS_API_SEPARATOR,
     TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
 } from './utils'
-import css from './DistributionCategoryCell.less'
+import {TruncateCellContent} from './TruncateCellContent'
 
 type Props = {
     category: string
@@ -29,35 +27,12 @@ export const DistributionCategoryCell = ({
     progress,
     ...props
 }: PropsWithRef<BodyCellProps> & Props) => {
-    const ref = useRef<HTMLSpanElement>(null)
-    const [isEllipsisActive, setIsEllipsisActive] = useState(false)
-
-    useLayoutEffect(() => {
-        if (ref.current) {
-            setIsEllipsisActive(
-                ref.current?.offsetWidth < ref.current?.scrollWidth
-            )
-        }
-    }, [])
-
     const content = formatCategory(category)
-    const tooltipTargetID = `category-${category.replace(/[^a-zA-Z0-9]/g, '_')}`
 
     return (
         <BodyCell {...props}>
             <GaugeCellAddon progress={progress} color={cellColor} />
-            <span
-                ref={ref}
-                id={tooltipTargetID}
-                className={classNames(css.text, {
-                    [css.truncate]: isEllipsisActive,
-                })}
-            >
-                {content}
-            </span>
-            <Tooltip target={tooltipTargetID} trigger={['hover']}>
-                {content}
-            </Tooltip>
+            <TruncateCellContent content={content} />
         </BodyCell>
     )
 }

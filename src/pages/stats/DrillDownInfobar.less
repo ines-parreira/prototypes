@@ -1,0 +1,23 @@
+@import '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .wrapper {
+        border-bottom: 1px solid var(--main-primary-1);
+        background-color: var(--main-primary-0);
+        padding: 12px @layout-spacing-s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: @layout-spacing-s;
+    }
+
+    .icon {
+        font-size: 20px;
+        color: var(--main-primary-3);
+    }
+
+    .text {
+        .body-regular();
+    }
+}

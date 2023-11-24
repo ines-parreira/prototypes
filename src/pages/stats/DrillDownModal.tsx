@@ -13,10 +13,12 @@ import {
     getDrillDownModalState,
     getDrillDownMetric,
 } from 'state/ui/stats/drillDownSlice'
+import {DrillDownTable} from './DrillDownTable'
+import {DrillDownInfobar} from './DrillDownInfobar'
 
 export const DrillDownModal = () => {
     const isOpen = useAppSelector(getDrillDownModalState)
-    const metricData = useAppSelector(getDrillDownMetric)
+    const {metricData} = useAppSelector(getDrillDownMetric)
     const dispatch = useAppDispatch()
 
     const hasAnalyticsDrillDown: boolean =
@@ -31,7 +33,10 @@ export const DrillDownModal = () => {
             }}
         >
             <ModalHeader title={metricData?.title} />
-            <ModalBody>Drill-Down Table</ModalBody>
+            <ModalBody className="p-0">
+                <DrillDownInfobar />
+                <DrillDownTable />
+            </ModalBody>
         </Modal>
     ) : null
 }

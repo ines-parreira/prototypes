@@ -5,9 +5,8 @@ import BodyCell, {
 } from 'pages/common/components/table/cells/BodyCell'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {mergeStatsFilters} from 'state/stats/actions'
-import Avatar from 'pages/common/components/Avatar/Avatar'
 import {User} from 'config/types/user'
-import Tooltip from 'pages/common/components/Tooltip'
+import {AgentAvatar} from './AgentAvatar'
 import css from './AgentCellContent.less'
 
 export const AgentCellContent = ({
@@ -18,8 +17,6 @@ export const AgentCellContent = ({
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) => {
     const dispatch = useAppDispatch()
-    const agentName = agent.name || agent.email
-    const tooltipTargetID = `agent-${agent.id}`
 
     const handleClick = () => {
         dispatch(mergeStatsFilters({agents: [agent.id]}))
@@ -32,19 +29,7 @@ export const AgentCellContent = ({
                 onClick={handleClick}
                 className={css.container}
             >
-                <Avatar
-                    name={agentName}
-                    url={agent.meta?.profile_picture_url}
-                    size={36}
-                    shape="round"
-                    className={css.avatar}
-                />
-                <span className={css.agent} id={tooltipTargetID}>
-                    {agentName}
-                </span>
-                <Tooltip target={tooltipTargetID} trigger={['hover']}>
-                    {agentName}
-                </Tooltip>
+                <AgentAvatar agent={agent} />
             </Link>
         </BodyCell>
     )

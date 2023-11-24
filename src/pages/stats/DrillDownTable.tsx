@@ -1,0 +1,134 @@
+import React from 'react'
+import classNames from 'classnames'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import useAppSelector from 'hooks/useAppSelector'
+import {getDrillDownMetricColumn} from 'state/ui/stats/drillDownSlice'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
+import {NumberedPagination} from 'pages/common/components/Paginations'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+
+import {DrillDownTicketDetailsCell} from './DrillDownTicketDetailsCell'
+import {TruncateCellContent} from './TruncateCellContent'
+import {AgentAvatar} from './AgentAvatar'
+import {useDrillDownData} from './useDrillDownData'
+import css from './DrillDownTable.less'
+
+const tooltipHints = {
+    metric: 'The metric values displayed in this column reflect the state of the ticket during the selected timeframe.',
+    assignee:
+        'Data in this column reflects the current ticket state. It might be different from the value that has been associated with this ticket during the selected timeframe.',
+    contactReason:
+        'Data in this column reflects the current ticket state. It might be different from the value that has been associated with this ticket during the selected timeframe.',
+}
+
+export const DrillDownTable = () => {
+    const {data, perPage, currentPage, onPageChange} = useDrillDownData()
+    const {showMetric, metricTitle, metricValueFormat} = useAppSelector(
+        getDrillDownMetricColumn
+    )
+
+    return (
+        <>
+            <div className={css.container}>
+                <TableWrapper className={css.table}>
+                    <TableHead>
+                        <HeaderCellProperty
+                            title="Ticket"
+                            width={showMetric ? 300 : 440}
+                            className={css.headerCell}
+                        />
+                        {showMetric && (
+                            <HeaderCellProperty
+                                title={metricTitle}
+                                width={140}
+                                className={css.headerCell}
+                                tooltip={tooltipHints.metric}
+                            />
+                        )}
+                        <HeaderCellProperty
+                            title="Assignee"
+                            width={180}
+                            className={css.headerCell}
+                            tooltip={tooltipHints.assignee}
+                        />
+                        <HeaderCellProperty
+                            title="Created"
+                            width={180}
+                            className={css.headerCell}
+                        />
+                        <HeaderCellProperty
+                            title="Contact Reason"
+                            width={200}
+                            className={css.headerCell}
+                            tooltip={tooltipHints.contactReason}
+                        />
+                    </TableHead>
+                    <TableBody>
+                        {data.map((item) => (
+                            <TableBodyRow
+                                key={item.ticket.id}
+                                className={classNames(css.tableRow, {
+                                    [css.isHighlighted]: !item.ticket.isRead,
+                                })}
+                            >
+                                <DrillDownTicketDetailsCell
+                                    ticketDetails={item.ticket}
+                                    bodyCellProps={{
+                                        width: showMetric ? 300 : 440,
+                                    }}
+                                />
+                                {showMetric && (
+                                    <BodyCell width={140}>
+                                        {formatMetricValue(
+                                            item.metricValue,
+                                            metricValueFormat,
+                                            NOT_AVAILABLE_PLACEHOLDER
+                                        )}
+                                    </BodyCell>
+                                )}
+                                <BodyCell width={180}>
+                                    <AgentAvatar
+                                        agent={item.assignee}
+                                        avatarSize={24}
+                                        className={css.agent}
+                                    />
+                                </BodyCell>
+
+                                <BodyCell width={180}>
+                                    <DatetimeLabel dateTime={item.created} />
+                                </BodyCell>
+                                <BodyCell width={200}>
+                                    {item.contactReason ? (
+                                        <TruncateCellContent
+                                            content={item.contactReason}
+                                        />
+                                    ) : (
+                                        <span className={css.noData}>
+                                            {NOT_AVAILABLE_PLACEHOLDER}
+                                        </span>
+                                    )}
+                                </BodyCell>
+                            </TableBodyRow>
+                        ))}
+                    </TableBody>
+                </TableWrapper>
+            </div>
+            {data.length > perPage && (
+                <NumberedPagination
+                    count={Math.ceil(data.length / perPage)}
+                    page={currentPage}
+                    onChange={onPageChange}
+                    className={css.pagination}
+                />
+            )}
+        </>
+    )
+}

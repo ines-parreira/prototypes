@@ -1,0 +1,59 @@
+@import '~css/typography';
+
+:local {
+    .wrapper {
+        margin-left: 8px;
+        width: calc(100% - 32px);
+
+        .subject,
+        .description {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+
+    .container {
+        display: flex;
+        width: 100%;
+    }
+
+    .channel {
+        display: flex;
+        align-self: flex-start;
+        padding: 4px;
+        border-radius: 4px;
+        background-color: var(--neutral-grey-1);
+        font-size: 16px;
+    }
+
+    .subject {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+        color: var(--neutral-grey-6);
+        margin-bottom: 4px;
+    }
+
+    .description {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        color: var(--neutral-grey-5);
+        margin: 0;
+    }
+
+    .highlighted {
+        .channel {
+            background-color: var(--main-primary);
+
+            i {
+                color: #fff;
+            }
+        }
+        .subject {
+            font-weight: 600;
+        }
+    }
+}

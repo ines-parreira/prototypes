@@ -10,6 +10,10 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {toggleDrillDownModal} from 'state/ui/stats/drillDownSlice'
 import {DrillDownModal} from '../DrillDownModal'
 
+jest.mock('pages/stats/useDrillDownData', () => ({
+    useDrillDownData: () => ({data: []}),
+}))
+
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AnalyticsDrillDown]: true,
 }))

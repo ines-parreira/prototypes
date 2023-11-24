@@ -1,0 +1,22 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .wrapper {
+        display: inline-flex;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .avatar {
+        margin-right: @layout-spacing-xs;
+        flex-shrink: 0;
+    }
+
+    .agent {
+        .body-medium();
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
