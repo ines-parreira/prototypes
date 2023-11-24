@@ -1,7 +1,57 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
 
 :local {
     .container:last-child {
         grid-template-columns: 1fr;
+    }
+    .container.enabled {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 100%;
+        overflow: hidden;
+        height: calc(100% - 60px);
+    }
+
+    .leftCol {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        overflow-y: scroll;
+    }
+
+    .rightCol {
+        background-image: url('../../../assets/img/gorgias-logo.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: var(--neutral-grey-1);
+        border-left: 1px solid var(--neutral-grey-3);
+    }
+
+    .content {
+        padding: @layout-spacing-s @layout-spacing-m;
+    }
+
+    .content.empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: @layout-spacing-xxs;
+    }
+    .content.empty.withButton {
+        gap: @layout-spacing-s;
+    }
+
+    .description {
+        .body-semibold();
+        text-align: center;
+        color: var(--neutral-grey-5);
+    }
+
+    @media (min-width: 1600px) {
+        .container.enabled {
+            grid-template-columns: 1fr 700px;
+        }
     }
 }

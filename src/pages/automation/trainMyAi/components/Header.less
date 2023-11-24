@@ -1,0 +1,28 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .header {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: @layout-spacing-xxs;
+        padding: @layout-spacing-m;
+        padding-bottom: 0;
+        background-color: var(--neutral-grey-0);
+    }
+    .title {
+        all: unset;
+        .heading-section-semibold();
+    }
+
+    .description {
+        .body-regular();
+        display: flex;
+        flex-direction: column;
+        margin-bottom: @layout-spacing-m;
+        row-gap: 2px;
+    }
+}
