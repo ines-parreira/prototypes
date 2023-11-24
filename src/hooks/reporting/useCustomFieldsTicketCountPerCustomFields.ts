@@ -28,6 +28,7 @@ const breakdownTimeSeries = (
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
     const timeSeriesObjects = Object.keys(timeSeriesData).map((key) => ({
         [BREAKDOWN_FIELD]: key,
+        initialCustomFieldValue: [key],
         timeSeries: timeSeriesData[key][0],
     }))
 

@@ -111,6 +111,7 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                 {
                     [VALUE_FIELD]: 668,
                     [BREAKDOWN_FIELD]: 'abc',
+                    initialCustomFieldValue: [customField],
                     decile: 9,
                     percentage: 100,
                     totalsDecile: 9,
@@ -118,6 +119,7 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                         {
                             [VALUE_FIELD]: 668,
                             [BREAKDOWN_FIELD]: 'xyz',
+                            initialCustomFieldValue: [customField],
                             children: [],
                             decile: 9,
                             totalsDecile: 9,
@@ -222,16 +224,20 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
         getValueModeMock.mockReturnValue(ValueMode.Percentage)
         const tag1DailyValues = [400, 123, 0, 75]
         const tag2DailyValues = [100, 0, 10, 25]
+        const customField1 = 'abc::xyz'
+        const customField2 = 'asd::qwe'
         const input = [
             {
                 [VALUE_FIELD]: tag1DailyValues.reduce((sum, v) => sum + v),
                 [BREAKDOWN_FIELD]: 'abc',
+                initialCustomFieldValue: [customField1],
                 children: [
                     {
                         [VALUE_FIELD]: tag1DailyValues.reduce(
                             (sum, v) => sum + v
                         ),
                         [BREAKDOWN_FIELD]: 'xyz',
+                        initialCustomFieldValue: null,
                         children: [],
                         timeSeries: [
                             {
@@ -275,12 +281,14 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             {
                 [VALUE_FIELD]: tag2DailyValues.reduce((sum, v) => sum + v),
                 [BREAKDOWN_FIELD]: 'asd',
+                initialCustomFieldValue: [customField2],
                 children: [
                     {
                         [VALUE_FIELD]: tag2DailyValues.reduce(
                             (sum, v) => sum + v
                         ),
                         [BREAKDOWN_FIELD]: 'qwe',
+                        initialCustomFieldValue: null,
                         children: [],
                         timeSeries: [
                             {
@@ -348,12 +356,14 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                 {
                     [VALUE_FIELD]: tag1DailyValues.reduce((sum, v) => sum + v),
                     [BREAKDOWN_FIELD]: 'abc',
+                    initialCustomFieldValue: [customField1],
                     children: [
                         {
                             [VALUE_FIELD]: tag1DailyValues.reduce(
                                 (sum, v) => sum + v
                             ),
                             [BREAKDOWN_FIELD]: 'xyz',
+                            initialCustomFieldValue: null,
                             children: [],
                             decile: calculateDecile(
                                 tag1DailyValues.reduce((sum, v) => sum + v),
@@ -526,12 +536,14 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                 {
                     [VALUE_FIELD]: tag2DailyValues.reduce((sum, v) => sum + v),
                     [BREAKDOWN_FIELD]: 'asd',
+                    initialCustomFieldValue: [customField2],
                     children: [
                         {
                             [VALUE_FIELD]: tag2DailyValues.reduce(
                                 (sum, v) => sum + v
                             ),
                             [BREAKDOWN_FIELD]: 'qwe',
+                            initialCustomFieldValue: null,
                             children: [],
                             decile: calculateDecile(
                                 tag2DailyValues.reduce((sum, v) => sum + v),

@@ -9,17 +9,47 @@ import {
     getHeatmapMode,
     getValueMode,
     ValueMode,
+    getSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock, mockStore} from 'utils/testing'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+import {ReportingGranularity} from 'models/reporting/types'
 
 jest.mock('state/ui/stats/ticketInsightsSlice')
+jest.mock(
+    'state/ui/stats/agentPerformanceSlice',
+    () =>
+        ({
+            ...jest.requireActual('state/ui/stats/agentPerformanceSlice'),
+            getCleanStatsFiltersWithTimezone: jest.fn(),
+        } as Record<string, any>)
+)
+
 const getValueModeMock = assumeMock(getValueMode)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone
+)
+const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 
 describe('<CustomFieldsTicketCountDataRowContent />', () => {
     beforeEach(() => {
         getValueModeMock.mockReturnValue(ValueMode.TotalCount)
         getHeatmapModeMock.mockReturnValue(false)
+        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+            granularity: ReportingGranularity.Week,
+            cleanStatsFilters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+            },
+        } as any)
+        getSelectedCustomFieldMock.mockReturnValue({
+            id: 123,
+            label: 'someLabel',
+            isLoading: false,
+        })
     })
 
     it('should format total count values with thousands separator', () => {
@@ -28,6 +58,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         const props = {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: 3456,
+            initialCustomFieldValue: ['someTag'],
             timeSeries: [
                 {
                     dateTime: '2023-08-09',
@@ -61,6 +92,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         const props = {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: 56,
+            initialCustomFieldValue: ['someTag'],
             timeSeries: [
                 {
                     dateTime: '2023-08-09',
@@ -94,6 +126,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         const props = {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: 12,
+            initialCustomFieldValue: ['someTag'],
             timeSeries: [
                 {
                     dateTime: '2023-08-09',
@@ -132,6 +165,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             const props = {
                 [BREAKDOWN_FIELD]: 'someTag',
                 [VALUE_FIELD]: value,
+                initialCustomFieldValue: ['someTag'],
                 timeSeries: [
                     {
                         dateTime: '2023-08-09',
@@ -163,6 +197,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         const props = {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: undefined,
+            initialCustomFieldValue: ['someTag'],
             timeSeries: [
                 {
                     dateTime: '2023-08-09',
@@ -199,6 +234,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         const props = {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: undefined,
+            initialCustomFieldValue: ['someTag'],
             timeSeries: [
                 {
                     dateTime: '2023-08-09',

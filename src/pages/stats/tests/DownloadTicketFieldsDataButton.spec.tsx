@@ -15,7 +15,7 @@ import {
     DOWNLOAD_DATA_BUTTON_LABEL,
 } from 'pages/stats/DownloadTicketFieldsDataButton'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {formatDates} from 'pages/stats/CustomFieldsTicketCountBreakdownTable'
+import {formatDates} from 'pages/stats/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {RootState} from 'state/types'

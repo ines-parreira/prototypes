@@ -7,7 +7,7 @@ import {setMetricData, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import css from './DrillDownModalTrigger.less'
 
 type Props = {
-    metricData: DrillDownMetric | null
+    metricData: DrillDownMetric
     enabled?: boolean
 }
 

@@ -13,11 +13,16 @@ import {
     getHeatmapMode,
     getValueMode,
     ValueMode,
+    getSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+import {formatDates, getPeriodEndDateTime} from './utils'
 
 const EXPAND_COLUMN_WIDTH = 24
 const DEFAULT_MARGIN = 8
@@ -51,6 +56,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
     timeSeries,
     [BREAKDOWN_FIELD]: label,
     [VALUE_FIELD]: value = 0,
+    initialCustomFieldValue,
     percentage,
     decile,
     totalsDecile,
@@ -61,6 +67,8 @@ export const CustomFieldsTicketCountDataRowContent = ({
     const valueMode = useAppSelector(getValueMode)
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
+    const selectedCustomField = useAppSelector(getSelectedCustomField)
+    const {granularity} = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     return (
         <>
@@ -100,10 +108,25 @@ export const CustomFieldsTicketCountDataRowContent = ({
                 innerClassName={classNames(css.BodyCellContent)}
                 justifyContent={'right'}
             >
-                {formatAccordingToValueMode(valueMode)({
-                    value: value,
-                    percentage,
-                })}
+                <DrillDownModalTrigger
+                    enabled={
+                        formatAccordingToValueMode(valueMode)({
+                            value: value,
+                            percentage,
+                        }) !== NOT_AVAILABLE_PLACEHOLDER
+                    }
+                    metricData={{
+                        title: `${selectedCustomField.label} | ${label} | Total`,
+                        metricName:
+                            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                        customFieldValue: initialCustomFieldValue,
+                    }}
+                >
+                    {formatAccordingToValueMode(valueMode)({
+                        value: value,
+                        percentage,
+                    })}
+                </DrillDownModalTrigger>
             </BodyCell>
             {timeSeries.map((data) => (
                 <BodyCell
@@ -126,7 +149,32 @@ export const CustomFieldsTicketCountDataRowContent = ({
                     )}
                     justifyContent={'right'}
                 >
-                    {formatAccordingToValueMode(valueMode)(data)}
+                    <DrillDownModalTrigger
+                        enabled={
+                            formatAccordingToValueMode(valueMode)(data) !==
+                            NOT_AVAILABLE_PLACEHOLDER
+                        }
+                        metricData={{
+                            title: `${
+                                selectedCustomField.label
+                            } | ${label} | ${formatDates(
+                                granularity,
+                                data.dateTime
+                            )}`,
+                            metricName:
+                                TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                            customFieldValue: initialCustomFieldValue,
+                            dateRange: {
+                                start_datetime: data.dateTime,
+                                end_datetime: getPeriodEndDateTime(
+                                    data.dateTime,
+                                    granularity
+                                ),
+                            },
+                        }}
+                    >
+                        {formatAccordingToValueMode(valueMode)(data)}
+                    </DrillDownModalTrigger>
                 </BodyCell>
             ))}
         </>

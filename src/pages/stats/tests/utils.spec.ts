@@ -1,10 +1,21 @@
 import {ChartArea, TooltipItem} from 'chart.js'
+import moment from 'moment'
 
+import {
+    MONTH_AND_YEAR_SHORT,
+    SHORT_DATE_FORMAT_US,
+    SHORT_DATE_FORMAT_WORLD,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
+} from 'utils/date'
+import {ReportingGranularity} from 'models/reporting/types'
 import {
     getGradient,
     renderTickLabelAsNumber,
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
+    formatDates,
+    getPeriodEndDateTime,
 } from '../utils'
 
 describe('getGradient', () => {
@@ -94,4 +105,101 @@ describe('renderTickLabelAsNumber', () => {
     ])('For %p should return formatted as %p', (value, expected) => {
         expect(renderTickLabelAsNumber(value)).toEqual(expected)
     })
+})
+
+describe('formatDates', () => {
+    const languageMock = jest.fn()
+    Object.defineProperty(global.navigator, 'language', {
+        get: languageMock,
+    })
+    const date = moment()
+
+    it.each([
+        {
+            locale: 'en-US',
+            granularity: ReportingGranularity.Day,
+            formatted: date.format(SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US),
+        },
+        {
+            locale: 'world',
+            granularity: ReportingGranularity.Day,
+            formatted: date.format(
+                SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD
+            ),
+        },
+        {
+            locale: 'en-US',
+            granularity: ReportingGranularity.Week,
+            formatted: `${date
+                .clone()
+                .subtract(6, 'days')
+                .format(SHORT_DATE_FORMAT_US)} - ${date.format(
+                SHORT_DATE_FORMAT_US
+            )}`,
+        },
+        {
+            locale: 'world',
+            granularity: ReportingGranularity.Week,
+            formatted: `${date
+                .clone()
+                .subtract(6, 'days')
+                .format(SHORT_DATE_FORMAT_WORLD)} - ${date.format(
+                SHORT_DATE_FORMAT_WORLD
+            )}`,
+        },
+        {
+            locale: 'en-US',
+            granularity: ReportingGranularity.Month,
+            formatted: date.format(MONTH_AND_YEAR_SHORT),
+        },
+        {
+            locale: 'world',
+            granularity: ReportingGranularity.Month,
+            formatted: date.format(MONTH_AND_YEAR_SHORT),
+        },
+    ])(
+        'should format dates based on granularity ($granularity) and Users`s locale ($locale)',
+        ({locale, granularity, formatted}) => {
+            languageMock.mockReturnValue(locale)
+
+            expect(formatDates(granularity, date.toISOString())).toEqual(
+                formatted
+            )
+        }
+    )
+})
+
+describe('getPeriodEndDateTime', () => {
+    const startDateTime = moment().toISOString()
+
+    it.each([
+        {
+            granularity: ReportingGranularity.Day,
+            endDateTime: moment(startDateTime)
+                .clone()
+                .subtract(1, 'day')
+                .toISOString(),
+        },
+        {
+            granularity: ReportingGranularity.Week,
+            endDateTime: moment(startDateTime)
+                .clone()
+                .subtract(6, 'days')
+                .toISOString(),
+        },
+        {
+            granularity: ReportingGranularity.Month,
+            endDateTime: moment(startDateTime)
+                .clone()
+                .subtract(1, 'month')
+                .toISOString(),
+        },
+    ])(
+        'should return end date time based on granularity ($granularity) and start date time',
+        ({endDateTime, granularity}) => {
+            expect(getPeriodEndDateTime(startDateTime, granularity)).toEqual(
+                endDateTime
+            )
+        }
+    )
 })

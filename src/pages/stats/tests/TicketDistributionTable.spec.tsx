@@ -13,6 +13,7 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {RootState, StoreDispatch} from 'state/types'
+import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 
@@ -23,7 +24,8 @@ const MOCK_SKELETON_TEST_ID = 'skeleton'
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
-
+jest.mock('state/ui/stats/ticketInsightsSlice')
+const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 jest.mock('hooks/reporting/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
@@ -82,6 +84,11 @@ describe('<TicketDistributionTable>', () => {
     useTicketsDistributionMock.mockReturnValue(
         useTicketsDistributionReturnValue
     )
+    getSelectedCustomFieldMock.mockReturnValue({
+        id: 123,
+        label: 'someLabel',
+        isLoading: false,
+    })
 
     it('should render the table', () => {
         render(

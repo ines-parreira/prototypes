@@ -1,7 +1,17 @@
 import {ChartArea, TooltipItem} from 'chart.js'
+import moment from 'moment'
 
 import {toRGBA} from 'utils'
 import {formatPercentage} from 'pages/common/utils/numbers'
+import {getFormat} from 'pages/stats/common/utils'
+import {ReportingGranularity} from 'models/reporting/types'
+import {
+    MONTH_AND_YEAR_SHORT,
+    SHORT_DATE_FORMAT_US,
+    SHORT_DATE_FORMAT_WORLD,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
+} from 'utils/date'
 
 export const NUMBER_TICK_FORMATTER = new Intl.NumberFormat('en-US', {
     notation: 'compact',
@@ -55,4 +65,49 @@ export const renderTickLabelAsNumber = (value: string | number) => {
         return NUMBER_TICK_FORMATTER.format(value)
     }
     return value
+}
+
+export const formatDates = (
+    granularity: ReportingGranularity,
+    dateTime: string
+) => {
+    const date = moment(dateTime)
+    let format = getFormat(granularity)
+    const isUsFormat = window.navigator.language === 'en-US'
+
+    switch (granularity) {
+        case ReportingGranularity.Day:
+            format = isUsFormat
+                ? SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US
+                : SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD
+            break
+        case ReportingGranularity.Week:
+            format = isUsFormat ? SHORT_DATE_FORMAT_US : SHORT_DATE_FORMAT_WORLD
+            break
+        case ReportingGranularity.Month:
+            format = MONTH_AND_YEAR_SHORT
+            break
+    }
+
+    if (granularity === ReportingGranularity.Week) {
+        return `${date
+            .clone()
+            .subtract(6, 'days')
+            .format(format)} - ${date.format(format)}`
+    }
+
+    return date.format(format)
+}
+
+export const getPeriodEndDateTime = (
+    startDateTime: string,
+    granularity: ReportingGranularity
+) => {
+    const startDate = moment(startDateTime)
+
+    if (granularity === ReportingGranularity.Week) {
+        return moment(startDate).clone().subtract(6, 'days').toISOString()
+    }
+
+    return moment(startDate).clone().subtract(1, granularity).toISOString()
 }

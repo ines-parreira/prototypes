@@ -19,6 +19,10 @@ type Props = {
 }
 
 const cellColor = colors['📺 Classic'].Accessory.Blue_bg.value
+export const formatCategory = (category: string) =>
+    category
+        ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
+        .join(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR)
 
 export const DistributionCategoryCell = ({
     category,
@@ -36,10 +40,7 @@ export const DistributionCategoryCell = ({
         }
     }, [])
 
-    const content = category
-        ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
-        .join(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR)
-
+    const content = formatCategory(category)
     const tooltipTargetID = `category-${category.replace(/[^a-zA-Z0-9]/g, '_')}`
 
     return (

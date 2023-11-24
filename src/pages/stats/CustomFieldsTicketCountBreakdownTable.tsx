@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import moment from 'moment/moment'
 import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
 import useMeasure from 'react-use/lib/useMeasure'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
@@ -7,7 +6,6 @@ import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -18,7 +16,6 @@ import {TableBodyRowExpandable} from 'pages/common/components/table/TableBodyRow
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/BreakdownTable.less'
-import {getFormat} from 'pages/stats/common/utils'
 import {
     CustomFieldsTicketCountDataRowContent,
     DataRowProps,
@@ -26,51 +23,13 @@ import {
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {setOrder, TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
-import {
-    MONTH_AND_YEAR_SHORT,
-    SHORT_DATE_FORMAT_US,
-    SHORT_DATE_FORMAT_WORLD,
-    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
-    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
-} from 'utils/date'
+import {formatDates} from './utils'
 
 export const CUSTOM_FIELD_COLUMN_LABEL = 'Value / Category'
 export const TOTAL_COLUMN_LABEL = 'Total'
 export const CUSTOM_FIELDS_PER_PAGE = 15
 const CATEGORY_COLUMN_WIDTH = 250
 const DATA_COLUMN_WIDTH = 120
-
-export const formatDates = (
-    granularity: ReportingGranularity,
-    dateTime: string
-) => {
-    const date = moment(dateTime)
-    let format = getFormat(granularity)
-    const isUsFormat = window.navigator.language === 'en-US'
-
-    switch (granularity) {
-        case ReportingGranularity.Day:
-            format = isUsFormat
-                ? SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US
-                : SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD
-            break
-        case ReportingGranularity.Week:
-            format = isUsFormat ? SHORT_DATE_FORMAT_US : SHORT_DATE_FORMAT_WORLD
-            break
-        case ReportingGranularity.Month:
-            format = MONTH_AND_YEAR_SHORT
-            break
-    }
-
-    if (granularity === ReportingGranularity.Week) {
-        return `${date
-            .clone()
-            .subtract(6, 'days')
-            .format(format)} - ${date.format(format)}`
-    }
-
-    return date.format(format)
-}
 
 export const CustomFieldsTicketCountBreakdownTable = ({
     selectedCustomFieldId,

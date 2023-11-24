@@ -13,8 +13,15 @@ import {
     formatMetricValue,
 } from 'pages/stats/common/utils'
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import useAppSelector from 'hooks/useAppSelector'
 
-import {DistributionCategoryCell} from './DistributionCategoryCell'
+import {
+    DistributionCategoryCell,
+    formatCategory,
+} from './DistributionCategoryCell'
 import {NoDataAvailable} from './NoDataAvailable'
 
 import css from './TicketDistributionTable.less'
@@ -33,6 +40,7 @@ export const TicketDistributionTable = () => {
         outsideTopTotalPercentage,
         outsideTopTotalGaugePercentage,
     } = useTicketsDistribution()
+    const selectedCustomField = useAppSelector(getSelectedCustomField)
 
     return (
         <ChartCard
@@ -81,11 +89,24 @@ export const TicketDistributionTable = () => {
                                     category={item.category}
                                 />
                                 <BodyCell justifyContent="right" width={100}>
-                                    {formatMetricValue(
-                                        item.value,
-                                        'decimal',
-                                        NOT_AVAILABLE_PLACEHOLDER
-                                    )}
+                                    <DrillDownModalTrigger
+                                        metricData={{
+                                            title: `${
+                                                selectedCustomField.label
+                                            } | ${formatCategory(
+                                                item.category
+                                            )}`,
+                                            metricName:
+                                                TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                                            customFieldValue: item.category,
+                                        }}
+                                    >
+                                        {formatMetricValue(
+                                            item.value,
+                                            'decimal',
+                                            NOT_AVAILABLE_PLACEHOLDER
+                                        )}
+                                    </DrillDownModalTrigger>
                                 </BodyCell>
                                 <BodyCell justifyContent="right" width={80}>
                                     {formatMetricValue(
@@ -130,7 +151,16 @@ export const TicketDistributionTable = () => {
                                 Total
                             </BodyCell>
                             <BodyCell justifyContent="right" width={100}>
-                                {formatMetricValue(ticketsCountTotal)}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: `${selectedCustomField.label} | Total`,
+                                        metricName:
+                                            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                                        customFieldValue: null,
+                                    }}
+                                >
+                                    {formatMetricValue(ticketsCountTotal)}
+                                </DrillDownModalTrigger>
                             </BodyCell>
                             <BodyCell justifyContent="right" width={80}>
                                 100%

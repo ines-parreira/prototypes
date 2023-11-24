@@ -44,6 +44,7 @@ export type TicketCustomFieldsTicketCountTimeSeriesData = {
     [BREAKDOWN_FIELD]: string
     [VALUE_FIELD]?: number
     timeSeries: TimeSeriesDataItem[]
+    initialCustomFieldValue: string[] | null
 }
 
 export type TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile =
@@ -54,6 +55,7 @@ export type TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile =
         percentage: number
         decile: number
         totalsDecile: number
+        initialCustomFieldValue: string[] | null
     }
 
 type WithChildren<T> = T & {children: WithChildren<T>[]}
@@ -114,6 +116,7 @@ export const selectTimeSeriesWithBreakdown = (
                     [BREAKDOWN_FIELD]: currentValue,
                     [VALUE_FIELD]: accumulator[VALUE_FIELD],
                     timeSeries: accumulator.timeSeries,
+                    initialCustomFieldValue: [element[BREAKDOWN_FIELD]],
                     children: [accumulator],
                 }
             },
@@ -123,6 +126,7 @@ export const selectTimeSeriesWithBreakdown = (
                     (sum, cur) => sum + cur.value,
                     0
                 ),
+                initialCustomFieldValue: [element[BREAKDOWN_FIELD]],
                 timeSeries: element.timeSeries,
                 children: [],
             }
@@ -192,6 +196,12 @@ const mergeTimeSeries =
             return {
                 [BREAKDOWN_FIELD]: acc[BREAKDOWN_FIELD],
                 [VALUE_FIELD]: summed.reduce((sum, cur) => sum + cur.value, 0),
+                initialCustomFieldValue: acc.initialCustomFieldValue
+                    ? [
+                          ...acc.initialCustomFieldValue,
+                          ...(currVal.initialCustomFieldValue || []),
+                      ]
+                    : null,
                 timeSeries: summed,
                 children: _orderBy(
                     compact(

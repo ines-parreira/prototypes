@@ -114,7 +114,7 @@ describe('withBreakdown', () => {
             ])
         })
 
-        it('should handle timnSeries data', () => {
+        it('should handle timeSeries data', () => {
             const results = customTags.map((tag) => ({
                 [BREAKDOWN_FIELD]: tag,
                 [VALUE_FIELD]: '1',
@@ -194,6 +194,7 @@ describe('withBreakdown', () => {
         const timeSeriesData: TicketCustomFieldsTicketCountTimeSeriesData[] =
             customFields.map((tag) => ({
                 [BREAKDOWN_FIELD]: tag,
+                initialCustomFieldValue: [tag],
                 timeSeries: [
                     {
                         label: tag,
@@ -229,17 +230,20 @@ describe('withBreakdown', () => {
                         [tagL3_1, tagL3_2, tagL3_3].length *
                         (day1Value + day2Value + day3Value),
                     [BREAKDOWN_FIELD]: tagL1_1,
+                    initialCustomFieldValue: [tag1, tag2, tag3],
                     children: [
                         {
                             [VALUE_FIELD]:
                                 [tagL3_1, tagL3_2].length *
                                 (day1Value + day2Value + day3Value),
                             [BREAKDOWN_FIELD]: tagL2_1,
+                            initialCustomFieldValue: [tag1, tag2],
                             children: [
                                 {
                                     [VALUE_FIELD]:
                                         day1Value + day2Value + day3Value,
                                     [BREAKDOWN_FIELD]: tagL3_2,
+                                    initialCustomFieldValue: [tag2],
                                     children: [],
                                     timeSeries: [
                                         {
@@ -262,6 +266,7 @@ describe('withBreakdown', () => {
                                 {
                                     [VALUE_FIELD]: 9,
                                     [BREAKDOWN_FIELD]: tagL3_1,
+                                    initialCustomFieldValue: [tag1],
                                     children: [],
                                     timeSeries: [
                                         {
@@ -308,11 +313,13 @@ describe('withBreakdown', () => {
                                 [tagL3_3].length *
                                 (day1Value + day2Value + day3Value),
                             [BREAKDOWN_FIELD]: tagL2_2,
+                            initialCustomFieldValue: [tag3],
                             children: [
                                 {
                                     [VALUE_FIELD]:
                                         day1Value + day2Value + day3Value,
                                     [BREAKDOWN_FIELD]: tagL3_3,
+                                    initialCustomFieldValue: [tag3],
                                     children: [],
                                     timeSeries: [
                                         {

@@ -1,11 +1,11 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
@@ -16,7 +16,6 @@ import {
     CUSTOM_FIELD_COLUMN_LABEL,
     CUSTOM_FIELDS_PER_PAGE,
     CustomFieldsTicketCountBreakdownTable,
-    formatDates,
     TOTAL_COLUMN_LABEL,
 } from 'pages/stats/CustomFieldsTicketCountBreakdownTable'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
@@ -27,15 +26,9 @@ import {
     setOrder,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {
-    MONTH_AND_YEAR_SHORT,
-    SHORT_DATE_FORMAT_US,
-    SHORT_DATE_FORMAT_WORLD,
-    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
-    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
-} from 'utils/date'
 import {getFilterDateRange} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
+import {formatDates} from '../utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -71,6 +64,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         {
             'TicketCustomFields.ticketCount': 668,
             'TicketCustomFields.valueString': 'abc',
+            initialCustomFieldValue: ['abc::xyz'],
             decile: 9,
             totalsDecile: 7,
             percentage: 100,
@@ -78,6 +72,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 {
                     'TicketCustomFields.ticketCount': 668,
                     'TicketCustomFields.valueString': 'xyz',
+                    initialCustomFieldValue: null,
                     decile: 9,
                     totalsDecile: 7,
                     percentage: 100,
@@ -232,6 +227,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         const dataPoint = {
             [BREAKDOWN_FIELD]: 'abc',
             [VALUE_FIELD]: 2,
+            initialCustomFieldValue: ['abc'],
             timeSeries: [
                 {
                     dateTime: '2021-05-29T23:59:59+02:00',
@@ -431,66 +427,4 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             })
         })
     })
-})
-
-describe('formatDates', () => {
-    const languageMock = jest.fn()
-    Object.defineProperty(global.navigator, 'language', {
-        get: languageMock,
-    })
-    const date = moment()
-
-    it.each([
-        {
-            locale: 'en-US',
-            granularity: ReportingGranularity.Day,
-            formatted: date.format(SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US),
-        },
-        {
-            locale: 'world',
-            granularity: ReportingGranularity.Day,
-            formatted: date.format(
-                SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD
-            ),
-        },
-        {
-            locale: 'en-US',
-            granularity: ReportingGranularity.Week,
-            formatted: `${date
-                .clone()
-                .subtract(6, 'days')
-                .format(SHORT_DATE_FORMAT_US)} - ${date.format(
-                SHORT_DATE_FORMAT_US
-            )}`,
-        },
-        {
-            locale: 'world',
-            granularity: ReportingGranularity.Week,
-            formatted: `${date
-                .clone()
-                .subtract(6, 'days')
-                .format(SHORT_DATE_FORMAT_WORLD)} - ${date.format(
-                SHORT_DATE_FORMAT_WORLD
-            )}`,
-        },
-        {
-            locale: 'en-US',
-            granularity: ReportingGranularity.Month,
-            formatted: date.format(MONTH_AND_YEAR_SHORT),
-        },
-        {
-            locale: 'world',
-            granularity: ReportingGranularity.Month,
-            formatted: date.format(MONTH_AND_YEAR_SHORT),
-        },
-    ])(
-        'should format dates based on granularity ($granularity) and Users`s locale ($locale)',
-        ({locale, granularity, formatted}) => {
-            languageMock.mockReturnValue(locale)
-
-            expect(formatDates(granularity, date.toISOString())).toEqual(
-                formatted
-            )
-        }
-    )
 })

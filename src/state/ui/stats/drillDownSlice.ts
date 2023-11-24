@@ -36,10 +36,6 @@ export type AgentsMetrics = {
 
 export type TicketFieldsMetrics = {
     metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-    customField: {
-        id: number
-        label: string
-    }
     customFieldValue: string | string[] | null
 } & CommonMetrics
 
