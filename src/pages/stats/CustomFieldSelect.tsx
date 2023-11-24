@@ -40,14 +40,15 @@ export const CustomFieldSelect = () => {
     )
 
     useEffect(() => {
-        dispatch(
-            setSelectedCustomField({
-                id: activeFields[0] !== undefined ? activeFields[0].id : null,
-                label:
-                    activeFields[0] !== undefined ? activeFields[0].label : '',
-                isLoading,
-            })
-        )
+        if (activeFields[0] !== undefined) {
+            dispatch(
+                setSelectedCustomField({
+                    id: activeFields[0].id,
+                    label: activeFields[0].label,
+                    isLoading,
+                })
+            )
+        }
     }, [activeFields, isLoading, dispatch])
 
     return isLoading ? (
