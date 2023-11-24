@@ -70,11 +70,19 @@ export const CustomFieldsTicketCountBreakdownTable = ({
         )
     }, [currentPage, customFieldDataRows])
 
+    const hasPagination = customFieldDataRows.length >= CUSTOM_FIELDS_PER_PAGE
+
     return customFieldDataRows.length === 0 && !isLoading ? (
         <NoDataAvailable className={css.NoDataAvailable} />
     ) : (
         <>
-            <div ref={ref} className={css.container} onScroll={handleScroll}>
+            <div
+                ref={ref}
+                className={classNames(css.container, {
+                    [css.withPagination]: hasPagination,
+                })}
+                onScroll={handleScroll}
+            >
                 <TableWrapper className={css.table} style={{width}}>
                     <TableHead>
                         <HeaderCellProperty
@@ -154,7 +162,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                 </TableWrapper>
             </div>
             <div>
-                {customFieldDataRows.length >= CUSTOM_FIELDS_PER_PAGE && (
+                {hasPagination && (
                     <NumberedPagination
                         count={Math.ceil(
                             customFieldDataRows.length / CUSTOM_FIELDS_PER_PAGE
