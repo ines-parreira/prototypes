@@ -12,15 +12,22 @@ type Props = {
     action?: ReactNode
     isLoading?: boolean
     children: ReactNode
+    className?: string
 }
 
-const AutomationView = ({title, action, isLoading, children}: Props) => {
+const AutomationView = ({
+    title,
+    action,
+    isLoading,
+    children,
+    className,
+}: Props) => {
     return (
         <div className="full-width">
             <PageHeader title={title}>{action}</PageHeader>
             <Container
                 fluid
-                className={classnames(css.container, {
+                className={classnames(css.container, className, {
                     [css.isLoading]: isLoading,
                 })}
             >

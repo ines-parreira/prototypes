@@ -158,6 +158,7 @@ import SelfServiceContactFormsProvider from './automation/common/providers/SelfS
 import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketInsights'
 import AutomateLandingPage from './automation/common/components/AutomateLandingPage'
 import AutomateStatsPaywall from './stats/AutomateStatsPaywall'
+import TrainMyAiViewContainer from './automation/trainMyAi/TrainMyAiViewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1319,6 +1320,7 @@ function AutomationContent() {
     const {path} = useRouteMatch()
     const {isAutomateRebranding} = useIsAutomateRebranding()
     const settingPath = '/app/settings'
+    const isTrainMyAiEnabled = useFlags()[FeatureFlagKey.TrainMyAiEnabled]
     return (
         <Switch>
             {/* Macros */}
@@ -1540,6 +1542,16 @@ function AutomationContent() {
                     AGENT_ROLE
                 )}
             />
+            {isTrainMyAiEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/train-my-ai`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        TrainMyAiViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
             <Route path={`${path}/:shopType/:shopName/connected-channels`}>
                 <SelfServiceHelpCentersProvider>
                     <SelfServiceContactFormsProvider>

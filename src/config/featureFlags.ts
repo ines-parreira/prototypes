@@ -64,6 +64,7 @@ export enum FeatureFlagKey {
     EnableNewLanguages = 'enable-new-languages',
     TaapNewReplyMessageChannelSelector = 'taap-new-reply-message-channel-selector',
     DisplayVoiceAnalytics = 'display-voice-analytics',
+    TrainMyAiEnabled = 'train-my-ai-enabled',
     AutomateRebranding = 'automate-rebranding',
     AutomateShowAttachmentUploadDisclaimer = 'automate-show-attachment-upload-disclaimer',
     MLFeaturesKillswitch = 'ml-features-killswitch',
