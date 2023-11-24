@@ -32,7 +32,7 @@ import {UserRole} from 'config/types/user'
 import {ManagedRule} from 'state/rules/types'
 import {hasRole} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import InTicketSuggestion from './InTicketSuggestion'
 
 import css from './RuleSuggestion.less'

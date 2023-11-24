@@ -4,7 +4,7 @@ import {MetricName} from 'services/reporting/constants'
 import {getPerformanceTip, Tip} from 'services/supportPerformanceTipService'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 
 export const usePerformanceTips = (
     metric: MetricName,

@@ -30,7 +30,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import List from './accountRules/RulesList'
 import CourseCard from './components/CourseCard'
 import CreateRuleFooter from './components/CreateRuleFooter'

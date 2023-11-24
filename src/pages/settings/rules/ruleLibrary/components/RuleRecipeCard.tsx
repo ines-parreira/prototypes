@@ -48,7 +48,7 @@ import {RuleRecipe} from 'models/ruleRecipe/types'
 import successIcon from 'assets/img/icons/success.svg'
 
 import {RuleDraft} from 'models/rule/types'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {CodeASTType} from '../../types'
 
 import {tagColors} from '../constants'

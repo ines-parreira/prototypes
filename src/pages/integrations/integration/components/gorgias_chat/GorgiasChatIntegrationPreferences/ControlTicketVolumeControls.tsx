@@ -7,13 +7,13 @@ import classnames from 'classnames'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Tooltip from 'pages/common/components/Tooltip'
-import {useHelpCenterPublishedArticlesCount} from 'pages/automation/common/hooks/useHelpCenterPublishedArticlesCount'
+import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import {TicketChannel} from 'business/types/ticket'
 
-import {ARTICLE_RECOMMENDATION} from 'pages/automation/common/components/constants'
+import {ARTICLE_RECOMMENDATION} from 'pages/automate/common/components/constants'
 import css from './GorgiasChatIntegrationPreferences.less'
 
 type Props = {

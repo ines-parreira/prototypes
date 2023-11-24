@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
+import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'

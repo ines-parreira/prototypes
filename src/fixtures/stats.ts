@@ -12,7 +12,7 @@ import {
 import {
     ARTICLE_RECOMMENDATION,
     QUICK_RESPONSES,
-} from 'pages/automation/common/components/constants'
+} from 'pages/automate/common/components/constants'
 
 export const statsFilters: StatsFilters = {
     period: {

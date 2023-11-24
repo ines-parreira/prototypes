@@ -31,7 +31,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import {errorToChildren} from 'utils'
 
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './MacrosSettingsTable.less'
 
 type OwnProps = {

@@ -2,7 +2,7 @@ import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {PreviewChannelButton} from '../PreviewChannelButton'
-import {SelfServiceChannel} from '../../../../automation/common/hooks/useSelfServiceChannels'
+import {SelfServiceChannel} from '../../../../automate/common/hooks/useSelfServiceChannels'
 import {TicketChannel} from '../../../../../business/types/ticket'
 import {getHelpCentersResponseFixture} from '../../../helpCenter/fixtures/getHelpCentersResponse.fixture'
 

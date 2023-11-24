@@ -15,8 +15,8 @@ import {
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getHasAutomate} from 'state/billing/selectors'
 import {Category} from 'models/integration/types'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
-import AutomationNavbarPaywallNavbarLink from '../../automation/common/components/AutomationNavbarPaywallNavbarLink'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
+import AutomationNavbarPaywallNavbarLink from '../../automate/common/components/AutomationNavbarPaywallNavbarLink'
 import {
     ROUTE_AUTOMATE_OVERVIEW,
     PAGE_TITLE_OVERVIEW,

@@ -42,17 +42,17 @@ import {
 } from 'config/paywalls'
 import PageHeader from 'pages/common/components/PageHeader'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
-import useWorkflowApi from 'pages/automation/workflows/hooks/useWorkflowApi'
-import {WorkflowConfigurationShallow} from 'pages/automation/workflows/models/workflowConfiguration.types'
+import useWorkflowApi from 'pages/automate/workflows/hooks/useWorkflowApi'
+import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import useStatResource from 'hooks/reporting/useStatResource'
 import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
-} from 'pages/automation/common/components/constants'
-import withEcommerceIntegration from 'pages/automation/common/utils/withStoreIntegrations'
+} from 'pages/automate/common/components/constants'
+import withEcommerceIntegration from 'pages/automate/common/utils/withStoreIntegrations'
 import {FeatureFlagKey} from 'config/featureFlags'
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import PeriodStatsFilter from '../PeriodStatsFilter'

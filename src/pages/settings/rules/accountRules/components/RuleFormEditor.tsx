@@ -30,7 +30,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import TrackedRuleLibraryLink, {
     Source,
 } from '../../components/TrackedRuleLibraryLink'

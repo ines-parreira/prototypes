@@ -10,7 +10,7 @@ import Errors from 'pages/common/components/ast/Errors'
 import {computeLeftPadding} from 'pages/common/components/ast/utils'
 import {RuleItemActions} from 'pages/settings/rules/types'
 
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
 import css from './Action.less'

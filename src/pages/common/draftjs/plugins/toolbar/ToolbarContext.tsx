@@ -2,7 +2,7 @@ import React, {ComponentType, createContext, useContext} from 'react'
 import _noop from 'lodash/noop'
 import {List} from 'immutable'
 
-import {FlowVariableList} from 'pages/automation/workflows/models/variables.types'
+import {FlowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails} from 'models/integration/types'
 

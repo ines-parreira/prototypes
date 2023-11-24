@@ -7,7 +7,7 @@ import {
     FLOWS,
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
-} from 'pages/automation/common/components/constants'
+} from 'pages/automate/common/components/constants'
 import {Reason} from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'

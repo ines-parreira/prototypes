@@ -23,7 +23,7 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 
 import Tooltip from 'pages/common/components/Tooltip'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {RuleItemActions} from '../../types'
 
 import {

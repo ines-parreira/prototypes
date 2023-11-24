@@ -38,7 +38,7 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import RuleLibrary from './ruleLibrary/RuleLibrary'
 import CreateCustomRuleFooter from './components/CreateCustomRuleFooter'
 

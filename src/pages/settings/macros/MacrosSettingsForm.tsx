@@ -46,8 +46,8 @@ import {MacroApiError} from 'state/macro/types'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {MacroActionName} from 'models/macroAction/types'
 
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
-import UploadingSensitiveInformationDisclaimer from 'pages/automation/common/components/UploadingSensitiveInformationDisclaimer'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
+import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
 import {FeatureFlagKey} from 'config/featureFlags'
 import css from './MacrosSettingsForm.less'
 

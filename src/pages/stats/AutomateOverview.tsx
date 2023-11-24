@@ -38,7 +38,7 @@ import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketChannel} from 'business/types/ticket'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 
-import withStoreIntegration from 'pages/automation/common/utils/withStoreIntegrations'
+import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrations'
 import {
     MetricTrendFormat,
     SHORT_FORMAT,

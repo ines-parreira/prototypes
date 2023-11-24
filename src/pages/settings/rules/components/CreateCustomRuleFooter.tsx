@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './CreateCustomRuleFooter.less'
 
 const CreateCustomRuleFooter: React.FC = () => {

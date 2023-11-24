@@ -37,7 +37,7 @@ import {
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {AutomationPrice, Price, ProductType} from 'models/billing/types'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {SegmentEvent, logEvent} from 'common/segment'
 import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'

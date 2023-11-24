@@ -14,7 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {TicketVias} from '../../../../../business/ticket'
 import {
     Meta as MetaType,

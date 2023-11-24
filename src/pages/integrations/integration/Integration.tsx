@@ -8,7 +8,7 @@ import {useUpdateEffect, useAsyncFn} from 'react-use'
 import {Container} from 'reactstrap'
 import classNames from 'classnames'
 
-import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {getHasAutomate, makeHasFeature} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'

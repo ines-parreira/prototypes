@@ -2,7 +2,7 @@ import React from 'react'
 import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
-} from 'pages/automation/common/components/constants'
+} from 'pages/automate/common/components/constants'
 import {
     IdentifierCategoryKey,
     IdentifierCategoryValue,

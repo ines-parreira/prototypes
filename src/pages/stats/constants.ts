@@ -4,7 +4,7 @@ import {
     ARTICLE_RECOMMENDATION,
     FLOWS,
     QUICK_RESPONSES,
-} from 'pages/automation/common/components/constants'
+} from 'pages/automate/common/components/constants'
 import {AutomatedInteractionByFeatures} from './types'
 
 export const FEATURE_LABELS: Record<AutomatedInteractionByFeatures, string> = {

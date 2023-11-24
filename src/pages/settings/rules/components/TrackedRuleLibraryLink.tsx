@@ -5,7 +5,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 
 export enum Source {
     CreateRuleButton = 'create-rule-button',

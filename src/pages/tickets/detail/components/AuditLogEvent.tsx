@@ -34,7 +34,7 @@ import {eventNameToLabel} from 'config/rules'
 
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {textToHTML} from 'utils/html'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './Event.less'
 
 type Props = {

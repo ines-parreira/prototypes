@@ -1,6 +1,6 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
-import {FlowVariableList} from 'pages/automation/workflows/models/variables.types'
+import {FlowVariableList} from 'pages/automate/workflows/models/variables.types'
 import FlowVariablePicker, {
     FlowVariablePickerProps,
 } from '../FlowVariablePicker'

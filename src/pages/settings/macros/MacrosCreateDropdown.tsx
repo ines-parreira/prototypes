@@ -16,7 +16,7 @@ import {JobType} from 'models/job/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import history from '../../history'
 
 import MacrosCSVImportPopover from './MacrosCSVImportPopover'

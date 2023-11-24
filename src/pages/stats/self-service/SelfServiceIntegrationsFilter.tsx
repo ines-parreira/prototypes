@@ -2,7 +2,7 @@ import React from 'react'
 
 import {Value} from 'pages/common/forms/SelectField/types'
 import {StatsFilters} from 'models/stat/types'
-import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {getIconFromType} from 'state/integrations/helpers'
 
 import SelectFilter from '../common/SelectFilter'

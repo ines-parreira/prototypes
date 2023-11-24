@@ -12,7 +12,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import history from 'pages/history'
 
 import {RootState} from 'state/types'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {RuleFormEditor} from './components/RuleFormEditor'
 
 export function RuleDetailForm({

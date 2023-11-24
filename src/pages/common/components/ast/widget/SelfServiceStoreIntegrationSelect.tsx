@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo} from 'react'
 import {fromJS} from 'immutable'
 
-import useShopifyIntegrations from 'pages/automation/common/hooks/useShopifyIntegrations'
+import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {RenderLabel} from 'pages/common/utils/labels'

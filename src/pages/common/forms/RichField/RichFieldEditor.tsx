@@ -21,7 +21,7 @@ import React, {
 import {UploadType} from 'common/types'
 import {extractUrlsFromString} from 'utils'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
-import createFlowVariablesPlugin from 'pages/automation/workflows/draftjs/plugins/variables'
+import createFlowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import shortcutManager from 'services/shortcutManager'
 
 import {ConnectedAction} from '../../../../state/types'

@@ -43,7 +43,7 @@ import {
 
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import Tooltip from 'pages/common/components/Tooltip'
-import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './RuleRow.less'
 import {getRuleActions} from './ruleEditors/utils'
 

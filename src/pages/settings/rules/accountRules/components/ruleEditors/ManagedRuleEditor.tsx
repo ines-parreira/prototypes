@@ -31,7 +31,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {ManagedRuleSettings, ManagedRulesSlugs} from 'state/rules/types'
 
 import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
-import UploadingSensitiveInformationDisclaimer from 'pages/automation/common/components/UploadingSensitiveInformationDisclaimer'
+import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
 import {FeatureFlagKey} from 'config/featureFlags'
 import type {ManagedRuleEditorProps, EditorHandle} from '../RuleFormEditor'
 import AutoCloseSpamEditor from './AutoCloseSpamEditor'

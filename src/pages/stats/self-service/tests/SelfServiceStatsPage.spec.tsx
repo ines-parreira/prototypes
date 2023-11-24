@@ -45,7 +45,7 @@ jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock('models/selfServiceConfiguration/resources', () => ({
     fetchSelfServiceConfigurations: jest.fn(() => Promise.resolve([])),
 }))
-jest.mock('pages/automation/workflows/hooks/useWorkflowApi', () => ({
+jest.mock('pages/automate/workflows/hooks/useWorkflowApi', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         fetchWorkflowConfigurations: jest.fn(() => Promise.resolve([])),
