@@ -178,7 +178,13 @@ export default function StatsNavbarView() {
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/ticket-fields"
                         >
-                            Ticket Fields
+                            Ticket Fields{' '}
+                            <Badge
+                                type={ColorType.Blue}
+                                className={cssNavbar.badge}
+                            >
+                                NEW
+                            </Badge>
                         </NavbarLink>
                     </div>
                     <div
