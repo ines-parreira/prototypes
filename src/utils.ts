@@ -432,10 +432,13 @@ export const replaceAttachmentURL = (url: string, format?: string) => {
     }
 
     if (isProduction()) {
+        const hostnameTLD = location.hostname.split('.').pop()
+        const tld = hostnameTLD === 'io' ? 'io' : 'com'
+
         return (
             url.replace(
                 '//uploads.gorgias.io',
-                `//${accountDomain}.gorgias.com/${ATTACHMENT_PATH}`
+                `//${accountDomain}.gorgias.${tld}/${ATTACHMENT_PATH}`
             ) + formatParam
         )
     }
