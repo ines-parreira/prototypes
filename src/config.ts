@@ -38,11 +38,13 @@ export const DATADOG_RUM_APPLICATION_ID = 'a9fcd4e9-2ebd-47e7-92c2-9438dd12c9df'
 export const HTTP_METHOD_GET = 'GET'
 export const HTTP_METHOD_POST = 'POST'
 export const HTTP_METHOD_PUT = 'PUT'
+export const HTTP_METHOD_PATCH = 'PATCH'
 export const HTTP_METHOD_DELETE = 'DELETE'
 export const AVAILABLE_HTTP_METHODS = [
     HTTP_METHOD_GET,
     HTTP_METHOD_POST,
     HTTP_METHOD_PUT,
+    HTTP_METHOD_PATCH,
     HTTP_METHOD_DELETE,
 ]
 

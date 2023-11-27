@@ -91,6 +91,11 @@ exports[`<Form/> should render with preloaded data 1`] = `
                     PUT
                   </option>
                   <option
+                    value="PATCH"
+                  >
+                    PATCH
+                  </option>
+                  <option
                     value="DELETE"
                   >
                     DELETE
@@ -280,6 +285,11 @@ exports[`<Form/> should render without any data 1`] = `
                     value="PUT"
                   >
                     PUT
+                  </option>
+                  <option
+                    value="PATCH"
+                  >
+                    PATCH
                   </option>
                   <option
                     value="DELETE"

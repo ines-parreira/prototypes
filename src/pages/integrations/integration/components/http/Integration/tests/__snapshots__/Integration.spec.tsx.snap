@@ -153,6 +153,12 @@ exports[`Integration should display data about the integration 1`] = `
           PUT
         </option>
         <option
+          key="PATCH"
+          value="PATCH"
+        >
+          PATCH
+        </option>
+        <option
           key="DELETE"
           value="DELETE"
         >
@@ -409,6 +415,12 @@ exports[`Integration should display data with url-encoded format 1`] = `
           value="PUT"
         >
           PUT
+        </option>
+        <option
+          key="PATCH"
+          value="PATCH"
+        >
+          PATCH
         </option>
         <option
           key="DELETE"
@@ -679,6 +691,12 @@ exports[`Integration should display default values because there is no integrati
           value="PUT"
         >
           PUT
+        </option>
+        <option
+          key="PATCH"
+          value="PATCH"
+        >
+          PATCH
         </option>
         <option
           key="DELETE"

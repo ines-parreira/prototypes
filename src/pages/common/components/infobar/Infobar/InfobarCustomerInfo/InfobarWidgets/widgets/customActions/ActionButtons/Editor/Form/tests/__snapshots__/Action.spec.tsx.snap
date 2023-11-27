@@ -42,6 +42,11 @@ exports[`<Action/> should render with a Body component 1`] = `
               PUT
             </option>
             <option
+              value="PATCH"
+            >
+              PATCH
+            </option>
+            <option
               value="DELETE"
             >
               DELETE
@@ -238,6 +243,11 @@ exports[`<Action/> should render without a Body component 1`] = `
               value="PUT"
             >
               PUT
+            </option>
+            <option
+              value="PATCH"
+            >
+              PATCH
             </option>
             <option
               value="DELETE"

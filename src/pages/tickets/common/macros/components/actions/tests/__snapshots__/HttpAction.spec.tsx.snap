@@ -75,6 +75,11 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
               PUT
             </option>
             <option
+              value="PATCH"
+            >
+              PATCH
+            </option>
+            <option
               value="DELETE"
             >
               DELETE
