@@ -158,6 +158,11 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                     void this.props.setStatus(TicketStatusEnum.Open)
                 },
             },
+            MARK_TICKET_SPAM: {
+                action: () => {
+                    void this._toggleSpam()
+                },
+            },
             DELETE_TICKET: {
                 action: () => {
                     if (!hasRole(currentUser, UserRole.Agent)) {

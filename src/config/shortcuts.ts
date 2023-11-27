@@ -122,7 +122,7 @@ const shortcuts: Record<string, KeyMap> = {
             },
             DELETE_TICKET: {
                 key: '#',
-                description: 'Delete selected tickets.',
+                description: 'Delete selected tickets (send to trash).',
             },
         },
     },
@@ -154,7 +154,6 @@ const shortcuts: Record<string, KeyMap> = {
                 key: 'k',
                 description: 'Scroll to the previous message.',
             },
-
             FOCUS_REPLY_AREA: {
                 key: 'r',
                 description: 'Focus on the reply area.',
@@ -178,6 +177,10 @@ const shortcuts: Record<string, KeyMap> = {
             DELETE_TICKET: {
                 key: '#',
                 description: 'Delete the ticket (send to trash).',
+            },
+            MARK_TICKET_SPAM: {
+                key: '!',
+                description: 'Mark ticket as spam.',
             },
             SHOW_MACROS: {
                 key: 'm',
