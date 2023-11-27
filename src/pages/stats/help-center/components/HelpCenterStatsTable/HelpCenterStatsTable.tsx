@@ -126,7 +126,10 @@ const HelpCenterStatsTable = ({
                                 })}
                             >
                                 {column.tooltip && (
-                                    <HintTooltip {...column.tooltip} />
+                                    <HintTooltip
+                                        className={css.columnHeaderTooltip}
+                                        {...column.tooltip}
+                                    />
                                 )}
                             </HeaderCellProperty>
                         ))}

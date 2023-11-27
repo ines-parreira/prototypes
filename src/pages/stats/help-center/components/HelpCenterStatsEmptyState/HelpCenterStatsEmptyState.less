@@ -1,3 +1,5 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .container {
         height: 100%;
@@ -9,12 +11,12 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 32px;
+        gap: @layout-spacing-l;
 
         text-align: center;
     }
 
     .content {
-        padding-bottom: 24px;
+        padding-bottom: @layout-spacing-m;
     }
 }

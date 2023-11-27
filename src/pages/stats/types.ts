@@ -26,4 +26,5 @@ export type TwoDimensionalDataItem = {
 export type TooltipData = {
     title: string
     link?: string
+    className?: string
 }

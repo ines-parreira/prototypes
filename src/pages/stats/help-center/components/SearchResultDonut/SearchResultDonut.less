@@ -1,3 +1,5 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .card {
         height: 324px;
@@ -5,7 +7,7 @@
     .donut {
         display: flex;
         flex-direction: column;
-        gap: 24px;
+        gap: @layout-spacing-m;
     }
     .legend {
         justify-content: center;
