@@ -252,7 +252,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Create field
       </button>
       <button
         aria-disabled="false"

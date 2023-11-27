@@ -46,7 +46,7 @@ describe('<AddFieldForm/>', () => {
             .onPost('/api/custom-fields')
             .reply(200, ticketInputFieldDefinition)
 
-        const {findByTestId, findByLabelText} = renderWithRouter(
+        const {findByText, findByLabelText} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
@@ -59,7 +59,7 @@ describe('<AddFieldForm/>', () => {
         const nameInput = await findByLabelText(/Name/)
         fireEvent.change(nameInput, {target: {value: 'Test name'}})
 
-        const saveButton = await findByTestId('save-button')
+        const saveButton = await findByText(/Create field/)
         saveButton.click()
 
         await waitFor(() => mockedServer.history.post.length > 0)

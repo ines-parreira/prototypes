@@ -37,6 +37,11 @@ export default function AddFieldForm(props: AddFieldFormProps) {
     }
 
     return (
-        <FieldForm field={newField} onSubmit={handleSubmit} onClose={close} />
+        <FieldForm
+            field={newField}
+            onSubmit={handleSubmit}
+            onClose={close}
+            submitLabel="Create field"
+        />
     )
 }

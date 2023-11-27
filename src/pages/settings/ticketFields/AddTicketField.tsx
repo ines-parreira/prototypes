@@ -20,7 +20,7 @@ export default function AddTicketField() {
                                 Ticket fields
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>Add field</BreadcrumbItem>
+                        <BreadcrumbItem active>New field</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

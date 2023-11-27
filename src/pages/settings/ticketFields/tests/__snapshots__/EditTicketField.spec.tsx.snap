@@ -228,7 +228,7 @@ exports[`<EditTicketField/> should render 2`] = `
               data-testid="save-button"
               type="button"
             >
-              Save Changes
+              Save changes
             </button>
             <button
               aria-disabled="false"

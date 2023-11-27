@@ -175,7 +175,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Save changes
       </button>
       <button
         aria-disabled="false"
@@ -557,7 +557,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Save changes
       </button>
       <button
         aria-disabled="false"
@@ -736,7 +736,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Save changes
       </button>
       <button
         aria-disabled="false"
@@ -915,7 +915,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Save changes
       </button>
       <button
         aria-disabled="false"
@@ -1116,7 +1116,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Save changes
       </button>
       <button
         aria-disabled="false"
@@ -1316,7 +1316,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Save changes
       </button>
       <button
         aria-disabled="false"

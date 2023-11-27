@@ -27,7 +27,7 @@ exports[`<AddTicketField/> should render 1`] = `
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Add field
+          New field
         </li>
       </ol>
     </nav>
@@ -252,7 +252,7 @@ exports[`<AddTicketField/> should render 1`] = `
               data-testid="save-button"
               type="button"
             >
-              Save Changes
+              Create field
             </button>
             <button
               aria-disabled="false"

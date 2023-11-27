@@ -108,7 +108,7 @@ describe('<FieldForm/>', () => {
             </QueryClientProvider>
         )
 
-        const saveButton = await findByText(/Save Changes/)
+        const saveButton = await findByText(/Save changes/)
         saveButton.click()
 
         expect(props.onSubmit).not.toHaveBeenCalled()
@@ -140,7 +140,7 @@ describe('<FieldForm/>', () => {
             </QueryClientProvider>
         )
 
-        const saveButton = await findByText(/Save Changes/)
+        const saveButton = await findByText(/Save changes/)
         saveButton.click()
 
         expect(props.onSubmit).not.toHaveBeenCalled()
@@ -174,7 +174,7 @@ describe('<FieldForm/>', () => {
             </QueryClientProvider>
         )
 
-        const saveButton = await findByText(/Save Changes/)
+        const saveButton = await findByText(/Save changes/)
         saveButton.click()
 
         expect(props.onSubmit).not.toHaveBeenCalled()
@@ -195,7 +195,7 @@ describe('<FieldForm/>', () => {
             </QueryClientProvider>
         )
 
-        const saveButton = await findByText(/Save Changes/)
+        const saveButton = await findByText(/Save changes/)
         saveButton.click()
 
         expect(props.onSubmit).toHaveBeenCalledTimes(1)

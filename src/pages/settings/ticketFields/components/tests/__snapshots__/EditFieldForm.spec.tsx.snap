@@ -212,7 +212,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
         data-testid="save-button"
         type="button"
       >
-        Save Changes
+        Save changes
       </button>
       <button
         aria-disabled="false"

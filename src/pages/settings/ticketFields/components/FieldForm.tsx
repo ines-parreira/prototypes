@@ -28,6 +28,7 @@ interface FieldFormProps {
     field: CustomField | CustomFieldInput
     onSubmit: (field: CustomFieldInput) => Promise<void>
     onClose: () => void
+    submitLabel?: string
 }
 
 const pickMap = {
@@ -227,7 +228,7 @@ export default function FieldForm(props: FieldFormProps) {
                         isLoading={isLoading}
                         data-testid="save-button"
                     >
-                        Save Changes
+                        {props.submitLabel || 'Save changes'}
                     </Button>
                     <Button intent="secondary" onClick={props.onClose}>
                         Cancel
