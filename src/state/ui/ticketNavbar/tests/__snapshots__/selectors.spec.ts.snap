@@ -52,6 +52,21 @@ exports[`selectors getPrivateTicketNavbarElements should return the elements 1`]
 ]
 `;
 
+exports[`selectors getPublicTicketNavbarElements should display legacy system view in Shared views category 1`] = `
+[
+  {
+    "data": {
+      "category": "system",
+      "id": 12,
+      "name": "Trash",
+      "type": "ticket-list",
+      "visibility": "shared",
+    },
+    "type": "view",
+  },
+]
+`;
+
 exports[`selectors getPublicTicketNavbarElements should properly display a section view without section 1`] = `
 [
   {

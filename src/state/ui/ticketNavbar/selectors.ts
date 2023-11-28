@@ -7,9 +7,10 @@ import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
 import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
+import {getMatchingSystemView} from 'state/views/utils'
 import {TicketNavbarElementType} from './types'
 
-const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
+const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
     const emptyViewsOrdering = {
         views: {},
         view_sections: {},
@@ -18,39 +19,52 @@ const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
         (state: RootState) => state.entities.views,
         (state: RootState) => state.entities.sections,
         (state: RootState) =>
-            (visibility === ViewVisibility.Private
+            (viewVisibility === ViewVisibility.Private
                 ? (getViewsOrderingUserSetting(state)
                       ?.data as UserViewsOrderingSettingData)
                 : (getViewsOrderingSetting(state).data as
                       | AccountViewsOrderingSettingData
                       | undefined)) || emptyViewsOrdering,
         (state: RootState) =>
-            visibility === ViewVisibility.Private
+            viewVisibility === ViewVisibility.Private
                 ? state.ui.ticketNavbar.optimisticUserSettings
                 : state.ui.ticketNavbar.optimisticAccountSettings,
         (views, sections, setting, optimisticSettings) => {
+            const viewsData = Object.values(views)
+
             const sectionIds = Object.keys(sections)
-            const viewElements = Object.values(views)
-                .filter(
-                    (view) =>
-                        view.type === ViewType.TicketList &&
-                        (visibility === ViewVisibility.Private
-                            ? view.visibility === ViewVisibility.Private
-                            : view.visibility !== ViewVisibility.Private &&
-                              (view.category
-                                  ? ![
-                                        ViewCategory.SystemBottom,
-                                        ViewCategory.SystemTop,
-                                    ].includes(view.category)
-                                  : true))
-                )
+            const viewElements = viewsData
+                .filter((view) => {
+                    const isTicketView = view.type === ViewType.TicketList
+                    if (!isTicketView) {
+                        return false
+                    }
+                    if (viewVisibility === ViewVisibility.Private) {
+                        return view.visibility === ViewVisibility.Private
+                    }
+
+                    // try to find the possibly duplicate legacy system views (Trash and Spam)
+                    // to display them in the "Shared views"
+                    const matchingSystemView = getMatchingSystemView(
+                        viewsData,
+                        view
+                    )
+                    if (matchingSystemView && matchingSystemView.id > view.id) {
+                        return true
+                    }
+
+                    return (
+                        view.visibility !== ViewVisibility.Private &&
+                        !view.category?.startsWith(ViewCategory.System)
+                    )
+                })
                 .map((view) => ({
                     data: view,
                     type: TicketNavbarElementType.View,
                 })) as TicketNavbarElement[]
             const sectionElements = Object.values(sections)
                 .filter((section) =>
-                    visibility === ViewVisibility.Private
+                    viewVisibility === ViewVisibility.Private
                         ? section.private
                         : !section.private
                 )

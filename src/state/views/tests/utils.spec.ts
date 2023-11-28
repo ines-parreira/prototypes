@@ -5,6 +5,7 @@ import {fromAST} from 'common/utils'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
 import {getAST} from 'utils'
 
+import {newViews} from 'models/view/mocks'
 import * as utils from '../utils'
 
 describe('utils', () => {
@@ -359,6 +360,38 @@ describe('utils', () => {
                     right: JSON.stringify(['email', 'phone']),
                 },
             ])
+        })
+    })
+
+    describe('getMatchingSystemView', () => {
+        it('should return null if view is not concerned', () => {
+            expect(utils.getMatchingSystemView(newViews, newViews[0])).toEqual(
+                null
+            )
+        })
+
+        it('should return matching view', () => {
+            expect(
+                utils.getMatchingSystemView(
+                    [
+                        ...newViews,
+                        {
+                            ...newViews[1],
+                            id: 2,
+                        },
+                    ],
+                    newViews[1]
+                )
+            ).toEqual({
+                ...newViews[1],
+                id: 2,
+            })
+        })
+
+        it('should return bull if no matching view has been found', () => {
+            expect(utils.getMatchingSystemView(newViews, newViews[1])).toEqual(
+                null
+            )
         })
     })
 })

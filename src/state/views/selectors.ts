@@ -33,7 +33,7 @@ import {
 } from 'state/ui/ticketNavbar/selectors'
 import {tryLocalStorage} from 'services/common/utils'
 
-import {sortViews} from './utils'
+import {getMatchingSystemView, sortViews} from './utils'
 import {ViewsState} from './types'
 import {SYSTEM_VIEWS} from './constants'
 
@@ -62,28 +62,37 @@ export const getSystemTicketNavbarElementsByCategory = (
             const systemViewsNames = SYSTEM_VIEWS.filter(
                 (view) => view.category === category
             ).map(({name}) => name)
-            const systemViewCategory =
-                category === 'views_top'
-                    ? ViewCategory.SystemTop
-                    : ViewCategory.SystemBottom
 
             return (
                 views
                     .filter((view) => {
                         const viewName: string = view?.get('name')
+                        if (
+                            !(
+                                systemViewsNames.includes(viewName) &&
+                                (
+                                    view?.get('category') as string | null
+                                )?.startsWith(ViewCategory.System)
+                            )
+                        ) {
+                            return false
+                        }
+                        const matchingSystemView = getMatchingSystemView(
+                            views.toJS(),
+                            view?.toJS()
+                        )
+                        // try to find the possibly duplicate legacy system views (Trash and Spam)
+                        // to not display them in the bottom section of navbar
+                        if (
+                            matchingSystemView &&
+                            matchingSystemView.id > (view?.get('id') as number)
+                        ) {
+                            return false
+                        }
 
                         return includeHiddenViews
-                            ? !!(
-                                  systemViewsNames.includes(viewName) &&
-                                  (view?.get('category') as string | null) ===
-                                      systemViewCategory
-                              )
-                            : !!(
-                                  systemViewsNames.includes(viewName) &&
-                                  (view?.get('category') as string | null) ===
-                                      systemViewCategory &&
-                                  !hiddenViews?.includes(view?.get('id'))
-                              )
+                            ? true
+                            : !hiddenViews?.includes(view?.get('id'))
                     })
                     .sort((first, second) => {
                         const firstViewDisplayOrder =
@@ -151,7 +160,7 @@ export const isDirty = createSelector(
 export const isActiveViewTrashView = createSelector(
     getActiveView,
     (state) =>
-        state.get('category') === 'system' &&
+        state.get('category') === ViewCategory.System &&
         (state.get('name') as string).toLocaleLowerCase() === 'trash'
 )
 

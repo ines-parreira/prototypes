@@ -15,8 +15,8 @@ import {logEvent, SegmentEvent} from 'common/segment'
 
 const mockViewsStore = fromJS({
     items: [
-        {name: 'Inbox', id: 0, category: ViewCategory.SystemTop},
-        {name: 'Spam', id: 1, category: ViewCategory.SystemBottom},
+        {name: 'Inbox', id: 0, category: ViewCategory.System},
+        {name: 'Spam', id: 1, category: ViewCategory.System},
     ],
 })
 const mockAccount = fromJS({

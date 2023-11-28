@@ -558,7 +558,7 @@ describe('selectors', () => {
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(true)
         })
 
-        describe('getTicketNavbarElementsByCategory', () => {
+        describe('getSystemTicketNavbarElementsByCategory', () => {
             const settings = [
                 ...account.settings,
                 {
@@ -648,6 +648,34 @@ describe('selectors', () => {
                                 },
                             ])
                         ),
+                    })
+                ).toEqual([
+                    {data: newViews[1], type: TicketNavbarElementType.View},
+                    {data: newViews[3], type: TicketNavbarElementType.View},
+                ])
+            })
+
+            it('should exclude legacy system views', () => {
+                const state = {
+                    views: initialState.set(
+                        'items',
+                        fromJS([
+                            ...newViews,
+                            {
+                                id: 18,
+                                name: 'Trash',
+                                category: ViewCategory.System,
+                            },
+                        ])
+                    ),
+                } as RootState
+
+                expect(
+                    selectors.getSystemTicketNavbarElementsByCategory(
+                        'views_bottom',
+                        true
+                    )({
+                        ...state,
                     })
                 ).toEqual([
                     {data: newViews[1], type: TicketNavbarElementType.View},
@@ -782,7 +810,7 @@ describe('selectors', () => {
             const systemView = {
                 id: 1,
                 name: SYSTEM_VIEWS[1].name,
-                category: ViewCategory.SystemTop,
+                category: ViewCategory.System,
                 type: ViewType.TicketList,
                 visibility: ViewVisibility.Public,
             } as unknown as View
@@ -808,7 +836,7 @@ describe('selectors', () => {
             const systemView = {
                 id: 1,
                 name: SYSTEM_VIEWS[4].name,
-                category: ViewCategory.SystemBottom,
+                category: ViewCategory.System,
                 type: ViewType.TicketList,
                 visibility: ViewVisibility.Public,
             } as unknown as View

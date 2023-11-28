@@ -7,8 +7,6 @@ export type ListParams = ApiPaginationParams & {
 
 export enum ViewCategory {
     System = 'system',
-    SystemTop = 'system-top',
-    SystemBottom = 'system-bottom',
 }
 
 export enum ViewType {
