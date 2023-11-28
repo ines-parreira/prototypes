@@ -51,6 +51,7 @@ import {
     getIntegrationByAddress,
     getSendersForChannel,
     getIntegrationChannel,
+    getIntegrationsByAppId,
 } from '../selectors'
 
 jest.mock('api/queryClient', () => ({
@@ -1010,5 +1011,45 @@ describe('integrations selectors', () => {
                 getIntegrationByAddress('invalid-address')(state)
             expect(integrationByAddress).toBeUndefined()
         })
+    })
+
+    describe('getIntegrationsByAppId()', () => {
+        const state = {
+            integrations: fromJS({
+                integrations: [
+                    {
+                        id: 123,
+                        type: 'app',
+                        application_id: '64785607477d0a11fc731bfa',
+                        name: 'The Shop',
+                        meta: {
+                            address: 'theshop',
+                        },
+                    },
+                    {
+                        id: 1234,
+                        type: 'app',
+                        application_id: 'nope',
+                        name: 'Another Shop',
+                        meta: {
+                            address: 'nope-shop',
+                        },
+                    },
+                ],
+            }),
+        } as RootState
+        expect(
+            getIntegrationsByAppId('64785607477d0a11fc731bfa')(state)
+        ).toEqual([
+            {
+                id: 123,
+                type: 'app',
+                application_id: '64785607477d0a11fc731bfa',
+                name: 'The Shop',
+                meta: {
+                    address: 'theshop',
+                },
+            },
+        ])
     })
 })

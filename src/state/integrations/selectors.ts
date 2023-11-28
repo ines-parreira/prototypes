@@ -158,6 +158,16 @@ export const getIntegrationsByType = <T extends Integration>(
         )
     })
 
+export const getIntegrationsByAppId = (appId: string) =>
+    createSelector(
+        getIntegrationsByType<AppIntegration>(IntegrationType.App),
+        (integrations) => {
+            return integrations.filter(
+                (integration) => integration.application_id === appId
+            )
+        }
+    )
+
 export const getIntegrationsByTypes = <T extends Integration['type']>(
     types: readonly T[] | T[]
 ) =>

@@ -14,6 +14,7 @@ import {
     AppDetail as AppDetailType,
     TrialPeriod,
 } from 'models/integration/types/app'
+import {getIntegrationsByAppId} from 'state/integrations/selectors'
 import {disconnectApp, fetchApp} from 'models/integration/resources'
 import PageHeader from 'pages/common/components/PageHeader'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
@@ -31,10 +32,12 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ConnectLink from './components/ConnectLink'
 import {mapAppToDetail} from './mappers/appToDetail'
 import {mapDefaults} from './mappers/mapDefaults'
+import ConnectionsList from './ConnectionsList'
 
 export enum Tab {
     Details = 'details',
     Advanced = 'advanced',
+    Connections = 'connections',
 }
 
 function queryStringToBool(flag?: string): boolean {
@@ -54,6 +57,7 @@ export default function AppDetail() {
     const [isLoading, setLoading] = useState(false)
 
     const baseURL = `/app/settings/integrations/app/${appId}`
+    const hasConnections = useAppSelector(() => !!getIntegrationsByAppId(appId))
 
     useEffect(() => {
         async function loadAppDetails(appId: string) {
@@ -127,10 +131,18 @@ export default function AppDetail() {
                     <NavLink to={`${baseURL}/advanced`} exact>
                         Advanced
                     </NavLink>
+                    {hasConnections && (
+                        <NavLink to={`${baseURL}/connections`} exact>
+                            Connections
+                        </NavLink>
+                    )}
                 </SecondaryNavbar>
             )}
             {extra === Tab.Advanced && <AppAdvanced {...appItem} />}
             {extra === Tab.Details && <Detail {...detailProps} />}
+            {extra === Tab.Connections && (
+                <ConnectionsList appId={appItem.appId} />
+            )}
         </div>
     )
 }
