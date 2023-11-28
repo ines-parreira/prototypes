@@ -156,9 +156,9 @@ import WorkflowsPaywallView from './automate/workflows/WorkflowsPaywallView'
 import WorkflowTemplatesViewContainer from './automate/workflows/WorkflowTemplatesViewContainer'
 import SelfServiceContactFormsProvider from './automate/common/providers/SelfServiceContactFormsProvider'
 import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketInsights'
-import AutomateLandingPage from './automate/common/components/AutomateLandingPage'
 import AutomateStatsPaywall from './stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from './automate/trainMyAi/TrainMyAiViewContainer'
+import AutomateRoute from './automate/common/components/AutomateRoute'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1595,7 +1595,7 @@ function AutomationContent() {
                 )}
             </Route>
             <Route path={`${path}`} exact>
-                <AutomateLandingPage />
+                <AutomateRoute />
             </Route>
             {typeof isAutomateRebranding !== 'undefined' && (
                 <Route>

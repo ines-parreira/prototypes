@@ -36,7 +36,7 @@ export interface AutomateReportData {
     firstResponseTimeTrend: MetricTrend
     resolutionTimeTrend: MetricTrend
     automationRateTrend: MetricTrend
-    automatedInterationTrend: MetricTrend
+    automatedInteractionTrend: MetricTrend
 }
 
 export const saveReport = async (data: AutomateReportData, period: Period) => {
@@ -47,7 +47,7 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
         firstResponseTimeTrend,
         resolutionTimeTrend,
         automationRateTrend,
-        automatedInterationTrend,
+        automatedInteractionTrend,
     } = data
 
     const round = (value?: number | null) =>
@@ -63,8 +63,8 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
         ],
         [
             AUTOMATED_INTERACTIONS_LABEL,
-            ifNullNa(automatedInterationTrend.data?.value),
-            ifNullNa(automatedInterationTrend.data?.prevValue),
+            ifNullNa(automatedInteractionTrend.data?.value),
+            ifNullNa(automatedInteractionTrend.data?.prevValue),
         ],
         [
             TIME_SAVED_ON_FIRST_RESPONSE,

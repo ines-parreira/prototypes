@@ -68,4 +68,5 @@ export enum FeatureFlagKey {
     AutomateRebranding = 'automate-rebranding',
     AutomateShowAttachmentUploadDisclaimer = 'automate-show-attachment-upload-disclaimer',
     MLFeaturesKillswitch = 'ml-features-killswitch',
+    AutomateLandingPage = 'automate-landing-page',
 }

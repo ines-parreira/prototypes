@@ -1,6 +1,7 @@
 import React, {useCallback, useRef, useState} from 'react'
 
 import {Popover, PopoverBody} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import navbarCss from 'assets/css/navbar.less'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -13,6 +14,7 @@ import {
 } from 'state/billing/selectors'
 import {hasAgentPrivileges} from 'utils'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
+import {FeatureFlagKey} from 'config/featureFlags'
 import AutomationNavbarPaywallView from './AutomationNavbarPaywallView'
 import AutomationNavbarView from './AutomationNavbarView'
 import css from './AutomationNavbar.less'
@@ -82,6 +84,8 @@ const AutomationNavbar = () => {
     const hasLegacyAutomateFeatures = useAppSelector(
         getHasLegacyAutomateFeatures
     )
+    const isNewLandingPageVisible: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateLandingPage]
 
     const menus = [
         {
@@ -113,7 +117,21 @@ const AutomationNavbar = () => {
 
             {hasAgentPrivileges(currentUser) &&
                 (hasAutomate || hasLegacyAutomateFeatures ? (
-                    <AutomationNavbarView />
+                    <>
+                        {isNewLandingPageVisible && (
+                            <div className={navbarCss['link-wrapper']}>
+                                <NavbarLink to="/app/automation" exact>
+                                    <span>
+                                        <i className="material-icons mr-2 icon">
+                                            bolt
+                                        </i>{' '}
+                                        My Automate
+                                    </span>
+                                </NavbarLink>
+                            </div>
+                        )}
+                        <AutomationNavbarView />
+                    </>
                 ) : (
                     <AutomationNavbarPaywallView />
                 ))}

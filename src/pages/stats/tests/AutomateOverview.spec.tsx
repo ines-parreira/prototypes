@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import LD from 'launchdarkly-react-client-sdk'
 
+import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -35,10 +36,7 @@ import {assumeMock} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
-import AutomateOverview, {
-    AAO_TIPS_VISIBILITY_KEY,
-    automationRate,
-} from '../AutomateOverview'
+import AutomateOverview, {AAO_TIPS_VISIBILITY_KEY} from '../AutomateOverview'
 import TagsStatsFilter from '../TagsStatsFilter'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -52,6 +50,12 @@ jest.mock(
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
+    useParams: jest.fn(),
+    useLocation: () => '/',
+}))
 
 // Trend
 jest.mock('hooks/reporting/metricTrends')
@@ -330,9 +334,21 @@ describe('<AutomateOverview />', () => {
         })
 
         describe.each([
-            ['light-error', /Room for improvement/, automationRate.avg - 0.1],
-            ['light-success', /You’re doing good/, automationRate.top10P - 0.1],
-            ['success', /You’re doing great/, automationRate.top10P + 0.1],
+            [
+                'light-error',
+                /Room for improvement/,
+                AUTOMATION_RATE_FIXED_STATS.avg - 0.1,
+            ],
+            [
+                'light-success',
+                /You’re doing good/,
+                AUTOMATION_RATE_FIXED_STATS.top10P - 0.1,
+            ],
+            [
+                'success',
+                /You’re doing great/,
+                AUTOMATION_RATE_FIXED_STATS.top10P + 0.1,
+            ],
         ])('%s', (testName, sentiment, value) => {
             it('should show tips with sentiment ', () => {
                 localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')

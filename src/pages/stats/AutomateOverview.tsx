@@ -34,55 +34,57 @@ import {
     paywallConfigs as defaultPaywallConfigs,
 } from 'config/paywalls'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketChannel} from 'business/types/ticket'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 
 import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrations'
+
 import {
-    MetricTrendFormat,
+    AutomatedInteractionsMetric,
+    AutomationRateMetric,
+    AutomationTimeSavedMetric,
+    AutomationDecreaseInFirstResponseTimeMetric,
+    AutomationCostSavedMetric,
+} from 'pages/automate/automate-metrics'
+
+import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
+import useSearch from 'hooks/useSearch'
+import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
+import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
+import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
-    formatMetricValue,
     formatTimeSeriesData,
 } from './common/utils'
-import BigNumberMetric from './BigNumberMetric'
+
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import ChartCard from './ChartCard'
 import DashboardGridCell from './DashboardGridCell'
 import DashboardSection from './DashboardSection'
 import {DownloadOverviewDataButton} from './DownloadOverviewDataButton'
 import LineChart from './LineChart'
-import MetricCard from './MetricCard'
+
 import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'
 import css from './AutomateOverview.less'
-import TrendBadge from './TrendBadge'
+
 import {DEFAULT_TIMEZONE} from './revenue/constants/components'
 import {
     AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
-    OVERALL_TIME_SAVED_BY_YOUR_TEAM,
     PAGE_TITLE_AUTOMATE_PAYWALL,
     PAGE_TITLE_OVERVIEW,
-    TIME_SAVED_ON_FIRST_RESPONSE,
 } from './self-service/constants'
 import {GreyArea} from './ChartPluginGreyArea'
 import SelfServiceStatsPagePaywallCustomCta from './self-service/SelfServiceStatsPagePaywallCustomCta'
-import PerformanceTip from './PerformanceTip'
+
 import TipsToggle from './TipsToggle'
 
 import {FEATURE_LABELS} from './constants'
 import {AutomatedInteractionByFeatures} from './types'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
-
-// Below values are from https://app.periscopedata.com/app/gorgias/1123203/[Cross]-Automation-Add-on-Performance?widget=17138886&udv=0
-export const automationRate = {
-    top10P: 0.31,
-    avg: 0.12,
-}
 
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
@@ -98,13 +100,23 @@ export function AutomateOverview() {
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
     const statsFilters = useAppSelector(getStatsFilters)
+
+    const params = useSearch() as {
+        start_datetime?: string
+        end_datetime?: string
+    }
+
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters
         return {
             channels,
-            period,
+            period: {
+                start_datetime: params?.start_datetime ?? period.start_datetime,
+                end_datetime: params?.end_datetime ?? period.end_datetime,
+            },
         }
-    }, [statsFilters])
+    }, [statsFilters, params])
+
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
     const granularity = periodToReportingGranularity(requestStatsFilters.period)
 
@@ -122,7 +134,7 @@ export function AutomateOverview() {
         pageStatsFilters,
         userTimezone
     )
-    const automatedInterationTrend = useAutomatedInteractionsTrend(
+    const automatedInteractionTrend = useAutomatedInteractionsTrend(
         pageStatsFilters,
         userTimezone
     )
@@ -155,6 +167,14 @@ export function AutomateOverview() {
         AUTOMATION_RATE_LABEL,
         granularity
     )
+
+    const costPerAutomatedInteraction = useGetCostPerAutomatedInteraction()
+    const costPerBillableTicket = useGetCostPerBillableTicket()
+
+    const costSavedPerInteraction =
+        costPerBillableTicket +
+        AGENT_COST_PER_TICKET -
+        costPerAutomatedInteraction
 
     const automatedInteractionByEventTypesTimeSeriesData =
         formatLabeledTimeSeriesData(
@@ -285,7 +305,7 @@ export function AutomateOverview() {
             firstResponseTimeTrend,
             resolutionTimeTrend,
             automationRateTrend,
-            automatedInterationTrend,
+            automatedInteractionTrend,
         }
     }, [
         automationRateTimeSeries,
@@ -294,29 +314,12 @@ export function AutomateOverview() {
         firstResponseTimeTrend,
         resolutionTimeTrend,
         automationRateTrend,
-        automatedInterationTrend,
+        automatedInteractionTrend,
     ])
 
     const hasActivity =
-        !automatedInterationTrend.isFetching &&
-        automatedInterationTrend.data?.value
-
-    const getTrendProps = (metricTrend: MetricTrend) => ({
-        value: metricTrend.data?.value || 0,
-        prevValue: metricTrend.data?.prevValue || 0,
-        format: 'percent' as MetricTrendFormat,
-        interpretAs: 'more-is-better' as const,
-    })
-
-    const automationRateValue = automationRateTrend.data?.value || 0
-
-    const automationRateSentiment = useMemo(() => {
-        if (automationRateValue > automationRate.top10P) return 'success'
-        else if (automationRateValue > automationRate.avg)
-            return 'light-success'
-        else if (automationRateValue > 0) return 'light-error'
-        return 'neutral'
-    }, [automationRateValue])
+        !automatedInteractionTrend.isFetching &&
+        automatedInteractionTrend.data?.value
 
     const percentLabel = (value: number) =>
         `${parseFloat((value * 100).toFixed(2))}%`
@@ -348,12 +351,6 @@ export function AutomateOverview() {
         return this.getLabelForValue(index)
     }
 
-    const getDurationLable = (trend: MetricTrend) => {
-        return trend.data?.value
-            ? formatMetricValue(trend.data?.value, 'duration')
-            : '0h 0m'
-    }
-
     return (
         <div className="full-width">
             <StatsPage
@@ -377,6 +374,7 @@ export function AutomateOverview() {
                             }}
                             value={pageStatsFilters.period}
                             variant="ghost"
+                            updateQueryParams
                         />
                         <DownloadOverviewDataButton
                             onClick={async () => {
@@ -407,8 +405,8 @@ export function AutomateOverview() {
                     </div>
                 ) : (
                     noActivityAlert &&
-                    !automatedInterationTrend.isFetching &&
-                    !automatedInterationTrend.data?.value && (
+                    !automatedInteractionTrend.isFetching &&
+                    !automatedInteractionTrend.data?.value && (
                         <div className={classnames(css.wrapper)}>
                             <Alert
                                 type={AlertType.Error}
@@ -444,139 +442,42 @@ export function AutomateOverview() {
                     }
                 >
                     <DashboardGridCell size={6}>
-                        <MetricCard
-                            title={AUTOMATION_RATE_LABEL}
-                            hint={{
-                                title: 'Automated interactions as a percent of all customer interactions handled without any agent intervention using Automate features.',
-                            }}
-                            isLoading={automationRateTrend.isFetching}
-                            trendBadge={
-                                <TrendBadge
-                                    {...getTrendProps(automationRateTrend)}
-                                />
-                            }
-                            tip={
-                                areTipsVisible && (
-                                    <PerformanceTip
-                                        topTen={percentLabel(
-                                            automationRate.top10P
-                                        )}
-                                        avgMerchant={percentLabel(
-                                            automationRate.avg
-                                        )}
-                                        type={automationRateSentiment}
-                                    >
-                                        Set up all{' '}
-                                        <a
-                                            target="blank"
-                                            href="https://link.gorgias.com/aut"
-                                        >
-                                            Automate features
-                                        </a>{' '}
-                                        to improve your automation rate across
-                                        all of your channels.
-                                    </PerformanceTip>
-                                )
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={automationRateTrend.isFetching}
-                            >
-                                {automationRateValue
-                                    ? formatMetricValue(
-                                          automationRateValue * 100,
-                                          'percent'
-                                      )
-                                    : '-'}
-                            </BigNumberMetric>
-                        </MetricCard>
+                        <AutomationRateMetric
+                            trend={automationRateTrend}
+                            showTips={areTipsVisible}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <MetricCard
-                            isLoading={automatedInterationTrend.isFetching}
-                            title={AUTOMATED_INTERACTIONS_LABEL}
-                            hint={{
-                                title: 'Fully automated interactions solved without any agent intervention using Gorgias Automate features.',
-                            }}
-                            trendBadge={
-                                <TrendBadge
-                                    {...getTrendProps(automatedInterationTrend)}
-                                />
-                            }
-                            tip={
-                                areTipsVisible && (
-                                    <PerformanceTip showBenchmark={false}>
-                                        Check out our{' '}
-                                        <a
-                                            target="blank"
-                                            href="https://link.gorgias.com/aut-playbook"
-                                        >
-                                            {' '}
-                                            Automation Playbook
-                                        </a>{' '}
-                                        for tactical tips on how to use Automate
-                                        to its full potential. Visit
-                                        <a
-                                            target="blank"
-                                            href="/app/settings/billing"
-                                        >
-                                            {' '}
-                                            billing
-                                        </a>{' '}
-                                        to make sure your Automate plan is the
-                                        right size for you.
-                                    </PerformanceTip>
-                                )
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={automatedInterationTrend.isFetching}
-                            >
-                                {formatMetricValue(
-                                    automatedInterationTrend.data?.value
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                        <AutomatedInteractionsMetric
+                            trend={automatedInteractionTrend}
+                            showTips={areTipsVisible}
+                        />
                     </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <MetricCard
-                            title={TIME_SAVED_ON_FIRST_RESPONSE}
-                            hint={{
-                                title: 'How much longer customers would have had to wait for a first response if you were not using Gorgias Automate, based on your average first response time.',
+
+                    <DashboardGridCell size={4}>
+                        <AutomationCostSavedMetric
+                            trend={{
+                                ...automatedInteractionTrend,
+                                data: {
+                                    value:
+                                        (automatedInteractionTrend.data
+                                            ?.value ?? 0) *
+                                        costSavedPerInteraction,
+                                    prevValue: null,
+                                },
                             }}
-                            isLoading={firstResponseTimeTrend.isFetching}
-                            trendBadge={
-                                <TrendBadge
-                                    {...getTrendProps(firstResponseTimeTrend)}
-                                />
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={firstResponseTimeTrend.isFetching}
-                            >
-                                {getDurationLable(firstResponseTimeTrend)}
-                            </BigNumberMetric>
-                        </MetricCard>
+                        />
                     </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <MetricCard
-                            title={OVERALL_TIME_SAVED_BY_YOUR_TEAM}
-                            hint={{
-                                title: 'How much time agents would have spent resolving your automated interactions, based on your average resolution time.',
-                            }}
-                            isLoading={resolutionTimeTrend.isFetching}
-                            trendBadge={
-                                <TrendBadge
-                                    {...getTrendProps(resolutionTimeTrend)}
-                                />
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={resolutionTimeTrend.isFetching}
-                            >
-                                {getDurationLable(resolutionTimeTrend)}
-                            </BigNumberMetric>
-                        </MetricCard>
+
+                    <DashboardGridCell size={4}>
+                        <AutomationTimeSavedMetric
+                            trend={resolutionTimeTrend}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={4}>
+                        <AutomationDecreaseInFirstResponseTimeMetric
+                            trend={firstResponseTimeTrend}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Performance">

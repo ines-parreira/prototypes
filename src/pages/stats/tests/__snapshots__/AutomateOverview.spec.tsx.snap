@@ -458,7 +458,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 6 / span 6;"
+                    style="grid-column: span 4 / span 4;"
                   >
                     <div
                       class="wrapper card"
@@ -466,7 +466,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       <div
                         class="title"
                       >
-                        Customer time saved on first response
+                        Cost saved
                         <div
                           class="wrapper tooltip"
                         >
@@ -488,13 +488,13 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        1m 31s
+                        $228
                       </div>
                     </div>
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 6 / span 6;"
+                    style="grid-column: span 4 / span 4;"
                   >
                     <div
                       class="wrapper card"
@@ -502,7 +502,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       <div
                         class="title"
                       >
-                        Overall time saved by your team
+                        Time saved
                         <div
                           class="wrapper tooltip"
                         >
@@ -525,6 +525,42 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         class="wrapper heading-page-semibold"
                       >
                         1m 32s
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 4 / span 4;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
                       </div>
                     </div>
                   </div>
@@ -1223,7 +1259,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 6 / span 6;"
+                  style="grid-column: span 4 / span 4;"
                 >
                   <div
                     class="wrapper card"
@@ -1231,7 +1267,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     <div
                       class="title"
                     >
-                      Customer time saved on first response
+                      Cost saved
                       <div
                         class="wrapper tooltip"
                       >
@@ -1253,13 +1289,13 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      1m 31s
+                      $228
                     </div>
                   </div>
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 6 / span 6;"
+                  style="grid-column: span 4 / span 4;"
                 >
                   <div
                     class="wrapper card"
@@ -1267,7 +1303,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     <div
                       class="title"
                     >
-                      Overall time saved by your team
+                      Time saved
                       <div
                         class="wrapper tooltip"
                       >
@@ -1290,6 +1326,42 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       class="wrapper heading-page-semibold"
                     >
                       1m 32s
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 4 / span 4;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Decrease in first response time
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
                     </div>
                   </div>
                 </div>
@@ -1967,7 +2039,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 6 / span 6;"
+                    style="grid-column: span 4 / span 4;"
                   >
                     <div
                       class="wrapper card"
@@ -1975,7 +2047,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       <div
                         class="title"
                       >
-                        Customer time saved on first response
+                        Cost saved
                         <div
                           class="wrapper tooltip"
                         >
@@ -1997,13 +2069,13 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        1m 31s
+                        $228
                       </div>
                     </div>
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 6 / span 6;"
+                    style="grid-column: span 4 / span 4;"
                   >
                     <div
                       class="wrapper card"
@@ -2011,7 +2083,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       <div
                         class="title"
                       >
-                        Overall time saved by your team
+                        Time saved
                         <div
                           class="wrapper tooltip"
                         >
@@ -2034,6 +2106,42 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         class="wrapper heading-page-semibold"
                       >
                         1m 32s
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 4 / span 4;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
                       </div>
                     </div>
                   </div>
@@ -2732,7 +2840,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 6 / span 6;"
+                  style="grid-column: span 4 / span 4;"
                 >
                   <div
                     class="wrapper card"
@@ -2740,7 +2848,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     <div
                       class="title"
                     >
-                      Customer time saved on first response
+                      Cost saved
                       <div
                         class="wrapper tooltip"
                       >
@@ -2762,13 +2870,13 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      1m 31s
+                      $228
                     </div>
                   </div>
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 6 / span 6;"
+                  style="grid-column: span 4 / span 4;"
                 >
                   <div
                     class="wrapper card"
@@ -2776,7 +2884,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     <div
                       class="title"
                     >
-                      Overall time saved by your team
+                      Time saved
                       <div
                         class="wrapper tooltip"
                       >
@@ -2799,6 +2907,42 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       class="wrapper heading-page-semibold"
                     >
                       1m 32s
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 4 / span 4;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Decrease in first response time
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
                     </div>
                   </div>
                 </div>
@@ -3476,7 +3620,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 6 / span 6;"
+                    style="grid-column: span 4 / span 4;"
                   >
                     <div
                       class="wrapper card"
@@ -3484,7 +3628,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       <div
                         class="title"
                       >
-                        Customer time saved on first response
+                        Cost saved
                         <div
                           class="wrapper tooltip"
                         >
@@ -3506,13 +3650,13 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        1m 31s
+                        $228
                       </div>
                     </div>
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 6 / span 6;"
+                    style="grid-column: span 4 / span 4;"
                   >
                     <div
                       class="wrapper card"
@@ -3520,7 +3664,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       <div
                         class="title"
                       >
-                        Overall time saved by your team
+                        Time saved
                         <div
                           class="wrapper tooltip"
                         >
@@ -3543,6 +3687,42 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         class="wrapper heading-page-semibold"
                       >
                         1m 32s
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 4 / span 4;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
                       </div>
                     </div>
                   </div>
@@ -4241,7 +4421,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 6 / span 6;"
+                  style="grid-column: span 4 / span 4;"
                 >
                   <div
                     class="wrapper card"
@@ -4249,7 +4429,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     <div
                       class="title"
                     >
-                      Customer time saved on first response
+                      Cost saved
                       <div
                         class="wrapper tooltip"
                       >
@@ -4271,13 +4451,13 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      1m 31s
+                      $228
                     </div>
                   </div>
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 6 / span 6;"
+                  style="grid-column: span 4 / span 4;"
                 >
                   <div
                     class="wrapper card"
@@ -4285,7 +4465,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     <div
                       class="title"
                     >
-                      Overall time saved by your team
+                      Time saved
                       <div
                         class="wrapper tooltip"
                       >
@@ -4308,6 +4488,42 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       class="wrapper heading-page-semibold"
                     >
                       1m 32s
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 4 / span 4;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Decrease in first response time
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
                     </div>
                   </div>
                 </div>
@@ -4981,7 +5197,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             </div>
             <div
               class="cell"
-              style="grid-column: span 6 / span 6;"
+              style="grid-column: span 4 / span 4;"
             >
               <div
                 class="wrapper card"
@@ -4989,7 +5205,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 <div
                   class="title"
                 >
-                  Customer time saved on first response
+                  Cost saved
                   <div
                     class="wrapper tooltip"
                   >
@@ -5011,13 +5227,13 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 <div
                   class="wrapper heading-page-semibold"
                 >
-                  1m 31s
+                  $228
                 </div>
               </div>
             </div>
             <div
               class="cell"
-              style="grid-column: span 6 / span 6;"
+              style="grid-column: span 4 / span 4;"
             >
               <div
                 class="wrapper card"
@@ -5025,7 +5241,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 <div
                   class="title"
                 >
-                  Overall time saved by your team
+                  Time saved
                   <div
                     class="wrapper tooltip"
                   >
@@ -5048,6 +5264,42 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   class="wrapper heading-page-semibold"
                 >
                   1m 32s
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 4 / span 4;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
+                >
+                  Decrease in first response time
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div>
+                      TrendBadgeMock
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
                 </div>
               </div>
             </div>

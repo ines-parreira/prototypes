@@ -1,0 +1,47 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        background: var(--neutral-grey-1);
+        border-radius: 4px;
+        padding: 32px;
+        width: 100%;
+
+        p {
+            .body-regular();
+            margin-bottom: 0;
+        }
+
+        h2 {
+            .heading-section-semibold();
+            margin-bottom: 0;
+        }
+
+        .headings {
+            display: flex;
+            gap: 59px;
+        }
+
+        .values {
+            display: flex;
+            gap: 82px;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .divider {
+            width: 1px;
+            height: 56px;
+            background: var(--neutral-grey-3);
+            align-self: self-end;
+        }
+
+        .heading {
+            .heading-section-semibold();
+        }
+    }
+}

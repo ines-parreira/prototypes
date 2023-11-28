@@ -10,7 +10,7 @@ import css from './StatsPage.less'
 
 type Props = {
     children: ReactNode
-    filters: ReactNode
+    filters?: ReactNode
 } & ComponentProps<typeof HeaderTitle>
 
 export default function StatsPage({
@@ -25,9 +25,11 @@ export default function StatsPage({
                     title={<HeaderTitle {...headerTitleProps} />}
                     className="mb-0"
                 >
-                    <div className="d-flex flex-wrap float-right">
-                        {filters}
-                    </div>
+                    {filters && (
+                        <div className="d-flex flex-wrap float-right">
+                            {filters}
+                        </div>
+                    )}
                 </PageHeader>
             </div>
             <div className={css.statsWrapper}>

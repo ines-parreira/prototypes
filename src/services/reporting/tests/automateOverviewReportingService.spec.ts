@@ -25,7 +25,7 @@ describe('reporting', () => {
         firstResponseTimeTrend: buildQuery(false, trendReportData),
         resolutionTimeTrend: buildQuery(false, trendReportData),
         automationRateTrend: buildQuery(false, trendReportData),
-        automatedInterationTrend: buildQuery(false, trendReportData),
+        automatedInteractionTrend: buildQuery(false, trendReportData),
         automationRateTimeSeries: buildQuery(false, [[timeSeriesData]]),
         automatedInteractionTimeSeries: buildQuery(false, [[timeSeriesData]]),
         automatedInteractionByEventTypesTimeSeries: buildQuery(false, [
