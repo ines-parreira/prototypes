@@ -27,6 +27,7 @@ type SearchQueryModalProps = {
     timezone: string
     searchQuery: string
     articleClickedCount: number
+    helpCenterDomain: string
 }
 
 const SearchQueryModal = ({
@@ -35,6 +36,7 @@ const SearchQueryModal = ({
     timezone,
     searchQuery,
     articleClickedCount,
+    helpCenterDomain,
 }: SearchQueryModalProps) => {
     const [currentPage, setCurrentPage] = useState(1)
     const onPageChange = (page: number) => {
@@ -47,6 +49,7 @@ const SearchQueryModal = ({
         statsFilters,
         timezone,
         searchQuery,
+        helpCenterDomain,
     })
 
     return (

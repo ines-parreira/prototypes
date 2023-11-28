@@ -21,6 +21,7 @@ const statsFilters = {
     },
 }
 const timezone = 'UTC'
+const helpCenterDomain = 'acme'
 
 describe('useSearchQueryMetrics', () => {
     beforeEach(() => {
@@ -42,6 +43,7 @@ describe('useSearchQueryMetrics', () => {
                 statsFilters,
                 timezone,
                 searchQuery,
+                helpCenterDomain,
             })
         )
 
@@ -69,6 +71,9 @@ describe('useSearchQueryMetrics', () => {
                     {
                         [HelpCenterTrackingEventDimensions.ArticleTitle]:
                             'How to report an issue',
+                        [HelpCenterTrackingEventDimensions.LocaleCode]: 'en-US',
+                        [HelpCenterTrackingEventDimensions.ArticleSlug]:
+                            'how-to-report-an-issue-12',
                         [HelpCenterTrackingEventMeasures.SearchArticlesClickedCount]:
                             '5',
                     },
@@ -81,6 +86,7 @@ describe('useSearchQueryMetrics', () => {
                 statsFilters,
                 timezone,
                 searchQuery: 'searchQuery',
+                helpCenterDomain,
             })
         )
 
@@ -91,6 +97,7 @@ describe('useSearchQueryMetrics', () => {
                     {
                         type: 'string',
                         value: 'How to report an issue',
+                        link: 'http://acme/en-US/how-to-report-an-issue-12',
                     },
                     {
                         type: 'number',
@@ -116,6 +123,7 @@ describe('useSearchQueryMetrics', () => {
                 statsFilters,
                 timezone,
                 searchQuery: 'searchQuery',
+                helpCenterDomain,
             })
         )
 
@@ -126,6 +134,7 @@ describe('useSearchQueryMetrics', () => {
                     {
                         type: 'string',
                         value: null,
+                        link: null,
                     },
                     {
                         type: 'number',

@@ -44,6 +44,7 @@ const columns = [
 type SearchTermsTableProps = {
     statsFilters: StatsFilters
     timezone: string
+    helpCenterDomain: string
 }
 
 type ModalStateType =
@@ -60,7 +61,11 @@ const modalIntiState: ModalStateType = {
     isOpen: false,
 }
 
-const SearchTermsTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
+const SearchTermsTable = ({
+    statsFilters,
+    timezone,
+    helpCenterDomain,
+}: SearchTermsTableProps) => {
     const [currentPage, setCurrentPage] = useState(1)
 
     const [modalState, setModalState] = useState<ModalStateType>(modalIntiState)
@@ -118,6 +123,7 @@ const SearchTermsTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
                                 statsFilters={statsFilters}
                                 searchQuery={modalState.searchQuery}
                                 onClose={onModalClose}
+                                helpCenterDomain={helpCenterDomain}
                                 articleClickedCount={
                                     modalState.articleClickedCount
                                 }

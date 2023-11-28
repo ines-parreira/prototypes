@@ -112,7 +112,11 @@ export const searchQueryClicksQueryFactory = (
     searchQueries: string[]
 ): ReportingQuery<HelpCenterTrackingEventCube> => ({
     measures: [HelpCenterTrackingEventMeasures.SearchArticlesClickedCount],
-    dimensions: [HelpCenterTrackingEventDimensions.ArticleTitle],
+    dimensions: [
+        HelpCenterTrackingEventDimensions.ArticleTitle,
+        HelpCenterTrackingEventDimensions.ArticleSlug,
+        HelpCenterTrackingEventDimensions.LocaleCode,
+    ],
     timezone,
     filters: [
         ...statsFiltersToReportingFilters(

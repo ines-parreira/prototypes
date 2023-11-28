@@ -10,15 +10,18 @@ import {
     HelpCenterTableCell,
     TableCellType,
 } from '../components/HelpCenterStatsTable/HelpCenterStatsTable'
+import {getArticleUrl} from '../utils/helpcenterStats.utils'
 
 export const useSearchQueryMetrics = ({
     searchQuery,
     statsFilters,
     timezone,
+    helpCenterDomain,
 }: {
     statsFilters: StatsFilters
     timezone: string
     searchQuery: string
+    helpCenterDomain: string
 }) => {
     const searchQueryData = useMetricPerDimension(
         searchQueryClicksQueryFactory(statsFilters, timezone, [searchQuery])
@@ -29,6 +32,19 @@ export const useSearchQueryMetrics = ({
             searchQueryData.data?.allData.map((value) => {
                 const articleTitle =
                     value[HelpCenterTrackingEventDimensions.ArticleTitle]
+                const articleSlug =
+                    value[HelpCenterTrackingEventDimensions.ArticleSlug]
+                const localeCode =
+                    value[HelpCenterTrackingEventDimensions.LocaleCode]
+                const articleLink =
+                    articleSlug && localeCode
+                        ? getArticleUrl({
+                              domain: helpCenterDomain,
+                              slug: articleSlug,
+                              locale: localeCode,
+                          })
+                        : null
+
                 const clicks = Number(
                     value[
                         HelpCenterTrackingEventMeasures
@@ -40,6 +56,7 @@ export const useSearchQueryMetrics = ({
                     {
                         type: TableCellType.String,
                         value: articleTitle ?? null,
+                        link: articleLink,
                     },
                     {
                         type: TableCellType.Number,
@@ -47,7 +64,7 @@ export const useSearchQueryMetrics = ({
                     },
                 ]
             }) ?? [[]],
-        [searchQueryData.data?.allData]
+        [helpCenterDomain, searchQueryData.data?.allData]
     )
 
     return useMemo(

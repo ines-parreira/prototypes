@@ -17,7 +17,7 @@ import {
     HelpCenterTableCell,
     TableCellType,
 } from '../components/HelpCenterStatsTable/HelpCenterStatsTable'
-import {getArticleUrl} from '../../../settings/helpCenter/utils/helpCenter.utils'
+import {getArticleUrl} from '../utils/helpcenterStats.utils'
 
 export const usePerformanceByArticleMetrics = ({
     itemPerPage,
@@ -90,9 +90,6 @@ export const usePerformanceByArticleMetrics = ({
                               domain: helpCenterDomain,
                               slug: articleSlug,
                               locale: localeCode,
-                              isUnlisted: false,
-                              articleId: articleId,
-                              unlistedId: '', // We don't handle unlisted articles
                           })
                         : null
                 const articleViewCount = Number(

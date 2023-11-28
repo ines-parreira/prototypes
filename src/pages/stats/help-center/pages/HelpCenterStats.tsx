@@ -54,6 +54,7 @@ const HelpCenterStatsComponent = ({
             statsFilters.helpCenters?.includes(helpCenter.id)
         ) ?? helpCenters[0]
 
+    const selectedHelpCenterDomain = getHelpCenterDomain(selectedHelpCenter)
     return (
         <div className="full-width">
             <StatsPage
@@ -103,9 +104,7 @@ const HelpCenterStatsComponent = ({
                         <PerformanceByArticle
                             statsFilters={statsFilters}
                             timezone={timezone}
-                            helpCenterDomain={getHelpCenterDomain(
-                                selectedHelpCenter
-                            )}
+                            helpCenterDomain={selectedHelpCenterDomain}
                             helpCenterId={selectedHelpCenter.id}
                         />
                     </DashboardGridCell>
@@ -121,6 +120,7 @@ const HelpCenterStatsComponent = ({
                         <SearchTermsTable
                             statsFilters={statsFilters}
                             timezone={timezone}
+                            helpCenterDomain={selectedHelpCenterDomain}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>

@@ -25,6 +25,7 @@ const mockUseMetric = jest.mocked(useMetric)
 const renderComponent = () => {
     render(
         <SearchTermsTable
+            helpCenterDomain="acme"
             statsFilters={{
                 period: {
                     start_datetime: '2021-05-29T00:00:00+02:00',

@@ -28,6 +28,7 @@ const renderComponent = (
             timezone=""
             searchQuery=""
             articleClickedCount={0}
+            helpCenterDomain="acme"
             {...props}
         />
     )

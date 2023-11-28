@@ -136,7 +136,7 @@ describe('usePerformanceByArticleMetrics', () => {
                         [HelpCenterTrackingEventDimensions.ArticleTitle]:
                             'Set up Voice (Phone)',
                         [HelpCenterTrackingEventDimensions.ArticleSlug]:
-                            'set-up-voice-(phone)',
+                            'set-up-voice-(phone)-1',
                         [HelpCenterTrackingEventDimensions.ArticleId]: '1',
                         [HelpCenterTrackingEventDimensions.LocaleCode]: 'en-US',
                         [HelpCenterTrackingEventMeasures.ArticleView]: '1',
