@@ -47,10 +47,8 @@ export default function ContactReasonSuggestion({ticket}: Props) {
         setCollapse(true)
     }, [contactReasonPrediction])
 
-    const contactReasonDropdownInputId = createInputId(
-        ticket.id,
-        contactReasonPrediction?.id ?? ''
-    )
+    const contactReasonDropdownInputId =
+        createInputId(ticket.id, contactReasonPrediction?.id ?? '') + '-input'
 
     const contactReasonElement = document.getElementById(
         contactReasonDropdownInputId
