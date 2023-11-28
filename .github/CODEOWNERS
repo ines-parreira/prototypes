@@ -81,7 +81,6 @@ src/rest_api/gorgias_chat_protected_api @gorgias/automations-chat
 src/pages/common/editor @gorgias/core-frontend
 src/pages/tickets @gorgias/core-frontend
 src/pages/settings/notifications @gorgias/core-frontend
-scripts/generateDesignTokens.js @gorgias/core-frontend
 src/services/browserNotification.ts @gorgias/core-frontend
 src/services/NotificationSounds.ts @gorgias/core-frontend
 src/services/localForageManager @gorgias/core-frontend
