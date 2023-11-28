@@ -1,0 +1,52 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        color: var(--main-primary);
+    }
+
+    .secondary {
+        color: var(--neutral-grey-4);
+    }
+
+    .error {
+        color: var(--feedback-error);
+    }
+
+    .warning {
+        color: var(--feedback-warning);
+    }
+
+    .success {
+        color: var(--feedback-success);
+    }
+
+    .label {
+        .heading-page-semibold();
+        color: var(--neutral-grey-6);
+    }
+
+    .barContainer {
+        color: inherit;
+        width: 100%;
+        border-radius: 4px;
+        height: 8px;
+        overflow: hidden;
+        background: var(--neutral-grey-2);
+    }
+
+    .bar {
+        color: inherit;
+        background-color: currentColor;
+        border-radius: inherit;
+        height: inherit;
+        position: relative;
+        left: -100%;
+        transition: transform 200ms ease-in-out, color 200ms linear;
+    }
+}
