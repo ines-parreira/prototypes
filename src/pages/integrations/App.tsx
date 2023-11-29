@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import {isEmpty} from 'lodash'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useTitle from 'hooks/useTitle'
@@ -57,7 +58,10 @@ export default function AppDetail() {
     const [isLoading, setLoading] = useState(false)
 
     const baseURL = `/app/settings/integrations/app/${appId}`
-    const hasConnections = useAppSelector(() => !!getIntegrationsByAppId(appId))
+
+    const hasConnections = !isEmpty(
+        useAppSelector(getIntegrationsByAppId(appId))
+    )
 
     useEffect(() => {
         async function loadAppDetails(appId: string) {
