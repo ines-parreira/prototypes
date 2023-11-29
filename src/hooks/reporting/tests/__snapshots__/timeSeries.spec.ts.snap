@@ -20,7 +20,7 @@ exports[`time series Automate OverallTimeSaved should render expected query snap
         ],
       },
       {
-        "member": "Ticket.channel",
+        "member": "AutomationEvent.channel",
         "operator": "equals",
         "values": [
           "help-center",
@@ -79,7 +79,7 @@ exports[`time series Automate useAutomatedInteractionTimeSeries should render ex
         ],
       },
       {
-        "member": "Ticket.channel",
+        "member": "AutomationEvent.channel",
         "operator": "equals",
         "values": [
           "help-center",
@@ -132,7 +132,7 @@ exports[`time series Automate useAutomationRateTimeSeries should render expected
         ],
       },
       {
-        "member": "Ticket.channel",
+        "member": "AutomationEvent.channel",
         "operator": "equals",
         "values": [
           "help-center",

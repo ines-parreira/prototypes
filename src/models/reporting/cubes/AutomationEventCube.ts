@@ -9,6 +9,7 @@ export enum AutomationEventMember {
     PeriodStart = 'AutomationEvent.periodStart',
     PeriodEnd = 'AutomationEvent.periodEnd',
     CreatedDate = 'AutomationEvent.createdDate',
+    Channel = 'AutomationEvent.channel',
 }
 
 type AutomationEventTimeDimension =
