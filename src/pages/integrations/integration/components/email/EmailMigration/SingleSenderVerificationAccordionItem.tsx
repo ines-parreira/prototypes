@@ -1,5 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
+import {Card} from '@gorgias/analytics-ui-kit'
 import {
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,
@@ -9,7 +10,6 @@ import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import Button from 'pages/common/components/button/Button'
-import Card from 'pages/stats/Card'
 import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
 import {
     computeDomainSingleSenderVerificationStatus,

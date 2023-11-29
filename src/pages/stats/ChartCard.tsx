@@ -1,9 +1,9 @@
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
+import {Card} from '@gorgias/analytics-ui-kit'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 
-import Card from './Card'
 import css from './ChartCard.less'
 
 type Props = {

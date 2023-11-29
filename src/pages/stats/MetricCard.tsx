@@ -1,10 +1,10 @@
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
+import {Card} from '@gorgias/analytics-ui-kit'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
-import Card from './Card'
 import css from './MetricCard.less'
 import {TooltipData} from './types'
 

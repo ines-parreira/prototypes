@@ -17,9 +17,9 @@ jest.mock('../EmailDomainVerification/components/RecordsTable', () => () => (
     <div data-testid="records-table" />
 ))
 
-jest.mock('pages/stats/Card', () => () => (
-    <div data-testid="verified-domain-card" />
-))
+jest.mock('@gorgias/analytics-ui-kit', () => ({
+    Card: () => <div data-testid="verified-domain-card" />,
+}))
 
 const mockCreateDomainVerification = jest.fn()
 jest.mock('../hooks/useCreateDomainVerification', () => () => ({

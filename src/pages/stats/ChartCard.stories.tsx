@@ -9,6 +9,11 @@ import LineChart from './LineChart'
 const storyConfig: Meta = {
     title: 'Stats/ChartCard',
     component: ChartCard,
+    parameters: {
+        chromatic: {
+            disableSnapshot: false,
+        },
+    },
 }
 
 const Template: Story<ComponentProps<typeof ChartCard>> = (props) => (

@@ -9,9 +9,9 @@ import {EmailMigrationOutboundVerification} from 'models/integration/types'
 import {mockStore} from 'utils/testing'
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
-jest.mock('pages/stats/Card', () => () => (
-    <div data-testid="verified-domain-card" />
-))
+jest.mock('@gorgias/analytics-ui-kit', () => ({
+    Card: () => <div data-testid="verified-domain-card" />,
+}))
 
 describe('SingleSenderVerificationAccordionItem', () => {
     const renderComponent = (
