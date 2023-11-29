@@ -14,6 +14,7 @@ import {NonEmptyArray} from 'types'
 import {isNotEmptyArray} from 'utils'
 import {StatsFilters} from 'models/stat/types'
 
+import {getSortByName} from 'utils/getSortByName'
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
@@ -140,11 +141,15 @@ const HelpCenterStats = () => {
     const {helpCenters, isLoading} = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
     })
+    const sortedHelpCenters = useMemo(
+        () => helpCenters.sort(getSortByName),
+        [helpCenters]
+    )
     const statsFiltersInitState = useMemo(
         () => ({
-            helpCenters: helpCenters[0] ? [helpCenters[0].id] : [],
+            helpCenters: sortedHelpCenters[0] ? [sortedHelpCenters[0].id] : [],
         }),
-        [helpCenters]
+        [sortedHelpCenters]
     )
     const [statsFilters, setStatsFilters] = useStatsFilters(
         statsFiltersInitState
@@ -162,9 +167,10 @@ const HelpCenterStats = () => {
         return <HelpCenterStatsLoading title={PAGE_TITLE_HELP_CENTER} />
     }
 
-    return activeHelpCenters.length > 0 && isNotEmptyArray(helpCenters) ? (
+    return activeHelpCenters.length > 0 &&
+        isNotEmptyArray(sortedHelpCenters) ? (
         <HelpCenterStatsComponent
-            helpCenters={helpCenters}
+            helpCenters={sortedHelpCenters}
             statsFilters={statsFilters}
             setStatsFilters={setStatsFilters}
         />

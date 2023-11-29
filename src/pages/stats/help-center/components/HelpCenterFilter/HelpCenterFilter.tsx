@@ -5,6 +5,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Button from 'pages/common/components/button/Button'
+import {HELP_CENTER_STATS_TEST_IDS} from '../../pages/tests/constants'
 import css from './HelpCenterFilter.less'
 
 type HelpCenterFilterProps = {
@@ -31,7 +32,8 @@ const HelpCenterFilter = ({
             <Button
                 onClick={() => setIsOpen(!isOpen)}
                 ref={buttonRef}
-                intent={'secondary'}
+                intent="secondary"
+                data-testid={HELP_CENTER_STATS_TEST_IDS.FILTER}
                 className={css.button}
             >
                 <span className={css.buttonText}>

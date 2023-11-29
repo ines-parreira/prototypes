@@ -1,6 +1,7 @@
 import React from 'react'
 import StatsPage from 'pages/stats/StatsPage'
 import Loader from 'pages/common/components/Loader/Loader'
+import {HELP_CENTER_STATS_TEST_IDS} from '../../pages/tests/constants'
 
 type HelpCenterStatsLoadingProps = {
     title: string
@@ -9,7 +10,10 @@ type HelpCenterStatsLoadingProps = {
 const HelpCenterStatsLoading = ({title}: HelpCenterStatsLoadingProps) => (
     <div className="full-width">
         <StatsPage title={title} filters={<></>}>
-            <Loader size="24px" data-testid="help-center-stats-loader" />
+            <Loader
+                size="24px"
+                data-testid={HELP_CENTER_STATS_TEST_IDS.LOADER}
+            />
         </StatsPage>
     </div>
 )

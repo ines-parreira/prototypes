@@ -10,6 +10,7 @@ import configureStore from 'store/configureStore.prod'
 import HelpCenterStats from '../HelpCenterStats'
 import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
 import {InitialRootState} from '../../../../../types'
+import {HELP_CENTER_STATS_TEST_IDS} from './constants'
 
 jest.mock('../../hooks/useHelpCenterTrend', () => ({
     useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
@@ -93,11 +94,11 @@ describe('<HelpCenterStats />', () => {
         renderComponent()
 
         expect(
-            screen.getByTestId('help-center-stats-loader')
+            screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.LOADER)
         ).toBeInTheDocument()
     })
 
-    it('should show empty state', () => {
+    it('should show empty state when help center deactivated', () => {
         mockUseHelpCenterList.mockReturnValue({
             isLoading: false,
             helpCenters: [
@@ -113,7 +114,22 @@ describe('<HelpCenterStats />', () => {
         renderComponent()
 
         expect(
-            screen.getByTestId('help-center-stats-empty-state')
+            screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.EMPTY_STATE)
+        ).toBeInTheDocument()
+    })
+
+    it('should show empty state when help center list is empty', () => {
+        mockUseHelpCenterList.mockReturnValue({
+            isLoading: false,
+            helpCenters: [],
+            hasMore: false,
+            fetchMore: jest.fn(),
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.EMPTY_STATE)
         ).toBeInTheDocument()
     })
 
@@ -169,5 +185,26 @@ describe('<HelpCenterStats />', () => {
             expect.anything(),
             expect.anything()
         )
+    })
+
+    it('should set initial help center filter by sorted help center list', () => {
+        const helpCenterFixture = getHelpCentersResponseFixture.data[0]
+        mockUseHelpCenterList.mockReturnValue({
+            isLoading: false,
+            helpCenters: [
+                {...helpCenterFixture, name: 'B', id: 3},
+                {...helpCenterFixture, name: 'A', id: 1},
+                {...helpCenterFixture, name: 'C', id: 2},
+                {...helpCenterFixture, name: 'D', id: 4},
+            ],
+            hasMore: false,
+            fetchMore: jest.fn(),
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.FILTER)
+        ).toHaveTextContent('A')
     })
 })
