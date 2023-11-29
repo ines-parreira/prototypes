@@ -2,6 +2,7 @@ import {Map} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
 import {Notification} from 'state/notifications/types'
+import {TableColumn} from 'state/ui/stats/types'
 
 export type CurrentAccountState = Map<any, any>
 
@@ -11,6 +12,7 @@ export enum AccountStatus {
 
 export enum AccountSettingType {
     Access = 'access',
+    AgentsTableConfig = 'agents-table-config',
     BusinessHours = 'business-hours',
     SatisfactionSurveys = 'satisfaction-surveys',
     TicketAssignment = 'ticket-assignment',
@@ -96,6 +98,12 @@ export type AccountSettingSatisfactionSurvey = {
         survey_email_text: string
         survey_interval: number
     }
+}
+
+export type AccountSettingAgentsTableConfig = {
+    id: number
+    type: AccountSettingType.AgentsTableConfig
+    data: TableColumn[]
 }
 
 export type AccountViewsOrderingSettingData = {

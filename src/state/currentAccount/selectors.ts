@@ -2,19 +2,20 @@ import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import moment, {Moment} from 'moment-timezone'
 
-import {RootState} from '../types'
-import {toJS} from '../../utils'
-import {isFeatureEnabled} from '../../utils/account'
-import {getTimezone} from '../currentUser/selectors'
+import {toJS} from 'utils'
+import {isFeatureEnabled} from 'utils/account'
+import {getTimezone} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
 import {
     AccountFeature,
+    AccountSettingAgentsTableConfig,
     AccountSettingBusinessHours,
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
     AccountSettingViewsVisibility,
     ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
-} from './types'
+} from 'state/currentAccount/types'
 
 export const getCurrentAccountState = (state: RootState) =>
     state.currentAccount || fromJS({})
@@ -113,6 +114,18 @@ const createSettingByTypeSelector = (type: string) => {
         ) || fromJS({})) as Map<any, any>
     })
 }
+
+export const getAgentsTableConfigSettings = createSettingByTypeSelector(
+    AccountSettingType.AgentsTableConfig
+)
+
+export const getAgentsTableConfigSettingsJS = createSelector(
+    getAgentsTableConfigSettings,
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingAgentsTableConfig)
+)
 
 export const getSurveysSettings = createSettingByTypeSelector(
     AccountSettingType.SatisfactionSurveys

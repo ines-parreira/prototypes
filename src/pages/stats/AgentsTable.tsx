@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React, {PropsWithRef, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import useMeasure from 'react-use/lib/useMeasure'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {User} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {NumberedPagination} from 'pages/common/components/Paginations'
@@ -30,11 +31,7 @@ import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeC
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
 import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
 import {SummaryCell} from 'pages/stats/SummaryCell'
-import {
-    getColumnAlignment,
-    getColumnWidth,
-    TableColumnsOrder,
-} from 'pages/stats/TableConfig'
+import {getColumnAlignment, getColumnWidth} from 'pages/stats/TableConfig'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
@@ -117,13 +114,14 @@ export const AgentsTable = () => {
             setIsTableScrolled(false)
         }
     }
+    const columnsOrder = useAgentsTableConfigSetting()
 
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
                 <TableWrapper className={css.table} style={{width}}>
                     <TableHead>
-                        {TableColumnsOrder.map((column, index) => (
+                        {columnsOrder.map((column, index) => (
                             <AgentsHeaderCellContent
                                 key={`header-cell-${column}`}
                                 width={getColumnWidth(column)} //TODO: consider introducing common props per cell type (header, average, body)
@@ -138,7 +136,7 @@ export const AgentsTable = () => {
                     </TableHead>
                     <TableBody>
                         <TableBodyRow>
-                            {TableColumnsOrder.map((column) => (
+                            {columnsOrder.map((column) => (
                                 <BodyCell
                                     key={column}
                                     width={getColumnWidth(column)}
@@ -160,7 +158,7 @@ export const AgentsTable = () => {
                         </TableBodyRow>
                         {paginatedAgents.map((agent) => (
                             <TableBodyRow key={agent.id}>
-                                {TableColumnsOrder.map((column) => (
+                                {columnsOrder.map((column) => (
                                     <React.Fragment key={column}>
                                         {React.createElement(getCell(column), {
                                             agent,
