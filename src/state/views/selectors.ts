@@ -160,7 +160,7 @@ export const isDirty = createSelector(
 export const isActiveViewTrashView = createSelector(
     getActiveView,
     (state) =>
-        state.get('category') === ViewCategory.System &&
+        (state.get('category') as string)?.startsWith(ViewCategory.System) &&
         (state.get('name') as string).toLocaleLowerCase() === 'trash'
 )
 
