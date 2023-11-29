@@ -23,6 +23,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import TextArea from 'pages/common/forms/TextArea'
 
+import Tooltip from 'pages/common/components/Tooltip'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import ContactCard from '../ContactCard'
 import {MAX_DESCRIPTION_LENGTH} from '../../constants'
@@ -197,8 +198,8 @@ const ChatApplication = () => {
                         <div>
                             <h3>Chat</h3>
                             <p>
-                                Allow customers to reach out to you through chat
-                                from the help center.
+                                Allow customers to chat with you from the Help
+                                Center.
                             </p>
                         </div>
                     </div>
@@ -209,7 +210,26 @@ const ChatApplication = () => {
                         className={css.toggle}
                         caption="This makes a chat widget visible for all Help Center pages."
                     >
-                        Enable chat widget
+                        Enable chat widget{' '}
+                        <i
+                            id="enable-chat-widget-info"
+                            className={classnames(
+                                'material-icons',
+                                css.tooltipIcon
+                            )}
+                        >
+                            info_outline
+                        </i>
+                        <Tooltip
+                            target="enable-chat-widget-info"
+                            placement="top-start"
+                            popperClassName={css.tooltip}
+                            innerClassName={css['tooltip-inner']}
+                            arrowClassName={css['tooltip-arrow']}
+                        >
+                            Hidden when Help Center is embedded to avoid
+                            duplicate chats on your website
+                        </Tooltip>
                     </ToggleInput>
 
                     {chatOptions.length === 0 && (
@@ -266,7 +286,26 @@ const ChatApplication = () => {
                             aria-label="Enable chat contact card"
                             isDisabled={!chatAppKey}
                         >
-                            Chat contact card
+                            Chat contact card{' '}
+                            <i
+                                id="chat-contact-card-info"
+                                className={classnames(
+                                    'material-icons',
+                                    css.tooltipIcon
+                                )}
+                            >
+                                info_outline
+                            </i>
+                            <Tooltip
+                                target="chat-contact-card-info"
+                                placement="top-start"
+                                popperClassName={css.tooltip}
+                                innerClassName={css['tooltip-inner']}
+                                arrowClassName={css['tooltip-arrow']}
+                            >
+                                Hidden when Help Center is embedded to avoid
+                                duplicate chats on your website
+                            </Tooltip>
                         </ToggleInput>
                         <TextArea
                             label="Card description"

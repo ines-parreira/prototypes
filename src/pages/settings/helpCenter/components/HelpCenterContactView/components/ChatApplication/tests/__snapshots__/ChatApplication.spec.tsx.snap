@@ -19,7 +19,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
               Chat
             </h3>
             <p>
-              Allow customers to reach out to you through chat from the help center.
+              Allow customers to chat with you from the Help Center.
             </p>
           </div>
         </div>
@@ -43,6 +43,13 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
               class="slider"
             />
             Enable chat widget
+             
+            <i
+              class="material-icons tooltipIcon"
+              id="enable-chat-widget-info"
+            >
+              info_outline
+            </i>
           </label>
           <div
             class="caption caption"
@@ -158,6 +165,13 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
                 class="slider"
               />
               Chat contact card
+               
+              <i
+                class="material-icons tooltipIcon"
+                id="chat-contact-card-info"
+              >
+                info_outline
+              </i>
             </label>
           </div>
           <div>
@@ -323,7 +337,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
               Chat
             </h3>
             <p>
-              Allow customers to reach out to you through chat from the help center.
+              Allow customers to chat with you from the Help Center.
             </p>
           </div>
         </div>
@@ -347,6 +361,13 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
               class="slider"
             />
             Enable chat widget
+             
+            <i
+              class="material-icons tooltipIcon"
+              id="enable-chat-widget-info"
+            >
+              info_outline
+            </i>
           </label>
           <div
             class="caption caption"
@@ -402,6 +423,13 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
                 class="slider"
               />
               Chat contact card
+               
+              <i
+                class="material-icons tooltipIcon"
+                id="chat-contact-card-info"
+              >
+                info_outline
+              </i>
             </label>
           </div>
           <div>

@@ -239,7 +239,9 @@ describe('<ChatApplication />', () => {
         expect(container).toMatchSnapshot()
 
         await waitFor(() => {
-            fireEvent.click(getByLabelText('Enable chat widget'))
+            fireEvent.click(
+                getByLabelText('Enable chat widget', {exact: false})
+            )
         })
 
         expect(mockedUpdateTranslation).toHaveBeenLastCalledWith(
