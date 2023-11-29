@@ -6,6 +6,9 @@ import {assumeMock} from 'utils/testing'
 import {DrillDownInfobar} from '../DrillDownInfobar'
 import {useDrillDownData} from '../useDrillDownData'
 
+jest.mock('pages/stats/DrillDownDownloadButton', () => ({
+    DrillDownDownloadButton: () => null,
+}))
 jest.mock('pages/stats/useDrillDownData')
 const useDrillDownDataMock = assumeMock(useDrillDownData)
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import {DrillDownDownloadButton} from './DrillDownDownloadButton'
 import {useDrillDownData} from './useDrillDownData'
 
 import css from './DrillDownInfobar.less'
@@ -15,6 +16,7 @@ export const DrillDownInfobar = () => {
                 <strong>{perPage}</strong> out of{' '}
                 <strong>{data.length} tickets</strong> are shown.
             </div>
+            <DrillDownDownloadButton />
         </div>
     )
 }
