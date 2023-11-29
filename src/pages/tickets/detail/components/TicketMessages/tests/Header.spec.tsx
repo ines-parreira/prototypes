@@ -1,95 +1,139 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
 
-import Header from '../Header'
-import Meta from '../Meta'
+import configureMockStore from 'redux-mock-store'
 import {
     message,
     duplicatedHiddenFacebookMessage,
-} from '../../../../../../models/ticket/tests/mocks'
+} from 'models/ticket/tests/mocks'
+import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
+import Header from '../Header'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const store = mockStore({} as RootState)
+
+jest.mock('pages/tickets/detail/components/TicketMessages/Meta')
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/SourceActionsHeader',
+    () => ({
+        default: () => null,
+    })
+)
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/SourceDetailsHeader',
+    () => () => null
+)
+const metaMock = assumeMock(Meta)
 
 describe('Header', () => {
+    beforeEach(() => {
+        metaMock.mockImplementation(() => <div></div>)
+    })
+
     it('should display header', () => {
-        const component = shallow(
-            <Header
-                id="some-header"
-                message={message}
-                timezone="America/Los_Angeles"
-                isLastRead={false}
-                isMessageHidden={false}
-                isMessageDeleted={false}
-            />
+        const {container} = render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={message}
+                    timezone="America/Los_Angeles"
+                    isLastRead={false}
+                    isMessageHidden={false}
+                    isMessageDeleted={false}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display header with metaContent = "Message hidden"', () => {
-        const component = shallow(
-            <Header
-                id="some-header"
-                message={message}
-                timezone="America/Los_Angeles"
-                isLastRead={false}
-                isMessageHidden={true}
-                isMessageDeleted={false}
-            />
+        const {container} = render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={message}
+                    timezone="America/Los_Angeles"
+                    isLastRead={false}
+                    isMessageHidden={true}
+                    isMessageDeleted={false}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not display header with metaContent = "Message hidden" because the message is duplicated', () => {
-        const component = shallow(
-            <Header
-                id="some-header"
-                message={duplicatedHiddenFacebookMessage}
-                timezone="America/Los_Angeles"
-                isLastRead={false}
-                isMessageHidden={true}
-                isMessageDeleted={false}
-            />
+        const {container} = render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={duplicatedHiddenFacebookMessage}
+                    timezone="America/Los_Angeles"
+                    isLastRead={false}
+                    isMessageHidden={true}
+                    isMessageDeleted={false}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display header with metaContent = "Comment deleted on Facebook"', () => {
-        const component = shallow(
-            <Header
-                id="some-header"
-                message={message}
-                timezone="America/Los_Angeles"
-                isLastRead={false}
-                isMessageHidden={false}
-                isMessageDeleted={true}
-            />
+        const {container} = render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={message}
+                    timezone="America/Los_Angeles"
+                    isLastRead={false}
+                    isMessageHidden={false}
+                    isMessageDeleted={true}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should pass the correct message id to Meta', () => {
-        const component = shallow(
-            <Header
-                id="some-header"
-                message={message}
-                timezone="America/Los_Angeles"
-                isLastRead={false}
-                isMessageHidden={false}
-                isMessageDeleted={false}
-            />
+        render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={message}
+                    timezone="America/Los_Angeles"
+                    isLastRead={false}
+                    isMessageHidden={false}
+                    isMessageDeleted={false}
+                />
+            </Provider>
         )
-        const messageId = component.find(Meta).prop('messageId')
-        expect(messageId).toBe(message.message_id)
+
+        expect(metaMock).toHaveBeenCalledWith(
+            expect.objectContaining({messageId: message.message_id}),
+            expect.any(Object)
+        )
     })
+
     it('should correctly display intents', () => {
-        const component = shallow(
-            <Header
-                id="some-header"
-                message={message}
-                timezone="America/Los_Angeles"
-                isLastRead={false}
-                isMessageHidden={false}
-                isMessageDeleted={false}
-            />
+        const {container} = render(
+            <Provider store={store}>
+                <Header
+                    id="some-header"
+                    message={message}
+                    timezone="America/Los_Angeles"
+                    isLastRead={false}
+                    isMessageHidden={false}
+                    isMessageDeleted={false}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

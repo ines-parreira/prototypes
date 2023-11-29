@@ -1,55 +1,317 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
-<TicketAssignee
-  className="assignee"
-  handleTeams={true}
-  handleUsers={false}
-  setTeam={[Function]}
-  setUser={[Function]}
-/>
+<div
+  class="assignee dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      Unassigned
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      ASSIGN TO:
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
+    />
+    <div />
+  </div>
+</div>
 `;
 
 exports[`<SetAssigneeAction/> render() should render team dropdown with current assignee 1`] = `
-<TicketAssignee
-  className="assignee"
-  currentAssigneeTeam={
-    Immutable.Map {
-      "id": 1,
-      "name": "Team 1",
-      "decoration": Immutable.Map {},
-    }
-  }
-  handleTeams={true}
-  handleUsers={false}
-  setTeam={[Function]}
-  setUser={[Function]}
-/>
+<div
+  class="assignee dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <div
+      class="TeamLabel"
+    >
+      <div
+        class="component square avatar"
+        style="width: 26px; height: 26px;"
+      >
+        <div
+          class="initials"
+          style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+        >
+          <span
+            style="line-height: 28px;"
+          >
+            T1
+          </span>
+        </div>
+      </div>
+      <span
+        class="name"
+        style="max-width: 100px;"
+      >
+        Team 1
+      </span>
+    </div>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      ASSIGN TO:
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
+    />
+    <div>
+      <button
+        class="assigneeItem dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="TeamLabel assigneeLabel"
+        >
+          <div
+            class="component square avatar"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                T1
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Team 1
+            <span
+              class="nameIcon material-icons md-2"
+            >
+              people
+            </span>
+          </span>
+        </div>
+        <i
+          class="material-icons md-2"
+        >
+          close
+        </i>
+      </button>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
-<TicketAssignee
-  className="assignee"
-  handleTeams={false}
-  handleUsers={true}
-  setTeam={[Function]}
-  setUser={[Function]}
-/>
+<div
+  class="assignee dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      Unassigned
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      ASSIGN TO:
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
+    />
+    <div>
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <h6
+        class="dropdown-header"
+        tabindex="-1"
+      >
+        Could not find any user
+      </h6>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<SetAssigneeAction/> render() should render user dropdown with current assignee 1`] = `
-<TicketAssignee
-  className="assignee"
-  currentAssigneeUser={
-    Immutable.Map {
-      "id": 1,
-      "name": "Team 1",
-      "decoration": Immutable.Map {},
-    }
-  }
-  handleTeams={false}
-  handleUsers={true}
-  setTeam={[Function]}
-  setUser={[Function]}
-/>
+<div
+  class="assignee dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <div
+      class="AgentLabel"
+    >
+      <div
+        class="component square avatar"
+        style="width: 26px; height: 26px;"
+      >
+        <div
+          class="initials"
+          style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+        >
+          <span
+            style="line-height: 28px;"
+          >
+            T1
+          </span>
+        </div>
+      </div>
+      <span
+        class="name"
+        style="max-width: 100px;"
+      >
+        Team 1
+      </span>
+    </div>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      ASSIGN TO:
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
+    />
+    <div>
+      <button
+        class="assigneeItem dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="AgentLabel assigneeLabel"
+        >
+          <div
+            class="component square avatar"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                T1
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Team 1
+          </span>
+        </div>
+        <i
+          class="material-icons md-2"
+        >
+          close
+        </i>
+      </button>
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <h6
+        class="dropdown-header"
+        tabindex="-1"
+      >
+        Could not find any user
+      </h6>
+    </div>
+  </div>
+</div>
 `;

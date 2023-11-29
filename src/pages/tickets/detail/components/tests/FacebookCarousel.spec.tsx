@@ -1,7 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {shallow, mount} from 'enzyme'
-
-import Button from 'pages/common/components/button/Button'
+import {render, screen} from '@testing-library/react'
 
 import FacebookCarousel from '../FacebookCarousel'
 
@@ -11,9 +9,9 @@ describe('FacebookCarousel component', () => {
     }
 
     it('default props', () => {
-        expect(
-            shallow(<FacebookCarousel {...defaultProps} />)
-        ).toMatchSnapshot()
+        const {container} = render(<FacebookCarousel {...defaultProps} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render empty with template_type=button', () => {
@@ -45,7 +43,9 @@ describe('FacebookCarousel component', () => {
             },
         ]
 
-        expect(mount(<FacebookCarousel data={data} />)).toMatchSnapshot()
+        const {container} = render(<FacebookCarousel data={data} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('render generic template', () => {
@@ -86,7 +86,9 @@ describe('FacebookCarousel component', () => {
             },
         ]
 
-        expect(mount(<FacebookCarousel data={data} />)).toMatchSnapshot()
+        const {container} = render(<FacebookCarousel data={data} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should have two elements', () => {
@@ -111,13 +113,29 @@ describe('FacebookCarousel component', () => {
                 },
             },
         ]
+        render(<FacebookCarousel data={data} />)
 
-        expect(
-            mount(<FacebookCarousel data={data} />).find('CardBody').length
-        ).toBe(2)
+        const cardBodies = []
+        data[0]?.payload?.elements?.forEach((element) => {
+            cardBodies.push(screen.getByText(element.title))
+        })
+        expect(cardBodies.length).toBe(2)
     })
 
     it('should have two buttons', () => {
+        const buttons = [
+            {
+                url: 'https://sfbicycles.myshopify.com/',
+                type: 'web_url',
+                title: 'View details',
+                webview_height_ratio: 'tall',
+            },
+            {
+                type: 'element_share',
+                title: 'share',
+                url: "'https://sfbicycles.myshopify.com/share",
+            },
+        ]
         const data: ComponentProps<typeof FacebookCarousel>['data'] = [
             {
                 type: 'template',
@@ -127,19 +145,7 @@ describe('FacebookCarousel component', () => {
                             title: 'Leather saddle',
                             subtitle: '$10',
                             image_url: 'https://gorgias.io',
-                            buttons: [
-                                {
-                                    url: 'https://sfbicycles.myshopify.com/',
-                                    type: 'web_url',
-                                    title: 'View details',
-                                    webview_height_ratio: 'tall',
-                                },
-                                {
-                                    type: 'element_share',
-                                    title: 'share',
-                                    url: "'https://sfbicycles.myshopify.com/share",
-                                },
-                            ],
+                            buttons,
                         },
                     ],
                     sharable: true,
@@ -147,9 +153,15 @@ describe('FacebookCarousel component', () => {
                 },
             },
         ]
+        render(<FacebookCarousel data={data} />)
 
-        expect(
-            mount(<FacebookCarousel data={data} />).find(Button).length
-        ).toBe(2)
+        const buttonComponents = []
+        buttons?.forEach((button) => {
+            buttonComponents.push(
+                screen.getByText(button.title, {exact: false})
+            )
+        })
+
+        expect(buttonComponents.length).toBe(2)
     })
 })

@@ -1,8 +1,14 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {RootState, StoreDispatch} from 'state/types'
 
 import SetAssigneeAction from '../SetAssigneeAction'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const store = mockStore({} as RootState)
 
 describe('<SetAssigneeAction/>', () => {
     describe('render()', () => {
@@ -13,59 +19,67 @@ describe('<SetAssigneeAction/>', () => {
         }
 
         it('should render user dropdown', () => {
-            const component = shallow(
-                <SetAssigneeAction {...minProps} handleUsers />
+            const {container} = render(
+                <Provider store={store}>
+                    <SetAssigneeAction {...minProps} handleUsers />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render team dropdown', () => {
-            const component = shallow(
-                <SetAssigneeAction {...minProps} handleTeams />
+            const {container} = render(
+                <Provider store={store}>
+                    <SetAssigneeAction {...minProps} handleTeams />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render user dropdown with current assignee', () => {
-            const component = shallow(
-                <SetAssigneeAction
-                    {...minProps}
-                    action={fromJS({
-                        arguments: {
-                            assignee_user: fromJS({
-                                id: 1,
-                                name: 'Team 1',
-                                decoration: {},
-                            }),
-                        },
-                    })}
-                    handleUsers
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <SetAssigneeAction
+                        {...minProps}
+                        action={fromJS({
+                            arguments: {
+                                assignee_user: fromJS({
+                                    id: 1,
+                                    name: 'Team 1',
+                                    decoration: {},
+                                }),
+                            },
+                        })}
+                        handleUsers
+                    />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render team dropdown with current assignee', () => {
-            const component = shallow(
-                <SetAssigneeAction
-                    {...minProps}
-                    action={fromJS({
-                        arguments: {
-                            assignee_team: fromJS({
-                                id: 1,
-                                name: 'Team 1',
-                                decoration: {},
-                            }),
-                        },
-                    })}
-                    handleTeams
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <SetAssigneeAction
+                        {...minProps}
+                        action={fromJS({
+                            arguments: {
+                                assignee_team: fromJS({
+                                    id: 1,
+                                    name: 'Team 1',
+                                    decoration: {},
+                                }),
+                            },
+                        })}
+                        handleTeams
+                    />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

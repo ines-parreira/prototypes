@@ -2,445 +2,115 @@
 
 exports[`Header should correctly display intents 1`] = `
 <div
-  className="header"
+  class="header"
 >
   <div
-    className="headerDetails"
+    class="headerDetails"
   >
     <div
-      className="author"
+      class="author"
     >
-      <CustomerLabel
-        customer={
-          Immutable.Map {
-            "id": 1,
-            "email": "john.doe@example.com",
-            "name": "John Doe",
-            "firstname": "John",
-            "lastname": "Doe",
-          }
-        }
-      />
+      <span>
+        John Doe
+      </span>
     </div>
-    <Meta
-      externalId={null}
-      integrationId={null}
-      messageCreatedDatetime=""
-      meta={null}
-      ruleId={null}
-      via="email"
-    />
+    <div />
   </div>
-  <SourceDetailsHeader
-    className="sourceDetails"
-    displayMessageStatusIndicator={false}
-    isLastRead={false}
-    isMessageDeleted={false}
-    message={
-      {
-        "actions": null,
-        "attachments": [],
-        "channel": "email",
-        "created_datetime": "",
-        "external_id": null,
-        "failed_datetime": null,
-        "from_agent": false,
-        "id": 1,
-        "integration_id": null,
-        "isMessage": true,
-        "is_retriable": false,
-        "meta": null,
-        "opened_datetime": null,
-        "public": true,
-        "receiver": {
-          "email": "mary.poppins@example.com",
-          "firstname": "Mary",
-          "id": 2,
-          "lastname": "Poppins",
-          "name": "Mary Poppins",
-        },
-        "rule_id": null,
-        "sender": {
-          "email": "john.doe@example.com",
-          "firstname": "John",
-          "id": 1,
-          "lastname": "Doe",
-          "name": "John Doe",
-        },
-        "stripped_html": null,
-        "stripped_signature": null,
-        "stripped_text": null,
-        "subject": "Some subject",
-        "uri": "http://example.com/messages/1",
-        "via": "email",
-      }
-    }
-    timezone="America/Los_Angeles"
-  />
 </div>
 `;
 
 exports[`Header should display header 1`] = `
 <div
-  className="header"
+  class="header"
 >
   <div
-    className="headerDetails"
+    class="headerDetails"
   >
     <div
-      className="author"
+      class="author"
     >
-      <CustomerLabel
-        customer={
-          Immutable.Map {
-            "id": 1,
-            "email": "john.doe@example.com",
-            "name": "John Doe",
-            "firstname": "John",
-            "lastname": "Doe",
-          }
-        }
-      />
+      <span>
+        John Doe
+      </span>
     </div>
-    <Meta
-      externalId={null}
-      integrationId={null}
-      messageCreatedDatetime=""
-      meta={null}
-      ruleId={null}
-      via="email"
-    />
+    <div />
   </div>
-  <SourceDetailsHeader
-    className="sourceDetails"
-    displayMessageStatusIndicator={false}
-    isLastRead={false}
-    isMessageDeleted={false}
-    message={
-      {
-        "actions": null,
-        "attachments": [],
-        "channel": "email",
-        "created_datetime": "",
-        "external_id": null,
-        "failed_datetime": null,
-        "from_agent": false,
-        "id": 1,
-        "integration_id": null,
-        "isMessage": true,
-        "is_retriable": false,
-        "meta": null,
-        "opened_datetime": null,
-        "public": true,
-        "receiver": {
-          "email": "mary.poppins@example.com",
-          "firstname": "Mary",
-          "id": 2,
-          "lastname": "Poppins",
-          "name": "Mary Poppins",
-        },
-        "rule_id": null,
-        "sender": {
-          "email": "john.doe@example.com",
-          "firstname": "John",
-          "id": 1,
-          "lastname": "Doe",
-          "name": "John Doe",
-        },
-        "stripped_html": null,
-        "stripped_signature": null,
-        "stripped_text": null,
-        "subject": "Some subject",
-        "uri": "http://example.com/messages/1",
-        "via": "email",
-      }
-    }
-    timezone="America/Los_Angeles"
-  />
 </div>
 `;
 
 exports[`Header should display header with metaContent = "Comment deleted on Facebook" 1`] = `
 <div
-  className="header"
+  class="header"
 >
   <div
-    className="headerDetails"
+    class="headerDetails"
   >
     <div
-      className="author deletedMessage"
+      class="author deletedMessage"
     >
-      <CustomerLabel
-        customer={
-          Immutable.Map {
-            "id": 1,
-            "email": "john.doe@example.com",
-            "name": "John Doe",
-            "firstname": "John",
-            "lastname": "Doe",
-          }
-        }
-      />
+      <span>
+        John Doe
+      </span>
     </div>
     <span
-      className="deletedMessage ml-1"
+      class="deletedMessage ml-1"
     >
        
       Comment deleted on Facebook
     </span>
   </div>
-  <SourceDetailsHeader
-    className="sourceDetails"
-    displayMessageStatusIndicator={false}
-    isLastRead={false}
-    isMessageDeleted={true}
-    message={
-      {
-        "actions": null,
-        "attachments": [],
-        "channel": "email",
-        "created_datetime": "",
-        "external_id": null,
-        "failed_datetime": null,
-        "from_agent": false,
-        "id": 1,
-        "integration_id": null,
-        "isMessage": true,
-        "is_retriable": false,
-        "meta": null,
-        "opened_datetime": null,
-        "public": true,
-        "receiver": {
-          "email": "mary.poppins@example.com",
-          "firstname": "Mary",
-          "id": 2,
-          "lastname": "Poppins",
-          "name": "Mary Poppins",
-        },
-        "rule_id": null,
-        "sender": {
-          "email": "john.doe@example.com",
-          "firstname": "John",
-          "id": 1,
-          "lastname": "Doe",
-          "name": "John Doe",
-        },
-        "stripped_html": null,
-        "stripped_signature": null,
-        "stripped_text": null,
-        "subject": "Some subject",
-        "uri": "http://example.com/messages/1",
-        "via": "email",
-      }
-    }
-    timezone="America/Los_Angeles"
-  />
 </div>
 `;
 
 exports[`Header should display header with metaContent = "Message hidden" 1`] = `
 <div
-  className="header"
+  class="header"
 >
   <div
-    className="headerDetails"
+    class="headerDetails"
   >
     <div
-      className="author hiddenMessage"
+      class="author hiddenMessage"
     >
-      <CustomerLabel
-        customer={
-          Immutable.Map {
-            "id": 1,
-            "email": "john.doe@example.com",
-            "name": "John Doe",
-            "firstname": "John",
-            "lastname": "Doe",
-          }
-        }
-      />
+      <span>
+        John Doe
+      </span>
     </div>
     <span
-      className="hiddenMessage ml-1"
+      class="hiddenMessage ml-1"
     >
        
       Message hidden
     </span>
   </div>
-  <SourceDetailsHeader
-    className="sourceDetails"
-    displayMessageStatusIndicator={false}
-    isLastRead={false}
-    isMessageDeleted={false}
-    message={
-      {
-        "actions": null,
-        "attachments": [],
-        "channel": "email",
-        "created_datetime": "",
-        "external_id": null,
-        "failed_datetime": null,
-        "from_agent": false,
-        "id": 1,
-        "integration_id": null,
-        "isMessage": true,
-        "is_retriable": false,
-        "meta": null,
-        "opened_datetime": null,
-        "public": true,
-        "receiver": {
-          "email": "mary.poppins@example.com",
-          "firstname": "Mary",
-          "id": 2,
-          "lastname": "Poppins",
-          "name": "Mary Poppins",
-        },
-        "rule_id": null,
-        "sender": {
-          "email": "john.doe@example.com",
-          "firstname": "John",
-          "id": 1,
-          "lastname": "Doe",
-          "name": "John Doe",
-        },
-        "stripped_html": null,
-        "stripped_signature": null,
-        "stripped_text": null,
-        "subject": "Some subject",
-        "uri": "http://example.com/messages/1",
-        "via": "email",
-      }
-    }
-    timezone="America/Los_Angeles"
-  />
 </div>
 `;
 
 exports[`Header should not display header with metaContent = "Message hidden" because the message is duplicated 1`] = `
 <div
-  className="header"
+  class="header"
 >
   <div
-    className="headerDetails"
+    class="headerDetails"
   >
     <div
-      className="author"
+      class="author"
     >
-      <CustomerLabel
-        customer={
-          Immutable.Map {
-            "id": 1,
-            "email": "john.doe@example.com",
-            "name": "John Doe",
-            "firstname": "John",
-            "lastname": "Doe",
-          }
-        }
-      />
+      <span>
+        John Doe
+      </span>
     </div>
-    <Source
-      channel="facebook"
-      createdDatetime=""
-      id="some-header"
-      isForwarded={false}
-      source={
-        {
-          "from": {
-            "address": "657788504429455-657788504429455",
-            "name": "Page",
-          },
-          "to": [
-            {
-              "address": "657788504429455-4135481299826174",
-              "name": "Cust Omer",
-            },
-          ],
-          "type": "facebook-comment",
-        }
-      }
-    />
-    <Meta
-      messageCreatedDatetime=""
-      meta={
-        {
-          "hidden_datetime": "2020-06-18T14:10:14.291746",
-          "is_duplicated": true,
-          "private_reply": {
-            "original_ticket_id": 1234,
-          },
-        }
-      }
-      source={
-        {
-          "from": {
-            "address": "657788504429455-657788504429455",
-            "name": "Page",
-          },
-          "to": [
-            {
-              "address": "657788504429455-4135481299826174",
-              "name": "Cust Omer",
-            },
-          ],
-          "type": "facebook-comment",
-        }
-      }
-      via="facebook"
-    />
+    <div>
+      <span
+        class="clickable source"
+      >
+        <i
+          class="icon d-inline-block icon-custom icon-facebook-feed secondary"
+          id="some-header"
+        />
+      </span>
+    </div>
+    <div />
   </div>
-  <SourceDetailsHeader
-    className="sourceDetails"
-    displayMessageStatusIndicator={false}
-    isLastRead={false}
-    isMessageDeleted={false}
-    message={
-      {
-        "channel": "facebook",
-        "created_datetime": "",
-        "from_agent": false,
-        "id": 1,
-        "isMessage": true,
-        "meta": {
-          "hidden_datetime": "2020-06-18T14:10:14.291746",
-          "is_duplicated": true,
-          "private_reply": {
-            "original_ticket_id": 1234,
-          },
-        },
-        "public": true,
-        "receiver": {
-          "email": "mary.poppins@example.com",
-          "firstname": "Mary",
-          "id": 2,
-          "lastname": "Poppins",
-          "name": "Mary Poppins",
-        },
-        "sender": {
-          "email": "john.doe@example.com",
-          "firstname": "John",
-          "id": 1,
-          "lastname": "Doe",
-          "name": "John Doe",
-        },
-        "source": {
-          "from": {
-            "address": "657788504429455-657788504429455",
-            "name": "Page",
-          },
-          "to": [
-            {
-              "address": "657788504429455-4135481299826174",
-              "name": "Cust Omer",
-            },
-          ],
-          "type": "facebook-comment",
-        },
-        "subject": "Some subject",
-        "uri": "http://example.com/messages/1",
-        "via": "facebook",
-      }
-    }
-    timezone="America/Los_Angeles"
-  />
 </div>
 `;
