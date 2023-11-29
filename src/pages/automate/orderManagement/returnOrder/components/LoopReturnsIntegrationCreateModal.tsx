@@ -97,7 +97,7 @@ const LoopReturnsIntegrationCreateModal = ({
                 <div className={css.caption}>
                     Currently only available to Loop Returns customers.
                     <a
-                        href="https://docs.gorgias.com/en-US/loop-returns-81908"
+                        href="https://link.gorgias.com/rpz"
                         target="_blank"
                         rel="noreferrer noopener"
                     >
