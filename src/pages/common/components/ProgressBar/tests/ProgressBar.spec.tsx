@@ -1,8 +1,8 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import Progress from '../Progress'
+import ProgressBar from '../ProgressBar'
 
-const defaultProps: ComponentProps<typeof Progress> = {
+const defaultProps: ComponentProps<typeof ProgressBar> = {
     barType: 'primary',
     labelType: 'percentage',
     value: 70,
@@ -23,33 +23,35 @@ const defaultProps: ComponentProps<typeof Progress> = {
     },
 }
 
-describe('<Progress />', () => {
+describe('<ProgressBar />', () => {
     it('should render a progress bar of different types', () => {
         const {container, rerender} = render(
-            <Progress {...defaultProps} barType="secondary" />
+            <ProgressBar {...defaultProps} barType="secondary" />
         )
 
         expect(container.querySelector('.secondary')).toBeTruthy()
 
-        rerender(<Progress {...defaultProps} barType="warning" />)
+        rerender(<ProgressBar {...defaultProps} barType="warning" />)
         expect(container.querySelector('.warning')).toBeTruthy()
 
-        rerender(<Progress {...defaultProps} barType="error" />)
+        rerender(<ProgressBar {...defaultProps} barType="error" />)
         expect(container.querySelector('.error')).toBeTruthy()
     })
 
     it('should render different progress bars for the threshold type', () => {
         const {container, rerender} = render(
-            <Progress {...defaultProps} barType="threshold" />
+            <ProgressBar {...defaultProps} barType="threshold" />
         )
 
         expect(container.querySelector('.success')).toBeTruthy()
 
-        rerender(<Progress {...defaultProps} barType="threshold" value={20} />)
+        rerender(
+            <ProgressBar {...defaultProps} barType="threshold" value={20} />
+        )
         expect(container.querySelector('.error')).toBeTruthy()
 
         rerender(
-            <Progress
+            <ProgressBar
                 {...defaultProps}
                 thresholds={{
                     secondary: {low: 0, high: 99},
@@ -82,7 +84,7 @@ describe('<Progress />', () => {
             },
         } as const
 
-        const {container} = render(<Progress {...props} value={20} />)
+        const {container} = render(<ProgressBar {...props} value={20} />)
         expect(container.querySelector('.success')).toBeTruthy()
     })
 })

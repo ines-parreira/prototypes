@@ -9,6 +9,7 @@ import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 
 import {SegmentEvent} from 'common/segment'
 import LinkButton from 'pages/common/components/button/LinkButton'
+import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
 import {TRAIN_MY_AI} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
@@ -77,7 +78,15 @@ const TrainMyAiView = () => {
             {isArticleRecommendationEnabled || recommendations.length > 0 ? (
                 <>
                     <div className={css.leftCol}>
-                        <Header hasAlert={!isArticleRecommendationEnabled} />
+                        <Header hasAlert={!isArticleRecommendationEnabled}>
+                            {recommendations.length > 0 && (
+                                <ProgressBar
+                                    value={12}
+                                    maxValue={50}
+                                    labelType="fraction"
+                                />
+                            )}
+                        </Header>
                         {isHelpCenterEmpty && recommendations.length === 0 && (
                             <div
                                 className={classNames(

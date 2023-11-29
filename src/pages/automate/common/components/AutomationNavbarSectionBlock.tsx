@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import cssNavbar from 'assets/css/navbar.less'
 import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
@@ -11,6 +12,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
 
+import {FeatureFlagKey} from '../../../../config/featureFlags'
 import AutomationNavbarPaywallNavbarLink from './AutomationNavbarPaywallNavbarLink'
 import css from './AutomationNavbarSectionBlock.less'
 import {
@@ -19,6 +21,7 @@ import {
     FLOWS,
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
+    TRAIN_MY_AI,
 } from './constants'
 
 type Props = {
@@ -35,6 +38,7 @@ const AutomationNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
+    const isTrainMyAiEnabled = useFlags()[FeatureFlagKey.TrainMyAiEnabled]
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -174,6 +178,25 @@ const AutomationNavbarSectionBlock = ({
                     <span className={cssNavbar['item-name']}>{CHANNELS}</span>
                 </NavbarLink>
             </div>
+            {isTrainMyAiEnabled && (
+                <div
+                    className={classNames(
+                        cssNavbar['link-wrapper'],
+                        cssNavbar.isNested
+                    )}
+                >
+                    <NavbarLink
+                        to={{
+                            pathname: `/app/automation/${shopType}/${shopName}/train-my-ai`,
+                            state: {from: FROM_LOCATION},
+                        }}
+                    >
+                        <span className={cssNavbar['item-name']}>
+                            {TRAIN_MY_AI}
+                        </span>
+                    </NavbarLink>
+                </div>
+            )}
         </NavbarSectionBlock>
     )
 }

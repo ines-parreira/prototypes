@@ -1,11 +1,11 @@
 import {ComponentProps} from 'react'
 import {Meta, StoryObj} from '@storybook/react'
 
-import Progress from './Progress'
+import ProgressBar from './ProgressBar'
 
-const storyConfig: Meta<typeof Progress> = {
-    title: 'General/Progress',
-    component: Progress,
+const storyConfig: Meta<typeof ProgressBar> = {
+    title: 'General/ProgressBar',
+    component: ProgressBar,
     argTypes: {
         barType: {
             control: {
@@ -44,7 +44,7 @@ const storyConfig: Meta<typeof Progress> = {
     },
 }
 
-type Story = StoryObj<typeof Progress>
+type Story = StoryObj<typeof ProgressBar>
 
 const templateParameters = {
     controls: {
@@ -52,7 +52,7 @@ const templateParameters = {
     },
 }
 
-const defaultProps: ComponentProps<typeof Progress> = {
+const defaultProps: ComponentProps<typeof ProgressBar> = {
     barType: 'threshold',
     labelType: 'percentage',
     value: 70,

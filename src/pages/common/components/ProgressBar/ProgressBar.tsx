@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import css from './Progress.less'
+import css from './ProgressBar.less'
 
 type BarType =
     | 'primary'
@@ -60,7 +60,7 @@ const checkBarType = (
     )
 }
 
-const Progress = ({
+const ProgressBar = ({
     barType = 'primary',
     labelType = 'percentage',
     value,
@@ -104,4 +104,4 @@ const Progress = ({
     )
 }
 
-export default Progress
+export default ProgressBar

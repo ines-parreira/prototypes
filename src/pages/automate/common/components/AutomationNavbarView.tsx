@@ -33,6 +33,7 @@ const AutomationNavbarView = () => {
             '/app/automation/:shopType/:shopName/order-management',
             '/app/automation/:shopType/:shopName/article-recommendation',
             '/app/automation/:shopType/:shopName/connected-channels',
+            '/app/automation/:shopType/:shopName/train-my-ai',
         ],
         exact: false,
     })
