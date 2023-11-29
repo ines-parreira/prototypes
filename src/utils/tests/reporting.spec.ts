@@ -47,6 +47,7 @@ describe('reporting utils', () => {
                         end_datetime: '2021-06-04T23:59:59.000+02:00',
                     },
                     helpCenters: [1],
+                    localeCodes: ['en-US'],
                 })
             ).toMatchInlineSnapshot(`
                 [
@@ -69,6 +70,13 @@ describe('reporting utils', () => {
                     "operator": "equals",
                     "values": [
                       "1",
+                    ],
+                  },
+                  {
+                    "member": "HelpCenterTrackingEvent.localeCode",
+                    "operator": "equals",
+                    "values": [
+                      "en-US",
                     ],
                   },
                 ]

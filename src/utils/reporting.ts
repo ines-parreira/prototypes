@@ -40,6 +40,7 @@ export const HelpCenterStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: HelpCenterTrackingEventMember.PeriodStart,
     periodEnd: HelpCenterTrackingEventMember.PeriodEnd,
     helpCenters: HelpCenterTrackingEventMember.HelpCenterId,
+    localeCodes: HelpCenterTrackingEventMember.LocaleCode,
 }
 
 export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
@@ -90,8 +91,15 @@ export const statsFiltersToReportingFilters = (
     members: StatsFiltersMembers,
     statsFilters: StatsFilters
 ): ReportingFilter[] => {
-    const {period, integrations, channels, agents, tags, helpCenters} =
-        statsFilters
+    const {
+        period,
+        integrations,
+        channels,
+        agents,
+        tags,
+        helpCenters,
+        localeCodes,
+    } = statsFilters
     const filters: ReportingFilter[] = [
         {
             member: members.periodStart,
@@ -118,6 +126,13 @@ export const statsFiltersToReportingFilters = (
             member: members.helpCenters,
             operator: ReportingFilterOperator.Equals,
             values: helpCenters.map((helpCenterId) => helpCenterId.toString()),
+        })
+    }
+    if (localeCodes?.length && members.localeCodes) {
+        filters.push({
+            member: members.localeCodes,
+            operator: ReportingFilterOperator.Equals,
+            values: localeCodes,
         })
     }
     if (channels?.length && members.channels) {

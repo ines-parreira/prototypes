@@ -1082,18 +1082,20 @@ export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
 export function HelpCenterStatsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
-            <Switch>
-                <Route
-                    path={`${path}`}
-                    exact
-                    render={() => (
-                        <App
-                            content={HelpCenterStats}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
-                />
-            </Switch>
+            <SupportedLocalesProvider>
+                <Switch>
+                    <Route
+                        path={`${path}`}
+                        exact
+                        render={() => (
+                            <App
+                                content={HelpCenterStats}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                </Switch>
+            </SupportedLocalesProvider>
         </HelpCenterApiClientProvider>
     )
 }

@@ -38,6 +38,13 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
+    useSupportedLocales: jest.fn(() => [
+        {code: 'en-US', name: 'English'},
+        {code: 'fr-FR', name: 'French'},
+    ]),
+}))
+
 const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
 
@@ -206,5 +213,44 @@ describe('<HelpCenterStats />', () => {
         expect(
             screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.FILTER)
         ).toHaveTextContent('A')
+    })
+
+    it('should change language when filter changed', () => {
+        mockUseHelpCenterList.mockReturnValue({
+            isLoading: false,
+            helpCenters: [
+                {
+                    ...getHelpCentersResponseFixture.data[0],
+                    supported_locales: ['en-US', 'fr-FR'],
+                },
+            ],
+            hasMore: false,
+            fetchMore: jest.fn(),
+        })
+
+        renderComponent()
+
+        expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
+            expect.objectContaining({
+                localeCodes: ['en-US', 'fr-FR'],
+            }),
+            expect.anything(),
+            expect.anything()
+        )
+
+        // Open dropdown
+        userEvent.click(screen.getByText('2 languages'))
+        // Select language
+        userEvent.click(screen.getByText('English'))
+        // Close dropdown
+        userEvent.click(document.body)
+
+        expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                localeCodes: ['fr-FR'],
+            }),
+            expect.anything(),
+            expect.anything()
+        )
     })
 })

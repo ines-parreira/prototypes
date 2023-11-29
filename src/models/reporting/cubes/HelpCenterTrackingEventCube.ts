@@ -20,6 +20,7 @@ export enum HelpCenterTrackingEventMember {
     PeriodStart = 'HelpCenterTrackingEvent.periodStart',
     PeriodEnd = 'HelpCenterTrackingEvent.periodEnd',
     HelpCenterId = 'HelpCenterTrackingEvent.helpCenterId',
+    LocaleCode = 'HelpCenterTrackingEvent.localeCode',
 }
 
 export enum HelpCenterTrackingEventMeasures {

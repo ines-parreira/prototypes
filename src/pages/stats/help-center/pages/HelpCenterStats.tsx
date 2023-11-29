@@ -24,16 +24,13 @@ import HelpCenterFilter from '../components/HelpCenterFilter/HelpCenterFilter'
 import {useStatsFilters} from '../hooks/useStatsFilters'
 import PeriodStatsFilter from '../../PeriodStatsFilter'
 import HelpCenterStatsLoading from '../components/HelpCenterStatsLoading/HelpCenterStatsLoading'
-import {HelpCenterStatsFilters} from '../types'
+import {HelpCenterStatsFilters, isHelpCenterStatsFiltersValid} from '../types'
 import HelpCenterOverviewSection from '../components/HelpCenterOverviewSection/HelpCenterOverviewSection'
 import UnpublishedHelpCenterAlert from '../components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 import {HelpCenterStatsEmptyState} from '../components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
+import HelpCenterStatsLanguageFilter from '../components/HelpCenterStatsLanguageFilter/HelpCenterStatsLanguageFilter'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
-
-const isHelpCenterStatsFiltersValid = (
-    filters: StatsFilters
-): filters is HelpCenterStatsFilters => Array.isArray(filters.helpCenters)
 
 type HelpCenterStatsComponentProps = {
     helpCenters: NonEmptyArray<HelpCenter>
@@ -56,12 +53,23 @@ const HelpCenterStatsComponent = ({
         ) ?? helpCenters[0]
 
     const selectedHelpCenterDomain = getHelpCenterDomain(selectedHelpCenter)
+    const onLanguageFilterChange = (localeCodes: string[]) => {
+        setStatsFilters({localeCodes})
+    }
+
     return (
         <div className="full-width">
             <StatsPage
                 title={PAGE_TITLE_HELP_CENTER}
                 filters={
                     <>
+                        <HelpCenterStatsLanguageFilter
+                            supportedLocales={
+                                selectedHelpCenter.supported_locales
+                            }
+                            selectedLocaleCodes={statsFilters.localeCodes}
+                            onFilterChange={onLanguageFilterChange}
+                        />
                         <PeriodStatsFilter
                             initialSettings={{
                                 maxSpan: 365,
@@ -148,6 +156,9 @@ const HelpCenterStats = () => {
     const statsFiltersInitState = useMemo(
         () => ({
             helpCenters: sortedHelpCenters[0] ? [sortedHelpCenters[0].id] : [],
+            localeCodes: sortedHelpCenters[0]
+                ? sortedHelpCenters[0].supported_locales
+                : [],
         }),
         [sortedHelpCenters]
     )

@@ -11,6 +11,7 @@ export type StatsFilters = {
     tags?: number[]
     agents?: number[]
     helpCenters?: number[]
+    localeCodes?: string[]
     channels?: ChannelIdentifier[]
     campaigns?: string[]
     score?: string[]
