@@ -1,7 +1,11 @@
 import React from 'react'
 import classNames from 'classnames'
 import {useListRecordings} from 'models/voiceCall/queries'
-import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
+import {
+    VoiceCall,
+    VoiceCallRecordingErrorCode,
+    VoiceCallRecordingType,
+} from 'models/voiceCall/types'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import DownloadableDeletableRecording from '../PhoneEvent/DownloadableDeletableRecording'
@@ -53,6 +57,18 @@ export default function TicketVoiceCallAudio({type, voiceCall}: Props) {
                         />
                     </>
                 )}
+            </div>
+        )
+    }
+
+    if (audio.error_code === VoiceCallRecordingErrorCode.RECORDING_IS_PRIVATE) {
+        return (
+            <div
+                className={css.privateRecording}
+                data-testid="private-recording-warning"
+            >
+                <div className="material-icons">warning</div>
+                <div>The call recording is not available.</div>
             </div>
         )
     }

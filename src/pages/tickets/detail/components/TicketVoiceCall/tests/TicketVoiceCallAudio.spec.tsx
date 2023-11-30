@@ -4,6 +4,7 @@ import * as voiceCallQueries from 'models/voiceCall/queries'
 import {
     VoiceCall,
     VoiceCallRecording,
+    VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
 
@@ -103,6 +104,31 @@ describe('TicketVoiceCallAudio', () => {
 
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
         expect(screen.getByTestId('recording-failure')).toBeInTheDocument()
+        expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
+    })
+
+    it('should render private recording warning', () => {
+        useListRecordingSpy.mockReturnValue({
+            data: {
+                data: {
+                    data: [
+                        {
+                            ...audio,
+                            error_code:
+                                VoiceCallRecordingErrorCode.RECORDING_IS_PRIVATE,
+                        },
+                    ],
+                },
+            },
+            isLoading: false,
+            error: undefined,
+        } as any)
+
+        renderComponent(voiceCall, VoiceCallRecordingType.Recording)
+
+        expect(
+            screen.getByTestId('private-recording-warning')
+        ).toBeInTheDocument()
         expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
     })
 

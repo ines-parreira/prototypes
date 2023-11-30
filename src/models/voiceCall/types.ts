@@ -46,6 +46,10 @@ export enum VoiceCallRecordingType {
     Voicemail = 'voicemail',
 }
 
+export enum VoiceCallRecordingErrorCode {
+    RECORDING_IS_PRIVATE = 'RECORDING_IS_PRIVATE',
+}
+
 export type VoiceCallRecording = {
     id: number
     call_id: number
@@ -56,6 +60,7 @@ export type VoiceCallRecording = {
     created_datetime: string
     deleted_datetime: string | null
     deleted_by_user_id: number | null
+    error_code: VoiceCallRecordingErrorCode | null
 }
 
 export type ListVoiceCallsParams = {
