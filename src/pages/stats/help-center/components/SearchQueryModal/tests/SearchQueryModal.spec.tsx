@@ -1,5 +1,8 @@
 import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
@@ -13,24 +16,29 @@ jest.mock('hooks/reporting/useMetricPerDimension', () => ({
 
 const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
 
+const mockStore = configureMockStore([thunk])
+const store = mockStore({})
+
 const renderComponent = (
     props: Partial<ComponentProps<typeof SearchQueryModal>>
 ) => {
     render(
-        <SearchQueryModal
-            onClose={jest.fn()}
-            statsFilters={{
-                period: {
-                    start_datetime: '2021-05-29T00:00:00+02:00',
-                    end_datetime: '2021-06-04T23:59:59+02:00',
-                },
-            }}
-            timezone=""
-            searchQuery=""
-            articleClickedCount={0}
-            helpCenterDomain="acme"
-            {...props}
-        />
+        <Provider store={store}>
+            <SearchQueryModal
+                onClose={jest.fn()}
+                statsFilters={{
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00+02:00',
+                        end_datetime: '2021-06-04T23:59:59+02:00',
+                    },
+                }}
+                timezone=""
+                searchQuery=""
+                articleClickedCount={0}
+                helpCenterDomain="acme"
+                {...props}
+            />
+        </Provider>
     )
 }
 

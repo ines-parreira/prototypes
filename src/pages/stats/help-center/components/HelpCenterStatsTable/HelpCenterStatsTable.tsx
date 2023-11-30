@@ -13,6 +13,11 @@ import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {TooltipData} from 'pages/stats/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {NumberedPagination} from 'pages/common/components/Paginations'
+import {
+    DateTimeResultFormatType,
+    DateAndTimeFormatting,
+} from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import css from './HelpCenterStatsTable.less'
 
 export enum TableCellType {
@@ -54,7 +59,10 @@ export type HelpCenterTableCell = {
 
 const NO_VALUE_PLACEHOLDER = '-'
 
-const getCellFormatter = (cell: HelpCenterTableCell) => {
+const getCellFormatter = (
+    cell: HelpCenterTableCell,
+    datetimeFormat: DateTimeResultFormatType
+) => {
     if (cell.value === null) return NO_VALUE_PLACEHOLDER
 
     switch (cell.type) {
@@ -65,7 +73,7 @@ const getCellFormatter = (cell: HelpCenterTableCell) => {
         case TableCellType.Percent:
             return formatPercentage(cell.value)
         case TableCellType.Date:
-            return formatDatetime(cell.value)
+            return formatDatetime(cell.value, datetimeFormat)
     }
 }
 
@@ -101,6 +109,10 @@ const HelpCenterStatsTable = ({
             setIsTableScrolled(false)
         }
     }
+
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.RelativeDateAndTime
+    )
 
     return (
         <>
@@ -198,7 +210,8 @@ const HelpCenterStatsTable = ({
                                                   )}
                                                   data-testid={`${columns[columnNumber]?.name}-${rowNumber}`}
                                                   title={getCellFormatter(
-                                                      cell
+                                                      cell,
+                                                      datetimeFormat
                                                   ).toString()}
                                               >
                                                   {cell.link ? (
@@ -208,11 +221,15 @@ const HelpCenterStatsTable = ({
                                                           rel="noopener noreferrer"
                                                       >
                                                           {getCellFormatter(
-                                                              cell
+                                                              cell,
+                                                              datetimeFormat
                                                           )}
                                                       </a>
                                                   ) : (
-                                                      getCellFormatter(cell)
+                                                      getCellFormatter(
+                                                          cell,
+                                                          datetimeFormat
+                                                      )
                                                   )}
                                               </span>
                                           </BodyCell>

@@ -3,6 +3,7 @@ import React from 'react'
 import Tooltip from 'pages/common/components/Tooltip'
 import {TicketChannel} from 'business/types/ticket'
 import {DatetimeLabel} from 'pages/common/utils/labels'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import css from './TicketVoiceCallContainer.less'
 
 type TicketVoiceCallSourceProps = {
@@ -41,7 +42,9 @@ export default function TicketVoiceCallSource({
                         date: (
                             <DatetimeLabel
                                 dateTime={date}
-                                labelFormat="MM-DD-YYYY HH:mm"
+                                labelFormat={
+                                    DateAndTimeFormatting.CompactDateWithTime
+                                }
                             />
                         ),
                     }).map(([key, value], index) => (

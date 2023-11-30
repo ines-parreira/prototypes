@@ -1,6 +1,18 @@
 import React from 'react'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import {fireEvent, render, RenderResult} from '@testing-library/react'
 
+import {fromJS} from 'immutable'
+import {
+    DateFormatType,
+    TimeFormatType,
+    DateTimeFormatType,
+    DateTimeFormatMapper,
+    DateTimeResultFormatType,
+} from 'constants/datetime'
+import {UserSettingType} from 'config/types/user'
 import history from '../../../../history'
 import {ImportZendeskDataList} from '../ImportZendeskDataList'
 
@@ -11,16 +23,44 @@ interface DefaultProps {
     img: string
     zendeskImports: ZendeskIntegration[]
     timezone: string | null
+    datetimeFormat: DateTimeResultFormatType
 }
 
+const mockStore = configureMockStore([thunk])
+
+const store = mockStore({
+    currentUser: fromJS({
+        id: 1,
+        email: 'steve@acme.gorgias.io',
+        settings: [
+            {
+                data: {
+                    date_format: DateFormatType.en_GB,
+                    time_format: TimeFormatType.AmPm,
+                },
+                id: 21,
+                type: UserSettingType.Preferences,
+            },
+        ],
+    }),
+})
+
 const renderComponent = (props: DefaultProps): RenderResult => {
-    return render(<ImportZendeskDataList {...props} />)
+    return render(
+        <Provider store={store}>
+            <ImportZendeskDataList {...props} />
+        </Provider>
+    )
 }
 
 describe('<ImportZendeskDataList/>', () => {
     const defaultProps = {
         img: `/zendesk.png`,
         timezone: 'UTC',
+        datetimeFormat:
+            DateTimeFormatMapper[
+                DateTimeFormatType.COMPACT_DATE_WITH_TIME_EN_US_AM_PM
+            ],
     }
     describe('rendering', () => {
         it('should render the list of imports', () => {
@@ -84,7 +124,7 @@ describe('<ImportZendeskDataList/>', () => {
                     push: mockedPush,
                 }),
             }))
-            const {getByRole} = renderComponent({
+            const {getByRole, getByText} = renderComponent({
                 ...defaultProps,
                 zendeskImports: [successImport],
             })
@@ -93,6 +133,7 @@ describe('<ImportZendeskDataList/>', () => {
             expect(history.push).toBeCalledWith(
                 `/app/settings/import-data/zendesk/${successImport.id}`
             )
+            expect(getByText('Completed on 11/27/2020 06:19 PM')).toBeDefined()
         })
     })
 })

@@ -30,6 +30,8 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {ZendeskIntegration} from 'models/integration/types'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
 import ImportStatusAlert from './ImportStatusAlert'
@@ -45,6 +47,10 @@ export const ImportZendeskDetail = ({
 }: ConnectedProps<typeof connector>) => {
     const [isPopoverOpened, setIsPopoverOpened] = useState(false)
     const {integrationId} = useParams<{integrationId: string}>()
+
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDateWithTime
+    )
 
     useEffectOnce(() => {
         fetchIntegration(integrationId, ZENDESK_INTEGRATION_TYPE)
@@ -250,7 +256,11 @@ export const ImportZendeskDetail = ({
                                 </tbody>
                             </Table>
                             <span className="text-muted">
-                                {getImportCompletionDate(integration, timezone)}
+                                {getImportCompletionDate(
+                                    integration,
+                                    datetimeFormat,
+                                    timezone
+                                )}
                             </span>
                         </div>
                     </div>

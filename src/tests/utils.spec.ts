@@ -18,6 +18,12 @@ import {
 } from 'config/user'
 import {getCode} from 'utils'
 import {mockProductionEnvironment} from 'utils/testing'
+import {getDateAndTimeFormat} from 'utils/datetime'
+import {
+    DateAndTimeFormatting,
+    DateFormatType,
+    TimeFormatType,
+} from 'constants/datetime'
 
 jest.mock('common/utils')
 jest.mock('utils/environment')
@@ -25,6 +31,17 @@ const isPrivateAssetMock = isPrivateAsset as jest.Mock
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
 
 describe('global utils', () => {
+    const compactDateFormat = getDateAndTimeFormat(
+        DateFormatType.en_US,
+        TimeFormatType.AmPm,
+        DateAndTimeFormatting.CompactDate
+    )
+    const compactDateWithTimeFormat = getDateAndTimeFormat(
+        DateFormatType.en_US,
+        TimeFormatType.AmPm,
+        DateAndTimeFormatting.CompactDateWithTime
+    )
+
     describe('formatDatetime', () => {
         /* We reset the moment language with its default value.
          *  Because others tests could edit this setting.
@@ -46,42 +63,74 @@ describe('global utils', () => {
                 // unreliable string magic, or
                 config._d = new Date(config._i)
             }
-            expect(utils.formatDatetime('test')).toBe('Invalid date')
+            expect(utils.formatDatetime('test', '')).toBe('Invalid date')
         })
 
         it('valid default format', () => {
-            expect(utils.formatDatetime('2013-05-10 12:00')).toBe('05/10/2013')
+            expect(
+                utils.formatDatetime('2013-05-10 12:00', compactDateFormat)
+            ).toBe('05/10/2013')
         })
 
         it('invalid timezone defaults to UTC', () => {
-            expect(utils.formatDatetime('2013-05-10 12:00', 'xxx')).toBe(
-                '05/10/2013'
-            )
+            expect(
+                utils.formatDatetime(
+                    '2013-05-10 12:00',
+                    compactDateFormat,
+                    'xxx'
+                )
+            ).toBe('05/10/2013')
         })
 
         it('iso format - with timezone', () => {
             const time = utils.formatDatetime(
                 '2016-06-09T07:30:07+00:00',
-                'Europe/Paris',
-                'YYYY-DD-MM HH:mm'
+                'YYYY-DD-MM HH:mm',
+                'Europe/Paris'
             )
             expect(time).toBe('2016-09-06 09:30')
         })
 
         it('timestamp input as string', () => {
-            expect(utils.formatDatetime('1480695366')).toBe('12/02/2016')
+            expect(utils.formatDatetime('1480695366', compactDateFormat)).toBe(
+                '12/02/2016'
+            )
         })
 
         it('timestamp input as number', () => {
-            expect(utils.formatDatetime(1480695366)).toBe('12/02/2016')
+            expect(utils.formatDatetime(1480695366, compactDateFormat)).toBe(
+                '12/02/2016'
+            )
         })
 
         it('timestamp input as string decimal', () => {
-            expect(utils.formatDatetime('1318781876.721')).toBe('10/16/2011')
+            expect(
+                utils.formatDatetime('1318781876.721', compactDateFormat)
+            ).toBe('10/16/2011')
         })
 
         it('timestamp input as number decimal', () => {
-            expect(utils.formatDatetime(1318781876.721)).toBe('10/16/2011')
+            expect(
+                utils.formatDatetime(1318781876.721, compactDateFormat)
+            ).toBe('10/16/2011')
+        })
+
+        it('moment input', () => {
+            expect(
+                utils.formatDatetime(
+                    moment('2016-06-09T19:21:30'),
+                    compactDateWithTimeFormat
+                )
+            ).toBe('06/09/2016 07:21 PM')
+        })
+
+        it('moment input with timezone offset', () => {
+            expect(
+                utils.formatDatetime(
+                    moment('2016-06-09 19:21:30+0300'),
+                    compactDateWithTimeFormat
+                )
+            ).toBe('06/09/2016 04:21 PM')
         })
     })
 

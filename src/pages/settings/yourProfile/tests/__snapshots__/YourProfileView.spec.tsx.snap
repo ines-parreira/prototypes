@@ -33,6 +33,19 @@ exports[`YourProfileView _handleSubmit should submit user data 1`] = `
     {
       "bio": "CTO",
       "email": "alex@gorgias.io",
+      "name": "Alex Plugaru",
+      "timezone": "EST",
+    },
+  ],
+]
+`;
+
+exports[`YourProfileView _handleSubmit should submit user data 2`] = `
+[
+  [
+    {
+      "bio": "CTO",
+      "email": "alex@gorgias.io",
       "language": "en",
       "name": "Alex Plugaru",
       "timezone": "EST",
@@ -47,7 +60,6 @@ exports[`YourProfileView _handleSubmit should submit user data and reset the pas
     {
       "bio": "CTO",
       "email": "alex@gorgias.io",
-      "language": "en",
       "name": "Alex Plugaru",
       "password_confirmation": "a-password",
       "timezone": "EST",

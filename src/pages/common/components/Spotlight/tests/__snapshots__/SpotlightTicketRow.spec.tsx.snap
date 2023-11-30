@@ -145,7 +145,7 @@ exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
         class="separator"
       />
       <span>
-        Jul 31st 17
+        Jul 31st, 17
       </span>
     </div>
   </span>
@@ -317,7 +317,7 @@ exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
         class="separator"
       />
       <span>
-        Jul 31st 17
+        Jul 31st, 17
       </span>
     </div>
   </span>
@@ -393,7 +393,7 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
         class="separator"
       />
       <span>
-        Jul 31st 17
+        Jul 31st, 17
       </span>
     </div>
   </span>
@@ -469,7 +469,7 @@ exports[`<SpotlightTicketRow/> should render without customer name and without e
         class="separator"
       />
       <span>
-        Jul 31st 17
+        Jul 31st, 17
       </span>
     </div>
   </span>

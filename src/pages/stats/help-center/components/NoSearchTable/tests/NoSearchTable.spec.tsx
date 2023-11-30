@@ -1,8 +1,11 @@
 import React from 'react'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import NoSearchTable from '../NoSearchTable'
+import configureMockStore from 'redux-mock-store'
 import {useNoSearchResultsMetrics} from '../../../hooks/useNoSearchResultsMetrics'
+import NoSearchTable from '../NoSearchTable'
 
 jest.mock('../../../hooks/useNoSearchResultsMetrics', () => ({
     useNoSearchResultsMetrics: jest.fn(),
@@ -10,17 +13,22 @@ jest.mock('../../../hooks/useNoSearchResultsMetrics', () => ({
 
 const mockUseNoSearchResultsMetrics = jest.mocked(useNoSearchResultsMetrics)
 
+const mockStore = configureMockStore([thunk])
+const store = mockStore({})
+
 const renderComponent = () => {
     render(
-        <NoSearchTable
-            statsFilters={{
-                period: {
-                    start_datetime: '2021-05-29T00:00:00+02:00',
-                    end_datetime: '2021-06-04T23:59:59+02:00',
-                },
-            }}
-            timezone="US"
-        />
+        <Provider store={store}>
+            <NoSearchTable
+                statsFilters={{
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00+02:00',
+                        end_datetime: '2021-06-04T23:59:59+02:00',
+                    },
+                }}
+                timezone="US"
+            />
+        </Provider>
     )
 }
 

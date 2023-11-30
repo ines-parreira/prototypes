@@ -22,7 +22,8 @@ import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
 import _startCase from 'lodash/startCase'
 import md5 from 'md5'
-import moment from 'moment-timezone'
+import moment, {Moment} from 'moment-timezone'
+import {isMoment} from 'moment/moment'
 import {
     createSelector,
     createSelectorCreator,
@@ -48,6 +49,7 @@ import {sanitizeHtmlDefault} from './utils/html'
 import {envVars, isProduction, isStaging} from './utils/environment'
 import {linkify} from './utils/editor'
 import {GorgiasApiResponseDataError} from './models/api/types'
+import {DateTimeResultFormatType} from './constants/datetime'
 
 export type Message = {
     id: number
@@ -62,7 +64,7 @@ type Property = {
 }
 export type SystemMessage = [NotificationStatus, string]
 
-type Datetime = Date | number | string
+type Datetime = Date | Moment | number | string
 
 // monitor if tab is active or not
 let activeTab = true
@@ -156,28 +158,27 @@ export function isGorgiasSupportAddress(address: string): boolean {
 
 export function formatDatetime(
     datetime: Datetime,
-    timezone?: string | null,
-    format = 'calendar'
+    format: DateTimeResultFormatType,
+    timezone?: string | null
 ): Datetime {
     try {
-        let momentDate = moment.utc(datetime)
+        let momentDate = isMoment(datetime) ? datetime : moment.utc(datetime)
 
-        // if the input is a UNIX timestamp, force moment to interpret it as a timestamp (not automatic)
-        const unix = moment.unix(datetime as any)
-        if (unix.isValid()) {
-            momentDate = unix
+        if (!isMoment(datetime)) {
+            // if the input is a UNIX timestamp, force moment to interpret it as a timestamp (not automatic)
+            const unix = moment.unix(datetime as any)
+            if (unix.isValid()) {
+                momentDate = unix
+            }
         }
 
         if (timezone) {
             momentDate = momentDate.tz(timezone)
         }
 
-        if (format === 'calendar') {
-            return momentDate.calendar(null, {
-                lastWeek: 'dddd', // Tuesday, Friday, etc.. The default is: [Last] dddd
-            })
+        if (typeof format !== 'string') {
+            return momentDate.calendar(null, format)
         }
-
         return momentDate.format(format)
     } catch (e) {
         console.error('Failed to format datetime', e, datetime, timezone)

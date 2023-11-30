@@ -1,22 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CustomerChannels component should display all passed channels (including last seen on chat 36 minutes ago) because the user clicked on "show more" 1`] = `
-<CustomerInfoWrapper>
+<div>
   <div>
     <div
-      className="customerChannel"
-      key=".0:$0"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          email
-        </i>
-      </SourceIcon>
+        email
+      </i>
       <a
         href="mailto:foo@gorgias.io"
         id="address-copied-1"
@@ -24,92 +18,25 @@ exports[`CustomerChannels component should display all passed channels (includin
         foo@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-1"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-0"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-0"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-0"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-0"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-0"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key=".0:$1"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          email
-        </i>
-      </SourceIcon>
+        email
+      </i>
       <a
         href="mailto:bar@gorgias.io"
         id="address-copied-2"
@@ -117,327 +44,25 @@ exports[`CustomerChannels component should display all passed channels (includin
         bar@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-2"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-1"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-1"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-1"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-1"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-1"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
-      </span>
-    </div>
-    <ForwardRef(Button)
-      className="container"
-      fillStyle="ghost"
-      intent="primary"
-      onClick={[Function]}
-      size="small"
-    >
-      <BaseButton
-        className="container"
-        fillStyle="ghost"
-        intent="primary"
-        size="small"
-      >
-        <button
-          aria-disabled={false}
-          className="wrapper container ghost primary small"
-          onClick={[Function]}
-          type="button"
-        >
-          <ButtonIconLabel
-            icon="expand_more"
-            position="right"
-          >
-            <span
-              className="wrapper"
-            >
-              Show 
-              more
-              <Icon
-                className="icon isRight"
-              >
-                <i
-                  className="material-icons icon isRight small"
-                >
-                  expand_more
-                </i>
-              </Icon>
-            </span>
-          </ButtonIconLabel>
-        </button>
-      </BaseButton>
-    </ForwardRef(Button)>
-  </div>
-</CustomerInfoWrapper>
-`;
-
-exports[`CustomerChannels component should display all passed channels (including last seen on chat 36 minutes ago) because the user clicked on "show more" 2`] = `
-<CustomerInfoWrapper>
-  <div>
-    <div
-      className="customerChannel"
-      key="0"
-    >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          email
-        </i>
-      </SourceIcon>
-      <a
-        href="mailto:foo@gorgias.io"
-        id="address-copied-1"
-      >
-        foo@gorgias.io
-      </a>
-      <span
-        className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-1"
-      >
-        <i
-          className="material-icons"
-          id="copy-icon-0"
-        >
-          content_copy
-        </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-0"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-0"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-0"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-0"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="1"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          email
-        </i>
-      </SourceIcon>
-      <a
-        href="mailto:bar@gorgias.io"
-        id="address-copied-2"
-      >
-        bar@gorgias.io
-      </a>
-      <span
-        className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-2"
-      >
-        <i
-          className="material-icons"
-          id="copy-icon-1"
-        >
-          content_copy
-        </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-1"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-1"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-1"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-1"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="customerChannel"
-      key="2"
-    >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          email
-        </i>
-      </SourceIcon>
+        email
+      </i>
       <a
         href="mailto:baz@gorgias.io"
         id="address-copied-3"
@@ -445,455 +70,147 @@ exports[`CustomerChannels component should display all passed channels (includin
         baz@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-3"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-2"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-2"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-2"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-2"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-2"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="3"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="phone"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          phone
-        </i>
-      </SourceIcon>
-      <ClickablePhoneNumber
-        address="+15551238523"
-        customerId="1"
-        customerName="Foo"
+        phone
+      </i>
+      <a
+        href="tel:+15551238523"
         id="address-copied-4"
       >
-        <a
-          href="tel:+15551238523"
-          id="address-copied-4"
-        >
-          +15551238523
-        </a>
-      </ClickablePhoneNumber>
+        +15551238523
+      </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-4"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-3"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-3"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-3"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-3"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-3"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="4"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="phone"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          phone
-        </i>
-      </SourceIcon>
-      <ClickablePhoneNumber
-        address="+15554567852"
-        customerId="1"
-        customerName="Foo"
+        phone
+      </i>
+      <a
+        href="tel:+15554567852"
         id="address-copied-5"
       >
-        <a
-          href="tel:+15554567852"
-          id="address-copied-5"
-        >
-          +15554567852
-        </a>
-      </ClickablePhoneNumber>
+        +15554567852
+      </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-5"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-4"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-4"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-4"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-4"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-4"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="5"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="phone"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
-        <i
-          className="icon d-inline-block material-icons uncolored mr-2"
-        >
-          phone
-        </i>
-      </SourceIcon>
-      <ClickablePhoneNumber
-        address="+15557899632"
-        customerId="1"
-        customerName="Foo"
+        phone
+      </i>
+      <a
+        href="tel:+15557899632"
         id="address-copied-6"
       >
-        <a
-          href="tel:+15557899632"
-          id="address-copied-6"
-        >
-          +15557899632
-        </a>
-      </ClickablePhoneNumber>
+        +15557899632
+      </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-6"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-5"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-5"
-        >
-          <UncontrolledTooltip
-            autohide={true}
-            className="tooltip noPointerEvents"
-            delay={
-              {
-                "hide": 0,
-                "show": 1000,
-              }
-            }
-            placement="top"
-            target="copy-icon-5"
-          >
-            <Tooltip
-              autohide={true}
-              className="tooltip noPointerEvents"
-              delay={
-                {
-                  "hide": 0,
-                  "show": 1000,
-                }
-              }
-              isOpen={false}
-              placement="top"
-              placementPrefix="bs-tooltip"
-              target="copy-icon-5"
-              toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                className="tooltip noPointerEvents"
-                delay={
-                  {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-5"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
-          </UncontrolledTooltip>
-        </Tooltip>
       </span>
     </div>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         language
       </i>
       Location: Paris, France
     </p>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         access_time
       </i>
       Local time: 14:00
     </p>
-    <ForwardRef(Button)
-      className="container"
-      fillStyle="ghost"
-      intent="primary"
-      onClick={[Function]}
-      size="small"
+    <button
+      aria-disabled="false"
+      class="wrapper container ghost primary small"
+      type="button"
     >
-      <BaseButton
-        className="container"
-        fillStyle="ghost"
-        intent="primary"
-        size="small"
+      <span
+        class="wrapper"
       >
-        <button
-          aria-disabled={false}
-          className="wrapper container ghost primary small"
-          onClick={[Function]}
-          type="button"
+        Show 
+        less
+        <i
+          class="material-icons icon isRight small"
         >
-          <ButtonIconLabel
-            icon="expand_less"
-            position="right"
-          >
-            <span
-              className="wrapper"
-            >
-              Show 
-              less
-              <Icon
-                className="icon isRight"
-              >
-                <i
-                  className="material-icons icon isRight small"
-                >
-                  expand_less
-                </i>
-              </Icon>
-            </span>
-          </ButtonIconLabel>
-        </button>
-      </BaseButton>
-    </ForwardRef(Button)>
+          expand_less
+        </i>
+      </span>
+    </button>
   </div>
-</CustomerInfoWrapper>
+</div>
 `;
 
 exports[`CustomerChannels component should display all passed channels and not display the button "show more" because there is only 1 passed channel 1`] = `
-<Fragment>
-  <CustomerInfoWrapper>
+<div>
+  <div>
     <div
-      className="customerChannel"
-      key="0"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      />
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        email
+      </i>
       <a
         href="mailto:foo@gorgias.io"
         id="address-copied-undefined"
@@ -901,98 +218,86 @@ exports[`CustomerChannels component should display all passed channels and not d
         foo@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-0"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-0"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
-  </CustomerInfoWrapper>
-</Fragment>
+  </div>
+</div>
 `;
 
 exports[`CustomerChannels component should display all passed channels and not display the button "show more" because there is only 2 passed location channel and local time channel 1`] = `
-<Fragment>
-  <CustomerInfoWrapper>
+<div>
+  <div>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         language
       </i>
       Location: Paris, France
     </p>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         access_time
       </i>
       Local time: 13:34
     </p>
-  </CustomerInfoWrapper>
-</Fragment>
+  </div>
+</div>
 `;
 
 exports[`CustomerChannels component should display all passed channels and not display the button "show more" because there is only 2 passed location channel and local time channel 2`] = `
-<Fragment>
-  <CustomerInfoWrapper>
+<div>
+  <div>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         language
       </i>
       Location: Paris
     </p>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         access_time
       </i>
       Local time: 13:34
     </p>
-  </CustomerInfoWrapper>
-</Fragment>
+  </div>
+</div>
 `;
 
 exports[`CustomerChannels component should display first few passed channels and the button "show more" because there are more channels than those displayed 1`] = `
-<Fragment>
-  <CustomerInfoWrapper>
+<div>
+  <div>
     <div
-      className="customerChannel"
-      key="0"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      />
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        email
+      </i>
       <a
         href="mailto:foo@gorgias.io"
         id="address-copied-undefined"
@@ -1000,37 +305,25 @@ exports[`CustomerChannels component should display first few passed channels and
         foo@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-0"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-0"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="1"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      />
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        email
+      </i>
       <a
         href="mailto:bar@gorgias.io"
         id="address-copied-undefined"
@@ -1038,37 +331,25 @@ exports[`CustomerChannels component should display first few passed channels and
         bar@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-1"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-1"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="2"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      />
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        email
+      </i>
       <a
         href="mailto:baz@gorgias.io"
         id="address-copied-undefined"
@@ -1076,178 +357,147 @@ exports[`CustomerChannels component should display first few passed channels and
         baz@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-2"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-2"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="3"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="phone"
-      />
-      <ClickablePhoneNumber
-        address="+15551238523"
-        customerId="1"
-        customerName="Foo"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        phone
+      </i>
+      <a
+        href="tel:+15551238523"
         id="address-copied-undefined"
-      />
+      >
+        +15551238523
+      </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-3"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-3"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="4"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="phone"
-      />
-      <ClickablePhoneNumber
-        address="+15554567852"
-        customerId="1"
-        customerName="Foo"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        phone
+      </i>
+      <a
+        href="tel:+15554567852"
         id="address-copied-undefined"
-      />
+      >
+        +15554567852
+      </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-4"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-4"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <div
-      className="customerChannel"
-      key="5"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="phone"
-      />
-      <ClickablePhoneNumber
-        address="+15557899632"
-        customerId="1"
-        customerName="Foo"
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        phone
+      </i>
+      <a
+        href="tel:+15557899632"
         id="address-copied-undefined"
-      />
+      >
+        +15557899632
+      </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-5"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-5"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         language
       </i>
       Location: Paris, France
     </p>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         access_time
       </i>
       Local time: 13:34
     </p>
-  </CustomerInfoWrapper>
-</Fragment>
+    <button
+      aria-disabled="false"
+      class="wrapper container ghost primary small"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        Show 
+        less
+        <i
+          class="material-icons icon isRight small"
+        >
+          expand_less
+        </i>
+      </span>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`CustomerChannels component should display the email channel and the local time channel and then display the button "show more" because there are more channels than those displayed 1`] = `
-<Fragment>
-  <CustomerInfoWrapper>
+<div>
+  <div>
     <div
-      className="customerChannel"
-      key="0"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      />
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        email
+      </i>
       <a
         href="mailto:foo@gorgias.io"
         id="address-copied-undefined"
@@ -1255,64 +505,69 @@ exports[`CustomerChannels component should display the email channel and the loc
         foo@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-0"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-0"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         language
       </i>
       Location: Paris, France
     </p>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         access_time
       </i>
       Local time: 13:34
     </p>
-  </CustomerInfoWrapper>
-</Fragment>
+    <button
+      aria-disabled="false"
+      class="wrapper container ghost primary small"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        Show 
+        less
+        <i
+          class="material-icons icon isRight small"
+        >
+          expand_less
+        </i>
+      </span>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`CustomerChannels component should display the email channel and the local time channel and then display the button "show more" because there are more channels than those displayed 2`] = `
-<Fragment>
-  <CustomerInfoWrapper>
+<div>
+  <div>
     <div
-      className="customerChannel"
-      key="0"
+      class="customerChannel"
     >
-      <SourceIcon
-        className="uncolored mr-2"
-        type="email"
-      />
+      <i
+        class="icon d-inline-block material-icons uncolored mr-2"
+      >
+        email
+      </i>
       <a
         href="mailto:foo@gorgias.io"
         id="address-copied-undefined"
@@ -1320,49 +575,54 @@ exports[`CustomerChannels component should display the email channel and the loc
         foo@gorgias.io
       </a>
       <span
-        className="copyAddress ml-2 js-clipboard-copy"
+        class="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
       >
         <i
-          className="material-icons"
+          class="material-icons"
           id="copy-icon-0"
         >
           content_copy
         </i>
-        <Tooltip
-          delay={
-            {
-              "hide": 0,
-              "show": 1000,
-            }
-          }
-          placement="top"
-          target="copy-icon-0"
-        >
-          Copy
-        </Tooltip>
       </span>
     </div>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         language
       </i>
       Location: France
     </p>
     <p
-      className="customerChannel"
+      class="customerChannel"
     >
       <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+        class="icon d-inline-block material-icons uncolored mr-2"
       >
         access_time
       </i>
       Local time: 13:34
     </p>
-  </CustomerInfoWrapper>
-</Fragment>
+    <button
+      aria-disabled="false"
+      class="wrapper container ghost primary small"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        Show 
+        less
+        <i
+          class="material-icons icon isRight small"
+        >
+          expand_less
+        </i>
+      </span>
+    </button>
+  </div>
+</div>
 `;

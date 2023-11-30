@@ -8,6 +8,9 @@ import {Ticket, TicketAssignee} from 'models/ticket/types'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import {UserAssigneeLabel} from 'pages/common/utils/labels'
 
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {formatDatetime} from 'utils'
 import SpotlightRow from './SpotlightRow'
 import css from './SpotlightTicketRow.less'
 
@@ -84,14 +87,24 @@ const SpotlightTicketInfo = ({
     assignee?: TicketAssignee | null
     date: string
 }) => {
+    const datetimeFormatShort = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay
+    )
+    const datetimeFormatShortWithYear = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.ShortDateWithYearAndOrdinalSuffixDay
+    )
+
     const formattedDate = useMemo(() => {
         const isToday = moment(date).isSame(moment(), 'day')
         const isThisYear = moment(date).isSame(moment(), 'year')
 
         return isToday
             ? 'Today'
-            : moment(date).format(isThisYear ? 'MMM Do' : 'MMM Do YY')
-    }, [date])
+            : formatDatetime(
+                  date,
+                  isThisYear ? datetimeFormatShort : datetimeFormatShortWithYear
+              )
+    }, [date, datetimeFormatShort, datetimeFormatShortWithYear])
 
     return (
         <div className={css.ticketInfo}>

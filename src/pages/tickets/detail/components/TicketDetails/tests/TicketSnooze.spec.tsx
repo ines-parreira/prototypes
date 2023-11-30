@@ -1,18 +1,50 @@
 import React from 'react'
+import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 
+import configureMockStore from 'redux-mock-store'
+
+import {DateFormatType, TimeFormatType} from 'constants/datetime'
+import {UserSettingType} from 'config/types/user'
 import TicketSnooze from '../TicketSnooze'
 
+const mockStore = configureMockStore([thunk])
+
 describe('<TicketSnooze/>', () => {
+    const store = mockStore({
+        currentUser: fromJS({
+            id: 1,
+            email: 'steve@acme.gorgias.io',
+            settings: [
+                {
+                    data: {
+                        date_format: DateFormatType.en_GB,
+                        time_format: TimeFormatType.AmPm,
+                    },
+                    id: 21,
+                    type: UserSettingType.Preferences,
+                },
+            ],
+        }),
+    })
+
     describe('rendering', () => {
         it('should render null if no datetime is provided', () => {
-            const {queryByText} = render(<TicketSnooze timezone="utc" />)
+            const {queryByText} = render(
+                <Provider store={store}>
+                    <TicketSnooze timezone="utc" />
+                </Provider>
+            )
             expect(queryByText('Snoozed')).not.toBeInTheDocument()
         })
 
         it('should render a badge with a tooltip', async () => {
             const {getByText} = render(
-                <TicketSnooze datetime="2017-12-22 17:00" timezone="utc" />
+                <Provider store={store}>
+                    <TicketSnooze datetime="2017-12-22 17:00" timezone="utc" />
+                </Provider>
             )
             const el = getByText('Snoozed')
             expect(el).toBeInTheDocument()
@@ -20,7 +52,7 @@ describe('<TicketSnooze/>', () => {
             fireEvent.mouseOver(el)
             await waitFor(() => getByText(/2017/))
 
-            expect(getByText(/Snoozed until/)).toBeInTheDocument()
+            expect(getByText(/Snoozed until 22\/12\/2017/)).toBeInTheDocument()
         })
     })
 })

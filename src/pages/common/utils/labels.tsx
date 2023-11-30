@@ -29,6 +29,7 @@ import {parseTimeDelta} from 'tickets/common/utils'
 import {formatDatetime, humanizeString} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationChannel} from 'state/integrations/selectors'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 import css from './labels.less'
 
@@ -387,7 +388,7 @@ type DatetimeLabelOwnProps = {
     breakDate?: boolean
     className?: string
     dateTime?: string
-    labelFormat?: string
+    labelFormat?: DateAndTimeFormatting
     hasTooltip?: boolean
     placement?: UncontrolledTooltipProps['placement']
     integrationType?: string
@@ -416,6 +417,7 @@ class DatetimeLabelContainer extends React.PureComponent<DatetimeLabelProps> {
             labelFormat,
             placement = 'top',
             timezone,
+            getDateAndTimeFormatter,
             integrationType,
         } = _omit(this.props, 'dispatch')
         let {dateTime} = this.props
@@ -428,8 +430,18 @@ class DatetimeLabelContainer extends React.PureComponent<DatetimeLabelProps> {
             dateTime = moment(dateTime).tz('US/Eastern', true).toISOString(true)
         }
 
-        const labelDatetime = formatDatetime(dateTime, timezone, labelFormat)
-        const tooltipDatetime = formatDatetime(dateTime, timezone, 'L LT')
+        const labelDatetime = formatDatetime(
+            dateTime,
+            getDateAndTimeFormatter(
+                labelFormat || DateAndTimeFormatting.RelativeDateAndTime
+            ),
+            timezone
+        )
+        const tooltipDatetime = formatDatetime(
+            dateTime,
+            getDateAndTimeFormatter(DateAndTimeFormatting.CompactDateWithTime),
+            timezone
+        )
 
         return (
             <span className={className}>
@@ -459,6 +471,8 @@ class DatetimeLabelContainer extends React.PureComponent<DatetimeLabelProps> {
 const datetimeLabelConnector = connect((state: RootState) => {
     return {
         timezone: currentUserSelectors.getTimezone(state),
+        getDateAndTimeFormatter:
+            currentUserSelectors.getDateAndTimeFormatter(state),
     }
 })
 

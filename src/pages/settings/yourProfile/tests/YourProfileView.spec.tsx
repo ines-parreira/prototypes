@@ -69,38 +69,46 @@ describe('YourProfileView', () => {
     })
 
     describe('_handleSubmit', () => {
-        it('should submit user data', () => {
-            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
-            const submitSetting = jest
-                .fn()
-                .mockReturnValueOnce(Promise.resolve())
-            const preferences: Map<any, any> = fromJS({data: {foo: 'bar'}})
-            const newPreferences: Map<any, any> = fromJS({hello: 'world'})
-            const expectedPreferences = preferences
-                .update('data', (data: Map<any, any>) =>
-                    data.mergeDeep(newPreferences)
+        it.each([true, false])(
+            'should submit user data',
+            (hasDateAndTimeFormattingUserSetting) => {
+                variationMock.mockImplementation(
+                    () => hasDateAndTimeFormattingUserSetting
                 )
-                .toJS()
+                const updateCurrentUserSpy = jest.fn(() =>
+                    Promise.resolve(user)
+                )
+                const submitSetting = jest
+                    .fn()
+                    .mockReturnValueOnce(Promise.resolve())
+                const preferences: Map<any, any> = fromJS({data: {foo: 'bar'}})
+                const newPreferences: Map<any, any> = fromJS({hello: 'world'})
+                const expectedPreferences = preferences
+                    .update('data', (data: Map<any, any>) =>
+                        data.mergeDeep(newPreferences)
+                    )
+                    .toJS()
 
-            const component = shallow<YourProfileView>(
-                <YourProfileView
-                    {...minProps}
-                    updateCurrentUser={updateCurrentUserSpy}
-                    submitSetting={submitSetting}
-                    preferences={fromJS({data: {foo: 'bar'}})}
-                />
-            ).instance()
-            component.setState({preferences: newPreferences})
+                const component = shallow<YourProfileView>(
+                    <YourProfileView
+                        {...minProps}
+                        updateCurrentUser={updateCurrentUserSpy}
+                        submitSetting={submitSetting}
+                        preferences={fromJS({data: {foo: 'bar'}})}
+                    />
+                ).instance()
+                component.setState({preferences: newPreferences})
 
-            void component._handleSubmit({
-                preventDefault: jest.fn(),
-            } as unknown as SyntheticEvent)
-            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
-            expect(submitSetting).toHaveBeenCalledWith(
-                expectedPreferences,
-                false
-            )
-        })
+                void component._handleSubmit({
+                    preventDefault: jest.fn(),
+                } as unknown as SyntheticEvent)
+                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+                expect(submitSetting).toHaveBeenCalledWith(
+                    expectedPreferences,
+                    false
+                )
+            }
+        )
 
         it(
             'should submit user data and reset the password confirmation field ' +

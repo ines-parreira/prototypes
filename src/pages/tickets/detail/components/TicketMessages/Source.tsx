@@ -11,6 +11,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import {toChannel} from 'services/channels'
 import {isTicketMessageSourceType} from 'models/ticket/predicates'
 import {humanizeChannel} from 'state/ticket/utils'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 import css from './Source.less'
 
@@ -81,7 +82,9 @@ export default function Source({
                             <strong>
                                 <DatetimeLabel
                                     dateTime={createdDatetime}
-                                    labelFormat="MM-DD-YYYY HH:mm"
+                                    labelFormat={
+                                        DateAndTimeFormatting.CompactDateWithTime
+                                    }
                                 />
                             </strong>
                         </li>

@@ -911,7 +911,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   <span
                     class="wrapper"
                   >
-                    Feb 03, 2021
+                    Feb 3, 2021
                     <i
                       class="material-icons icon isRight medium"
                     >

@@ -1,21 +1,29 @@
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import React, {ComponentProps} from 'react'
+import configureMockStore from 'redux-mock-store'
 import {act, fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import noop from 'lodash/noop'
 import HelpCenterStatsTable, {TableCellType} from '../HelpCenterStatsTable'
 
+const mockStore = configureMockStore([thunk])
+const store = mockStore({})
+
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterStatsTable>>
 ) => {
     render(
-        <HelpCenterStatsTable
-            count={0}
-            currentPage={1}
-            data={[]}
-            columns={[]}
-            onPageChange={noop}
-            {...props}
-        />
+        <Provider store={store}>
+            <HelpCenterStatsTable
+                count={0}
+                currentPage={1}
+                data={[]}
+                columns={[]}
+                onPageChange={noop}
+                {...props}
+            />
+        </Provider>
     )
 }
 

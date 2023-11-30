@@ -201,7 +201,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
           <span
             class="text-muted"
           >
-            Completed on 11/27/2020 6:19 PM
+            Completed on 11/27/2020 06:19 PM
           </span>
         </div>
       </div>
@@ -482,7 +482,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
           <span
             class="text-muted"
           >
-            Last updated on 10/27/2020 6:19 PM
+            Last updated on 10/27/2020 06:19 PM
           </span>
         </div>
       </div>
@@ -695,7 +695,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
           <span
             class="text-muted"
           >
-            Started on 09/26/2020 6:19 PM
+            Started on 09/26/2020 06:19 PM
           </span>
         </div>
       </div>

@@ -7,6 +7,8 @@ import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment-timezone'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {formatDatetime} from 'utils'
+import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {RootState} from '../../../state/types'
 import PeriodStatsFilter from '../PeriodStatsFilter'
 
@@ -76,9 +78,17 @@ describe('PeriodStatsFilter', () => {
         )
 
         fireEvent.click(
-            getByText(moment(value.start_datetime).format('MMM DD, YYYY'), {
-                exact: false,
-            })
+            getByText(
+                formatDatetime(
+                    value.start_datetime,
+                    DateTimeFormatMapper[
+                        DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
+                    ]
+                ).toString(),
+                {
+                    exact: false,
+                }
+            )
         )
 
         expect(logEvent).toHaveBeenCalledWith(

@@ -16,6 +16,12 @@ import {Tooltip} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {
+    DateTimeFormatType,
+    DateTimeFormatMapper,
+    DateTimeResultFormatType,
+} from 'constants/datetime'
+import {formatDatetime} from 'utils'
 import {RootState} from '../../../state/types'
 import {getTimezone} from '../../../state/currentUser/selectors'
 
@@ -27,7 +33,7 @@ type Props = {
         maxSpan?: moment.MomentInput | moment.Duration
     ) => moment.Duration
     isDisabled?: boolean
-    labelDateFormat?: string
+    labelDateFormat?: DateTimeResultFormatType
     onChange: ({
         startDatetime,
         endDatetime,
@@ -48,7 +54,9 @@ export const PeriodPickerContainer = ({
     formatMaxSpan,
     initialSettings,
     isDisabled = false,
-    labelDateFormat = 'MMM DD, YYYY',
+    labelDateFormat = DateTimeFormatMapper[
+        DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
+    ],
     onChange,
     onOpen,
     startDatetime,
@@ -95,8 +103,8 @@ export const PeriodPickerContainer = ({
     }, [])
 
     const label = useMemo(() => {
-        const start = startDate.format(labelDateFormat)
-        const end = endDate.format(labelDateFormat)
+        const start = formatDatetime(startDate, labelDateFormat).toString()
+        const end = formatDatetime(endDate, labelDateFormat).toString()
 
         if (start === end) {
             return start

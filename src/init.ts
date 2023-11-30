@@ -40,11 +40,7 @@ import {RootState} from 'state/types'
 import GreyArea from 'pages/stats/ChartPluginGreyArea'
 
 const initMoment = (currentUser: EditableUserProfile) => {
-    // set default locale and timezone
-    if (currentUser.language) {
-        moment.locale(currentUser.language)
-    }
-
+    // set default timezone
     if (currentUser.timezone) {
         moment.tz.setDefault(currentUser.timezone)
     }

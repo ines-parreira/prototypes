@@ -1,6 +1,9 @@
 import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {PerformanceByArticle} from '../PerformanceByArticle'
 import {usePerformanceByArticleMetrics} from '../../../hooks/usePerformanceByArticleMetrics'
 import {TableCellType} from '../../HelpCenterStatsTable/HelpCenterStatsTable'
@@ -13,22 +16,27 @@ const mockUsePerformanceByArticleMetrics = jest.mocked(
     usePerformanceByArticleMetrics
 )
 
+const mockStore = configureMockStore([thunk])
+const store = mockStore({})
+
 const renderComponent = (
     props: Partial<ComponentProps<typeof PerformanceByArticle>>
 ) => {
     render(
-        <PerformanceByArticle
-            statsFilters={{
-                period: {
-                    start_datetime: '2021-05-29T00:00:00+02:00',
-                    end_datetime: '2021-06-04T23:59:59+02:00',
-                },
-            }}
-            helpCenterId={1}
-            timezone="US"
-            helpCenterDomain="acme"
-            {...props}
-        />
+        <Provider store={store}>
+            <PerformanceByArticle
+                statsFilters={{
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00+02:00',
+                        end_datetime: '2021-06-04T23:59:59+02:00',
+                    },
+                }}
+                helpCenterId={1}
+                timezone="US"
+                helpCenterDomain="acme"
+                {...props}
+            />
+        </Provider>
     )
 }
 

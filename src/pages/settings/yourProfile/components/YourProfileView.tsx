@@ -118,11 +118,14 @@ export class YourProfileView extends Component<Props, State> {
 
     _handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
+        const toOmitKeys = this.state.hasDateAndTimeFormattingUserSetting
+            ? ['meta', 'language']
+            : ['meta']
         const normalizedValues = _pick(
             this.state,
             // metadata is not editable from this component
             // so there is no point to send potential outdated data.
-            Object.keys(_omit(defaultContent, 'meta'))
+            Object.keys(_omit(defaultContent, toOmitKeys))
         ) as EditableUserProfile
 
         this.setState({isLoading: true})

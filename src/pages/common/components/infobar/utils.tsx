@@ -39,11 +39,13 @@ import {
     CUSTOMER_EXTERNAL_DATA_KEY,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
+import {DateTimeResultFormatType} from 'constants/datetime'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
+import {formatDatetime} from 'utils'
 import css from './utils.less'
 
 /**
@@ -944,11 +946,14 @@ export function stringifyRawData(data: any, type: string): string | null {
 /**
  * Return the local time in string format, based on the UTC offset value
  */
-export function getLocalTime(timezoneOffset: string) {
+export function getLocalTime(
+    timezoneOffset: string,
+    datetimeFormat: DateTimeResultFormatType
+) {
     const timezoneDifference = parseInt(timezoneOffset.substring(0, 3))
     const localTime = moment.utc().utcOffset(timezoneDifference)
 
-    return localTime.format('HH:mm')
+    return formatDatetime(localTime, datetimeFormat).toString()
 }
 
 /**

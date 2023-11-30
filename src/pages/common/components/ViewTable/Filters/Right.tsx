@@ -6,8 +6,10 @@ import moment from 'moment-timezone'
 import {Input} from 'reactstrap'
 
 import {humanizeChannel} from 'state/ticket/utils'
+import {formatDatetime, getLanguageDisplayName} from 'utils'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
 import {IntegrationsDetailLabel} from '../../../utils/labels'
-import {getLanguageDisplayName} from '../../../../../utils'
 import {stringToDatetime} from '../../../../../utils/date'
 
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
@@ -230,7 +232,10 @@ export class RightContainer extends Component<Props, State> {
                 >
                     <div>
                         <Input
-                            value={datetime.format('L LT')}
+                            value={formatDatetime(
+                                datetime,
+                                this.props.datetimeFormat
+                            ).toString()}
                             placeholder="Choose a date..."
                         />
                     </div>
@@ -332,6 +337,9 @@ const connector = connect((state: RootState) => {
         integrations: getMessagingIntegrations(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         tags: getTags(state),
+        datetimeFormat: getDateAndTimeFormatter(state)(
+            DateAndTimeFormatting.CompactDateWithTime
+        ),
     }
 })
 

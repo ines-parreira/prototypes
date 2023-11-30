@@ -28,9 +28,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getMoment} from 'utils/date'
 import {humanizeString} from 'utils'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
 import css from '../settings.less'
-
 import {DATETIME_LABEL_FORMAT} from './constants'
 import UserAuditRow from './UserAuditRow'
 
@@ -50,6 +50,7 @@ const UserAuditList = () => {
     const auditLogEvents = useAppSelector((state: RootState) =>
         Object.values(state.entities.auditLogEvents)
     )
+    const datetimeLabelFormat = useGetDateAndTimeFormat(DATETIME_LABEL_FORMAT)
 
     const [meta, setMeta] = useState<CursorMeta | null>(null)
     const [startDatetime, setStartDatetime] = useState<string>(
@@ -197,7 +198,7 @@ const UserAuditList = () => {
                             },
                             timePicker: true,
                         }}
-                        labelDateFormat={DATETIME_LABEL_FORMAT}
+                        labelDateFormat={datetimeLabelFormat}
                         onChange={onApplyDatePicker}
                         formatMaxSpan={(maxSpan) =>
                             moment.duration({

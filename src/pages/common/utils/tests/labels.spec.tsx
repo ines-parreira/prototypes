@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {channels as mockChannels} from 'fixtures/channels'
 
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import {IntegrationType} from 'models/integration/types'
 import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
 import {
@@ -425,7 +426,9 @@ describe('components utils: labels', () => {
                         <labels.DatetimeLabel
                             dateTime="2022-01-01T03:11:07"
                             integrationType={RECHARGE_INTEGRATION_TYPE}
-                            labelFormat="MM-DD-YYYY HH:mm"
+                            labelFormat={
+                                DateAndTimeFormatting.CompactDateWithTime
+                            }
                         />
                     </Provider>
                 )

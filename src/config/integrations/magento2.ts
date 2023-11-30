@@ -1,9 +1,9 @@
 import {Map, List} from 'immutable'
 
-import {LDMLToMomentFormat} from '../../pages/common/utils/template'
-import {formatDatetime} from '../../utils'
-import {getTrackingUrl} from '../../utils/delivery'
-import {IntegrationType} from '../../models/integration/types'
+import {formatDatetime} from 'utils'
+import {getTrackingUrl} from 'utils/delivery'
+import {IntegrationType} from 'models/integration/types'
+import {DateTimeFormatType, DateTimeFormatMapper} from 'constants/datetime'
 
 export const MACRO_VARIABLES = {
     type: IntegrationType.Magento2,
@@ -157,8 +157,10 @@ export const MACRO_VARIABLES = {
 
                 return formatDatetime(
                     lastTrack.get('created_at'),
-                    null,
-                    LDMLToMomentFormat('MMMM d YYYY')
+                    DateTimeFormatMapper[
+                        DateTimeFormatType.LONG_DATE_WITH_YEAR_EN_US
+                    ],
+                    null
                 )
             },
         },

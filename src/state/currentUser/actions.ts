@@ -25,6 +25,8 @@ import {
 } from 'state/currentUser/constants'
 import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {getDateAndTimeFormat} from 'utils/datetime'
 import type {StoreDispatch, RootState} from '../types'
 import * as currentUserSelectors from './selectors'
 import * as constants from './constants'
@@ -232,6 +234,16 @@ export const handle2FAEnforced =
     () => (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
 
+        const dateFormatSetting =
+            currentUserSelectors.getDateFormatPreferenceSetting(state)
+        const timeFormatSetting =
+            currentUserSelectors.getTimeFormatPreferenceSetting(state)
+        const datetimeFormat = getDateAndTimeFormat(
+            dateFormatSetting,
+            timeFormatSetting,
+            DateAndTimeFormatting.CompactDate
+        )
+
         const userTimezone = currentUserSelectors.getTimezone(state)
         const twoFAEnforcedDatetime =
             currentAccountSelectors.getTwoFAEnforcedDatetime(state)
@@ -250,9 +262,9 @@ export const handle2FAEnforced =
         // Show a global banner if the 2fa is not required yet (see check2FARequired util function to see the condition on that)
         if (!!twoFAEnforcedDatetime && !has2FAEnabled) {
             const twoFASetupDueDate = formatDatetime(
-                moment.utc(twoFAEnforcedDatetime).format(),
-                userTimezone,
-                'L'
+                moment.utc(twoFAEnforcedDatetime),
+                datetimeFormat,
+                userTimezone
             )
 
             void dispatch(

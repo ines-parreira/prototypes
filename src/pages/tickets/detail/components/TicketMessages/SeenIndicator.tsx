@@ -1,8 +1,10 @@
 import classNames from 'classnames'
 import React from 'react'
 
-import {formatDatetime} from '../../../../../utils'
-import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from 'pages/common/components/Tooltip'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {formatDatetime} from 'utils'
 
 import css from './SeenIndicator.style.less'
 
@@ -28,6 +30,10 @@ export default function SeenIndicator(props: Props) {
     const indicator = openedDatetime ? 'done_all' : 'done'
     const elementId = `seen-indicator-id-${iconElementId}`
 
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.RelativeDateAndTime
+    )
+
     const getSeenIndicatorTooltipText = ({
         openedDatetime,
         timezone,
@@ -36,7 +42,11 @@ export default function SeenIndicator(props: Props) {
             return SeenIndicatorStatus.DELIVERED
         }
 
-        const datetime = formatDatetime(openedDatetime, timezone)
+        const datetime = formatDatetime(
+            openedDatetime,
+            datetimeFormat,
+            timezone
+        )
 
         return typeof datetime === 'string'
             ? `${SeenIndicatorStatus.READ} ${datetime.toLowerCase()}`

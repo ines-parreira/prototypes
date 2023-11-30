@@ -179,7 +179,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         <span
                           class="wrapper"
                         >
-                          Feb 03, 2021
+                          Feb 3, 2021
                           <i
                             class="material-icons icon isRight medium"
                           >
@@ -980,7 +980,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       <span
                         class="wrapper"
                       >
-                        Feb 03, 2021
+                        Feb 3, 2021
                         <i
                           class="material-icons icon isRight medium"
                         >
@@ -1760,7 +1760,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         <span
                           class="wrapper"
                         >
-                          Feb 03, 2021
+                          Feb 3, 2021
                           <i
                             class="material-icons icon isRight medium"
                           >
@@ -2561,7 +2561,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       <span
                         class="wrapper"
                       >
-                        Feb 03, 2021
+                        Feb 3, 2021
                         <i
                           class="material-icons icon isRight medium"
                         >
@@ -3341,7 +3341,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         <span
                           class="wrapper"
                         >
-                          Feb 03, 2021
+                          Feb 3, 2021
                           <i
                             class="material-icons icon isRight medium"
                           >
@@ -4142,7 +4142,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       <span
                         class="wrapper"
                       >
-                        Feb 03, 2021
+                        Feb 3, 2021
                         <i
                           class="material-icons icon isRight medium"
                         >
@@ -4918,7 +4918,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   <span
                     class="wrapper"
                   >
-                    Feb 03, 2021
+                    Feb 3, 2021
                     <i
                       class="material-icons icon isRight medium"
                     >

@@ -34,6 +34,7 @@ import {DatetimeLabel} from 'pages/common/utils/labels'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -322,7 +323,9 @@ export function DraftOrderModalContainer({
                                 Sent on{' '}
                                 <DatetimeLabel
                                     dateTime={draftOrder.get('invoice_sent_at')}
-                                    labelFormat="L LT"
+                                    labelFormat={
+                                        DateAndTimeFormatting.CompactDateWithTime
+                                    }
                                     hasTooltip={false}
                                 />
                             </span>

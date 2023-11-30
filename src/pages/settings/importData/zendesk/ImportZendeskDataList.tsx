@@ -4,15 +4,16 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {assetsUrl} from 'utils'
 
-import {getIntegrationsByType} from '../../../../state/integrations/selectors'
-import {getTimezone} from '../../../../state/currentUser/selectors'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {getDateAndTimeFormatter, getTimezone} from 'state/currentUser/selectors'
 import {
     IntegrationType,
     ZendeskIntegration,
     ZendeskIntegrationMeta,
-} from '../../../../models/integration/types'
-import {RootState} from '../../../../state/types'
-import history from '../../../history'
+} from 'models/integration/types'
+import {RootState} from 'state/types'
+import history from 'pages/history'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 
 import {getImportCompletionDate} from './utils'
 import {ImportStatus} from './types'
@@ -20,7 +21,8 @@ import {ImportStatus} from './types'
 export const ImportZendeskDataList = (
     props: ConnectedProps<typeof connector>
 ) => {
-    const {zendeskImports, img, timezone} = props
+    const {zendeskImports, img, timezone, datetimeFormat} = props
+
     const renderImportStatus = (
         integrationMeta: ZendeskIntegrationMeta
     ): React.ReactChild => {
@@ -142,6 +144,7 @@ export const ImportZendeskDataList = (
                                     <span className="text-muted">
                                         {getImportCompletionDate(
                                             integration,
+                                            datetimeFormat,
                                             timezone
                                         )}
                                     </span>
@@ -164,6 +167,9 @@ const mapStateToProps = (state: RootState) => ({
         IntegrationType.Zendesk
     )(state),
     timezone: getTimezone(state),
+    datetimeFormat: getDateAndTimeFormatter(state)(
+        DateAndTimeFormatting.CompactDateWithTime
+    ),
 })
 
 const connector = connect(mapStateToProps, {})

@@ -6,6 +6,13 @@ import momentTimezone from 'moment-timezone'
 import {WidgetContextType} from 'state/widgets/types'
 
 import {jsonToCovertToWidgets} from 'pages/common/components/infobar/tests/fixtures'
+import {getDateAndTimeFormat} from 'utils/datetime'
+import {
+    DateTimeResultFormatType,
+    DateFormatType,
+    TimeFormatType,
+    DateAndTimeFormatting,
+} from 'constants/datetime'
 import * as utils from '../utils'
 
 jest.mock('../../../utils/labels', () => ({
@@ -400,25 +407,96 @@ describe('widgets infobar utils', () => {
     })
 
     describe('getLocalTime()', () => {
+        const enGBDateTimeFormat = getDateAndTimeFormat(
+            DateFormatType.en_GB,
+            TimeFormatType.TwentyFourHour,
+            DateAndTimeFormatting.TimeDoubleDigitHour
+        )
+        const enUSDateTimeFormat = getDateAndTimeFormat(
+            DateFormatType.en_US,
+            TimeFormatType.AmPm,
+            DateAndTimeFormatting.TimeDoubleDigitHour
+        )
         const nowDates = [
-            ['+0100', '13:34'],
-            ['+0900', '21:34'],
-            ['+0000', '12:34'],
-            ['-0300', '09:34'],
-            ['-0500', '07:34'],
-            ['+1200', '00:34'],
+            {
+                timezoneOffset: '+0100',
+                expectedLocalTime: '13:34',
+                datetimeFormat: enGBDateTimeFormat,
+            },
+            {
+                timezoneOffset: '+0900',
+                expectedLocalTime: '21:34',
+                datetimeFormat: enGBDateTimeFormat,
+            },
+            {
+                timezoneOffset: '+0000',
+                expectedLocalTime: '12:34',
+                datetimeFormat: enGBDateTimeFormat,
+            },
+            {
+                timezoneOffset: '-0300',
+                expectedLocalTime: '09:34',
+                datetimeFormat: enGBDateTimeFormat,
+            },
+            {
+                timezoneOffset: '-0500',
+                expectedLocalTime: '07:34',
+                datetimeFormat: enGBDateTimeFormat,
+            },
+            {
+                timezoneOffset: '+1200',
+                expectedLocalTime: '00:34',
+                datetimeFormat: enGBDateTimeFormat,
+            },
+            {
+                timezoneOffset: '+0100',
+                expectedLocalTime: '01:34 PM',
+                datetimeFormat: enUSDateTimeFormat,
+            },
+            {
+                timezoneOffset: '+0900',
+                expectedLocalTime: '09:34 PM',
+                datetimeFormat: enUSDateTimeFormat,
+            },
+            {
+                timezoneOffset: '+0000',
+                expectedLocalTime: '12:34 PM',
+                datetimeFormat: enUSDateTimeFormat,
+            },
+            {
+                timezoneOffset: '-0300',
+                expectedLocalTime: '09:34 AM',
+                datetimeFormat: enUSDateTimeFormat,
+            },
+            {
+                timezoneOffset: '-0500',
+                expectedLocalTime: '07:34 AM',
+                datetimeFormat: enUSDateTimeFormat,
+            },
+            {
+                timezoneOffset: '+1200',
+                expectedLocalTime: '12:34 AM',
+                datetimeFormat: enUSDateTimeFormat,
+            },
         ]
 
         it.each(nowDates)(
             'should correctly format local time in the hh:mm format',
-            (timezoneOffset, expectedLocalTime) => {
+            (obj: {
+                timezoneOffset: string
+                expectedLocalTime: string
+                datetimeFormat: DateTimeResultFormatType
+            }) => {
                 const fixedUtcDate = moment.utc('2019-01-26T12:34:56.000Z')
                 jest.spyOn(moment, 'utc').mockImplementationOnce(
                     () => fixedUtcDate
                 )
 
-                const result = utils.getLocalTime(timezoneOffset)
-                expect(result).toBe(expectedLocalTime)
+                const result = utils.getLocalTime(
+                    obj.timezoneOffset,
+                    obj.datetimeFormat
+                )
+                expect(result).toBe(obj.expectedLocalTime)
             }
         )
     })

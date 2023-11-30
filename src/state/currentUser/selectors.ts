@@ -4,6 +4,12 @@ import {createSelector} from 'reselect'
 import {DEFAULT_PREFERENCES} from 'config'
 import {UserSetting, UserSettingType} from 'config/types/user'
 import {createImmutableSelector} from 'utils'
+import {
+    DateAndTimeFormatting,
+    DateFormatType,
+    TimeFormatType,
+} from 'constants/datetime'
+import {getDateAndTimeFormat} from 'utils/datetime'
 import {RootState} from '../types'
 
 import {CurrentUserState} from './types'
@@ -154,4 +160,31 @@ export const getNotificationSettings = createSelector(
                   {type: UserSettingType.NotificationPreferences}
               >
             | undefined
+)
+
+export const getDateFormatPreferenceSetting = createSelector(
+    getSettingsByType(UserSettingType.Preferences),
+    (preferencesSettings) =>
+        (
+            preferencesSettings.toJS() as
+                | Extract<UserSetting, {type: UserSettingType.Preferences}>
+                | undefined
+        )?.data?.date_format || DateFormatType.en_US
+)
+
+export const getTimeFormatPreferenceSetting = createSelector(
+    getSettingsByType(UserSettingType.Preferences),
+    (preferencesSettings) =>
+        (
+            preferencesSettings.toJS() as
+                | Extract<UserSetting, {type: UserSettingType.Preferences}>
+                | undefined
+        )?.data?.time_format || TimeFormatType.AmPm
+)
+
+export const getDateAndTimeFormatter = createSelector(
+    getDateFormatPreferenceSetting,
+    getTimeFormatPreferenceSetting,
+    (dateFormat, timeFormat) => (format: DateAndTimeFormatting) =>
+        getDateAndTimeFormat(dateFormat, timeFormat, format)
 )

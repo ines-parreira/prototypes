@@ -1,8 +1,12 @@
 import React, {ComponentProps, ReactNode} from 'react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Identifier} from 'estree'
 
+import configureMockStore from 'redux-mock-store'
+import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {CHANNELS} from 'tickets/common/config'
 import {RightContainer} from '../Right'
 
@@ -20,6 +24,9 @@ jest.mock(
             return <>{children}</>
         }
 )
+
+const mockStore = configureMockStore([thunk])
+const store = mockStore({})
 
 describe('<Right />', () => {
     const minProps = {
@@ -57,28 +64,34 @@ describe('<Right />', () => {
         tags: fromJS([]),
         teams: fromJS([]),
         updateFieldFilter: jest.fn(),
+        datetimeFormat:
+            DateTimeFormatMapper[
+                DateTimeFormatType.COMPACT_DATE_WITH_TIME_EN_GB_24_HOUR
+            ],
     } as unknown as ComponentProps<typeof RightContainer>
 
     it('should default the current datetime when the date value is invalid', () => {
         const {container} = render(
-            <RightContainer
-                {...minProps}
-                node={{
-                    loc: {
-                        end: {
-                            line: 1,
-                            column: 54,
+            <Provider store={store}>
+                <RightContainer
+                    {...minProps}
+                    node={{
+                        loc: {
+                            end: {
+                                line: 1,
+                                column: 54,
+                            },
+                            start: {
+                                line: 1,
+                                column: 29,
+                            },
                         },
-                        start: {
-                            line: 1,
-                            column: 29,
-                        },
-                    },
-                    raw: "'2021-12-1T06:00:00.000Z'",
-                    type: 'Literal',
-                    value: '2021-12-1T06:00:00.000Z',
-                }}
-            />
+                        raw: "'2021-12-1T06:00:00.000Z'",
+                        type: 'Literal',
+                        value: '2021-12-1T06:00:00.000Z',
+                    }}
+                />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -86,23 +99,25 @@ describe('<Right />', () => {
 
     it('should render humanized label if ticket channel is selected', () => {
         const {container} = render(
-            <RightContainer
-                {...minProps}
-                operator={{
-                    name: 'eq',
-                    type: 'Identifier',
-                }}
-                node={{
-                    raw: "'contact_form'",
-                    type: 'Literal',
-                    value: 'contact_form',
-                }}
-                field={fromJS({
-                    name: 'channel',
-                    title: 'Channel',
-                    enum: CHANNELS,
-                })}
-            />
+            <Provider store={store}>
+                <RightContainer
+                    {...minProps}
+                    operator={{
+                        name: 'eq',
+                        type: 'Identifier',
+                    }}
+                    node={{
+                        raw: "'contact_form'",
+                        type: 'Literal',
+                        value: 'contact_form',
+                    }}
+                    field={fromJS({
+                        name: 'channel',
+                        title: 'Channel',
+                        enum: CHANNELS,
+                    })}
+                />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()

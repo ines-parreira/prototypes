@@ -3,6 +3,9 @@ import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {RootState} from 'state/types'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
@@ -165,7 +168,10 @@ export class CustomerChannels extends Component<Props> {
                             >
                                 access_time
                             </i>
-                            {`Local time: ${getLocalTime(timezoneOffset)}`}
+                            {`Local time: ${getLocalTime(
+                                timezoneOffset,
+                                this.props.datetimeFormat
+                            )}`}
                         </p>
                     )}
                 </CustomerInfoWrapper>
@@ -174,6 +180,12 @@ export class CustomerChannels extends Component<Props> {
     }
 }
 
-const connector = connect(null)
+const connector = connect((state: RootState) => {
+    return {
+        datetimeFormat: getDateAndTimeFormatter(state)(
+            DateAndTimeFormatting.TimeDoubleDigitHour
+        ),
+    }
+})
 
 export default connector(CustomerChannels)

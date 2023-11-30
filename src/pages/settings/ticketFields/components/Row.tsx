@@ -9,6 +9,7 @@ import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/Arc
 import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
 import {Callbacks} from 'pages/common/hooks/useReorderDnD'
 import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import css from './Row.less'
 
 export type Props = {
@@ -84,7 +85,7 @@ export default function Row({
                 <div className={'text-faded'}>
                     <DatetimeLabel
                         dateTime={ticketField.updated_datetime}
-                        labelFormat="YYYY-MM-DD"
+                        labelFormat={DateAndTimeFormatting.CompactDate}
                     />
                 </div>
             </td>

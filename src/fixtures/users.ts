@@ -1,5 +1,6 @@
-import {ADMIN_ROLE} from '../config/user'
-import {User, UserSettingType} from '../config/types/user'
+import {ADMIN_ROLE} from 'config/user'
+import {User, UserSettingType} from 'config/types/user'
+import {DateFormatType, TimeFormatType} from 'constants/datetime'
 
 export const user: User = {
     lastname: 'Plugaru',
@@ -12,8 +13,8 @@ export const user: User = {
                 available: true,
                 hide_tips: true,
                 forward_calls: false,
-                date_format: 'en_US',
-                time_format: 'AM/PM',
+                date_format: DateFormatType.en_US,
+                time_format: TimeFormatType.AmPm,
             },
             id: 3,
             type: UserSettingType.Preferences,

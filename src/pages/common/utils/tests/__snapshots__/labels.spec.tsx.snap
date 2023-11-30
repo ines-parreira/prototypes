@@ -5,7 +5,7 @@ exports[`components utils: labels <DatetimeLabel/> render() should render a modi
   <span
     id="datetime-tooltip-"
   >
-    01-01-2022 00:11
+    01/01/2022 12:11 AM
   </span>
   TooltipMock
 </span>
