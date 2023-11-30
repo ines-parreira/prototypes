@@ -6,7 +6,6 @@ import React, {
     useState,
 } from 'react'
 import {useAsyncFn} from 'react-use'
-import moment from 'moment'
 import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 import {Link} from 'react-router-dom'
@@ -40,6 +39,9 @@ import {
     Rule,
     RuleType,
 } from 'state/rules/types'
+import {formatDatetime} from 'utils'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -70,6 +72,9 @@ export function RuleRow({
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
     const helpCenters = useAppSelector(getActiveHelpCenterList)
     const hasAgentPrivileges = useHasAgentPrivileges()
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate
+    )
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
     const {rulesUrl} = useIsAutomateRebranding()
@@ -180,8 +185,8 @@ export function RuleRow({
     }
 
     const formattedUpdatedDate = useMemo(
-        () => moment(rule.updated_datetime).format('YYYY-MM-DD'),
-        [rule]
+        () => formatDatetime(rule.updated_datetime, datetimeFormat),
+        [rule, datetimeFormat]
     )
 
     const link = useMemo(() => `${rulesUrl}/${rule.id}`, [rule, rulesUrl])

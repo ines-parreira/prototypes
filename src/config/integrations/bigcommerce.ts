@@ -1,7 +1,17 @@
 import {Map} from 'immutable'
 
 import {getTrackingLink} from 'common/tracking'
-import {IntegrationType} from '../../models/integration/types'
+import {formatDatetime} from 'utils'
+import {StoreState} from 'state/types'
+import {IntegrationType} from 'models/integration/types'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {
+    DateAndTimeFormatting,
+    DateTimeFormatMapper,
+    DateTimeFormatType,
+} from 'constants/datetime'
+import {momentToLDMLFormat} from 'pages/common/utils/template'
+import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
 
 function getLastOrderTrackingURL(
     context: Map<any, any>,
@@ -44,7 +54,39 @@ export const MACRO_VARIABLES = {
         },
         {
             name: 'Date of last order',
-            value: '{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format("MMMM d YYYY")}}',
+            value: `{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format("${momentToLDMLFormat(
+                DateTimeFormatMapper[
+                    DateTimeFormatType.LONG_DATE_WITH_YEAR_EN_US
+                ].toString()
+            )}")}}`,
+            tooltip: DATE_VARIABLE_TOOLTIP_TEXT,
+            replace: (
+                context: Map<any, any>,
+                integrationId: number,
+                currentUser: Map<any, any>
+            ) => {
+                const lastOrder = context.getIn([
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    integrationId,
+                    'orders',
+                    0,
+                ]) as Map<any, any>
+
+                if (!lastOrder || !lastOrder.get('date_created')) {
+                    return ''
+                }
+
+                return formatDatetime(
+                    lastOrder.get('date_created'),
+                    getDateAndTimeFormatter({
+                        currentUser: currentUser,
+                    } as unknown as StoreState)(
+                        DateAndTimeFormatting.LongDateWithYear
+                    )
+                )
+            },
         },
         {
             name: 'Tracking url of last order',
@@ -61,7 +103,39 @@ export const MACRO_VARIABLES = {
         },
         {
             name: 'Shipping date of last order',
-            value: '{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format("MMMM d YYYY")}}',
+            value: `{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format("${momentToLDMLFormat(
+                DateTimeFormatMapper[
+                    DateTimeFormatType.LONG_DATE_WITH_YEAR_EN_US
+                ].toString()
+            )}")}}`,
+            tooltip: DATE_VARIABLE_TOOLTIP_TEXT,
+            replace: (
+                context: Map<any, any>,
+                integrationId: number,
+                currentUser: Map<any, any>
+            ) => {
+                const lastOrder = context.getIn([
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    integrationId,
+                    'orders',
+                    0,
+                ]) as Map<any, any>
+
+                if (!lastOrder || !lastOrder.get('date_shipped')) {
+                    return ''
+                }
+
+                return formatDatetime(
+                    lastOrder.get('date_shipped'),
+                    getDateAndTimeFormatter({
+                        currentUser: currentUser,
+                    } as unknown as StoreState)(
+                        DateAndTimeFormatting.LongDateWithYear
+                    )
+                )
+            },
         },
         {
             name: 'Destination country of last order',
@@ -98,6 +172,22 @@ export const MACRO_HIDDEN_VARIABLES = {
         {
             name: 'State',
             value: '{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].state}}',
+        },
+    ],
+}
+
+export const MACRO_PREVIOUS_VARIABLES = {
+    type: IntegrationType.BigCommerce,
+    name: 'BigCommerce',
+    integration: true,
+    children: [
+        {
+            name: 'Date of last order',
+            value: '{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format("MMMM d YYYY")}}',
+        },
+        {
+            name: 'Shipping date of last order',
+            value: '{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format("MMMM d YYYY")}}',
         },
     ],
 }

@@ -12,9 +12,14 @@ import {InputType} from 'reactstrap/lib/Input'
 import {UploadType} from 'common/types'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {humanizeChannel} from 'state/ticket/utils'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {
+    DateAndTimeFormatting,
+    DateTimeResultFormatType,
+} from 'constants/datetime'
+import {formatDatetime, humanizeString} from 'utils'
 import DatePicker from '../../../common/forms/DatePicker'
 
-import {humanizeString} from '../../../../utils'
 import {stringToDatetime} from '../../../../utils/date'
 import {convertToHTML, getPlainText} from '../../../../utils/editor'
 import MultiSelectField from '../../forms/MultiSelectField'
@@ -254,7 +259,10 @@ export class Widget extends Component<Props, State> {
         )
     }
 
-    _datetimeSelect = (datetime: string) => {
+    _datetimeSelect = (
+        datetime: string,
+        datetimeFormat: DateTimeResultFormatType
+    ) => {
         const date = datetime ? stringToDatetime(datetime) : null
         return (
             <div className="widget d-inline-block">
@@ -270,7 +278,14 @@ export class Widget extends Component<Props, State> {
                     >
                         <div>
                             <Input
-                                value={date ? date.format('L LT') : ''}
+                                value={
+                                    date
+                                        ? formatDatetime(
+                                              date,
+                                              datetimeFormat
+                                          ).toString()
+                                        : ''
+                                }
                                 placeholder="Choose a date..."
                             />
                         </div>
@@ -344,8 +359,16 @@ export class Widget extends Component<Props, State> {
     }
 
     render() {
-        const {leftsiblings, schemas, value, rule, parent, className, config} =
-            this.props
+        const {
+            leftsiblings,
+            schemas,
+            value,
+            rule,
+            parent,
+            className,
+            config,
+            datetimeFormat,
+        } = this.props
 
         // todo should depend on triggers (should be described in schemas)
         const rootObjects = ['ticket', 'message']
@@ -692,7 +715,7 @@ export class Widget extends Component<Props, State> {
             case 'rich-field':
                 return this._richField(value)
             case 'datetime-select':
-                return this._datetimeSelect(value)
+                return this._datetimeSelect(value, datetimeFormat)
             case 'timedelta-select':
                 return this._timedeltaSelect(value)
             case 'number-input':
@@ -706,6 +729,9 @@ export class Widget extends Component<Props, State> {
 
 const connector = connect((state: RootState) => ({
     hasIntegrationOfTypes: makeHasIntegrationOfTypes(state),
+    datetimeFormat: getDateAndTimeFormatter(state)(
+        DateAndTimeFormatting.CompactDateWithTime
+    ),
 }))
 
 export default connector(Widget)

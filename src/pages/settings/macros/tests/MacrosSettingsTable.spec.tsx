@@ -30,6 +30,7 @@ jest.mock('reactstrap', () => {
     }
 })
 jest.mock('hooks/useHasAgentPrivileges')
+jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges

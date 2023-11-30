@@ -18,7 +18,7 @@ import * as ticketSelectors from 'state/ticket/selectors'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
-} from 'config/integrations/recharge'
+} from 'config/integrations/constants/recharge'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {renderTemplate} from 'pages/common/utils/template'

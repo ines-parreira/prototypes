@@ -38,38 +38,50 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         role="menu"
         tabindex="-1"
       >
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          First name
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Last name
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Full name
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Email
-        </button>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-0"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            First name
+          </button>
+        </div>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-1"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Last name
+          </button>
+        </div>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-2"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Full name
+          </button>
+        </div>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-3"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Email
+          </button>
+        </div>
       </div>
     </div>
     <div
@@ -103,46 +115,61 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         role="menu"
         tabindex="-1"
       >
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          First name
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Last name
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Full name
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Email
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Bio
-        </button>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-0"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            First name
+          </button>
+        </div>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-1"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Last name
+          </button>
+        </div>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-2"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Full name
+          </button>
+        </div>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-3"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Email
+          </button>
+        </div>
+        <div>
+          <button
+            class="dropdown-item"
+            id="variable-4"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Bio
+          </button>
+        </div>
       </div>
     </div>
   </div>

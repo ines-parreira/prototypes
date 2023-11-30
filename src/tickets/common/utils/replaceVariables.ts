@@ -15,7 +15,7 @@ import replaceIntegrationVariables from './replaceIntegrationVariables'
 export default function replaceVariables(
     argument: string,
     ticket: Map<any, any> | null,
-    currentUser: Map<any, any> | null,
+    currentUser: Map<any, any>,
     notify?: typeof notifyAction
 ) {
     // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
@@ -36,6 +36,7 @@ export default function replaceVariables(
                         ticket!,
                         variable,
                         newArgument,
+                        currentUser,
                         notify
                     )
                 }

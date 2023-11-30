@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import moment from 'moment'
 import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
 import {useAsyncFn} from 'react-use'
@@ -7,8 +6,10 @@ import {Link} from 'react-router-dom'
 import {Table} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -20,6 +21,7 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {ChannelLabel} from 'pages/common/utils/labels'
 import Loader from 'pages/common/components/Loader/Loader'
+import {formatDatetime} from 'utils'
 
 import css from './RuleTicketList.less'
 
@@ -52,6 +54,10 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
             )
         }
     }, [])
+
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate
+    )
 
     useEffect(() => {
         void handleFetchData()
@@ -134,8 +140,9 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
                                     </div>
                                 </LinkedCell>
                                 <LinkedCell ticketId={ticket.id}>
-                                    {moment(ticket.created_datetime).format(
-                                        'DD/MM/YYYY'
+                                    {formatDatetime(
+                                        ticket.created_datetime,
+                                        datetimeFormat
                                     )}
                                 </LinkedCell>
                                 <LinkedCell ticketId={ticket.id}>

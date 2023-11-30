@@ -28,6 +28,7 @@ describe('ast', () => {
             ]),
             parent: fromJS(['body', 0, 'test', 'arguments', 1, 'elements']),
             schemas: fromJS(_schemas),
+            datetimeFormat: 'MM/DD/YYYY h:mm A',
         } as ComponentProps<typeof Widget>
 
         it('should render case-insensitive MultiSelectField (containsAll operator)', () => {

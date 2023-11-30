@@ -13,6 +13,7 @@ import {RuleTicketList} from '../RuleTicketList'
 jest.mock('models/ticket/resources')
 jest.mock('pages/history')
 jest.mock('common/segment')
+jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
 describe('<RuleTicketList/>', () => {
     const minProps: ComponentProps<typeof RuleTicketList> = {

@@ -24,7 +24,7 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {MacroActionName} from 'models/macroAction/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getVariables} from 'tickets/common/utils'
-
+import Tooltip from 'pages/common/components/Tooltip'
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,
 } from '../MacroMessageActionsHeader'
@@ -95,18 +95,30 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
                             <DropdownMenu>
                                 {category.children.map(
                                     (variable, indexVariable) => {
+                                        const dropdownItemId = `variable-${indexVariable}`
                                         return (
-                                            <DropdownItem
-                                                key={indexVariable}
-                                                type="button"
-                                                onClick={() => {
-                                                    insertEditorText(
-                                                        variable.value
-                                                    )
-                                                }}
-                                            >
-                                                {variable.name}
-                                            </DropdownItem>
+                                            <div key={indexVariable}>
+                                                <DropdownItem
+                                                    key={indexVariable}
+                                                    id={dropdownItemId}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        insertEditorText(
+                                                            variable.value
+                                                        )
+                                                    }}
+                                                >
+                                                    {variable.name}
+                                                </DropdownItem>
+                                                {variable?.tooltip && (
+                                                    <Tooltip
+                                                        target={dropdownItemId}
+                                                        placement="right"
+                                                    >
+                                                        {variable.tooltip}
+                                                    </Tooltip>
+                                                )}
+                                            </div>
                                         )
                                     }
                                 )}

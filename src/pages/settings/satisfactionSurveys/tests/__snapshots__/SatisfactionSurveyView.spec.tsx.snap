@@ -696,74 +696,98 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           role="menu"
                                           tabIndex="-1"
                                         >
-                                          <DropdownItem
+                                          <div
                                             key="0"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-0"
+                                              key="0"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              First name
-                                            </button>
-                                          </DropdownItem>
-                                          <DropdownItem
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-0"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                First name
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
+                                          <div
                                             key="1"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-1"
+                                              key="1"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              Last name
-                                            </button>
-                                          </DropdownItem>
-                                          <DropdownItem
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-1"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                Last name
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
+                                          <div
                                             key="2"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-2"
+                                              key="2"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              Full name
-                                            </button>
-                                          </DropdownItem>
-                                          <DropdownItem
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-2"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                Full name
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
+                                          <div
                                             key="3"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-3"
+                                              key="3"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              Email
-                                            </button>
-                                          </DropdownItem>
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-3"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                Email
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
                                         </div>
                                       </DropdownMenu>
                                     </div>
@@ -853,91 +877,121 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           role="menu"
                                           tabIndex="-1"
                                         >
-                                          <DropdownItem
+                                          <div
                                             key="0"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-0"
+                                              key="0"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              First name
-                                            </button>
-                                          </DropdownItem>
-                                          <DropdownItem
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-0"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                First name
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
+                                          <div
                                             key="1"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-1"
+                                              key="1"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              Last name
-                                            </button>
-                                          </DropdownItem>
-                                          <DropdownItem
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-1"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                Last name
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
+                                          <div
                                             key="2"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-2"
+                                              key="2"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              Full name
-                                            </button>
-                                          </DropdownItem>
-                                          <DropdownItem
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-2"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                Full name
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
+                                          <div
                                             key="3"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-3"
+                                              key="3"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              Email
-                                            </button>
-                                          </DropdownItem>
-                                          <DropdownItem
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-3"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                Email
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
+                                          <div
                                             key="4"
-                                            onClick={[Function]}
-                                            tag="button"
-                                            toggle={true}
-                                            type="button"
                                           >
-                                            <button
-                                              className="dropdown-item"
+                                            <DropdownItem
+                                              id="variable-4"
+                                              key="4"
                                               onClick={[Function]}
-                                              role="menuitem"
-                                              tabIndex="0"
+                                              tag="button"
+                                              toggle={true}
                                               type="button"
                                             >
-                                              Bio
-                                            </button>
-                                          </DropdownItem>
+                                              <button
+                                                className="dropdown-item"
+                                                id="variable-4"
+                                                onClick={[Function]}
+                                                role="menuitem"
+                                                tabIndex="0"
+                                                type="button"
+                                              >
+                                                Bio
+                                              </button>
+                                            </DropdownItem>
+                                          </div>
                                         </div>
                                       </DropdownMenu>
                                     </div>

@@ -31,6 +31,20 @@ export function LDMLToMomentFormat(pattern: string): string {
     )
 }
 
+/**
+ * Transforms a formatting string pattern in `moment.js` format to LDML.
+ * Rules (executed by the back-end) use LDML ('d' and 'dd') but we use `moment.js` format ('D' and 'DD') in the UI.
+ */
+export function momentToLDMLFormat(pattern: string): string {
+    return (
+        pattern
+            // Replace all `D` which are not immediately preceded or followed by another letter with `d`
+            .replace(/(\bD\b)/g, 'd')
+            // Replace all `DD` which are not immediately preceded or followed by another letter with `dd`
+            .replace(/(\bDD\b)/g, 'dd')
+    )
+}
+
 const filters = {
     datetime_format: (value: string, args: Array<string>): string => {
         if (!value) {

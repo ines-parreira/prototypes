@@ -41,6 +41,7 @@ describe('replaceIntegrationVariables()', () => {
             ticketState,
             variable,
             newArg,
+            fromJS({}),
             notifySpy
         )
 
@@ -76,6 +77,7 @@ describe('replaceIntegrationVariables()', () => {
             ticketState,
             variable,
             newArg,
+            fromJS({}),
             notifySpy
         )
 
@@ -113,6 +115,7 @@ describe('replaceIntegrationVariables()', () => {
             ticketState,
             variable,
             newArg,
+            fromJS({}),
             notifySpy
         )
 
@@ -155,6 +158,7 @@ describe('replaceIntegrationVariables()', () => {
             ticketState,
             variable,
             newArg,
+            fromJS({}),
             notifySpy
         )
 
@@ -206,6 +210,7 @@ describe('replaceIntegrationVariables()', () => {
             ticketState,
             variable,
             newArg,
+            fromJS({}),
             notifySpy
         )
 
@@ -241,6 +246,7 @@ describe('replaceIntegrationVariables()', () => {
             ticketState,
             variable,
             newArg,
+            fromJS({}),
             notifySpy
         )
 

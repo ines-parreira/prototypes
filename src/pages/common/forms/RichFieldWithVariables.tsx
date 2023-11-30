@@ -15,6 +15,7 @@ import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getVariables} from 'tickets/common/utils'
 
+import Tooltip from 'pages/common/components/Tooltip'
 import RichField from './RichField/RichField'
 import TicketRichField from './RichField/TicketRichField'
 import css from './RichFieldWithVariables.less'
@@ -91,19 +92,37 @@ export default class RichFieldWithVariables extends Component<Props> {
                                     </DropdownToggle>
                                     <DropdownMenu>
                                         {category.children.map(
-                                            (variable, indexVariable) => (
-                                                <DropdownItem
-                                                    key={indexVariable}
-                                                    type="button"
-                                                    onClick={() => {
-                                                        this._insertText(
-                                                            variable.value
-                                                        )
-                                                    }}
-                                                >
-                                                    {variable.name}
-                                                </DropdownItem>
-                                            )
+                                            (variable, indexVariable) => {
+                                                const dropdownItemId = `variable-${indexVariable}`
+                                                return (
+                                                    <div key={indexVariable}>
+                                                        <DropdownItem
+                                                            key={indexVariable}
+                                                            id={dropdownItemId}
+                                                            type="button"
+                                                            onClick={() => {
+                                                                this._insertText(
+                                                                    variable.value
+                                                                )
+                                                            }}
+                                                        >
+                                                            {variable.name}
+                                                        </DropdownItem>
+                                                        {variable?.tooltip && (
+                                                            <Tooltip
+                                                                target={
+                                                                    dropdownItemId
+                                                                }
+                                                                placement="right"
+                                                            >
+                                                                {
+                                                                    variable.tooltip
+                                                                }
+                                                            </Tooltip>
+                                                        )}
+                                                    </div>
+                                                )
+                                            }
                                         )}
                                     </DropdownMenu>
                                 </UncontrolledDropdown>

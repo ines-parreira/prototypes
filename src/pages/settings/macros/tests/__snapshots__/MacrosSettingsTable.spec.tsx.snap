@@ -116,7 +116,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           to="/app/automation/macros/1"
         >
           <BodyCellContent>
-            2017-08-01
+            01/08/2017
           </BodyCellContent>
         </Link>
       </td>
@@ -229,7 +229,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           to="/app/automation/macros/2"
         >
           <BodyCellContent>
-            2017-08-01
+            01/08/2017
           </BodyCellContent>
         </Link>
       </td>

@@ -70,7 +70,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
       <div
         class="text-faded"
       >
-        2020-01-01
+        01/01/2020
       </div>
     </a>
   </td>
@@ -176,7 +176,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
       <div
         class="text-faded"
       >
-        2020-01-01
+        01/01/2020
       </div>
     </a>
   </td>
@@ -292,7 +292,7 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
       <div
         class="text-faded"
       >
-        2020-01-01
+        01/01/2020
       </div>
     </a>
   </td>

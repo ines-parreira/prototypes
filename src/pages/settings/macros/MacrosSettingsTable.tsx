@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import moment from 'moment'
 import React, {useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -29,7 +28,9 @@ import {macroCreated, macroDeleted} from 'state/entities/macros/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
-import {errorToChildren} from 'utils'
+import {formatDatetime, errorToChildren} from 'utils'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './MacrosSettingsTable.less'
@@ -54,6 +55,10 @@ export function MacrosSettingsTableContainer({
     onSortOptionsChange,
     options,
 }: OwnProps & ConnectedProps<typeof connector>) {
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate
+    )
+
     const orderByValue = useMemo(
         () => options.orderBy?.split(':')[0],
         [options.orderBy]
@@ -273,8 +278,9 @@ export function MacrosSettingsTableContainer({
                                 >
                                     <Link to={to} tabIndex={-1}>
                                         <BodyCellContent>
-                                            {moment(updated_datetime).format(
-                                                'YYYY-MM-DD'
+                                            {formatDatetime(
+                                                updated_datetime,
+                                                datetimeFormat
                                             )}
                                         </BodyCellContent>
                                     </Link>

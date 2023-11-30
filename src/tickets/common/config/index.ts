@@ -56,13 +56,18 @@ export type Variable = {
     fullName?: string
 
     integration?: string
-    replace?: (object: Map<any, any>, value: any) => string
+    replace?: (
+        object: Map<any, any>,
+        value: any,
+        currentUserObject?: Map<any, any>
+    ) => string
 }
 
 type VariableChild = {
     name: string
     fullName: string
     value: string
+    tooltip?: string
 }
 
 // available variables in macros

@@ -11,6 +11,7 @@ export default function replaceIntegrationVariables(
     ticketState: Map<any, any>,
     variable: string,
     newArgument: string,
+    currentUser: Map<any, any>,
     notify?: typeof notifyAction
 ) {
     let integrations = (
@@ -60,7 +61,8 @@ export default function replaceIntegrationVariables(
     if (variableConfig && variableConfig.replace != null) {
         newVariable = variableConfig.replace(
             fromJS({ticket: ticketState}),
-            integrationId
+            integrationId,
+            fromJS(currentUser)
         )
     }
 

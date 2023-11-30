@@ -87,12 +87,32 @@ exports[`config integrations INTEGRATION_PREVIOUS_VARIABLES should contain all p
   {
     "children": [
       {
+        "name": "Date of last order",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].created_at|datetime_format("MMMM d YYYY")}}",
+      },
+      {
+        "name": "Shipping date of last order",
+        "replace": [Function],
+        "value": "{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.created_at}}",
+      },
+    ],
+    "integration": true,
+    "name": "Magento 2",
+    "type": "magento2",
+  },
+  {
+    "children": [
+      {
         "name": "Hash of customer",
         "value": "{{ticket.customer.integrations.recharge.customer.hash}}",
       },
       {
         "name": "Scheduled date of next charge of last subscription",
         "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("L")}}",
+      },
+      {
+        "name": "Scheduled date of next charge of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("MM/d/YYYY")}}",
       },
     ],
     "integration": true,
@@ -141,10 +161,33 @@ exports[`config integrations INTEGRATION_PREVIOUS_VARIABLES should contain all p
         "name": "Shipping date of last order",
         "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")}}",
       },
+      {
+        "name": "Date of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format("MMMM d YYYY")}}",
+      },
+      {
+        "name": "Shipping date of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM d YYYY")}}",
+      },
     ],
     "integration": true,
     "name": "Shopify",
     "type": "shopify",
+  },
+  {
+    "children": [
+      {
+        "name": "Date of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format("MMMM d YYYY")}}",
+      },
+      {
+        "name": "Shipping date of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format("MMMM d YYYY")}}",
+      },
+    ],
+    "integration": true,
+    "name": "BigCommerce",
+    "type": "bigcommerce",
   },
 ]
 `;
@@ -169,7 +212,9 @@ exports[`config integrations INTEGRATION_VARIABLES should contain all variables 
       },
       {
         "name": "Date of last order",
-        "value": "{{ticket.customer.integrations.magento2.orders[0].created_at|datetime_format("MMMM d YYYY")}}",
+        "replace": [Function],
+        "tooltip": "You can format this date by editing the variable (double click on it) and adding a pipe (|) followed by the format.",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].created_at|datetime_format("MMMM d, YYYY")}}",
       },
       {
         "name": "Tracking url of last order",
@@ -184,7 +229,8 @@ exports[`config integrations INTEGRATION_VARIABLES should contain all variables 
       {
         "name": "Shipping date of last order",
         "replace": [Function],
-        "value": "{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.created_at}}",
+        "tooltip": "You can format this date by editing the variable (double click on it) and adding a pipe (|) followed by the format.",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.created_at|datetime_format("MMMM d, YYYY")}}",
       },
       {
         "name": "Destination country of last order",
@@ -227,7 +273,9 @@ exports[`config integrations INTEGRATION_VARIABLES should contain all variables 
       },
       {
         "name": "Scheduled date of next charge of last subscription",
-        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("MM/d/YYYY")}}",
+        "replace": [Function],
+        "tooltip": "You can format this date by editing the variable (double click on it) and adding a pipe (|) followed by the format.",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("MM/dd/YYYY")}}",
       },
     ],
     "integration": true,
@@ -242,7 +290,9 @@ exports[`config integrations INTEGRATION_VARIABLES should contain all variables 
       },
       {
         "name": "Date of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format("MMMM d YYYY")}}",
+        "replace": [Function],
+        "tooltip": "You can format this date by editing the variable (double click on it) and adding a pipe (|) followed by the format.",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format("MMMM d, YYYY")}}",
       },
       {
         "name": "Tracking url of last order",
@@ -262,7 +312,9 @@ exports[`config integrations INTEGRATION_VARIABLES should contain all variables 
       },
       {
         "name": "Shipping date of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM d YYYY")}}",
+        "replace": [Function],
+        "tooltip": "You can format this date by editing the variable (double click on it) and adding a pipe (|) followed by the format.",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM d, YYYY")}}",
       },
       {
         "name": "Destination country of last order",
@@ -308,7 +360,9 @@ exports[`config integrations INTEGRATION_VARIABLES should contain all variables 
       },
       {
         "name": "Date of last order",
-        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format("MMMM d YYYY")}}",
+        "replace": [Function],
+        "tooltip": "You can format this date by editing the variable (double click on it) and adding a pipe (|) followed by the format.",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format("MMMM d, YYYY")}}",
       },
       {
         "name": "Tracking url of last order",
@@ -325,7 +379,9 @@ exports[`config integrations INTEGRATION_VARIABLES should contain all variables 
       },
       {
         "name": "Shipping date of last order",
-        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format("MMMM d YYYY")}}",
+        "replace": [Function],
+        "tooltip": "You can format this date by editing the variable (double click on it) and adding a pipe (|) followed by the format.",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format("MMMM d, YYYY")}}",
       },
       {
         "name": "Destination country of last order",
