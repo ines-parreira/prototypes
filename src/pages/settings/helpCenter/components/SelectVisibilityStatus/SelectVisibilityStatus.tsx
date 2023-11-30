@@ -58,7 +58,7 @@ const SelectVisibilityStatus = ({
             title: 'Public',
             description: `${_upperFirst(
                 type
-            )} is public to everyone visiting your helpcenter.`,
+            )} is public to everyone visiting your Help Center.`,
             descriptionInheritUnlisted: `${_upperFirst(
                 type
             )} is currently only accessible via direct link because one of its parent categories is unlisted.`,

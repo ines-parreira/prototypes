@@ -402,7 +402,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       <div
                         class="description"
                       >
-                        Category is public to everyone visiting your helpcenter.
+                        Category is public to everyone visiting your Help Center.
                       </div>
                     </div>
                   </div>

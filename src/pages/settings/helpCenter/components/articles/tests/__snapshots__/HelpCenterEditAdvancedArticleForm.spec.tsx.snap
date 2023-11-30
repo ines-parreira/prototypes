@@ -192,7 +192,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
                   <div
                     class="description"
                   >
-                    Article is public to everyone visiting your helpcenter.
+                    Article is public to everyone visiting your Help Center.
                   </div>
                 </div>
               </div>
