@@ -857,4 +857,38 @@ describe('selectors', () => {
             ).toMatchObject(systemView)
         })
     })
+
+    describe('getViewPlainJS()', () => {
+        const views = {
+            '2': {
+                id: 2,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            },
+            '88': {
+                id: 88,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            },
+            '1234': {
+                id: 123,
+                type: ViewType.CustomerList,
+                visibility: ViewVisibility.Private,
+            },
+        }
+
+        const state = {
+            views: fromJS({
+                items: views,
+            }),
+        } as RootState
+
+        it('should return the view matching the id', () => {
+            expect(selectors.getViewPlainJS(state, '88')).toEqual(views['88'])
+        })
+
+        it('should return null when no view matches the id', () => {
+            expect(selectors.getViewPlainJS(state, '22')).toEqual(null)
+        })
+    })
 })

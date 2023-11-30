@@ -45,6 +45,19 @@ export const getViews = createImmutableSelector(
     (state) => state.get('items', fromJS([])) as List<any>
 )
 
+export const getViewPlainJS = createSelector(
+    [getViews, (state, id: string) => id],
+    (views, id) => {
+        const view = views.find(
+            (view: Map<any, any>) => view.get('id') === parseInt(id),
+            null,
+            fromJS({})
+        ) as Map<any, any>
+
+        return view.isEmpty() ? null : (view.toJS() as View)
+    }
+)
+
 export const getSystemTicketNavbarElementsByCategory = (
     category: 'views_top' | 'views_bottom',
     includeHiddenViews = false

@@ -1,19 +1,22 @@
 import React, {useMemo} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {Ticket} from 'models/ticket/types'
 import {useGetViewItems} from 'models/view/queries'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import {getViewPlainJS} from 'state/views/selectors'
 
 import TicketRow from './TicketRow'
 import css from './TicketListView.less'
-import SortingDropdown from './SortingDropdown'
 
 export default function TicketListView({viewId}: {viewId: string}) {
     const {isInitialLoading, data, hasNextPage, fetchNextPage} =
         useGetViewItems({
             viewId: parseInt(viewId),
         })
+
+    const view = useAppSelector((state) => getViewPlainJS(state, viewId))
 
     const tickets = useMemo(
         () =>
@@ -27,8 +30,7 @@ export default function TicketListView({viewId}: {viewId: string}) {
     return (
         <div className={css.wrapper}>
             <div className={css.titleWrapper}>
-                <div className={css.title}>My tickets</div>
-                <SortingDropdown />
+                <div className={css.title}>{view?.name}</div>
             </div>
             {isInitialLoading ? (
                 <SkeletonLoader length={5} className={css.skeleton} />
