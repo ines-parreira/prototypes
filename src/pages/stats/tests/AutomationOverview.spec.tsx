@@ -31,6 +31,9 @@ jest.mock('react-chartjs-2', () => ({
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
+jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
+    <div>ChannelsStatsFilter</div>
+))
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

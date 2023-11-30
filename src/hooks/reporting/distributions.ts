@@ -8,7 +8,7 @@ import {
 import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
 import {StatsFilters} from 'models/stat/types'
 import {OneDimensionalDataItem} from 'pages/stats/types'
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
+import {humanizeChannel} from 'state/ticket/utils'
 import {getPreviousPeriod} from 'utils/reporting'
 
 export const useWorkloadPerChannelDistribution = (
@@ -61,7 +61,7 @@ const selectPerChannel = (
     >
 ) => {
     return data.data.data.map((item) => ({
-        label: TICKET_CHANNEL_NAMES[item[TicketDimension.Channel]],
+        label: humanizeChannel(item[TicketDimension.Channel]),
         value: parseFloat(item[TicketMeasure.TicketCount]),
     }))
 }

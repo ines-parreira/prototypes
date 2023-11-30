@@ -18,7 +18,6 @@ import {
     TwoDimensionalChart,
     StatsFilters,
 } from 'models/stat/types'
-import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -93,7 +92,6 @@ export default function AutomationOverview() {
                         />
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
                         />
                         <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>

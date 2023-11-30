@@ -96,7 +96,7 @@ exports[`TicketDetailsStat should handle an unknown channel and report error 1`]
     </div>
     <div
       class="channel"
-      title="foo"
+      title="Foo"
     >
       <i
         class="material-icons channelIcon"
@@ -107,7 +107,7 @@ exports[`TicketDetailsStat should handle an unknown channel and report error 1`]
     </div>
     <div
       class="channel"
-      title="bar"
+      title="Bar"
     >
       <i
         class="material-icons channelIcon"

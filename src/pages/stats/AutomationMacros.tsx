@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketChannel} from 'business/types/ticket'
 import {MESSAGES_SENT_PER_MACRO, stats as statsConfig} from 'config/stats'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
@@ -60,7 +59,6 @@ export default function AutomationMacros() {
                         />
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
                         />
                         <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>

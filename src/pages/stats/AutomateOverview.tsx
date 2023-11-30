@@ -359,7 +359,7 @@ export function AutomateOverview() {
                     <>
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={[
+                            channelsFilter={[
                                 TicketChannel.Chat,
                                 TicketChannel.HelpCenter,
                                 TicketChannel.ContactForm,

@@ -73,6 +73,10 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
 jest.mock('hooks/reporting/metricTrends')
+jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
+    <div>ChannelsStatsFilter</div>
+))
+
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend
 )

@@ -92,7 +92,10 @@ How many surveys have been sent, response rate, average scores and more."
                     />
                     <ChannelsStatsFilter
                         value={pageStatsFilters.channels}
-                        channels={[TicketChannel.Chat, TicketChannel.Email]}
+                        channelsFilter={[
+                            TicketChannel.Chat,
+                            TicketChannel.Email,
+                        ]}
                     />
                     <ScoreStatsFilter
                         value={pageStatsFilters.score}

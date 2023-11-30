@@ -6,7 +6,6 @@ import {
     getStatsStoreIntegrations,
     getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
-import {TicketChannel} from 'business/types/ticket'
 import {
     OneDimensionalUnionChart,
     StatsFilters,
@@ -117,7 +116,6 @@ helping customers through the purchasing journey."
                         )}
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
                         />
                         <TagsStatsFilter value={pageStatsFilters.tags} />
                         <PeriodStatsFilter value={pageStatsFilters.period} />

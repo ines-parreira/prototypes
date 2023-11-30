@@ -11,7 +11,6 @@ import {
     TICKETS_CREATED_PER_CHANNEL_PER_DAY,
 } from 'config/stats'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
-import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -74,7 +73,6 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc..."
                         />
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
                         />
                         <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>

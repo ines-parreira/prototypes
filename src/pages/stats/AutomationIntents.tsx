@@ -84,7 +84,7 @@ export default function AutomationIntents() {
                     <>
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={AUTOMATION_INTENTS_CHANNELS}
+                            channelsFilter={AUTOMATION_INTENTS_CHANNELS}
                         />
                         <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>

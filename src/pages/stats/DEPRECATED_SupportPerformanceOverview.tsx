@@ -7,7 +7,6 @@ import {
     getStatsFilters,
     getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
-import {TicketChannel} from 'business/types/ticket'
 import {
     OneDimensionalChart,
     StatsFilters,
@@ -246,7 +245,6 @@ providing excellent customer support."
                             />
                             <ChannelsStatsFilter
                                 value={pageStatsFilters.channels}
-                                channels={Object.values(TicketChannel)}
                             />
                             <AgentsStatsFilter
                                 value={pageStatsFilters.agents}

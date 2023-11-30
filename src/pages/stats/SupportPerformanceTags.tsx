@@ -9,7 +9,6 @@ import {
 import {stats as statsConfig, TICKETS_PER_TAG} from 'config/stats'
 import {getTags} from 'state/tags/selectors'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
-import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -71,7 +70,6 @@ tag attached to them."
                         />
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
                         />
                         <TagsStatsFilter value={pageStatsFilters.tags} />
                         <PeriodStatsFilter value={pageStatsFilters.period} />

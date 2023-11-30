@@ -1,7 +1,6 @@
 import moment from 'moment'
 import React, {useMemo} from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getStatsFilters} from 'state/stats/selectors'
 import {
@@ -113,7 +112,6 @@ function LiveOverview() {
                     <>
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
                         />
                         <AgentsStatsFilter value={pageStatsFilters.agents} />
                     </>

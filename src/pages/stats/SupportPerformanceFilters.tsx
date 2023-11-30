@@ -1,7 +1,6 @@
 import React from 'react'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketChannel} from 'business/types/ticket'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
@@ -27,7 +26,6 @@ export const SupportPerformanceFilters = () => {
             />
             <ChannelsStatsFilter
                 value={pageStatsFilters.channels}
-                channels={Object.values(TicketChannel)}
                 variant="ghost"
             />
             <AgentsStatsFilter

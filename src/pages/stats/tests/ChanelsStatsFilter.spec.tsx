@@ -4,15 +4,19 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import * as channelsService from 'services/channels'
+import {channels} from 'fixtures/channels'
 
-import {RootState} from '../../../state/types'
+import {RootState} from 'state/types'
+
 import ChannelsStatsFilter from '../ChannelsStatsFilter'
-import {TicketChannel} from '../../../business/types/ticket'
 
 const mockStore = configureMockStore([thunk])
 
+jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
+
 describe('ChannelsStatsFilter', () => {
-    const allChannels = Object.values(TicketChannel)
+    const allChannels = channelsService.getChannels()
     const defaultState = {
         stats: fromJS({
             filters: null,
@@ -22,10 +26,7 @@ describe('ChannelsStatsFilter', () => {
     it('should render channels stats filter', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <ChannelsStatsFilter
-                    value={[allChannels[0]]}
-                    channels={allChannels}
-                />
+                <ChannelsStatsFilter value={[allChannels[0]?.slug]} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -35,10 +36,7 @@ describe('ChannelsStatsFilter', () => {
         const store = mockStore(defaultState)
         const {getByLabelText} = render(
             <Provider store={store}>
-                <ChannelsStatsFilter
-                    value={[]}
-                    channels={Object.values(TicketChannel)}
-                />
+                <ChannelsStatsFilter value={[]} />
             </Provider>
         )
 

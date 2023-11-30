@@ -26,6 +26,9 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock('hooks/reporting/useStatResource')
+jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
+    <div>ChannelsStatsFilter</div>
+))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<

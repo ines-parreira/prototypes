@@ -104,6 +104,9 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               />
             </div>
           </div>
+          <div>
+            ChannelsStatsFilter
+          </div>
           <div
             class="dropdown"
           >
@@ -114,7 +117,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               type="button"
             >
               <span>
-                1 channel
+                1 score
               </span>
             </button>
             <div
@@ -129,7 +132,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               >
                 <input
                   class="form-control"
-                  placeholder="Search channels..."
+                  placeholder="Search scores..."
                   type="text"
                   value=""
                 />
@@ -177,13 +180,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     for="checkbox-3"
                   >
                     <input
-                      checked=""
                       class="input"
                       id="checkbox-3"
                       name="checkbox-3"
                       type="checkbox"
                     />
-                     Chat
+                     ★★★★★
                   </label>
                 </div>
                 <div
@@ -199,77 +201,25 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       name="checkbox-4"
                       type="checkbox"
                     />
-                     Email
+                     ★★★★☆
                   </label>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="dropdown"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              <span>
-                1 score
-              </span>
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu dropdown-menu-right"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="dropdown-item-input dropdownItemInput dropdown-header"
-                tabindex="-1"
-              >
-                <input
-                  class="form-control"
-                  placeholder="Search scores..."
-                  type="text"
-                  value=""
-                />
-              </h6>
-              <button
-                class="component dropdown-item"
-                role="menuitem"
-                tabindex="0"
-              >
                 <div
-                  class="checkbox"
+                  class="wrapperItem"
                 >
                   <label
-                    class="label label quickSelectionOption"
+                    class="label label labelItem"
                     for="checkbox-5"
                   >
                     <input
-                      checked=""
                       class="input"
                       id="checkbox-5"
                       name="checkbox-5"
                       type="checkbox"
                     />
-                    Deselect
-                    <div
-                      class="badge badge--unselect"
-                    >
-                      1
-                    </div>
+                     ★★★☆☆
                   </label>
                 </div>
-              </button>
-              <div
-                class="dropdownDivider dropdown-divider"
-                tabindex="-1"
-              />
-              <div
-                class="content"
-              >
                 <div
                   class="wrapperItem"
                 >
@@ -278,12 +228,13 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     for="checkbox-6"
                   >
                     <input
+                      checked=""
                       class="input"
                       id="checkbox-6"
                       name="checkbox-6"
                       type="checkbox"
                     />
-                     ★★★★★
+                     ★★☆☆☆
                   </label>
                 </div>
                 <div
@@ -297,55 +248,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       class="input"
                       id="checkbox-7"
                       name="checkbox-7"
-                      type="checkbox"
-                    />
-                     ★★★★☆
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-8"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-8"
-                      name="checkbox-8"
-                      type="checkbox"
-                    />
-                     ★★★☆☆
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-9"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      id="checkbox-9"
-                      name="checkbox-9"
-                      type="checkbox"
-                    />
-                     ★★☆☆☆
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-10"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-10"
-                      name="checkbox-10"
                       type="checkbox"
                     />
                      ★☆☆☆☆
@@ -394,13 +296,13 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-11"
+                    for="checkbox-8"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-11"
-                      name="checkbox-11"
+                      id="checkbox-8"
+                      name="checkbox-8"
                       type="checkbox"
                     />
                     Deselect
@@ -431,12 +333,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-12"
+                      for="checkbox-9"
                     >
                       <input
                         class="input"
-                        id="checkbox-12"
-                        name="checkbox-12"
+                        id="checkbox-9"
+                        name="checkbox-9"
                         type="checkbox"
                       />
                       Foo
@@ -447,12 +349,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-13"
+                      for="checkbox-10"
                     >
                       <input
                         class="input"
-                        id="checkbox-13"
-                        name="checkbox-13"
+                        id="checkbox-10"
+                        name="checkbox-10"
                         type="checkbox"
                       />
                       Phone team - +1 205-396-3441
@@ -463,12 +365,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-14"
+                      for="checkbox-11"
                     >
                       <input
                         class="input"
-                        id="checkbox-14"
-                        name="checkbox-14"
+                        id="checkbox-11"
+                        name="checkbox-11"
                         type="checkbox"
                       />
                       Team: user meta null
@@ -479,12 +381,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-15"
+                      for="checkbox-12"
                     >
                       <input
                         class="input"
-                        id="checkbox-15"
-                        name="checkbox-15"
+                        id="checkbox-12"
+                        name="checkbox-12"
                         type="checkbox"
                       />
                       Test
@@ -506,13 +408,13 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-16"
+                    for="checkbox-13"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-16"
-                      name="checkbox-16"
+                      id="checkbox-13"
+                      name="checkbox-13"
                       type="checkbox"
                     />
                      Acme Support
@@ -523,12 +425,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-17"
+                    for="checkbox-14"
                   >
                     <input
                       class="input"
-                      id="checkbox-17"
-                      name="checkbox-17"
+                      id="checkbox-14"
+                      name="checkbox-14"
                       type="checkbox"
                     />
                      Bob Smith

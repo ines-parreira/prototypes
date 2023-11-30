@@ -8,7 +8,6 @@ import {getStatsFilters} from 'state/stats/selectors'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import {getTimezone} from 'state/currentUser/selectors'
-import {TicketChannel} from 'business/types/ticket'
 import {
     NumericStatAxisValue,
     Stat,
@@ -87,7 +86,6 @@ function LiveAgents() {
                         <>
                             <ChannelsStatsFilter
                                 value={pageStatsFilters.channels}
-                                channels={Object.values(TicketChannel)}
                             />
                             <AgentsStatsFilter
                                 value={pageStatsFilters.agents}

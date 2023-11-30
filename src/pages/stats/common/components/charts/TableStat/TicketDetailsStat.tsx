@@ -2,16 +2,16 @@ import React, {useMemo} from 'react'
 
 import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
 import {reportError} from 'utils/errors'
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
+import {TicketStatus} from 'business/types/ticket'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import {ViewFilter} from 'state/views/types'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 import {ViewField} from 'models/view/types'
 import {EqualityOperator} from 'state/rules/types'
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-
-import ViewLink from '../../../ViewLink'
-import {useStatsViewFilters} from '../../../utils'
+import ViewLink from 'pages/stats/common//ViewLink'
+import {useStatsViewFilters} from 'pages/stats/common/utils'
+import {getChannels} from 'services/channels'
+import {humanizeChannel} from 'state/ticket/utils'
 
 import css from './TicketDetailsStat.less'
 
@@ -68,27 +68,27 @@ export default function TicketDetailsStat({
         [assigneeFilter, baseFilters]
     )
 
-    const channelFilters = useMemo<Record<TicketChannel, ViewFilter[]>>(() => {
+    const channelFilters = useMemo<Record<string, ViewFilter[]>>(() => {
         const channelFilterLeft = getTicketViewFieldPath(
             getTicketViewField(ViewField.Channel)
         )
-        return Object.values(TicketChannel).reduce(
+        return getChannels().reduce<Record<string, ViewFilter[]>>(
             (acc, channel) => ({
                 ...acc,
-                [channel]: [
+                [channel.slug]: [
                     assigneeFilter,
                     STATUS_FILTER,
                     {
                         left: channelFilterLeft,
                         operator: EqualityOperator.Eq,
-                        right: JSON.stringify(channel),
+                        right: JSON.stringify(channel.slug),
                     },
                     ...baseFilters.filter(
                         (filter) => filter.left !== channelFilterLeft
                     ),
                 ],
             }),
-            {} as Record<TicketChannel, ViewFilter[]>
+            {}
         )
     }, [assigneeFilter, baseFilters])
 
@@ -117,21 +117,21 @@ export default function TicketDetailsStat({
             </div>
             <div className={css.separator} />
             <div className={css.channelsBreakdown}>
-                {(Object.entries(channelsBreakdown) as [string, number][]).map(
-                    ([name, ticketsNumber]) => {
+                {Object.entries(channelsBreakdown).map(
+                    ([channel, ticketsNumber]) => {
                         if (!ticketsNumber) {
                             return null
-                        } else if (!channelFilters[name as TicketChannel]) {
+                        } else if (!channelFilters[channel]) {
                             reportError(
                                 new Error(
-                                    `Channel not found for the name: ${name}`
+                                    `Channel not found for the name: ${channel}`
                                 )
                             )
                             return (
                                 <div
-                                    key={name}
+                                    key={channel}
                                     className={css.channel}
-                                    title={name}
+                                    title={humanizeChannel(channel)}
                                 >
                                     <i
                                         className={`material-icons ${css.channelIcon}`}
@@ -142,20 +142,22 @@ export default function TicketDetailsStat({
                                 </div>
                             )
                         }
-                        const channelName = name as TicketChannel
+
                         return (
                             <div
-                                key={channelName}
+                                key={channel}
                                 className={css.channel}
-                                title={TICKET_CHANNEL_NAMES[channelName]}
+                                title={humanizeChannel(channel)}
                             >
                                 <SourceIcon
-                                    type={channelName}
+                                    type={channel}
                                     className={css.channelIcon}
                                 />
                                 <ViewLink
-                                    viewName={`Open tickets assigned to: ${agentName}, channel: ${TICKET_CHANNEL_NAMES[channelName]}`}
-                                    filters={channelFilters[channelName]}
+                                    viewName={`Open tickets assigned to: ${agentName}, channel: ${humanizeChannel(
+                                        channel
+                                    )}`}
+                                    filters={channelFilters[channel]}
                                     onClick={() => {
                                         logEvent(
                                             SegmentEvent.StatViewLinkClicked,

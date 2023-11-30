@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
 import {
     FIRST_RESPONSE_TIME,
     stats as statsConfig,
@@ -66,7 +65,6 @@ export default function SupportPerformanceBusiestTimesOfDays() {
 
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
                         />
 
                         <AgentsStatsFilter value={pageStatsFilters.agents} />

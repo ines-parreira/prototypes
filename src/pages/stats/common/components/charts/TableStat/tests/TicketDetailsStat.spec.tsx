@@ -12,6 +12,8 @@ import {integrationsState} from 'fixtures/integrations'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {reportError} from 'utils/errors'
 import {StatsFilters} from 'models/stat/types'
+import * as channelsService from 'services/channels'
+import {channels} from 'fixtures/channels'
 
 import ViewLink from '../../../../ViewLink'
 import TicketDetailsStat from '../TicketDetailsStat'
@@ -41,6 +43,7 @@ jest.mock(
                 </a>
             )
 )
+jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
 describe('TicketDetailsStat', () => {
     const defaultStatsFilters: StatsFilters = {
@@ -61,13 +64,12 @@ describe('TicketDetailsStat', () => {
         agentId: 1,
         agentName: 'John Doe',
         openTickets: 0,
-        channelsBreakdown: Object.values(TicketChannel).reduce(
-            (acc, channel) => {
-                acc[channel] = 0
+        channelsBreakdown: channelsService
+            .getChannels()
+            .reduce((acc, channel) => {
+                acc[channel.slug] = 0
                 return acc
-            },
-            {} as Record<string, number>
-        ),
+            }, {} as Record<string, number>),
     }
 
     it('should render a message when no assigned tickets', () => {
