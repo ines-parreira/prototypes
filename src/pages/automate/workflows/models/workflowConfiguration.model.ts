@@ -1,4 +1,5 @@
 import {ulid} from 'ulidx'
+import _omit from 'lodash/omit'
 import {
     NO_ORDERS_WORKFLOW_ID,
     ORDER_SELECTION_WORKFLOW_ID,
@@ -12,6 +13,7 @@ import {
     AutomatedMessageNodeType,
     EndNodeType,
     FileUploadNodeType,
+    HttpRequestNodeType,
     MultipleChoicesNodeType,
     OrderSelectionNodeType,
     TextReplyNodeType,
@@ -286,6 +288,43 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     ticketTags: step.settings.ticket_tags,
                     ticketAssigneeUserId: step.settings.ticket_assignee_user_id,
                     ticketAssigneeTeamId: step.settings.ticket_assignee_team_id,
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'http-request') {
+            const bodyContentType = step.settings.headers?.[
+                'content-type'
+            ] as HttpRequestNodeType['data']['bodyContentType']
+
+            const n: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'http_request',
+                data: {
+                    wfConfigurationRef: {
+                        wfConfigurationHttpRequestStepId: step.id,
+                    },
+                    name: step.settings.name,
+                    url: step.settings.url,
+                    method: step.settings.method,
+                    headers: Object.entries(
+                        _omit(step.settings.headers ?? {}, 'content-type')
+                    ).map(([name, value]) => ({name, value})),
+                    json:
+                        bodyContentType === 'application/json'
+                            ? step.settings.body
+                            : undefined,
+                    formUrlencoded:
+                        bodyContentType === 'application/x-www-form-urlencoded'
+                            ? [
+                                  ...new URLSearchParams(
+                                      step.settings.body
+                                  ).entries(),
+                              ].map(([key, value]) => ({key, value}))
+                            : undefined,
+                    bodyContentType: bodyContentType,
+                    variables: step.settings.variables,
                 },
             }
             nodeIdByStepId[step.id] = n.id

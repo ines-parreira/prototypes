@@ -6,7 +6,7 @@ import Label from 'pages/common/forms/Label/Label'
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {
-    flowVariableRegex,
+    workflowVariableRegex,
     isValidLiquidSyntaxInNode,
 } from 'pages/automate/workflows/models/variables.model'
 import {
@@ -53,7 +53,7 @@ const AutomatedMessageNode = memo(function AutomatedMessageNode({
                     <VisualBuilderActionTag nodeType="automated_message" />
                     <Label className={css.nodeTitle}>
                         {contentText.length > 0 ? (
-                            contentText.replace(flowVariableRegex, '{...}')
+                            contentText.replace(workflowVariableRegex, '{...}')
                         ) : (
                             <span className={css.clickToAdd}>Message</span>
                         )}

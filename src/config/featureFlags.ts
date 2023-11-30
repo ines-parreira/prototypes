@@ -31,6 +31,7 @@ export enum FeatureFlagKey {
     EarlyAdopter = 'early-adopter',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     EnforceTicketsOnES = 'enforce-tickets-on-es',
+    FlowsStepsHttpRequest = 'flows-steps-http-request',
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
     HelpCenterAutoEmbed = 'help-center-auto-embed',

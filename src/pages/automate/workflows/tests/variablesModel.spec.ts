@@ -1,20 +1,20 @@
 import {
-    getAvailableFlowVariableListForNode,
-    parseFlowVariable,
+    getWorkflowVariableListForNode,
+    parseWorkflowVariable,
 } from '../models/variables.model'
-import {FlowVariableList} from '../models/variables.types'
+import {WorkflowVariableList} from '../models/variables.types'
 import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
 
-describe('parseFlowVariable', () => {
+describe('parseWorkflowVariable', () => {
     test('should parse an available flow variable', () => {
-        const availableVariables: FlowVariableList = [
+        const availableVariables: WorkflowVariableList = [
             {
                 nodeType: 'text_reply',
                 name: 'My text reply',
                 value: '{{steps_state["textInput1"].content.text}}',
             },
         ]
-        const parsed = parseFlowVariable(
+        const parsed = parseWorkflowVariable(
             '{{steps_state["textInput1"].content.text}}',
             availableVariables
         )
@@ -26,7 +26,7 @@ describe('parseFlowVariable', () => {
     })
 
     test('should parse an available group flow variable', () => {
-        const availableVariables: FlowVariableList = [
+        const availableVariables: WorkflowVariableList = [
             {
                 nodeType: 'order_selection',
                 name: 'My order selection',
@@ -38,7 +38,7 @@ describe('parseFlowVariable', () => {
                 ],
             },
         ]
-        const parsed = parseFlowVariable(
+        const parsed = parseWorkflowVariable(
             '{{customer.firstname}}',
             availableVariables
         )
@@ -49,8 +49,8 @@ describe('parseFlowVariable', () => {
     })
 
     test('should return an invalid flow variable if not found', () => {
-        const availableVariables: FlowVariableList = []
-        const parsed = parseFlowVariable(
+        const availableVariables: WorkflowVariableList = []
+        const parsed = parseWorkflowVariable(
             '{{customer.firstname}}',
             availableVariables
         )
@@ -65,13 +65,13 @@ describe('parseFlowVariable', () => {
 describe('getAvailableFlowVariables', () => {
     const g = visualBuilderGraphSimpleChoicesFixture
     test('no available variables at the beginning of the flow', () => {
-        expect(
-            getAvailableFlowVariableListForNode(g, 'multiple_choices1')
-        ).toEqual([])
+        expect(getWorkflowVariableListForNode(g, 'multiple_choices1')).toEqual(
+            []
+        )
     })
 
     test('selected choice and text input variables available', () => {
-        expect(getAvailableFlowVariableListForNode(g, 'file_upload1')).toEqual([
+        expect(getWorkflowVariableListForNode(g, 'file_upload1')).toEqual([
             {
                 nodeType: 'multiple_choices',
                 name: 'Choices text',
@@ -86,14 +86,14 @@ describe('getAvailableFlowVariables', () => {
     })
 
     test('only selected choice available', () => {
-        expect(
-            getAvailableFlowVariableListForNode(g, 'automated_message1')
-        ).toEqual([
-            {
-                nodeType: 'multiple_choices',
-                name: 'Choices text',
-                value: '{{steps_state["choices1"].selected_choice.label}}',
-            },
-        ])
+        expect(getWorkflowVariableListForNode(g, 'automated_message1')).toEqual(
+            [
+                {
+                    nodeType: 'multiple_choices',
+                    name: 'Choices text',
+                    value: '{{steps_state["choices1"].selected_choice.label}}',
+                },
+            ]
+        )
     })
 })

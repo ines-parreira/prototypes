@@ -18,6 +18,7 @@ import TextReplyEditor from './editors/TextReplyEditor'
 import FileUploadEditor from './editors/FileUploadEditor'
 import EndNodeEditor from './editors/EndNodeEditor'
 import OrderSelectionEditor from './editors/OrderSelectionEditor'
+import HttpRequestEditor from './editors/HttpRequestEditor'
 
 type NodeEditorDrawerProps = {
     nodeInEdition?: VisualBuilderNode | null
@@ -131,6 +132,11 @@ export default function NodeEditorDrawer({
                     )}
                     {memoizedNodeInEdition?.type === 'order_selection' && (
                         <OrderSelectionEditor
+                            nodeInEdition={memoizedNodeInEdition}
+                        />
+                    )}
+                    {memoizedNodeInEdition?.type === 'http_request' && (
+                        <HttpRequestEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
                     )}

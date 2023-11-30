@@ -29,6 +29,10 @@ export const colorByVisualBuilderNodeType: Record<
         color: colors['📺 Classic'].Accessory.Blue_text.value,
         backgroundColor: colors['📺 Classic'].Accessory.Teal_bg.value,
     },
+    http_request: {
+        color: '#605708',
+        backgroundColor: colors['📺 Classic'].Accessory.Yellow_bg.value,
+    },
 }
 
 export const iconByVisualBuilderNodeType: Record<
@@ -40,6 +44,7 @@ export const iconByVisualBuilderNodeType: Record<
     text_reply: <i className="material-icons">short_text</i>,
     file_upload: <i className="material-icons">attach_file</i>,
     order_selection: <img src={orderSelectionIcon} alt="" />,
+    http_request: <i className="material-icons">webhook</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<
@@ -52,6 +57,7 @@ export const labelByVisualBuilderNodeType: Record<
     text_reply: 'Collect text reply',
     file_upload: 'Collect file upload',
     order_selection: 'Order selection',
+    http_request: 'HTTP request',
     end: 'End flow',
 }
 

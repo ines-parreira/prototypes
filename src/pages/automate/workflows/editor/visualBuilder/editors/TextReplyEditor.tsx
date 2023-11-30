@@ -3,9 +3,9 @@ import React, {useCallback, useMemo} from 'react'
 import Label from 'pages/common/forms/Label/Label'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import TranslationPreviewHeader from 'pages/automate/workflows/components/translations/TranslationPreviewHeader'
-import TranslationsPreviewField from 'pages/automate/workflows/components/translations/TranslationPreviewField'
-import {getAvailableFlowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
+import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 
 import {TextReplyNodeType} from '../../../models/visualBuilderGraph.types'
 import {useWorkflowEditorContext} from '../../../hooks/useWorkflowEditor'
@@ -31,9 +31,9 @@ export default function TextReplyEditor({
         },
         [dispatch, nodeInEdition.id]
     )
-    const availableFlowVariables = useMemo(
+    const workflowVariables = useMemo(
         () =>
-            getAvailableFlowVariableListForNode(
+            getWorkflowVariableListForNode(
                 visualBuilderGraph,
                 nodeInEdition.id
             ),
@@ -50,7 +50,7 @@ export default function TextReplyEditor({
                     <MessageContentFormField
                         content={nodeInEdition.data.content}
                         handleUpdateContent={handleUpdateContent}
-                        availableFlowVariables={availableFlowVariables}
+                        workflowVariables={workflowVariables}
                     />
                     <div className={css.description}>
                         After the prompt, customers can type a reply of up to

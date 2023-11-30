@@ -21,7 +21,7 @@ import {useToolbarContext} from './ToolbarContext'
 
 import css from './Toolbar.less'
 
-import FlowVariablePicker from './components/FlowVariablePicker'
+import WorkflowVariablePicker from './components/WorkflowVariablePicker'
 import {isDisplayedAction} from './index'
 
 type Props = {
@@ -196,9 +196,9 @@ const Toolbar = ({
                                 /{maxLength}
                             </span>
                         )}
-                        {isActionDisplayed(ActionName.FlowVariable) &&
+                        {isActionDisplayed(ActionName.WorkflowVariable) &&
                             displayedActions && (
-                                <FlowVariablePicker
+                                <WorkflowVariablePicker
                                     onSelect={handleVariableSelection}
                                 />
                             )}

@@ -1,32 +1,27 @@
 import classNames from 'classnames'
-import React, {memo, useMemo} from 'react'
-import {Handle, Position, NodeProps} from 'reactflow'
+import React, {memo} from 'react'
+import {Handle, NodeProps, Position} from 'reactflow'
 
 import Label from 'pages/common/forms/Label/Label'
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
-    workflowVariableRegex,
-    isValidLiquidSyntaxInNode,
-} from 'pages/automate/workflows/models/variables.model'
-import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 
-import {TextReplyNodeType} from '../../../models/visualBuilderGraph.types'
+import {HttpRequestNodeType} from '../../../models/visualBuilderGraph.types'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import EdgeBlock from '../components/EdgeBlock'
 
 import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
-    contentText: string
+    name: string
     isErrored: boolean
 }
 
-const TextReplyNode = memo(function TextReplyNode({
-    contentText,
+const HttpRequestNode = memo(function HttpRequestNode({
+    name,
     isErrored,
     isSelected,
     isGreyedOut,
@@ -50,12 +45,12 @@ const TextReplyNode = memo(function TextReplyNode({
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="text_reply" />
+                    <VisualBuilderActionTag nodeType="http_request" />
                     <Label className={css.nodeTitle}>
-                        {contentText.length > 0 ? (
-                            contentText.replace(workflowVariableRegex, '{...}')
+                        {name.length > 0 ? (
+                            name
                         ) : (
-                            <span className={css.clickToAdd}>Message</span>
+                            <span className={css.clickToAdd}>Request name</span>
                         )}
                     </Label>
                     <NodeDeleteIcon {...deleteProps} />
@@ -70,29 +65,14 @@ const TextReplyNode = memo(function TextReplyNode({
     )
 })
 
-export default function TextReplyNodeWrapper(
-    node: NodeProps<TextReplyNodeType['data']>
+export default function HttpRequestNodeWrapper(
+    node: NodeProps<HttpRequestNodeType['data']>
 ) {
-    const {content} = node.data
-    const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
-    const hasInvalidVariables = useMemo(
-        () => checkInvalidVariablesForNode(content.text, node.id),
-        [content.text, node.id, checkInvalidVariablesForNode]
-    )
-    const isErrored =
-        content.text.length === 0 ||
-        hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode(node.data.content)
+    const {name} = node.data
+    const isErrored = name.length === 0
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (
-        <TextReplyNode
-            {...commonProps}
-            shouldShowErrors={
-                commonProps.shouldShowErrors || hasInvalidVariables
-            }
-            contentText={content.text}
-            isErrored={isErrored}
-        />
+        <HttpRequestNode {...commonProps} name={name} isErrored={isErrored} />
     )
 }

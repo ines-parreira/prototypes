@@ -13,7 +13,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
-import {FlowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 
 import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
@@ -25,7 +25,7 @@ import css from './MessageContentFormField.less'
 type MessageContentFormFieldProps = {
     content: MessageContent
     handleUpdateContent: (content: MessageContent) => void
-    availableFlowVariables?: FlowVariableList
+    workflowVariables?: WorkflowVariableList
 }
 
 const textLimit = 5000
@@ -37,13 +37,13 @@ const toolbarActions = [
     ActionName.Image,
     ActionName.Emoji,
     ActionName.ProductPicker,
-    ActionName.FlowVariable,
+    ActionName.WorkflowVariable,
 ]
 
 export default function MessageContentFormField({
     content,
     handleUpdateContent,
-    availableFlowVariables,
+    workflowVariables,
 }: MessageContentFormFieldProps) {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
     const {visualBuilderChoiceEventIdEditing} = useWorkflowEditorContext()
@@ -117,7 +117,7 @@ export default function MessageContentFormField({
                         ? [storeIntegration]
                         : []
                 )}
-                availableFlowVariables={availableFlowVariables}
+                workflowVariables={workflowVariables}
             >
                 <RichField
                     minHeight={169}

@@ -1,13 +1,13 @@
-export type FlowVariable = {
+export type WorkflowVariable = {
     isInvalid?: boolean
     nodeType?: 'text_reply' | 'multiple_choices'
     name: string
     value: string
 }
-export type FlowVariableGroup = {
+export type WorkflowVariableGroup = {
     name: string
-    nodeType: 'order_selection'
-    variables: FlowVariable[]
+    nodeType: 'order_selection' | 'http_request'
+    variables: WorkflowVariable[]
 }
 
-export type FlowVariableList = (FlowVariable | FlowVariableGroup)[]
+export type WorkflowVariableList = (WorkflowVariable | WorkflowVariableGroup)[]

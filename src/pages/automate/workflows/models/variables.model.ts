@@ -1,8 +1,8 @@
 import {Liquid} from 'liquidjs'
 import {
-    FlowVariableList,
-    FlowVariable,
-    FlowVariableGroup,
+    WorkflowVariableList,
+    WorkflowVariable,
+    WorkflowVariableGroup,
 } from './variables.types'
 import {
     VisualBuilderEdge,
@@ -27,9 +27,9 @@ const encodedQuotesInVariablesRegex = new RegExp(
 const templateEngine = new Liquid()
 
 // any text starting with {{ and ending with }} will be interpreted as a variable by the API template engine
-export const flowVariableRegex = /{{[^{}]*}}/g
+export const workflowVariableRegex = /{{[^{}]*}}/g
 export function extractVariablesFromText(text: string): string[] {
-    const match = text.match(flowVariableRegex)
+    const match = text.match(workflowVariableRegex)
     if (match) {
         return match
     }
@@ -37,9 +37,11 @@ export function extractVariablesFromText(text: string): string[] {
 }
 
 export function findVariable(
-    variables: FlowVariableList,
-    fn: (v: FlowVariable | FlowVariableGroup) => FlowVariable | undefined
-): FlowVariable | undefined {
+    variables: WorkflowVariableList,
+    fn: (
+        v: WorkflowVariable | WorkflowVariableGroup
+    ) => WorkflowVariable | undefined
+): WorkflowVariable | undefined {
     for (const variable of variables) {
         const result = fn(variable)
         if (result) {
@@ -53,10 +55,10 @@ export function findVariable(
         }
     }
 }
-export function parseFlowVariable(
+export function parseWorkflowVariable(
     value: string,
-    availableVariables: FlowVariableList
-): FlowVariable {
+    availableVariables: WorkflowVariableList
+): WorkflowVariable {
     const variable = findVariable(availableVariables, (v) => {
         if ('value' in v && v.value === value) {
             return v
@@ -66,11 +68,11 @@ export function parseFlowVariable(
     return variable ?? {isInvalid: true, value, name: 'variable unavailable'}
 }
 
-export const buildFlowVariableFromNode = (
+export const buildWorkflowVariableFromNode = (
     node: VisualBuilderNode
-): FlowVariable | FlowVariableGroup | undefined => {
+): WorkflowVariable | WorkflowVariableGroup | undefined => {
     const formatVariableName = (text: string) =>
-        text.replace(flowVariableRegex, '{...}')
+        text.replace(workflowVariableRegex, '{...}')
 
     if (node.type === 'text_reply') {
         const {
@@ -140,10 +142,26 @@ export const buildFlowVariableFromNode = (
                 },
             ],
         }
+    } else if (node.type === 'http_request') {
+        const {
+            data: {
+                name,
+                variables,
+                wfConfigurationRef: {wfConfigurationHttpRequestStepId},
+            },
+        } = node
+        return {
+            nodeType: 'http_request',
+            name: formatVariableName(name.length > 0 ? name : 'Request name'),
+            variables: variables.map((variable) => ({
+                name: variable.name,
+                value: `{{steps_state["${wfConfigurationHttpRequestStepId}"].content["${variable.id}"]}}`,
+            })),
+        }
     }
 }
 
-export function getAvailableFlowVariableListForNode(
+export function getWorkflowVariableListForNode(
     g: VisualBuilderGraph,
     nodeId: string
 ) {
@@ -161,20 +179,20 @@ export function getAvailableFlowVariableListForNode(
         }
     } while (incomingEdges.length > 0)
 
-    const availableFlowVariableList: FlowVariableList = []
+    const workflowVariableList: WorkflowVariableList = []
 
     for (const ancestor of ancestors.reverse()) {
-        const availableNode = buildFlowVariableFromNode(ancestor)
-        if (availableNode) {
-            availableFlowVariableList.push(availableNode)
+        const variable = buildWorkflowVariableFromNode(ancestor)
+        if (variable) {
+            workflowVariableList.push(variable)
         }
     }
-    return availableFlowVariableList
+    return workflowVariableList
 }
 
 export function hasNodesWithInvalidVariables(g: VisualBuilderGraph) {
     return g.nodes.some((node) => {
-        const availableVariablesForNode = getAvailableFlowVariableListForNode(
+        const availableVariablesForNode = getWorkflowVariableListForNode(
             g,
             node.id
         )
@@ -183,7 +201,7 @@ export function hasNodesWithInvalidVariables(g: VisualBuilderGraph) {
             if (variables.length === 0) return false
             const invalidVariables = variables.some(
                 (variable) =>
-                    parseFlowVariable(variable, availableVariablesForNode)
+                    parseWorkflowVariable(variable, availableVariablesForNode)
                         .isInvalid
             )
             return invalidVariables

@@ -4,9 +4,9 @@ import Label from 'pages/common/forms/Label/Label'
 import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import TranslationPreviewHeader from 'pages/automate/workflows/components/translations/TranslationPreviewHeader'
-import TranslationsPreviewField from 'pages/automate/workflows/components/translations/TranslationPreviewField'
-import {getAvailableFlowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
+import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 
 import {useWorkflowEditorContext} from '../../../hooks/useWorkflowEditor'
 import ReplyButtonList from '../nodes/MultipleChoicesNode/ReplyButtonList'
@@ -33,9 +33,9 @@ export default function MultipleChoicesEditor({
         [dispatch, nodeInEdition.id]
     )
     const choices = nodeInEdition.data.choices ?? []
-    const availableFlowVariables = useMemo(
+    const workflowVariables = useMemo(
         () =>
-            getAvailableFlowVariableListForNode(
+            getWorkflowVariableListForNode(
                 visualBuilderGraph,
                 nodeInEdition.id
             ),
@@ -51,7 +51,7 @@ export default function MultipleChoicesEditor({
                 <MessageContentFormField
                     content={nodeInEdition.data.content}
                     handleUpdateContent={handleUpdateContent}
-                    availableFlowVariables={availableFlowVariables}
+                    workflowVariables={workflowVariables}
                 />
             </div>
             <div className={css.formField}>

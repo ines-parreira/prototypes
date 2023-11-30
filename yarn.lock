@@ -9384,6 +9384,13 @@ draft-js-resizeable-plugin@2.0.8:
     prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
+draft-js-single-line-plugin@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/draft-js-single-line-plugin/-/draft-js-single-line-plugin-2.0.5.tgz#71d3b7612c7477d94fd8a3bab119d6ac1c738b20"
+  integrity sha512-/zdekY1NpH8z/GPv1CnqSuLttRDcUmO+Ryh00p5Y+EqeprjpNfnr/8iHhPsPkB9tjEqv8EUnOph0zX7GW0mIdA==
+  dependencies:
+    immutable "^3.7.4"
+
 draft-js@0.10.5:
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.5.tgz#bfa9beb018fe0533dbb08d6675c371a6b08fa742"
@@ -11641,10 +11648,10 @@ immutable-devtools@0.1.4:
   resolved "https://registry.yarnpkg.com/immutable-devtools/-/immutable-devtools-0.1.4.tgz#2aaa0d5a4057c3df19389c1550a1d1bf0468a183"
   integrity sha512-2Gz4j/9EhFVIrky0to3YGsVys7q+alWPErhB96+FOy1kHhk84FgNxcbX86emPUqK1xsVlpjGWIu2DMH3V10Msg==
 
-immutable@3.8.2:
+immutable@3.8.2, immutable@^3.7.4:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
+  integrity sha512-15gZoQ38eYjEjxkorfbcgBKBL6R7T459OuK+CpcWt7O3KF4uPCx2tD0uFETlUDIyo+1789crbMhTvQBSR5yBMg==
 
 immutable@~3.7.4:
   version "3.7.6"

@@ -1,0 +1,71 @@
+@import (reference) '~css/typography';
+
+:local {
+    .button {
+        .body-regular();
+
+        display: flex;
+        padding: 6px 4px 6px 8px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        background-color: var(--neutral-grey-2);
+        color: var(--neutral-grey-6);
+        cursor: pointer;
+        height: 30px;
+        border-radius: 0 4px 4px 0;
+        user-select: none;
+    }
+
+    .buttonIcon {
+        font-size: 20px;
+    }
+
+    .editor {
+        flex: 1;
+        min-width: 0;
+        height: 30px;
+        background-color: var(--neutral-grey-0);
+        border-radius: 4px 0 0 4px;
+        padding: 2px 8px;
+
+        :global {
+            .DraftEditor-root {
+                height: 26px;
+            }
+
+            .public-DraftEditorPlaceholder-root {
+                color: var(--neutral-grey-4);
+            }
+
+            .public-DraftEditorPlaceholder-inner {
+                height: 26px;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            .public-DraftEditor-content {
+                min-height: inherit;
+            }
+
+            .DraftEditor-editorContainer {
+                border: none;
+            }
+
+            .public-DraftStyleDefault-block {
+                overflow-x: auto;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                height: 26px;
+                flex: 1;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+            }
+        }
+    }
+}

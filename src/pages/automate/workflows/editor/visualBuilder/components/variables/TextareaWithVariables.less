@@ -1,0 +1,31 @@
+:local {
+    .container {
+        position: relative;
+    }
+
+    .variables {
+        position: absolute;
+        right: 16px;
+        bottom: 6px;
+        z-index: 1;
+    }
+
+    .editor {
+        height: 200px;
+        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-1);
+        border-radius: 4px;
+        padding: 6px 8px;
+        overflow: auto;
+
+        :global {
+            .DraftEditor-root {
+                height: 186px;
+            }
+
+            .DraftEditor-editorContainer {
+                border: none;
+            }
+        }
+    }
+}

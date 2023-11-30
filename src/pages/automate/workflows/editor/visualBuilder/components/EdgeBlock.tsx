@@ -116,6 +116,20 @@ function useMenuItems(
                 })
             },
         },
+        {
+            label: labelByVisualBuilderNodeType.http_request,
+            description: 'Perform 3rd party actions',
+            type: 'http_request',
+            icon: iconByVisualBuilderNodeType.http_request,
+            style: colorByVisualBuilderNodeType.http_request,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_HTTP_REQUEST_NODE',
+                    beforeNodeId: nodeId,
+                })
+            },
+        },
     ])
     const updateMenuItems = useCallback(
         (immerProducer: (draft: Draft<MenuItem>) => void) => {

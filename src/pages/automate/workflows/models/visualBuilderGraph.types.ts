@@ -89,6 +89,30 @@ export type OrderSelectionNodeType = Node<
     'order_selection'
 >
 
+export type HttpRequestNodeType = Node<
+    {
+        wfConfigurationRef: {
+            wfConfigurationHttpRequestStepId: string
+        }
+        name: string
+        url: string
+        method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+        headers: {name: string; value: string}[]
+        json?: string
+        formUrlencoded?: {key: string; value: string}[]
+        bodyContentType?:
+            | 'application/json'
+            | 'application/x-www-form-urlencoded'
+        variables: {
+            id: string
+            name: string
+            jsonpath: string
+        }[]
+        isGreyedOut?: boolean | null
+    },
+    'http_request'
+>
+
 export type EndNodeType = Node<
     {
         wfConfigurationRef: {
@@ -110,6 +134,7 @@ export type VisualBuilderNode =
     | TextReplyNodeType
     | FileUploadNodeType
     | OrderSelectionNodeType
+    | HttpRequestNodeType
     | EndNodeType
 
 export type VisualBuilderEdge = Edge<{

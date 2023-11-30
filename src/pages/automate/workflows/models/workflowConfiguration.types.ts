@@ -68,6 +68,23 @@ export type WorkflowStepShopperAuthentication = {
     }
 }
 
+export type WorkflowStepHttpRequest = {
+    id: string
+    kind: 'http-request'
+    settings: {
+        name: string
+        url: string
+        method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+        headers?: Record<string, string>
+        body?: string
+        variables: {
+            id: string
+            name: string
+            jsonpath: string
+        }[]
+    }
+}
+
 export type WorkflowStep =
     | WorkflowStepMessages
     | WorkflowStepTextInput
@@ -76,6 +93,7 @@ export type WorkflowStep =
     | WorkflowStepWorkflowCall
     | WorkflowStepHandover
     | WorkflowStepShopperAuthentication
+    | WorkflowStepHttpRequest
 
 export type WorkflowTransition = {
     id: string

@@ -24,6 +24,7 @@ import 'reactflow/dist/style.css'
 import TextReplyNode from './nodes/TextReplyNode'
 import FileUploadNode from './nodes/FileUploadNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
+import HttpRequestNode from './nodes/HttpRequestNode'
 
 import css from './WorkflowVisualBuilder.less'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
@@ -35,6 +36,7 @@ const nodeTypes = {
     text_reply: TextReplyNode,
     file_upload: FileUploadNode,
     order_selection: OrderSelectionNode,
+    http_request: HttpRequestNode,
     end: EndNode,
 }
 

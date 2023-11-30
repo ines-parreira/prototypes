@@ -5,7 +5,7 @@ import {Handle, Position, NodeProps} from 'reactflow'
 import Label from 'pages/common/forms/Label/Label'
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
-    flowVariableRegex,
+    workflowVariableRegex,
     isValidLiquidSyntaxInNode,
 } from 'pages/automate/workflows/models/variables.model'
 import {
@@ -53,7 +53,7 @@ const FileUploadNode = memo(function FileUploadNode({
                     <VisualBuilderActionTag nodeType="file_upload" />
                     <Label className={css.nodeTitle}>
                         {contentText.length > 0 ? (
-                            contentText.replace(flowVariableRegex, '{...}')
+                            contentText.replace(workflowVariableRegex, '{...}')
                         ) : (
                             <span className={css.clickToAdd}>Message</span>
                         )}

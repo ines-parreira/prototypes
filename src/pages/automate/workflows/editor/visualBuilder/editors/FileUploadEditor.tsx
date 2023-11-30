@@ -3,9 +3,9 @@ import {MessageContent} from 'pages/automate/workflows/models/workflowConfigurat
 import Label from 'pages/common/forms/Label/Label'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import TranslationPreviewHeader from 'pages/automate/workflows/components/translations/TranslationPreviewHeader'
-import TranslationsPreviewField from 'pages/automate/workflows/components/translations/TranslationPreviewField'
-import {getAvailableFlowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
+import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 
 import {FileUploadNodeType} from '../../../models/visualBuilderGraph.types'
 import MessageContentFormField from '../components/MessageContentFormField'
@@ -30,9 +30,9 @@ export default function FileUploadEditor({
         },
         [dispatch, nodeInEdition.id]
     )
-    const availableFlowVariables = useMemo(
+    const workflowVariables = useMemo(
         () =>
-            getAvailableFlowVariableListForNode(
+            getWorkflowVariableListForNode(
                 visualBuilderGraph,
                 nodeInEdition.id
             ),
@@ -49,7 +49,7 @@ export default function FileUploadEditor({
                     <MessageContentFormField
                         content={nodeInEdition.data.content}
                         handleUpdateContent={handleUpdateContent}
-                        availableFlowVariables={availableFlowVariables}
+                        workflowVariables={workflowVariables}
                     />
                     <div className={css.description}>
                         After the prompt, customers can upload up to 5 files

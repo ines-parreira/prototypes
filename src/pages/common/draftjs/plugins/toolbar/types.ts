@@ -11,7 +11,7 @@ export enum ActionName {
     Emoji = 'EMOJI',
     ProductPicker = 'PRODUCTPICKER',
     DiscountCodePicker = 'DISCOUNTCODE',
-    FlowVariable = 'FLOWVARIABLE',
+    WorkflowVariable = 'WORKFLOWVARIABLE',
 }
 
 export type EditorStateSetter = (editorState: EditorState) => any

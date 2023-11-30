@@ -1,6 +1,6 @@
 import {ContentState} from 'draft-js'
 import findWithRegex from 'find-with-regex'
-import {flowVariableRegex} from 'pages/automate/workflows/models/variables.model'
+import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
 import {addEntityToVariable} from '../utils'
 
 describe('addEntityToVariable', () => {
@@ -11,7 +11,7 @@ describe('addEntityToVariable', () => {
         const block = contentState.getFirstBlock()
         // parsing firstname variable
         let newContentState = contentState
-        findWithRegex(flowVariableRegex, block, (start, end) => {
+        findWithRegex(workflowVariableRegex, block, (start, end) => {
             newContentState = addEntityToVariable(
                 block,
                 newContentState,

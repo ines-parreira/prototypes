@@ -7,10 +7,16 @@ import {
     isVisualBuilderChoiceAction,
     choicesReducer,
 } from './choicesReducer'
+import {
+    VisualBuilderHttpRequestAction,
+    isVisualBuilderHttpRequestAction,
+    httpRequestReducer,
+} from './httpRequestReducer'
 
 export type VisualBuilderGraphAction =
     | VisualBuilderBaseAction
     | VisualBuilderChoicesAction
+    | VisualBuilderHttpRequestAction
 
 export function useVisualBuilderGraphReducer(initialState: VisualBuilderGraph) {
     return useReducer(reducer, initialState)
@@ -22,6 +28,9 @@ export function reducer(
 ): VisualBuilderGraph {
     if (isVisualBuilderChoiceAction(action)) {
         return choicesReducer(graph, action)
+    }
+    if (isVisualBuilderHttpRequestAction(action)) {
+        return httpRequestReducer(graph, action)
     }
     return baseReducer(graph, action)
 }

@@ -1,0 +1,205 @@
+import React, {useEffect, useMemo, useState} from 'react'
+
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Label from 'pages/common/forms/Label/Label'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+
+import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
+import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
+import css from '../NodeEditor.less'
+import Headers from './Headers'
+import MethodSelect from './MethodSelect'
+import BodyContentTypeSelect from './BodyContentTypeSelect'
+import FormUrlencoded from './FormUrlencoded'
+import Variables from './Variables'
+
+const nameTextLimit = 100
+
+export default function HttpRequestEditor({
+    nodeInEdition,
+}: {
+    nodeInEdition: HttpRequestNodeType
+}) {
+    const {dispatch, visualBuilderGraph} = useWorkflowEditorContext()
+
+    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null)
+
+    useEffect(() => {
+        inputRef?.focus({preventScroll: true})
+    }, [inputRef])
+
+    const workflowVariables = useMemo(
+        () =>
+            getWorkflowVariableListForNode(
+                visualBuilderGraph,
+                nodeInEdition.id
+            ),
+        [visualBuilderGraph, nodeInEdition.id]
+    )
+
+    return (
+        <div className={css.container}>
+            <div className={css.formField}>
+                <Label isRequired>Request name</Label>
+                <TextInput
+                    className={css.textInput}
+                    ref={setInputRef}
+                    isRequired
+                    maxLength={nameTextLimit}
+                    onChange={(name: string) => {
+                        dispatch({
+                            type: 'SET_HTTP_REQUEST_NAME',
+                            httpRequestNodeId: nodeInEdition.id,
+                            name,
+                        })
+                    }}
+                    value={nodeInEdition.data.name}
+                />
+            </div>
+            <div className={css.urlMethodFormFieldGroup}>
+                <div className={css.formField}>
+                    <Label isRequired>URL</Label>
+                    <TextInputWithVariables
+                        value={nodeInEdition.data.url}
+                        onChange={(url: string) => {
+                            dispatch({
+                                type: 'SET_HTTP_REQUEST_URL',
+                                httpRequestNodeId: nodeInEdition.id,
+                                url,
+                            })
+                        }}
+                        variables={workflowVariables}
+                    />
+                </div>
+                <div className={css.formField}>
+                    <Label>HTTP method</Label>
+                    <MethodSelect
+                        value={nodeInEdition.data.method}
+                        onChange={(method) => {
+                            dispatch({
+                                type: 'SET_HTTP_REQUEST_METHOD',
+                                httpRequestNodeId: nodeInEdition.id,
+                                method,
+                            })
+                        }}
+                    />
+                </div>
+            </div>
+            <div className={css.formField}>
+                <Label>Headers</Label>
+                <Headers
+                    variables={workflowVariables}
+                    headers={nodeInEdition.data.headers}
+                    onChange={(index, header) => {
+                        dispatch({
+                            type: 'SET_HTTP_REQUEST_HEADER',
+                            httpRequestNodeId: nodeInEdition.id,
+                            index,
+                            header,
+                        })
+                    }}
+                    onDelete={(index) => {
+                        dispatch({
+                            type: 'DELETE_HTTP_REQUEST_HEADER',
+                            httpRequestNodeId: nodeInEdition.id,
+                            index,
+                        })
+                    }}
+                    onAdd={() => {
+                        dispatch({
+                            type: 'ADD_HTTP_REQUEST_HEADER',
+                            httpRequestNodeId: nodeInEdition.id,
+                        })
+                    }}
+                />
+            </div>
+            {nodeInEdition.data.bodyContentType && (
+                <div className={css.formField}>
+                    <Label>Request body</Label>
+                    <BodyContentTypeSelect
+                        value={nodeInEdition.data.bodyContentType}
+                        onChange={(bodyContentType) => {
+                            dispatch({
+                                type: 'SET_HTTP_REQUEST_BODY_CONTENT_TYPE',
+                                httpRequestNodeId: nodeInEdition.id,
+                                bodyContentType,
+                            })
+                        }}
+                    />
+                    {nodeInEdition.data.bodyContentType ===
+                        'application/json' && (
+                        <TextareaWithVariables
+                            value={nodeInEdition.data.json ?? ''}
+                            onChange={(json: string) => {
+                                dispatch({
+                                    type: 'SET_HTTP_REQUEST_JSON',
+                                    httpRequestNodeId: nodeInEdition.id,
+                                    json,
+                                })
+                            }}
+                            variables={workflowVariables}
+                        />
+                    )}
+                    {nodeInEdition.data.bodyContentType ===
+                        'application/x-www-form-urlencoded' && (
+                        <FormUrlencoded
+                            items={nodeInEdition.data.formUrlencoded}
+                            variables={workflowVariables}
+                            onChange={(index, item) => {
+                                dispatch({
+                                    type: 'SET_HTTP_REQUEST_FORM_URLENCODED_ITEM',
+                                    httpRequestNodeId: nodeInEdition.id,
+                                    index,
+                                    item,
+                                })
+                            }}
+                            onDelete={(index) => {
+                                dispatch({
+                                    type: 'DELETE_HTTP_REQUEST_FORM_URLENCODED_ITEM',
+                                    httpRequestNodeId: nodeInEdition.id,
+                                    index,
+                                })
+                            }}
+                            onAdd={() => {
+                                dispatch({
+                                    type: 'ADD_HTTP_REQUEST_FORM_URLENCODED_ITEM',
+                                    httpRequestNodeId: nodeInEdition.id,
+                                })
+                            }}
+                        />
+                    )}
+                </div>
+            )}
+            <div className={css.divider} />
+            <div className={css.formField}>
+                <Label>Create variables</Label>
+                <Variables
+                    variables={nodeInEdition.data.variables}
+                    onChange={(index, variable) => {
+                        dispatch({
+                            type: 'SET_HTTP_REQUEST_VARIABLE',
+                            httpRequestNodeId: nodeInEdition.id,
+                            index,
+                            variable,
+                        })
+                    }}
+                    onDelete={(index) => {
+                        dispatch({
+                            type: 'DELETE_HTTP_REQUEST_VARIABLE',
+                            httpRequestNodeId: nodeInEdition.id,
+                            index,
+                        })
+                    }}
+                    onAdd={() => {
+                        dispatch({
+                            type: 'ADD_HTTP_REQUEST_VARIABLE',
+                            httpRequestNodeId: nodeInEdition.id,
+                        })
+                    }}
+                />
+            </div>
+        </div>
+    )
+}

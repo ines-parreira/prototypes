@@ -11,6 +11,7 @@ import {
     AutomatedMessageNodeType,
     EndNodeType,
     FileUploadNodeType,
+    HttpRequestNodeType,
     MultipleChoicesNodeType,
     OrderSelectionNodeType,
     TextReplyNodeType,
@@ -207,6 +208,25 @@ export const buildOrderSelectionNode: (
                 text_tkey: ulid(),
             },
             integrationId: storeIntegrationId,
+        },
+    }
+}
+
+export const buildHttpRequestNode: () => HttpRequestNodeType = () => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'http_request',
+        data: {
+            wfConfigurationRef: {
+                wfConfigurationHttpRequestStepId: id,
+            },
+            name: '',
+            url: '',
+            method: 'GET',
+            headers: [{name: '', value: ''}],
+            variables: [{id: ulid(), name: '', jsonpath: ''}],
         },
     }
 }

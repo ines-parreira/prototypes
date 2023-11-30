@@ -5,6 +5,7 @@ import _omit from 'lodash/omit'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
 import _groupBy from 'lodash/groupBy'
+import _omitBy from 'lodash/omitBy'
 
 import {
     NO_ORDERS_WORKFLOW_ID,
@@ -16,6 +17,7 @@ import {
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
     WorkflowStepHandover,
+    WorkflowStepHttpRequest,
     WorkflowStepMessages,
     WorkflowStepShopperAuthentication,
     WorkflowStepTextInput,
@@ -55,7 +57,10 @@ export function areGraphsEqual(
                 ...g,
                 nodes: g.nodes
                     .map((node) => {
-                        const data = _omit(node.data, ['isGreyedOut'])
+                        const data = _omitBy(
+                            _omit(node.data, ['isGreyedOut']),
+                            (value) => value === undefined
+                        )
 
                         if (node.type === 'automated_message') {
                             return {
@@ -69,6 +74,20 @@ export function areGraphsEqual(
                                             node.data.content.html
                                         ),
                                     },
+                                },
+                            }
+                        } else if (node.type === 'http_request') {
+                            return {
+                                id: node.id,
+                                type: node.type,
+                                data: {
+                                    ...data,
+                                    headers: node.data.headers.map(
+                                        (header) => ({
+                                            ...header,
+                                            name: header.name.toLowerCase(),
+                                        })
+                                    ),
                                 },
                             }
                         }
@@ -431,6 +450,62 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         event: incomingEdge?.data?.event,
                     })
                 }
+            } else if (node.type === 'http_request') {
+                const stepId =
+                    node.data.wfConfigurationRef
+                        .wfConfigurationHttpRequestStepId
+
+                const headers = node.data.headers.reduce<
+                    Record<string, string>
+                >((acc, header) => {
+                    acc[header.name.toLowerCase()] = header.value
+                    return acc
+                }, {})
+
+                if (node.data.bodyContentType) {
+                    headers['content-type'] = node.data.bodyContentType
+                }
+
+                let body: string | undefined
+
+                switch (node.data.bodyContentType) {
+                    case 'application/json':
+                        body = node.data.json
+                        break
+                    case 'application/x-www-form-urlencoded': {
+                        const entries = node.data.formUrlencoded?.map(
+                            (entry) => [entry.key, entry.value]
+                        )
+
+                        body = new URLSearchParams(entries).toString()
+                        break
+                    }
+                }
+
+                const s: WorkflowStepHttpRequest = {
+                    id: stepId,
+                    kind: 'http-request',
+                    settings: {
+                        name: node.data.name,
+                        url: node.data.url,
+                        method: node.data.method,
+                        headers,
+                        body,
+                        variables: node.data.variables,
+                    },
+                }
+                c.steps.push(s)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: stepId,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = stepId
+                }
+                stepIdByNodeId[node.id] = stepId
             }
         }
     )

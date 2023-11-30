@@ -26,10 +26,10 @@ import {
 } from '../models/visualBuilderGraph.model'
 import {
     extractVariablesFromText,
-    getAvailableFlowVariableListForNode,
-    parseFlowVariable,
+    getWorkflowVariableListForNode,
+    parseWorkflowVariable,
     checkGraphVariablesValidity,
-    buildFlowVariableFromNode,
+    buildWorkflowVariableFromNode,
     findVariable,
 } from '../models/variables.model'
 import {
@@ -384,12 +384,12 @@ export function useWorkflowEditor(
         (text: string, nodeId: string) => {
             const variables = extractVariablesFromText(text)
             if (variables.length === 0) return false
-            const availableVariables = getAvailableFlowVariableListForNode(
+            const availableVariables = getWorkflowVariableListForNode(
                 visualBuilderGraphDirty,
                 nodeId
             )
             return variables
-                .map((v) => parseFlowVariable(v, availableVariables))
+                .map((v) => parseWorkflowVariable(v, availableVariables))
                 .some((v) => v.isInvalid)
         },
         [visualBuilderGraphDirty]
@@ -403,7 +403,7 @@ export function useWorkflowEditor(
 
             if (!currentNode) return false
 
-            const nodeVariable = buildFlowVariableFromNode(currentNode)
+            const nodeVariable = buildWorkflowVariableFromNode(currentNode)
             if (!nodeVariable) return false
 
             let found = false

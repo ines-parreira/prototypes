@@ -16,8 +16,10 @@
         background-color: var(--neutral-grey-0);
     }
 
-    .richFieldLabel {
-        margin-bottom: @layout-spacing-s;
+    .selectInput {
+        & > div {
+            background-color: var(--neutral-grey-0);
+        }
     }
 
     .withDescription {
@@ -34,6 +36,7 @@
     .container {
         display: flex;
         flex-direction: column;
+        gap: @layout-spacing-s;
     }
 
     .formField {
@@ -41,13 +44,36 @@
         flex-direction: column;
         gap: @layout-spacing-xs;
     }
-    .formField:not(:first-child) {
-        margin-top: @layout-spacing-s;
+
+    .urlMethodFormFieldGroup {
+        display: inline-grid;
+        grid-template-columns: 444px 120px;
+        gap: @layout-spacing-s;
     }
 
     .assignee :global(.dropdown-toggle) {
         height: 2.4em;
         display: inline-flex;
         align-items: center;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: var(--neutral-grey-3);
+        margin: @layout-spacing-s 0;
+    }
+
+    .keyValueContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+        align-items: flex-start;
+    }
+
+    .keyValueRow {
+        align-self: stretch;
+        display: grid;
+        gap: @layout-spacing-xs;
+        grid-template-columns: 188px 1fr 20px;
     }
 }

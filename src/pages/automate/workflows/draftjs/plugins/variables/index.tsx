@@ -6,12 +6,12 @@ import {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
-import {flowVariableRegex} from 'pages/automate/workflows/models/variables.model'
+import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
 
-import FlowVariableTag from './FlowVariableTag'
+import WorkflowVariableTag from './WorkflowVariableTag'
 import {addEntityToVariable} from './utils'
 
-export default function createFlowVariablesPlugin() {
+export default function createWorkflowVariablesPlugin() {
     return {
         decorators: [
             {
@@ -35,9 +35,9 @@ export default function createFlowVariablesPlugin() {
                     const value = contentState.getEntity(entityKey).getData()
                         .value as string
                     return (
-                        <FlowVariableTag value={value}>
+                        <WorkflowVariableTag value={value}>
                             {children}
-                        </FlowVariableTag>
+                        </WorkflowVariableTag>
                     )
                 },
             },
@@ -50,14 +50,18 @@ export default function createFlowVariablesPlugin() {
 
             blocks.forEach((block) => {
                 if (block) {
-                    findWithRegex(flowVariableRegex, block, (start, end) => {
-                        newContentState = addEntityToVariable(
-                            block,
-                            newContentState,
-                            start,
-                            end
-                        )
-                    })
+                    findWithRegex(
+                        workflowVariableRegex,
+                        block,
+                        (start, end) => {
+                            newContentState = addEntityToVariable(
+                                block,
+                                newContentState,
+                                start,
+                                end
+                            )
+                        }
+                    )
                 }
             })
 

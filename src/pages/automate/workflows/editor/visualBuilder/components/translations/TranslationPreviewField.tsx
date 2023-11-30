@@ -7,8 +7,8 @@ import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkfl
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import {contentStateFromTextOrHTML} from 'utils/editor'
 
-import {getAvailableFlowVariableListForNode} from '../../models/variables.model'
-import createFlowVariablesPlugin from '../../draftjs/plugins/variables'
+import {getWorkflowVariableListForNode} from '../../../../models/variables.model'
+import createWorkflowVariablesPlugin from '../../../../draftjs/plugins/variables'
 
 import 'draft-js/dist/Draft.css'
 import css from './TranslationPreviewField.less'
@@ -22,14 +22,17 @@ export default function TranslationsPreviewField({nodeId, tkey}: Props) {
     const {translateKey} = useWorkflowEditorContext()
     const {previewLanguageList, previewLanguage, translatedGraph} =
         useTranslationsPreviewContext()
-    const availableFlowVariables = useMemo(
-        () => getAvailableFlowVariableListForNode(translatedGraph, nodeId),
+    const workflowVariables = useMemo(
+        () => getWorkflowVariableListForNode(translatedGraph, nodeId),
         [translatedGraph, nodeId]
     )
-    const flowsVariablesPlugin = useMemo(() => createFlowVariablesPlugin(), [])
+    const workflowsVariablesPlugin = useMemo(
+        () => createWorkflowVariablesPlugin(),
+        []
+    )
     const [editorState, setEditorState] = React.useState(() =>
         EditorState.createEmpty(
-            new CompositeDecorator(flowsVariablesPlugin.decorators as any)
+            new CompositeDecorator(workflowsVariablesPlugin.decorators as any)
         )
     )
     const translatedText = useMemo(() => {
@@ -37,25 +40,23 @@ export default function TranslationsPreviewField({nodeId, tkey}: Props) {
     }, [previewLanguage, tkey, translateKey])
     const onChange = useCallback(
         (editorState: EditorState) => {
-            setEditorState(flowsVariablesPlugin.onChange(editorState))
+            setEditorState(workflowsVariablesPlugin.onChange(editorState))
         },
-        [flowsVariablesPlugin]
+        [workflowsVariablesPlugin]
     )
     useEffect(() => {
         const newEditorState = EditorState.createWithContent(
             contentStateFromTextOrHTML(translatedText),
-            new CompositeDecorator(flowsVariablesPlugin.decorators as any)
+            new CompositeDecorator(workflowsVariablesPlugin.decorators as any)
         )
-        setEditorState(flowsVariablesPlugin.onChange(newEditorState))
-    }, [translatedText, flowsVariablesPlugin])
+        setEditorState(workflowsVariablesPlugin.onChange(newEditorState))
+    }, [translatedText, workflowsVariablesPlugin])
 
     if (previewLanguageList.length === 0 || previewLanguage == null) return null
     return (
         <div className={css.previewField}>
             <div className={classNames(css.editor, css.readOnly)}>
-                <ToolbarProvider
-                    availableFlowVariables={availableFlowVariables}
-                >
+                <ToolbarProvider workflowVariables={workflowVariables}>
                     <Editor
                         editorState={editorState}
                         onChange={onChange}

@@ -1,12 +1,12 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
-import {FlowVariableList} from 'pages/automate/workflows/models/variables.types'
-import FlowVariablePicker, {
-    FlowVariablePickerProps,
-} from '../FlowVariablePicker'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import WorkflowVariablePicker, {
+    WorkflowVariablePickerProps,
+} from '../WorkflowVariablePicker'
 import ToolbarProvider from '../../ToolbarProvider'
 
-const availableFlowVariables: FlowVariableList = [
+const workflowVariables: WorkflowVariableList = [
     {
         nodeType: 'text_reply',
         name: 'Customer first name',
@@ -39,13 +39,13 @@ const availableFlowVariables: FlowVariableList = [
         ],
     },
 ]
-describe('FlowVariablePicker', () => {
+describe('WorkflowVariablePicker', () => {
     const renderWithToolbarProvider = (
-        overrides?: Partial<FlowVariablePickerProps>
+        overrides?: Partial<WorkflowVariablePickerProps>
     ) =>
         render(
-            <ToolbarProvider availableFlowVariables={availableFlowVariables}>
-                <FlowVariablePicker onSelect={jest.fn()} {...overrides} />
+            <ToolbarProvider workflowVariables={workflowVariables}>
+                <WorkflowVariablePicker onSelect={jest.fn()} {...overrides} />
             </ToolbarProvider>
         )
 
@@ -56,7 +56,7 @@ describe('FlowVariablePicker', () => {
 
     it('should render the variables button', () => {
         renderWithToolbarProvider()
-        expect(screen.getByRole('button')).toHaveTextContent(/{ } variables/i)
+        expect(screen.getByRole('button')).toHaveTextContent(/{\+} variables/i)
     })
 
     it('should render a dropdown when the button is clicked', () => {
