@@ -5,8 +5,8 @@ import _isEqual from 'lodash/isEqual'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
@@ -90,7 +90,7 @@ export default function TrackOrderFlowView() {
     const isLoading = !selfServiceConfiguration || !dirtyTrackOrderFlow
 
     return (
-        <AutomationView
+        <AutomateView
             title={
                 <Breadcrumb>
                     <BreadcrumbItem>
@@ -105,7 +105,7 @@ export default function TrackOrderFlowView() {
             }
             isLoading={isLoading}
         >
-            <AutomationViewContent
+            <AutomateViewContent
                 description="Allow customers to track the status of their order."
                 helpUrl="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
                 helpTitle="Learn About Order Statuses In Gorgias"
@@ -134,13 +134,13 @@ export default function TrackOrderFlowView() {
                         message="If you're uploading images, make sure they don't contain sensitive information."
                     />
                 )}
-            </AutomationViewContent>
+            </AutomateViewContent>
             <TrackOrderFlowPreview
                 isTextAreaFocused={isTextAreaFocused}
                 responseMessageContent={
                     dirtyTrackOrderFlow?.unfulfilled_message
                 }
             />
-        </AutomationView>
+        </AutomateView>
     )
 }

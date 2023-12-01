@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutomationNavbar /> render() should not render automation navbar for non-agent user with Automate 1`] = `
+exports[`<AutomateNavbar /> render() should not render automate navbar for non-agent user with Automate 1`] = `
 <div>
   <div
     class="sidebar"
@@ -223,7 +223,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should not render automation navbar for non-agent user without Automate 1`] = `
+exports[`<AutomateNavbar /> render() should not render automate navbar for non-agent user without Automate 1`] = `
 <div>
   <div
     class="sidebar"
@@ -446,7 +446,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should render automation navbar for admin with Automate 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for admin with Automate 1`] = `
 <div>
   <div
     class="sidebar"
@@ -870,7 +870,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should render automation navbar for admin with legacy automation features 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for admin with legacy automate features 1`] = `
 <div>
   <div
     class="sidebar"
@@ -1230,7 +1230,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should render automation navbar for admin without Automate and without legacy automation features 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for admin without Automate and without legacy automate features 1`] = `
 <div>
   <div
     class="sidebar"
@@ -1533,7 +1533,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should render automation navbar for agent with Automate 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for agent with Automate 1`] = `
 <div>
   <div
     class="sidebar"
@@ -1957,7 +1957,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should render automation navbar for agent with legacy automation features 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for agent with legacy automate features 1`] = `
 <div>
   <div
     class="sidebar"
@@ -2317,7 +2317,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should render automation navbar for agent without Automate and without legacy automation features 1`] = `
+exports[`<AutomateNavbar /> render() should render automate navbar for agent without Automate and without legacy automate features 1`] = `
 <div>
   <div
     class="sidebar"

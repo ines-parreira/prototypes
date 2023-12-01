@@ -15,9 +15,9 @@ import {
 import {hasAgentPrivileges} from 'utils'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {FeatureFlagKey} from 'config/featureFlags'
-import AutomationNavbarPaywallView from './AutomationNavbarPaywallView'
-import AutomationNavbarView from './AutomationNavbarView'
-import css from './AutomationNavbar.less'
+import AutomateNavbarPaywallView from './AutomateNavbarPaywallView'
+import AutomateNavbarView from './AutomateNavbarView'
+import css from './AutomateNavbar.less'
 
 type MenuItem = {
     label: string
@@ -78,7 +78,7 @@ const MenuItem = ({menu}: {menu: MenuItem}) => {
     )
 }
 
-const AutomationNavbar = () => {
+const AutomateNavbar = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)
     const hasLegacyAutomateFeatures = useAppSelector(
@@ -130,13 +130,13 @@ const AutomationNavbar = () => {
                                 </NavbarLink>
                             </div>
                         )}
-                        <AutomationNavbarView />
+                        <AutomateNavbarView />
                     </>
                 ) : (
-                    <AutomationNavbarPaywallView />
+                    <AutomateNavbarPaywallView />
                 ))}
         </Navbar>
     )
 }
 
-export default AutomationNavbar
+export default AutomateNavbar

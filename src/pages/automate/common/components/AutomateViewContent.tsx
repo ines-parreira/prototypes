@@ -3,7 +3,7 @@ import React, {ReactNode} from 'react'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
-import css from './AutomationViewContent.less'
+import css from './AutomateViewContent.less'
 
 type Props = {
     description?: ReactNode
@@ -17,7 +17,7 @@ type Props = {
     children: ReactNode
 }
 
-const AutomationViewContent = ({
+const AutomateViewContent = ({
     description,
     helpUrl,
     helpTitle,
@@ -68,4 +68,4 @@ const AutomationViewContent = ({
     )
 }
 
-export default AutomationViewContent
+export default AutomateViewContent

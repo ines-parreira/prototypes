@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom'
 
 import classNames from 'classnames'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import AutomationView from 'pages/automate/common/components/AutomationView'
+import AutomateView from 'pages/automate/common/components/AutomateView'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 
@@ -66,7 +66,7 @@ const TrainMyAiView = () => {
 
     const isHelpCenterEmpty = !helpCenterArticlesCount
     return (
-        <AutomationView
+        <AutomateView
             title={TRAIN_MY_AI}
             isLoading={isLoading}
             className={classNames(css.container, {
@@ -135,7 +135,7 @@ const TrainMyAiView = () => {
                     articleRecommendationUrl={`/app/automation/${shopType}/${shopName}/article-recommendation`}
                 />
             )}
-        </AutomationView>
+        </AutomateView>
     )
 }
 

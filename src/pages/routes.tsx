@@ -83,7 +83,7 @@ import TeamForm from 'pages/settings/users/Form'
 import TeamsList from 'pages/settings/teams/List'
 import TeamsForm from 'pages/settings/teams/Form'
 import List from 'pages/settings/teams/members/List'
-import AutomationNavbar from 'pages/automate/common/components/AutomationNavbar'
+import AutomateNavbar from 'pages/automate/common/components/AutomateNavbar'
 
 import UserAuditList from 'pages/settings/audit/UserAuditList'
 import BusinessHours from 'pages/settings/businessHours/BusinessHours'
@@ -1309,7 +1309,7 @@ export function AutomationRoutes() {
                     render={() => (
                         <App
                             content={AutomationContent}
-                            navbar={AutomationNavbar}
+                            navbar={AutomateNavbar}
                         />
                     )}
                 />

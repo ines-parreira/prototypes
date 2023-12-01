@@ -3,8 +3,8 @@ import {Link, useHistory, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
@@ -29,7 +29,7 @@ const ReportOrderIssueFlowView = () => {
     const isLoading = !selfServiceConfiguration
 
     return (
-        <AutomationView
+        <AutomateView
             title={
                 <Breadcrumb>
                     <BreadcrumbItem>
@@ -49,7 +49,7 @@ const ReportOrderIssueFlowView = () => {
             }
             isLoading={isLoading}
         >
-            <AutomationViewContent
+            <AutomateViewContent
                 description="Customize scenarios and the corresponding options customers can select when reporting order issues."
                 helpUrl="https://docs.gorgias.com/en-US/how-to-customize-the-report-order-issue-flow-81863"
                 helpTitle="How to Customize The Report Order Issue Flow"
@@ -63,11 +63,11 @@ const ReportOrderIssueFlowView = () => {
                     onHasHoveredItemChange={setHasHoveredScenario}
                     onReorder={handleScenariosUpdate}
                 />
-            </AutomationViewContent>
+            </AutomateViewContent>
             <ReportOrderIssueFlowPreview
                 hasHoveredScenario={hasHoveredScenario}
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

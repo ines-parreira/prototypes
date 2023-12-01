@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React, {ReactNode} from 'react'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarLink, {
     NavbarLinkProps,
@@ -16,7 +17,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {getHasAutomate} from 'state/billing/selectors'
 import {Category} from 'models/integration/types'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
-import AutomationNavbarPaywallNavbarLink from '../../automate/common/components/AutomationNavbarPaywallNavbarLink'
 import {
     ROUTE_AUTOMATE_OVERVIEW,
     PAGE_TITLE_OVERVIEW,
@@ -92,13 +92,13 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
             }
             {!hasAutomate ? (
                 <>
-                    <AutomationNavbarPaywallNavbarLink
+                    <AutomateNavbarPaywallNavbarLink
                         to={OVERVIEW_PATH}
                         key={ROUTE_AUTOMATE_OVERVIEW}
                         isNested
                     >
                         {PAGE_TITLE_OVERVIEW}
-                    </AutomationNavbarPaywallNavbarLink>
+                    </AutomateNavbarPaywallNavbarLink>
                 </>
             ) : (
                 <>

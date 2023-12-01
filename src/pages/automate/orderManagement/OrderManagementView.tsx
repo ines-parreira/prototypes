@@ -15,8 +15,8 @@ import {
 import {TicketChannel} from 'business/types/ticket'
 import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
 
 import {ORDER_MANAGEMENT} from '../common/components/constants'
@@ -134,8 +134,8 @@ const OrderManagementView = () => {
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
     return (
-        <AutomationView title={ORDER_MANAGEMENT} isLoading={isLoading}>
-            <AutomationViewContent
+        <AutomateView title={ORDER_MANAGEMENT} isLoading={isLoading}>
+            <AutomateViewContent
                 description="Let customers track and manage orders in Chat, Help Center, and Contact Form with personalized options based on order status."
                 helpUrl="https://docs.gorgias.com/en-US/installing-self-service-81861"
                 helpTitle={`How To Set Up ${ORDER_MANAGEMENT}`}
@@ -236,13 +236,13 @@ const OrderManagementView = () => {
                               },
                           })}
                 />
-            </AutomationViewContent>
+            </AutomateViewContent>
             <OrderManagementPreview
                 history={previewHistory}
                 hoveredOrderManagementFlow={hoveredOrderManagementFlow}
                 selfServiceConfiguration={selfServiceConfiguration!}
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

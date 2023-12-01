@@ -26,7 +26,7 @@ import {
     AutomationRateMetric,
 } from '../../automate-metrics'
 import {AGENT_COST_PER_TICKET} from '../../automate-metrics/constants'
-import {AutomationSavingsCard} from './AutomationSavingsCard'
+import {AutomateSavingsCard} from './AutomateSavingsCard'
 import css from './AutomateLandingPage.less'
 
 const DEFAULT_TIMEZONE = 'UTC'
@@ -156,7 +156,7 @@ const AutomateLandingPage = () => {
                     </DashboardGridCell>
                     {MIN_AUTOMATED_INTERACTIONS && !isLoading && (
                         <DashboardGridCell size={12}>
-                            <AutomationSavingsCard
+                            <AutomateSavingsCard
                                 amountSaved={
                                     (automatedInteractionsTrend?.data?.value ??
                                         0) * moneySavedPerInteraction

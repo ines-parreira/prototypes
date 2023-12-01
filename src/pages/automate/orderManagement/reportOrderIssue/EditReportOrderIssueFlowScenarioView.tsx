@@ -6,8 +6,8 @@ import _isEqual from 'lodash/isEqual'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
@@ -88,7 +88,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
     const isLoading = !selfServiceConfiguration || !dirtyScenario
 
     return (
-        <AutomationView
+        <AutomateView
             title={
                 <Breadcrumb>
                     <BreadcrumbItem>
@@ -114,7 +114,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
             }
             isLoading={isLoading}
         >
-            <AutomationViewContent
+            <AutomateViewContent
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
                 isSubmittable={isScenarioDirty && !isUpdatePending && !hasError}
@@ -154,13 +154,13 @@ const EditReportOrderIssueFlowScenarioView = () => {
                         onChange={handleScenarioUpdate}
                     />
                 </ReportOrderIssueScenarioFormContext.Provider>
-            </AutomationViewContent>
+            </AutomateViewContent>
             <ReportOrderIssueFlowScenarioPreview
                 reasons={dirtyScenario?.reasons ?? []}
                 expandedReasonKey={expandedReasonKey}
                 hoveredReasonKey={hoveredReasonKey}
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

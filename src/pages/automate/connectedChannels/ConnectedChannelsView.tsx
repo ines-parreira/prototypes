@@ -16,8 +16,8 @@ import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/u
 import Button from 'pages/common/components/button/Button'
 import useSearch from 'hooks/useSearch'
 import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {SegmentEvent} from 'common/segment'
 import useWorkflowChannelSupport, {
@@ -153,8 +153,8 @@ const ConnectedChannelsView = () => {
         contactFormOrderManagementEnabled
 
     return (
-        <AutomationView title={CHANNELS} isLoading={isLoading}>
-            <AutomationViewContent description="Manage your Automate features per channel.">
+        <AutomateView title={CHANNELS} isLoading={isLoading}>
+            <AutomateViewContent description="Manage your Automate features per channel.">
                 {hasChannels && (
                     <div
                         className={css.channelsContainer}
@@ -230,13 +230,13 @@ const ConnectedChannelsView = () => {
                             </Alert>
                         )}
                 </div>
-            </AutomationViewContent>
+            </AutomateViewContent>
             <ConnectedChannelsPreview
                 channel={expandedChannel}
                 selfServiceConfiguration={selfServiceConfiguration!}
                 storeIntegration={storeIntegration}
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

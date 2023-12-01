@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
-import AutomationNavbarPaywallNavbarLink from './AutomationNavbarPaywallNavbarLink'
+import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import {
     ARTICLE_RECOMMENDATION,
     FLOWS,
@@ -16,21 +16,21 @@ const PAYWALL_ITEMS = [
     {name: ARTICLE_RECOMMENDATION, slug: 'article-recommendation'},
 ] as const
 
-const AutomationNavbarPaywallView = () => {
+const AutomateNavbarPaywallView = () => {
     const {isAutomateRebranding} = useIsAutomateRebranding()
     return (
         <>
             {!isAutomateRebranding &&
                 PAYWALL_ITEMS.map((paywallItem) => (
-                    <AutomationNavbarPaywallNavbarLink
+                    <AutomateNavbarPaywallNavbarLink
                         key={paywallItem.name}
                         to={`/app/automation/${paywallItem.slug}`}
                     >
                         {paywallItem.name}
-                    </AutomationNavbarPaywallNavbarLink>
+                    </AutomateNavbarPaywallNavbarLink>
                 ))}
         </>
     )
 }
 
-export default AutomationNavbarPaywallView
+export default AutomateNavbarPaywallView

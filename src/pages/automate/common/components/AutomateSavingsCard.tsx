@@ -1,7 +1,7 @@
 import React from 'react'
 import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import css from './AutomationSavingsCard.less'
+import css from './AutomateSavingsCard.less'
 
 interface Props {
     amountSaved: number
@@ -9,7 +9,7 @@ interface Props {
     customersTimeSaved: Maybe<number>
 }
 
-export const AutomationSavingsCard = ({
+export const AutomateSavingsCard = ({
     amountSaved,
     teamTimeSaved,
     customersTimeSaved,

@@ -9,8 +9,8 @@ import Button from 'pages/common/components/button/Button'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import useSearch from 'hooks/useSearch'
 import {SegmentEvent} from 'common/segment'
@@ -199,8 +199,8 @@ const QuickResponsesView = () => {
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
     return (
-        <AutomationView title={QUICK_RESPONSES} isLoading={isLoading}>
-            <AutomationViewContent
+        <AutomateView title={QUICK_RESPONSES} isLoading={isLoading}>
+            <AutomateViewContent
                 description={`Display up to ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} buttons in your Chat with common questions that customers can click for an instant response. If a customer needs more help, a ticket is created for an agent to handle.`}
                 helpUrl="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
                 helpTitle={`How To Set Up ${QUICK_RESPONSES}`}
@@ -236,7 +236,7 @@ const QuickResponsesView = () => {
                     <i className="material-icons md-2 mr-2">add</i>
                     Add Quick Response
                 </Button>
-            </AutomationViewContent>
+            </AutomateViewContent>
             <QuickResponsesPreview
                 channels={chatChannels}
                 selfServiceConfiguration={{
@@ -246,7 +246,7 @@ const QuickResponsesView = () => {
                 expandedQuickResponse={expandedQuickResponse}
                 hoveredQuickResponseId={hoveredQuickResponseId}
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

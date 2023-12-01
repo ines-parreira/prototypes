@@ -5,7 +5,7 @@ import {Container} from 'reactstrap'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 
-import css from './AutomationView.less'
+import css from './AutomateView.less'
 
 type Props = {
     title: ReactNode
@@ -15,7 +15,7 @@ type Props = {
     className?: string
 }
 
-const AutomationView = ({
+const AutomateView = ({
     title,
     action,
     isLoading,
@@ -37,4 +37,4 @@ const AutomationView = ({
     )
 }
 
-export default AutomationView
+export default AutomateView

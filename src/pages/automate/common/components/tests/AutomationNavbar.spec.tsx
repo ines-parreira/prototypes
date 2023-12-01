@@ -23,7 +23,7 @@ import {
     legacyBasicHelpdeskPrice,
 } from 'fixtures/productPrices'
 
-import AutomationNavbar from '../AutomationNavbar'
+import AutomateNavbar from '../AutomateNavbar'
 
 jest.mock('utils/launchDarkly')
 jest.mock('react-router')
@@ -35,7 +35,7 @@ useParamsMock.mockReturnValue({})
 
 const mockStore = configureMockStore()
 
-describe('<AutomationNavbar />', () => {
+describe('<AutomateNavbar />', () => {
     const defaultState: Partial<RootState> = {
         currentUser: fromJS(user),
         currentAccount: fromJS(account),
@@ -58,7 +58,7 @@ describe('<AutomationNavbar />', () => {
     )
 
     describe('render()', () => {
-        it('should not render automation navbar for non-agent user without Automate', () => {
+        it('should not render automate navbar for non-agent user without Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -70,7 +70,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )
@@ -78,7 +78,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should not render automation navbar for non-agent user with Automate', () => {
+        it('should not render automate navbar for non-agent user with Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -98,7 +98,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )
@@ -106,7 +106,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for agent without Automate and without legacy automation features', () => {
+        it('should render automate navbar for agent without Automate and without legacy automate features', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -123,7 +123,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )
@@ -131,7 +131,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for agent with legacy automation features', () => {
+        it('should render automate navbar for agent with legacy automate features', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -170,7 +170,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )
@@ -178,7 +178,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for agent with Automate', () => {
+        it('should render automate navbar for agent with Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -198,7 +198,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )
@@ -206,7 +206,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for admin without Automate and without legacy automation features', () => {
+        it('should render automate navbar for admin without Automate and without legacy automate features', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -219,7 +219,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )
@@ -227,7 +227,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for admin with legacy automation features', () => {
+        it('should render automate navbar for admin with legacy automate features', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -262,7 +262,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )
@@ -270,7 +270,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for admin with Automate', () => {
+        it('should render automate navbar for admin with Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -286,7 +286,7 @@ describe('<AutomationNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomationNavbar />
+                        <AutomateNavbar />
                     </DndProvider>
                 </Provider>
             )

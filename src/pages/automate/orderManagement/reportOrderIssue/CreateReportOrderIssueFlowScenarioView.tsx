@@ -7,8 +7,8 @@ import {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
@@ -78,7 +78,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     const isLoading = !selfServiceConfiguration
 
     return (
-        <AutomationView
+        <AutomateView
             title={
                 <Breadcrumb>
                     <BreadcrumbItem>
@@ -100,7 +100,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
             }
             isLoading={isLoading}
         >
-            <AutomationViewContent
+            <AutomateViewContent
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
                 isSubmittable={!hasError && !isCreatePending}
@@ -119,13 +119,13 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                         onChange={setScenario}
                     />
                 </ReportOrderIssueScenarioFormContext.Provider>
-            </AutomationViewContent>
+            </AutomateViewContent>
             <ReportOrderIssueFlowScenarioPreview
                 reasons={scenario.reasons}
                 expandedReasonKey={expandedReasonKey}
                 hoveredReasonKey={hoveredReasonKey}
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

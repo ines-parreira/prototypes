@@ -9,8 +9,8 @@ import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {SegmentEvent} from 'common/segment'
 import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
@@ -78,8 +78,8 @@ const ArticleRecommendationView = () => {
     const isLoading = !selfServiceConfiguration || isLoadingHelpCenters
 
     return (
-        <AutomationView title={ARTICLE_RECOMMENDATION} isLoading={isLoading}>
-            <AutomationViewContent
+        <AutomateView title={ARTICLE_RECOMMENDATION} isLoading={isLoading}>
+            <AutomateViewContent
                 description="Automatically send a Help Center article in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
                 helpUrl="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
                 helpTitle={`Learn About ${ARTICLE_RECOMMENDATION} In Chat`}
@@ -112,13 +112,13 @@ const ArticleRecommendationView = () => {
                         shopType={shopType}
                     />
                 )}
-            </AutomationViewContent>
+            </AutomateViewContent>
             <ArticleRecommendationPreview
                 channels={channels}
                 selfServiceConfiguration={selfServiceConfiguration!}
                 isHelpCenterSelected={Boolean(helpCenter)}
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

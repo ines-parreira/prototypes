@@ -9,8 +9,8 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 import useReturnOrderFlow from './hooks/useReturnOrderFlow'
@@ -103,7 +103,7 @@ const ReturnOrderFlowView = () => {
     const isLoading = !selfServiceConfiguration || !dirtyReturnOrderFlow
 
     return (
-        <AutomationView
+        <AutomateView
             title={
                 <Breadcrumb>
                     <BreadcrumbItem>
@@ -118,7 +118,7 @@ const ReturnOrderFlowView = () => {
             }
             isLoading={isLoading}
         >
-            <AutomationViewContent
+            <AutomateViewContent
                 description="Allow customers to request a return if an order has been delivered."
                 helpUrl="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
                 helpTitle="Learn About Order Statuses In Gorgias"
@@ -143,9 +143,9 @@ const ReturnOrderFlowView = () => {
                         />
                     )}
                 </ReturnOrderFlowViewContext.Provider>
-            </AutomationViewContent>
+            </AutomateViewContent>
             <ReturnOrderFlowPreview returnAction={dirtyReturnAction} />
-        </AutomationView>
+        </AutomateView>
     )
 }
 

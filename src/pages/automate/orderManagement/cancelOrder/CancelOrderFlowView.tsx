@@ -11,8 +11,8 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
-import AutomationView from 'pages/automate/common/components/AutomationView'
-import AutomationViewContent from 'pages/automate/common/components/AutomationViewContent'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
@@ -116,7 +116,7 @@ const CancelOrderFlowView = () => {
     const isLoading = !selfServiceConfiguration || !dirtyCancelOrderFlow
 
     return (
-        <AutomationView
+        <AutomateView
             title={
                 <Breadcrumb>
                     <BreadcrumbItem>
@@ -131,7 +131,7 @@ const CancelOrderFlowView = () => {
             }
             isLoading={isLoading}
         >
-            <AutomationViewContent
+            <AutomateViewContent
                 description="Allow customers to request a cancellation if an order hasn't been processed or shipped."
                 helpUrl="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
                 helpTitle="Learn About Order Statuses In Gorgias"
@@ -167,13 +167,13 @@ const CancelOrderFlowView = () => {
                         message="If you're uploading images, make sure they don't contain sensitive information."
                     />
                 )}
-            </AutomationViewContent>
+            </AutomateViewContent>
             <CancelOrderFlowPreview
                 responseMessageContent={
                     dirtyCancelOrderFlow?.action?.response_message_content
                 }
             />
-        </AutomationView>
+        </AutomateView>
     )
 }
 
