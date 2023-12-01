@@ -7,7 +7,6 @@ import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_
 import type {Client} from 'rest_api/gorgias_chat_protected_api/client.generated'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import * as constants from 'state/integrations/constants'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import history from '../../../pages/history'
 import * as actions from '../actions'
 import * as helpers from '../helpers'
@@ -274,7 +273,13 @@ describe('integrations actions', () => {
 
     describe('fetchChatIntegrationStatus action', () => {
         let chatClient: Client
-        const defaultApiResponse = axiosSuccessResponse({})
+        const defaultApiResponse = {
+            statusText: '',
+            config: {},
+            headers: {},
+            data: {},
+            status: 200,
+        }
 
         beforeEach(async () => {
             chatClient = await getGorgiasChatProtectedApiClient()

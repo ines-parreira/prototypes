@@ -2,27 +2,25 @@
 
 exports[`client resources createClient should return a proper new instance of axios 1`] = `
 {
-  "adapter": [
-    "xhr",
-    "http",
-  ],
-  "env": {
-    "Blob": [Function],
-    "FormData": [Function],
-  },
+  "adapter": [Function],
   "headers": {
     "X-CSRF-Token": "abcd",
     "X-Gorgias-User-Client": "web",
     "common": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": undefined,
     },
     "delete": {},
     "get": {},
     "head": {},
-    "patch": {},
-    "post": {},
-    "put": {},
+    "patch": {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    "post": {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    "put": {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
   },
   "maxBodyLength": -1,
   "maxContentLength": -1,
@@ -33,11 +31,6 @@ exports[`client resources createClient should return a proper new instance of ax
   "transformResponse": [
     [Function],
   ],
-  "transitional": {
-    "clarifyTimeoutError": false,
-    "forcedJSONParsing": true,
-    "silentJSONParsing": true,
-  },
   "validateStatus": [Function],
   "xsrfCookieName": "XSRF-TOKEN",
   "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -69,10 +62,6 @@ exports[`client resources resources axios instance should resolve with data 1`] 
 {
   "config": {
     "data": undefined,
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
@@ -88,11 +77,6 @@ exports[`client resources resources axios instance should resolve with data 1`] 
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -124,13 +108,9 @@ exports[`client resources resources axios instance should send a request with da
   "post": [
     {
       "data": "{"foo_bar":"foo","foo":[{"foo_bar":"foo"}]}",
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -144,11 +124,6 @@ exports[`client resources resources axios instance should send a request with da
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

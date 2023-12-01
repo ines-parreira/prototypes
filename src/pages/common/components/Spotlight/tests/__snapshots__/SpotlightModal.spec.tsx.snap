@@ -4,19 +4,15 @@ exports[`<SpotlightModal/> should cancel previous request when tab is switched a
 [
   {
     "cancelToken": CancelToken {
-      "promise": Promise {
-        "then": [Function],
+      "promise": Promise {},
+      "reason": Cancel {
+        "message": undefined,
       },
-      "reason": [CanceledError: canceled],
     },
     "data": "{"search":"foo","filters":""}",
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -33,11 +29,6 @@ exports[`<SpotlightModal/> should cancel previous request when tab is switched a
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/tickets/search",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -45,18 +36,12 @@ exports[`<SpotlightModal/> should cancel previous request when tab is switched a
   },
   {
     "cancelToken": CancelToken {
-      "promise": Promise {
-        "then": [Function],
-      },
+      "promise": Promise {},
     },
     "data": "{"search":"foo"}",
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -74,11 +59,6 @@ exports[`<SpotlightModal/> should cancel previous request when tab is switched a
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/customers/search",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -91,18 +71,12 @@ exports[`<SpotlightModal/> should fetch customers on enter keypress 1`] = `
 [
   {
     "cancelToken": CancelToken {
-      "promise": Promise {
-        "then": [Function],
-      },
+      "promise": Promise {},
     },
     "data": "{"search":"foo2"}",
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -120,11 +94,6 @@ exports[`<SpotlightModal/> should fetch customers on enter keypress 1`] = `
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/customers/search",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -137,19 +106,15 @@ exports[`<SpotlightModal/> should fetch items for the search term on previous ta
 [
   {
     "cancelToken": CancelToken {
-      "promise": Promise {
-        "then": [Function],
+      "promise": Promise {},
+      "reason": Cancel {
+        "message": undefined,
       },
-      "reason": [CanceledError: canceled],
     },
     "data": "{"search":"foo","filters":""}",
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -166,11 +131,6 @@ exports[`<SpotlightModal/> should fetch items for the search term on previous ta
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/tickets/search",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -178,18 +138,12 @@ exports[`<SpotlightModal/> should fetch items for the search term on previous ta
   },
   {
     "cancelToken": CancelToken {
-      "promise": Promise {
-        "then": [Function],
-      },
+      "promise": Promise {},
     },
     "data": "{"search":"foo"}",
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -207,11 +161,6 @@ exports[`<SpotlightModal/> should fetch items for the search term on previous ta
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/customers/search",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -224,18 +173,12 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the new s
 [
   {
     "cancelToken": CancelToken {
-      "promise": Promise {
-        "then": [Function],
-      },
+      "promise": Promise {},
     },
     "data": "{"search":"foo","filters":""}",
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -252,11 +195,6 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the new s
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/tickets/search",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -269,18 +207,12 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the old s
 [
   {
     "cancelToken": CancelToken {
-      "promise": Promise {
-        "then": [Function],
-      },
+      "promise": Promise {},
     },
     "data": "{"view":{"search":"foo2","type":"ticket-list"}}",
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -294,11 +226,6 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the old s
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/views/0/items/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",

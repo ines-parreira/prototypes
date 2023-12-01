@@ -102,10 +102,6 @@ exports[`integration resource fetchIntegrations should return the integrations 1
 {
   "config": {
     "data": undefined,
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
@@ -122,11 +118,6 @@ exports[`integration resource fetchIntegrations should return the integrations 1
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/integrations",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -500,7 +491,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
       },
     ],
   ],
-  "headers": {},
+  "headers": undefined,
   "request": {
     "responseUrl": "/api/integrations",
   },

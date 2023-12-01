@@ -1,5 +1,5 @@
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, {AxiosHeaders, Document} from 'openapi-client-axios'
+import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
 
 import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
 import {isProduction, isStaging} from 'utils/environment'
@@ -31,10 +31,10 @@ async function buildMigrationClient() {
 
         return {
             ...config,
-            headers: new AxiosHeaders({
+            headers: {
                 ...config.headers,
                 authorization: getBearerAuthorizationHeader(accessToken || ''),
-            }),
+            },
         }
     })
 

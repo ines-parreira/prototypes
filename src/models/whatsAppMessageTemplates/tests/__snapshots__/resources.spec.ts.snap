@@ -65,10 +65,6 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
   "get": [
     {
       "data": undefined,
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -77,9 +73,7 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
-      "paramsSerializer": {
-        "indexes": null,
-      },
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -87,11 +81,6 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/integrations/whatsapp/message-templates",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

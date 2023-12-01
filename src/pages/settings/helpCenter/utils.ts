@@ -14,7 +14,7 @@ const isHelpCenterApiError = (
 ): error is AxiosError<{message: string}> => {
     const data = error.response?.data
     return (
-        'message' in (data as {message: unknown}) &&
+        'message' in data &&
         typeof (data as Record<string, unknown>).message === 'string'
     )
 }

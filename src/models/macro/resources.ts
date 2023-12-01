@@ -1,4 +1,5 @@
 import {AxiosRequestConfig} from 'axios'
+import qs from 'qs'
 
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
@@ -19,9 +20,8 @@ export const fetchMacros = async (
                 limit: 30,
                 ...params,
             },
-            paramsSerializer: {
-                indexes: null,
-            },
+            paramsSerializer: (params) =>
+                qs.stringify(params, {arrayFormat: 'repeat'}),
             ...config,
         }
     )

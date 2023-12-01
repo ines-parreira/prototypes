@@ -2,8 +2,6 @@ import MockAdapter from 'axios-mock-adapter'
 
 jest.unmock('../resources')
 
-import {AxiosHeaders} from 'axios'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {notify} from '../../../state/notifications/actions'
 import client, {handleNewRelease, createClient, timeoutTime} from '../resources'
 
@@ -49,13 +47,18 @@ describe('client resources', () => {
     })
 
     describe('handleNewRelease interceptor', () => {
-        const mockedResponse = axiosSuccessResponse(undefined)
-
+        const mockedResponse = {
+            data: undefined,
+            status: 200,
+            statusText: 'ok',
+            config: {},
+            headers: {},
+        }
         const mockNewResponseHeaders = (releaseHeader: string) => ({
             ...mockedResponse,
-            headers: new AxiosHeaders({
+            headers: {
                 'x-gorgias-release': releaseHeader,
-            }),
+            },
         })
         const mockedStore = {dispatch: jest.fn()} as any
 

@@ -99,13 +99,9 @@ exports[`phone numbers resources createPhoneNumber should resolve with a new Pho
   "post": [
     {
       "data": "{"name":"A Phone Number"}",
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -119,11 +115,6 @@ exports[`phone numbers resources createPhoneNumber should resolve with a new Pho
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/integrations/phone/phone-numbers/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -264,13 +255,9 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
   "put": [
     {
       "data": "{"id":1,"name":"A Phone Number","phone_number":"+12133734253","phone_number_id":1,"created_datetime":"2021-12-01T18:00:00.000000+00:00","updated_datetime":"2021-12-01T18:00:00.000000+00:00","deleted_datetime":null,"meta":{"emoji":null,"type":"Local","friendly_name":"+1 213 373 4253","state":"CA","country":"US","area_code":415},"integrations":[],"capabilities":{"sms":true,"voice":true,"mms":true,"whatsapp":true}}",
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -284,11 +271,6 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/integrations/phone/phone-numbers/1/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

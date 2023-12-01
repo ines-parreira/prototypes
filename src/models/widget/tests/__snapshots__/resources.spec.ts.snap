@@ -4,10 +4,6 @@ exports[`widgets resources fetchWidgets should resolve with a list of widgets on
 {
   "config": {
     "data": undefined,
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
@@ -26,11 +22,6 @@ exports[`widgets resources fetchWidgets should resolve with a list of widgets on
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/widgets/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -245,7 +236,7 @@ exports[`widgets resources fetchWidgets should resolve with a list of widgets on
       },
     ],
   },
-  "headers": {},
+  "headers": undefined,
   "request": {
     "responseUrl": "/api/widgets/",
   },

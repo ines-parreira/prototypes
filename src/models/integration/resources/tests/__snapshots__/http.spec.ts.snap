@@ -6,10 +6,6 @@ exports[`HTTP event resources getHTTPEvent should resolve with an existing Custo
   "get": [
     {
       "data": undefined,
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -25,11 +21,6 @@ exports[`HTTP event resources getHTTPEvent should resolve with an existing Custo
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/integrations/1/events/1",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -51,10 +42,6 @@ exports[`HTTP event resources getHTTPEvents should resolve with a list of http e
   "get": [
     {
       "data": undefined,
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -70,11 +57,6 @@ exports[`HTTP event resources getHTTPEvents should resolve with a list of http e
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/integrations/1/events/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

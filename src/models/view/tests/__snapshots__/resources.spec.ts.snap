@@ -153,13 +153,9 @@ exports[`view resources createView should resolve with a new View on success 2`]
   "post": [
     {
       "data": "{"category":null,"order_by":"updated","deactivated_datetime":null,"name":"New & Open Tickets","slug":"new-&-open-tickets","uri":"/api/views/7/","decoration":null,"created_datetime":"2017-07-31T21:43:10.610368+00:00","group_by":null,"fields":["details","tags","customer","created"],"section_id":null,"type":"ticket-list","filters":"neq(ticket.status, \\"closed\\")","order_dir":"desc","visibility":"public","filters_ast":{"sourceType":"script","loc":{"start":{"column":0,"line":1},"end":{"column":28,"line":1}},"type":"Program","body":[{"loc":{"start":{"column":0,"line":1},"end":{"column":28,"line":1}},"type":"ExpressionStatement","expression":{"arguments":[{"object":{"type":"Identifier","loc":{"start":{"column":4,"line":1},"end":{"column":10,"line":1}},"name":"ticket"},"property":{"type":"Identifier","loc":{"start":{"column":11,"line":1},"end":{"column":17,"line":1}},"name":"status"},"loc":{"start":{"column":4,"line":1},"end":{"column":17,"line":1}},"type":"MemberExpression","computed":false},{"value":"closed","loc":{"start":{"column":19,"line":1},"end":{"column":27,"line":1}},"type":"Literal","raw":"\\"closed\\""}],"callee":{"type":"Identifier","loc":{"start":{"column":0,"line":1},"end":{"column":3,"line":1}},"name":"neq"},"loc":{"start":{"column":0,"line":1},"end":{"column":28,"line":1}},"type":"CallExpression"}}]}}",
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -173,11 +169,6 @@ exports[`view resources createView should resolve with a new View on success 2`]
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/views/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -194,10 +185,6 @@ exports[`view resources fetchViewsPaginated should resolve with a View list on s
 {
   "config": {
     "data": undefined,
-    "env": {
-      "Blob": [Function],
-      "FormData": [Function],
-    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
@@ -207,6 +194,7 @@ exports[`view resources fetchViewsPaginated should resolve with a View list on s
     "maxContentLength": -1,
     "method": "get",
     "params": {},
+    "paramsSerializer": [Function],
     "timeout": 0,
     "transformRequest": [
       [Function],
@@ -214,11 +202,6 @@ exports[`view resources fetchViewsPaginated should resolve with a View list on s
     "transformResponse": [
       [Function],
     ],
-    "transitional": {
-      "clarifyTimeoutError": false,
-      "forcedJSONParsing": true,
-      "silentJSONParsing": true,
-    },
     "url": "/api/views/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -645,7 +628,7 @@ exports[`view resources fetchViewsPaginated should resolve with a View list on s
       },
     ],
   },
-  "headers": {},
+  "headers": undefined,
   "request": {
     "responseUrl": "/api/views/",
   },
@@ -807,13 +790,9 @@ exports[`view resources updateView should resolve with an updated View on succes
   "put": [
     {
       "data": "{"category":null,"order_by":"updated","deactivated_datetime":null,"name":"foo","slug":"new-&-open-tickets","uri":"/api/views/7/","decoration":null,"created_datetime":"2017-07-31T21:43:10.610368+00:00","group_by":null,"fields":["details","tags","customer","created"],"section_id":null,"type":"ticket-list","filters":"neq(ticket.status, \\"closed\\")","order_dir":"desc","visibility":"public","id":7,"shared_with_teams":[1],"shared_with_users":[1]}",
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -827,11 +806,6 @@ exports[`view resources updateView should resolve with an updated View on succes
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/views/7/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

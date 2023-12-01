@@ -10,7 +10,6 @@ import {fetchTags} from 'models/tag/resources'
 import * as tagActions from 'state/tags/actions'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import ManageTags from '../ManageTags'
 
 const mockedDispatch = jest.fn()
@@ -44,8 +43,9 @@ describe('ManageTags component', () => {
     }
 
     beforeEach(() => {
-        fetchTagsMock.mockResolvedValue(
-            axiosSuccessResponse({
+        fetchTagsMock.mockResolvedValue({
+            config: {},
+            data: {
                 uri: '/api/tags/',
                 data: tagsFixtures,
                 meta: {
@@ -53,8 +53,11 @@ describe('ManageTags component', () => {
                     prev_cursor: null,
                 },
                 object: 'list',
-            })
-        )
+            },
+            headers: {},
+            status: 200,
+            statusText: '',
+        })
     })
 
     it('should render a loader while fetching data', async () => {

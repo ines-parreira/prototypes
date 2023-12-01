@@ -12,21 +12,15 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
     {
       "baseURL": "http://acme.gorgias.docker:4001",
       "data": "{"page_external_id":"123456789","position":"TOP"}",
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=utf-8",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -34,11 +28,6 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -61,21 +50,15 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
     {
       "baseURL": "http://acme.gorgias.docker:4001",
       "data": "{"page_external_id":"123456789","position":"TOP"}",
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=utf-8",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "post",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -83,11 +66,6 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -105,10 +83,6 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
     {
       "baseURL": "http://acme.gorgias.docker:4001",
       "data": undefined,
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
       },
@@ -116,9 +90,7 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -126,11 +98,6 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -153,10 +120,6 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
     {
       "baseURL": "http://acme.gorgias.docker:4001",
       "data": undefined,
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
       },
@@ -164,9 +127,7 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -174,11 +135,6 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -201,10 +157,6 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
     {
       "baseURL": "http://acme.gorgias.docker:4001",
       "data": undefined,
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
       },
@@ -212,9 +164,7 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -222,11 +172,6 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/help-center/help-centers/1/shopify-pages",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -249,10 +194,6 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
     {
       "baseURL": "http://acme.gorgias.docker:4001",
       "data": undefined,
-      "env": {
-        "Blob": [Function],
-        "FormData": [Function],
-      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
       },
@@ -260,9 +201,7 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "maxContentLength": -1,
       "method": "get",
       "params": {},
-      "paramsSerializer": {
-        "serialize": [Function],
-      },
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -270,11 +209,6 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "transformResponse": [
         [Function],
       ],
-      "transitional": {
-        "clarifyTimeoutError": false,
-        "forcedJSONParsing": true,
-        "silentJSONParsing": true,
-      },
       "url": "/api/help-center/help-centers/1/shopify-pages",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
