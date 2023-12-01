@@ -2,6 +2,7 @@ import {Components} from 'rest_api/help_center_api/client.generated'
 import {Attachment} from 'common/types'
 import {getHelpCenterClient} from './index'
 import {GorgiasUIEnv, getEnvironment} from '../../utils/environment'
+import {v4 as uuidv4} from 'uuid'
 
 type ChannelInfo = Components.Schemas.UploadAttachmentDto['channel']
 
@@ -37,6 +38,47 @@ const getFileTypeForFirefox = (fileName: string): string => {
     }
 }
 
+// We don't have access to the file extension when getting file from Clipboard
+// So we have to infer it from the file MIME type
+const getFileExtensionByFileMimeType = (mimeType: string): string => {
+   const mimeMap: Record<string, string> = {
+        'image/gif': '.gif',
+        'image/jpeg': '.jpeg',
+        'image/jpg': '.jpg',
+        'image/png': '.png',
+        'image/svg+xml': '.svg',
+        'image/webp': '.webp',
+        'image/bmp': '.bmp',
+        'image/tiff': '.tif',
+        'image/heic': '.heic',
+        'video/3gpp': '.3gpp',
+        'video/mp4': '.mp4',
+        'video/quicktime': '.mov',
+        'video/x-msvideo': '.avi',
+        'video/x-ms-wmv': '.wmv',
+        'video/webm': '.webm',
+        'application/pdf': '.pdf',
+        'text/csv': '.csv',
+        'text/plain': '.txt',
+        'application/rtf': '.rtf',
+        'application/msword': '.doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+        'application/vnd.ms-excel': '.xls',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'application/vnd.ms-powerpoint': '.ppt',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation': '.pptx',
+        'application/vnd.oasis.opendocument.spreadsheet': '.ods',
+        'text/tab-separated-values': '.tsv',
+        'application/vnd.oasis.opendocument.text': '.odt',
+        'application/vnd.oasis.opendocument.text-master': '.odm',
+        'application/vnd.oasis.opendocument.presentation': '.odp',
+        'application/x-rar-compressed': '.rar',
+        'application/zip': '.zip'
+    };
+
+    return mimeMap[mimeType] || '';
+}
+
 export const uploadAttachments = async (
     files: File[],
     channelInfo: ChannelInfo
@@ -52,7 +94,7 @@ export const uploadAttachments = async (
                 channel: channelInfo,
                 file: {
                     size: file.size,
-                    name: file.name,
+                    name: file.name || `${uuidv4()}${getFileExtensionByFileMimeType(fileType)}`,
                     mimetype: fileType,
                 },
             }
