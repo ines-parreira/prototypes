@@ -1,0 +1,58 @@
+import React, {ComponentProps} from 'react'
+import {Map, List} from 'immutable'
+
+import {RuleItemActions} from 'pages/settings/rules/types'
+import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
+
+import Foldable from 'pages/common/components/ast/Foldable/Foldable'
+
+import BlockStatement from './BlockStatement'
+import {StatementProps, statementReference} from './statementReference'
+
+type AlternateStatementProps = {
+    rule: Map<any, any>
+    actions: RuleItemActions
+    alternate: Partial<ComponentProps<typeof BlockStatement>>
+    parent: List<any>
+    schemas: Map<any, any>
+    depth: number
+}
+
+export default function AlternateStatement({
+    actions,
+    alternate,
+    rule,
+    parent,
+    schemas,
+    depth,
+}: AlternateStatementProps) {
+    const {Statement} = statementReference
+
+    return (
+        <div className="alternate">
+            <Foldable
+                label={
+                    <AddActionOrIfStatement
+                        actions={actions}
+                        rule={rule}
+                        parent={parent.push('alternate')}
+                        title="ELSE"
+                        hoverableClassName="d-inline-flex"
+                        depth={depth}
+                        removable
+                        empty={alternate.body?.length === 0}
+                    />
+                }
+            >
+                <Statement
+                    {...(alternate as StatementProps)}
+                    parent={parent.push('alternate')}
+                    rule={rule}
+                    actions={actions}
+                    schemas={schemas}
+                    depth={depth + 1}
+                />
+            </Foldable>
+        </div>
+    )
+}

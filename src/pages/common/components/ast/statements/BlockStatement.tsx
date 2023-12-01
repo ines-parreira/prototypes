@@ -1,70 +1,31 @@
-import React, {ComponentProps} from 'react'
-import {List, Map} from 'immutable'
+import React from 'react'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
-import Hoverable from '../../Hoverable'
+import {BlockStatementProps} from '../types'
+import BlockStatementItem from './BlockStatementItem'
 
-import {statementReference} from './statementReference'
-
-type BlockStatementItemProps = {
-    rule: Map<any, any>
-    actions: RuleItemActions
-    body: Partial<BlockStatementItemProps>
-    parent: List<any>
-    schemas: Map<any, any>
-    depth: number
-}
-
-class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
-    render() {
-        const {actions, body, rule, parent, schemas, depth} = this.props
-        const {Statement} = statementReference
-
-        return (
-            <div className="BlockStatementItem">
-                <Statement
-                    {...(body as ComponentProps<typeof Statement>)}
-                    parent={parent}
-                    rule={rule}
-                    schemas={schemas}
+const BlockStatement = ({
+    body,
+    rule,
+    actions,
+    parent,
+    schemas,
+    depth,
+}: BlockStatementProps) => {
+    return (
+        <div className="BlockStatement">
+            {body.map((bodyItem, idx) => (
+                <BlockStatementItem
+                    key={idx}
                     actions={actions}
+                    body={bodyItem}
+                    rule={rule}
+                    parent={parent.push('body', idx)}
+                    schemas={schemas}
                     depth={depth}
                 />
-            </div>
-        )
-    }
+            ))}
+        </div>
+    )
 }
 
-const BlockStatementItem = Hoverable(_BlockStatementItem)
-
-export default class BlockStatement extends React.Component<BlockStatementProps> {
-    _renderStatements = () => {
-        const {body, rule, actions, parent, schemas, depth} = this.props
-
-        return body.map((bodyItem, idx) => (
-            //@ts-ignore
-            <BlockStatementItem
-                key={idx}
-                actions={actions}
-                body={bodyItem}
-                rule={rule}
-                parent={parent.push('body', idx)}
-                schemas={schemas}
-                depth={depth}
-            />
-        ))
-    }
-
-    render() {
-        return <div className="BlockStatement">{this._renderStatements()}</div>
-    }
-}
-
-type BlockStatementProps = {
-    rule: Map<any, any>
-    actions: RuleItemActions
-    body: BlockStatementItemProps[]
-    parent: List<any>
-    schemas: Map<any, any>
-    depth: number
-}
+export default BlockStatement

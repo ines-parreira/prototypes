@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import {List, Map, fromJS} from 'immutable'
+import {Map, fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {rule} from 'fixtures/rule'
@@ -8,7 +8,7 @@ import {rule} from 'fixtures/rule'
 import Statement from '../Statement'
 import {statementReference} from '../statementReference'
 
-import IfStatement, {ConsequentStatement} from '../IfStatement'
+import IfStatement from '../IfStatement'
 
 statementReference.Statement = Statement
 
@@ -53,29 +53,6 @@ describe('IfStatement component', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
-    })
-})
-
-describe('<ConsequentStatement/> component', () => {
-    const minProps: ComponentProps<typeof ConsequentStatement> = {
-        parent: List(),
-        schemas: Map(),
-        depth: 0,
-        consequent: {},
-        rule: Map(),
-        actions: {
-            modifyCodeAST: jest.fn(),
-            getCondition: jest.fn(),
-        },
-    }
-
-    it('should render', () => {
-        const {container} = render(
-            <Provider store={mockStore(defaultStore)}>
-                <ConsequentStatement {...minProps} />
-            </Provider>
-        )
         expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,7 +1,8 @@
-import React, {ComponentType} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 
-import {RootState} from '../../../../../state/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getSchemas} from 'state/schemas/selectors'
 import UnknownSyntax from '../UnknownSyntax'
 
 import {StatementProps} from './statementReference'
@@ -9,31 +10,17 @@ import BlockStatement from './BlockStatement'
 import ExpressionStatement from './ExpressionStatement'
 import IfStatement from './IfStatement'
 
-class Statement extends React.Component<StatementProps> {
-    types: {
-        [key: string]:
-            | typeof IfStatement
-            | typeof ExpressionStatement
-            | typeof BlockStatement
-    } = {
-        IfStatement,
-        ExpressionStatement,
-        BlockStatement,
-    }
+const types = {
+    IfStatement,
+    ExpressionStatement,
+    BlockStatement,
+} as const
+const Statement = (props: StatementProps) => {
+    const {depth} = props
+    const schemas = useAppSelector(getSchemas)
+    const Component = types[props.type as keyof typeof types] || UnknownSyntax
 
-    render() {
-        const {schemas, depth} = this.props
-        const Component = (this.types[this.props.type] ||
-            UnknownSyntax) as ComponentType<StatementProps>
-
-        return <Component {...this.props} schemas={schemas} depth={depth} />
-    }
+    return <Component {...props} schemas={schemas} depth={depth} />
 }
 
-const mapStateToProps = (state: RootState) => ({
-    schemas: state.schemas,
-})
-
-export default connect(mapStateToProps)(
-    Statement
-) as ComponentType<StatementProps>
+export default connect()(Statement)
