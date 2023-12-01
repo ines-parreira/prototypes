@@ -38,8 +38,8 @@ import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactForm
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {getHasAutomate} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
-import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
 import css from './ContactFormSettingsView.less'
 
 const navLinks = {

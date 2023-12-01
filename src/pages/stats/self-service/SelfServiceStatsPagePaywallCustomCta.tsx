@@ -5,8 +5,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentProducts} from 'state/billing/selectors'
-import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
 
 const SelfServiceStatsPagePaywallCustomCta = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =

@@ -4,8 +4,8 @@ import {createMemoryHistory} from 'history'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
-import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {

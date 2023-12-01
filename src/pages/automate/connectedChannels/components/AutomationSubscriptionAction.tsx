@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
-import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
 
 const AutomationSubscriptionAction = () => {
     const [

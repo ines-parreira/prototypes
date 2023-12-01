@@ -10,7 +10,7 @@ import {
     getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
@@ -20,7 +20,7 @@ import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfig
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
 
 import {KeyMetricCell} from './common/components/charts/KeyMetricStat/KeyMetricCell'
 import KeyMetricCellWrapper from './common/components/charts/KeyMetricStat/KeyMetricCellWrapper'

@@ -7,7 +7,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 
-import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import RuleRecipeCard from './components/RuleRecipeCard'

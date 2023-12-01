@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import {useEffectOnce} from 'react-use'
 import PageHeader from 'pages/common/components/PageHeader'
 import LinkButton from 'pages/common/components/button/LinkButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
 import automateIcon from 'assets/img/self-service/automate-logo.svg'
 import Button from 'pages/common/components/button/Button'
 
