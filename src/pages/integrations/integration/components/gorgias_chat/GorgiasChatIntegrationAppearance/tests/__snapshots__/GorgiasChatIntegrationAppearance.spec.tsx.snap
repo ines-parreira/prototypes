@@ -11218,7 +11218,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     <h3
                       class="subtitle mb-2"
                     >
-                      During business hours
+                      Standard logo
                     </h3>
                     <div
                       class="previewHeaderLogoContainer mb-3"
@@ -11279,7 +11279,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     <h3
                       class="subtitle mb-2"
                     >
-                      Outside business hours
+                      Dark logo
                       <span
                         id="header-picture-offline"
                       >

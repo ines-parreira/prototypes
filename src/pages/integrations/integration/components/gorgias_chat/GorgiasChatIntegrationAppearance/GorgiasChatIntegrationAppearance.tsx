@@ -1183,7 +1183,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                             'mb-2'
                                                         )}
                                                     >
-                                                        During business hours
+                                                        Standard logo
                                                     </h3>
                                                     <ImageField
                                                         isDiscardable={true}
@@ -1204,37 +1204,53 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                             'mb-2'
                                                         )}
                                                     >
-                                                        Outside business hours
+                                                        Dark logo
                                                         <span id="header-picture-offline">
-                                                            <i
-                                                                className={classNames(
-                                                                    'material-icons-outlined',
-                                                                    css.tooltipIcon
-                                                                )}
-                                                            >
-                                                                info
-                                                            </i>
-                                                            <Tooltip
-                                                                style={{
-                                                                    textAlign:
-                                                                        'left',
-                                                                }}
-                                                                target="header-picture-offline"
-                                                            >
-                                                                If your default
-                                                                logo is light in
-                                                                color, please
-                                                                upload a dark
-                                                                version for when
-                                                                your chat is
-                                                                outside of
-                                                                business hours.
-                                                                This will
-                                                                improve
-                                                                readability
-                                                                against the gray
-                                                                background.
-                                                            </Tooltip>
+                                                            {headerPictureUrl && (
+                                                                <>
+                                                                    <i
+                                                                        className={classNames(
+                                                                            'material-icons-outlined',
+                                                                            css.tooltipIcon
+                                                                        )}
+                                                                    >
+                                                                        info
+                                                                    </i>
+                                                                    <Tooltip
+                                                                        style={{
+                                                                            textAlign:
+                                                                                'left',
+                                                                        }}
+                                                                        target="header-picture-offline"
+                                                                    >
+                                                                        If your
+                                                                        standard
+                                                                        logo is
+                                                                        light in
+                                                                        color,
+                                                                        we
+                                                                        recommend
+                                                                        you
+                                                                        upload a
+                                                                        dark
+                                                                        version
+                                                                        for when
+                                                                        your
+                                                                        chat is
+                                                                        outside
+                                                                        of
+                                                                        business
+                                                                        hours.
+                                                                        This
+                                                                        will
+                                                                        improve
+                                                                        readability
+                                                                        against
+                                                                        the gray
+                                                                        background.
+                                                                    </Tooltip>
+                                                                </>
+                                                            )}
                                                         </span>
                                                     </h3>
                                                     <ImageField

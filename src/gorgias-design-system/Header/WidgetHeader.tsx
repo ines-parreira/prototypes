@@ -102,6 +102,8 @@ const StyledMessage = styled.div<{
 `
 
 const StyledWidgetHeaderImageWrapper = styled.div`
+    display: flex;
+    align-items: center;
     height: 28px;
     max-width: calc(100% - 100px);
 `
