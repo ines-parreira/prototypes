@@ -1,3 +1,4 @@
+import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
@@ -19,9 +20,9 @@ const minProps: ComponentProps<typeof SankeyStat> = {
     }),
     config: fromJS({
         colorMap: {
-            foo: '#ff0000',
-            bar: '#00ff00',
-            baz: '#0000ff',
+            foo: colorTokens['📺 Classic'].Feedback.Variations.Error_4.value,
+            bar: colorTokens['📺 Classic'].Feedback.Variations.Success_4.value,
+            baz: colorTokens['📺 Classic'].Main.Variations.Primary_4.value,
         },
         priority: {
             foo: 1,

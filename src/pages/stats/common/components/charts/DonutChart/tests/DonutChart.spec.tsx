@@ -1,3 +1,4 @@
+import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import DonutChart from '../DonutChart'
@@ -55,7 +56,10 @@ describe('<DonutChart />', () => {
     })
 
     it('should pass custom colors', () => {
-        const customColors = ['#fff', '#000']
+        const customColors = [
+            colorTokens['📺 Classic'].Neutral.Grey_0.value,
+            colorTokens['📺 Classic'].Neutral.Grey_6.value,
+        ]
         renderComponent({
             data: [
                 {label: 'Label 1', value: 11},

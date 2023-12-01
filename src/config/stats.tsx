@@ -7,6 +7,7 @@ import _isString from 'lodash/isString'
 import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
 import classNames from 'classnames'
 
+import analyticsColors from 'assets/css/new/stats/colors.json'
 import {toImmutable} from 'common/utils'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
@@ -27,7 +28,6 @@ import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from '../models/selfServiceConfiguration/constants'
 
 import css from './stats.less'
-
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
 export const TOTAL_TICKETS_CREATED = 'total-tickets-created'
@@ -682,7 +682,7 @@ export const stats = toImmutable<
             },
             'facebook-mention': {
                 label: 'Facebook Mention',
-                color: '#4f97eb',
+                color: analyticsColors.analytics.data.blue.value,
             },
             'help-center': {
                 label: 'Help Center',
@@ -706,11 +706,11 @@ export const stats = toImmutable<
             },
             contact_form: {
                 label: 'Contact Form',
-                color: '#9411b5',
+                color: analyticsColors.analytics.data.magenta.value,
             },
             'internal-note': {
                 label: 'Internal Note',
-                color: '#d89238',
+                color: analyticsColors.analytics.data.yellow.value,
             },
             api: {
                 label: 'Gorgias API',

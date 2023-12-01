@@ -9,7 +9,7 @@ exports[`Legend should render a legend 1`] = `
   >
     <span
       class="circle mr-2"
-      style="background: rgb(0, 0, 0);"
+      style="background: rgb(29, 54, 92);"
     />
     line 1
   </span>

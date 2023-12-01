@@ -1,3 +1,4 @@
+import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import React, {useMemo} from 'react'
 import {
     SankeyDataPoint,
@@ -10,7 +11,7 @@ import _isEqual from 'lodash/isEqual'
 import _merge from 'lodash/merge'
 import {Chart} from 'react-chartjs-2'
 
-import {chartMaxHeight} from '../../../../../config/stats'
+import {chartMaxHeight} from 'config/stats'
 
 type Props = {
     data: Map<any, any>
@@ -45,7 +46,7 @@ export function SankeyStat({data, config, legend}: Props) {
                         getColor(ctx.dataset.data[ctx.dataIndex].to),
                     colorMode: 'gradient',
                     borderWidth: 0,
-                    color: '#1D365C',
+                    color: colorTokens['📺 Classic'].Neutral.Grey_6.value,
                     priority: (config.get('priority') as Map<any, any>)?.toJS(),
                 },
             ],

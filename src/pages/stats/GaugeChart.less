@@ -19,16 +19,16 @@
 
     .tooltip {
         :global .tooltip-inner {
-            background-color: #fff;
-            border: 1px solid #e2e3ec;
-            color: #152065;
+            background-color: var(--neutral-grey-0);
+            border: 1px solid var(--neutral-grey-1);
+            color: var(--indigo);
             font-size: 14px;
-            padding: 16px;
+            padding: @layout-spacing-s;
             box-shadow: none;
         }
 
         :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
-            border-top-color: #e2e3ec !important;
+            border-top-color: var(--neutral-grey-1) !important;
         }
 
         :global .bs-tooltip-auto[x-placement^='top'] .arrow::after {
@@ -37,7 +37,8 @@
             border-width: 0.4rem 0.4rem 0;
             position: absolute;
             top: -1px;
-            border-color: #fff transparent transparent transparent;
+            border-color: var(--neutral-grey-0) transparent transparent
+                transparent;
             border-style: solid;
         }
     }

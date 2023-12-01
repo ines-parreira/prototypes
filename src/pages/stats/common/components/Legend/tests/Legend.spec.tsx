@@ -1,3 +1,4 @@
+import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 
@@ -8,11 +9,11 @@ describe('Legend', () => {
         labels: [
             {
                 name: 'line 1',
-                background: '#000',
+                background: colorTokens['📺 Classic'].Neutral.Grey_6.value,
             },
             {
                 name: 'line 2',
-                background: '#fff',
+                background: colorTokens['📺 Classic'].Neutral.Grey_0.value,
             },
             {
                 name: 'square line 1',

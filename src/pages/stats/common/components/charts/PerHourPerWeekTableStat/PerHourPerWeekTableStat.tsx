@@ -3,6 +3,7 @@ import {Map, List} from 'immutable'
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Table} from 'reactstrap'
+import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
 import {DEPRECATED_getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors'
@@ -31,12 +32,12 @@ type Limits = {
 }
 
 const colors = {
-    rangeOneColor: '#F6F9FF',
+    rangeOneColor: colorTokens['📺 Classic'].Main.Variations.Primary_0.value,
     rangeTwoColor: '#D2E2FD',
-    rangeThreeColor: '#9BC0FC',
+    rangeThreeColor: colorTokens['📺 Classic'].Main.Variations.Primary_1.value,
     rangeFourColor: '#77A9FA',
-    red: '#F4697D',
-    white: '#FFFFFF',
+    red: colorTokens['📺 Classic'].Feedback.Variations.Error_2.value,
+    white: colorTokens['📺 Classic'].Neutral.Grey_0.value,
 }
 
 const getDataIntervals = (lines: List<any>): Limits => {
