@@ -7,6 +7,7 @@ import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import {Action} from 'redux'
 
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {tags as tagsFixtures} from '../../../fixtures/tag'
 import {RootState} from '../../../state/types'
 import TagsStatsFilter from '../TagsStatsFilter'
@@ -47,9 +48,8 @@ describe('TagsStatsFilter', () => {
     beforeEach(() => {
         tagsFetchedSpy = jest.spyOn(tagsActions, 'tagsFetched')
 
-        fetchTagsMock.mockResolvedValue({
-            config: {},
-            data: {
+        fetchTagsMock.mockResolvedValue(
+            axiosSuccessResponse({
                 uri: '/api/tags/',
                 data: tagsFixtures,
                 meta: {
@@ -57,11 +57,8 @@ describe('TagsStatsFilter', () => {
                     prev_cursor: null,
                 },
                 object: 'list',
-            },
-            headers: {},
-            status: 200,
-            statusText: '',
-        })
+            })
+        )
     })
 
     afterEach(() => {

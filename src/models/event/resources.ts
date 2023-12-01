@@ -1,4 +1,3 @@
-import qs from 'qs'
 import {AxiosRequestConfig} from 'axios'
 
 import client from 'models/api/resources'
@@ -17,8 +16,8 @@ export const fetchEvents = async (
         '/api/events/',
         {
             params,
-            paramsSerializer: function (params) {
-                return qs.stringify(params, {arrayFormat: 'repeat'})
+            paramsSerializer: {
+                indexes: null,
             },
             ...config,
         }

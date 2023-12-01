@@ -12,9 +12,13 @@ exports[`<EditFieldForm/> should create custom field if the save button is click
   "put": [
     {
       "data": "{"object_type":"Ticket","label":"Updated name","description":"This is an input field","required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Some placeholder"}}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -28,6 +32,11 @@ exports[`<EditFieldForm/> should create custom field if the save button is click
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields/123",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

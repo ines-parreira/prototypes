@@ -6,9 +6,15 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
   "get": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -27,6 +33,11 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/foo/bar",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -34,9 +45,15 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
     },
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -56,6 +73,11 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/foo/bar",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -63,9 +85,15 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
     },
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -85,6 +113,11 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/foo/bar",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -114,12 +147,18 @@ exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request
   "put": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": "{}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -133,6 +172,11 @@ exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/billing/invoices/in_mf9u2x3j20z/confirm-payment/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -147,9 +191,15 @@ exports[`services GorgiasApi deleteDraftOrder() should delete a draft order 1`] 
   "delete": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -168,6 +218,11 @@ exports[`services GorgiasApi deleteDraftOrder() should delete a draft order 1`] 
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/integrations/shopify/order/draft/2/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -195,12 +250,18 @@ exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of gi
   "post": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": "{"to":"foo@bar.xyz","custom_message":"foo bar"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -217,6 +278,11 @@ exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of gi
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/integrations/shopify/order/draft/2/send-invoice/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -233,9 +299,15 @@ exports[`services GorgiasApi getViewSharing() should fetch view's sharing option
   "get": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -251,6 +323,11 @@ exports[`services GorgiasApi getViewSharing() should fetch view's sharing option
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -278,12 +355,18 @@ exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an 
   "put": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": "{}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -297,6 +380,11 @@ exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an 
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/billing/invoices/in_1dj2801j2d/pay/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -318,12 +406,18 @@ exports[`services GorgiasApi setViewSharing() should update view's sharing optio
   "put": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": "{"visibility":"public","shared_with_teams":[2],"shared_with_users":[3]}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -337,6 +431,11 @@ exports[`services GorgiasApi setViewSharing() should update view's sharing optio
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -358,12 +457,18 @@ exports[`services GorgiasApi startSubscription() should start the subscription o
   "put": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": "{}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -377,6 +482,11 @@ exports[`services GorgiasApi startSubscription() should start the subscription o
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/billing/subscription/start/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -398,12 +508,18 @@ exports[`services GorgiasApi updateCreditCard() should update the credit card of
   "put": [
     {
       "cancelToken": CancelToken {
-        "promise": Promise {},
+        "promise": Promise {
+          "then": [Function],
+        },
       },
       "data": "{"token":"tok_2xe129dnm21d2miwmdfsa"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -417,6 +533,11 @@ exports[`services GorgiasApi updateCreditCard() should update the credit card of
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/billing/credit-card/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

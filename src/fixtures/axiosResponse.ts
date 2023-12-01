@@ -1,4 +1,4 @@
-import {AxiosResponse} from 'axios'
+import {AxiosHeaders, AxiosResponse} from 'axios'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 
 export function axiosSuccessResponse<D>(data: D): AxiosResponse<D> {
@@ -6,7 +6,9 @@ export function axiosSuccessResponse<D>(data: D): AxiosResponse<D> {
         data,
         status: 200,
         statusText: 'OK',
-        config: {},
+        config: {
+            headers: new AxiosHeaders(),
+        },
         headers: {},
     }
 }

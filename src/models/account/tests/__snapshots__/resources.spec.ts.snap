@@ -4,9 +4,13 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
 {
   "config": {
     "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"type":"views-ordering"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json;charset=utf-8",
+      "Content-Type": "application/json",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -20,6 +24,11 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/account/settings/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -43,7 +52,7 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
     "id": 2,
     "type": "views-ordering",
   },
-  "headers": undefined,
+  "headers": {},
   "request": {
     "responseUrl": "/api/account/settings/",
   },
@@ -55,9 +64,13 @@ exports[`account resources updateAccountSetting should resolve on success 1`] = 
 {
   "config": {
     "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json;charset=utf-8",
+      "Content-Type": "application/json",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -71,6 +84,11 @@ exports[`account resources updateAccountSetting should resolve on success 1`] = 
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/account/settings/2/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -94,7 +112,7 @@ exports[`account resources updateAccountSetting should resolve on success 1`] = 
     "id": 2,
     "type": "views-ordering",
   },
-  "headers": undefined,
+  "headers": {},
   "request": {
     "responseUrl": "/api/account/settings/2/",
   },
@@ -114,9 +132,13 @@ exports[`account resources updateAccountSetting should resolve on success 2`] = 
   "put": [
     {
       "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -130,6 +152,11 @@ exports[`account resources updateAccountSetting should resolve on success 2`] = 
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/account/settings/2/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

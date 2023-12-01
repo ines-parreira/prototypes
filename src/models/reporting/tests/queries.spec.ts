@@ -1,6 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {AxiosError, AxiosResponse} from 'axios'
+import {AxiosError, AxiosHeaders, AxiosResponse} from 'axios'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {doNotRetry40XErrorsHandler, usePostReporting} from '../queries'
 import {postReporting} from '../resources'
 
@@ -50,18 +51,14 @@ describe('Reporting queries', () => {
         })
 
         describe('doNotRetry40XErrorsHandler', () => {
-            const response: AxiosResponse = {
-                data: {},
-                status: 200,
-                statusText: 'some text',
-                headers: [],
-                config: {},
-            }
+            const response: AxiosResponse = axiosSuccessResponse({})
 
             const defaultAxiosErrorTemplate: AxiosError = {
                 isAxiosError: true,
                 response,
-                config: {},
+                config: {
+                    headers: new AxiosHeaders(),
+                },
                 name: 'someName',
                 message: 'someMessage',
                 toJSON: jest.fn(),

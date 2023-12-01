@@ -6,6 +6,10 @@ exports[`event resources fetchEvents should format option value to snake_case 1`
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -17,7 +21,9 @@ exports[`event resources fetchEvents should format option value to snake_case 1`
       "params": {
         "order_by": "created_datetime:asc",
       },
-      "paramsSerializer": [Function],
+      "paramsSerializer": {
+        "indexes": null,
+      },
       "timeout": 0,
       "transformRequest": [
         [Function],
@@ -25,6 +31,11 @@ exports[`event resources fetchEvents should format option value to snake_case 1`
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/events/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -44,6 +55,10 @@ exports[`event resources fetchEvents should resolve with an Event list on succes
 {
   "config": {
     "data": undefined,
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
@@ -53,7 +68,9 @@ exports[`event resources fetchEvents should resolve with an Event list on succes
     "maxContentLength": -1,
     "method": "get",
     "params": {},
-    "paramsSerializer": [Function],
+    "paramsSerializer": {
+      "indexes": null,
+    },
     "timeout": 0,
     "transformRequest": [
       [Function],
@@ -61,6 +78,11 @@ exports[`event resources fetchEvents should resolve with an Event list on succes
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/events/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -107,7 +129,7 @@ exports[`event resources fetchEvents should resolve with an Event list on succes
       "prev_cursor": null,
     },
   },
-  "headers": undefined,
+  "headers": {},
   "request": {
     "responseUrl": "/api/events/",
   },

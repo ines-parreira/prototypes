@@ -1,7 +1,7 @@
 import querystring from 'querystring'
 import url from 'url'
 import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios/index'
+import axios from 'axios'
 import {fromJS, List} from 'immutable'
 
 import {
@@ -43,7 +43,7 @@ describe('services', () => {
                 try {
                     gorgiasApi.cancelPendingRequests()
                 } catch (error) {
-                    errorCaught = error
+                    errorCaught = error as Error
                 }
                 expect(errorCaught?.message).toMatchSnapshot()
             })

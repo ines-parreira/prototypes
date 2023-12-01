@@ -5,6 +5,7 @@ import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
 import {Client} from './client.generated'
 import {AppAbility, AbilityRules, createAbility} from './ability'
 import {helpCenterAPI} from './client'
+import { AxiosHeaders } from 'axios'
 
 let agentAbility: AppAbility | undefined
 
@@ -42,10 +43,10 @@ async function buildHelpCenterClient(
 
         return {
             ...config,
-            headers: {
+            headers: new AxiosHeaders({
                 ...config.headers,
                 authorization: getBearerAuthorizationHeader(accessToken || ''),
-            },
+            }),
         }
     })
 

@@ -8,9 +8,13 @@ exports[`rule resources updateRule should resolve with the updated rule on succe
 [
   {
     "data": "{"priority":6,"deactivated_datetime":"2021-01-15T15:26:02.575404+00:00","name":"Set tags","uri":"/api/rules/7/","code":"if (eq(message.source.from.address, 'alex@gorgias.io')) {\\n    Action('setTags', { tags: 'set' })\\n}","created_datetime":"2021-01-15T15:26:02.577755+00:00","event_types":"ticket-created","type":"user","id":7,"description":"Set tags","updated_datetime":"2021-02-11T13:15:46.420156+00:00"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json;charset=utf-8",
+      "Content-Type": "application/json",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -24,6 +28,11 @@ exports[`rule resources updateRule should resolve with the updated rule on succe
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/rules/7/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",

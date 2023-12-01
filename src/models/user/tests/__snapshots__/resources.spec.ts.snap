@@ -4,9 +4,13 @@ exports[`user resources createUserSetting should resolve on success 1`] = `
 {
   "config": {
     "data": "{"data":{"available":true,"show_macros":true},"type":"preferences"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json;charset=utf-8",
+      "Content-Type": "application/json",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -20,6 +24,11 @@ exports[`user resources createUserSetting should resolve on success 1`] = `
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/users/0/settings/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -33,7 +42,7 @@ exports[`user resources createUserSetting should resolve on success 1`] = `
     "id": 2,
     "type": "preferences",
   },
-  "headers": undefined,
+  "headers": {},
   "request": {
     "responseUrl": "/api/users/0/settings/",
   },
@@ -45,9 +54,13 @@ exports[`user resources updateUserSetting should resolve on success 1`] = `
 {
   "config": {
     "data": "{"data":{"available":true,"show_macros":true},"id":2,"type":"preferences"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "Content-Type": "application/json;charset=utf-8",
+      "Content-Type": "application/json",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
     },
@@ -61,6 +74,11 @@ exports[`user resources updateUserSetting should resolve on success 1`] = `
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/users/0/settings/2/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -74,7 +92,7 @@ exports[`user resources updateUserSetting should resolve on success 1`] = `
     "id": 2,
     "type": "preferences",
   },
-  "headers": undefined,
+  "headers": {},
   "request": {
     "responseUrl": "/api/users/0/settings/2/",
   },
@@ -94,9 +112,13 @@ exports[`user resources updateUserSetting should resolve on success 2`] = `
   "put": [
     {
       "data": "{"data":{"available":true,"show_macros":true},"id":2,"type":"preferences"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -110,6 +132,11 @@ exports[`user resources updateUserSetting should resolve on success 2`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/users/0/settings/2/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

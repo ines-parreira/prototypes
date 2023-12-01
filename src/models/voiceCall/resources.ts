@@ -1,4 +1,3 @@
-import {stringify} from 'qs'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
@@ -15,7 +14,6 @@ export async function listVoiceCalls(
         ApiListResponseCursorPagination<VoiceCall[]>
     >(`/api/phone/voice-calls/`, {
         params,
-        paramsSerializer: stringify,
     })
 
     return response.data
@@ -28,7 +26,6 @@ export async function listVoiceCallRecordings(
         ApiListResponseCursorPagination<VoiceCallRecording[]>
     >(`/api/phone/voice-call-recordings/`, {
         params,
-        paramsSerializer: stringify,
     })
 
     return response

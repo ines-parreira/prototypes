@@ -1,4 +1,4 @@
-import {AxiosRequestConfig, AxiosResponse} from 'axios'
+import {AxiosHeaders, AxiosRequestConfig, AxiosResponse} from 'axios'
 import gorgiasApiClient from 'models/api/resources'
 
 function isValidAccessToken(token: string | null): boolean {
@@ -40,10 +40,10 @@ export const buildGorgiasAppsAuthInterceptor = () => {
 
         return {
             ...config,
-            headers: {
+            headers: new AxiosHeaders({
                 ...config.headers,
                 authorization: `Bearer ${accessToken || ''}`,
-            },
+            }),
         }
     }
 
