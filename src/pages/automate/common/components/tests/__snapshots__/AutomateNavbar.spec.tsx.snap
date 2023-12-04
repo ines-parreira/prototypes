@@ -135,51 +135,7 @@ exports[`<AutomateNavbar /> render() should not render automate navbar for non-a
       </div>
       <div
         class="navbar-content"
-      >
-        <div
-          class="category"
-        >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      />
       <div
         data-candu-id="navbar-menu-spacer"
       />
@@ -358,51 +314,7 @@ exports[`<AutomateNavbar /> render() should not render automate navbar for non-a
       </div>
       <div
         class="navbar-content"
-      >
-        <div
-          class="category"
-        >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      />
       <div
         data-candu-id="navbar-menu-spacer"
       />
@@ -582,49 +494,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       <div
         class="navbar-content"
       >
-        <div
-          class="category"
-        >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
         <div
           class="category"
         >
@@ -1009,49 +878,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <div
           class="category"
         >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
-        <div
-          class="category"
-        >
           <div
             class="section section"
           >
@@ -1367,49 +1193,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         class="navbar-content"
       >
         <div
-          class="category"
-        >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
-        <div
           class="link-wrapper"
         >
           <a
@@ -1669,49 +1452,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-content"
       >
-        <div
-          class="category"
-        >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
         <div
           class="category"
         >
@@ -2096,49 +1836,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <div
           class="category"
         >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
-        <div
-          class="category"
-        >
           <div
             class="section section"
           >
@@ -2453,49 +2150,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-content"
       >
-        <div
-          class="category"
-        >
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/macros"
-              >
-                Macros
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/rules"
-              >
-                Rules
-              </a>
-            </div>
-          </div>
-          <div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link disabled"
-                data-active-class-name="active"
-                href="/app/automation/ticket-assignment"
-              >
-                Ticket assignment
-              </a>
-            </div>
-          </div>
-        </div>
         <div
           class="link-wrapper"
         >
