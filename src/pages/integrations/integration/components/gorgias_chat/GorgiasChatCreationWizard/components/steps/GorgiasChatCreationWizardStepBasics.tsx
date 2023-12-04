@@ -109,7 +109,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const [currentLanguage, setCurrentLanguage] = useState<string>()
     const [currentLanguages, setCurrentLanguages] = useState<LanguageItem[]>()
     const [oAuthFlowTriggered, setOAuthFlowTriggered] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [
+        isModalUpdateShopifyPermissionsOpen,
+        setIsModalUpdateShopifyPermissionsOpen,
+    ] = useState(false)
 
     useEffect(() => {
         // Used to keep saving the correct `language` with `languages` for the time being.
@@ -186,6 +189,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             ? storeIntegrations.first()
             : undefined)
 
+    const isStoreOfShopifyType = storeIntegration
+        ? storeIntegration?.get('type') === IntegrationType.Shopify
+        : false
+
     const hasShopifyScriptTagScope =
         storeIntegration &&
         getHasShopifyScriptTagScopes({
@@ -194,13 +201,17 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const retriggerOAuthFlow = () => {
         setOAuthFlowTriggered(true)
-        setIsModalOpen(false)
-        const shopName = (storeIntegration as Map<any, any>)?.getIn([
-            'meta',
-            'shop_name',
-        ])
+        setIsModalUpdateShopifyPermissionsOpen(false)
+        const shopName = storeIntegration
+            ? (storeIntegration.getIn(['meta', 'shop_name']) as string)
+            : undefined
         onSave()?.then(() => {
-            window.location.href = redirectUri.replace('{shop_name}', shopName)
+            if (shopName) {
+                window.location.href = redirectUri.replace(
+                    '{shop_name}',
+                    shopName
+                )
+            }
         })
     }
 
@@ -251,11 +262,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         }
 
         if (
+            isStoreOfShopifyType &&
             shouldCheckShopifyPermissions &&
             isStoreRequired &&
             !hasShopifyScriptTagScope
         ) {
-            setIsModalOpen(true)
+            setIsModalUpdateShopifyPermissionsOpen(true)
             return
         }
 
@@ -381,8 +393,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const ShopifyScriptTagScopeModal = () => {
         return (
             <Modal
-                onClose={() => setIsModalOpen(false)}
-                isOpen={isModalOpen}
+                onClose={() => setIsModalUpdateShopifyPermissionsOpen(false)}
+                isOpen={isModalUpdateShopifyPermissionsOpen}
                 container={document.getElementById('root') as Element}
                 data-testid="shopify-script-tag-scope-modal"
             >
@@ -394,7 +406,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 <ModalActionsFooter>
                     <Button
                         intent="secondary"
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() =>
+                            setIsModalUpdateShopifyPermissionsOpen(false)
+                        }
                     >
                         Close
                     </Button>
@@ -620,6 +634,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
                         {isStoreRequired &&
                             storeIntegration &&
+                            isStoreOfShopifyType &&
                             !hasShopifyScriptTagScope && (
                                 <div
                                     className={css.info}
