@@ -79,10 +79,10 @@ describe('integrations actions', () => {
         history.push = p
     })
 
-    it('should do some action and redirect correctly on create smooch_inside success', () => {
+    it('should do some action and redirect correctly on create gorgias chat success', () => {
         const integration = {
             id: 1,
-            type: IntegrationType.SmoochInside,
+            type: IntegrationType.GorgiasChat,
         } as Integration
 
         const p = history.push
@@ -92,25 +92,9 @@ describe('integrations actions', () => {
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
-        expect(logUrl).toMatchSnapshot()
-
-        history.push = p
-    })
-
-    it('should do some action and redirect correctly on create smooch success', () => {
-        const integration = {
-            id: 1,
-            type: IntegrationType.Smooch,
-        } as Integration
-
-        const p = history.push
-        let logUrl = ''
-
-        history.push = (url: string) => (logUrl = url)
-
-        actions.onCreateSuccess(store.dispatch, integration)
-        expect(store.getActions()).toMatchSnapshot()
-        expect(logUrl).toMatchSnapshot()
+        expect(logUrl).toMatchInlineSnapshot(
+            `"/app/settings/channels/gorgias_chat/1/installation"`
+        )
 
         history.push = p
     })

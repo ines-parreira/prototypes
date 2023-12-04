@@ -599,28 +599,6 @@ export const makeHasIntegrationOfTypes =
     (state: RootState) => (types: IntegrationType[] | IntegrationType) =>
         hasIntegrationOfTypes(types)(state)
 
-export const getShopifyIntegrationsWithoutChat = (state: RootState) => {
-    const shopifyIntegrations = DEPRECATED_getIntegrationsByTypes(
-        IntegrationType.Shopify
-    )(state)
-    const chatIntegrations = DEPRECATED_getIntegrationsByTypes(
-        IntegrationType.SmoochInside
-    )(state)
-
-    return shopifyIntegrations.filter((shopifyIntegration: Map<any, any>) => {
-        const shopifyId = shopifyIntegration.get('id') as number
-
-        return !chatIntegrations.some((chatIntegration: Map<any, any>) => {
-            return (
-                chatIntegration.getIn(
-                    ['meta', 'shopify_integration_ids'],
-                    fromJS([])
-                ) as List<any>
-            ).contains(shopifyId)
-        })
-    }) as List<any>
-}
-
 export const getShopifyIntegrationsWithoutFacebook = (state: RootState) => {
     const shopifyIntegrations = DEPRECATED_getIntegrationsByTypes(
         IntegrationType.Shopify

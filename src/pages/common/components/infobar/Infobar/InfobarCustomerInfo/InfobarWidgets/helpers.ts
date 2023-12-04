@@ -16,7 +16,6 @@ export const LABELS: {[key: string]: string} = {
     // not sure this one is needed
     [IntegrationType.Http]: 'HTTP',
     [IntegrationType.Magento2]: 'Magento',
-    [IntegrationType.SmoochInside]: 'Chat',
     [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: 'Customer third party data',
     [STANDALONE_WIDGET_TYPE]: 'Standalone',
     [WOOCOMMERCE_WIDGET_TYPE]: 'WooCommerce',

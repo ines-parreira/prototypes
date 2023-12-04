@@ -11,8 +11,6 @@ export const STATS_MESSAGING_INTEGRATIONS_TYPES = [
     IntegrationType.Outlook,
     IntegrationType.Aircall,
     IntegrationType.GorgiasChat,
-    IntegrationType.Smooch,
-    IntegrationType.SmoochInside,
     IntegrationType.Sms,
     IntegrationType.Facebook,
     IntegrationType.Zendesk,

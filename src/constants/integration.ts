@@ -3,8 +3,6 @@ import {IntegrationType} from '../models/integration/types'
 //$TsFixMe fallback values for js, use IntegrationType enum instead
 export const AIRCALL_INTEGRATION_TYPE = 'aircall'
 export const BIGCOMMERCE_INTEGRATION_TYPE = 'bigcommerce'
-export const SMOOCH_INTEGRATION_TYPE = 'smooch'
-export const SMOOCH_INSIDE_INTEGRATION_TYPE = 'smooch_inside'
 export const FACEBOOK_INTEGRATION_TYPE = 'facebook'
 export const EMAIL_INTEGRATION_TYPE = 'email'
 export const GMAIL_INTEGRATION_TYPE = 'gmail'
@@ -34,8 +32,6 @@ export const INTEGRATION_TYPES_MAP = Object.freeze({
     OUTLOOK_INTEGRATION_TYPE,
     AIRCALL_INTEGRATION_TYPE,
     BIGCOMMERCE_INTEGRATION_TYPE,
-    SMOOCH_INTEGRATION_TYPE,
-    SMOOCH_INSIDE_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,

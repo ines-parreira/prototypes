@@ -5,19 +5,19 @@ Immutable.Map {
   "integrations": Immutable.List [
     Immutable.Map {
       "id": 241,
-      "type": "smooch_inside",
+      "type": "gorgias_chat",
       "meta": Immutable.Map {
         "foo": "bar",
       },
     },
     Immutable.Map {
       "id": 118712,
-      "type": "smooch_inside",
+      "type": "gorgias_chat",
     },
   ],
   "integration": Immutable.Map {
     "id": 118712,
-    "type": "smooch_inside",
+    "type": "gorgias_chat",
   },
   "emailDomain": Immutable.Map {},
   "authentication": Immutable.Map {},
@@ -208,14 +208,14 @@ Immutable.Map {
   "integrations": Immutable.List [
     Immutable.Map {
       "id": 241,
-      "type": "smooch_inside",
+      "type": "gorgias_chat",
       "meta": Immutable.Map {
         "foo": "bar",
       },
     },
     Immutable.Map {
       "id": 118712,
-      "type": "smooch_inside",
+      "type": "gorgias_chat",
       "meta": Immutable.Map {
         "foo": "bar",
       },
@@ -223,7 +223,7 @@ Immutable.Map {
   ],
   "integration": Immutable.Map {
     "id": 118712,
-    "type": "smooch_inside",
+    "type": "gorgias_chat",
     "meta": Immutable.Map {
       "foo": "bar",
     },

@@ -4,7 +4,6 @@ import aircallIcon from 'assets/img/integrations/aircall.png'
 import gmailIcon from 'assets/img/integrations/gmail.png'
 import outlookIcon from 'assets/img/integrations/outlook.svg'
 import shopifyIcon from 'assets/img/integrations/shopify.png'
-import smoochIcon from 'assets/img/integrations/smooch.png'
 import zendeskIcon from 'assets/img/integrations/zendesk.png'
 import whatsAppIcon from 'assets/img/integrations/whatsapp.svg'
 import {IntegrationType} from 'models/integration/constants'
@@ -22,8 +21,6 @@ export const IMAGE_ICONS = {
     [IntegrationType.Gmail]: gmailIcon,
     [IntegrationType.Outlook]: outlookIcon,
     [IntegrationType.Shopify]: shopifyIcon,
-    [IntegrationType.Smooch]: smoochIcon,
-    [IntegrationType.SmoochInside]: smoochIcon,
     [IntegrationType.Zendesk]: zendeskIcon,
     [IntegrationType.WhatsApp]: whatsAppIcon,
 }

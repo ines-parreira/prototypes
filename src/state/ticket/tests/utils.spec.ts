@@ -56,7 +56,6 @@ import {
 import {
     emailTicket,
     facebookPost,
-    smoochTicket,
     twitterQuotedTweet,
     twitterTweet,
     chatTicket,
@@ -498,7 +497,6 @@ describe('ticket utils', () => {
                         id: 1,
                         description: null,
                         updated_datetime: '2017-02-07T06:07:43.481517+00:00',
-                        smooch: null,
                     },
                 ],
             })
@@ -655,15 +653,10 @@ describe('ticket utils', () => {
         })
 
         it('should return `from` field from last message from agent (chat, messenger)', () => {
-            const expected = smoochTicket.getIn([
-                'messages',
-                1,
-                'source',
-                'from',
-            ])
+            const expected = chatTicket.getIn(['messages', 1, 'source', 'from'])
             expect(
                 getNewMessageSender(
-                    smoochTicket,
+                    chatTicket,
                     TicketMessageSourceType.Chat,
                     channels,
                     integrations
@@ -690,8 +683,8 @@ describe('ticket utils', () => {
 
         it('should return `to` field from last message from customer (chat, messenger)', () => {
             // delete last message from agent
-            const _smoochTicket = smoochTicket.deleteIn(['messages', 1])
-            const expected = _smoochTicket.getIn([
+            const _chatTicket = chatTicket.deleteIn(['messages', 1])
+            const expected = _chatTicket.getIn([
                 'messages',
                 0,
                 'source',
@@ -700,7 +693,7 @@ describe('ticket utils', () => {
             ])
             expect(
                 getNewMessageSender(
-                    _smoochTicket,
+                    _chatTicket,
                     TicketMessageSourceType.Chat,
                     channels,
                     integrations

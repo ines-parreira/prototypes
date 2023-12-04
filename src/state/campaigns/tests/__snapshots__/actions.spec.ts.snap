@@ -5,7 +5,6 @@ exports[`Campaign actions createCampaign should fetch the integration and execut
   {
     "resp": {
       "id": 1,
-      "type": "smooch_inside",
     },
     "type": "UPDATE_INTEGRATION_SUCCESS",
   },
@@ -75,7 +74,6 @@ exports[`Campaign actions updateCampaign should fetch the integration and execut
   {
     "resp": {
       "id": 1,
-      "type": "smooch_inside",
     },
     "type": "UPDATE_INTEGRATION_SUCCESS",
   },

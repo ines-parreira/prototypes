@@ -4,8 +4,6 @@ import type {OutlookIntegration} from './outlook'
 import type {AircallIntegration} from './aircall'
 import type {AlloyIntegration} from './alloy'
 import type {GorgiasChatIntegration} from './gorgiasChat'
-import type {SmoochIntegration} from './smooch'
-import type {SmoochInsideIntegration} from './smoochInside'
 import type {FacebookIntegration} from './facebook'
 import type {HttpIntegration} from './http'
 import type {ShopifyIntegration} from './shopify'
@@ -37,9 +35,7 @@ export * from './email'
 export * from './gmail'
 export * from './outlook'
 export * from './aircall'
-export * from './smooch'
 export * from './gorgiasChat'
-export * from './smoochInside'
 export * from './facebook'
 export * from './http'
 export * from './shopify'
@@ -64,8 +60,6 @@ export type Integration =
     | AircallIntegration
     | AlloyIntegration
     | GorgiasChatIntegration
-    | SmoochIntegration
-    | SmoochInsideIntegration
     | FacebookIntegration
     | HttpIntegration
     | ShopifyIntegration

@@ -24,10 +24,6 @@ declare global {
         STAGING: boolean
         IMAGE_PROXY_SIGN_KEY: Maybe<string>
         IMAGE_PROXY_URL: string
-        // https://github.com/zendesk/sunshine-conversations-core-js/issues/81
-        Smooch?: {
-            open: () => void
-        }
         noticeable: {
             render: (target: string, id: string) => Promise<void>
             on: (

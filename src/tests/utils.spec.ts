@@ -400,9 +400,6 @@ describe('global utils', () => {
             expect(utils.resolvePropertyName('Macro')).toEqual('Macro')
             expect(utils.resolvePropertyName('Account')).toEqual('Account')
             expect(utils.resolvePropertyName('UserAuth')).toEqual('UserAuth')
-            expect(utils.resolvePropertyName('IntegrationSmooch')).toEqual(
-                'IntegrationSmooch'
-            )
             expect(utils.resolvePropertyName('Integration')).toEqual(
                 'Integration'
             )

@@ -14,7 +14,6 @@ import {
     RECHARGE_WIDGET_TYPE,
     SHOPIFY_WIDGET_TYPE,
     SMILE_WIDGET_TYPE,
-    SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
     BIGCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
@@ -31,7 +30,6 @@ import magento2 from './widgets/magento2'
 import recharge from './widgets/recharge'
 import shopify from './widgets/shopify'
 import smile from './widgets/smile'
-import smoochInside from './widgets/smoochInside'
 import yotpo from './widgets/yotpo'
 import bigcommerce from './widgets/bigcommerce'
 import woocommerce from './widgets/woocommerce'
@@ -60,7 +58,6 @@ export default function InfobarWidget({
         [RECHARGE_WIDGET_TYPE]: recharge,
         [SMILE_WIDGET_TYPE]: smile,
         [MAGENTO2_WIDGET_TYPE]: magento2,
-        [SMOOCH_INSIDE_WIDGET_TYPE]: smoochInside,
         [HTTP_WIDGET_TYPE]: http,
         [YOTPO_WIDGET_TYPE]: yotpo,
         [BIGCOMMERCE_WIDGET_TYPE]: bigcommerce,

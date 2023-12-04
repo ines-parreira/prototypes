@@ -15,7 +15,7 @@ import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
-import {TicketVias} from '../../../../../business/ticket'
+import {IntegrationType} from 'models/integration/constants'
 import {
     Meta as MetaType,
     ReplyTicketMessage,
@@ -54,7 +54,6 @@ export default function Meta(props: Props) {
         source,
         messageId,
         externalId,
-        via,
         integrationId,
         messageCreatedDatetime,
         repliedBy,
@@ -426,13 +425,7 @@ export default function Meta(props: Props) {
             </From>
         )
     } else if (meta && meta.campaign_id && props.integrationId) {
-        let sentViaLink
-
-        if (via === TicketVias.GORGIAS_CHAT) {
-            sentViaLink = `/app/settings/channels/gorgias_chat/${props.integrationId}/campaigns/${meta.campaign_id}`
-        } else {
-            sentViaLink = `/app/settings/integrations/smooch_inside` // Will show the deprecation page
-        }
+        const sentViaLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${props.integrationId}/campaigns/${meta.campaign_id}`
 
         widgets.push(
             <From key="via-widget" label="sent via a">

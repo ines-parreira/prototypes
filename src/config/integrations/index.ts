@@ -4,8 +4,6 @@ import * as magento2 from './magento2'
 import * as recharge from './recharge'
 import * as shopify from './shopify'
 import * as smile from './smile'
-import * as smooch from './smooch'
-import * as smoochInside from './smooch_inside'
 import * as bigcommerce from './bigcommerce'
 
 const allIntegrations = [
@@ -14,8 +12,6 @@ const allIntegrations = [
     recharge,
     shopify,
     smile,
-    smooch,
-    smoochInside,
     bigcommerce,
 ]
 

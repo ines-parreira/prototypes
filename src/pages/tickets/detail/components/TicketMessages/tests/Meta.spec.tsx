@@ -148,26 +148,6 @@ describe('ticket message meta', () => {
 
     it(
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
-            'smooch_inside integration',
-        () => {
-            const {container} = render(
-                <Provider store={store}>
-                    <Meta
-                        messageId="some-id"
-                        via="something"
-                        integrationId={118}
-                        meta={{
-                            campaign_id: '123',
-                        }}
-                    />
-                </Provider>
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        }
-    )
-
-    it(
-        'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'gorgias-chat integration',
         () => {
             const {container} = render(

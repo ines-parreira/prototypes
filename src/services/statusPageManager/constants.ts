@@ -72,7 +72,6 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           c696fffd032x: IntegrationType.Gmail,
           '0k9stqn0czpt': IntegrationType.Outlook,
           slm5jt5rbn6w: IntegrationType.GorgiasChat, // Gorgias Chat
-          wt84j6hkbg5v: IntegrationType.SmoochInside, // Smooch Core API
           zlsstk1s8j12: IntegrationType.Facebook,
           x95q6p88z8hd: IntegrationType.Facebook, // Instagram comments
           fzmbzjs3p9qd: IntegrationType.Facebook, // Messenger

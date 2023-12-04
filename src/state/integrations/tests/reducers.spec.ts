@@ -222,7 +222,7 @@ describe('integrations reducers', () => {
             () => {
                 const newIntegration = {
                     id: 118712,
-                    type: IntegrationType.SmoochInside,
+                    type: IntegrationType.GorgiasChat,
                 }
 
                 const integrationsState = initialState.mergeDeep(
@@ -230,7 +230,7 @@ describe('integrations reducers', () => {
                         integrations: [
                             {
                                 id: 241,
-                                type: IntegrationType.SmoochInside,
+                                type: IntegrationType.GorgiasChat,
                                 meta: {foo: 'bar'},
                             },
                         ],
@@ -254,7 +254,7 @@ describe('integrations reducers', () => {
             () => {
                 const integration = {
                     id: 118712,
-                    type: IntegrationType.SmoochInside,
+                    type: IntegrationType.GorgiasChat,
                 }
                 const updatedIntegration = Object.assign({}, integration, {
                     meta: {foo: 'bar'},
@@ -265,7 +265,7 @@ describe('integrations reducers', () => {
                         integrations: [
                             {
                                 id: 241,
-                                type: IntegrationType.SmoochInside,
+                                type: IntegrationType.GorgiasChat,
                                 meta: {foo: 'bar'},
                             },
                             integration,

@@ -376,12 +376,12 @@ exports[`IntegrationsStatsFilter should render icon for aircall integration 1`] 
 exports[`IntegrationsStatsFilter should render icon for email integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-22"
+  for="checkbox-20"
 >
   <input
     class="input"
-    id="checkbox-22"
-    name="checkbox-22"
+    id="checkbox-20"
+    name="checkbox-20"
     type="checkbox"
   />
   <i
@@ -396,12 +396,12 @@ exports[`IntegrationsStatsFilter should render icon for email integration 1`] = 
 exports[`IntegrationsStatsFilter should render icon for facebook integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-23"
+  for="checkbox-21"
 >
   <input
     class="input"
-    id="checkbox-23"
-    name="checkbox-23"
+    id="checkbox-21"
+    name="checkbox-21"
     type="checkbox"
   />
   <i
@@ -436,12 +436,12 @@ exports[`IntegrationsStatsFilter should render icon for gmail integration 1`] = 
 exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-27"
+  for="checkbox-25"
 >
   <input
     class="input"
-    id="checkbox-27"
-    name="checkbox-27"
+    id="checkbox-25"
+    name="checkbox-25"
     type="checkbox"
   />
   <i
@@ -456,12 +456,12 @@ exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration
 exports[`IntegrationsStatsFilter should render icon for http integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-24"
+  for="checkbox-22"
 >
   <input
     class="input"
-    id="checkbox-24"
-    name="checkbox-24"
+    id="checkbox-22"
+    name="checkbox-22"
     type="checkbox"
   />
   <i
@@ -496,12 +496,12 @@ exports[`IntegrationsStatsFilter should render icon for outlook integration 1`] 
 exports[`IntegrationsStatsFilter should render icon for phone integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-25"
+  for="checkbox-23"
 >
   <input
     class="input"
-    id="checkbox-25"
-    name="checkbox-25"
+    id="checkbox-23"
+    name="checkbox-23"
     type="checkbox"
   />
   <i
@@ -533,55 +533,15 @@ exports[`IntegrationsStatsFilter should render icon for shopify integration 1`] 
 </label>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for smooch integration 1`] = `
-<label
-  class="label label labelItem"
-  for="checkbox-18"
->
-  <input
-    class="input"
-    id="checkbox-18"
-    name="checkbox-18"
-    type="checkbox"
-  />
-  <img
-    alt="logo-smooch"
-    class="integrationIcon"
-    src="test-file-stub"
-  />
-   smooch integration
-</label>
-`;
-
-exports[`IntegrationsStatsFilter should render icon for smooch_inside integration 1`] = `
-<label
-  class="label label labelItem"
-  for="checkbox-19"
->
-  <input
-    class="input"
-    id="checkbox-19"
-    name="checkbox-19"
-    type="checkbox"
-  />
-  <img
-    alt="logo-smooch_inside"
-    class="integrationIcon"
-    src="test-file-stub"
-  />
-   smooch_inside integration
-</label>
-`;
-
 exports[`IntegrationsStatsFilter should render icon for sms integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-26"
+  for="checkbox-24"
 >
   <input
     class="input"
-    id="checkbox-26"
-    name="checkbox-26"
+    id="checkbox-24"
+    name="checkbox-24"
     type="checkbox"
   />
   <i
@@ -596,12 +556,12 @@ exports[`IntegrationsStatsFilter should render icon for sms integration 1`] = `
 exports[`IntegrationsStatsFilter should render icon for whatsapp integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-21"
+  for="checkbox-19"
 >
   <input
     class="input"
-    id="checkbox-21"
-    name="checkbox-21"
+    id="checkbox-19"
+    name="checkbox-19"
     type="checkbox"
   />
   <img
@@ -616,12 +576,12 @@ exports[`IntegrationsStatsFilter should render icon for whatsapp integration 1`]
 exports[`IntegrationsStatsFilter should render icon for zendesk integration 1`] = `
 <label
   class="label label labelItem"
-  for="checkbox-20"
+  for="checkbox-18"
 >
   <input
     class="input"
-    id="checkbox-20"
-    name="checkbox-20"
+    id="checkbox-18"
+    name="checkbox-18"
     type="checkbox"
   />
   <img

@@ -1,51 +1,5 @@
 import {fromJS, Map} from 'immutable'
 
-export const smoochTicket = fromJS({
-    messages: [
-        {
-            source: {
-                extra: {
-                    smooch_app_id: '58997fe9227b1f4c0026ea57',
-                },
-                to: [
-                    {
-                        name: 'acme',
-                        address: '',
-                    },
-                ],
-                from: {
-                    name: 'Monumental Halibut',
-                    address: '20c0993066ec2e8601b7de22',
-                },
-                type: 'chat',
-            },
-            id: 151,
-            from_agent: false,
-        },
-        {
-            source: {
-                extra: {
-                    smooch_app_id: '58997fe9227b1f4c0026ea57',
-                },
-                cc: [],
-                to: [
-                    {
-                        name: 'Monumental Halibut',
-                        address: '20c0993066ec2e8601b7de22',
-                    },
-                ],
-                from: {
-                    name: 'acme',
-                    address: '',
-                },
-                type: 'chat',
-            },
-            id: 152,
-            from_agent: true,
-        },
-    ],
-}) as Map<any, any>
-
 export const emailTicket = fromJS({
     messages: [
         {

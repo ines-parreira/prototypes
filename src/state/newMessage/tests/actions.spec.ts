@@ -36,7 +36,6 @@ import {
     chatTicket,
     emailTicket,
     instagramMedia,
-    smoochTicket,
 } from 'state/ticket/tests/fixtures'
 import socketManager from 'services/socketManager/socketManager'
 import {IntegrationType} from 'models/integration/types'
@@ -136,7 +135,7 @@ describe('actions', () => {
             })
 
             it('`from` field from last message from agent (chat, messenger)', () => {
-                const from = smoochTicket.getIn([
+                const from = chatTicket.getIn([
                     'messages',
                     1,
                     'source',
@@ -148,7 +147,7 @@ describe('actions', () => {
                 })
                 store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: smoochTicket,
+                    ticket: chatTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
                         'chat'
@@ -165,8 +164,8 @@ describe('actions', () => {
             })
 
             it('`to` field from last message from customer (chat, messenger)', () => {
-                const _smoochTicket = smoochTicket.deleteIn(['messages', 1]) // delete last message from agent
-                const from = _smoochTicket.getIn([
+                const _chatTicket = chatTicket.deleteIn(['messages', 1]) // delete last message from agent
+                const from = _chatTicket.getIn([
                     'messages',
                     0,
                     'source',
@@ -179,7 +178,7 @@ describe('actions', () => {
                 })
                 store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: _smoochTicket,
+                    ticket: _chatTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
                         'chat'

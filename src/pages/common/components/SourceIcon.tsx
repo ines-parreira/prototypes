@@ -39,8 +39,6 @@ const sourceTypeToIcon = (sourceType?: ChannelLike) => {
             break
         case TicketMessageSourceType.Chat:
         case IntegrationType.GorgiasChat:
-        case IntegrationType.Smooch:
-        case IntegrationType.SmoochInside:
         case TicketMessageSourceType.ChatContactForm:
         case TicketMessageSourceType.ChatOfflineCapture:
             icon.name = 'forum'

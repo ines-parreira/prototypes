@@ -62,8 +62,6 @@ export const OnboardingSidePanel = () => {
     )
 
     const hasConnectedChat = hasIntegrationsOfTypes([
-        IntegrationType.Smooch,
-        IntegrationType.SmoochInside,
         IntegrationType.GorgiasChat,
     ])
 

@@ -698,7 +698,7 @@ export function getNewMessageSender(
         return type === newMessageSourceType
     })
 
-    // smooch, messenger
+    // messenger
     // because channels only list email addresses
     if (preferredChannel.isEmpty()) {
         if (!lastMessage) {

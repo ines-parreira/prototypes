@@ -98,7 +98,6 @@ import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDet
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import EmailMigration from './components/email/EmailMigration/EmailMigration'
-import SmoochDeprecatedIntegration from './components/deprecated/SmoochDeprecatedIntegration'
 import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import {Tab} from './types'
 import useSelfServiceConfiguration from './components/gorgias_chat/hooks/useSelfServiceConfiguration'
@@ -182,15 +181,35 @@ export const IntegrationDetail = ({
     const editLinkDefaultTab = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Campaigns}`
 
     const goToDefaultTab = () => history.replace(editLinkDefaultTab)
+    if (
+        integrationType === IntegrationType.GorgiasChat &&
+        !extra &&
+        integrationId
+    ) {
+        goToDefaultTab()
+    }
+
+    const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
+        try {
+            const numbers = await fetchPhoneNumbers()
+            if (numbers) {
+                dispatch(phoneNumbersFetched(numbers.data))
+            }
+            const newNumbers = await fetchNewPhoneNumbers()
+            if (newNumbers) {
+                dispatch(newPhoneNumbersFetched(newNumbers.data))
+            }
+        } catch (error) {
+            void dispatch(
+                notify({
+                    message: 'Failed to fetch phone numbers',
+                    status: NotificationStatus.Error,
+                })
+            )
+        }
+    })
 
     useEffect(() => {
-        if (
-            integrationType === IntegrationType.GorgiasChat &&
-            !extra &&
-            integrationId
-        ) {
-            goToDefaultTab()
-        }
         actions.fetchIntegrations()
         void handleFetchPhoneNumbers()
         // We need this to allow the user to refresh the settings page.
@@ -198,8 +217,13 @@ export const IntegrationDetail = ({
         if (integrationId && isIntegrationId) {
             actions.fetchIntegration(integrationId, integrationType)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [
+        actions,
+        integrationId,
+        integrationType,
+        isIntegrationId,
+        handleFetchPhoneNumbers,
+    ])
 
     const chatApplicationIds = useMemo(() => {
         const appId: string = integration.getIn(['meta', 'app_id'])
@@ -221,33 +245,12 @@ export const IntegrationDetail = ({
                 dispatch(resetChatInstallationStatus())
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration, integrationType])
 
     const {selfServiceConfiguration, selfServiceConfigurationEnabled} =
         useSelfServiceConfiguration(integration)
 
     const dispatch = useAppDispatch()
-
-    const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
-        try {
-            const numbers = await fetchPhoneNumbers()
-            if (numbers) {
-                dispatch(phoneNumbersFetched(numbers.data))
-            }
-            const newNumbers = await fetchNewPhoneNumbers()
-            if (newNumbers) {
-                dispatch(newPhoneNumbersFetched(newNumbers.data))
-            }
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch phone numbers',
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
-    })
 
     const [, handleFetchGorgiasChatInstallationStatus] = useAsyncFn(
         async (applicationId: string) => {
@@ -457,14 +460,6 @@ export const IntegrationDetail = ({
         case IntegrationType.Sms: {
             return <SmsIntegration />
         }
-
-        case IntegrationType.SmoochInside:
-        case IntegrationType.Smooch:
-            return (
-                <SmoochDeprecatedIntegration
-                    loading={loading.get('integrations', false)}
-                />
-            )
 
         case IntegrationType.Shopify:
             return (

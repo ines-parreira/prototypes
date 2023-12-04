@@ -101,10 +101,6 @@ jest.mock('../components/voice/VoiceIntegration', () => () => (
     <div>VoiceIntegration</div>
 ))
 
-jest.mock('../components/deprecated/SmoochDeprecatedIntegration', () => () => (
-    <div>SmoochDeprecatedIntegration</div>
-))
-
 jest.mock('../components/shopify/Shopify', () => () => (
     <div>ShopifyIntegration</div>
 ))

@@ -78,22 +78,6 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.SmoochInside,
-        title: 'Chat data',
-        description: (
-            <div>
-                The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/smooch_inside"
-                    target="_blank"
-                >
-                    <b>Chat integrations</b>
-                </Link>
-                .
-            </div>
-        ),
-    },
-    {
         type: IntegrationType.Http,
         title: 'HTTP data',
         description: (

@@ -97,7 +97,9 @@
                 "tags": ["User"],
                 "responses": {
                     "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
+                    "202": {
+                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                    },
                     "404": {"description": "Not found."}
                 },
                 "produces": ["application/json"],
@@ -343,7 +345,9 @@
                 "tags": ["User"],
                 "responses": {
                     "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
+                    "201": {
+                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                    },
                     "404": {"description": "Not found."}
                 },
                 "produces": ["application/json"],
@@ -854,7 +858,9 @@
                 "tags": ["User"],
                 "responses": {
                     "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
+                    "202": {
+                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                    },
                     "404": {"description": "Not found."}
                 },
                 "produces": ["application/json"],
@@ -877,7 +883,9 @@
                 "parameters": [{"$ref": "#/parameters/id"}],
                 "tags": ["User"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
+                    "200": {
+                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                    },
                     "400": {"description": "Bad request."},
                     "404": {"description": "Not found."}
                 },
@@ -2122,7 +2130,7 @@
                     }
                 },
                 "type": {
-                    "description": "Type of the integration. Possible values are email, gmail, outlook, aircall, smooch_inside, smooch, facebook, http, shopify, recharge, smile, zendesk.",
+                    "description": "Type of the integration. Possible values are email, gmail, outlook, aircall, facebook, http, shopify, recharge, smile, zendesk.",
                     "type": "string"
                 }
             },
@@ -3240,7 +3248,7 @@
             "description": "A Source is an object that describes the addresses/names used to communicate with a customer\n        in a context of a TicketMessage. The Source object populates the `TicketMessage.source` field.",
             "properties": {
                 "extra": {
-                    "description": "Contains extra data about where the message comes from (i.e. the smooch_app_id)",
+                    "description": "Contains extra data about where the message comes from",
                     "type": "string"
                 },
                 "from": {
@@ -3471,15 +3479,14 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "To which kind of data this widget is attached (the type of the widget is used for rendering inside Gorgias). Possible values are custom, shopify, smile, stripe, http, recharge, smooch_inside",
+                    "description": "To which kind of data this widget is attached (the type of the widget is used for rendering inside Gorgias). Possible values are custom, shopify, smile, stripe, http, recharge",
                     "enum": [
                         "custom",
                         "shopify",
                         "smile",
                         "stripe",
                         "http",
-                        "recharge",
-                        "smooch_inside"
+                        "recharge"
                     ],
                     "type": "string"
                 },

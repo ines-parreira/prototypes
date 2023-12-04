@@ -107,7 +107,6 @@ export const integrationsState = {
             id: 4,
             description: 'Notify on Slack when a new ticket is created.',
             updated_datetime: '2017-02-07T06:07:45.135448+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -138,7 +137,6 @@ export const integrationsState = {
             id: 5,
             description: null,
             updated_datetime: '2017-02-07T06:21:05.655015+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -169,7 +167,6 @@ export const integrationsState = {
             id: 7,
             description: null,
             updated_datetime: '2017-02-07T06:21:05.655015+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -210,7 +207,6 @@ export const integrationsState = {
             id: 3,
             description: 'Test multi-step',
             updated_datetime: '2017-02-07T06:07:45.097905+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -253,7 +249,6 @@ export const integrationsState = {
             id: 2,
             description: 'Get customer data from our backoffice',
             updated_datetime: '2017-02-07T06:07:43.764835+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -281,7 +276,6 @@ export const integrationsState = {
             id: 1,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -305,7 +299,6 @@ export const integrationsState = {
             id: 15,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -329,7 +322,6 @@ export const integrationsState = {
             id: 13,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -357,7 +349,6 @@ export const integrationsState = {
             id: 12,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
-            smooch: null,
         },
         {
             deleted_datetime: null,
@@ -463,7 +454,6 @@ export const integrationsState = {
         id: 5,
         description: null,
         updated_datetime: '2017-02-07T06:21:05.655015+00:00',
-        smooch: null,
     },
 }
 

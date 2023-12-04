@@ -111,33 +111,3 @@ exports[`ticket message meta should add a -sent via campaign- label because the 
   </span>
 </span>
 `;
-
-exports[`ticket message meta should add a -sent via campaign- label because the message was sent by a campaign on a smooch_inside integration 1`] = `
-<span
-  class="from"
->
-  <span
-    class="fromLabel"
-  >
-    sent via a
-  </span>
-   
-  <span
-    class="fromValue"
-  >
-    <b>
-      <a
-        title="Campaign"
-        to="/app/settings/integrations/smooch_inside"
-      >
-        <i
-          class="material-icons mr-1"
-        >
-          settings
-        </i>
-        "Campaign"
-      </a>
-    </b>
-  </span>
-</span>
-`;

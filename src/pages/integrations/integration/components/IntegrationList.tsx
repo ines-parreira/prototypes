@@ -13,7 +13,6 @@ import {notify} from 'state/notifications/actions'
 import PageHeader from 'pages/common/components/PageHeader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {IntegrationType} from 'models/integration/types'
-import {NotificationStatus} from 'state/notifications/types'
 import withRouter from 'pages/common/utils/withRouter'
 
 import css from '../../../settings/settings.less'
@@ -43,16 +42,6 @@ class IntegrationList extends React.Component<Props> {
     }
 
     onButtonClick = () => {
-        if (this.props.integrationType === IntegrationType.SmoochInside) {
-            void this.props.notify({
-                status: NotificationStatus.Error,
-                message:
-                    'Cannot create a chat integration because it is deprecated. ' +
-                    'Please use the new chat integration instead.',
-            })
-            return
-        }
-
         this.props.createIntegration()
     }
 

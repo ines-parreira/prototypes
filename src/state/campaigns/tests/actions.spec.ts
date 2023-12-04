@@ -3,8 +3,10 @@ import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 
+import client from 'models/api/resources'
+import {IntegrationType} from 'models/integration/types'
 import * as actions from '../actions'
-import client from '../../../models/api/resources'
+
 import {GorgiasAction, StoreDispatch} from '../../types'
 
 const middlewares = [thunk]
@@ -26,7 +28,6 @@ describe('Campaign actions', () => {
 
     const integration: Map<any, any> = fromJS({
         id: 1,
-        type: 'smooch_inside',
     })
     const campaign: Map<any, any> = fromJS({
         id: '123-456',
@@ -35,7 +36,9 @@ describe('Campaign actions', () => {
     describe('createCampaign', () => {
         it('should fetch the integration and execute onUpdateSuccess when creating a campaign successfully', () => {
             mockServer
-                .onPost('/api/integrations/smooch_inside/1/campaigns/')
+                .onPost(
+                    `/api/integrations/${IntegrationType.GorgiasChat}/1/campaigns/`
+                )
                 .reply(201, {
                     data: {
                         id: '123-456',
@@ -65,7 +68,7 @@ describe('Campaign actions', () => {
         it('should notify an error when creating a campaign fails', () => {
             mockServer
                 .onPost(
-                    `/api/integrations/${integration.get('type') as string}/${
+                    `/api/integrations/${IntegrationType.GorgiasChat}/${
                         integration.get('id') as string
                     }/campaigns/`
                 )
@@ -92,7 +95,7 @@ describe('Campaign actions', () => {
         it('should fetch the integration and execute onUpdateSuccess when updating a campaign successfully', () => {
             mockServer
                 .onPut(
-                    `/api/integrations/${integration.get('type') as string}/${
+                    `/api/integrations/${IntegrationType.GorgiasChat}/${
                         integration.get('id') as string
                     }/campaigns/${campaign.get('id') as string}`
                 )
@@ -122,7 +125,7 @@ describe('Campaign actions', () => {
         it('should notify an error when updating a campaign fails', () => {
             mockServer
                 .onPut(
-                    `/api/integrations/${integration.get('type') as string}/${
+                    `/api/integrations/${IntegrationType.GorgiasChat}/${
                         integration.get('id') as string
                     }/campaigns/${campaign.get('id') as string}`
                 )
@@ -149,7 +152,7 @@ describe('Campaign actions', () => {
         it('should fetch the integration and execute onUpdateSuccess when deleting a campaign successfully', () => {
             mockServer
                 .onDelete(
-                    `/api/integrations/${integration.get('type') as string}/${
+                    `/api/integrations/${IntegrationType.GorgiasChat}/${
                         integration.get('id') as string
                     }/campaigns/${campaign.get('id') as string}`
                 )
@@ -175,7 +178,7 @@ describe('Campaign actions', () => {
         it('should notify an error when deleting a campaign fails', () => {
             mockServer
                 .onDelete(
-                    `/api/integrations/${integration.get('type') as string}/${
+                    `/api/integrations/${IntegrationType.GorgiasChat}/${
                         integration.get('id') as string
                     }/campaigns/${campaign.get('id') as string}`
                 )

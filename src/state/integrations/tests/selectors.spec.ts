@@ -39,7 +39,6 @@ import {
     getOnboardingIntegrations,
     getOnboardingMeta,
     getShopifyIntegrationByShopName,
-    getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
     getMessagingIntegrations,
     DEPRECATED_getPhoneIntegrations,
@@ -108,8 +107,6 @@ describe('integrations selectors', () => {
                         IntegrationType.Outlook,
                         IntegrationType.Gmail,
                         IntegrationType.Aircall,
-                        IntegrationType.SmoochInside,
-                        IntegrationType.Smooch,
                         IntegrationType.Facebook,
                         IntegrationType.Phone,
                         IntegrationType.Twitter,
@@ -437,66 +434,6 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getShopifyIntegrationsWithoutChat()', () => {
-        it('should return one integration', () => {
-            const state = {
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: 'shopify',
-                        },
-                        {
-                            id: 2,
-                            type: 'shopify',
-                        },
-                        {
-                            id: 3,
-                            type: 'smooch_inside',
-                            meta: {
-                                shopify_integration_ids: [1],
-                            },
-                        },
-                    ],
-                }),
-            } as RootState
-
-            const shopifyIntegrations: ShopifyIntegration[] =
-                getShopifyIntegrationsWithoutChat(state).toJS()
-            expect(size(shopifyIntegrations)).toEqual(1)
-
-            const integration: ShopifyIntegration = shopifyIntegrations[0]
-            expect(integration.id).toEqual(2)
-        })
-
-        it('should return no integration', () => {
-            const state = {
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: 'shopify',
-                        },
-                        {
-                            id: 2,
-                            type: 'shopify',
-                        },
-                        {
-                            id: 3,
-                            type: 'smooch_inside',
-                            meta: {
-                                shopify_integration_ids: [1, 2],
-                            },
-                        },
-                    ],
-                }),
-            } as RootState
-
-            const res = getShopifyIntegrationsWithoutChat(state)
-            expect(res.size).toEqual(0)
-        })
-    })
-
     describe('getShopifyIntegrationsWithoutFacebook()', () => {
         it('should return one integration', () => {
             const state = {
@@ -608,7 +545,7 @@ describe('integrations selectors', () => {
                     integrations: [
                         {
                             id: 1,
-                            type: 'smooch_inside',
+                            type: IntegrationType.GorgiasChat,
                             meta: {
                                 campaigns: [
                                     {
@@ -622,7 +559,7 @@ describe('integrations selectors', () => {
                         },
                         {
                             id: 3,
-                            type: 'smooch_inside',
+                            type: IntegrationType.GorgiasChat,
                             meta: {
                                 campaigns: expectedCampaigns,
                             },
@@ -649,7 +586,7 @@ describe('integrations selectors', () => {
                     integrations: [
                         {
                             id: 1,
-                            type: 'smooch_inside',
+                            type: IntegrationType.GorgiasChat,
                             meta: {
                                 campaigns: [
                                     {
@@ -665,7 +602,7 @@ describe('integrations selectors', () => {
                         },
                         {
                             id: 3,
-                            type: 'smooch_inside',
+                            type: IntegrationType.GorgiasChat,
                             meta: {
                                 campaigns: [
                                     expectedCampaign,

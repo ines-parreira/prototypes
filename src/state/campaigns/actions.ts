@@ -14,7 +14,7 @@ export function createCampaign(
     return (dispatch: StoreDispatch) => {
         return client
             .post<Campaign>(
-                `/api/integrations/${integration.get('type') as string}/${
+                `/api/integrations/${IntegrationType.GorgiasChat}/${
                     integration.get('id') as string
                 }/campaigns/`,
                 campaign.toJS()
@@ -26,7 +26,7 @@ export function createCampaign(
                     return dispatch(
                         fetchIntegration(
                             integration.get('id'),
-                            integration.get('type')
+                            IntegrationType.GorgiasChat
                         )
                     ).then(() => {
                         history.push(
@@ -55,7 +55,7 @@ export function updateCampaign(
     return (dispatch: StoreDispatch) => {
         return client
             .put<Campaign>(
-                `/api/integrations/${integration.get('type') as string}/${
+                `/api/integrations/${IntegrationType.GorgiasChat}/${
                     integration.get('id') as string
                 }/campaigns/${campaign.get('id') as string}`,
                 campaign.toJS()
@@ -67,7 +67,7 @@ export function updateCampaign(
                     return dispatch(
                         fetchIntegration(
                             integration.get('id'),
-                            integration.get('type')
+                            IntegrationType.GorgiasChat
                         )
                     )
                 },
@@ -88,7 +88,7 @@ export function deleteCampaign(
     return (dispatch: StoreDispatch) => {
         return client
             .delete(
-                `/api/integrations/${integration.get('type') as string}/${
+                `/api/integrations/${IntegrationType.GorgiasChat}/${
                     integration.get('id') as string
                 }/campaigns/${campaign.get('id') as string}`
             )
@@ -98,7 +98,7 @@ export function deleteCampaign(
                     return dispatch(
                         fetchIntegration(
                             integration.get('id'),
-                            integration.get('type')
+                            IntegrationType.GorgiasChat
                         )
                     )
                 },
