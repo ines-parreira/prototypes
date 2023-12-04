@@ -40,7 +40,7 @@ const AUTOMATION_INTENTS_CHANNELS = [
     TicketChannel.Sms,
 ]
 
-export default function AutomationIntents() {
+export default function AutomateIntents() {
     const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {

@@ -17,7 +17,7 @@ import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
 import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import AutomationIntents from '../AutomationIntents'
+import AutomateIntents from '../AutomateIntents'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -34,7 +34,7 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
 
-describe('AutomationIntents', () => {
+describe('AutomateIntents', () => {
     const defaultState = {
         stats: fromJS({
             filters: {
@@ -63,7 +63,7 @@ describe('AutomationIntents', () => {
 
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
-                <AutomationIntents />
+                <AutomateIntents />
             </Provider>
         )
 

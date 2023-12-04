@@ -13,7 +13,7 @@ import {integrationsState} from 'fixtures/integrations'
 import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import AutomationMacros from '../AutomationMacros'
+import AutomateMacros from '../AutomateMacros'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
@@ -29,7 +29,7 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
 
-describe('AutomationMacros', () => {
+describe('AutomateMacros', () => {
     const defaultState = {
         stats: fromJS({
             filters: {
@@ -57,7 +57,7 @@ describe('AutomationMacros', () => {
 
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
-                <AutomationMacros />
+                <AutomateMacros />
             </Provider>
         )
 

@@ -24,9 +24,9 @@ import AutomationSubscriptionButton from 'pages/settings/billing/automate/Automa
 
 import {KeyMetricCell} from './common/components/charts/KeyMetricStat/KeyMetricCell'
 import KeyMetricCellWrapper from './common/components/charts/KeyMetricStat/KeyMetricCellWrapper'
-import css from './AutomationStatsSelfServiceMetric.less'
+import css from './AutomateStatsSelfServiceMetric.less'
 
-export const AutomationStatsSelfServiceMetric = ({
+export const AutomateStatsSelfServiceMetric = ({
     id,
     ...props
 }: ComponentProps<typeof KeyMetricCell>) => {

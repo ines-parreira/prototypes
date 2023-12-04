@@ -22,7 +22,7 @@ import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPerAgentViewLink'
 import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
 import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreatedPerChannelViewLink'
-import {AutomationStatsSelfServiceMetric} from '../pages/stats/AutomationStatsSelfServiceMetric'
+import {AutomateStatsSelfServiceMetric} from '../pages/stats/AutomateStatsSelfServiceMetric'
 import {SelectableOption} from '../pages/common/forms/SelectField/types'
 import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from '../models/selfServiceConfiguration/constants'
@@ -1326,7 +1326,7 @@ export const stats = toImmutable<
                 name: 'automated_via_selfservice',
                 tooltip:
                     'Percentage of customer interactions automated using self-service. ',
-                component: AutomationStatsSelfServiceMetric,
+                component: AutomateStatsSelfServiceMetric,
             },
         ],
     },

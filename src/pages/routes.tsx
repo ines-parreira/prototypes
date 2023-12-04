@@ -113,8 +113,8 @@ import SupportPerformanceBusiestTimesOfDays from 'pages/stats/SupportPerformance
 import LiveOverview from 'pages/stats/LiveOverview'
 import LiveAgents from 'pages/stats/LiveAgents'
 import AutomationOverview from 'pages/stats/AutomationOverview'
-import AutomationMacros from 'pages/stats/AutomationMacros'
-import AutomationIntents from 'pages/stats/AutomationIntents'
+import AutomateMacros from 'pages/stats/AutomateMacros'
+import AutomateIntents from 'pages/stats/AutomateIntents'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from 'pages/tasks/detail/TwilioSubaccountStatusForm'
 import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBillingIntegration'
@@ -669,7 +669,7 @@ export function StatsRoutes() {
                     path={`${path}/macros`}
                     render={() => (
                         <App
-                            content={AutomationMacros}
+                            content={AutomateMacros}
                             navbar={StatsNavbarContainer}
                         />
                     )}
@@ -679,7 +679,7 @@ export function StatsRoutes() {
                     path={`${path}/intents`}
                     render={() => (
                         <App
-                            content={AutomationIntents}
+                            content={AutomateIntents}
                             navbar={StatsNavbarContainer}
                         />
                     )}

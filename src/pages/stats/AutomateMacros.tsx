@@ -19,7 +19,7 @@ import StatWrapper from './StatWrapper'
 
 export const AUTOMATION_MACROS_STAT_NAME = 'automation-macros'
 
-export default function AutomationMacros() {
+export default function AutomateMacros() {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter

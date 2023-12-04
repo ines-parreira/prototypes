@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AutomationIntents should render the filters and stats when stats filters are defined 1`] = `
+exports[`AutomateIntents should render the filters and stats when stats filters are defined 1`] = `
 <div
   class="full-width wrapper"
 >

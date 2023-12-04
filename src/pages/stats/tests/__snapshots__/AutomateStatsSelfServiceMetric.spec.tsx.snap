@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutomationStatsSelfServiceMetric /> should render legacy 1`] = `
+exports[`<AutomateStatsSelfServiceMetric /> should render legacy 1`] = `
 <div>
   <div
     class="metric"
@@ -40,7 +40,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render legacy 1`] = `
 </div>
 `;
 
-exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
+exports[`<AutomateStatsSelfServiceMetric /> should render paywall 1`] = `
 <div>
   <div
     class="metric"
@@ -80,7 +80,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
 </div>
 `;
 
-exports[`<AutomationStatsSelfServiceMetric /> should render setup 1`] = `
+exports[`<AutomateStatsSelfServiceMetric /> should render setup 1`] = `
 <div>
   <div
     class="metric"
@@ -105,7 +105,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render setup 1`] = `
 </div>
 `;
 
-exports[`<AutomationStatsSelfServiceMetric /> should render stats 1`] = `
+exports[`<AutomateStatsSelfServiceMetric /> should render stats 1`] = `
 <div>
   <div
     class="metric"

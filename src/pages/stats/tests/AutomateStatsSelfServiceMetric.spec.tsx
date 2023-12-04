@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import _cloneDeep from 'lodash/cloneDeep'
 
 import {AUTOMATION_OVERVIEW, stats as statsConfig} from 'config/stats'
-import {AutomationStatsSelfServiceMetric} from 'pages/stats/AutomationStatsSelfServiceMetric'
+import {AutomateStatsSelfServiceMetric} from 'pages/stats/AutomateStatsSelfServiceMetric'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     SelfServiceConfiguration,
@@ -29,7 +29,7 @@ import {entitiesInitialState} from 'fixtures/entities'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<AutomationStatsSelfServiceMetric />', () => {
+describe('<AutomateStatsSelfServiceMetric />', () => {
     const data = fromJS([
         {
             delta: 100,
@@ -43,7 +43,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
         statsConfig.get(AUTOMATION_OVERVIEW).get('metrics') as List<any>
     ).get(2)
 
-    const minProps: ComponentProps<typeof AutomationStatsSelfServiceMetric> = {
+    const minProps: ComponentProps<typeof AutomateStatsSelfServiceMetric> = {
         index: 2,
         loading: false,
         data,
@@ -147,7 +147,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
         act(() => {
             const {container} = render(
                 <Provider store={mockStore(state)}>
-                    <AutomationStatsSelfServiceMetric {...minProps} />
+                    <AutomateStatsSelfServiceMetric {...minProps} />
                 </Provider>
             )
             expect(container).toMatchSnapshot()
