@@ -1,17 +1,20 @@
 import React, {useCallback, useMemo, useState} from 'react'
+
 import {produce} from 'immer'
 import _keyBy from 'lodash/keyBy'
 
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
 
 import {Locale, LocaleCode} from 'models/helpCenter/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
-import DEPRECATED_Modal from '../../../../../../common/components/DEPRECATED_Modal'
 import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
 import {BadgeItemProps, DynamicBadgeList} from '../BadgeList'
 
 import {transformToSelectedLocale} from './utils'
-import css from './AvailableLanguagesTags.less'
 
 function ensureDefaultLanguageIsFirst(
     locales: LocaleCode[],
@@ -141,42 +144,39 @@ export const LanguageBadgeTags = ({
                 onSelectItem={handleOnAddLocale}
                 onRemoveItem={handleOnAttemptRemoveLocale}
             />
-            <DEPRECATED_Modal
+            <Modal
                 isOpen={!!pendingLocale}
-                header="Are you sure you want to delete this language?"
-                className={css['modal-centered']}
-                footer={
-                    <div className={css['footer-actions']}>
-                        <Button
-                            intent="secondary"
-                            onClick={handleOnCancelDeleteLocale}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            className={css['delete-btn']}
-                            intent="secondary"
-                            onClick={handleOnClickDeleteLocale}
-                        >
-                            <i className="material-icons">delete</i>
-                            Delete Language
-                        </Button>
-                    </div>
-                }
-                style={{width: 380}}
                 onClose={handleOnCancelDeleteLocale}
             >
-                {pendingLocale && (
-                    <p>
-                        <FlagLanguageItem
-                            code={localesByCode[pendingLocale.id].code}
-                            name={localesByCode[pendingLocale.id].name}
-                        />{' '}
-                        content will not be available anymore until you add this
-                        language back again.
-                    </p>
-                )}
-            </DEPRECATED_Modal>
+                <ModalHeader title="Delete language?" />
+                <ModalBody>
+                    {pendingLocale && (
+                        <p>
+                            <FlagLanguageItem
+                                code={localesByCode[pendingLocale.id].code}
+                                name={localesByCode[pendingLocale.id].name}
+                            />{' '}
+                            content will no longer be available unless you add
+                            the language back.
+                        </p>
+                    )}
+                </ModalBody>
+                <ModalActionsFooter>
+                    <Button
+                        intent="secondary"
+                        onClick={handleOnCancelDeleteLocale}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        intent="destructive"
+                        onClick={handleOnClickDeleteLocale}
+                    >
+                        <i className="material-icons">delete</i>
+                        Delete Language
+                    </Button>
+                </ModalActionsFooter>
+            </Modal>
         </>
     )
 }
