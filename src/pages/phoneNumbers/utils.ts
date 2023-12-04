@@ -20,6 +20,7 @@ import {
 
 import {IntegrationType} from 'models/integration/types'
 import rawCountries from 'pages/phoneNumbers/options/countries.json'
+import {State, states} from 'config/states'
 
 const CAPABILITY_KEY: Record<
     IntegrationType.Sms | IntegrationType.Phone | IntegrationType.WhatsApp,
@@ -30,8 +31,67 @@ const CAPABILITY_KEY: Record<
     [IntegrationType.WhatsApp]: 'whatsapp',
 }
 
+const AVAILABLE_STATES: Record<string, string[]> = {
+    US: [
+        'AL',
+        'AZ',
+        'AR',
+        'CA',
+        'CO',
+        'CT',
+        'DE',
+        'DC',
+        'FL',
+        'GA',
+        'ID',
+        'IL',
+        'IN',
+        'IA',
+        'KS',
+        'KY',
+        'LA',
+        'ME',
+        'MD',
+        'MA',
+        'MI',
+        'MN',
+        'MS',
+        'MO',
+        'MT',
+        'NE',
+        'NV',
+        'NJ',
+        'NM',
+        'NY',
+        'NC',
+        'ND',
+        'OH',
+        'OK',
+        'OR',
+        'PA',
+        'RI',
+        'SC',
+        'SD',
+        'TN',
+        'TX',
+        'UT',
+        'VT',
+        'VA',
+        'WA',
+        'WV',
+        'WI',
+    ],
+}
+
 export function shouldValidateAddress(country: PhoneCountry): boolean {
     return country === PhoneCountry.GB || country === PhoneCountry.AU
+}
+
+export function getAvailableStates(country: string): State[] {
+    const availableStates = AVAILABLE_STATES[country] ?? []
+    return (states[country] ?? []).filter((state) =>
+        availableStates.includes(state.code)
+    )
 }
 
 export function countryName(country: PhoneCountry): string {

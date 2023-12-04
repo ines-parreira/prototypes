@@ -12,19 +12,14 @@ import InputField from 'pages/common/forms/input/InputField'
 import type {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import rawCountryOptions from './options/countries.json'
-import rawStateOptions from './options/states.json'
 import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawGbAreaCodeOptions from './options/area-codes/gb.json'
 import rawAuAreaCodeOptions from './options/area-codes/au.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
-
-type StateOptions = {
-    [key: string]: SelectableOption[]
-}
+import {getAvailableStates} from './utils'
 
 const countryOptions: SelectableOption[] = rawCountryOptions
-const stateOptions: StateOptions = rawStateOptions
 
 type LocalAreaCodes = {
     [PhoneCountry.US]: Record<string, SelectableOption[]>
@@ -232,7 +227,16 @@ export default function PhoneDetailsFields({
                                 id="state"
                                 value={state}
                                 onChange={handleStateChange}
-                                options={!!country ? stateOptions[country] : []}
+                                options={
+                                    !!country
+                                        ? getAvailableStates(country).map(
+                                              (state) => ({
+                                                  label: state.name,
+                                                  value: state.code,
+                                              })
+                                          )
+                                        : []
+                                }
                                 fullWidth
                                 required
                             />

@@ -6,7 +6,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Button from 'pages/common/components/button/Button'
 import {states as countries} from 'fixtures/states'
 import {SenderInformation} from 'models/singleSenderVerification/types'
-import allStates from 'pages/phoneNumbers/options/states.json'
+import {states} from 'config/states'
 
 import css from './VerificationForm.less'
 
@@ -62,7 +62,6 @@ export default function VerificationForm({
     }
 
     const isStateFieldVisible = country === 'United States'
-    const states = allStates.US
 
     return (
         <Form
@@ -149,7 +148,10 @@ export default function VerificationForm({
                             className={css.inputRow}
                             id="state"
                             fullWidth
-                            options={states}
+                            options={states['US'].map((state) => ({
+                                label: state.name,
+                                value: state.code,
+                            }))}
                             onChange={(state) => setStateValue(state as string)}
                             value={stateValue}
                             disabled={isFormDisabled}

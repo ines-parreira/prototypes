@@ -33,6 +33,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import {
     countryCode,
+    getAvailableStates,
     hasCapability,
     isNewPhoneNumber,
     isTwilioConnection,
@@ -45,18 +46,12 @@ import SourceIcon from 'pages/common/components/SourceIcon'
 import css from './PhoneNumberDetails.less'
 
 import rawCountries from './options/countries.json'
-import rawStates from './options/states.json'
 
 type Props = {
     phoneNumber: NewPhoneNumber
 }
 
-type States = {
-    [key: string]: SelectableOption[]
-}
-
 const countries: SelectableOption[] = rawCountries
-const states: States = rawStates
 
 export function PhoneNumberDetails({phoneNumber}: Props) {
     const dispatch = useAppDispatch()
@@ -67,9 +62,9 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
     const numberCountryCode = countryCode(phoneNumber)
     const state =
         !!twilioConnection && numberCountryCode === PhoneCountry.US
-            ? states[numberCountryCode].find(
-                  (c) => c.value === twilioConnection.meta.address.state
-              )?.label || ''
+            ? getAvailableStates(numberCountryCode).find(
+                  (state) => state.code === twilioConnection.meta.address.state
+              )?.name || ''
             : ''
     const [isPhoneNumberCopied, setIsPhoneNumberCopied] = useState(false)
     const countryName = numberCountryCode
@@ -234,7 +229,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                     <Label className="control-label">
                                         State
                                     </Label>
-                                    <Input value={state as string} readOnly />
+                                    <Input value={state} readOnly />
                                 </FormGroup>
                             </Col>
                         )}

@@ -21,6 +21,7 @@ import {
     normalizeNumber,
     formatPhoneNumberInternational,
     shouldValidateAddress,
+    getAvailableStates,
 } from '../utils'
 
 describe('isNewPhoneNumber()', () => {
@@ -280,4 +281,21 @@ describe('shouldValidateAddress()', () => {
         'should validate address',
         (country) => expect(shouldValidateAddress(country)).toBe(true)
     )
+})
+
+describe('getAvailableStates()', () => {
+    it('should only include a selected list of states', () => {
+        expect(
+            getAvailableStates('US').find((state) => state.name === 'New York')
+        ).toBeDefined()
+        expect(
+            getAvailableStates('US').find(
+                (state) => state.name === 'New Hampshire'
+            )
+        ).toBeUndefined()
+    })
+
+    it('should only include US states', () => {
+        expect(getAvailableStates('CA')).toEqual([])
+    })
 })
