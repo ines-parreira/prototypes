@@ -236,11 +236,16 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="mb40"
           >
             <label
-              class="label mbXs"
+              class="label mbXxs"
               for="store-select"
             >
               Connect a store
             </label>
+            <p
+              class="body-regular description mb8"
+            >
+              A store connection is required to use Automate features and enable auto-embedding for Shopify stores.
+            </p>
             <div>
               <div
                 class="dropdown"

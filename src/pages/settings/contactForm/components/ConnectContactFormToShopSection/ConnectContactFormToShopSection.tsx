@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
+import classNames from 'classnames'
 import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
@@ -32,9 +33,19 @@ export const ConnectContactFormToShopSection = ({
 
     return (
         <section className={settingsCss.mb40}>
-            <Label htmlFor="store-select" className={contactFormCss.mbXs}>
+            <Label htmlFor="store-select" className={contactFormCss.mbXxs}>
                 Connect a store
             </Label>
+            <p
+                className={classNames(
+                    'body-regular',
+                    css.description,
+                    settingsCss.mb8
+                )}
+            >
+                A store connection is required to use Automate features and
+                enable auto-embedding for Shopify stores.
+            </p>
 
             <SelectField
                 disabled={!!shopName}
