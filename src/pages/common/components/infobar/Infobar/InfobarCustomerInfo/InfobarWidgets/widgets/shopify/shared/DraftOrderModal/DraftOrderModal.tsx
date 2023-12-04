@@ -160,19 +160,22 @@ export function DraftOrderModalContainer({
                     integrationId!,
                     data.order ? data.order.get('id') : null
                 )
-                onBulkChange(
-                    [
-                        {
-                            name: 'draft_order_id',
-                            value: result?.get('id') || '',
-                        },
-                        {name: 'payment_pending', value: isPending},
-                    ],
-                    () => {
-                        onSubmit()
-                        handleReset()
-                    }
-                )
+                const result_id = result?.get('id')
+                if (result_id) {
+                    onBulkChange(
+                        [
+                            {
+                                name: 'draft_order_id',
+                                value: result_id,
+                            },
+                            {name: 'payment_pending', value: isPending},
+                        ],
+                        () => {
+                            onSubmit()
+                            handleReset()
+                        }
+                    )
+                }
             },
         [
             onCreateDraftOrder,
