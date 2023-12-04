@@ -209,7 +209,7 @@ export function httpRequestReducer(
                             node.data.json = '{}'
                             break
                         case 'application/x-www-form-urlencoded':
-                            node.data.formUrlencoded = [{key: '', value: ''}]
+                            node.data.formUrlencoded = []
                             break
                     }
                 }

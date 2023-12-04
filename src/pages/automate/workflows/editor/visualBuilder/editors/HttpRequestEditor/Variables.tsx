@@ -50,7 +50,7 @@ const Variables = ({variables, onChange, onDelete, onAdd}: Props) => {
                     </IconButton>
                 </div>
             ))}
-            <div>Variable name and JSONPath</div>
+            {variables.length > 0 && <div>Variable name and JSONPath</div>}
             <Button intent="secondary" onClick={onAdd}>
                 <ButtonIconLabel icon="add">Add Variable</ButtonIconLabel>
             </Button>

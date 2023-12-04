@@ -60,7 +60,7 @@ const FormUrlencoded = ({
                     </IconButton>
                 </div>
             ))}
-            <div>Key and value pairs</div>
+            {items.length > 0 && <div>Key and value pairs</div>}
             <Button intent="secondary" onClick={onAdd}>
                 <ButtonIconLabel icon="add">Add Body Data</ButtonIconLabel>
             </Button>

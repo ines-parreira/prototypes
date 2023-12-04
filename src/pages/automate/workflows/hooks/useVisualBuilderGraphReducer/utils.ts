@@ -225,8 +225,8 @@ export const buildHttpRequestNode: () => HttpRequestNodeType = () => {
             name: '',
             url: '',
             method: 'GET',
-            headers: [{name: '', value: ''}],
-            variables: [{id: ulid(), name: '', jsonpath: ''}],
+            headers: [],
+            variables: [],
         },
     }
 }
