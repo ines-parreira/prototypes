@@ -32,6 +32,7 @@ const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 describe('<TicketDistributionTable>', () => {
     const maxTicketCount = 16
     const ticketsCountTotal = 20
+    const selectedCustomField = {id: 123, label: 'Some Label'}
     const data = [
         {
             [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
@@ -93,7 +94,9 @@ describe('<TicketDistributionTable>', () => {
     it('should render the table', () => {
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable />
+                <TicketDistributionTable
+                    selectedCustomField={selectedCustomField}
+                />
             </Provider>
         )
 
@@ -110,7 +113,9 @@ describe('<TicketDistributionTable>', () => {
     it('should render the total value', () => {
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable />
+                <TicketDistributionTable
+                    selectedCustomField={selectedCustomField}
+                />
             </Provider>
         )
 
@@ -130,7 +135,9 @@ describe('<TicketDistributionTable>', () => {
         })
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable />
+                <TicketDistributionTable
+                    selectedCustomField={selectedCustomField}
+                />
             </Provider>
         )
 
@@ -146,7 +153,9 @@ describe('<TicketDistributionTable>', () => {
 
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable />
+                <TicketDistributionTable
+                    selectedCustomField={selectedCustomField}
+                />
             </Provider>
         )
 
@@ -160,7 +169,9 @@ describe('<TicketDistributionTable>', () => {
         })
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable />
+                <TicketDistributionTable
+                    selectedCustomField={selectedCustomField}
+                />
             </Provider>
         )
 

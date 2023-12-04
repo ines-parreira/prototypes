@@ -4,7 +4,7 @@ import React from 'react'
 import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
 import {OrderDirection} from 'models/api/types'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
-import {TableLabels} from 'pages/stats/TableConfig'
+import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 

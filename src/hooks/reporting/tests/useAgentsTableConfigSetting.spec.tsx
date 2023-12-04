@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {TableColumnsOrder} from 'pages/stats/TableConfig'
+import {TableColumnsOrder} from 'pages/stats/AgentsTableConfig'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {account} from 'fixtures/account'
 import {

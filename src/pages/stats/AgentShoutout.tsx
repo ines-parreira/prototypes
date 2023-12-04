@@ -1,5 +1,5 @@
 import React from 'react'
-import {ShoutoutConfig} from 'pages/stats/shoutouts-config'
+import {ShoutoutConfig} from 'pages/stats/AgentsShoutoutsConfig'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 
 import useAppSelector from 'hooks/useAppSelector'

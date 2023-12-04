@@ -32,6 +32,7 @@ export const medianResolutionTimeQueryFactory = (
         ),
     ],
 })
+
 export const medianResolutionTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -39,6 +40,20 @@ export const medianResolutionTimeMetricPerAgentQueryFactory = (
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...medianResolutionTimeQueryFactory(filters, timezone),
     dimensions: [TicketDimension.AssigneeUserId],
+    ...(sorting
+        ? {
+              order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
+          }
+        : {}),
+})
+
+export const medianResolutionTimeMetricPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...medianResolutionTimeQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.TicketId],
     ...(sorting
         ? {
               order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],

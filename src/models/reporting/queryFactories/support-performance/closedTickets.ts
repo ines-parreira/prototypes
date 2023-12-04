@@ -55,7 +55,20 @@ export const closedTicketsPerAgentQueryFactory = (
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...closedTicketsQueryFactory(filters, timezone),
     dimensions: [TicketDimension.AssigneeUserId],
+    ...(sorting
+        ? {
+              order: [[TicketMeasure.TicketCount, sorting]],
+          }
+        : {}),
+})
 
+export const closedTicketsPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...closedTicketsQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.TicketId],
     ...(sorting
         ? {
               order: [[TicketMeasure.TicketCount, sorting]],

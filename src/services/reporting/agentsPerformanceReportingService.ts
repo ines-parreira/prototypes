@@ -6,7 +6,7 @@ import {
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Metric} from 'hooks/reporting/metrics'
-import {TableLabels} from 'pages/stats/TableConfig'
+import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {User} from 'config/types/user'
 import {createCsv, saveZippedFiles} from 'utils/file'
 import {

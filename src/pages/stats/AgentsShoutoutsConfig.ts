@@ -13,8 +13,8 @@ import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {StatsFilters} from 'models/stat/types'
 import {TableColumn} from 'state/ui/stats/types'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {NOT_AVAILABLE_PLACEHOLDER, formatMetricValue} from './common/utils'
-import {TableLabels} from './TableConfig'
 
 export interface ShoutoutConfig {
     useQuery: (
@@ -42,7 +42,7 @@ const formatDuration = _partial(
     NOT_AVAILABLE_PLACEHOLDER
 )
 
-export const shoutoutsConfig: ShoutoutConfig[] = [
+export const agentsShoutoutsConfig: ShoutoutConfig[] = [
     {
         useQuery: useCustomerSatisfactionMetricPerAgent,
         queryOrder: OrderDirection.Desc,

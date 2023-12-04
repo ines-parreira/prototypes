@@ -7,7 +7,7 @@ import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/heatmap.less'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
 import {
     getCleanStatsFiltersWithTimezone,
     getHeatmapMode,
@@ -22,11 +22,9 @@ import {DrillDownModalTrigger} from './DrillDownModalTrigger'
 export const MessagesSentCellContent = ({
     agent,
     bodyCellProps,
-    column,
 }: {
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
-    column: TableColumn
 }) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -60,7 +58,10 @@ export const MessagesSentCellContent = ({
             ) : (
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
-                    metricData={buildAgentMetric(column, agent)}
+                    metricData={buildAgentMetric(
+                        TableColumn.MessagesSent,
+                        agent
+                    )}
                 >
                     {formatMetricValue(
                         metricValue,

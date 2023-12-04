@@ -11,7 +11,11 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import {
+    medianResolutionTimeMetricPerAgentQueryFactory,
+    medianResolutionTimeMetricPerTicketQueryFactory,
+    medianResolutionTimeQueryFactory,
+} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -78,6 +82,7 @@ describe('medianResolutionTimeMetricPerAgent', () => {
             timezone: timezone,
         })
     })
+
     it('should build a query with and agents sorting', () => {
         const agents = [2]
 
@@ -129,6 +134,51 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 TicketMessagesSegment.ConversationStarted,
             ],
             timezone: timezone,
+        })
+    })
+})
+
+describe('medianResolutionTimeMetricPerTicketQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.add(7, 'days')
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd.toISOString(),
+            start_datetime: periodStart.toISOString(),
+        },
+        channels: [TicketChannel.Email, TicketChannel.Chat],
+        integrations: [1],
+        tags: [1, 2],
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Asc
+
+    it('should build a query', () => {
+        expect(
+            medianResolutionTimeMetricPerTicketQueryFactory(
+                statsFilters,
+                timezone
+            )
+        ).toEqual({
+            ...medianResolutionTimeQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+        })
+    })
+
+    it('should build a query with agents filter and sorting', () => {
+        const agents = [2]
+        const filters = {...statsFilters, agents}
+
+        expect(
+            medianResolutionTimeMetricPerTicketQueryFactory(
+                filters,
+                timezone,
+                sorting
+            )
+        ).toEqual({
+            ...medianResolutionTimeQueryFactory(filters, timezone),
+            dimensions: [TicketDimension.TicketId],
+            order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
         })
     })
 })

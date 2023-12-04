@@ -7,7 +7,7 @@ import {
     TicketMessagesCube,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {getQuery} from 'pages/stats/TableConfig'
+import {getQuery} from 'pages/stats/AgentsTableConfig'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {opposite, OrderDirection} from 'models/api/types'
 import {useSortingQuery} from 'hooks/reporting/useSortingQuery'

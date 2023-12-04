@@ -1,7 +1,11 @@
 import React from 'react'
 import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import {HeaderTooltips, TableLabels, getQuery} from 'pages/stats/TableConfig'
+import {
+    HeaderTooltips,
+    TableLabels,
+    getQuery,
+} from 'pages/stats/AgentsTableConfig'
 import {TableColumn} from 'state/ui/stats/types'
 import {OrderDirection} from 'models/api/types'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'

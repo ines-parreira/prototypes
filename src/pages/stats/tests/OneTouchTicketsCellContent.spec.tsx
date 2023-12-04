@@ -12,7 +12,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
-import {TableColumn} from 'state/ui/stats/types'
 import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -63,10 +62,7 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
     it('should render value as percentage', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <OneTouchTicketsCellContent
-                    column={TableColumn.OneTouchTickets}
-                    agent={agent}
-                />
+                <OneTouchTicketsCellContent agent={agent} />
             </Provider>
         )
 
@@ -83,10 +79,7 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <OneTouchTicketsCellContent
-                    column={TableColumn.OneTouchTickets}
-                    agent={agent}
-                />
+                <OneTouchTicketsCellContent agent={agent} />
             </Provider>
         )
 
@@ -101,10 +94,7 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <OneTouchTicketsCellContent
-                    column={TableColumn.OneTouchTickets}
-                    agent={agent}
-                />
+                <OneTouchTicketsCellContent agent={agent} />
             </Provider>
         )
 

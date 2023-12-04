@@ -5,15 +5,22 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {DrillDownTable} from 'pages/stats/DrillDownTable'
-import {useDrillDownData} from 'pages/stats/useDrillDownData'
-import {getDrillDownMetricColumn} from 'state/ui/stats/drillDownSlice'
+import {
+    DrillDownRowData,
+    useDrillDownData,
+} from 'hooks/reporting/useDrillDownData'
+import {
+    DrillDownMetric,
+    getDrillDownMetricColumn,
+} from 'state/ui/stats/drillDownSlice'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
 jest.mock('state/ui/stats/drillDownSlice')
 const getDrillDownMetricColumnMock = assumeMock(getDrillDownMetricColumn)
-jest.mock('pages/stats/useDrillDownData')
+jest.mock('hooks/reporting/useDrillDownData')
 const useDrillDownDataMock = assumeMock(useDrillDownData)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -22,21 +29,38 @@ describe('<DrillDownTable />', () => {
     const currentPage = 1
     const agentName = 'Agent name'
     const ticketSubject = 'Ticket subject'
-    const data = [
+    const metricData: DrillDownMetric = {metricName: OverviewMetric.OpenTickets}
+    const data: DrillDownRowData[] = [
         {
             ticket: {
                 id: 1,
                 channel: TicketMessageSourceType.Chat,
                 description: 'description',
-                isRead: false,
+                isRead: true,
                 subject: ticketSubject,
+                created: '22/12/2023',
+                contactReason: 'reason',
             },
-            contactReason: 'reason',
             assignee: {
                 id: 1,
                 name: agentName,
             },
-            created: '22/12/2023',
+            metricValue: 15,
+        },
+        {
+            ticket: {
+                id: 2,
+                channel: null,
+                description: null,
+                isRead: false,
+                subject: null,
+                created: null,
+                contactReason: null,
+            },
+            assignee: {
+                id: 1,
+                name: agentName,
+            },
             metricValue: 15,
         },
     ]
@@ -54,7 +78,7 @@ describe('<DrillDownTable />', () => {
     it('should render the table title, table header and rows', () => {
         render(
             <Provider store={mockStore({})}>
-                <DrillDownTable />
+                <DrillDownTable metricData={metricData} />
             </Provider>
         )
 
@@ -71,7 +95,7 @@ describe('<DrillDownTable />', () => {
 
         render(
             <Provider store={mockStore({})}>
-                <DrillDownTable />
+                <DrillDownTable metricData={metricData} />
             </Provider>
         )
 

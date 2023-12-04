@@ -49,7 +49,12 @@ export default function SupportPerformanceTicketInsights() {
             {selectedCustomField.id && (
                 <DashboardSection>
                     <DashboardGridCell size={1}>
-                        <TicketDistributionTable />
+                        <TicketDistributionTable
+                            selectedCustomField={{
+                                id: selectedCustomField.id,
+                                label: selectedCustomField.label,
+                            }}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={11}>
                         <TicketInsightsFieldTrend />

@@ -6,10 +6,11 @@ import {
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ticketsRepliedMetricPerAgentQueryFactory,
+    ticketsRepliedMetricPerTickerQueryFactory,
     ticketsRepliedQueryFactory,
     ticketsRepliedTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
@@ -299,6 +300,48 @@ describe('ticketsRepliedMetricPerAgent', () => {
             measures: [HelpdeskMessageMeasure.TicketCount],
             order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
             timezone: timezone,
+        })
+    })
+})
+
+describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.add(7, 'days')
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd.toISOString(),
+            start_datetime: periodStart.toISOString(),
+        },
+        channels: [TicketChannel.Email, TicketChannel.Chat],
+        integrations: [1],
+        tags: [1, 2],
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Asc
+
+    it('should build a query', () => {
+        expect(
+            ticketsRepliedMetricPerTickerQueryFactory(statsFilters, timezone)
+        ).toEqual({
+            ...ticketsRepliedQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+        })
+    })
+
+    it('should build a query with agents filter and sorting', () => {
+        const agents = [2]
+        const filters = {...statsFilters, agents}
+
+        expect(
+            ticketsRepliedMetricPerTickerQueryFactory(
+                filters,
+                timezone,
+                sorting
+            )
+        ).toEqual({
+            ...ticketsRepliedQueryFactory(filters, timezone),
+            dimensions: [TicketDimension.TicketId],
+            order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
         })
     })
 })

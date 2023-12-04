@@ -1,8 +1,14 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import axios, {AxiosResponse} from 'axios'
 
-import {postReporting} from './resources'
-import {Cube, ReportingParams, ReportingResponse} from './types'
+import {
+    Cube,
+    EnrichmentFields,
+    ReportingParams,
+    ReportingQuery,
+    ReportingResponse,
+} from 'models/reporting/types'
+import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
 
 export const doNotRetry40XErrorsHandler = (
     failureCount: number,
@@ -28,8 +34,16 @@ export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
     ReportingResponse<TData>
 >
 
+export type UseEnrichedPostReportingQueryData<TData> = AxiosResponse<
+    ReportingResponse<TData>
+>
+
 export const reportingKeys = {
     post: (data: ReportingParams) => ['reporting', 'post-reporting', data],
+    postEnriched: (data: {
+        query: ReportingQuery
+        enrichment: EnrichmentFields[]
+    }) => ['reporting', 'post-reporting-enriched', data],
 }
 
 export const usePostReporting = <
@@ -47,6 +61,29 @@ export const usePostReporting = <
     return useQuery({
         queryKey: reportingKeys.post(data),
         queryFn: () => postReporting<TData, TCube>(data),
+        ...defaultOptions,
+        ...overrides,
+    })
+}
+
+export const useEnrichedPostReporting = <
+    TData extends unknown[],
+    SelectData = UseEnrichedPostReportingQueryData<TData>,
+    TCube extends Cube = Cube
+>(
+    data: {
+        query: ReportingQuery<TCube>
+        enrichment: EnrichmentFields[]
+    },
+    overrides?: UseQueryOptions<
+        UseEnrichedPostReportingQueryData<TData>,
+        unknown,
+        SelectData
+    >
+) => {
+    return useQuery({
+        queryKey: reportingKeys.postEnriched(data),
+        queryFn: () => postEnrichedReporting<TData>(data),
         ...defaultOptions,
         ...overrides,
     })

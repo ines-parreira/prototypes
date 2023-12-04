@@ -12,7 +12,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {TableColumn} from 'state/ui/stats/types'
 import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -64,10 +63,7 @@ describe('<CustomerSatisfactionCellContent>', () => {
     it('should render value as decimal', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <CustomerSatisfactionCellContent
-                    column={TableColumn.CustomerSatisfaction}
-                    agent={agent}
-                />
+                <CustomerSatisfactionCellContent agent={agent} />
             </Provider>
         )
 
@@ -81,10 +77,7 @@ describe('<CustomerSatisfactionCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <CustomerSatisfactionCellContent
-                    column={TableColumn.CustomerSatisfaction}
-                    agent={agent}
-                />
+                <CustomerSatisfactionCellContent agent={agent} />
             </Provider>
         )
 

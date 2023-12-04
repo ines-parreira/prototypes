@@ -50,7 +50,7 @@ describe('metricsPerDimension', () => {
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
-    const agentId = 'someId'
+    const agentId = '2'
     const customFieldId = '1'
 
     describe('useMedianFirstResponseTimeMetricPerAgent', () => {

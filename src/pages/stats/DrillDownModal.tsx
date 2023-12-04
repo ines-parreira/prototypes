@@ -24,7 +24,7 @@ export const DrillDownModal = () => {
     const hasAnalyticsDrillDown: boolean =
         useFlags()[FeatureFlagKey.AnalyticsDrillDown]
 
-    return hasAnalyticsDrillDown ? (
+    return hasAnalyticsDrillDown && isOpen ? (
         <Modal
             size="huge"
             isOpen={isOpen}
@@ -34,8 +34,12 @@ export const DrillDownModal = () => {
         >
             <ModalHeader title={metricData?.title} />
             <ModalBody className="p-0">
-                <DrillDownInfobar />
-                <DrillDownTable />
+                {metricData !== null && (
+                    <>
+                        <DrillDownInfobar metricData={metricData} />
+                        <DrillDownTable metricData={metricData} />
+                    </>
+                )}
             </ModalBody>
         </Modal>
     ) : null

@@ -1,11 +1,16 @@
 import React from 'react'
-import {DrillDownDownloadButton} from './DrillDownDownloadButton'
-import {useDrillDownData} from './useDrillDownData'
+import {DrillDownDownloadButton} from 'pages/stats/DrillDownDownloadButton'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
 
 import css from './DrillDownInfobar.less'
 
-export const DrillDownInfobar = () => {
-    const {data, perPage} = useDrillDownData()
+export const DrillDownInfobar = ({
+    metricData,
+}: {
+    metricData: DrillDownMetric
+}) => {
+    const {data, perPage} = useDrillDownData(metricData)
 
     return (
         <div className={css.wrapper}>

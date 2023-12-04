@@ -1,13 +1,20 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {AxiosError, AxiosResponse} from 'axios'
+import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {doNotRetry40XErrorsHandler, usePostReporting} from '../queries'
-import {postReporting} from '../resources'
+import {assumeMock} from 'utils/testing'
+import {
+    doNotRetry40XErrorsHandler,
+    useEnrichedPostReporting,
+    usePostReporting,
+} from '../queries'
+import {postEnrichedReporting, postReporting} from '../resources'
 
 import {ReportingParams} from '../types'
 
 jest.mock('../resources')
-const postReportingMock = postReporting as jest.Mock
+const postReportingMock = assumeMock(postReporting)
+const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
 
 describe('Reporting queries', () => {
     const mockData = {
@@ -20,9 +27,9 @@ describe('Reporting queries', () => {
             query: 'foo bar',
             data: [42],
         },
-    }
+    } as any
 
-    const payload: ReportingParams = [
+    const cubeQueries: ReportingParams = [
         {
             filters: [],
             measures: [],
@@ -38,14 +45,14 @@ describe('Reporting queries', () => {
     describe('usePostReporting', () => {
         it('should call postReporting and return the result', async () => {
             const {result, waitForNextUpdate} = renderHook(
-                () => usePostReporting(payload),
+                () => usePostReporting(cubeQueries),
                 {
                     wrapper: mockQueryClientProvider(),
                 }
             )
             await waitForNextUpdate()
 
-            expect(postReportingMock).toHaveBeenCalledWith(payload)
+            expect(postReportingMock).toHaveBeenCalledWith(cubeQueries)
             expect(result.current.data?.data.data).toEqual([42])
         })
 
@@ -120,6 +127,25 @@ describe('Reporting queries', () => {
                     ).toEqual(shouldRetry)
                 }
             )
+        })
+    })
+
+    describe('useEnrichedPostReporting', () => {
+        it('should ', async () => {
+            const payload = {
+                query: cubeQueries[0],
+                enrichment: defaultEnrichmentFields,
+            }
+
+            const {waitForNextUpdate} = renderHook(
+                () => useEnrichedPostReporting(payload),
+                {
+                    wrapper: mockQueryClientProvider(),
+                }
+            )
+            await waitForNextUpdate()
+
+            expect(postEnrichedReportingMock).toHaveBeenCalledWith(payload)
         })
     })
 })

@@ -32,9 +32,9 @@ const CATEGORY_COLUMN_WIDTH = 250
 const DATA_COLUMN_WIDTH = 120
 
 export const CustomFieldsTicketCountBreakdownTable = ({
-    selectedCustomFieldId,
+    selectedCustomField,
 }: {
-    selectedCustomFieldId: number
+    selectedCustomField: {id: number; label: string}
 }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [ref, {width}] = useMeasure<HTMLDivElement>()
@@ -57,7 +57,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
         dateTimes,
         isLoading,
         order,
-    } = useCustomFieldsTicketCountPerCustomFields(selectedCustomFieldId)
+    } = useCustomFieldsTicketCountPerCustomFields(selectedCustomField.id)
 
     useEffect(() => {
         setCurrentPage(1)
@@ -152,6 +152,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                           ...row,
                                           isLoading,
                                           isTableScrolled,
+                                          selectedCustomField,
                                       }}
                                       RowContentComponent={
                                           CustomFieldsTicketCountDataRowContent

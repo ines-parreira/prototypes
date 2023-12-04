@@ -15,7 +15,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
-import {TableColumn} from 'state/ui/stats/types'
 import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -67,10 +66,7 @@ describe('<ClosedTicketsCellContent>', () => {
     it('should render value as decimal', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <ClosedTicketsCellContent
-                    column={TableColumn.ClosedTickets}
-                    agent={agent}
-                />
+                <ClosedTicketsCellContent agent={agent} />
             </Provider>
         )
 
@@ -92,10 +88,7 @@ describe('<ClosedTicketsCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <ClosedTicketsCellContent
-                    column={TableColumn.ClosedTickets}
-                    agent={agent}
-                />
+                <ClosedTicketsCellContent agent={agent} />
             </Provider>
         )
 

@@ -19,7 +19,7 @@ import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClos
 import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
 import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeCellSummary'
-import {TableColumnsOrder} from 'pages/stats/TableConfig'
+import {TableColumnsOrder} from 'pages/stats/AgentsTableConfig'
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'

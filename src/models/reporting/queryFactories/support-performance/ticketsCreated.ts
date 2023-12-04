@@ -13,6 +13,7 @@ import {
     ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
+    ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -110,3 +111,17 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
         ],
     }
 }
+
+export const ticketsCreatedPerTicketQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...ticketsCreatedQueryFactory(statsFilters, timezone),
+    dimensions: [TicketDimension.TicketId],
+    ...(sorting
+        ? {
+              order: [[TicketMeasure.TicketCount, sorting]],
+          }
+        : {}),
+})

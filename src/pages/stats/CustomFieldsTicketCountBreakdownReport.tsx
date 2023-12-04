@@ -14,7 +14,7 @@ const REPORT_HINT =
     'Number of tickets labeled with each value within the selected timeframe for the selected Ticket Field. Only values that have been used at least once are shown.'
 
 export const CustomFieldsTicketCountBreakdownReport = () => {
-    const {id} = useAppSelector(getSelectedCustomField)
+    const {id, label} = useAppSelector(getSelectedCustomField)
 
     return (
         <ChartCard
@@ -31,7 +31,10 @@ export const CustomFieldsTicketCountBreakdownReport = () => {
         >
             {id !== null ? (
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={id}
+                    selectedCustomField={{
+                        id: id,
+                        label,
+                    }}
                 />
             ) : (
                 <NoDataAvailable

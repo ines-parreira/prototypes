@@ -23,6 +23,18 @@ export type FetchStatStartedAction = PayloadActionCreator<
     typeof FETCH_STAT_STARTED
 >
 
+export enum OverviewMetric {
+    CustomerSatisfaction = 'customer_satisfaction',
+    MedianFirstResponseTime = 'median_first_response_time',
+    MessagesPerTicket = 'messages_per_ticket',
+    MessagesSent = 'messages_sent',
+    OpenTickets = 'open_tickets',
+    MedianResolutionTime = 'median_resolution_time',
+    TicketsClosed = 'tickets_closed',
+    TicketsCreated = 'tickets_created',
+    TicketsReplied = 'tickets_replied',
+}
+
 export enum TableColumn {
     AgentName = 'agent_name',
     CustomerSatisfaction = 'customer_satisfaction',

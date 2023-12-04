@@ -1,5 +1,10 @@
+import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMeasure,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -29,4 +34,18 @@ export const openTicketsQueryFactory = (
             (filter) => filter.member !== TicketStatsFiltersMembers.periodStart
         ),
     ],
+})
+
+export const openTicketsPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...openTicketsQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.TicketId],
+    ...(sorting
+        ? {
+              order: [[TicketMeasure.TicketCount, sorting]],
+          }
+        : {}),
 })

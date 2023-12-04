@@ -197,3 +197,9 @@ export const withFilter = <T extends ReportingQuery>(
 ): T => {
     return {...query, filters: [...query.filters, filter]}
 }
+
+export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({
+    member: TicketMember.AssigneeUserId,
+    operator: ReportingFilterOperator.Set,
+    values: agentAssigneeId ? [agentAssigneeId] : [],
+})

@@ -60,13 +60,11 @@ import {
 import {DownloadOverviewDataButton} from 'pages/stats/DownloadOverviewDataButton'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {getTimezone} from 'state/currentUser/selectors'
+import {OverviewMetric} from 'state/ui/stats/types'
 import {getPreviousPeriod, periodToReportingGranularity} from 'utils/reporting'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {overviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {
     formatMetricValue,
     formatTimeSeriesData,
@@ -82,7 +80,6 @@ import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
-import {statsHintsTooltipsConfig} from './stats-hints-config'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
@@ -299,12 +296,9 @@ export default function SupportPerformanceOverview() {
                 >
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title={CUSTOMER_SATISFACTION_LABEL}
-                            hint={
-                                statsHintsTooltipsConfig[
-                                    CUSTOMER_SATISFACTION_LABEL
-                                ]
-                            }
+                            {...overviewMetricConfig[
+                                OverviewMetric.CustomerSatisfaction
+                            ]}
                             isLoading={customerSatisfactionTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -340,7 +334,7 @@ export default function SupportPerformanceOverview() {
                                     metricData={{
                                         title: CUSTOMER_SATISFACTION_LABEL,
                                         metricName:
-                                            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                                            OverviewMetric.CustomerSatisfaction,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -362,12 +356,9 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title={MEDIAN_FIRST_RESPONSE_TIME_LABEL}
-                            hint={
-                                statsHintsTooltipsConfig[
-                                    MEDIAN_FIRST_RESPONSE_TIME_LABEL
-                                ]
-                            }
+                            {...overviewMetricConfig[
+                                OverviewMetric.MedianFirstResponseTime
+                            ]}
                             isLoading={medianFirstResponseTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -404,7 +395,7 @@ export default function SupportPerformanceOverview() {
                                     metricData={{
                                         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
                                         metricName:
-                                            TicketMessagesMeasure.MedianFirstResponseTime,
+                                            OverviewMetric.MedianFirstResponseTime,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -423,12 +414,9 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title={MEDIAN_RESOLUTION_TIME_LABEL}
-                            hint={
-                                statsHintsTooltipsConfig[
-                                    MEDIAN_RESOLUTION_TIME_LABEL
-                                ]
-                            }
+                            {...overviewMetricConfig[
+                                OverviewMetric.MedianResolutionTime
+                            ]}
                             isLoading={medianResolutionTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -461,7 +449,7 @@ export default function SupportPerformanceOverview() {
                                     metricData={{
                                         title: MEDIAN_RESOLUTION_TIME_LABEL,
                                         metricName:
-                                            TicketMessagesMeasure.MedianResolutionTime,
+                                            OverviewMetric.MedianResolutionTime,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -479,12 +467,9 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title={MESSAGES_PER_TICKET_LABEL}
-                            hint={
-                                statsHintsTooltipsConfig[
-                                    MESSAGES_PER_TICKET_LABEL
-                                ]
-                            }
+                            {...overviewMetricConfig[
+                                OverviewMetric.MessagesPerTicket
+                            ]}
                             isLoading={messagesPerTicketTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -514,7 +499,7 @@ export default function SupportPerformanceOverview() {
                                     metricData={{
                                         title: MESSAGES_PER_TICKET_LABEL,
                                         metricName:
-                                            TicketMessagesMeasure.MessagesAverage,
+                                            OverviewMetric.MessagesPerTicket,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -532,8 +517,9 @@ export default function SupportPerformanceOverview() {
                 <DashboardSection title="Workload">
                     <DashboardGridCell size={6}>
                         <MetricCard
-                            title={OPEN_TICKETS_LABEL}
-                            hint={statsHintsTooltipsConfig[OPEN_TICKETS_LABEL]}
+                            {...overviewMetricConfig[
+                                OverviewMetric.OpenTickets
+                            ]}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -554,7 +540,7 @@ export default function SupportPerformanceOverview() {
                                 <DrillDownModalTrigger
                                     metricData={{
                                         title: OPEN_TICKETS_LABEL,
-                                        metricName: TicketMeasure.TicketCount,
+                                        metricName: OverviewMetric.OpenTickets,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -571,10 +557,9 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <MetricCard
-                            title={TICKETS_CLOSED_LABEL}
-                            hint={
-                                statsHintsTooltipsConfig[TICKETS_CLOSED_LABEL]
-                            }
+                            {...overviewMetricConfig[
+                                OverviewMetric.TicketsClosed
+                            ]}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -597,7 +582,8 @@ export default function SupportPerformanceOverview() {
                                 <DrillDownModalTrigger
                                     metricData={{
                                         title: TICKETS_CLOSED_LABEL,
-                                        metricName: TicketMeasure.TicketCount,
+                                        metricName:
+                                            OverviewMetric.TicketsClosed,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -614,10 +600,9 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <MetricCard
-                            title={TICKETS_CREATED_LABEL}
-                            hint={
-                                statsHintsTooltipsConfig[TICKETS_CREATED_LABEL]
-                            }
+                            {...overviewMetricConfig[
+                                OverviewMetric.TicketsCreated
+                            ]}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -640,7 +625,8 @@ export default function SupportPerformanceOverview() {
                                 <DrillDownModalTrigger
                                     metricData={{
                                         title: TICKETS_CREATED_LABEL,
-                                        metricName: TicketMeasure.TicketCount,
+                                        metricName:
+                                            OverviewMetric.TicketsCreated,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -657,10 +643,9 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <MetricCard
-                            title={TICKETS_REPLIED_LABEL}
-                            hint={
-                                statsHintsTooltipsConfig[TICKETS_REPLIED_LABEL]
-                            }
+                            {...overviewMetricConfig[
+                                OverviewMetric.TicketsReplied
+                            ]}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -684,7 +669,7 @@ export default function SupportPerformanceOverview() {
                                     metricData={{
                                         title: TICKETS_REPLIED_LABEL,
                                         metricName:
-                                            HelpdeskMessageMeasure.TicketCount,
+                                            OverviewMetric.TicketsReplied,
                                         dateRange: statsFilters.period,
                                     }}
                                 >
@@ -701,8 +686,9 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <MetricCard
-                            title={MESSAGES_SENT_LABEL}
-                            hint={statsHintsTooltipsConfig[MESSAGES_SENT_LABEL]}
+                            {...overviewMetricConfig[
+                                OverviewMetric.MessagesSent
+                            ]}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -725,8 +711,7 @@ export default function SupportPerformanceOverview() {
                                 <DrillDownModalTrigger
                                     metricData={{
                                         title: MESSAGES_SENT_LABEL,
-                                        metricName:
-                                            HelpdeskMessageMeasure.MessageCount,
+                                        metricName: OverviewMetric.MessagesSent,
                                         dateRange: statsFilters.period,
                                     }}
                                 >

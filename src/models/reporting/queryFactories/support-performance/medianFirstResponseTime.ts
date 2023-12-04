@@ -1,5 +1,8 @@
 import {OrderDirection} from 'models/api/types'
-import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketCubeWithJoins,
+    TicketDimension,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
@@ -62,6 +65,20 @@ export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...medianFirstResponseTimeQueryFactory(filters, timezone),
     dimensions: [TicketMessagesDimension.FirstHelpdeskMessageUserId],
+    ...(sorting
+        ? {
+              order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
+          }
+        : {}),
+})
+
+export const medianFirstResponseTimeMetricPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<TicketCubeWithJoins> => ({
+    ...medianFirstResponseTimeQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.TicketId],
     ...(sorting
         ? {
               order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],

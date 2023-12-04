@@ -31,7 +31,7 @@ import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeC
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
 import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
 import {SummaryCell} from 'pages/stats/SummaryCell'
-import {getColumnAlignment, getColumnWidth} from 'pages/stats/TableConfig'
+import {getColumnAlignment, getColumnWidth} from 'pages/stats/AgentsTableConfig'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'

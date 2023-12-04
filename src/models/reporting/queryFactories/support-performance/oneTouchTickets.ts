@@ -47,3 +47,12 @@ export const oneTouchTicketsPerAgentQueryFactory = (
     ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
     dimensions: [TicketDimension.AssigneeUserId],
 })
+
+export const oneTouchTicketsPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
+    dimensions: [TicketDimension.TicketId],
+})

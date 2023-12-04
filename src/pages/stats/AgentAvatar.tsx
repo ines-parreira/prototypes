@@ -10,11 +10,11 @@ export const AgentAvatar = ({
     avatarSize = 36,
     className,
 }: {
-    agent: User
+    agent: {id: number} & Partial<User>
     avatarSize?: number
     className?: string
 }) => {
-    const agentName = agent.name || agent.email
+    const agentName = agent?.name || agent?.email
     const tooltipTargetID = `agent-${agent.id}`
 
     return (

@@ -15,8 +15,6 @@ import {
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import useAppSelector from 'hooks/useAppSelector'
 
 import {
     DistributionCategoryCell,
@@ -31,7 +29,11 @@ export const OUTSIDE_TOP_DATA = {
     color: colors['📺 Classic'].Accessory.Purple_bg.value,
 }
 
-export const TicketDistributionTable = () => {
+export const TicketDistributionTable = ({
+    selectedCustomField,
+}: {
+    selectedCustomField: {id: number; label: string}
+}) => {
     const {
         isFetching,
         topData,
@@ -40,7 +42,6 @@ export const TicketDistributionTable = () => {
         outsideTopTotalPercentage,
         outsideTopTotalGaugePercentage,
     } = useTicketsDistribution()
-    const selectedCustomField = useAppSelector(getSelectedCustomField)
 
     return (
         <ChartCard
@@ -98,7 +99,9 @@ export const TicketDistributionTable = () => {
                                             )}`,
                                             metricName:
                                                 TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                                            customFieldValue: item.category,
+                                            customFieldId:
+                                                selectedCustomField.id,
+                                            customFieldValue: [item.category],
                                         }}
                                     >
                                         {formatMetricValue(
@@ -156,6 +159,7 @@ export const TicketDistributionTable = () => {
                                         title: `${selectedCustomField.label} | Total`,
                                         metricName:
                                             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                                        customFieldId: selectedCustomField.id,
                                         customFieldValue: null,
                                     }}
                                 >

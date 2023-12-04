@@ -1,22 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {RootState} from 'state/types'
+import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {OrderDirection} from 'models/api/types'
-import {TableColumn} from 'state/ui/stats/types'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {TableLabels} from 'pages/stats/TableConfig'
 import {User} from 'config/types/user'
-import {
-    CUSTOMER_SATISFACTION_LABEL,
-    MEDIAN_FIRST_RESPONSE_TIME_LABEL,
-    MEDIAN_RESOLUTION_TIME_LABEL,
-    MESSAGES_PER_TICKET_LABEL,
-    MESSAGES_SENT_LABEL,
-} from 'services/reporting/constants'
+import {overviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
+import {RootState} from 'state/types'
+import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
 
 type CommonMetrics = {
     title?: string
@@ -28,23 +18,36 @@ type CommonMetrics = {
 
 type PerformanceOverviewMetrics = {
     metricName:
-        | TicketSatisfactionSurveyMeasure.AvgSurveyScore
-        | TicketMessagesMeasure.MedianFirstResponseTime
-        | TicketMessagesMeasure.MedianResolutionTime
-        | TicketMessagesMeasure.MessagesAverage
-        | TicketMeasure.TicketCount
-        | HelpdeskMessageMeasure.TicketCount
-        | HelpdeskMessageMeasure.MessageCount
+        | OverviewMetric.OpenTickets
+        | OverviewMetric.TicketsClosed
+        | OverviewMetric.TicketsCreated
+        | OverviewMetric.TicketsReplied
+        | OverviewMetric.MessagesSent
+        | OverviewMetric.MessagesPerTicket
+        | OverviewMetric.MedianResolutionTime
+        | OverviewMetric.MedianFirstResponseTime
+        | OverviewMetric.CustomerSatisfaction
 } & CommonMetrics
 
+export type AgentMetricColumn =
+    | TableColumn.CustomerSatisfaction
+    | TableColumn.MedianFirstResponseTime
+    | TableColumn.MedianResolutionTime
+    | TableColumn.MessagesSent
+    | TableColumn.PercentageOfClosedTickets
+    | TableColumn.ClosedTickets
+    | TableColumn.RepliedTickets
+    | TableColumn.OneTouchTickets
+
 export type AgentsMetrics = {
-    metricName: TableColumn
+    metricName: AgentMetricColumn
     perAgentId: number
 } & CommonMetrics
 
 export type TicketFieldsMetrics = {
     metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-    customFieldValue: string | string[] | null
+    customFieldId: number | null
+    customFieldValue: string[] | null
 } & CommonMetrics
 
 export type DrillDownMetric =
@@ -58,8 +61,10 @@ export type DrillDownState = {
 }
 
 const hiddenMetrics: DrillDownMetric['metricName'][] = [
-    TicketMeasure.TicketCount,
-    HelpdeskMessageMeasure.TicketCount,
+    OverviewMetric.OpenTickets,
+    OverviewMetric.TicketsClosed,
+    OverviewMetric.TicketsCreated,
+    OverviewMetric.TicketsReplied,
     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     TableColumn.ClosedTickets,
     TableColumn.PercentageOfClosedTickets,
@@ -95,8 +100,7 @@ export const getDrillDownMetric = (state: RootState) => {
     return {
         metricData,
         metricOrder:
-            metricData?.metricName ===
-                TicketSatisfactionSurveyMeasure.AvgSurveyScore ||
+            metricData?.metricName === OverviewMetric.CustomerSatisfaction ||
             metricData?.metricName === TableColumn.CustomerSatisfaction
                 ? OrderDirection.Asc
                 : OrderDirection.Desc,
@@ -109,8 +113,8 @@ const getMetricValueFormat = (
     if (
         metricName === TableColumn.MedianFirstResponseTime ||
         metricName === TableColumn.MedianResolutionTime ||
-        metricName === TicketMessagesMeasure.MedianFirstResponseTime ||
-        metricName === TicketMessagesMeasure.MedianResolutionTime
+        metricName === OverviewMetric.MedianFirstResponseTime ||
+        metricName === OverviewMetric.MedianResolutionTime
     ) {
         return 'duration'
     }
@@ -145,20 +149,7 @@ export const getDrillDownMetricColumn = (
     } else if ('customFieldValue' in metricData) {
         metricTitle = ''
     } else {
-        const performanceMetricsTitle = {
-            [HelpdeskMessageMeasure.MessageCount]: MESSAGES_SENT_LABEL,
-            [TicketMessagesMeasure.MedianFirstResponseTime]:
-                MEDIAN_FIRST_RESPONSE_TIME_LABEL,
-            [TicketMessagesMeasure.MedianResolutionTime]:
-                MEDIAN_RESOLUTION_TIME_LABEL,
-            [TicketMessagesMeasure.MessagesAverage]: MESSAGES_PER_TICKET_LABEL,
-            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]:
-                CUSTOMER_SATISFACTION_LABEL,
-            [HelpdeskMessageMeasure.TicketCount]: '',
-            [TicketMeasure.TicketCount]: '',
-        }
-
-        metricTitle = performanceMetricsTitle[metricData.metricName]
+        metricTitle = overviewMetricConfig[metricData.metricName].title
     }
 
     return {
@@ -168,7 +159,7 @@ export const getDrillDownMetricColumn = (
     }
 }
 
-export const buildAgentMetric = (column: TableColumn, agent: User) => ({
+export const buildAgentMetric = (column: AgentMetricColumn, agent: User) => ({
     title: `${TableLabels[column]} | ${agent.name}`,
     metricName: column,
     perAgentId: agent.id,

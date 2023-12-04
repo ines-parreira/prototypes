@@ -13,7 +13,6 @@ import {
     getHeatmapMode,
     getValueMode,
     ValueMode,
-    getSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {
     formatMetricValue,
@@ -34,6 +33,7 @@ export type DataRowProps =
         isTableScrolled?: boolean
         onClick?: () => void
         children?: TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile[]
+        selectedCustomField?: {id: number; label: string}
     }
 
 const formatAccordingToValueMode =
@@ -57,6 +57,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
     [BREAKDOWN_FIELD]: label,
     [VALUE_FIELD]: value = 0,
     initialCustomFieldValue,
+    selectedCustomField,
     percentage,
     decile,
     totalsDecile,
@@ -67,7 +68,6 @@ export const CustomFieldsTicketCountDataRowContent = ({
     const valueMode = useAppSelector(getValueMode)
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
-    const selectedCustomField = useAppSelector(getSelectedCustomField)
     const {granularity} = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     return (
@@ -116,9 +116,12 @@ export const CustomFieldsTicketCountDataRowContent = ({
                         }) !== NOT_AVAILABLE_PLACEHOLDER
                     }
                     metricData={{
-                        title: `${selectedCustomField.label} | ${label} | Total`,
+                        title: `${String(
+                            selectedCustomField?.label
+                        )} | ${label} | Total`,
                         metricName:
                             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                        customFieldId: selectedCustomField?.id || null,
                         customFieldValue: initialCustomFieldValue,
                     }}
                 >
@@ -155,14 +158,15 @@ export const CustomFieldsTicketCountDataRowContent = ({
                             NOT_AVAILABLE_PLACEHOLDER
                         }
                         metricData={{
-                            title: `${
-                                selectedCustomField.label
-                            } | ${label} | ${formatDates(
+                            title: `${String(
+                                selectedCustomField?.label
+                            )} | ${label} | ${formatDates(
                                 granularity,
                                 data.dateTime
                             )}`,
                             metricName:
                                 TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                            customFieldId: selectedCustomField?.id || null,
                             customFieldValue: initialCustomFieldValue,
                             dateRange: {
                                 start_datetime: data.dateTime,

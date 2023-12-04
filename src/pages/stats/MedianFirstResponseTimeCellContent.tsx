@@ -7,26 +7,24 @@ import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/heatmap.less'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
 import {
     getCleanStatsFiltersWithTimezone,
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {TableColumn} from 'state/ui/stats/types'
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
+import {TableColumn} from 'state/ui/stats/types'
 import {DrillDownModalTrigger} from './DrillDownModalTrigger'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const MedianFirstResponseTimeCellContent = ({
     agent,
     bodyCellProps,
-    column,
 }: {
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
-    column: TableColumn
 }) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -60,7 +58,10 @@ export const MedianFirstResponseTimeCellContent = ({
             ) : (
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
-                    metricData={buildAgentMetric(column, agent)}
+                    metricData={buildAgentMetric(
+                        TableColumn.MedianFirstResponseTime,
+                        agent
+                    )}
                 >
                     {formatMetricValue(
                         metricValue,

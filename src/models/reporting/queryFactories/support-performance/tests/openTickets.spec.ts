@@ -1,6 +1,14 @@
 import moment from 'moment/moment'
-import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
+import {OrderDirection} from 'models/api/types'
+import {
+    TicketDimension,
+    TicketMeasure,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import {
+    openTicketsPerTicketQueryFactory,
+    openTicketsQueryFactory,
+} from 'models/reporting/queryFactories/support-performance/openTickets'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -39,6 +47,42 @@ describe('openTicketsTrendQueryFactory', () => {
                 },
             ],
             timezone,
+        })
+    })
+})
+
+describe('openTicketsPerTicketQueryFactory', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment())
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
+        },
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Asc
+
+    it('should build a query', () => {
+        const query = openTicketsPerTicketQueryFactory(statsFilters, timezone)
+
+        expect(query).toEqual({
+            ...openTicketsQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+        })
+    })
+
+    it('should build a query with sorting', () => {
+        const query = openTicketsPerTicketQueryFactory(
+            statsFilters,
+            timezone,
+            sorting
+        )
+
+        expect(query).toEqual({
+            ...openTicketsQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+            order: [[TicketMeasure.TicketCount, sorting]],
         })
     })
 })

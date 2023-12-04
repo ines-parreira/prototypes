@@ -1,25 +1,20 @@
 import React, {PropsWithRef} from 'react'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
+import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import {TicketDetails} from 'hooks/reporting/useDrillDownData'
 
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import {ChannelLabel} from 'pages/common/utils/labels'
-import {TicketMessageSourceType} from 'business/types/ticket'
 import css from './DrillDownTicketDetailsCell.less'
 
 export const DrillDownTicketDetailsCell = ({
     ticketDetails,
     bodyCellProps,
 }: {
-    ticketDetails: {
-        id: number
-        subject: string
-        description: string
-        channel: TicketMessageSourceType
-        isRead: boolean
-    }
+    ticketDetails: TicketDetails
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) => {
     return (
@@ -33,7 +28,11 @@ export const DrillDownTicketDetailsCell = ({
                 })}
             >
                 <div className={css.channel}>
-                    <ChannelLabel channel={ticketDetails.channel} />
+                    {ticketDetails.channel ? (
+                        <ChannelLabel channel={ticketDetails.channel} />
+                    ) : (
+                        NOT_AVAILABLE_PLACEHOLDER
+                    )}
                 </div>
                 <div className={css.wrapper}>
                     <h4 className={css.subject}>{ticketDetails.subject}</h4>

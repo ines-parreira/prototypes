@@ -8,7 +8,11 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import {
+    ticketsCreatedPerTicketQueryFactory,
+    ticketsCreatedQueryFactory,
+    ticketsCreatedTimeSeriesQueryFactory,
+} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -112,6 +116,45 @@ describe('ticketsCreatedQueryFactory', () => {
                 },
             ],
             timezone,
+        })
+    })
+})
+
+describe('ticketsCreatedPerTicketQueryFactory', () => {
+    const periodStart = '2021-05-29T00:00:00.000'
+    const periodEnd = '2021-06-04T23:59:59.000'
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const timezone = 'UTC'
+    const sorting = OrderDirection.Asc
+
+    it('should build expected query', () => {
+        const query = ticketsCreatedPerTicketQueryFactory(
+            statsFilters,
+            timezone
+        )
+
+        expect(query).toEqual({
+            ...ticketsCreatedQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+        })
+    })
+
+    it('should build expected query with sorting', () => {
+        const query = ticketsCreatedPerTicketQueryFactory(
+            statsFilters,
+            timezone,
+            sorting
+        )
+
+        expect(query).toEqual({
+            ...ticketsCreatedQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+            order: [[TicketMeasure.TicketCount, sorting]],
         })
     })
 })

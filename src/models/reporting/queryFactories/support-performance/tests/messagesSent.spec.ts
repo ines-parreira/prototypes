@@ -6,10 +6,10 @@ import {
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     messagesSentMetricPerAgentQueryFactory,
+    messagesSentMetricPerTicketQueryFactory,
     messagesSentQueryFactory,
     messagesSentTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -155,123 +155,58 @@ describe('messagesSentMetricPerAgentQueryFactory', () => {
         expect(
             messagesSentMetricPerAgentQueryFactory(statsFilters, timezone)
         ).toEqual({
+            ...messagesSentQueryFactory(statsFilters, timezone),
             dimensions: [HelpdeskMessageDimension.SenderId],
-            filters: [
-                {
-                    member: TicketMember.PeriodStart,
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [formatReportingQueryDate(periodStart)],
-                },
-                {
-                    member: TicketMember.PeriodEnd,
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [formatReportingQueryDate(periodEnd)],
-                },
-                {
-                    member: HelpdeskMessageMember.SentDatetime,
-                    operator: ReportingFilterOperator.InDateRange,
-                    values: [
-                        formatReportingQueryDate(periodStart),
-                        formatReportingQueryDate(periodEnd),
-                    ],
-                },
-                ...PublicHelpdeskAndApiMessagesFilter,
-                {
-                    member: HelpdeskMessageMember.PeriodStart,
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [formatReportingQueryDate(periodStart)],
-                },
-                {
-                    member: HelpdeskMessageMember.PeriodEnd,
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [formatReportingQueryDate(periodStart)],
-                },
-                {
-                    member: TicketMessagesMember.Integration,
-                    operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
-                },
-                {
-                    member: TicketMember.Channel,
-                    operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
-                },
-                {
-                    member: TicketMember.Tags,
-                    operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
-                },
-            ],
-            measures: [HelpdeskMessageMeasure.MessageCount],
-            timezone: timezone,
         })
     })
 
     it('should build a query with and agents sorting', () => {
         const agents = [2]
+        const filters = {...statsFilters, agents}
+        expect(
+            messagesSentMetricPerAgentQueryFactory(filters, timezone, sorting)
+        ).toEqual({
+            ...messagesSentQueryFactory(filters, timezone),
+            dimensions: [HelpdeskMessageDimension.SenderId],
+            order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+        })
+    })
+})
+
+describe('messagesSentMetricPerTicketQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.add(7, 'days')
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd.toISOString(),
+            start_datetime: periodStart.toISOString(),
+        },
+        channels: [TicketChannel.Email, TicketChannel.Chat],
+        integrations: [1],
+        tags: [1, 2],
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Asc
+
+    it('should build a query', () => {
+        expect(
+            messagesSentMetricPerTicketQueryFactory(statsFilters, timezone)
+        ).toEqual({
+            ...messagesSentQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+        })
+    })
+
+    it('should build a query with agents filter and sorting', () => {
+        const agents = [2]
+        const filters = {...statsFilters, agents}
 
         expect(
-            messagesSentMetricPerAgentQueryFactory(
-                {...statsFilters, agents},
-                timezone,
-                sorting
-            )
+            messagesSentMetricPerTicketQueryFactory(filters, timezone, sorting)
         ).toEqual({
-            dimensions: [HelpdeskMessageDimension.SenderId],
-            filters: [
-                {
-                    member: TicketMember.PeriodStart,
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [formatReportingQueryDate(periodStart)],
-                },
-                {
-                    member: TicketMember.PeriodEnd,
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [formatReportingQueryDate(periodEnd)],
-                },
-                {
-                    member: HelpdeskMessageMember.SentDatetime,
-                    operator: ReportingFilterOperator.InDateRange,
-                    values: [
-                        formatReportingQueryDate(periodStart),
-                        formatReportingQueryDate(periodEnd),
-                    ],
-                },
-                ...PublicHelpdeskAndApiMessagesFilter,
-                {
-                    member: HelpdeskMessageMember.PeriodStart,
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [formatReportingQueryDate(periodStart)],
-                },
-                {
-                    member: HelpdeskMessageMember.PeriodEnd,
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [formatReportingQueryDate(periodStart)],
-                },
-                {
-                    member: TicketMessagesMember.Integration,
-                    operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
-                },
-                {
-                    member: TicketMember.Channel,
-                    operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
-                },
-                {
-                    member: HelpdeskMessageMember.SenderId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: agents.map(String),
-                },
-                {
-                    member: TicketMember.Tags,
-                    operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
-                },
-            ],
-            measures: [HelpdeskMessageMeasure.MessageCount],
+            ...messagesSentQueryFactory(filters, timezone),
+            dimensions: [TicketDimension.TicketId],
             order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
-            timezone: timezone,
         })
     })
 })

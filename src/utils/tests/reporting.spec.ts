@@ -6,6 +6,7 @@ import {
     ReportingGranularity,
 } from 'models/reporting/types'
 import {
+    agentFilter,
     formatReportingQueryDate,
     HelpCenterStatsFiltersMembers,
     periodToReportingGranularity,
@@ -151,6 +152,25 @@ describe('reporting utils', () => {
             const queryWithFilter = withFilter(query, filter)
 
             expect(queryWithFilter.filters).toContainEqual(filter)
+        })
+    })
+
+    describe('agentFilter', () => {
+        it('should return Agent filter with agentId', () => {
+            const agentId = '123'
+            expect(agentFilter(agentId)).toEqual({
+                member: TicketMember.AssigneeUserId,
+                operator: ReportingFilterOperator.Set,
+                values: [agentId],
+            })
+        })
+
+        it('should return Agent filter with no values', () => {
+            expect(agentFilter()).toEqual({
+                member: TicketMember.AssigneeUserId,
+                operator: ReportingFilterOperator.Set,
+                values: [],
+            })
         })
     })
 })

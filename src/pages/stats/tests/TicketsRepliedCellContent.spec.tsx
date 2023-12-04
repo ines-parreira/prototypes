@@ -16,7 +16,6 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TableColumn} from 'state/ui/stats/types'
 import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -68,10 +67,7 @@ describe('<TicketsRepliedCellContent>', () => {
     it('should render value as duration', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <TicketsRepliedCellContent
-                    column={TableColumn.RepliedTickets}
-                    agent={agent}
-                />
+                <TicketsRepliedCellContent agent={agent} />
             </Provider>
         )
 
@@ -93,10 +89,7 @@ describe('<TicketsRepliedCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <TicketsRepliedCellContent
-                    column={TableColumn.RepliedTickets}
-                    agent={agent}
-                />
+                <TicketsRepliedCellContent agent={agent} />
             </Provider>
         )
 

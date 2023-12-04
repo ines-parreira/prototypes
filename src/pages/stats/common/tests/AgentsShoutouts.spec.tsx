@@ -20,7 +20,7 @@ import {initialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
 import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
-import {TableLabels} from '../../TableConfig'
+import {TableLabels} from 'pages/stats/AgentsTableConfig'
 
 jest.mock('hooks/reporting/metricsPerDimension')
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(

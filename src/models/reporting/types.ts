@@ -94,7 +94,7 @@ export type TimeSeriesQuery<TCube extends Cube = Cube> = Omit<
 
 export type ReportingParams<TCube extends Cube = Cube> = ReportingQuery<TCube>[]
 
-export type ReportingResponse<TData extends unknown[]> = {
+export type ReportingResponse<TData> = {
     annotation: {
         title: string
         shortTitle: string
@@ -102,4 +102,15 @@ export type ReportingResponse<TData extends unknown[]> = {
     }
     data: TData
     query: ReportingQuery
+}
+
+export enum EnrichmentFields {
+    TicketId = 'Ticket.ticketId',
+    TicketName = 'Ticket.name',
+    Status = 'Ticket.status',
+    Description = 'Ticket.description',
+    Channel = 'Ticket.channel',
+    AssigneeId = 'Ticket.assigneeId',
+    CreatedDatetime = 'Ticket.createdDatetime',
+    ContactReason = 'Ticket.contactReason',
 }

@@ -1,13 +1,17 @@
 import moment from 'moment'
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     TicketMessagesMeasure,
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import {
+    medianFirstResponseTimeMetricPerAgentQueryFactory,
+    medianFirstResponseTimeMetricPerTicketQueryFactory,
+    medianFirstResponseTimeQueryFactory,
+} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -136,6 +140,51 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
             order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
             segments: [TicketMessagesSegment.ConversationStarted],
             timezone: timezone,
+        })
+    })
+})
+
+describe('medianFirstResponseTimeMetricPerTicketQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.add(7, 'days')
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd.toISOString(),
+            start_datetime: periodStart.toISOString(),
+        },
+        channels: [TicketChannel.Email, TicketChannel.Chat],
+        integrations: [1],
+        tags: [1, 2],
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Asc
+
+    it('should build a query', () => {
+        expect(
+            medianFirstResponseTimeMetricPerTicketQueryFactory(
+                statsFilters,
+                timezone
+            )
+        ).toEqual({
+            ...medianFirstResponseTimeQueryFactory(statsFilters, timezone),
+            dimensions: [TicketDimension.TicketId],
+        })
+    })
+
+    it('should build a query with agents filter and sorting', () => {
+        const agents = [2]
+        const filters = {...statsFilters, agents}
+
+        expect(
+            medianFirstResponseTimeMetricPerTicketQueryFactory(
+                filters,
+                timezone,
+                sorting
+            )
+        ).toEqual({
+            ...medianFirstResponseTimeQueryFactory(filters, timezone),
+            dimensions: [TicketDimension.TicketId],
+            order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
         })
     })
 })

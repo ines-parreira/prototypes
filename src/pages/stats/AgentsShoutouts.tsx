@@ -1,8 +1,8 @@
 import React from 'react'
 
 import css from 'pages/stats/AgentsShoutouts.less'
+import {agentsShoutoutsConfig} from 'pages/stats/AgentsShoutoutsConfig'
 import AgentsShoutout from './AgentShoutout'
-import {shoutoutsConfig} from './shoutouts-config'
 
 export default function AgentsShoutouts() {
     return (
@@ -10,11 +10,11 @@ export default function AgentsShoutouts() {
             className={css.grid}
             style={
                 {
-                    '--agents-shoutouts-columns': shoutoutsConfig.length,
+                    '--agents-shoutouts-columns': agentsShoutoutsConfig.length,
                 } as React.CSSProperties
             }
         >
-            {shoutoutsConfig.map((config) => (
+            {agentsShoutoutsConfig.map((config) => (
                 <AgentsShoutout {...config} key={config.metricName} />
             ))}
         </div>

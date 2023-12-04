@@ -7,7 +7,10 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import useAppSelector from 'hooks/useAppSelector'
-import {getDrillDownMetricColumn} from 'state/ui/stats/drillDownSlice'
+import {
+    DrillDownMetric,
+    getDrillDownMetricColumn,
+} from 'state/ui/stats/drillDownSlice'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -15,10 +18,10 @@ import {
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 
+import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
 import {DrillDownTicketDetailsCell} from './DrillDownTicketDetailsCell'
 import {TruncateCellContent} from './TruncateCellContent'
 import {AgentAvatar} from './AgentAvatar'
-import {useDrillDownData} from './useDrillDownData'
 import css from './DrillDownTable.less'
 
 const tooltipHints = {
@@ -29,11 +32,13 @@ const tooltipHints = {
         'Data in this column reflects the current ticket state. It might be different from the value that has been associated with this ticket during the selected timeframe.',
 }
 
-export const DrillDownTable = () => {
-    const {data, perPage, currentPage, onPageChange} = useDrillDownData()
+export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
     const {showMetric, metricTitle, metricValueFormat} = useAppSelector(
         getDrillDownMetricColumn
     )
+
+    const {perPage, currentPage, onPageChange, data} =
+        useDrillDownData(metricData)
 
     return (
         <>
@@ -103,12 +108,18 @@ export const DrillDownTable = () => {
                                 </BodyCell>
 
                                 <BodyCell width={180}>
-                                    <DatetimeLabel dateTime={item.created} />
+                                    {item.ticket.created ? (
+                                        <DatetimeLabel
+                                            dateTime={item.ticket.created}
+                                        />
+                                    ) : (
+                                        NOT_AVAILABLE_PLACEHOLDER
+                                    )}
                                 </BodyCell>
                                 <BodyCell width={200}>
-                                    {item.contactReason ? (
+                                    {item.ticket.contactReason ? (
                                         <TruncateCellContent
-                                            content={item.contactReason}
+                                            content={item.ticket.contactReason}
                                         />
                                     ) : (
                                         <span className={css.noData}>

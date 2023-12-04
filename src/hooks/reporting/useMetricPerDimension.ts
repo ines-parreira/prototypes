@@ -3,11 +3,20 @@ import {
     withBreakdown,
 } from 'hooks/reporting/withBreakdown'
 import {withDeciles} from 'hooks/reporting/withDeciles'
+import {
+    IDRecord,
+    KeyedRecord,
+    MergedRecord,
+    withEnrichment,
+} from 'hooks/reporting/withEnrichment'
 import {Cubes} from 'models/reporting/cubes'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {usePostReporting} from 'models/reporting/queries'
-import {postReporting} from 'models/reporting/resources'
-import {ReportingQuery} from 'models/reporting/types'
+import {
+    useEnrichedPostReporting,
+    usePostReporting,
+} from 'models/reporting/queries'
+import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
+import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 
 type Requested = {
@@ -31,6 +40,15 @@ export type MetricWithDecile<TCube extends Cubes = Cubes> = Requested & {
 export type MetricWithBreakdown = Requested & {
     data: {
         allData: WithChildren<TicketCustomFieldsTicketCountData>[]
+    } | null
+}
+
+export type MetricWithEnrichment<
+    T extends string,
+    ID extends string
+> = Requested & {
+    data: {
+        allData: (MergedRecord<T, EnrichmentFields> & IDRecord<ID>)[]
     } | null
 }
 
@@ -108,6 +126,49 @@ export function useMetricPerDimensionWithBreakdown(
             ]).then((data) => withBreakdown(data)),
         queryKey: ['reporting', 'post-reporting-breakdown', query],
     })
+
+    return {
+        isFetching: metricData.isFetching,
+        isError: metricData.isError,
+        data:
+            metricData.data !== undefined
+                ? {
+                      allData: metricData?.data,
+                  }
+                : null,
+    }
+}
+
+export function useMetricPerDimensionWithEnrichment(
+    query: ReportingQuery<HelpdeskMessageCubeWithJoins>,
+    enrichmentFields: EnrichmentFields[]
+): MetricWithEnrichment<
+    typeof query['measures'][0],
+    typeof query['dimensions'][0]
+> {
+    const idField = query.dimensions[0]
+    const metricData = useEnrichedPostReporting<
+        (MergedRecord<typeof query['measures'][0], EnrichmentFields> &
+            IDRecord<typeof query['dimensions'][0]>)[],
+        (MergedRecord<typeof query['measures'][0], EnrichmentFields> &
+            IDRecord<typeof query['dimensions'][0]>)[]
+    >(
+        {query, enrichment: enrichmentFields},
+        {
+            select: (data) => {
+                return data.data.data
+            },
+            queryFn: () =>
+                postEnrichedReporting<{
+                    data: (KeyedRecord<typeof query['measures'][0]> &
+                        IDRecord<typeof query['dimensions'][0]>)[]
+                    enrichment: (KeyedRecord<EnrichmentFields> &
+                        IDRecord<typeof query['dimensions'][0]>)[]
+                }>({query, enrichment: enrichmentFields}).then((data) =>
+                    withEnrichment(data, idField, enrichmentFields)
+                ),
+        }
+    )
 
     return {
         isFetching: metricData.isFetching,

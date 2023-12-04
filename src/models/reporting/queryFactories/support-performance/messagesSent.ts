@@ -5,7 +5,7 @@ import {
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -74,6 +74,20 @@ export const messagesSentMetricPerAgentQueryFactory = (
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...messagesSentQueryFactory(filters, timezone),
     dimensions: [HelpdeskMessageDimension.SenderId],
+    ...(sorting
+        ? {
+              order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+          }
+        : {}),
+})
+
+export const messagesSentMetricPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...messagesSentQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.TicketId],
     ...(sorting
         ? {
               order: [[HelpdeskMessageMeasure.MessageCount, sorting]],

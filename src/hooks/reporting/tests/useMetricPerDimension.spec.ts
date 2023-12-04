@@ -1,9 +1,11 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {
     QueryReturnType,
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
+    useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
@@ -12,10 +14,14 @@ import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
+import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {ReportingQuery} from 'models/reporting/types'
-import {usePostReporting} from 'models/reporting/queries'
+import {
+    useEnrichedPostReporting,
+    usePostReporting,
+} from 'models/reporting/queries'
 import {assumeMock} from 'utils/testing'
 import {
     BREAKDOWN_FIELD,
@@ -27,6 +33,7 @@ import {
 jest.mock('models/reporting/queries')
 jest.mock('models/reporting/resources')
 const usePostReportingMock = assumeMock(usePostReporting)
+const useEnrichedPostReportingMock = assumeMock(useEnrichedPostReporting)
 
 describe('useMetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
@@ -200,6 +207,44 @@ describe('useMetricPerDimensionWithBreakdown', () => {
                         ],
                     },
                 ],
+            },
+        })
+    })
+})
+
+describe('useMetricPerDimensionWithEnrichment', () => {
+    it('should send a query with custom queryFn', () => {
+        const timezone = 'America'
+        const statsFilters = {
+            period: {
+                start_datetime: '2020-01-16T03:04:56.789-10:00',
+                end_datetime: '2020-01-02T03:04:56.789-10:00',
+            },
+        }
+        const query = messagesSentQueryFactory(statsFilters, timezone)
+        const mockedResponse = {
+            isFetching: false,
+            isError: false,
+            data: [],
+        }
+        useEnrichedPostReportingMock.mockReturnValue(mockedResponse as any)
+
+        const {result} = renderHook(() =>
+            useMetricPerDimensionWithEnrichment(query, defaultEnrichmentFields)
+        )
+
+        expect(useEnrichedPostReportingMock).toHaveBeenCalledWith(
+            {query, enrichment: defaultEnrichmentFields},
+            {
+                select: expect.any(Function),
+                queryFn: expect.any(Function),
+            }
+        )
+        expect(result.current).toEqual({
+            isFetching: mockedResponse.isFetching,
+            isError: mockedResponse.isError,
+            data: {
+                allData: mockedResponse.data,
             },
         })
     })

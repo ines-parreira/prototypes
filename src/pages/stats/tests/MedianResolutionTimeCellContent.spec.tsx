@@ -16,7 +16,6 @@ import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agent
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TableColumn} from 'state/ui/stats/types'
 import {User} from 'config/types/user'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -69,10 +68,7 @@ describe('<MedianResolutionTimeCellContent>', () => {
     it('should render value as duration', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <MedianResolutionTimeCellContent
-                    column={TableColumn.MedianResolutionTime}
-                    agent={agent}
-                />
+                <MedianResolutionTimeCellContent agent={agent} />
             </Provider>
         )
 
@@ -94,10 +90,7 @@ describe('<MedianResolutionTimeCellContent>', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <MedianResolutionTimeCellContent
-                    column={TableColumn.MedianResolutionTime}
-                    agent={agent}
-                />
+                <MedianResolutionTimeCellContent agent={agent} />
             </Provider>
         )
 

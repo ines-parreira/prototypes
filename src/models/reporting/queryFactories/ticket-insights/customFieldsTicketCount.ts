@@ -1,5 +1,6 @@
 import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -58,6 +59,38 @@ export const customFieldsTicketCountQueryFactory = (
           }
         : {}),
 })
+
+export const customFieldsTicketCountPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    sorting?: OrderDirection,
+    customFieldsValueStrings?: string[]
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    const baseQuery = customFieldsTicketCountQueryFactory(
+        filters,
+        timezone,
+        customFieldId,
+        sorting
+    )
+
+    return {
+        ...baseQuery,
+        ...(customFieldsValueStrings
+            ? {
+                  filters: [
+                      ...baseQuery.filters,
+                      {
+                          member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                          operator: ReportingFilterOperator.In,
+                          values: customFieldsValueStrings,
+                      },
+                  ],
+              }
+            : {}),
+        dimensions: [TicketDimension.TicketId],
+    }
+}
 
 export const customFieldsTicketCountTimeSeriesQueryFactory = (
     filters: StatsFilters,

@@ -1,5 +1,5 @@
 import {RootState} from 'state/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
 import {OrderDirection} from 'models/api/types'
 import {
     initialState,
@@ -12,8 +12,7 @@ import {
     buildAgentMetric,
 } from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
-import {TableLabels} from 'pages/stats/TableConfig'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
+import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 
@@ -164,8 +163,7 @@ describe('drillDownSlice', () => {
                     ui: {
                         [drillDownSlice.name]: {
                             metricData: {
-                                metricName:
-                                    TicketMessagesMeasure.MedianResolutionTime,
+                                metricName: OverviewMetric.MedianResolutionTime,
                             },
                         },
                     },

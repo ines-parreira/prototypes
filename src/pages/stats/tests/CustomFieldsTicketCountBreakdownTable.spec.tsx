@@ -45,7 +45,7 @@ const NoDataAvailableMock = assumeMock(NoDataAvailable)
 const componentMock = () => <div />
 
 describe('<CustomFieldsTicketCountBreakdownTable />', () => {
-    const customFieldId = 123
+    const customField = {id: 123, label: 'someLabel'}
     const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
@@ -153,7 +153,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
+                    selectedCustomField={customField}
                 />
             </Provider>
         )
@@ -173,7 +173,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
+                    selectedCustomField={customField}
                 />
             </Provider>
         )
@@ -187,7 +187,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         render(
             <Provider store={store}>
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
+                    selectedCustomField={customField}
                 />
             </Provider>
         )
@@ -211,7 +211,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         render(
             <Provider store={store}>
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
+                    selectedCustomField={customField}
                 />
             </Provider>
         )
@@ -259,7 +259,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         render(
             <Provider store={store}>
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
+                    selectedCustomField={customField}
                 />
             </Provider>
         )
@@ -279,7 +279,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         render(
             <Provider store={store}>
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
+                    selectedCustomField={customField}
                 />
             </Provider>
         )
@@ -321,7 +321,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
+                    selectedCustomField={customField}
                 />
             </Provider>
         )
@@ -341,7 +341,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <CustomFieldsTicketCountBreakdownTable
-                        selectedCustomFieldId={customFieldId}
+                        selectedCustomField={customField}
                     />
                 </Provider>
             )
@@ -365,7 +365,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <CustomFieldsTicketCountBreakdownTable
-                        selectedCustomFieldId={customFieldId}
+                        selectedCustomField={customField}
                     />
                 </Provider>
             )
@@ -395,7 +395,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             const {rerender} = render(
                 <Provider store={mockStore(defaultState)}>
                     <CustomFieldsTicketCountBreakdownTable
-                        selectedCustomFieldId={customFieldId}
+                        selectedCustomField={customField}
                     />
                 </Provider>
             )
@@ -417,7 +417,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             rerender(
                 <Provider store={mockStore(defaultState)}>
                     <CustomFieldsTicketCountBreakdownTable
-                        selectedCustomFieldId={customFieldId}
+                        selectedCustomField={customField}
                     />
                 </Provider>
             )

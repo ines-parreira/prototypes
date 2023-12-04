@@ -11,7 +11,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import css from 'pages/stats/heatmap.less'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
 import {
     getCleanStatsFiltersWithTimezone,
     getHeatmapMode,
@@ -25,11 +25,9 @@ import {DrillDownModalTrigger} from './DrillDownModalTrigger'
 export const ClosedTicketsCellContent = ({
     agent,
     bodyCellProps,
-    column,
 }: {
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
-    column: TableColumn
 }) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -63,7 +61,10 @@ export const ClosedTicketsCellContent = ({
             ) : (
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
-                    metricData={buildAgentMetric(column, agent)}
+                    metricData={buildAgentMetric(
+                        TableColumn.ClosedTickets,
+                        agent
+                    )}
                 >
                     {formatMetricValue(
                         metricValue,

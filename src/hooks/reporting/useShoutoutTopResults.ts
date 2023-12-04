@@ -4,7 +4,7 @@ import {User} from 'config/types/user'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {isMetricForAgent} from 'pages/stats/common/utils'
-import {ShoutoutConfig} from 'pages/stats/shoutouts-config'
+import {ShoutoutConfig} from 'pages/stats/AgentsShoutoutsConfig'
 import {getFilteredAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {notUndefined} from 'utils/types'
 
