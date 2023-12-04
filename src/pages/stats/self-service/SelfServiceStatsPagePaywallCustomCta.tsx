@@ -5,8 +5,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentProducts} from 'state/billing/selectors'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 const SelfServiceStatsPagePaywallCustomCta = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -27,7 +27,7 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
 
     return (
         <>
-            <AutomationSubscriptionButton
+            <AutomateSubscriptionButton
                 onClick={() => {
                     setIsAutomationModalOpened(true)
                 }}
@@ -35,7 +35,7 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
                 label="Learn More"
                 segmentEventToSend={segmentEventToSend}
             />
-            <AutomationSubscriptionModal
+            <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationModalOpened}
                 onClose={() => setIsAutomationModalOpened(false)}

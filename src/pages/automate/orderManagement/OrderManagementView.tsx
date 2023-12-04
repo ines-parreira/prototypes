@@ -4,8 +4,8 @@ import {createMemoryHistory} from 'history'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {
@@ -32,14 +32,14 @@ const AutomationSubscriptionAction = () => {
 
     return (
         <>
-            <AutomationSubscriptionButton
+            <AutomateSubscriptionButton
                 label="Get Automate Features"
                 size="small"
                 onClick={() => {
                     setIsAutomationSubscriptionModalOpen(true)
                 }}
             />
-            <AutomationSubscriptionModal
+            <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationSubscriptionModalOpen}
                 onClose={() => setIsAutomationSubscriptionModalOpen(false)}

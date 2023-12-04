@@ -7,9 +7,9 @@ import userEvent from '@testing-library/user-event'
 import {RootState, StoreDispatch} from 'state/types'
 import {automationProduct} from 'fixtures/productPrices'
 import {billingState} from 'fixtures/billing'
-import AutomationPlanSubscriptionDescription, {
+import AutomatePlanSubscriptionDescription, {
     AutomationPlanSubscriptionDescriptionProps,
-} from '../AutomationPlanSubscriptionDescription'
+} from '../AutomatePlanSubscriptionDescription'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -38,7 +38,7 @@ describe('AutomationPlanSubscriptionDescription', () => {
     it('displays correct plan options in select field', () => {
         render(
             <Provider store={mockedStore(defaultState)}>
-                <AutomationPlanSubscriptionDescription {...defaultProps} />
+                <AutomatePlanSubscriptionDescription {...defaultProps} />
             </Provider>
         )
         const proOption = screen.getByText('190')
@@ -51,7 +51,7 @@ describe('AutomationPlanSubscriptionDescription', () => {
     it('calls setSelectedPrice when a plan option is selected', () => {
         render(
             <Provider store={mockedStore(defaultState)}>
-                <AutomationPlanSubscriptionDescription {...defaultProps} />
+                <AutomatePlanSubscriptionDescription {...defaultProps} />
             </Provider>
         )
         const proOption = screen.getByText('190')
@@ -66,7 +66,7 @@ describe('AutomationPlanSubscriptionDescription', () => {
     it('displays the plan price correctly', () => {
         render(
             <Provider store={mockedStore(defaultState)}>
-                <AutomationPlanSubscriptionDescription {...defaultProps} />
+                <AutomatePlanSubscriptionDescription {...defaultProps} />
             </Provider>
         )
         const planPrice = screen.getByText('$30/month')
@@ -77,7 +77,7 @@ describe('AutomationPlanSubscriptionDescription', () => {
         const props = {...defaultProps, isEnterprisePlan: true}
         render(
             <Provider store={mockedStore(defaultState)}>
-                <AutomationPlanSubscriptionDescription {...props} />
+                <AutomatePlanSubscriptionDescription {...props} />
             </Provider>
         )
         const enterpriseDescription = screen.getByText(

@@ -15,8 +15,8 @@ import {validLocaleCode} from 'models/helpCenter/utils'
 
 import settingsCss from 'pages/settings/settings.less'
 import {getHasAutomate} from 'state/billing/selectors'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {TicketChannel} from 'business/types/ticket'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -155,12 +155,12 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                         )
                     ) : (
                         <>
-                            <AutomationSubscriptionButton
+                            <AutomateSubscriptionButton
                                 fillStyle="ghost"
                                 label="Upgrade your help center with automate"
                                 onClick={() => setIsAutomationModalOpened(true)}
                             />
-                            <AutomationSubscriptionModal
+                            <AutomateSubscriptionModal
                                 confirmLabel="Subscribe"
                                 isOpen={isAutomationModalOpened}
                                 onClose={() =>

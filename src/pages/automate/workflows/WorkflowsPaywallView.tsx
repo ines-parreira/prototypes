@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
 import {withCanduPaywall} from 'pages/common/components/Paywall/CanduPaywall'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import {assetsUrl} from 'utils'
 import {FLOWS} from '../common/components/constants'
 
@@ -22,7 +22,7 @@ const WorkflowsPaywallView = () => {
             showUpgradeCta
             renderFilterShadow
             customCta={
-                <AutomationSubscriptionButton
+                <AutomateSubscriptionButton
                     onClick={() => {
                         setIsAutomationModalOpened(true)
                     }}
@@ -30,7 +30,7 @@ const WorkflowsPaywallView = () => {
                 />
             }
             modal={
-                <AutomationSubscriptionModal
+                <AutomateSubscriptionModal
                     confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}

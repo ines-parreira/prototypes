@@ -18,7 +18,7 @@ import {
 } from 'fixtures/productPrices'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
-import AutomationSubscriptionButton from '../AutomationSubscriptionButton'
+import AutomateSubscriptionButton from '../AutomateSubscriptionButton'
 
 const mockUpgradeButton = jest.fn()
 jest.mock(
@@ -31,13 +31,13 @@ jest.mock(
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('AutomationSubscriptionButton', () => {
+describe('AutomateSubscriptionButton', () => {
     const defaultState = {
         billing: fromJS(billingState),
         currentAccount: fromJS(account),
     } as RootState
 
-    const minProps: ComponentProps<typeof AutomationSubscriptionButton> = {
+    const minProps: ComponentProps<typeof AutomateSubscriptionButton> = {
         label: 'Foo',
         position: 'right',
         onClick: jest.fn(),
@@ -49,7 +49,7 @@ describe('AutomationSubscriptionButton', () => {
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationSubscriptionButton {...minProps} />
+                <AutomateSubscriptionButton {...minProps} />
             </Provider>
         )
         expect(mockUpgradeButton).toHaveBeenLastCalledWith(minProps)
@@ -76,7 +76,7 @@ describe('AutomationSubscriptionButton', () => {
                     }),
                 })}
             >
-                <AutomationSubscriptionButton label="Foo" />
+                <AutomateSubscriptionButton label="Foo" />
             </Provider>
         )
         expect(mockUpgradeButton).toHaveBeenCalledWith({

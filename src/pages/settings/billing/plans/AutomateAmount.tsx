@@ -7,7 +7,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 
-import css from './AutomationAmount.less'
+import css from './AutomateAmount.less'
 
 const AutomationLabel = ({id}: {id: string}) => {
     return (
@@ -28,7 +28,7 @@ type Props = {
     isIntervalAbbreviated?: boolean
 }
 
-const AutomationAmount = ({
+const AutomateAmount = ({
     addOnAmount,
     currency,
     fullAddOnAmount,
@@ -122,4 +122,4 @@ const AutomationAmount = ({
     )
 }
 
-export default AutomationAmount
+export default AutomateAmount

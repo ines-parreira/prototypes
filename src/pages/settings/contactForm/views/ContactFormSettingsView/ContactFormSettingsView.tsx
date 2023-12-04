@@ -38,8 +38,8 @@ import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactForm
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {getHasAutomate} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import css from './ContactFormSettingsView.less'
 
 const navLinks = {
@@ -169,12 +169,12 @@ const ContactFormSettingsView = (): JSX.Element => {
                         )
                     ) : (
                         <>
-                            <AutomationSubscriptionButton
+                            <AutomateSubscriptionButton
                                 fillStyle="ghost"
                                 label="Upgrade your contact form with automate"
                                 onClick={() => setIsAutomationModalOpened(true)}
                             />
-                            <AutomationSubscriptionModal
+                            <AutomateSubscriptionModal
                                 confirmLabel="Subscribe"
                                 isOpen={isAutomationModalOpened}
                                 onClose={() =>

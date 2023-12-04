@@ -19,7 +19,7 @@ import {fetchCreditCard} from 'state/billing/actions'
 import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
 
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
-import css from './AutomationPlanSubscriptionDescription.less'
+import css from './AutomatePlanSubscriptionDescription.less'
 
 export type AutomationPlanSubscriptionDescriptionProps = {
     automationPrices: AutomationPrice[]
@@ -31,7 +31,7 @@ export type AutomationPlanSubscriptionDescriptionProps = {
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const AutomationPlanSubscriptionDescription = ({
+const AutomatePlanSubscriptionDescription = ({
     automationPrices,
     isTrialing,
     isEnterprisePlan,
@@ -233,4 +233,4 @@ const AutomationPlanSubscriptionDescription = ({
     )
 }
 
-export default AutomationPlanSubscriptionDescription
+export default AutomatePlanSubscriptionDescription

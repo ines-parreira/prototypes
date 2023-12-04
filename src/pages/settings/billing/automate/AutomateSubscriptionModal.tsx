@@ -39,8 +39,8 @@ import {AutomationPrice, Price, ProductType} from 'models/billing/types'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {SegmentEvent, logEvent} from 'common/segment'
-import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
-import css from './AutomationSubscriptionModal.less'
+import AutomatePlanSubscriptionDescription from './AutomatePlanSubscriptionDescription'
+import css from './AutomateSubscriptionModal.less'
 
 type Props = {
     confirmLabel: string
@@ -92,7 +92,7 @@ const DefaultFooter = ({
     )
 }
 
-const AutomationSubscriptionModal = ({
+const AutomateSubscriptionModal = ({
     confirmLabel,
     footer: Footer = DefaultFooter,
     image,
@@ -230,7 +230,7 @@ const AutomationSubscriptionModal = ({
                             setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                         />
                     ) : (
-                        <AutomationPlanSubscriptionDescription
+                        <AutomatePlanSubscriptionDescription
                             isTrialing={isTrialingSubscription}
                             isEnterprisePlan={isEnterprisePlan}
                             automationPrices={automationPrices}
@@ -299,4 +299,4 @@ const AutomationSubscriptionModal = ({
     )
 }
 
-export default AutomationSubscriptionModal
+export default AutomateSubscriptionModal

@@ -4,8 +4,8 @@ import {useHistory} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {TicketChannel} from 'business/types/ticket'
@@ -28,13 +28,13 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
     if (!hasAutomate) {
         return (
             <>
-                <AutomationSubscriptionButton
+                <AutomateSubscriptionButton
                     className={css.automationSubscriptionButton}
                     fillStyle="ghost"
                     label="Upgrade your chat with automate"
                     onClick={() => setIsAutomationModalOpened(true)}
                 />
-                <AutomationSubscriptionModal
+                <AutomateSubscriptionModal
                     confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}

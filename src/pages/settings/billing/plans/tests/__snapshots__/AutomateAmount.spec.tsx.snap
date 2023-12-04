@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutomationAmount /> should render a string as amount 1`] = `
+exports[`<AutomateAmount /> should render a string as amount 1`] = `
 <div>
   <div
     class="automationRow"
@@ -25,7 +25,7 @@ exports[`<AutomationAmount /> should render a string as amount 1`] = `
 </div>
 `;
 
-exports[`<AutomationAmount /> should render formatted amount number without discount 1`] = `
+exports[`<AutomateAmount /> should render formatted amount number without discount 1`] = `
 <div>
   <div
     class="automationRow"
@@ -76,7 +76,7 @@ exports[`<AutomationAmount /> should render formatted amount number without disc
 </div>
 `;
 
-exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
+exports[`<AutomateAmount /> should render formatted numbers as amount 1`] = `
 <div>
   <div
     class="automationRow"
@@ -133,7 +133,7 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
 </div>
 `;
 
-exports[`<AutomationAmount /> should render no addon when plan doesn't include one 1`] = `
+exports[`<AutomateAmount /> should render no addon when plan doesn't include one 1`] = `
 <div>
   <div
     class="automationRow"
@@ -154,7 +154,7 @@ exports[`<AutomationAmount /> should render no addon when plan doesn't include o
 </div>
 `;
 
-exports[`<AutomationAmount /> should render not editable variant 1`] = `
+exports[`<AutomateAmount /> should render not editable variant 1`] = `
 <div>
   <div
     class="automationRow"
@@ -192,7 +192,7 @@ exports[`<AutomationAmount /> should render not editable variant 1`] = `
 </div>
 `;
 
-exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] = `
+exports[`<AutomateAmount /> should render with abbreviated plan interval 1`] = `
 <div>
   <div
     class="automationRow"

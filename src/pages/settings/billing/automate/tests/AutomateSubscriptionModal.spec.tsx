@@ -14,7 +14,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {assumeMock} from 'utils/testing'
 import {SegmentEvent, logEvent} from 'common/segment'
-import AutomationSubscriptionModal from '../AutomationSubscriptionModal'
+import AutomateSubscriptionModal from '../AutomateSubscriptionModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
@@ -31,14 +31,14 @@ const defaultState: Partial<RootState> = {
     billing: fromJS(billingState),
 }
 
-const minProps: ComponentProps<typeof AutomationSubscriptionModal> = {
+const minProps: ComponentProps<typeof AutomateSubscriptionModal> = {
     confirmLabel: 'I am sure',
     isOpen: false,
     onClose: jest.fn(),
 }
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
-describe('<AutomationSubscriptionModal />', () => {
+describe('<AutomateSubscriptionModal />', () => {
     beforeEach(() => {
         jest.spyOn(LD, 'useFlags').mockReturnValue({
             [FeatureFlagKey.NewBillingInterface]: true,
@@ -47,7 +47,7 @@ describe('<AutomationSubscriptionModal />', () => {
     it('should not render the modal', () => {
         const {baseElement} = render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationSubscriptionModal {...minProps} />
+                <AutomateSubscriptionModal {...minProps} />
             </Provider>
         )
         expect(logEventMock).not.toHaveBeenCalled()
@@ -57,7 +57,7 @@ describe('<AutomationSubscriptionModal />', () => {
     it('should render the modal', () => {
         const {baseElement} = render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationSubscriptionModal {...minProps} isOpen />
+                <AutomateSubscriptionModal {...minProps} isOpen />
             </Provider>
         )
         expect(logEventMock).toHaveBeenCalledWith(
@@ -71,7 +71,7 @@ describe('<AutomationSubscriptionModal />', () => {
         const {findByText} = render(
             <Provider store={mockStore(defaultState)}>
                 {' '}
-                <AutomationSubscriptionModal {...minProps} isOpen />
+                <AutomateSubscriptionModal {...minProps} isOpen />
             </Provider>
         )
         const button = await findByText(/I am sure/)
@@ -97,7 +97,7 @@ describe('<AutomationSubscriptionModal />', () => {
                     }),
                 })}
             >
-                <AutomationSubscriptionModal {...minProps} isOpen />
+                <AutomateSubscriptionModal {...minProps} isOpen />
             </Provider>
         )
         expect(logEventMock).toHaveBeenCalledWith(
@@ -112,7 +112,7 @@ describe('<AutomationSubscriptionModal />', () => {
         const {findByAltText} = render(
             <Provider store={mockStore(defaultState)}>
                 {' '}
-                <AutomationSubscriptionModal
+                <AutomateSubscriptionModal
                     {...minProps}
                     isOpen
                     image="foo.png"
@@ -130,7 +130,7 @@ describe('<AutomationSubscriptionModal />', () => {
     it('should display the new modal description component', () => {
         const {getByTestId} = render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationSubscriptionModal {...minProps} isOpen />
+                <AutomateSubscriptionModal {...minProps} isOpen />
             </Provider>
         )
         expect(logEventMock).toHaveBeenCalledWith(

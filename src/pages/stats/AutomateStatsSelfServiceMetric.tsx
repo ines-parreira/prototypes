@@ -10,7 +10,7 @@ import {
     getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
@@ -20,7 +20,7 @@ import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfig
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 
 import {KeyMetricCell} from './common/components/charts/KeyMetricStat/KeyMetricCell'
 import KeyMetricCellWrapper from './common/components/charts/KeyMetricStat/KeyMetricCellWrapper'
@@ -92,7 +92,7 @@ export const AutomateStatsSelfServiceMetric = ({
     const automatePaywall = () => {
         return (
             <>
-                <AutomationSubscriptionModal
+                <AutomateSubscriptionModal
                     confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
@@ -102,7 +102,7 @@ export const AutomateStatsSelfServiceMetric = ({
                     tooltipId={`title-${id}`}
                 >
                     <div className={classnames('mt-3', css.button)}>
-                        <AutomationSubscriptionButton
+                        <AutomateSubscriptionButton
                             label="Get Automate Features"
                             onClick={() => {
                                 setIsAutomationModalOpened(true)

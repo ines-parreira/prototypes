@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import {useEffectOnce} from 'react-use'
 import PageHeader from 'pages/common/components/PageHeader'
 import LinkButton from 'pages/common/components/button/LinkButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import automateIcon from 'assets/img/self-service/automate-logo.svg'
 import Button from 'pages/common/components/button/Button'
 
@@ -85,7 +85,7 @@ const AutomatePaywallView = ({
                     <HeroImageCarousel slides={slidesData} />
                 </div>
             </div>
-            <AutomationSubscriptionModal
+            <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationModalOpened}
                 onClose={() => setIsAutomationModalOpened(false)}

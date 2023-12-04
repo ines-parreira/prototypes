@@ -2,7 +2,7 @@ import React, {ReactNode, useEffect, useState} from 'react'
 import {Table} from 'reactstrap'
 import classnames from 'classnames'
 
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -198,7 +198,7 @@ export function RulesList({
                 </Table>
             )}
             {hasAgentPrivileges && (
-                <AutomationSubscriptionModal
+                <AutomateSubscriptionModal
                     onClose={() => setManagedRuleUpgradeID(undefined)}
                     confirmLabel="Upgrade and reactivate"
                     onSubscribe={handleUpgrade}

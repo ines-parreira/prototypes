@@ -20,7 +20,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {activateRule} from 'models/rule/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import RuleItemButtons from 'pages/settings/rules/components/RuleItemButtons'
 import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'
 import {getHasAutomate} from 'state/billing/selectors'
@@ -260,7 +260,7 @@ export const ManagedRuleEditor = (
                 />
 
                 {hasAgentPrivileges && (
-                    <AutomationSubscriptionModal
+                    <AutomateSubscriptionModal
                         onClose={() =>
                             setShowAutomationSubscriptionModal(false)
                         }

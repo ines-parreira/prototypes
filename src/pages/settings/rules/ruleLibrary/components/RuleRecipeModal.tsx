@@ -18,8 +18,8 @@ import {
     RuleLimitStatus,
     RuleType,
 } from 'state/rules/types'
-import AutomationSubscriptionModal from 'pages/settings/billing/automate/AutomationSubscriptionModal'
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 
 import Tooltip from 'pages/common/components/Tooltip'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
@@ -122,7 +122,7 @@ export const RuleRecipeModal = ({
         isBehindPaywall ? (
             <>
                 <span id={installButtonId}>
-                    <AutomationSubscriptionButton
+                    <AutomateSubscriptionButton
                         id={installButtonId}
                         onClick={() => {
                             logEvent(SegmentEvent.RuleAutomationAddOnUpsell, {
@@ -276,7 +276,7 @@ export const RuleRecipeModal = ({
             </ModalFooter>
         </Modal>
     ) : (
-        <AutomationSubscriptionModal
+        <AutomateSubscriptionModal
             confirmLabel="Subscribe &amp; Install Rule"
             isOpen={showAutomationModal}
             onClose={() => setShowAutomationModal(false)}

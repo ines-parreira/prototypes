@@ -2,7 +2,7 @@ import React, {ComponentProps, useMemo} from 'react'
 
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
-export default function AutomationSubscriptionButton({
+export default function AutomateSubscriptionButton({
     state,
     label,
     onClick,

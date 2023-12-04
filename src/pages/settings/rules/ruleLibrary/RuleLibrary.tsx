@@ -7,7 +7,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 
-import AutomationSubscriptionButton from 'pages/settings/billing/automate/AutomationSubscriptionButton'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import RuleRecipeCard from './components/RuleRecipeCard'
@@ -120,7 +120,7 @@ export function RuleLibrary({
                 </div>
                 {!hasAutomate && (
                     <div>
-                        <AutomationSubscriptionButton
+                        <AutomateSubscriptionButton
                             label="Get Automate Features"
                             onClick={() => {
                                 logEvent(

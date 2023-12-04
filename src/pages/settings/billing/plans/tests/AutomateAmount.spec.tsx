@@ -5,10 +5,10 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {starterHelpdeskPrice} from 'fixtures/productPrices'
 
 import {PlanInterval} from '../../../../../models/billing/types'
-import AutomationAmount from '../AutomationAmount'
+import AutomateAmount from '../AutomateAmount'
 
-describe('<AutomationAmount />', () => {
-    const minProps: ComponentProps<typeof AutomationAmount> = {
+describe('<AutomateAmount />', () => {
+    const minProps: ComponentProps<typeof AutomateAmount> = {
         addOnAmount: 'Amount',
         isAutomationChecked: false,
         onAutomationChange: jest.fn(),
@@ -19,13 +19,13 @@ describe('<AutomationAmount />', () => {
     })
 
     it('should render a string as amount', () => {
-        const {container} = render(<AutomationAmount {...minProps} />)
+        const {container} = render(<AutomateAmount {...minProps} />)
         expect(container).toMatchSnapshot()
     })
 
     it('should render formatted numbers as amount', () => {
         const {container} = render(
-            <AutomationAmount
+            <AutomateAmount
                 {...minProps}
                 addOnAmount={45612}
                 fullAddOnAmount={91224}
@@ -38,7 +38,7 @@ describe('<AutomationAmount />', () => {
 
     it('should render formatted amount number without discount', () => {
         const {container} = render(
-            <AutomationAmount
+            <AutomateAmount
                 {...minProps}
                 addOnAmount={45612}
                 interval={PlanInterval.Month}
@@ -50,7 +50,7 @@ describe('<AutomationAmount />', () => {
 
     it('should render with abbreviated plan interval', () => {
         const {container} = render(
-            <AutomationAmount
+            <AutomateAmount
                 {...minProps}
                 addOnAmount={45612}
                 fullAddOnAmount={91224}
@@ -64,7 +64,7 @@ describe('<AutomationAmount />', () => {
 
     it('should trigger callback for updating input value', () => {
         const {getByLabelText} = render(
-            <AutomationAmount
+            <AutomateAmount
                 {...minProps}
                 addOnAmount={45612}
                 fullAddOnAmount={91224}
@@ -78,7 +78,7 @@ describe('<AutomationAmount />', () => {
 
     it('should render not editable variant', () => {
         const {container} = render(
-            <AutomationAmount
+            <AutomateAmount
                 {...minProps}
                 addOnAmount={2000}
                 fullAddOnAmount={4000}
@@ -92,7 +92,7 @@ describe('<AutomationAmount />', () => {
 
     it("should render no addon when plan doesn't include one", () => {
         const {container} = render(
-            <AutomationAmount
+            <AutomateAmount
                 {...minProps}
                 addOnAmount={undefined}
                 interval={starterHelpdeskPrice.interval}
@@ -106,7 +106,7 @@ describe('<AutomationAmount />', () => {
 
     it('should render Unavailable when no amount is passed', () => {
         const {getByText} = render(
-            <AutomationAmount
+            <AutomateAmount
                 {...minProps}
                 addOnAmount={undefined}
                 fullAddOnAmount={91224}

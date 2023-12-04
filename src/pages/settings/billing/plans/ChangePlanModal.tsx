@@ -28,7 +28,7 @@ import BillingPlanCard from './BillingPlanCard'
 import CurrentPlanBadge from './CurrentPlanBadge'
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import TotalAmount from './TotalAmount'
-import AutomationAmount from './AutomationAmount'
+import AutomateAmount from './AutomateAmount'
 
 import css from './ChangePlanModal.less'
 import {getPlanCardFeaturesForPrices} from './billingPlanFeatures'
@@ -138,7 +138,7 @@ export const ChangePlanModal = ({
                                         className={css.plan}
                                         footer={
                                             <>
-                                                <AutomationAmount
+                                                <AutomateAmount
                                                     addOnAmount={
                                                         currentHelpdeskAutomateAmount
                                                     }

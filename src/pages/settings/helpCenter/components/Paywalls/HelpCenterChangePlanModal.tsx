@@ -16,7 +16,7 @@ import {getFormattedAmount, getFullPrice} from 'models/billing/utils'
 
 import {getPlanCardFeaturesForPrices} from 'pages/settings/billing/plans/billingPlanFeatures'
 import TotalAmount from 'pages/settings/billing/plans/TotalAmount'
-import AutomationAmount from 'pages/settings/billing/plans/AutomationAmount'
+import AutomateAmount from 'pages/settings/billing/plans/AutomateAmount'
 import {getActiveIntegrations} from 'state/integrations/selectors'
 
 import {HelpdeskPrice} from '../../../../../models/billing/types'
@@ -114,7 +114,7 @@ const HelpCenterChangePlanModal = ({
                     renderBody={renderBody}
                     footer={
                         <>
-                            <AutomationAmount
+                            <AutomateAmount
                                 addOnAmount={addOnAmount}
                                 currency={helpdeskPrice.currency}
                                 editable={
