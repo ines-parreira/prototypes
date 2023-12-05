@@ -20,13 +20,6 @@ describe('RichField', () => {
     const defaultProps: ComponentProps<typeof RichField> = {
         value: {html: undefined},
         onChange: _noop,
-        linkIsOpen: false,
-        linkText: '',
-        linkUrl: '',
-        onLinkUrlChange: _noop,
-        onLinkTextChange: _noop,
-        onLinkOpen: _noop,
-        onLinkClose: _noop,
     }
 
     beforeEach(() => {

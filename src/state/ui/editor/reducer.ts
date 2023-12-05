@@ -8,7 +8,7 @@ export const initialState = {
     isFocused: false,
 }
 
-const statsReducer = createReducer<EditorState>(initialState, (builder) =>
+export default createReducer<EditorState>(initialState, (builder) =>
     builder
         .addCase(linkEditionStarted, (state) => {
             state.isEditingLink = true
@@ -20,5 +20,3 @@ const statsReducer = createReducer<EditorState>(initialState, (builder) =>
             state.isFocused = payload
         })
 )
-
-export default statsReducer

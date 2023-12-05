@@ -15,7 +15,6 @@ import {
 } from 'pages/tickets/common/macros/utils'
 import shortcutManager from 'services/shortcutManager/index'
 import {getPreferences} from 'state/currentUser/selectors'
-import {setResponseText} from 'state/newMessage/actions'
 import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {notify} from 'state/notifications/actions'
@@ -577,7 +576,6 @@ const connector = connect(
         applyMacro,
         clearAppliedMacro,
         notify,
-        setResponseText,
     }
 )
 

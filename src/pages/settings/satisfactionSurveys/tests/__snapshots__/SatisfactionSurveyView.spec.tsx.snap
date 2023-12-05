@@ -1044,7 +1044,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 }
                               >
                                 <Wrapper
-                                  allowExternalChanges={true}
                                   canAddVideoPlayer={true}
                                   editorState={
                                     EditorState {
@@ -1209,15 +1208,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   onFocus={[Function]}
                                   onInsertVideoAddedFromPastedLink={[Function]}
                                   uploadType="public_attachment"
-                                  value={
-                                    {
-                                      "html": "<div><br></div>",
-                                      "text": "",
-                                    }
-                                  }
                                 >
                                   <Wrapper
-                                    allowExternalChanges={true}
                                     canAddVideoPlayer={true}
                                     detectGrammarly={[Function]}
                                     editorState={
@@ -1383,15 +1375,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     onFocus={[Function]}
                                     onInsertVideoAddedFromPastedLink={[Function]}
                                     uploadType="public_attachment"
-                                    value={
-                                      {
-                                        "html": "<div><br></div>",
-                                        "text": "",
-                                      }
-                                    }
                                   >
                                     <Wrapper
-                                      allowExternalChanges={true}
                                       canAddVideoPlayer={true}
                                       createToolbarPlugin={[Function]}
                                       detectGrammarly={[Function]}
@@ -1565,15 +1550,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       onLinkTextChange={[Function]}
                                       onLinkUrlChange={[Function]}
                                       uploadType="public_attachment"
-                                      value={
-                                        {
-                                          "html": "<div><br></div>",
-                                          "text": "",
-                                        }
-                                      }
                                     >
                                       <RichFieldEditor
-                                        allowExternalChanges={true}
                                         attachFiles={[Function]}
                                         canAddVideoPlayer={true}
                                         canDropFiles={false}
@@ -1754,12 +1732,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         onLinkUrlChange={[Function]}
                                         onMentionSearchChange={[Function]}
                                         uploadType="public_attachment"
-                                        value={
-                                          {
-                                            "html": "<div><br></div>",
-                                            "text": "",
-                                          }
-                                        }
                                       >
                                         <div
                                           className="rich-textarea-wrapper"
@@ -3069,7 +3041,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             </div>
                                           </div>
                                           <Toolbar
-                                            allowExternalChanges={true}
                                             attachFiles={[Function]}
                                             canAddVideoPlayer={true}
                                             canDropFiles={false}
@@ -3257,12 +3228,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             setEditorState={[Function]}
                                             setReadOnly={[Function]}
                                             uploadType="public_attachment"
-                                            value={
-                                              {
-                                                "html": "<div><br></div>",
-                                                "text": "",
-                                              }
-                                            }
                                           >
                                             <div
                                               className="editor-toolbar page"

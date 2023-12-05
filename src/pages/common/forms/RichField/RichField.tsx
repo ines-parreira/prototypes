@@ -1,23 +1,22 @@
+import React, {Component, ComponentProps} from 'react'
 import {ContentState, EditorState} from 'draft-js'
-import 'draft-js/dist/Draft.css'
 import _isEqual from 'lodash/isEqual'
-import React, {Component} from 'react'
+import 'draft-js/dist/Draft.css'
 
-import {contentStateFromTextOrHTML, convertToHTML} from 'utils/editor'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
+import {contentStateFromTextOrHTML, convertToHTML} from 'utils/editor'
 
-import RichFieldEditor, {Props as RichFieldEditorProps} from './RichFieldEditor'
+import RichFieldEditor from './RichFieldEditor'
 
 export type Props = {
     allowExternalChanges?: boolean
+    defaultContentState?: ContentState
+    onChange: (arg: EditorState) => void
     value: {
         html?: string
         text?: string
     }
-    defaultContentState?: ContentState
-    onChange: (arg: EditorState) => void
-    noAutoScroll?: boolean
-} & Partial<Omit<RichFieldEditorProps, 'editorState'>>
+} & Partial<Omit<ComponentProps<typeof RichFieldEditor>, 'editorState'>>
 
 type State = {
     editorState: EditorState
@@ -126,9 +125,19 @@ export default class RichField extends Component<Props, State> {
     }
 
     render() {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        const {
+            allowExternalChanges,
+            defaultContentState,
+            onChange,
+            value,
+            ...richFieldEditorProps
+        } = this.props
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+
         return (
             <RichFieldEditor
-                {...(this.props as Omit<RichFieldEditorProps, 'editorState'>)}
+                {...richFieldEditorProps}
                 editorState={this.state.editorState}
                 isFocused={this.state.isFocused}
                 onChange={this.handleEditorChange}

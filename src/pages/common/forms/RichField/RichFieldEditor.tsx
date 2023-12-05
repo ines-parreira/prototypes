@@ -63,7 +63,7 @@ import css from './RichFieldEditor.less'
 type suggestionsType = List<any>
 type canAddMentionType = boolean
 
-export type Props = {
+type Props = {
     className?: string
     header?: ReactNode
     quickReply?: ReactNode
@@ -90,7 +90,7 @@ export type Props = {
     predictionDebounce?: number
     ticket?: any
     isFocused: boolean
-    isRequired: boolean
+    isRequired?: boolean
     placeholder?: string
     canAddVideoPlayer?: boolean
     onInsertVideoAddedFromPastedLink?: () => void
@@ -275,11 +275,10 @@ export class RichFieldEditor extends Component<Props, State> {
         setTimeout(() => {
             if (this.editor) {
                 this.editor.focus()
-                if (!noAutoScroll)
-                    scrollToReactNode(this.editor as any, {
-                        block: 'start',
-                        scrollMode: 'always',
-                    })
+                if (!noAutoScroll) {
+                    scrollToReactNode(this.editor as any)
+                }
+
                 shortcutManager.denylist(['SpotlightModal'])
             }
         }, 0)

@@ -34,14 +34,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
 >
   <RichField
     canAddMention={true}
-    linkIsOpen={false}
-    linkText=""
-    linkUrl=""
     onChange={[Function]}
-    onLinkClose={[Function]}
-    onLinkOpen={[Function]}
-    onLinkTextChange={[Function]}
-    onLinkUrlChange={[Function]}
     value={
       {
         "html": "html",
@@ -85,14 +78,7 @@ exports[`RichField should render a basic input 1`] = `
   }
 >
   <RichField
-    linkIsOpen={false}
-    linkText=""
-    linkUrl=""
     onChange={[Function]}
-    onLinkClose={[Function]}
-    onLinkOpen={[Function]}
-    onLinkTextChange={[Function]}
-    onLinkUrlChange={[Function]}
     value={
       {
         "html": "html",
@@ -174,14 +160,7 @@ exports[`RichField should render default content state 1`] = `
         },
       }
     }
-    linkIsOpen={false}
-    linkText=""
-    linkUrl=""
     onChange={[Function]}
-    onLinkClose={[Function]}
-    onLinkOpen={[Function]}
-    onLinkTextChange={[Function]}
-    onLinkUrlChange={[Function]}
     value={
       {
         "html": "<div>foo</div>",
@@ -190,63 +169,6 @@ exports[`RichField should render default content state 1`] = `
     }
   >
     <Wrapper
-      defaultContentState={
-        Immutable.Record {
-          "entityMap": {
-            "__add": [Function],
-            "__create": [Function],
-            "__get": [Function],
-            "__getLastCreatedEntityKey": [Function],
-            "__mergeData": [Function],
-            "__replaceData": [Function],
-            "add": [Function],
-            "create": [Function],
-            "get": [Function],
-            "getLastCreatedEntityKey": [Function],
-            "mergeData": [Function],
-            "replaceData": [Function],
-          },
-          "blockMap": Immutable.OrderedMap {
-            "123": Immutable.Record {
-              "key": "123",
-              "type": "unstyled",
-              "text": "foo",
-              "characterList": Immutable.List [
-                Immutable.Record {
-                  "style": Immutable.OrderedSet [],
-                  "entity": null,
-                },
-                Immutable.Record {
-                  "style": Immutable.OrderedSet [],
-                  "entity": null,
-                },
-                Immutable.Record {
-                  "style": Immutable.OrderedSet [],
-                  "entity": null,
-                },
-              ],
-              "depth": 0,
-              "data": Immutable.Map {},
-            },
-          },
-          "selectionBefore": Immutable.Record {
-            "anchorKey": "123",
-            "anchorOffset": 0,
-            "focusKey": "123",
-            "focusOffset": 0,
-            "isBackward": false,
-            "hasFocus": false,
-          },
-          "selectionAfter": Immutable.Record {
-            "anchorKey": "123",
-            "anchorOffset": 0,
-            "focusKey": "123",
-            "focusOffset": 0,
-            "isBackward": false,
-            "hasFocus": false,
-          },
-        }
-      }
       editorState={
         EditorState {
           "_immutable": Immutable.Record {
@@ -375,81 +297,11 @@ exports[`RichField should render default content state 1`] = `
         }
       }
       isFocused={false}
-      linkIsOpen={false}
-      linkText=""
-      linkUrl=""
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
-      onLinkClose={[Function]}
-      onLinkOpen={[Function]}
-      onLinkTextChange={[Function]}
-      onLinkUrlChange={[Function]}
-      value={
-        {
-          "html": "<div>foo</div>",
-          "text": "foo",
-        }
-      }
     >
       <Wrapper
-        defaultContentState={
-          Immutable.Record {
-            "entityMap": {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "blockMap": Immutable.OrderedMap {
-              "123": Immutable.Record {
-                "key": "123",
-                "type": "unstyled",
-                "text": "foo",
-                "characterList": Immutable.List [
-                  Immutable.Record {
-                    "style": Immutable.OrderedSet [],
-                    "entity": null,
-                  },
-                  Immutable.Record {
-                    "style": Immutable.OrderedSet [],
-                    "entity": null,
-                  },
-                  Immutable.Record {
-                    "style": Immutable.OrderedSet [],
-                    "entity": null,
-                  },
-                ],
-                "depth": 0,
-                "data": Immutable.Map {},
-              },
-            },
-            "selectionBefore": Immutable.Record {
-              "anchorKey": "123",
-              "anchorOffset": 0,
-              "focusKey": "123",
-              "focusOffset": 0,
-              "isBackward": false,
-              "hasFocus": false,
-            },
-            "selectionAfter": Immutable.Record {
-              "anchorKey": "123",
-              "anchorOffset": 0,
-              "focusKey": "123",
-              "focusOffset": 0,
-              "isBackward": false,
-              "hasFocus": false,
-            },
-          }
-        }
         detectGrammarly={[Function]}
         editorState={
           EditorState {
@@ -579,82 +431,12 @@ exports[`RichField should render default content state 1`] = `
           }
         }
         isFocused={false}
-        linkIsOpen={false}
-        linkText=""
-        linkUrl=""
         onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
-        onLinkClose={[Function]}
-        onLinkOpen={[Function]}
-        onLinkTextChange={[Function]}
-        onLinkUrlChange={[Function]}
-        value={
-          {
-            "html": "<div>foo</div>",
-            "text": "foo",
-          }
-        }
       >
         <Wrapper
           createToolbarPlugin={[Function]}
-          defaultContentState={
-            Immutable.Record {
-              "entityMap": {
-                "__add": [Function],
-                "__create": [Function],
-                "__get": [Function],
-                "__getLastCreatedEntityKey": [Function],
-                "__mergeData": [Function],
-                "__replaceData": [Function],
-                "add": [Function],
-                "create": [Function],
-                "get": [Function],
-                "getLastCreatedEntityKey": [Function],
-                "mergeData": [Function],
-                "replaceData": [Function],
-              },
-              "blockMap": Immutable.OrderedMap {
-                "123": Immutable.Record {
-                  "key": "123",
-                  "type": "unstyled",
-                  "text": "foo",
-                  "characterList": Immutable.List [
-                    Immutable.Record {
-                      "style": Immutable.OrderedSet [],
-                      "entity": null,
-                    },
-                    Immutable.Record {
-                      "style": Immutable.OrderedSet [],
-                      "entity": null,
-                    },
-                    Immutable.Record {
-                      "style": Immutable.OrderedSet [],
-                      "entity": null,
-                    },
-                  ],
-                  "depth": 0,
-                  "data": Immutable.Map {},
-                },
-              },
-              "selectionBefore": Immutable.Record {
-                "anchorKey": "123",
-                "anchorOffset": 0,
-                "focusKey": "123",
-                "focusOffset": 0,
-                "isBackward": false,
-                "hasFocus": false,
-              },
-              "selectionAfter": Immutable.Record {
-                "anchorKey": "123",
-                "anchorOffset": 0,
-                "focusKey": "123",
-                "focusOffset": 0,
-                "isBackward": false,
-                "hasFocus": false,
-              },
-            }
-          }
           detectGrammarly={[Function]}
           editorState={
             EditorState {
@@ -794,12 +576,6 @@ exports[`RichField should render default content state 1`] = `
           onLinkOpen={[Function]}
           onLinkTextChange={[Function]}
           onLinkUrlChange={[Function]}
-          value={
-            {
-              "html": "<div>foo</div>",
-              "text": "foo",
-            }
-          }
         >
           <RichFieldEditor
             attachFiles={[Function]}
@@ -807,63 +583,6 @@ exports[`RichField should render default content state 1`] = `
             canDropFiles={false}
             canInsertInlineImages={true}
             createToolbarPlugin={[Function]}
-            defaultContentState={
-              Immutable.Record {
-                "entityMap": {
-                  "__add": [Function],
-                  "__create": [Function],
-                  "__get": [Function],
-                  "__getLastCreatedEntityKey": [Function],
-                  "__mergeData": [Function],
-                  "__replaceData": [Function],
-                  "add": [Function],
-                  "create": [Function],
-                  "get": [Function],
-                  "getLastCreatedEntityKey": [Function],
-                  "mergeData": [Function],
-                  "replaceData": [Function],
-                },
-                "blockMap": Immutable.OrderedMap {
-                  "123": Immutable.Record {
-                    "key": "123",
-                    "type": "unstyled",
-                    "text": "foo",
-                    "characterList": Immutable.List [
-                      Immutable.Record {
-                        "style": Immutable.OrderedSet [],
-                        "entity": null,
-                      },
-                      Immutable.Record {
-                        "style": Immutable.OrderedSet [],
-                        "entity": null,
-                      },
-                      Immutable.Record {
-                        "style": Immutable.OrderedSet [],
-                        "entity": null,
-                      },
-                    ],
-                    "depth": 0,
-                    "data": Immutable.Map {},
-                  },
-                },
-                "selectionBefore": Immutable.Record {
-                  "anchorKey": "123",
-                  "anchorOffset": 0,
-                  "focusKey": "123",
-                  "focusOffset": 0,
-                  "isBackward": false,
-                  "hasFocus": false,
-                },
-                "selectionAfter": Immutable.Record {
-                  "anchorKey": "123",
-                  "anchorOffset": 0,
-                  "focusKey": "123",
-                  "focusOffset": 0,
-                  "isBackward": false,
-                  "hasFocus": false,
-                },
-              }
-            }
             detectGrammarly={[Function]}
             editorState={
               EditorState {
@@ -1008,12 +727,6 @@ exports[`RichField should render default content state 1`] = `
             onLinkTextChange={[Function]}
             onLinkUrlChange={[Function]}
             onMentionSearchChange={[Function]}
-            value={
-              {
-                "html": "<div>foo</div>",
-                "text": "foo",
-              }
-            }
           >
             <div
               className="rich-textarea-wrapper"
@@ -2279,63 +1992,6 @@ exports[`RichField should render default content state 1`] = `
                 canDropFiles={false}
                 canInsertInlineImages={true}
                 createToolbarPlugin={[Function]}
-                defaultContentState={
-                  Immutable.Record {
-                    "entityMap": {
-                      "__add": [Function],
-                      "__create": [Function],
-                      "__get": [Function],
-                      "__getLastCreatedEntityKey": [Function],
-                      "__mergeData": [Function],
-                      "__replaceData": [Function],
-                      "add": [Function],
-                      "create": [Function],
-                      "get": [Function],
-                      "getLastCreatedEntityKey": [Function],
-                      "mergeData": [Function],
-                      "replaceData": [Function],
-                    },
-                    "blockMap": Immutable.OrderedMap {
-                      "123": Immutable.Record {
-                        "key": "123",
-                        "type": "unstyled",
-                        "text": "foo",
-                        "characterList": Immutable.List [
-                          Immutable.Record {
-                            "style": Immutable.OrderedSet [],
-                            "entity": null,
-                          },
-                          Immutable.Record {
-                            "style": Immutable.OrderedSet [],
-                            "entity": null,
-                          },
-                          Immutable.Record {
-                            "style": Immutable.OrderedSet [],
-                            "entity": null,
-                          },
-                        ],
-                        "depth": 0,
-                        "data": Immutable.Map {},
-                      },
-                    },
-                    "selectionBefore": Immutable.Record {
-                      "anchorKey": "123",
-                      "anchorOffset": 0,
-                      "focusKey": "123",
-                      "focusOffset": 0,
-                      "isBackward": false,
-                      "hasFocus": false,
-                    },
-                    "selectionAfter": Immutable.Record {
-                      "anchorKey": "123",
-                      "anchorOffset": 0,
-                      "focusKey": "123",
-                      "focusOffset": 0,
-                      "isBackward": false,
-                      "hasFocus": false,
-                    },
-                  }
-                }
                 detectGrammarly={[Function]}
                 editorState={
                   EditorState {
@@ -2487,12 +2143,6 @@ exports[`RichField should render default content state 1`] = `
                 onMentionSearchChange={[Function]}
                 setEditorState={[Function]}
                 setReadOnly={[Function]}
-                value={
-                  {
-                    "html": "<div>foo</div>",
-                    "text": "foo",
-                  }
-                }
               >
                 <div
                   className="editor-toolbar page"
@@ -3377,14 +3027,7 @@ exports[`RichField should render immutable variable 1`] = `
   }
 >
   <RichField
-    linkIsOpen={false}
-    linkText=""
-    linkUrl=""
     onChange={[Function]}
-    onLinkClose={[Function]}
-    onLinkOpen={[Function]}
-    onLinkTextChange={[Function]}
-    onLinkUrlChange={[Function]}
     value={
       {
         "html": "html {{current_user.name}}",
@@ -3814,22 +3457,9 @@ exports[`RichField should render immutable variable 1`] = `
         }
       }
       isFocused={false}
-      linkIsOpen={false}
-      linkText=""
-      linkUrl=""
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
-      onLinkClose={[Function]}
-      onLinkOpen={[Function]}
-      onLinkTextChange={[Function]}
-      onLinkUrlChange={[Function]}
-      value={
-        {
-          "html": "html {{current_user.name}}",
-          "text": "text {{current_user.name}}",
-        }
-      }
     >
       <Wrapper
         detectGrammarly={[Function]}
@@ -4254,22 +3884,9 @@ exports[`RichField should render immutable variable 1`] = `
           }
         }
         isFocused={false}
-        linkIsOpen={false}
-        linkText=""
-        linkUrl=""
         onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
-        onLinkClose={[Function]}
-        onLinkOpen={[Function]}
-        onLinkTextChange={[Function]}
-        onLinkUrlChange={[Function]}
-        value={
-          {
-            "html": "html {{current_user.name}}",
-            "text": "text {{current_user.name}}",
-          }
-        }
       >
         <Wrapper
           createToolbarPlugin={[Function]}
@@ -4705,12 +4322,6 @@ exports[`RichField should render immutable variable 1`] = `
           onLinkOpen={[Function]}
           onLinkTextChange={[Function]}
           onLinkUrlChange={[Function]}
-          value={
-            {
-              "html": "html {{current_user.name}}",
-              "text": "text {{current_user.name}}",
-            }
-          }
         >
           <RichFieldEditor
             attachFiles={[Function]}
@@ -5155,12 +4766,6 @@ exports[`RichField should render immutable variable 1`] = `
             onLinkTextChange={[Function]}
             onLinkUrlChange={[Function]}
             onMentionSearchChange={[Function]}
-            value={
-              {
-                "html": "html {{current_user.name}}",
-                "text": "text {{current_user.name}}",
-              }
-            }
           >
             <div
               className="rich-textarea-wrapper"
@@ -8555,12 +8160,6 @@ exports[`RichField should render immutable variable 1`] = `
                 onMentionSearchChange={[Function]}
                 setEditorState={[Function]}
                 setReadOnly={[Function]}
-                value={
-                  {
-                    "html": "html {{current_user.name}}",
-                    "text": "text {{current_user.name}}",
-                  }
-                }
               >
                 <div
                   className="editor-toolbar page"
@@ -9445,14 +9044,7 @@ exports[`RichField should render mutable variable 1`] = `
   }
 >
   <RichField
-    linkIsOpen={false}
-    linkText=""
-    linkUrl=""
     onChange={[Function]}
-    onLinkClose={[Function]}
-    onLinkOpen={[Function]}
-    onLinkTextChange={[Function]}
-    onLinkUrlChange={[Function]}
     value={
       {
         "html": "html",
@@ -9636,22 +9228,9 @@ exports[`RichField should render mutable variable 1`] = `
         }
       }
       isFocused={false}
-      linkIsOpen={false}
-      linkText=""
-      linkUrl=""
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
-      onLinkClose={[Function]}
-      onLinkOpen={[Function]}
-      onLinkTextChange={[Function]}
-      onLinkUrlChange={[Function]}
-      value={
-        {
-          "html": "html",
-          "text": "text",
-        }
-      }
     >
       <Wrapper
         detectGrammarly={[Function]}
@@ -9830,22 +9409,9 @@ exports[`RichField should render mutable variable 1`] = `
           }
         }
         isFocused={false}
-        linkIsOpen={false}
-        linkText=""
-        linkUrl=""
         onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
-        onLinkClose={[Function]}
-        onLinkOpen={[Function]}
-        onLinkTextChange={[Function]}
-        onLinkUrlChange={[Function]}
-        value={
-          {
-            "html": "html",
-            "text": "text",
-          }
-        }
       >
         <Wrapper
           createToolbarPlugin={[Function]}
@@ -10035,12 +9601,6 @@ exports[`RichField should render mutable variable 1`] = `
           onLinkOpen={[Function]}
           onLinkTextChange={[Function]}
           onLinkUrlChange={[Function]}
-          value={
-            {
-              "html": "html",
-              "text": "text",
-            }
-          }
         >
           <RichFieldEditor
             attachFiles={[Function]}
@@ -10239,12 +9799,6 @@ exports[`RichField should render mutable variable 1`] = `
             onLinkTextChange={[Function]}
             onLinkUrlChange={[Function]}
             onMentionSearchChange={[Function]}
-            value={
-              {
-                "html": "html",
-                "text": "text",
-              }
-            }
           >
             <div
               className="rich-textarea-wrapper"
@@ -11861,12 +11415,6 @@ exports[`RichField should render mutable variable 1`] = `
                 onMentionSearchChange={[Function]}
                 setEditorState={[Function]}
                 setReadOnly={[Function]}
-                value={
-                  {
-                    "html": "html",
-                    "text": "text",
-                  }
-                }
               >
                 <div
                   className="editor-toolbar page"
