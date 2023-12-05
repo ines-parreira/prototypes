@@ -3,10 +3,10 @@ import React, {useState} from 'react'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
-const AutomationSubscriptionAction = () => {
+const AutomateSubscriptionAction = () => {
     const [
-        isAutomationSubscriptionModalOpen,
-        setIsAutomationSubscriptionModalOpen,
+        isAutomateSubscriptionModalOpen,
+        setIsAutomateSubscriptionModalOpen,
     ] = useState(false)
 
     return (
@@ -15,16 +15,16 @@ const AutomationSubscriptionAction = () => {
                 label="Get Automate Features"
                 size="small"
                 onClick={() => {
-                    setIsAutomationSubscriptionModalOpen(true)
+                    setIsAutomateSubscriptionModalOpen(true)
                 }}
             />
             <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
-                isOpen={isAutomationSubscriptionModalOpen}
-                onClose={() => setIsAutomationSubscriptionModalOpen(false)}
+                isOpen={isAutomateSubscriptionModalOpen}
+                onClose={() => setIsAutomateSubscriptionModalOpen(false)}
             />
         </>
     )
 }
 
-export default AutomationSubscriptionAction
+export default AutomateSubscriptionAction

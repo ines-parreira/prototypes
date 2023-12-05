@@ -20,7 +20,7 @@ import {
     QUICK_RESPONSES,
 } from '../../common/components/constants'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
-import AutomationSubscriptionAction from './AutomationSubscriptionAction'
+import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 
 import css from './ConnectedChannelAccordionBodyChat.less'
@@ -63,7 +63,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
     const renderArticleRecommendationAction = () => {
         if (!hasAutomate) {
-            return <AutomationSubscriptionAction />
+            return <AutomateSubscriptionAction />
         }
 
         if (!articleRecommendationHelpCenterId) {
@@ -148,7 +148,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                     !hasAutomate ||
                     cantReactivateQuickResponses
                 }
-                action={!hasAutomate && <AutomationSubscriptionAction />}
+                action={!hasAutomate && <AutomateSubscriptionAction />}
                 tooltipMessage={
                     cantReactivateQuickResponses
                         ? 'Disable individual Flows and Quick Responses to have a maximum of 6 Flows between them in order to turn on Quick Response again.'

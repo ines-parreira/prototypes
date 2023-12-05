@@ -16,7 +16,7 @@ import {getHasAutomate} from '../../../../state/billing/selectors'
 import {FeatureFlagKey} from '../../../../config/featureFlags'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
-import AutomationSubscriptionAction from './AutomationSubscriptionAction'
+import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 
 type Props = {
     channel: SelfServiceStandaloneContactFormChannel
@@ -92,7 +92,7 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                             order_management: {enabled},
                         })
                     }}
-                    action={!hasAutomate && <AutomationSubscriptionAction />}
+                    action={!hasAutomate && <AutomateSubscriptionAction />}
                 />
             )}
         </>

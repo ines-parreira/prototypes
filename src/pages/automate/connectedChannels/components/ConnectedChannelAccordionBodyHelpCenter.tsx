@@ -19,7 +19,7 @@ import {
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
-import AutomationSubscriptionAction from './AutomationSubscriptionAction'
+import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 
 type Props = {
@@ -124,7 +124,7 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                 value={channel.value.self_service_deactivated_datetime === null}
                 disabled={updatingHelpCenter || !hasAutomate}
                 onChange={updateHelpCenter}
-                action={!hasAutomate && <AutomationSubscriptionAction />}
+                action={!hasAutomate && <AutomateSubscriptionAction />}
             />
         </>
     )

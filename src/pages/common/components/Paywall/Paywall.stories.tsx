@@ -3,7 +3,7 @@ import React, {ComponentProps, useState} from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
 import overviewStatsPaywall from 'assets/img/paywalls/screens/live-overview-statistic.png'
-import gorgiasChatSSPaywall from 'assets/img/paywalls/screens/gorgias_chat_ssp_automation.png'
+import gorgiasChatSSPaywall from 'assets/img/paywalls/screens/gorgias_chat_ssp_automate.png'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
