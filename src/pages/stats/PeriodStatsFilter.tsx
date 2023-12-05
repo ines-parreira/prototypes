@@ -3,7 +3,6 @@ import React, {ComponentProps, useCallback} from 'react'
 import {Options as InitialSettings} from 'daterangepicker'
 import {useEffectOnce} from 'react-use'
 
-import {useHistory} from 'react-router-dom'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -17,17 +16,15 @@ type Props = {
     initialSettings?: InitialSettings
     value: StatsFilters['period']
     variant?: 'fill' | 'ghost'
-    updateQueryParams?: boolean
 }
 
 export default function PeriodStatsFilter({
     initialSettings: initialSettingsProp,
     value,
     variant = 'fill',
-    updateQueryParams = false,
 }: Props) {
     const dispatch = useAppDispatch()
-    const history = useHistory()
+
     const initialSettings = {
         maxDate: moment(),
         maxSpan: MAX_SPAN,
@@ -51,13 +48,8 @@ export default function PeriodStatsFilter({
                         },
                     })
                 )
-                if (updateQueryParams) {
-                    history.push({
-                        search: `?start_datetime=${startDatetime}&end_datetime=${endDatetime}`,
-                    })
-                }
             },
-            [dispatch, updateQueryParams, history]
+            [dispatch]
         )
 
     useEffectOnce(() => {

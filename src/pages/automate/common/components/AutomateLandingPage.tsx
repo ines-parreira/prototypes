@@ -87,9 +87,7 @@ const AutomateLandingPage = () => {
     )
 
     const handleViewFullReport = () => {
-        history.push(
-            `/app/stats/automate-overview?start_datetime=${nowLess28DaysDatetime}&end_datetime=${nowDatetime}`
-        )
+        history.push(`/app/stats/automate-overview?source=automate`)
     }
 
     const isLoading =

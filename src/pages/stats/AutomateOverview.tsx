@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import moment, {Moment} from 'moment'
 import {useLocalStorage} from 'react-use'
 import {Scale, TooltipItem} from 'chart.js'
@@ -48,9 +48,11 @@ import {
 } from 'pages/automate/automate-metrics'
 
 import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
-import useSearch from 'hooks/useSearch'
 import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useSearch from 'hooks/useSearch'
+import {mergeStatsFilters} from 'state/stats/actions'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
@@ -96,14 +98,13 @@ export function AutomateOverview() {
         AAO_TIPS_VISIBILITY_KEY,
         true
     )
+    const dispatch = useAppDispatch()
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
     const statsFilters = useAppSelector(getStatsFilters)
-
     const params = useSearch() as {
-        start_datetime?: string
-        end_datetime?: string
+        source?: 'automate'
     }
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
@@ -111,11 +112,11 @@ export function AutomateOverview() {
         return {
             channels,
             period: {
-                start_datetime: params?.start_datetime ?? period.start_datetime,
-                end_datetime: params?.end_datetime ?? period.end_datetime,
+                start_datetime: period.start_datetime,
+                end_datetime: period.end_datetime,
             },
         }
-    }, [statsFilters, params])
+    }, [statsFilters])
 
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
     const granularity = periodToReportingGranularity(requestStatsFilters.period)
@@ -214,6 +215,24 @@ export function AutomateOverview() {
         const threeDaysAgo = moment().subtract(3, 'days')
         return startdDateTime.isAfter(threeDaysAgo, 'date')
     }, [statsFilters.period.start_datetime])
+
+    useEffect(() => {
+        if (params.source === 'automate') {
+            const newValues = {
+                startDatetime: moment().subtract(28, 'days').format(),
+                endDatetime: moment().endOf('day').format(),
+            }
+
+            dispatch(
+                mergeStatsFilters({
+                    period: {
+                        start_datetime: newValues.startDatetime,
+                        end_datetime: newValues.endDatetime,
+                    },
+                })
+            )
+        }
+    }, [params.source, dispatch])
 
     const plotIfGrayArea = useCallback(
         (
@@ -367,14 +386,12 @@ export function AutomateOverview() {
                             ]}
                             variant="ghost"
                         />
-
                         <PeriodStatsFilter
                             initialSettings={{
                                 maxSpan: 365,
                             }}
                             value={pageStatsFilters.period}
                             variant="ghost"
-                            updateQueryParams
                         />
                         <DownloadOverviewDataButton
                             onClick={async () => {

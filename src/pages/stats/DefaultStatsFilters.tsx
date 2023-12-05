@@ -30,6 +30,7 @@ export default function DefaultStatsFilters({
 
     useEffect(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
+
         const defaultFilters: StatsFilters = {
             period: {
                 // default period: last 7 days
@@ -41,6 +42,7 @@ export default function DefaultStatsFilters({
                 end_datetime: currentDay.clone().endOf('day').format(),
             },
         }
+
         dispatch(setStatsFilters(defaultFilters))
         return () => {
             dispatch(resetStatsFilters())
