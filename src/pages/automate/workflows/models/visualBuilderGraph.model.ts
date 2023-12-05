@@ -29,6 +29,7 @@ import {
     VisualBuilderNode,
     isMultipleChoicesNodeType,
 } from './visualBuilderGraph.types'
+import {unescapeUrlEncodedVariables} from './variables.model'
 
 export const buildEdgeCommonProperties: () => Pick<
     Edge,
@@ -462,7 +463,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                             (entry) => [entry.key, entry.value]
                         )
 
-                        body = new URLSearchParams(entries).toString()
+                        body = unescapeUrlEncodedVariables(
+                            new URLSearchParams(entries).toString()
+                        )
                         break
                     }
                 }

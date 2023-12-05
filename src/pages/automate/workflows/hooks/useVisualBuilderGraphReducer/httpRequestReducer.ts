@@ -207,9 +207,11 @@ export function httpRequestReducer(
                     switch (action.bodyContentType) {
                         case 'application/json':
                             node.data.json = '{}'
+                            delete node.data.formUrlencoded
                             break
                         case 'application/x-www-form-urlencoded':
                             node.data.formUrlencoded = []
+                            delete node.data.json
                             break
                     }
                 }

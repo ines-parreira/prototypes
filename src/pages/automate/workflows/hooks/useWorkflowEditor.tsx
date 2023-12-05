@@ -512,7 +512,7 @@ function isHttpRequestStepIncomplete({
     }
 
     if (headers['content-type'] === 'application/x-www-form-urlencoded') {
-        const entries = [...new URLSearchParams(body).entries()]
+        const entries = Array.from(new URLSearchParams(body).entries())
 
         if (entries.some(([k, v]) => !k.trim() || !v.trim())) {
             return true

@@ -337,11 +337,11 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                             : undefined,
                     formUrlencoded:
                         bodyContentType === 'application/x-www-form-urlencoded'
-                            ? [
-                                  ...new URLSearchParams(
+                            ? Array.from(
+                                  new URLSearchParams(
                                       step.settings.body
-                                  ).entries(),
-                              ].map(([key, value]) => ({key, value}))
+                                  ).entries()
+                              ).map(([key, value]) => ({key, value}))
                             : undefined,
                     bodyContentType: bodyContentType,
                     variables: step.settings.variables,
