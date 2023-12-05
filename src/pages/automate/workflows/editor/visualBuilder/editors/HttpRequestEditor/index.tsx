@@ -5,6 +5,7 @@ import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilder
 import Label from 'pages/common/forms/Label/Label'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import {validateJSON} from 'utils'
 
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
@@ -140,6 +141,11 @@ export default function HttpRequestEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={
+                                validateJSON(nodeInEdition.data.json ?? '')
+                                    ? undefined
+                                    : 'Invalid JSON'
+                            }
                         />
                     )}
                     {nodeInEdition.data.bodyContentType ===

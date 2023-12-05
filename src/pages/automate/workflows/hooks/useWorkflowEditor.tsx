@@ -12,6 +12,7 @@ import {useThrottleFn} from 'react-use'
 import {
     LanguageCode,
     WorkflowConfiguration,
+    WorkflowStepHttpRequest,
 } from '../models/workflowConfiguration.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {
@@ -25,17 +26,18 @@ import {
     walkVisualBuilderGraph,
 } from '../models/visualBuilderGraph.model'
 import {
-    extractVariablesFromText,
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
     checkGraphVariablesValidity,
     buildWorkflowVariableFromNode,
     findVariable,
+    extractVariablesFromNode,
 } from '../models/variables.model'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
+import {validateJSON, validateWebhookURL} from '../../../../utils'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -56,7 +58,9 @@ export type WorkflowEditorContext = {
     handleValidate: () => Maybe<string>
     handleSave: () => Promise<void>
     handleDiscard: () => void
-    checkInvalidVariablesForNode: (text: string, nodeId: string) => boolean
+    checkInvalidVariablesForNode: (
+        node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
+    ) => boolean
     checkNodeHasVariablesUsedInChildren: (nodeId: string) => boolean
     dispatch: React.Dispatch<VisualBuilderGraphAction>
     visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
@@ -381,12 +385,12 @@ export function useWorkflowEditor(
     ])
 
     const checkInvalidVariablesForNode = useCallback(
-        (text: string, nodeId: string) => {
-            const variables = extractVariablesFromText(text)
+        (node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>) => {
+            const variables = extractVariablesFromNode(node)
             if (variables.length === 0) return false
             const availableVariables = getWorkflowVariableListForNode(
                 visualBuilderGraphDirty,
-                nodeId
+                node.id
             )
             return variables
                 .map((v) => parseWorkflowVariable(v, availableVariables))
@@ -414,14 +418,7 @@ export function useWorkflowEditor(
                 (childNode) => {
                     if (found) return
 
-                    const content =
-                        'content' in childNode.data
-                            ? childNode.data.content.text
-                            : null
-
-                    if (!content) return
-
-                    const variables = extractVariablesFromText(content)
+                    const variables = extractVariablesFromNode(childNode)
                     if (variables.length === 0) return
 
                     found = Boolean(
@@ -496,27 +493,82 @@ export function useWorkflowEditor(
     }
 }
 
+function isHttpRequestStepIncomplete({
+    name,
+    headers = {},
+    variables,
+    body,
+}: WorkflowStepHttpRequest['settings']) {
+    if (!name.trim()) {
+        return true
+    }
+
+    if (Object.entries(headers).some(([k, v]) => !k.trim() || !v.trim())) {
+        return true
+    }
+
+    if (variables.some((v) => !v.name.trim() || !v.jsonpath.trim())) {
+        return true
+    }
+
+    if (headers['content-type'] === 'application/x-www-form-urlencoded') {
+        const entries = [...new URLSearchParams(body).entries()]
+
+        if (entries.some(([k, v]) => !k.trim() || !v.trim())) {
+            return true
+        }
+    }
+
+    return false
+}
+
 function validate(conf: WorkflowConfiguration): Maybe<string> {
-    if (conf.name.trim().length === 0)
+    if (!conf.name.trim()) {
         return 'You must add a flow name in order to save'
-    else if (conf.name.length > 100)
+    }
+    if (conf.name.length > 100) {
         return 'Flow name must be less than 100 characters'
+    }
+    if (conf.steps.length === 1) {
+        return 'You must add at least one step after the trigger button in order to save'
+    }
+
+    const httpRequestSteps = conf.steps.filter(
+        (s): s is WorkflowStepHttpRequest => s.kind === 'http-request'
+    )
+
     if (
         conf.entrypoint?.label.trim().length === 0 ||
         conf.steps.find(
             (s) =>
                 s.kind === 'messages' &&
-                s.settings.messages[0].content.text.trim().length === 0
+                !s.settings.messages[0].content.text.trim()
         ) ||
         conf.steps.find(
             (s) =>
                 s.kind === 'choices' &&
-                s.settings.choices.find((c) => c.label.trim().length === 0)
-        )
-    )
+                s.settings.choices.find((c) => !c.label.trim())
+        ) ||
+        httpRequestSteps.find((s) => isHttpRequestStepIncomplete(s.settings))
+    ) {
         return 'Complete or delete incomplete steps in order to save'
-    if (conf.steps.length === 1)
-        return 'You must add at least one step after the trigger button in order to save'
+    }
+
+    const urlValidationMessage = httpRequestSteps
+        .map((s) => validateWebhookURL(s.settings.url))
+        .filter(Boolean)[0]
+    if (urlValidationMessage) {
+        return urlValidationMessage
+    }
+
+    const jsonInvalid = httpRequestSteps
+        .filter(
+            (s) => s.settings.headers?.['content-type'] === 'application/json'
+        )
+        .some((s) => !validateJSON(s.settings.body || ''))
+    if (jsonInvalid) {
+        return 'Invalid JSON'
+    }
     if (isPayloadTooLarge(emptyTranslatedTexts(conf))) {
         return 'This Flow is too large to save. Please remove steps and try again.'
     }

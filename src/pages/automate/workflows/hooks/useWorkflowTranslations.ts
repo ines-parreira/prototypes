@@ -18,11 +18,11 @@ import _mapValues from 'lodash/mapValues'
 
 import {LanguageCode} from '../models/workflowConfiguration.types'
 import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
-import {decodeVariablesQuotes} from '../models/variables.model'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
+import {migrateBracketNotationToDotNotation} from '../models/variables.model'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -72,7 +72,15 @@ export default function useWorkflowTranslations(
             const translationsByLang = langTranslationsPair.reduce(
                 (acc, [lang, translations]) => ({
                     ...acc,
-                    [lang]: translations,
+                    [lang]: Object.entries(translations ?? {}).reduce<
+                        Record<string, string>
+                    >(
+                        (acc, [key, value]) => ({
+                            ...acc,
+                            [key]: migrateBracketNotationToDotNotation(value),
+                        }),
+                        {}
+                    ),
                 }),
                 {} as TranslationsByLang
             )
@@ -127,15 +135,10 @@ export default function useWorkflowTranslations(
                         translationsByLang[languageCode]
                     )
                 ) {
-                    const translationWithNoQuotes = _mapValues(
-                        nextTranslationsByLangDirty[languageCode],
-                        decodeVariablesQuotes
-                    )
-
                     await upsertWorkflowTranslations(
                         configurationInternalId,
                         languageCode,
-                        translationWithNoQuotes
+                        nextTranslationsByLangDirty[languageCode]
                     )
                 }
             }

@@ -29,7 +29,6 @@ import {
     VisualBuilderNode,
     isMultipleChoicesNodeType,
 } from './visualBuilderGraph.types'
-import {decodeVariablesQuotes} from './variables.model'
 
 export const buildEdgeCommonProperties: () => Pick<
     Edge,
@@ -62,21 +61,7 @@ export function areGraphsEqual(
                             (value) => value === undefined
                         )
 
-                        if (node.type === 'automated_message') {
-                            return {
-                                id: node.id,
-                                type: node.type,
-                                data: {
-                                    ...data,
-                                    content: {
-                                        ...node.data.content,
-                                        html: decodeVariablesQuotes(
-                                            node.data.content.html
-                                        ),
-                                    },
-                                },
-                            }
-                        } else if (node.type === 'http_request') {
+                        if (node.type === 'http_request') {
                             return {
                                 id: node.id,
                                 type: node.type,

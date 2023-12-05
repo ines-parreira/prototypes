@@ -76,14 +76,19 @@ export default function MultipleChoicesNodeWrapper(
     const {content, choices} = node.data
     const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
     const hasInvalidVariables = useMemo(
-        () => checkInvalidVariablesForNode(content.text, node.id),
-        [content.text, node.id, checkInvalidVariablesForNode]
+        () =>
+            checkInvalidVariablesForNode({
+                id: node.id,
+                data: node.data,
+                type: 'multiple_choices',
+            }),
+        [node.id, node.data, checkInvalidVariablesForNode]
     )
     const isErrored =
         content.text.length === 0 ||
         choices.some((c) => !c.label) ||
         hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode(node.data.content)
+        !isValidLiquidSyntaxInNode({data: node.data, type: 'multiple_choices'})
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (

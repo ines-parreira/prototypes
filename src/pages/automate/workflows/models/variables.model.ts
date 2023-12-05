@@ -1,4 +1,6 @@
 import {Liquid} from 'liquidjs'
+import _flatten from 'lodash/flatten'
+
 import {
     WorkflowVariableList,
     WorkflowVariable,
@@ -9,26 +11,18 @@ import {
     VisualBuilderGraph,
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
-import {LanguageCode, MessageContent} from './workflowConfiguration.types'
+import {LanguageCode} from './workflowConfiguration.types'
 
 type GraphVariablesValidationResult = {
     error: string
     lang: LanguageCode
 } | null
 
-// DraftJS encodes double quotes in variables as HTML entities, we need to decode those back
-const encodedQuotesInVariablesRegex = new RegExp(
-    '({{[^{}]*)' + // match the opening {{ and everything except opening or ending curly bracket (we stay in the variable)
-        '&quot;' + // a html encoded double quote, at this point it must be inside variable delimiters
-        '([^{}]*}})', // everything remaining until the closing }}
-    'g'
-)
-
 const templateEngine = new Liquid()
 
 // any text starting with {{ and ending with }} will be interpreted as a variable by the API template engine
 export const workflowVariableRegex = /{{[^{}]*}}/g
-export function extractVariablesFromText(text: string): string[] {
+function extractVariablesFromText(text: string): string[] {
     const match = text.match(workflowVariableRegex)
     if (match) {
         return match
@@ -83,7 +77,7 @@ export const buildWorkflowVariableFromNode = (
         } = node
         return {
             name: formatVariableName(text.length > 0 ? text : 'Message'),
-            value: `{{steps_state["${wfConfigurationTextInputStepId}"].content.text}}`,
+            value: `{{steps_state.${wfConfigurationTextInputStepId}.content.text}}`,
             nodeType: 'text_reply',
         }
     } else if (node.type === 'multiple_choices') {
@@ -95,7 +89,7 @@ export const buildWorkflowVariableFromNode = (
         } = node
         return {
             name: formatVariableName(text.length > 0 ? text : 'Question'),
-            value: `{{steps_state["${wfConfigurationChoicesStepId}"].selected_choice.label}}`,
+            value: `{{steps_state.${wfConfigurationChoicesStepId}.selected_choice.label}}`,
             nodeType: 'multiple_choices',
         }
     } else if (node.type === 'order_selection') {
@@ -155,7 +149,7 @@ export const buildWorkflowVariableFromNode = (
             name: formatVariableName(name.length > 0 ? name : 'Request name'),
             variables: variables.map((variable) => ({
                 name: variable.name,
-                value: `{{steps_state["${wfConfigurationHttpRequestStepId}"].content["${variable.id}"]}}`,
+                value: `{{steps_state.${wfConfigurationHttpRequestStepId}.content.${variable.id}}}`,
             })),
         }
     }
@@ -190,32 +184,56 @@ export function getWorkflowVariableListForNode(
     return workflowVariableList
 }
 
+export function extractVariablesFromNode(
+    node: UnionPick<VisualBuilderNode, 'type' | 'data'>
+) {
+    let variables: string[] = []
+
+    switch (node.type) {
+        case 'automated_message':
+        case 'multiple_choices':
+        case 'text_reply':
+        case 'file_upload':
+        case 'order_selection':
+            variables = extractVariablesFromText(node.data.content.text)
+            break
+        case 'http_request':
+            variables = [
+                ...extractVariablesFromText(node.data.url),
+                ..._flatten(
+                    node.data.headers.map((header) =>
+                        extractVariablesFromText(header.value)
+                    )
+                ),
+                ...extractVariablesFromText(node.data.json ?? ''),
+                ..._flatten(
+                    node.data.formUrlencoded?.map((item) =>
+                        extractVariablesFromText(item.value)
+                    )
+                ),
+            ]
+    }
+
+    return variables
+}
+
 export function hasNodesWithInvalidVariables(g: VisualBuilderGraph) {
     return g.nodes.some((node) => {
         const availableVariablesForNode = getWorkflowVariableListForNode(
             g,
             node.id
         )
-        if ('content' in node.data) {
-            const variables = extractVariablesFromText(node.data.content.text)
-            if (variables.length === 0) return false
-            const invalidVariables = variables.some(
-                (variable) =>
-                    parseWorkflowVariable(variable, availableVariablesForNode)
-                        .isInvalid
-            )
-            return invalidVariables
-        }
-        return false
+        const variables = extractVariablesFromNode(node)
+        return variables.some(
+            (variable) =>
+                parseWorkflowVariable(variable, availableVariablesForNode)
+                    .isInvalid
+        )
     })
 }
 
 export function hasNodesWithInvalidLiquidSyntax(g: VisualBuilderGraph) {
-    return g.nodes.some((node) =>
-        'content' in node.data
-            ? isValidLiquidSyntaxInNode(node.data.content) === false
-            : false
-    )
+    return g.nodes.some((node) => !isValidLiquidSyntaxInNode(node))
 }
 
 export function checkGraphVariablesValidity(
@@ -249,18 +267,49 @@ export function checkGraphVariablesValidity(
     return validationResult
 }
 
-export function isValidLiquidSyntaxInNode(content: MessageContent) {
+function isValidLiquidSyntax(string: string) {
     try {
-        templateEngine.parse(content.text)
-        templateEngine.parse(content.html)
+        templateEngine.parse(string)
         return true
-    } catch (e) {
+    } catch {
         return false
     }
 }
 
-export function decodeVariablesQuotes(text: string): string {
-    // recall capture groups as $1 and $2
-    const cleanText = text.replace(encodedQuotesInVariablesRegex, '$1"$2')
-    return cleanText !== text ? decodeVariablesQuotes(cleanText) : cleanText
+export function isValidLiquidSyntaxInNode(
+    node: UnionPick<VisualBuilderNode, 'type' | 'data'>
+) {
+    switch (node.type) {
+        case 'automated_message':
+        case 'multiple_choices':
+        case 'text_reply':
+        case 'file_upload':
+        case 'order_selection':
+            return (
+                isValidLiquidSyntax(node.data.content.text) &&
+                isValidLiquidSyntax(node.data.content.html)
+            )
+        case 'http_request':
+            return (
+                isValidLiquidSyntax(node.data.url) &&
+                node.data.headers.every((header) =>
+                    isValidLiquidSyntax(header.value)
+                ) &&
+                isValidLiquidSyntax(node.data.json ?? '') &&
+                (node.data.formUrlencoded ?? []).every((item) =>
+                    isValidLiquidSyntax(item.value)
+                )
+            )
+        default:
+            return true
+    }
+}
+
+const bracketNotationVariableRegex = new RegExp(
+    '({{[^\\[]*)\\["([^"]*)"\\]([^{}]*}})',
+    'g'
+)
+
+export function migrateBracketNotationToDotNotation(text: string) {
+    return text.replace(bracketNotationVariableRegex, '$1.$2$3')
 }

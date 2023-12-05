@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, {memo} from 'react'
+import React, {memo, useMemo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
 
 import Label from 'pages/common/forms/Label/Label'
@@ -8,8 +8,11 @@ import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {isValidLiquidSyntaxInNode} from 'pages/automate/workflows/models/variables.model'
+import {validateJSON, validateWebhookURL} from 'utils'
 
-import {HttpRequestNodeType} from '../../../models/visualBuilderGraph.types'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import EdgeBlock from '../components/EdgeBlock'
 
@@ -68,11 +71,46 @@ const HttpRequestNode = memo(function HttpRequestNode({
 export default function HttpRequestNodeWrapper(
     node: NodeProps<HttpRequestNodeType['data']>
 ) {
-    const {name} = node.data
-    const isErrored = name.length === 0
+    const {
+        name,
+        url,
+        headers,
+        json,
+        formUrlencoded = [],
+        bodyContentType,
+        variables,
+    } = node.data
+    const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
+    const hasInvalidVariables = useMemo(
+        () =>
+            checkInvalidVariablesForNode({
+                id: node.id,
+                data: node.data,
+                type: 'http_request',
+            }),
+        [node.id, node.data, checkInvalidVariablesForNode]
+    )
+    const isErrored =
+        !name ||
+        hasInvalidVariables ||
+        headers.some((header) => !header.name.trim() || !header.value.trim()) ||
+        formUrlencoded.some((item) => !item.key.trim() || !item.value.trim()) ||
+        variables.some(
+            (variable) => !variable.name.trim() || !variable.jsonpath.trim()
+        ) ||
+        !isValidLiquidSyntaxInNode({data: node.data, type: 'http_request'}) ||
+        !!validateWebhookURL(url) ||
+        (bodyContentType === 'application/json' && !validateJSON(json ?? ''))
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (
-        <HttpRequestNode {...commonProps} name={name} isErrored={isErrored} />
+        <HttpRequestNode
+            {...commonProps}
+            shouldShowErrors={
+                commonProps.shouldShowErrors || hasInvalidVariables
+            }
+            name={name}
+            isErrored={isErrored}
+        />
     )
 }

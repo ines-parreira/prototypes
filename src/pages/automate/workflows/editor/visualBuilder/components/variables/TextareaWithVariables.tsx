@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {ContentState, EditorState} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 
+import classnames from 'classnames'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {contentStateFromTextOrHTML} from 'utils/editor'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
@@ -17,9 +18,10 @@ type Props = {
     value: string
     onChange: (value: string) => void
     variables?: WorkflowVariableList
+    error?: string
 }
 
-const TextareaWithVariables = ({value, onChange, variables}: Props) => {
+const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
     const editorRef = useRef<Editor | null>()
 
     const plugins = useMemo(() => [createWorkflowVariablesPlugin()], [])
@@ -75,23 +77,32 @@ const TextareaWithVariables = ({value, onChange, variables}: Props) => {
     }, [value])
 
     return (
-        <div className={css.container}>
-            <ToolbarProvider workflowVariables={variables}>
-                <div className={css.editor}>
-                    <Editor
-                        editorState={editorState}
-                        onChange={handleChange}
-                        stripPastedStyles
-                        ref={(editor) => {
-                            editorRef.current = editor
-                        }}
-                        plugins={plugins}
-                    />
-                </div>
-                <div className={css.variables}>
-                    <WorkflowVariablePicker onSelect={handleVariableSelect} />
-                </div>
-            </ToolbarProvider>
+        <div>
+            <div className={css.container}>
+                <ToolbarProvider workflowVariables={variables}>
+                    <div
+                        className={classnames(css.editor, {
+                            [css.hasError]: !!error,
+                        })}
+                    >
+                        <Editor
+                            editorState={editorState}
+                            onChange={handleChange}
+                            stripPastedStyles
+                            ref={(editor) => {
+                                editorRef.current = editor
+                            }}
+                            plugins={plugins}
+                        />
+                    </div>
+                    <div className={css.variables}>
+                        <WorkflowVariablePicker
+                            onSelect={handleVariableSelect}
+                        />
+                    </div>
+                </ToolbarProvider>
+            </div>
+            {error && <div className={css.error}>{error}</div>}
         </div>
     )
 }

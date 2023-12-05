@@ -76,13 +76,18 @@ export default function OrderSelectionNodeWrapper(
     const {content} = node.data
     const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
     const hasInvalidVariables = useMemo(
-        () => checkInvalidVariablesForNode(content.text, node.id),
-        [content.text, node.id, checkInvalidVariablesForNode]
+        () =>
+            checkInvalidVariablesForNode({
+                id: node.id,
+                data: node.data,
+                type: 'order_selection',
+            }),
+        [node.id, node.data, checkInvalidVariablesForNode]
     )
     const isErrored =
         content.text.length === 0 ||
         hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode(node.data.content)
+        !isValidLiquidSyntaxInNode({data: node.data, type: 'order_selection'})
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (

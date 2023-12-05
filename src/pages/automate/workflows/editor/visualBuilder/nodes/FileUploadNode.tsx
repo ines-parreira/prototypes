@@ -76,13 +76,18 @@ export default function FileUploadNodeWrapper(
     const {content} = node.data
     const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
     const hasInvalidVariables = useMemo(
-        () => checkInvalidVariablesForNode(content.text, node.id),
-        [content.text, node.id, checkInvalidVariablesForNode]
+        () =>
+            checkInvalidVariablesForNode({
+                id: node.id,
+                data: node.data,
+                type: 'file_upload',
+            }),
+        [node.id, node.data, checkInvalidVariablesForNode]
     )
     const isErrored =
         content.text.length === 0 ||
         hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode(node.data.content)
+        !isValidLiquidSyntaxInNode({data: node.data, type: 'file_upload'})
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (

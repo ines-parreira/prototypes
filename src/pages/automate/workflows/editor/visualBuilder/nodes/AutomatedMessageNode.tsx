@@ -77,14 +77,19 @@ export default function AutomatedMessageNodeWrapper(
     const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
 
     const hasInvalidVariables = useMemo(
-        () => checkInvalidVariablesForNode(content.text, node.id),
-        [content.text, node.id, checkInvalidVariablesForNode]
+        () =>
+            checkInvalidVariablesForNode({
+                id: node.id,
+                data: node.data,
+                type: 'automated_message',
+            }),
+        [node.id, node.data, checkInvalidVariablesForNode]
     )
 
     const isErrored =
         content.text.length === 0 ||
         hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode(node.data.content)
+        !isValidLiquidSyntaxInNode({type: 'automated_message', data: node.data})
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (

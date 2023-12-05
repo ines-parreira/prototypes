@@ -1,3 +1,5 @@
+@import (reference) '~css/typography.less';
+
 :local {
     .container {
         position: relative;
@@ -18,6 +20,10 @@
         padding: 6px 8px;
         overflow: auto;
 
+        &.hasError {
+            border-color: var(--feedback-error-3);
+        }
+
         :global {
             .DraftEditor-root {
                 height: 186px;
@@ -27,5 +33,11 @@
                 border: none;
             }
         }
+    }
+
+    .error {
+        .caption-regular();
+        color: var(--feedback-error-3);
+        margin-top: 4px;
     }
 }

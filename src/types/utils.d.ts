@@ -39,3 +39,5 @@ type _ExclusifyUnion<T, K extends PropertyKey> = T extends unknown
     ? Id<T & Partial<Record<Exclude<K, keyof T>, never>>>
     : never
 type ExclusifyUnion<T> = _ExclusifyUnion<T, AllKeys<T>>
+
+type UnionPick<T, K extends keyof T> = T extends unknown ? Pick<T, K> : never

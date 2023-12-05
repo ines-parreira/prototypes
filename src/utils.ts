@@ -1270,3 +1270,12 @@ export function isTouchEvent(
 ): event is TouchEvent | TouchEventReact {
     return 'touches' in event
 }
+
+export function validateJSON(json: string) {
+    try {
+        JSON.parse(json)
+        return true
+    } catch {
+        return false
+    }
+}
