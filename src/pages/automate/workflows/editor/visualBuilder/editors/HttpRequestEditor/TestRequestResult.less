@@ -1,0 +1,35 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .textarea {
+        > textarea {
+            min-height: 90px;
+            max-height: 500px;
+            resize: none;
+        }
+    }
+
+    .variable {
+        display: grid;
+        grid-template-columns: 188px 1fr;
+        gap: @layout-spacing-xs;
+    }
+}

@@ -1,13 +1,16 @@
 import React, {useEffect, useRef} from 'react'
 import {useKey, usePrevious} from 'react-use'
 import classNames from 'classnames'
+import _camelCase from 'lodash/camelCase'
+
 import Tooltip from 'pages/common/components/Tooltip'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
 import useId from 'hooks/useId'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
-import {TranslationsPreviewProvider} from '../../hooks/useTranslationsPreviewContext'
+import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {TranslationsPreviewProvider} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+
 import {labelByVisualBuilderNodeType} from '../../constants'
 
 import css from './NodeEditorDrawer.less'
@@ -25,7 +28,6 @@ type NodeEditorDrawerProps = {
     onClose: () => void
 }
 
-// allow to edit trigger button, automated message and reply button in a right-side panel
 export default function NodeEditorDrawer({
     nodeInEdition,
     onClose,
@@ -59,7 +61,12 @@ export default function NodeEditorDrawer({
 
     return (
         <Drawer
-            className={classNames(css.drawer)}
+            className={classNames(
+                css.drawer,
+                memoizedNodeInEdition
+                    ? css[_camelCase(memoizedNodeInEdition.type)]
+                    : undefined
+            )}
             name="visual-builder-node-edition"
             open={!!nodeInEdition}
             fullscreen={false}
@@ -101,50 +108,42 @@ export default function NodeEditorDrawer({
                     </Drawer.HeaderActions>
                 </div>
             </Drawer.Header>
-            <Drawer.Content>
-                <TranslationsPreviewProvider key={nodeInEdition?.id}>
-                    {memoizedNodeInEdition?.type === 'trigger_button' && (
-                        <TriggerButtonEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                            onClose={onClose}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'automated_message' && (
-                        <AutomatedMessageEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'multiple_choices' && (
-                        <MultipleChoicesEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                            onClose={onClose}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'text_reply' && (
-                        <TextReplyEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'file_upload' && (
-                        <FileUploadEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'order_selection' && (
-                        <OrderSelectionEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'http_request' && (
-                        <HttpRequestEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'end' && (
-                        <EndNodeEditor nodeInEdition={memoizedNodeInEdition} />
-                    )}
-                </TranslationsPreviewProvider>
-            </Drawer.Content>
+            <TranslationsPreviewProvider key={nodeInEdition?.id}>
+                {memoizedNodeInEdition?.type === 'trigger_button' && (
+                    <TriggerButtonEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                        onClose={onClose}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'automated_message' && (
+                    <AutomatedMessageEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'multiple_choices' && (
+                    <MultipleChoicesEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                        onClose={onClose}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'text_reply' && (
+                    <TextReplyEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'file_upload' && (
+                    <FileUploadEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'order_selection' && (
+                    <OrderSelectionEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'http_request' && (
+                    <HttpRequestEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'end' && (
+                    <EndNodeEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+            </TranslationsPreviewProvider>
         </Drawer>
     )
 }

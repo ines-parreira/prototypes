@@ -81,6 +81,15 @@ export type VisualBuilderHttpRequestAction =
           httpRequestNodeId: string
           index: number
       }
+    | {
+          type: 'SET_HTTP_REQUEST_TEST_REQUEST_RESULT'
+          httpRequestNodeId: string
+          result: NonNullable<HttpRequestNodeType['data']['testRequestResult']>
+      }
+    | {
+          type: 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT'
+          httpRequestNodeId: string
+      }
 
 // bridge between type system and runtime
 // allow to keep a type safe list of all action types for this reducer
@@ -102,6 +111,8 @@ const visualBuilderHttpRequestActionTypes: ActionTypes = {
     SET_HTTP_REQUEST_VARIABLE: true,
     ADD_HTTP_REQUEST_VARIABLE: true,
     DELETE_HTTP_REQUEST_VARIABLE: true,
+    SET_HTTP_REQUEST_TEST_REQUEST_RESULT: true,
+    RESET_HTTP_REQUEST_TEST_REQUEST_RESULT: true,
 }
 
 export function isVisualBuilderHttpRequestAction(action: {
@@ -296,6 +307,28 @@ export function httpRequestReducer(
                 )
                 if (node && node.data.variables[action.index]) {
                     node.data.variables.splice(action.index, 1)
+                }
+            })
+        case 'SET_HTTP_REQUEST_TEST_REQUEST_RESULT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request'
+                )
+                if (node) {
+                    node.data.testRequestResult = action.result
+                }
+            })
+        case 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request'
+                )
+                if (node) {
+                    delete node.data.testRequestResult
                 }
             })
     }

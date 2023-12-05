@@ -1,13 +1,15 @@
 import React, {useCallback, useMemo} from 'react'
+
+import {Drawer} from 'pages/common/components/Drawer'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Label from 'pages/common/forms/Label/Label'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import {AutomatedMessageNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+
 import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
-
-import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
-import {useWorkflowEditorContext} from '../../../hooks/useWorkflowEditor'
 import MessageContentFormField from '../components/MessageContentFormField'
 
 import css from './NodeEditor.less'
@@ -39,29 +41,33 @@ export default function AutomatedMessageEditor({
     )
 
     return (
-        <div className={css.container}>
-            <div className={css.formField}>
-                <Label className={css.label} isRequired={true}>
-                    Message
-                </Label>
-                <MessageContentFormField
-                    content={nodeInEdition.data.content}
-                    handleUpdateContent={handleUpdateContent}
-                    workflowVariables={workflowVariables}
-                />
+        <Drawer.Content>
+            <div className={css.container}>
+                <div className={css.formField}>
+                    <Label className={css.label} isRequired={true}>
+                        Message
+                    </Label>
+                    <MessageContentFormField
+                        content={nodeInEdition.data.content}
+                        handleUpdateContent={handleUpdateContent}
+                        workflowVariables={workflowVariables}
+                    />
+                </div>
+                {previewLanguage && (
+                    <>
+                        <TranslationPreviewHeader />
+                        <div className={css.formField}>
+                            <Label className={css.labelDisabled}>Message</Label>
+                            <TranslationsPreviewField
+                                nodeId={nodeInEdition.id}
+                                tkey={
+                                    nodeInEdition.data.content.text_tkey ?? ''
+                                }
+                            />
+                        </div>
+                    </>
+                )}
             </div>
-            {previewLanguage && (
-                <>
-                    <TranslationPreviewHeader />
-                    <div className={css.formField}>
-                        <Label className={css.labelDisabled}>Message</Label>
-                        <TranslationsPreviewField
-                            nodeId={nodeInEdition.id}
-                            tkey={nodeInEdition.data.content.text_tkey ?? ''}
-                        />
-                    </div>
-                </>
-            )}
-        </div>
+        </Drawer.Content>
     )
 }

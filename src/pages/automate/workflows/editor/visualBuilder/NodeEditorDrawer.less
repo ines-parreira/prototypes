@@ -8,10 +8,6 @@
     .drawer {
         width: @drawer-width !important;
         right: -@drawer-width !important;
-        grid-template-areas:
-            'header'
-            'main' !important;
-        grid-template-rows: 64px auto !important;
         &:global.opened {
             transform: translateX(-@drawer-width) !important;
         }
@@ -21,6 +17,13 @@
             &:global.opened {
                 transform: translateX(-100%) !important;
             }
+        }
+
+        &:not(.httpRequest) {
+            grid-template-areas:
+                'header'
+                'main' !important;
+            grid-template-rows: 64px auto !important;
         }
     }
 

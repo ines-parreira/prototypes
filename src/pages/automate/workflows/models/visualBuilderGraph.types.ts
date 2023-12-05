@@ -108,6 +108,10 @@ export type HttpRequestNodeType = Node<
             name: string
             jsonpath: string
         }[]
+        testRequestResult?: {
+            status: number
+            content?: string
+        }
         isGreyedOut?: boolean | null
     },
     'http_request'

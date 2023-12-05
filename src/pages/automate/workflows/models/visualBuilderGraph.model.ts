@@ -57,12 +57,14 @@ export function areGraphsEqual(
                 ...g,
                 nodes: g.nodes
                     .map((node) => {
-                        const data = _omitBy(
+                        let data = _omitBy(
                             _omit(node.data, ['isGreyedOut']),
                             (value) => value === undefined
                         )
 
                         if (node.type === 'http_request') {
+                            data = _omit(data, ['testRequestResult'])
+
                             return {
                                 id: node.id,
                                 type: node.type,
