@@ -48,7 +48,7 @@ variables:
     STORAGE_BUCKET: gs://gorgias-assets-production
     DEPLOY_ENV: production
   rules:
-    - if: $CI_COMMIT_REF_NAME == "bfcm"
+    - if: $CI_COMMIT_REF_NAME == "main"
 
 # This keyword only works on a job, cannot be extended
 .gitlab_environment: &gitlab_environment
@@ -139,7 +139,7 @@ Build production:
   variables:
     GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.io/${WEBAPP_PATH}
   rules:
-    - if: $CI_COMMIT_REF_NAME == "bfcm" || $CI_COMMIT_REF_NAME == "staging"
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
 
 .deploy:
   stage: deploy
@@ -175,6 +175,7 @@ Deploy staging:
   extends:
     - .deploy
     - .production_env
+# TODO: remove after global bfcm unfreeze
   script:
     - export BLOCK_RELEASE=""
     - !reference [.deploy, script]
@@ -233,8 +234,10 @@ Force deploy production:
       gorgias-helpdesk-production-aus-southeast1-fcb9
       gorgias-main-us-east1-635c
   rules:
-    - if: $CI_COMMIT_REF_NAME == "bfcm" || $CI_COMMIT_REF_NAME == "staging"
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
   script:
+  # TODO: remove after global bfcm unfreeze
+    - export BLOCK_RELEASE=""
     - . deployment/bin/deploy-utils.sh
     - . deploy-argo-utils.sh
     - find_and_publish_to_gcs $BUILD_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/build
