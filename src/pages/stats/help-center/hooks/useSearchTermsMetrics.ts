@@ -87,7 +87,7 @@ export const useSearchTermsMetrics = ({
                             : clickThroughRate,
                     },
                 ]
-            }) ?? [[]],
+            }) ?? [],
         [onModalOpen, searchResultTerms.data?.allData]
     )
 

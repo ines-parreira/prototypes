@@ -141,7 +141,7 @@ describe('useNoSearchResultsMetrics', () => {
         })
     })
 
-    it('should return null when data is empty', () => {
+    it('should return null for each field when data is empty', () => {
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,
             isError: false,
@@ -175,6 +175,28 @@ describe('useNoSearchResultsMetrics', () => {
                     },
                 ],
             ],
+        })
+    })
+
+    it('should return an empty array when no data from api', () => {
+        mockUseMetricPerDimension.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: null,
+        })
+        const {result} = renderHook(() =>
+            useNoSearchResultsMetrics({
+                statsFilters,
+                timezone,
+                itemPerPage,
+                currentPage,
+            })
+        )
+
+        expect(result.current).toEqual({
+            total: 0,
+            isLoading: false,
+            data: [],
         })
     })
 })

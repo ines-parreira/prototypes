@@ -137,7 +137,7 @@ export const usePerformanceByArticleMetrics = ({
                         value: articleLastUpdated,
                     },
                 ]
-            }) ?? [[]],
+            }) ?? [],
         [articleViewData.data?.allData, helpCenterArticles, helpCenterDomain]
     )
 

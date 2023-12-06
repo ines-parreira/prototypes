@@ -63,7 +63,7 @@ export const useSearchQueryMetrics = ({
                         value: isNaN(clicks) ? null : clicks,
                     },
                 ]
-            }) ?? [[]],
+            }) ?? [],
         [helpCenterDomain, searchQueryData.data?.allData]
     )
 

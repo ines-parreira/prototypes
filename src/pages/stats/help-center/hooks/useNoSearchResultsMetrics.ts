@@ -63,7 +63,7 @@ export const useNoSearchResultsMetrics = ({
                         value: isNaN(searchCount) ? null : searchCount,
                     },
                 ]
-            }) ?? [[]],
+            }) ?? [],
         [noSearchResults.data?.allData]
     )
 
