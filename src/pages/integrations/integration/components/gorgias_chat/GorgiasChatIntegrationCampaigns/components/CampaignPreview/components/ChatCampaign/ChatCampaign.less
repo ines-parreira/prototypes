@@ -8,10 +8,12 @@
         flex-shrink: 0;
         flex-direction: column;
         background: var(--neutral-grey-0);
-        border-radius: 5px;
-        box-shadow: 4px 4px 16px 0px rgba(22, 22, 22, 0.01);
+        border-radius: 16px;
+        box-shadow: 4px 4px 16px 0px rgba(22, 22, 22, 0.1);
 
+        padding: 20px;
         margin-bottom: 10px;
+        gap: 20px;
 
         .content {
             display: flex;
@@ -20,53 +22,59 @@
 
         .header {
             display: flex;
-            padding: 10px;
 
             .message {
-                padding: 10px;
                 overflow: hidden;
                 color: @darker-grey;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
 
                 .authorName {
-                    font-size: 13px;
+                    font-size: 14px;
+                    color: var(--neutral-grey-6);
                 }
 
                 .messageText {
                     overflow-wrap: break-word;
-                    font-size: 13px;
-                    padding-left: 58px;
+                    font-size: 14px;
+                    color: var(--neutral-grey-6);
                 }
 
                 img {
                     max-width: 100%;
+                    border-radius: 8px;
                 }
             }
         }
 
         .videos {
-            padding: 0px 16px 16px;
-
             & iframe {
-                border-radius: 4px;
+                border-radius: 8px;
             }
 
             .video {
                 width: 100%;
                 aspect-ratio: 16/9;
-                margin-top: 4px;
             }
         }
 
         .carouselContainer {
             display: flex;
             justify-content: flex-end;
+            margin: 0 -20px;
         }
 
         .footer {
             cursor: pointer;
             padding: 15px 20px;
-            border-top: 1px solid #e8e8e8;
-            color: var(--neutral-grey-3);
+            color: rgba(106, 106, 106, 0.7);
+
+            max-height: 180px;
+            padding: 12px;
+
+            border-radius: 4px;
+            background: var(--neutral-grey-2);
         }
 
         .author {

@@ -131,7 +131,7 @@ export const ChatCampaign = ({
                                         ? GorgiasChatAvatarNameType.AGENT_FIRST_NAME
                                         : undefined
                                 }
-                                size={50}
+                                size={32}
                             />
                             <div className={css.authorName}>
                                 <b>

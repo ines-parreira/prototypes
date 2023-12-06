@@ -82,38 +82,36 @@ export const ProductCarousel = ({
             className={css.container}
             style={{maxWidth: configuration.carouselMaxWidth}}
         >
-            <div className={css.track}>
-                <div
-                    className={css.slides}
-                    style={{
-                        transform: `translate3d(${translate}px, 0px, 0px)`,
-                    }}
-                >
-                    {products.map((product, index) => (
-                        <div
-                            key={product.id}
-                            className={classnames({
-                                [css.frame]: true,
-                                [css.highlighted]: currentElement === index,
-                            })}
-                            style={{
-                                width: configuration.frameWidth,
-                            }}
-                        >
-                            <ProductCard
-                                currency={product.currency}
-                                image={product.featured_image}
-                                color={mainColor}
-                                price={product.price}
-                                position={product.position}
-                                productId={product.id}
-                                title={product.title}
-                                hasOptions={!!product.variant_name}
-                                isHeadlessStore={isHeadlessStore}
-                            />
-                        </div>
-                    ))}
-                </div>
+            <div
+                className={css.slides}
+                style={{
+                    transform: `translate3d(${translate}px, 0px, 0px)`,
+                }}
+            >
+                {products.map((product, index) => (
+                    <div
+                        key={product.id}
+                        className={classnames({
+                            [css.frame]: true,
+                            [css.highlighted]: currentElement === index,
+                        })}
+                        style={{
+                            width: configuration.frameWidth,
+                        }}
+                    >
+                        <ProductCard
+                            currency={product.currency}
+                            image={product.featured_image}
+                            color={mainColor}
+                            price={product.price}
+                            position={product.position}
+                            productId={product.id}
+                            title={product.title}
+                            hasOptions={!!product.variant_name}
+                            isHeadlessStore={isHeadlessStore}
+                        />
+                    </div>
+                ))}
             </div>
             <div>
                 {currentElement > 0 && (
