@@ -188,7 +188,6 @@ export function EditOrderModalContainer({
     if (!hasScope) {
         return (
             <Modal
-                ref={modalRef}
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
@@ -211,7 +210,12 @@ export function EditOrderModalContainer({
         )
     }
     return (
-        <Modal isOpen={isOpen} onClose={handleCancel('header')} size="huge">
+        <Modal
+            isOpen={isOpen}
+            onClose={handleCancel('header')}
+            size="huge"
+            ref={modalRef}
+        >
             <ModalHeader title={title} />
             <div className={css.formHeader}>
                 <ProductSearchInput
@@ -249,6 +253,7 @@ export function EditOrderModalContainer({
                         products={products}
                         onLineItemUpdate={handleLineItemUpdate}
                         onLineItemDelete={handleLineItemDelete}
+                        container={modalRef}
                     />
                     {calculatedEditOrder ? (
                         <EditOrderForm
