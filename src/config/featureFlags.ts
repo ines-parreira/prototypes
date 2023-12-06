@@ -26,6 +26,7 @@ export enum FeatureFlagKey {
     ChatQuickRepliesSunsetModal = 'chat-quick-replies-sunset-modal',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ConvertBilling = 'revenue-billing',
+    ConvertCampaignBundleWarning = 'convert-campaign-bundle-warning',
     ConvertCampaignCapping = 'convert-campaign-capping',
     DecoupleContactForm = 'decouple-contact-form',
     EarlyAdopter = 'early-adopter',

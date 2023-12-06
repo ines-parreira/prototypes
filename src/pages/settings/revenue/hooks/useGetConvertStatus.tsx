@@ -19,23 +19,33 @@ const defaultOptions = {
 }
 
 export const getConvertStatusAndUsage = async (
-    client: RevenueAddonClient | undefined
+    client: RevenueAddonClient | undefined,
+    shopIntegrationId?: number
 ) => {
     if (!client) return null
-    const res = await client.get_status_and_usage()
+
+    const res = await client.get_status_and_usage(
+        shopIntegrationId && {
+            shop_integration_id: shopIntegrationId,
+        }
+    )
 
     return res.data
 }
 
-const useGetConvertStatus = () => {
+const useGetConvertStatus = (
+    fetchForAll = false,
+    shopIntegrationId?: number
+) => {
     const isConvertSubscriber = useIsConvertSubscriber()
     const {client} = useRevenueAddonApi()
 
     const {data} = useQuery({
-        queryKey: ['convert', 'status'],
-        queryFn: async () => getConvertStatusAndUsage(client),
+        queryKey: ['convert', 'status', shopIntegrationId],
+        queryFn: async () =>
+            getConvertStatusAndUsage(client, shopIntegrationId),
         // avoid fetching if not convert subscriber
-        enabled: !!client && isConvertSubscriber,
+        enabled: !!client && (isConvertSubscriber || fetchForAll),
         ...defaultOptions,
     })
 

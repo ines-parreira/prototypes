@@ -834,6 +834,17 @@
                 "tags": ["subscriptions"],
                 "summary": "Get Status And Usage",
                 "operationId": "get_status_and_usage",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Shop Integration Id"
+                        },
+                        "name": "shop_integration_id",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -841,6 +852,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/SubscriptionUsageAndBundleStatusSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
                                 }
                             }
                         }

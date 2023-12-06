@@ -184,8 +184,20 @@ export const CampaignsList = ({
                     </div>
                 )}
 
-                <ConvertLimitBanner classes={'mt-4'} />
-                <ConvertSetupBanner classes={'mt-4'} />
+                <ConvertLimitBanner
+                    classes={'mt-4'}
+                    shopIntegrationId={integration.getIn([
+                        'meta',
+                        'shop_integration_id',
+                    ])}
+                />
+                <ConvertSetupBanner
+                    classes={'mt-4'}
+                    shopIntegrationId={integration.getIn([
+                        'meta',
+                        'shop_integration_id',
+                    ])}
+                />
 
                 {!isConvertSubscriber && isRevenueBillingEnabled && (
                     <CampaignInfobarPaywall />

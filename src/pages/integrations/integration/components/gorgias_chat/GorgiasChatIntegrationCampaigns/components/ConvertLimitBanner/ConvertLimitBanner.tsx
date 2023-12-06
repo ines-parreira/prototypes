@@ -10,10 +10,14 @@ import {useIsConvertCampaignCappingEnabled} from 'pages/settings/revenue/hooks/u
 
 type Props = {
     classes?: string
+    shopIntegrationId?: number
 }
 
-export const ConvertLimitBanner = ({classes}: Props): JSX.Element => {
-    const convertStatus = useGetConvertStatus()
+export const ConvertLimitBanner = ({
+    classes,
+    shopIntegrationId,
+}: Props): JSX.Element => {
+    const convertStatus = useGetConvertStatus(false, shopIntegrationId)
     const isConvertCampaignCappingEnabled = useIsConvertCampaignCappingEnabled()
 
     const isLimitReached = useMemo(

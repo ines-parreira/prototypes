@@ -32,8 +32,11 @@ jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => {
 })
 
 describe('useGetConvertStatus', () => {
-    const renderHookWithQueryClient = () =>
-        renderHook(() => useGetConvertStatus(), {
+    const renderHookWithQueryClient = (
+        fetchForAll?: boolean,
+        shopIntegrationId?: number
+    ) =>
+        renderHook(() => useGetConvertStatus(fetchForAll, shopIntegrationId), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
@@ -41,15 +44,39 @@ describe('useGetConvertStatus', () => {
             ),
         })
 
-    beforeEach(() => {
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
+    const mockUseIsConvertSubscriber = (isConvertSubscriber: boolean) =>
+        jest
+            .spyOn(isConvertSubscriberHook, 'useIsConvertSubscriber')
+            .mockImplementation(() => isConvertSubscriber)
+
+    afterEach(() => {
+        queryClient.clear()
     })
 
     it('should return api response', async () => {
+        mockUseIsConvertSubscriber(true)
+
         const {result} = renderHookWithQueryClient()
+
+        await waitFor(() => {
+            expect(result.current).toBe(apiResponse)
+        })
+    })
+
+    it('should not return api response', async () => {
+        mockUseIsConvertSubscriber(false)
+
+        const {result} = renderHookWithQueryClient()
+
+        await waitFor(() => {
+            expect(result.current).toBe(undefined)
+        })
+    })
+
+    it('should return api response anyway', async () => {
+        mockUseIsConvertSubscriber(false)
+
+        const {result} = renderHookWithQueryClient(true, 1)
 
         await waitFor(() => {
             expect(result.current).toBe(apiResponse)

@@ -507,9 +507,19 @@ declare namespace Paths {
         }
     }
     namespace GetStatusAndUsage {
+        namespace Parameters {
+            /**
+             * Shop Integration Id
+             */
+            export type ShopIntegrationId = number
+        }
+        export interface QueryParameters {
+            shop_integration_id: Parameters.ShopIntegrationId
+        }
         namespace Responses {
             export type $200 =
                 Components.Schemas.SubscriptionUsageAndBundleStatusSchema
+            export type $422 = Components.Schemas.HTTPValidationError
         }
     }
     namespace GetSubscriptionStatusByAccountId {
@@ -978,7 +988,7 @@ export interface OperationMethods {
      * get_status_and_usage - Get Status And Usage
      */
     'get_status_and_usage'(
-        parameters?: Parameters<UnknownParamsObject> | null,
+        parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
@@ -1322,7 +1332,7 @@ export interface PathsDictionary {
          * get_status_and_usage - Get Status And Usage
          */
         'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
+            parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>

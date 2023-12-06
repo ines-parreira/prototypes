@@ -299,7 +299,7 @@ describe('<CampaignsList />', () => {
 
     describe('Campaign infobar', () => {
         const buttonText = 'Continue Setup'
-        const messageText = 'You have activated the Convert product'
+        const messageText = 'Ensure proper campaign functionality'
 
         it('should render setup infobar', () => {
             useGetConvertStatusMock.mockReturnValue({

@@ -489,6 +489,7 @@ export const CampaignDetailsForm = ({
                                     )}
                                     isConvertSubscriber={isConvertSubscriber}
                                     isShopifyStore={isShopifyStore}
+                                    integration={integration}
                                 />
                                 <CampaignMessageStep
                                     agents={agents}

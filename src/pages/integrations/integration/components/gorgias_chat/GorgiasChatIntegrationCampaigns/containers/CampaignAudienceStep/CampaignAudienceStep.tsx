@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 
+import {Map} from 'immutable'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {StatefulAccordion} from '../../components/StatefulAccordion'
@@ -27,6 +28,7 @@ type Props = {
     isValid?: boolean
     isConvertSubscriber?: boolean
     isShopifyStore?: boolean
+    integration: Map<any, any>
 }
 
 export const CampaignAudienceStep = ({
@@ -35,6 +37,7 @@ export const CampaignAudienceStep = ({
     isValid = false,
     isConvertSubscriber,
     isShopifyStore,
+    integration,
 }: Props) => {
     const {
         campaign,
@@ -99,7 +102,13 @@ export const CampaignAudienceStep = ({
             id={CampaignStepsKeys.Audience}
             title="Choose your audience"
         >
-            <ConvertSetupBanner classes={'mb-4'} />
+            <ConvertSetupBanner
+                classes={'mb-4'}
+                shopIntegrationId={integration.getIn([
+                    'meta',
+                    'shop_integration_id',
+                ])}
+            />
             <div className="mb-4">
                 {shouldShowContactCsm && (
                     <Alert icon type={AlertType.Warning}>
