@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -19,9 +20,11 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
     PublicHelpdeskAndApiMessagesFilter,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('messagesSentQueryFactory', () => {
@@ -193,7 +196,16 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             messagesSentMetricPerTicketQueryFactory(statsFilters, timezone)
         ).toEqual({
             ...messagesSentQueryFactory(statsFilters, timezone),
-            dimensions: [TicketDimension.TicketId],
+            measures: [],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketMessagesDimension.MessagesCount,
+            ],
+            filters: [
+                ...messagesSentQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -205,8 +217,17 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             messagesSentMetricPerTicketQueryFactory(filters, timezone, sorting)
         ).toEqual({
             ...messagesSentQueryFactory(filters, timezone),
-            dimensions: [TicketDimension.TicketId],
-            order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+            measures: [],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketMessagesDimension.MessagesCount,
+            ],
+            filters: [
+                ...messagesSentQueryFactory(filters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [[TicketMessagesDimension.MessagesCount, sorting]],
         })
     })
 })

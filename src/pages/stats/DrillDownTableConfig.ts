@@ -1,10 +1,9 @@
 import {OrderDirection} from 'models/api/types'
-
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {closedTicketsPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeMetricPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {medianResolutionTimeMetricPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {firstResponseTimeMetricPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import {resolutionTimeMetricPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {messagesSentMetricPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {oneTouchTicketsPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {openTicketsPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
@@ -19,7 +18,7 @@ import {agentFilter, withFilter} from 'utils/reporting'
 export const getDrillDownQuery = (metricName: DrillDownMetric) => {
     switch (metricName.metricName) {
         case OverviewMetric.CustomerSatisfaction:
-            return customerSatisfactionMetricPerAgentQueryFactory
+            return customerSatisfactionMetricDrillDownQueryFactory
         case TableColumn.CustomerSatisfaction:
             return (
                 statsFilters: StatsFilters,
@@ -27,7 +26,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                 sorting?: OrderDirection
             ) =>
                 withFilter(
-                    customerSatisfactionMetricPerAgentQueryFactory(
+                    customerSatisfactionMetricDrillDownQueryFactory(
                         statsFilters,
                         timezone,
                         sorting
@@ -41,7 +40,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                 sorting?: OrderDirection
             ) =>
                 withFilter(
-                    medianFirstResponseTimeMetricPerTicketQueryFactory(
+                    firstResponseTimeMetricPerTicketQueryFactory(
                         statsFilters,
                         timezone,
                         sorting
@@ -49,7 +48,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                     agentFilter(String(metricName.perAgentId))
                 )
         case OverviewMetric.MedianFirstResponseTime:
-            return medianFirstResponseTimeMetricPerTicketQueryFactory
+            return firstResponseTimeMetricPerTicketQueryFactory
         case TableColumn.MedianResolutionTime:
             return (
                 statsFilters: StatsFilters,
@@ -57,7 +56,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                 sorting?: OrderDirection
             ) =>
                 withFilter(
-                    medianResolutionTimeMetricPerTicketQueryFactory(
+                    resolutionTimeMetricPerTicketQueryFactory(
                         statsFilters,
                         timezone,
                         sorting
@@ -65,7 +64,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                     agentFilter(String(metricName.perAgentId))
                 )
         case OverviewMetric.MedianResolutionTime:
-            return medianResolutionTimeMetricPerTicketQueryFactory
+            return resolutionTimeMetricPerTicketQueryFactory
         case OverviewMetric.MessagesPerTicket:
         case OverviewMetric.MessagesSent:
             return messagesSentMetricPerTicketQueryFactory

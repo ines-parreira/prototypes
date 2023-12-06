@@ -1,4 +1,5 @@
 import {UseEnrichedPostReportingQueryData} from 'models/reporting/queries'
+import {EnrichmentFields} from 'models/reporting/types'
 
 export type IDRecord<IDKey extends string> = {[K in IDKey]: any}
 
@@ -16,17 +17,18 @@ export const withEnrichment = <
 >(
     res: UseEnrichedPostReportingQueryData<{
         data: (KeyedRecord<T> & IDRecord<ID>)[]
-        enrichment: (KeyedRecord<K> & IDRecord<ID>)[]
+        enrichment: KeyedRecord<K | EnrichmentFields.TicketId>[]
     }>,
     idField: ID,
     enrichmentFields: K[]
-): UseEnrichedPostReportingQueryData<(MergedRecord<T, K> & IDRecord<ID>)[]> => {
+): UseEnrichedPostReportingQueryData<{
+    data: (MergedRecord<T, K | EnrichmentFields.TicketId> & IDRecord<ID>)[]
+}> => {
     return {
         ...res,
         data: {
-            ...res.data,
             data: selectWithEnrichment<T, K, ID>(
-                res.data.data,
+                res.data,
                 idField,
                 enrichmentFields
             ),
@@ -41,19 +43,20 @@ const selectWithEnrichment = <
 >(
     data: {
         data: (KeyedRecord<T> & IDRecord<ID>)[]
-        enrichment: (KeyedRecord<K> & IDRecord<ID>)[]
+        enrichment: KeyedRecord<K | EnrichmentFields.TicketId>[]
     },
     idField: ID,
     enrichmentFields: K[]
-): (MergedRecord<T, K> & IDRecord<ID>)[] => {
+): (MergedRecord<T, K | EnrichmentFields.TicketId> & IDRecord<ID>)[] => {
     return data.data.map((result) => ({
         ...result,
-        ...merge<T, K, ID>(
+        ...merge<T, K | EnrichmentFields.TicketId, ID>(
             result,
             enrichmentFields,
             data.enrichment.find(
                 (enrichedResult) =>
-                    String(enrichedResult[idField]) === String(result[idField])
+                    String(enrichedResult[EnrichmentFields.TicketId]) ===
+                    String(result[idField])
             )
         ),
     }))
@@ -62,8 +65,8 @@ const selectWithEnrichment = <
 const merge = <T extends string, K extends string, ID extends string>(
     result: KeyedRecord<T> & IDRecord<ID>,
     fields: K[],
-    enrichment?: KeyedRecord<K> & IDRecord<ID>
-): MergedRecord<T, K> & IDRecord<ID> => {
+    enrichment?: KeyedRecord<K>
+): MergedRecord<T, K | EnrichmentFields.TicketId> & IDRecord<ID> => {
     return fields.reduce((obj, field) => {
         return {...obj, [field]: enrichment?.[field] || null}
     }, result)

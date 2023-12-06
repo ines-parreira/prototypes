@@ -13,6 +13,7 @@ import {Cubes} from 'models/reporting/cubes'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     useEnrichedPostReporting,
+    UseEnrichedPostReportingQueryData,
     usePostReporting,
 } from 'models/reporting/queries'
 import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
@@ -48,7 +49,11 @@ export type MetricWithEnrichment<
     ID extends string
 > = Requested & {
     data: {
-        allData: (MergedRecord<T, EnrichmentFields> & IDRecord<ID>)[]
+        allData: (MergedRecord<
+            T,
+            EnrichmentFields | EnrichmentFields.TicketId
+        > &
+            IDRecord<ID>)[]
     } | null
 }
 
@@ -148,25 +153,42 @@ export function useMetricPerDimensionWithEnrichment(
 > {
     const idField = query.dimensions[0]
     const metricData = useEnrichedPostReporting<
-        (MergedRecord<typeof query['measures'][0], EnrichmentFields> &
-            IDRecord<typeof query['dimensions'][0]>)[],
+        {
+            data: (MergedRecord<typeof query['measures'][0], EnrichmentFields> &
+                IDRecord<typeof query['dimensions'][0]>)[]
+        },
         (MergedRecord<typeof query['measures'][0], EnrichmentFields> &
             IDRecord<typeof query['dimensions'][0]>)[]
     >(
-        {query, enrichment: enrichmentFields},
+        {query, enrichment_fields: enrichmentFields},
         {
-            select: (data) => {
+            select: (
+                data: UseEnrichedPostReportingQueryData<{
+                    data: (MergedRecord<
+                        typeof query['measures'][0],
+                        EnrichmentFields
+                    > &
+                        IDRecord<typeof query['dimensions'][0]>)[]
+                }>
+            ): UseEnrichedPostReportingQueryData<{
+                data: (MergedRecord<
+                    typeof query['measures'][0],
+                    EnrichmentFields
+                > &
+                    IDRecord<typeof query['dimensions'][0]>)[]
+            }>['data']['data'] => {
                 return data.data.data
             },
-            queryFn: () =>
-                postEnrichedReporting<{
+            queryFn: () => {
+                return postEnrichedReporting<{
                     data: (KeyedRecord<typeof query['measures'][0]> &
                         IDRecord<typeof query['dimensions'][0]>)[]
                     enrichment: (KeyedRecord<EnrichmentFields> &
                         IDRecord<typeof query['dimensions'][0]>)[]
-                }>({query, enrichment: enrichmentFields}).then((data) =>
+                }>(query, enrichmentFields).then((data) =>
                     withEnrichment(data, idField, enrichmentFields)
-                ),
+                )
+            },
         }
     )
 

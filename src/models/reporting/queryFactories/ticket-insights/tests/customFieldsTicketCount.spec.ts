@@ -12,9 +12,11 @@ import {
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
@@ -140,7 +142,18 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     timezone,
                     customFieldId
                 ),
+
+                measures: [],
                 dimensions: [TicketDimension.TicketId],
+                filters: [
+                    ...customFieldsTicketCountQueryFactory(
+                        statsFilters,
+                        timezone,
+                        customFieldId
+                    ).filters,
+                    TicketDrillDownFilter,
+                ],
+                limit: DRILLDOWN_QUERY_LIMIT,
             })
         })
 
@@ -163,6 +176,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     timezone,
                     customFieldId
                 ),
+                measures: [],
                 dimensions: [TicketDimension.TicketId],
                 filters: [
                     ...customFieldsTicketCountQueryFactory(
@@ -175,7 +189,9 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         operator: ReportingFilterOperator.In,
                         values: customFieldsValueStrings,
                     },
+                    TicketDrillDownFilter,
                 ],
+                limit: DRILLDOWN_QUERY_LIMIT,
             })
         })
     })

@@ -10,8 +10,10 @@ import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
@@ -54,5 +56,11 @@ export const oneTouchTicketsPerTicketQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
+    measures: [],
     dimensions: [TicketDimension.TicketId],
+    filters: [
+        ...oneTouchTicketsQueryFactory(filters, timezone, sorting).filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
 })

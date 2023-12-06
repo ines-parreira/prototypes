@@ -14,10 +14,12 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
@@ -76,19 +78,22 @@ export const customFieldsTicketCountPerTicketQueryFactory = (
 
     return {
         ...baseQuery,
-        ...(customFieldsValueStrings
-            ? {
-                  filters: [
-                      ...baseQuery.filters,
+        measures: [],
+        filters: [
+            ...baseQuery.filters,
+            ...(customFieldsValueStrings
+                ? [
                       {
                           member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
                           operator: ReportingFilterOperator.In,
                           values: customFieldsValueStrings,
                       },
-                  ],
-              }
-            : {}),
+                  ]
+                : []),
+            TicketDrillDownFilter,
+        ],
         dimensions: [TicketDimension.TicketId],
+        limit: DRILLDOWN_QUERY_LIMIT,
     }
 }
 

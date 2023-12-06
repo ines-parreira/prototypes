@@ -4,6 +4,7 @@ import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerD
 import {MergedRecord} from 'hooks/reporting/withEnrichment'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {EnrichmentFields} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getAgentsJS} from 'state/agents/selectors'
@@ -40,20 +41,22 @@ interface DrillDownData {
 export const DRILL_DOWN_PER_PAGE = 20
 
 export const defaultEnrichmentFields: EnrichmentFields[] = [
-    EnrichmentFields.TicketId,
     EnrichmentFields.TicketName,
     EnrichmentFields.Status,
     EnrichmentFields.Description,
     EnrichmentFields.Channel,
     EnrichmentFields.AssigneeId,
+    EnrichmentFields.CreatedDatetime,
+    EnrichmentFields.ContactReason,
 ]
 
 export const formatDrillDownRowData = (
     row: MergedRecord<any, any>,
-    agents: User[]
+    agents: User[],
+    metricField: string
 ): DrillDownRowData => ({
     ticket: {
-        id: row[EnrichmentFields.TicketId] || null,
+        id: row[TicketDimension.TicketId] || null,
         subject: row[EnrichmentFields.TicketName] || null,
         description: row[EnrichmentFields.Description] || null,
         channel: row[EnrichmentFields.Channel] || null,
@@ -61,7 +64,7 @@ export const formatDrillDownRowData = (
         created: row[EnrichmentFields.CreatedDatetime] || null,
         contactReason: row[EnrichmentFields.ContactReason] || null,
     },
-    metricValue: row.metricValue,
+    metricValue: row[metricField],
     assignee: {
         id: row[EnrichmentFields.AssigneeId],
         name:
@@ -87,13 +90,13 @@ export const useDrillDownData = (
         getCleanStatsFiltersWithTimezone
     )
     const agents = useAppSelector(getAgentsJS)
-
+    const query = getDrillDownQuery(metricData)(
+        cleanStatsFilters,
+        userTimezone,
+        getDrillDownMetricOrder(metricData.metricName)
+    )
     const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
-        getDrillDownQuery(metricData)(
-            cleanStatsFilters,
-            userTimezone,
-            getDrillDownMetricOrder(metricData.metricName)
-        ),
+        query,
         defaultEnrichmentFields
     )
 
@@ -104,6 +107,8 @@ export const useDrillDownData = (
         perPage: DRILL_DOWN_PER_PAGE,
         currentPage: 1,
         onPageChange: (page: number) => page,
-        data: rowData.map((row) => formatDrillDownRowData(row, agents)),
+        data: rowData.map((row) =>
+            formatDrillDownRowData(row, agents, query.dimensions[1])
+        ),
     }
 }

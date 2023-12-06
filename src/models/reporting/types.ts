@@ -105,12 +105,12 @@ export type ReportingResponse<TData> = {
 }
 
 export enum EnrichmentFields {
-    TicketId = 'Ticket.ticketId',
-    TicketName = 'Ticket.name',
+    TicketId = 'Ticket.id',
+    TicketName = 'Ticket.subject',
     Status = 'Ticket.status',
-    Description = 'Ticket.description',
+    Description = 'Ticket.excerpt',
     Channel = 'Ticket.channel',
-    AssigneeId = 'Ticket.assigneeId',
-    CreatedDatetime = 'Ticket.createdDatetime',
-    ContactReason = 'Ticket.contactReason',
+    AssigneeId = 'Ticket.assignee_user_id',
+    CreatedDatetime = 'Ticket.created_datetime',
+    ContactReason = 'Ticket.contact_reason',
 }

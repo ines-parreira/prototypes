@@ -2,14 +2,17 @@ import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension, TicketSegment} from 'models/reporting/cubes/TicketCube'
 import {
+    TicketMessagesDimension,
     TicketMessagesMeasure,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
@@ -47,16 +50,25 @@ export const medianResolutionTimeMetricPerAgentQueryFactory = (
         : {}),
 })
 
-export const medianResolutionTimeMetricPerTicketQueryFactory = (
+export const resolutionTimeMetricPerTicketQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...medianResolutionTimeQueryFactory(filters, timezone),
-    dimensions: [TicketDimension.TicketId],
+    measures: [],
+    dimensions: [
+        TicketDimension.TicketId,
+        TicketMessagesDimension.ResolutionTime,
+    ],
+    filters: [
+        ...medianResolutionTimeQueryFactory(filters, timezone).filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
-              order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
+              order: [[TicketMessagesDimension.ResolutionTime, sorting]],
           }
         : {}),
 })

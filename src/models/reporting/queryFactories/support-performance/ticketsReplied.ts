@@ -15,12 +15,14 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
     HelpdeskMessagesStatsFiltersMembers,
     NotSpamNorTrashedTicketsFilter,
     PublicHelpdeskAndApiMessagesFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 export const ticketsRepliedQueryFactory = (
@@ -95,7 +97,13 @@ export const ticketsRepliedMetricPerTickerQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...ticketsRepliedQueryFactory(filters, timezone),
+    measures: [],
     dimensions: [TicketDimension.TicketId],
+    filters: [
+        ...ticketsRepliedQueryFactory(filters, timezone).filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
               order: [[HelpdeskMessageMeasure.TicketCount, sorting]],

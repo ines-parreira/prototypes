@@ -1,8 +1,14 @@
 import client from 'models/api/resources'
-import {Cube, ReportingParams, ReportingResponse} from './types'
+import {
+    Cube,
+    EnrichmentFields,
+    ReportingParams,
+    ReportingQuery,
+    ReportingResponse,
+} from './types'
 
 export const REPORTING_ENDPOINT = '/api/reporting'
-export const REPORTING_ENRICHED_ENDPOINT = '/api/enriched-reporting'
+export const REPORTING_ENRICHED_ENDPOINT = '/api/reporting-enriched'
 export const QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS = 202
 
 const validateStatus = (status: number) => {
@@ -22,6 +28,14 @@ export const post =
         })
     }
 
+export const enrichedPost =
+    (path: string) =>
+    async <TData>(payload: unknown) => {
+        return await client.post<TData>(path, payload, {
+            validateStatus,
+        })
+    }
+
 export const postReporting = <TData, TCube extends Cube = Cube>(
     queries: ReportingParams<TCube>
 ) =>
@@ -29,4 +43,11 @@ export const postReporting = <TData, TCube extends Cube = Cube>(
         query: queries,
     })
 
-export const postEnrichedReporting = post(REPORTING_ENRICHED_ENDPOINT)
+export const postEnrichedReporting = <TData, TCube extends Cube = Cube>(
+    query: ReportingQuery<TCube>,
+    enrichmentFields: EnrichmentFields[]
+) =>
+    enrichedPost(REPORTING_ENRICHED_ENDPOINT)<TData>({
+        query,
+        enrichment_fields: enrichmentFields,
+    })

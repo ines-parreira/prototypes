@@ -234,7 +234,7 @@ describe('useMetricPerDimensionWithEnrichment', () => {
         )
 
         expect(useEnrichedPostReportingMock).toHaveBeenCalledWith(
-            {query, enrichment: defaultEnrichmentFields},
+            {query, enrichment_fields: defaultEnrichmentFields},
             {
                 select: expect.any(Function),
                 queryFn: expect.any(Function),

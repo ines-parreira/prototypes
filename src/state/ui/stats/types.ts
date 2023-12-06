@@ -37,7 +37,7 @@ export enum OverviewMetric {
 
 export enum TableColumn {
     AgentName = 'agent_name',
-    CustomerSatisfaction = 'customer_satisfaction',
+    CustomerSatisfaction = 'customer_satisfaction_per_agent',
     MedianFirstResponseTime = 'median_first_response_time',
     MedianResolutionTime = 'median_resolution_time',
     MessagesSent = 'messages_sent',

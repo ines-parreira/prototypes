@@ -16,8 +16,10 @@ import {
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('closedTicketsMetricPerAgent', () => {
@@ -146,7 +148,13 @@ describe('closedTicketsPerTicketQueryFactory', () => {
             closedTicketsPerTicketQueryFactory(statsFilters, timezone)
         ).toEqual({
             ...closedTicketsQueryFactory(statsFilters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...closedTicketsQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -158,7 +166,13 @@ describe('closedTicketsPerTicketQueryFactory', () => {
             closedTicketsPerTicketQueryFactory(filters, timezone, sorting)
         ).toEqual({
             ...closedTicketsQueryFactory(filters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...closedTicketsQueryFactory(filters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
             order: [[TicketMeasure.TicketCount, sorting]],
         })
     })

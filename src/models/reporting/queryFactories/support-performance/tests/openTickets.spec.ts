@@ -12,8 +12,10 @@ import {
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('openTicketsTrendQueryFactory', () => {
@@ -68,7 +70,13 @@ describe('openTicketsPerTicketQueryFactory', () => {
 
         expect(query).toEqual({
             ...openTicketsQueryFactory(statsFilters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...openTicketsQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -81,7 +89,13 @@ describe('openTicketsPerTicketQueryFactory', () => {
 
         expect(query).toEqual({
             ...openTicketsQueryFactory(statsFilters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...openTicketsQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
             order: [[TicketMeasure.TicketCount, sorting]],
         })
     })

@@ -134,7 +134,7 @@ describe('Reporting queries', () => {
         it('should ', async () => {
             const payload = {
                 query: cubeQueries[0],
-                enrichment: defaultEnrichmentFields,
+                enrichment_fields: defaultEnrichmentFields,
             }
 
             const {waitForNextUpdate} = renderHook(
@@ -145,7 +145,10 @@ describe('Reporting queries', () => {
             )
             await waitForNextUpdate()
 
-            expect(postEnrichedReportingMock).toHaveBeenCalledWith(payload)
+            expect(postEnrichedReportingMock).toHaveBeenCalledWith(
+                payload.query,
+                payload.enrichment_fields
+            )
         })
     })
 })

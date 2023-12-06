@@ -19,8 +19,10 @@ import {
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('oneTouchTicketsPerAgentQueryFactory', () => {
@@ -157,7 +159,13 @@ describe('oneTouchTicketsPerTicketQueryFactory', () => {
             oneTouchTicketsPerTicketQueryFactory(statsFilters, timezone)
         ).toEqual({
             ...oneTouchTicketsQueryFactory(statsFilters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...oneTouchTicketsQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -169,7 +177,13 @@ describe('oneTouchTicketsPerTicketQueryFactory', () => {
             oneTouchTicketsPerTicketQueryFactory(filters, timezone, sorting)
         ).toEqual({
             ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...oneTouchTicketsQueryFactory(filters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 })

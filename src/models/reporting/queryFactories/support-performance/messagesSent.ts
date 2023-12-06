@@ -6,6 +6,7 @@ import {
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -14,11 +15,13 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
     HelpdeskMessagesStatsFiltersMembers,
     PublicHelpdeskAndApiMessagesFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 export const messagesSentQueryFactory = (
@@ -87,10 +90,19 @@ export const messagesSentMetricPerTicketQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...messagesSentQueryFactory(filters, timezone),
-    dimensions: [TicketDimension.TicketId],
+    measures: [],
+    dimensions: [
+        TicketDimension.TicketId,
+        TicketMessagesDimension.MessagesCount,
+    ],
+    filters: [
+        ...messagesSentQueryFactory(filters, timezone).filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
-              order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+              order: [[TicketMessagesDimension.MessagesCount, sorting]],
           }
         : {}),
 })

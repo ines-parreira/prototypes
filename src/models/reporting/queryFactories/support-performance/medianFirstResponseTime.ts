@@ -16,9 +16,11 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
@@ -72,16 +74,25 @@ export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
         : {}),
 })
 
-export const medianFirstResponseTimeMetricPerTicketQueryFactory = (
+export const firstResponseTimeMetricPerTicketQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...medianFirstResponseTimeQueryFactory(filters, timezone),
-    dimensions: [TicketDimension.TicketId],
+    measures: [],
+    dimensions: [
+        TicketDimension.TicketId,
+        TicketMessagesDimension.FirstResponseTime,
+    ],
+    filters: [
+        ...medianFirstResponseTimeQueryFactory(filters, timezone).filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
-              order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
+              order: [[TicketMessagesDimension.FirstResponseTime, sorting]],
           }
         : {}),
 })

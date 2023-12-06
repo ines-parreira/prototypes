@@ -8,8 +8,10 @@ import {
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
@@ -42,7 +44,13 @@ export const openTicketsPerTicketQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...openTicketsQueryFactory(filters, timezone),
+    measures: [],
     dimensions: [TicketDimension.TicketId],
+    filters: [
+        ...openTicketsQueryFactory(filters, timezone).filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
               order: [[TicketMeasure.TicketCount, sorting]],

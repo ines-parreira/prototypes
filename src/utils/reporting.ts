@@ -2,7 +2,7 @@ import moment, {Moment} from 'moment'
 import {Cubes} from 'models/reporting/cubes'
 import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ReportingFilter,
@@ -87,6 +87,14 @@ export const PublicHelpdeskAndApiMessagesFilter = [
         values: ['helpdesk', 'api'],
     },
 ]
+
+export const TicketDrillDownFilter = {
+    member: TicketMeasure.TicketCount,
+    operator: ReportingFilterOperator.MeasureFilter,
+    values: [],
+}
+
+export const DRILLDOWN_QUERY_LIMIT = 20
 
 export const statsFiltersToReportingFilters = (
     members: StatsFiltersMembers,

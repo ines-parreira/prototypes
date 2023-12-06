@@ -1,4 +1,5 @@
 import {withEnrichment} from 'hooks/reporting/withEnrichment'
+import {EnrichmentFields} from 'models/reporting/types'
 
 describe('withEnrichment', () => {
     const results = [
@@ -9,19 +10,17 @@ describe('withEnrichment', () => {
         {entityId: 5, metric: 529},
     ]
     const enrichments = [
-        {entityId: 1, fieldA: 'Jan', fieldB: 'Kowalski'},
-        {entityId: 2, fieldA: 'Petar', fieldB: 'Petrović'},
-        {entityId: 3, fieldA: 'Jean', fieldB: 'Dupont'},
-        {entityId: 4, fieldB: null},
+        {[EnrichmentFields.TicketId]: 1, fieldA: 'Jan', fieldB: 'Kowalski'},
+        {[EnrichmentFields.TicketId]: 2, fieldA: 'Petar', fieldB: 'Petrović'},
+        {[EnrichmentFields.TicketId]: 3, fieldA: 'Jean', fieldB: 'Dupont'},
+        {[EnrichmentFields.TicketId]: 4, fieldB: null},
     ]
     const enrichmentFields = ['fieldA' as const, 'fieldB' as const]
 
     const response = {
         data: {
-            data: {
-                data: results,
-                enrichment: enrichments,
-            },
+            data: results,
+            enrichment: enrichments,
         },
     }
 

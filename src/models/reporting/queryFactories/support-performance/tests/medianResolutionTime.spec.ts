@@ -7,20 +7,23 @@ import {
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
 import {
+    TicketMessagesDimension,
     TicketMessagesMeasure,
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     medianResolutionTimeMetricPerAgentQueryFactory,
-    medianResolutionTimeMetricPerTicketQueryFactory,
+    resolutionTimeMetricPerTicketQueryFactory,
     medianResolutionTimeQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('medianResolutionTimeMetricPerAgent', () => {
@@ -138,7 +141,7 @@ describe('medianResolutionTimeMetricPerAgent', () => {
     })
 })
 
-describe('medianResolutionTimeMetricPerTicketQueryFactory', () => {
+describe('resolutionTimeMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -155,13 +158,20 @@ describe('medianResolutionTimeMetricPerTicketQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            medianResolutionTimeMetricPerTicketQueryFactory(
-                statsFilters,
-                timezone
-            )
+            resolutionTimeMetricPerTicketQueryFactory(statsFilters, timezone)
         ).toEqual({
             ...medianResolutionTimeQueryFactory(statsFilters, timezone),
-            dimensions: [TicketDimension.TicketId],
+            measures: [],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketMessagesDimension.ResolutionTime,
+            ],
+            filters: [
+                ...medianResolutionTimeQueryFactory(statsFilters, timezone)
+                    .filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -170,15 +180,24 @@ describe('medianResolutionTimeMetricPerTicketQueryFactory', () => {
         const filters = {...statsFilters, agents}
 
         expect(
-            medianResolutionTimeMetricPerTicketQueryFactory(
+            resolutionTimeMetricPerTicketQueryFactory(
                 filters,
                 timezone,
                 sorting
             )
         ).toEqual({
             ...medianResolutionTimeQueryFactory(filters, timezone),
-            dimensions: [TicketDimension.TicketId],
-            order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
+            measures: [],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketMessagesDimension.ResolutionTime,
+            ],
+            filters: [
+                ...medianResolutionTimeQueryFactory(filters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [[TicketMessagesDimension.ResolutionTime, sorting]],
         })
     })
 })

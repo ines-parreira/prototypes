@@ -3,20 +3,23 @@ import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
+    TicketMessagesDimension,
     TicketMessagesMeasure,
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     medianFirstResponseTimeMetricPerAgentQueryFactory,
-    medianFirstResponseTimeMetricPerTicketQueryFactory,
+    firstResponseTimeMetricPerTicketQueryFactory,
     medianFirstResponseTimeQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('medianFirstResponseTimeMetricPerAgent', () => {
@@ -144,7 +147,7 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
     })
 })
 
-describe('medianFirstResponseTimeMetricPerTicketQueryFactory', () => {
+describe('firstResponseTimeMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -161,13 +164,20 @@ describe('medianFirstResponseTimeMetricPerTicketQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            medianFirstResponseTimeMetricPerTicketQueryFactory(
-                statsFilters,
-                timezone
-            )
+            firstResponseTimeMetricPerTicketQueryFactory(statsFilters, timezone)
         ).toEqual({
             ...medianFirstResponseTimeQueryFactory(statsFilters, timezone),
-            dimensions: [TicketDimension.TicketId],
+            measures: [],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketMessagesDimension.FirstResponseTime,
+            ],
+            filters: [
+                ...medianFirstResponseTimeQueryFactory(statsFilters, timezone)
+                    .filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -176,15 +186,25 @@ describe('medianFirstResponseTimeMetricPerTicketQueryFactory', () => {
         const filters = {...statsFilters, agents}
 
         expect(
-            medianFirstResponseTimeMetricPerTicketQueryFactory(
+            firstResponseTimeMetricPerTicketQueryFactory(
                 filters,
                 timezone,
                 sorting
             )
         ).toEqual({
             ...medianFirstResponseTimeQueryFactory(filters, timezone),
-            dimensions: [TicketDimension.TicketId],
-            order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
+            measures: [],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketMessagesDimension.FirstResponseTime,
+            ],
+            filters: [
+                ...medianFirstResponseTimeQueryFactory(filters, timezone)
+                    .filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [[TicketMessagesDimension.FirstResponseTime, sorting]],
         })
     })
 })

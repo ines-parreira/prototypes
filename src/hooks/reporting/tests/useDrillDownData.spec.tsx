@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {EnrichmentFields, ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -46,6 +47,7 @@ describe('useDrillDownData', () => {
         },
     }
     const userTimezone = 'someTimeZone'
+    const metricDimension = TicketMessagesDimension.MessagesCount
     const rowData = [
         {
             [TicketDimension.TicketId]: '777',
@@ -56,7 +58,7 @@ describe('useDrillDownData', () => {
             [EnrichmentFields.CreatedDatetime]: '2023-04-07T00:00:00.000',
             [EnrichmentFields.ContactReason]: 'some contact reason',
             [EnrichmentFields.AssigneeId]: '1',
-            metricValue: 12,
+            [metricDimension]: 12,
         },
     ]
 
@@ -90,7 +92,9 @@ describe('useDrillDownData', () => {
             perPage: DRILL_DOWN_PER_PAGE,
             currentPage: 1,
             onPageChange: expect.any(Function),
-            data: rowData.map((row) => formatDrillDownRowData(row, agents)),
+            data: rowData.map((row) =>
+                formatDrillDownRowData(row, agents, metricDimension)
+            ),
         })
     })
 })

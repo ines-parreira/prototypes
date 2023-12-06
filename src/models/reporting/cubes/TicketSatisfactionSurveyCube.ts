@@ -7,6 +7,7 @@ export enum TicketSatisfactionSurveyMeasure {
 export enum TicketSatisfactionSurveyDimension {
     TicketId = 'TicketSatisfactionSurvey.ticketId',
     AccountId = 'TicketSatisfactionSurvey.accountId',
+    SurveyScore = 'TicketSatisfactionSurvey.surveyScore',
 }
 
 export enum TicketSatisfactionSurveySegment {

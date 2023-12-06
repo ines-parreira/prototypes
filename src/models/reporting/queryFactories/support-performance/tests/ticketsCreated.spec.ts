@@ -18,7 +18,11 @@ import {
     ReportingGranularity,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {NotSpamNorTrashedTicketsFilter} from 'utils/reporting'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    NotSpamNorTrashedTicketsFilter,
+    TicketDrillDownFilter,
+} from 'utils/reporting'
 
 describe('ticketsCreatedQueryFactory', () => {
     const periodStart = '2021-05-29T00:00:00.000'
@@ -140,7 +144,13 @@ describe('ticketsCreatedPerTicketQueryFactory', () => {
 
         expect(query).toEqual({
             ...ticketsCreatedQueryFactory(statsFilters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...ticketsCreatedQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -153,7 +163,13 @@ describe('ticketsCreatedPerTicketQueryFactory', () => {
 
         expect(query).toEqual({
             ...ticketsCreatedQueryFactory(statsFilters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...ticketsCreatedQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
             order: [[TicketMeasure.TicketCount, sorting]],
         })
     })

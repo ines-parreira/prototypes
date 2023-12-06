@@ -20,10 +20,12 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     PublicHelpdeskAndApiMessagesFilter,
+    TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('ticketsRepliedQueryFactory', () => {
@@ -324,7 +326,13 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
             ticketsRepliedMetricPerTickerQueryFactory(statsFilters, timezone)
         ).toEqual({
             ...ticketsRepliedQueryFactory(statsFilters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...ticketsRepliedQueryFactory(statsFilters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
 
@@ -340,7 +348,13 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
             )
         ).toEqual({
             ...ticketsRepliedQueryFactory(filters, timezone),
+            measures: [],
             dimensions: [TicketDimension.TicketId],
+            filters: [
+                ...ticketsRepliedQueryFactory(filters, timezone).filters,
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
             order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
         })
     })

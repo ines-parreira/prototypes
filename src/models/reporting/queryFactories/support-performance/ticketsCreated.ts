@@ -18,22 +18,24 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
 export const ticketsCreatedQueryFactory = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string
 ) => {
-    const {agents, ...statFiltersWithoutAgents} = statsFilters
+    const {agents, ...statFiltersWithoutAgents} = filters
     const commonFilters: ReportingFilter[] = [
         {
             member: TicketMember.CreatedDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(statsFilters),
+            values: getFilterDateRange(filters),
         },
         ...NotSpamNorTrashedTicketsFilter,
     ]
@@ -68,11 +70,11 @@ export const ticketsCreatedQueryFactory = (
 }
 
 export const ticketsCreatedTimeSeriesQueryFactory = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
-    const {agents, ...statFiltersWithoutAgents} = statsFilters
+    const {agents, ...statFiltersWithoutAgents} = filters
     const commonFilters: ReportingFilter[] = [...NotSpamNorTrashedTicketsFilter]
     if (agents?.length) {
         commonFilters.push({
@@ -97,7 +99,7 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
             {
                 dimension: TicketDimension.CreatedDatetime,
                 granularity,
-                dateRange: getFilterDateRange(statsFilters),
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,
@@ -113,12 +115,18 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
 }
 
 export const ticketsCreatedPerTicketQueryFactory = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...ticketsCreatedQueryFactory(statsFilters, timezone),
+    ...ticketsCreatedQueryFactory(filters, timezone),
+    measures: [],
     dimensions: [TicketDimension.TicketId],
+    filters: [
+        ...ticketsCreatedQueryFactory(filters, timezone).filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
               order: [[TicketMeasure.TicketCount, sorting]],

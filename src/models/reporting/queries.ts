@@ -34,15 +34,13 @@ export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
     ReportingResponse<TData>
 >
 
-export type UseEnrichedPostReportingQueryData<TData> = AxiosResponse<
-    ReportingResponse<TData>
->
+export type UseEnrichedPostReportingQueryData<TData> = AxiosResponse<TData>
 
 export const reportingKeys = {
     post: (data: ReportingParams) => ['reporting', 'post-reporting', data],
     postEnriched: (data: {
         query: ReportingQuery
-        enrichment: EnrichmentFields[]
+        enrichment_fields: EnrichmentFields[]
     }) => ['reporting', 'post-reporting-enriched', data],
 }
 
@@ -67,13 +65,13 @@ export const usePostReporting = <
 }
 
 export const useEnrichedPostReporting = <
-    TData extends unknown[],
-    SelectData = UseEnrichedPostReportingQueryData<TData>,
+    TData,
+    SelectData,
     TCube extends Cube = Cube
 >(
     data: {
         query: ReportingQuery<TCube>
-        enrichment: EnrichmentFields[]
+        enrichment_fields: EnrichmentFields[]
     },
     overrides?: UseQueryOptions<
         UseEnrichedPostReportingQueryData<TData>,
@@ -83,7 +81,11 @@ export const useEnrichedPostReporting = <
 ) => {
     return useQuery({
         queryKey: reportingKeys.postEnriched(data),
-        queryFn: () => postEnrichedReporting<TData>(data),
+        queryFn: () =>
+            postEnrichedReporting<TData, TCube>(
+                data.query,
+                data.enrichment_fields
+            ),
         ...defaultOptions,
         ...overrides,
     })

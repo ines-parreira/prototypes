@@ -8,6 +8,7 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Metric} from 'hooks/reporting/metrics'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {User} from 'config/types/user'
+import {TableColumn} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
 import {
     formatMetricValue,
@@ -159,15 +160,15 @@ export const saveReport = async (
 
     const agentsMetricData = [
         [
-            TableLabels.agent_name,
-            TableLabels.customer_satisfaction,
-            TableLabels.median_first_response_time,
-            TableLabels.median_resolution_time,
-            TableLabels.closed_tickets,
-            TableLabels.percentage_of_closed_tickets,
-            TableLabels.replied_tickets,
-            TableLabels.messages_sent,
-            TableLabels.one_touch_tickets,
+            TableLabels[TableColumn.AgentName],
+            TableLabels[TableColumn.CustomerSatisfaction],
+            TableLabels[TableColumn.MedianFirstResponseTime],
+            TableLabels[TableColumn.MedianResolutionTime],
+            TableLabels[TableColumn.ClosedTickets],
+            TableLabels[TableColumn.PercentageOfClosedTickets],
+            TableLabels[TableColumn.RepliedTickets],
+            TableLabels[TableColumn.MessagesSent],
+            TableLabels[TableColumn.OneTouchTickets],
         ],
         [
             'Average',
