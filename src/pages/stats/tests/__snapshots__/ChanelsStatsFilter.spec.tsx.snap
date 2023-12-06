@@ -91,23 +91,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-2"
             type="checkbox"
           />
-           TikTok Shop
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-3"
-        >
-          <input
-            class="input"
-            id="checkbox-3"
-            name="checkbox-3"
-            type="checkbox"
-          />
-           Google Business Messenger
+          <span
+            id="label-tooltip-3"
+          >
+             TikTok Shop
+          </span>
         </label>
       </div>
       <div
@@ -123,23 +111,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-4"
             type="checkbox"
           />
-           Aircall
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-5"
-        >
-          <input
-            class="input"
-            id="checkbox-5"
-            name="checkbox-5"
-            type="checkbox"
-          />
-           Api
+          <span
+            id="label-tooltip-5"
+          >
+             Google Business Messenger
+          </span>
         </label>
       </div>
       <div
@@ -155,23 +131,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-6"
             type="checkbox"
           />
-           Chat
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-7"
-        >
-          <input
-            class="input"
-            id="checkbox-7"
-            name="checkbox-7"
-            type="checkbox"
-          />
-           Contact Form
+          <span
+            id="label-tooltip-7"
+          >
+             Aircall
+          </span>
         </label>
       </div>
       <div
@@ -187,23 +151,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-8"
             type="checkbox"
           />
-           Email
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-9"
-        >
-          <input
-            class="input"
-            id="checkbox-9"
-            name="checkbox-9"
-            type="checkbox"
-          />
-           Facebook
+          <span
+            id="label-tooltip-9"
+          >
+             Api
+          </span>
         </label>
       </div>
       <div
@@ -219,23 +171,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-10"
             type="checkbox"
           />
-           Facebook Mention
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-11"
-        >
-          <input
-            class="input"
-            id="checkbox-11"
-            name="checkbox-11"
-            type="checkbox"
-          />
-           Facebook Messenger
+          <span
+            id="label-tooltip-11"
+          >
+             Chat
+          </span>
         </label>
       </div>
       <div
@@ -251,23 +191,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-12"
             type="checkbox"
           />
-           Facebook Recommendations
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-13"
-        >
-          <input
-            class="input"
-            id="checkbox-13"
-            name="checkbox-13"
-            type="checkbox"
-          />
-           Help Center
+          <span
+            id="label-tooltip-13"
+          >
+             Contact Form
+          </span>
         </label>
       </div>
       <div
@@ -283,23 +211,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-14"
             type="checkbox"
           />
-           Instagram Ad Comment
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-15"
-        >
-          <input
-            class="input"
-            id="checkbox-15"
-            name="checkbox-15"
-            type="checkbox"
-          />
-           Instagram Comment
+          <span
+            id="label-tooltip-15"
+          >
+             Email
+          </span>
         </label>
       </div>
       <div
@@ -315,23 +231,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-16"
             type="checkbox"
           />
-           Instagram Mention
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-17"
-        >
-          <input
-            class="input"
-            id="checkbox-17"
-            name="checkbox-17"
-            type="checkbox"
-          />
-           Instagram Direct Message
+          <span
+            id="label-tooltip-17"
+          >
+             Facebook
+          </span>
         </label>
       </div>
       <div
@@ -347,23 +251,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-18"
             type="checkbox"
           />
-           Internal Note
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-19"
-        >
-          <input
-            class="input"
-            id="checkbox-19"
-            name="checkbox-19"
-            type="checkbox"
-          />
-           Phone
+          <span
+            id="label-tooltip-19"
+          >
+             Facebook Mention
+          </span>
         </label>
       </div>
       <div
@@ -379,23 +271,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-20"
             type="checkbox"
           />
-           SMS
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-21"
-        >
-          <input
-            class="input"
-            id="checkbox-21"
-            name="checkbox-21"
-            type="checkbox"
-          />
-           Twitter
+          <span
+            id="label-tooltip-21"
+          >
+             Facebook Messenger
+          </span>
         </label>
       </div>
       <div
@@ -411,23 +291,11 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-22"
             type="checkbox"
           />
-           Twitter Direct Message
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-23"
-        >
-          <input
-            class="input"
-            id="checkbox-23"
-            name="checkbox-23"
-            type="checkbox"
-          />
-           Yotpo Review
+          <span
+            id="label-tooltip-23"
+          >
+             Facebook Recommendations
+          </span>
         </label>
       </div>
       <div
@@ -443,7 +311,231 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-24"
             type="checkbox"
           />
-           WhatsApp
+          <span
+            id="label-tooltip-25"
+          >
+             Help Center
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-26"
+        >
+          <input
+            class="input"
+            id="checkbox-26"
+            name="checkbox-26"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-27"
+          >
+             Instagram Ad Comment
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-28"
+        >
+          <input
+            class="input"
+            id="checkbox-28"
+            name="checkbox-28"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-29"
+          >
+             Instagram Comment
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-30"
+        >
+          <input
+            class="input"
+            id="checkbox-30"
+            name="checkbox-30"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-31"
+          >
+             Instagram Mention
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-32"
+        >
+          <input
+            class="input"
+            id="checkbox-32"
+            name="checkbox-32"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-33"
+          >
+             Instagram Direct Message
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-34"
+        >
+          <input
+            class="input"
+            id="checkbox-34"
+            name="checkbox-34"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-35"
+          >
+             Internal Note
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-36"
+        >
+          <input
+            class="input"
+            id="checkbox-36"
+            name="checkbox-36"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-37"
+          >
+             Phone
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-38"
+        >
+          <input
+            class="input"
+            id="checkbox-38"
+            name="checkbox-38"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-39"
+          >
+             SMS
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-40"
+        >
+          <input
+            class="input"
+            id="checkbox-40"
+            name="checkbox-40"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-41"
+          >
+             Twitter
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-42"
+        >
+          <input
+            class="input"
+            id="checkbox-42"
+            name="checkbox-42"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-43"
+          >
+             Twitter Direct Message
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-44"
+        >
+          <input
+            class="input"
+            id="checkbox-44"
+            name="checkbox-44"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-45"
+          >
+             Yotpo Review
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-46"
+        >
+          <input
+            class="input"
+            id="checkbox-46"
+            name="checkbox-46"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-47"
+          >
+             WhatsApp
+          </span>
         </label>
       </div>
     </div>

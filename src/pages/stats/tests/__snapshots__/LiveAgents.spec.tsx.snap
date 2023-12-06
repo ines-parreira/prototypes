@@ -137,23 +137,11 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                         name="checkbox-2"
                         type="checkbox"
                       />
-                      Foo
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
-                      for="checkbox-3"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-3"
-                        name="checkbox-3"
-                        type="checkbox"
-                      />
-                      Phone team - +1 205-396-3441
+                      <span
+                        id="label-tooltip-3"
+                      >
+                         Foo
+                      </span>
                     </label>
                   </div>
                   <div
@@ -169,7 +157,11 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                         name="checkbox-4"
                         type="checkbox"
                       />
-                      Team: user meta null
+                      <span
+                        id="label-tooltip-5"
+                      >
+                         Phone team - +1 205-396-3441
+                      </span>
                     </label>
                   </div>
                   <div
@@ -177,15 +169,39 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-5"
+                      for="checkbox-6"
                     >
                       <input
                         class="input"
-                        id="checkbox-5"
-                        name="checkbox-5"
+                        id="checkbox-6"
+                        name="checkbox-6"
                         type="checkbox"
                       />
-                      Test
+                      <span
+                        id="label-tooltip-7"
+                      >
+                         Team: user meta null
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-8"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-8"
+                        name="checkbox-8"
+                        type="checkbox"
+                      />
+                      <span
+                        id="label-tooltip-9"
+                      >
+                         Test
+                      </span>
                     </label>
                   </div>
                 </div>
@@ -204,16 +220,20 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-6"
+                    for="checkbox-10"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
+                      id="checkbox-10"
+                      name="checkbox-10"
                       type="checkbox"
                     />
-                     Acme Support
+                    <span
+                      id="label-tooltip-11"
+                    >
+                       Acme Support
+                    </span>
                   </label>
                 </div>
                 <div
@@ -221,15 +241,19 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-7"
+                    for="checkbox-12"
                   >
                     <input
                       class="input"
-                      id="checkbox-7"
-                      name="checkbox-7"
+                      id="checkbox-12"
+                      name="checkbox-12"
                       type="checkbox"
                     />
-                     Bob Smith
+                    <span
+                      id="label-tooltip-13"
+                    >
+                       Bob Smith
+                    </span>
                   </label>
                 </div>
               </div>

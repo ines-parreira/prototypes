@@ -94,7 +94,11 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       class="integrationIcon"
                       src="test-file-stub"
                     />
-                     My Shop
+                    <span
+                      id="label-tooltip-2"
+                    >
+                       My Shop
+                    </span>
                   </label>
                 </div>
               </div>
@@ -140,13 +144,13 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-2"
+                    for="checkbox-3"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-2"
-                      name="checkbox-2"
+                      id="checkbox-3"
+                      name="checkbox-3"
                       type="checkbox"
                     />
                     Deselect
@@ -170,16 +174,20 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-3"
+                    for="checkbox-4"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-3"
-                      name="checkbox-3"
+                      id="checkbox-4"
+                      name="checkbox-4"
                       type="checkbox"
                     />
-                     campaign 1
+                    <span
+                      id="label-tooltip-5"
+                    >
+                       campaign 1
+                    </span>
                   </label>
                 </div>
                 <div
@@ -187,15 +195,19 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-4"
+                    for="checkbox-6"
                   >
                     <input
                       class="input"
-                      id="checkbox-4"
-                      name="checkbox-4"
+                      id="checkbox-6"
+                      name="checkbox-6"
                       type="checkbox"
                     />
-                     campaign 2
+                    <span
+                      id="label-tooltip-7"
+                    >
+                       campaign 2
+                    </span>
                   </label>
                 </div>
               </div>

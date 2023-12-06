@@ -31,7 +31,7 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
     aria-hidden="true"
     class="dropdown-menu dropdown-menu-right"
     role="menu"
-    style="padding: 0px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
+    style="padding: 0px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051;"
     tabindex="-1"
   >
     <h6
@@ -97,23 +97,11 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
               name="checkbox-2"
               type="checkbox"
             />
-             billing
-          </label>
-        </div>
-        <div
-          class="wrapperItem"
-        >
-          <label
-            class="label label labelItem"
-            for="checkbox-3"
-          >
-            <input
-              class="input"
-              id="checkbox-3"
-              name="checkbox-3"
-              type="checkbox"
-            />
-             refund
+            <span
+              id="label-tooltip-3"
+            >
+               billing
+            </span>
           </label>
         </div>
         <div
@@ -124,13 +112,16 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             for="checkbox-4"
           >
             <input
-              checked=""
               class="input"
               id="checkbox-4"
               name="checkbox-4"
               type="checkbox"
             />
-             refund accepted
+            <span
+              id="label-tooltip-5"
+            >
+               refund
+            </span>
           </label>
         </div>
         <div
@@ -138,15 +129,40 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-5"
+            for="checkbox-6"
+          >
+            <input
+              checked=""
+              class="input"
+              id="checkbox-6"
+              name="checkbox-6"
+              type="checkbox"
+            />
+            <span
+              id="label-tooltip-7"
+            >
+               refund accepted
+            </span>
+          </label>
+        </div>
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label label labelItem"
+            for="checkbox-8"
           >
             <input
               class="input"
-              id="checkbox-5"
-              name="checkbox-5"
+              id="checkbox-8"
+              name="checkbox-8"
               type="checkbox"
             />
-             rejected
+            <span
+              id="label-tooltip-9"
+            >
+               rejected
+            </span>
           </label>
         </div>
       </div>

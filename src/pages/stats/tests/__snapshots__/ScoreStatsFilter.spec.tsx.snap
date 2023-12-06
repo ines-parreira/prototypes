@@ -79,24 +79,11 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
             name="checkbox-2"
             type="checkbox"
           />
-           ★☆☆☆☆
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-3"
-        >
-          <input
-            checked=""
-            class="input"
-            id="checkbox-3"
-            name="checkbox-3"
-            type="checkbox"
-          />
-           ★★☆☆☆
+          <span
+            id="label-tooltip-3"
+          >
+             ★☆☆☆☆
+          </span>
         </label>
       </div>
       <div
@@ -107,29 +94,17 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
           for="checkbox-4"
         >
           <input
+            checked=""
             class="input"
             id="checkbox-4"
             name="checkbox-4"
             type="checkbox"
           />
-           ★★★☆☆
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-5"
-        >
-          <input
-            checked=""
-            class="input"
-            id="checkbox-5"
-            name="checkbox-5"
-            type="checkbox"
-          />
-           ★★★★☆
+          <span
+            id="label-tooltip-5"
+          >
+             ★★☆☆☆
+          </span>
         </label>
       </div>
       <div
@@ -145,7 +120,52 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
             name="checkbox-6"
             type="checkbox"
           />
-           ★★★★★
+          <span
+            id="label-tooltip-7"
+          >
+             ★★★☆☆
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-8"
+        >
+          <input
+            checked=""
+            class="input"
+            id="checkbox-8"
+            name="checkbox-8"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-9"
+          >
+             ★★★★☆
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-10"
+        >
+          <input
+            class="input"
+            id="checkbox-10"
+            name="checkbox-10"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-11"
+          >
+             ★★★★★
+          </span>
         </label>
       </div>
     </div>
@@ -194,13 +214,13 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
       >
         <label
           class="label label quickSelectionOption"
-          for="checkbox-7"
+          for="checkbox-12"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-7"
-            name="checkbox-7"
+            id="checkbox-12"
+            name="checkbox-12"
             type="checkbox"
           />
           Deselect all
@@ -224,16 +244,20 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
       >
         <label
           class="label label labelItem"
-          for="checkbox-8"
+          for="checkbox-13"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-8"
-            name="checkbox-8"
+            id="checkbox-13"
+            name="checkbox-13"
             type="checkbox"
           />
-           ★★★
+          <span
+            id="label-tooltip-14"
+          >
+             ★★★
+          </span>
         </label>
       </div>
       <div
@@ -241,15 +265,19 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
       >
         <label
           class="label label labelItem"
-          for="checkbox-9"
+          for="checkbox-15"
         >
           <input
             class="input"
-            id="checkbox-9"
-            name="checkbox-9"
+            id="checkbox-15"
+            name="checkbox-15"
             type="checkbox"
           />
-           ★★☆
+          <span
+            id="label-tooltip-16"
+          >
+             ★★☆
+          </span>
         </label>
       </div>
       <div
@@ -257,16 +285,20 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
       >
         <label
           class="label label labelItem"
-          for="checkbox-10"
+          for="checkbox-17"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-10"
-            name="checkbox-10"
+            id="checkbox-17"
+            name="checkbox-17"
             type="checkbox"
           />
-           ★☆☆
+          <span
+            id="label-tooltip-18"
+          >
+             ★☆☆
+          </span>
         </label>
       </div>
     </div>

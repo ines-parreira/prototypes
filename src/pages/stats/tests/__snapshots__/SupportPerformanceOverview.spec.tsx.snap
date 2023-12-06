@@ -149,7 +149,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         class="integrationIcon"
                         src="test-file-stub"
                       />
-                       Acme Billing
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Acme Billing
+                      </span>
                     </label>
                   </div>
                   <div
@@ -170,7 +174,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         class="integrationIcon"
                         src="test-file-stub"
                       />
-                       Deactivated gmail
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Deactivated gmail
+                      </span>
                     </label>
                   </div>
                   <div
@@ -191,7 +199,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                       >
                         email
                       </i>
-                       Acme Support
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Acme Support
+                      </span>
                     </label>
                   </div>
                   <div
@@ -212,7 +224,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                       >
                         email
                       </i>
-                       Acme Contact
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Acme Contact
+                      </span>
                     </label>
                   </div>
                   <div
@@ -233,7 +249,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                       >
                         email
                       </i>
-                       Acme Unverified
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Acme Unverified
+                      </span>
                     </label>
                   </div>
                   <div
@@ -254,7 +274,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                       >
                         email
                       </i>
-                       Sendgrid Integration
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Sendgrid Integration
+                      </span>
                     </label>
                   </div>
                   <div
@@ -275,7 +299,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                       >
                         phone
                       </i>
-                       Acme Phone
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Acme Phone
+                      </span>
                     </label>
                   </div>
                   <div
@@ -296,7 +324,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                       >
                         chat
                       </i>
-                       Chitty chatty
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Chitty chatty
+                      </span>
                     </label>
                   </div>
                 </div>
@@ -390,7 +422,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                           name="checkbox-abc"
                           type="checkbox"
                         />
-                        Foo
+                        <span
+                          id="label-tooltip-abc"
+                        >
+                           Foo
+                        </span>
                       </label>
                     </div>
                     <div
@@ -406,7 +442,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                           name="checkbox-abc"
                           type="checkbox"
                         />
-                        Phone team - +1 205-396-3441
+                        <span
+                          id="label-tooltip-abc"
+                        >
+                           Phone team - +1 205-396-3441
+                        </span>
                       </label>
                     </div>
                     <div
@@ -422,7 +462,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                           name="checkbox-abc"
                           type="checkbox"
                         />
-                        Team: user meta null
+                        <span
+                          id="label-tooltip-abc"
+                        >
+                           Team: user meta null
+                        </span>
                       </label>
                     </div>
                     <div
@@ -438,7 +482,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                           name="checkbox-abc"
                           type="checkbox"
                         />
-                        Test
+                        <span
+                          id="label-tooltip-abc"
+                        >
+                           Test
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -466,7 +514,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-abc"
                         type="checkbox"
                       />
-                       Acme Support
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Acme Support
+                      </span>
                     </label>
                   </div>
                   <div
@@ -482,7 +534,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-abc"
                         type="checkbox"
                       />
-                       Bob Smith
+                      <span
+                        id="label-tooltip-abc"
+                      >
+                         Bob Smith
+                      </span>
                     </label>
                   </div>
                 </div>

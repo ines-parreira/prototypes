@@ -43,15 +43,19 @@ exports[`<SelectFilter /> should not render the component with quick selection o
       >
         <label
           class="label label labelItem"
-          for="checkbox-6"
+          for="checkbox-9"
         >
           <input
             class="input"
-            id="checkbox-6"
-            name="checkbox-6"
+            id="checkbox-9"
+            name="checkbox-9"
             type="checkbox"
           />
-           Api
+          <span
+            id="label-tooltip-10"
+          >
+             Api
+          </span>
         </label>
       </div>
       <div
@@ -59,15 +63,19 @@ exports[`<SelectFilter /> should not render the component with quick selection o
       >
         <label
           class="label label labelItem"
-          for="checkbox-7"
+          for="checkbox-11"
         >
           <input
             class="input"
-            id="checkbox-7"
-            name="checkbox-7"
+            id="checkbox-11"
+            name="checkbox-11"
             type="checkbox"
           />
-           Chat
+          <span
+            id="label-tooltip-12"
+          >
+             Chat
+          </span>
         </label>
       </div>
       <div
@@ -75,15 +83,19 @@ exports[`<SelectFilter /> should not render the component with quick selection o
       >
         <label
           class="label label labelItem"
-          for="checkbox-8"
+          for="checkbox-13"
         >
           <input
             class="input"
-            id="checkbox-8"
-            name="checkbox-8"
+            id="checkbox-13"
+            name="checkbox-13"
             type="checkbox"
           />
-           Email
+          <span
+            id="label-tooltip-14"
+          >
+             Email
+          </span>
         </label>
       </div>
     </div>
@@ -132,12 +144,12 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
       >
         <label
           class="label label quickSelectionOption"
-          for="checkbox-9"
+          for="checkbox-15"
         >
           <input
             class="input"
-            id="checkbox-9"
-            name="checkbox-9"
+            id="checkbox-15"
+            name="checkbox-15"
             type="checkbox"
           />
           Select all
@@ -161,12 +173,12 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-10"
+          for="checkbox-16"
         >
           <input
             class="input"
-            id="checkbox-10"
-            name="checkbox-10"
+            id="checkbox-16"
+            name="checkbox-16"
             type="checkbox"
           />
           <i
@@ -174,7 +186,11 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
           >
             api
           </i>
-           Api
+          <span
+            id="label-tooltip-17"
+          >
+             Api
+          </span>
         </label>
       </div>
       <div
@@ -182,12 +198,12 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-11"
+          for="checkbox-18"
         >
           <input
             class="input"
-            id="checkbox-11"
-            name="checkbox-11"
+            id="checkbox-18"
+            name="checkbox-18"
             type="checkbox"
           />
           <i
@@ -195,7 +211,11 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
           >
             chat
           </i>
-           Chat
+          <span
+            id="label-tooltip-19"
+          >
+             Chat
+          </span>
         </label>
       </div>
       <div
@@ -203,12 +223,12 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-12"
+          for="checkbox-20"
         >
           <input
             class="input"
-            id="checkbox-12"
-            name="checkbox-12"
+            id="checkbox-20"
+            name="checkbox-20"
             type="checkbox"
           />
           <i
@@ -216,7 +236,11 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
           >
             email
           </i>
-           Email
+          <span
+            id="label-tooltip-21"
+          >
+             Email
+          </span>
         </label>
       </div>
     </div>
@@ -302,23 +326,11 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
             name="checkbox-3"
             type="checkbox"
           />
-           Api
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-4"
-        >
-          <input
-            class="input"
-            id="checkbox-4"
-            name="checkbox-4"
-            type="checkbox"
-          />
-           Chat
+          <span
+            id="label-tooltip-4"
+          >
+             Api
+          </span>
         </label>
       </div>
       <div
@@ -334,7 +346,31 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
             name="checkbox-5"
             type="checkbox"
           />
-           Email
+          <span
+            id="label-tooltip-6"
+          >
+             Chat
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-7"
+        >
+          <input
+            class="input"
+            id="checkbox-7"
+            name="checkbox-7"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-8"
+          >
+             Email
+          </span>
         </label>
       </div>
     </div>
@@ -383,13 +419,13 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
       >
         <label
           class="label label quickSelectionOption"
-          for="checkbox-13"
+          for="checkbox-22"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-13"
-            name="checkbox-13"
+            id="checkbox-22"
+            name="checkbox-22"
             type="checkbox"
           />
           Deselect all
@@ -413,16 +449,20 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-14"
+          for="checkbox-23"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-14"
-            name="checkbox-14"
+            id="checkbox-23"
+            name="checkbox-23"
             type="checkbox"
           />
-           Api
+          <span
+            id="label-tooltip-24"
+          >
+             Api
+          </span>
         </label>
       </div>
       <div
@@ -430,16 +470,20 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-15"
+          for="checkbox-25"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-15"
-            name="checkbox-15"
+            id="checkbox-25"
+            name="checkbox-25"
             type="checkbox"
           />
-           Chat
+          <span
+            id="label-tooltip-26"
+          >
+             Chat
+          </span>
         </label>
       </div>
       <div
@@ -447,15 +491,19 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-16"
+          for="checkbox-27"
         >
           <input
             class="input"
-            id="checkbox-16"
-            name="checkbox-16"
+            id="checkbox-27"
+            name="checkbox-27"
             type="checkbox"
           />
-           Email
+          <span
+            id="label-tooltip-28"
+          >
+             Email
+          </span>
         </label>
       </div>
     </div>
@@ -573,12 +621,12 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
       >
         <label
           class="label label quickSelectionOption"
-          for="checkbox-36"
+          for="checkbox-63"
         >
           <input
             class="input"
-            id="checkbox-36"
-            name="checkbox-36"
+            id="checkbox-63"
+            name="checkbox-63"
             type="checkbox"
           />
           Select all
@@ -602,15 +650,19 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-37"
+          for="checkbox-64"
         >
           <input
             class="input"
-            id="checkbox-37"
-            name="checkbox-37"
+            id="checkbox-64"
+            name="checkbox-64"
             type="checkbox"
           />
-           Api
+          <span
+            id="label-tooltip-65"
+          >
+             Api
+          </span>
         </label>
       </div>
       <div
@@ -618,15 +670,19 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-38"
+          for="checkbox-66"
         >
           <input
             class="input"
-            id="checkbox-38"
-            name="checkbox-38"
+            id="checkbox-66"
+            name="checkbox-66"
             type="checkbox"
           />
-           Chat
+          <span
+            id="label-tooltip-67"
+          >
+             Chat
+          </span>
         </label>
       </div>
       <div
@@ -634,15 +690,19 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-39"
+          for="checkbox-68"
         >
           <input
             class="input"
-            id="checkbox-39"
-            name="checkbox-39"
+            id="checkbox-68"
+            name="checkbox-68"
             type="checkbox"
           />
-           Email
+          <span
+            id="label-tooltip-69"
+          >
+             Email
+          </span>
         </label>
       </div>
       <div
@@ -650,15 +710,19 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-40"
+          for="checkbox-70"
         >
           <input
             class="input"
-            id="checkbox-40"
-            name="checkbox-40"
+            id="checkbox-70"
+            name="checkbox-70"
             type="checkbox"
           />
-          Group 1
+          <span
+            id="label-tooltip-71"
+          >
+             Group 1
+          </span>
         </label>
       </div>
       <div
@@ -666,15 +730,19 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-41"
+          for="checkbox-72"
         >
           <input
             class="input"
-            id="checkbox-41"
-            name="checkbox-41"
+            id="checkbox-72"
+            name="checkbox-72"
             type="checkbox"
           />
-          Group 2
+          <span
+            id="label-tooltip-73"
+          >
+             Group 2
+          </span>
         </label>
       </div>
       <div
@@ -682,15 +750,19 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
       >
         <label
           class="label label labelItem"
-          for="checkbox-42"
+          for="checkbox-74"
         >
           <input
             class="input"
-            id="checkbox-42"
-            name="checkbox-42"
+            id="checkbox-74"
+            name="checkbox-74"
             type="checkbox"
           />
-          Group 3
+          <span
+            id="label-tooltip-75"
+          >
+             Group 3
+          </span>
         </label>
       </div>
     </div>

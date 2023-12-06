@@ -33,6 +33,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 import QuickSelectionOption from './QuickSelectionOption'
+import {LabelWithTooltip} from './LabelWithTooltip'
 import css from './SelectFilter.less'
 
 type Value = string | number
@@ -92,7 +93,7 @@ const Item = ({label, value, icon}: ItemProps) => {
                     icon
                 )
             ) : null}
-            {` ${label}`}
+            <LabelWithTooltip label={label} />
         </CheckBox>
     )
 }
@@ -146,7 +147,7 @@ const Group = ({items, label, value}: GroupProps) => {
                 getCheckedStatus({items, value}) === CheckedStatus.Partial
             }
         >
-            {label}
+            <LabelWithTooltip label={label} />
         </CheckBox>
     )
 }

@@ -78,12 +78,12 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-6"
+                    for="checkbox-9"
                   >
                     <input
                       class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
+                      id="checkbox-9"
+                      name="checkbox-9"
                       type="checkbox"
                     />
                     Select all
@@ -107,15 +107,19 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-7"
+                    for="checkbox-10"
                   >
                     <input
                       class="input"
-                      id="checkbox-7"
-                      name="checkbox-7"
+                      id="checkbox-10"
+                      name="checkbox-10"
                       type="checkbox"
                     />
-                     Auto Close
+                    <span
+                      id="label-tooltip-11"
+                    >
+                       Auto Close
+                    </span>
                   </label>
                 </div>
                 <div
@@ -123,15 +127,19 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-8"
+                    for="checkbox-12"
                   >
                     <input
                       class="input"
-                      id="checkbox-8"
-                      name="checkbox-8"
+                      id="checkbox-12"
+                      name="checkbox-12"
                       type="checkbox"
                     />
-                     Auto Tag
+                    <span
+                      id="label-tooltip-13"
+                    >
+                       Auto Tag
+                    </span>
                   </label>
                 </div>
                 <div
@@ -139,15 +147,19 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-9"
+                    for="checkbox-14"
                   >
                     <input
                       class="input"
-                      id="checkbox-9"
-                      name="checkbox-9"
+                      id="checkbox-14"
+                      name="checkbox-14"
                       type="checkbox"
                     />
-                     Auto Reply
+                    <span
+                      id="label-tooltip-15"
+                    >
+                       Auto Reply
+                    </span>
                   </label>
                 </div>
               </div>
@@ -170,8 +182,8 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
               </span>
               <input
                 class="input"
-                id="input-text-10"
-                name="input-text-10"
+                id="input-text-16"
+                name="input-text-16"
                 placeholder="Search rule templates..."
                 type="text"
                 value=""
@@ -324,23 +336,11 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
                       name="checkbox-2"
                       type="checkbox"
                     />
-                     Auto Close
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-3"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-3"
-                      name="checkbox-3"
-                      type="checkbox"
-                    />
-                     Auto Tag
+                    <span
+                      id="label-tooltip-3"
+                    >
+                       Auto Close
+                    </span>
                   </label>
                 </div>
                 <div
@@ -356,7 +356,31 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
                       name="checkbox-4"
                       type="checkbox"
                     />
-                     Auto Reply
+                    <span
+                      id="label-tooltip-5"
+                    >
+                       Auto Tag
+                    </span>
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-6"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-6"
+                      name="checkbox-6"
+                      type="checkbox"
+                    />
+                    <span
+                      id="label-tooltip-7"
+                    >
+                       Auto Reply
+                    </span>
                   </label>
                 </div>
               </div>
@@ -379,8 +403,8 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
               </span>
               <input
                 class="input"
-                id="input-text-5"
-                name="input-text-5"
+                id="input-text-8"
+                name="input-text-8"
                 placeholder="Search rule templates..."
                 type="text"
                 value=""

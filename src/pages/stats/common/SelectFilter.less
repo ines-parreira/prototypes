@@ -5,7 +5,8 @@
     }
 
     .dropdown {
-        width: 230px;
+        min-width: 230px;
+        max-width: 400px;
         padding: 0;
     }
 
@@ -38,6 +39,12 @@
 
         &:hover {
             background-color: var(--neutral-grey-2);
+        }
+
+        & > span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 

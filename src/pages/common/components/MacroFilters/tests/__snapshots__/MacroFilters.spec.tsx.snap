@@ -54,7 +54,11 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
               name="checkbox-1"
               type="checkbox"
             />
-             English
+            <span
+              id="label-tooltip-2"
+            >
+               English
+            </span>
           </label>
         </div>
         <div
@@ -62,16 +66,20 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-2"
+            for="checkbox-3"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-2"
-              name="checkbox-2"
+              id="checkbox-3"
+              name="checkbox-3"
               type="checkbox"
             />
-             French
+            <span
+              id="label-tooltip-4"
+            >
+               French
+            </span>
           </label>
         </div>
       </div>
@@ -117,13 +125,13 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label quickSelectionOption"
-            for="checkbox-3"
+            for="checkbox-5"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-3"
-              name="checkbox-3"
+              id="checkbox-5"
+              name="checkbox-5"
               type="checkbox"
             />
             Deselect all
@@ -147,16 +155,20 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-4"
+            for="checkbox-6"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-4"
-              name="checkbox-4"
+              id="checkbox-6"
+              name="checkbox-6"
               type="checkbox"
             />
-             tag1
+            <span
+              id="label-tooltip-7"
+            >
+               tag1
+            </span>
           </label>
         </div>
         <div
@@ -164,16 +176,20 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-5"
+            for="checkbox-8"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-5"
-              name="checkbox-5"
+              id="checkbox-8"
+              name="checkbox-8"
               type="checkbox"
             />
-             tag2
+            <span
+              id="label-tooltip-9"
+            >
+               tag2
+            </span>
           </label>
         </div>
       </div>

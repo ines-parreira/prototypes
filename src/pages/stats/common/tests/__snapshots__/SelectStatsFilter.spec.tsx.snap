@@ -78,23 +78,11 @@ exports[`<SelectStatsFilter /> should render a filter with items 1`] = `
             name="checkbox-2"
             type="checkbox"
           />
-           Api
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="label label labelItem"
-          for="checkbox-3"
-        >
-          <input
-            class="input"
-            id="checkbox-3"
-            name="checkbox-3"
-            type="checkbox"
-          />
-           Chat
+          <span
+            id="label-tooltip-3"
+          >
+             Api
+          </span>
         </label>
       </div>
       <div
@@ -110,7 +98,31 @@ exports[`<SelectStatsFilter /> should render a filter with items 1`] = `
             name="checkbox-4"
             type="checkbox"
           />
-           Email
+          <span
+            id="label-tooltip-5"
+          >
+             Chat
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-6"
+        >
+          <input
+            class="input"
+            id="checkbox-6"
+            name="checkbox-6"
+            type="checkbox"
+          />
+          <span
+            id="label-tooltip-7"
+          >
+             Email
+          </span>
         </label>
       </div>
     </div>
