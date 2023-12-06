@@ -152,20 +152,25 @@ const AutomateLandingPage = () => {
                             showTips={isTipsVisible}
                         />
                     </DashboardGridCell>
-                    {MIN_AUTOMATED_INTERACTIONS && !isLoading && (
-                        <DashboardGridCell size={12}>
-                            <AutomateSavingsCard
-                                amountSaved={
-                                    (automatedInteractionsTrend?.data?.value ??
-                                        0) * moneySavedPerInteraction
-                                }
-                                teamTimeSaved={resolutionTimeTrend.data?.value}
-                                customersTimeSaved={
-                                    firstResponseTimeTrend.data?.value
-                                }
-                            />
-                        </DashboardGridCell>
-                    )}
+                    {(automatedInteractionsTrend?.data?.value ?? 0) >=
+                        MIN_AUTOMATED_INTERACTIONS &&
+                        !isLoading && (
+                            <DashboardGridCell size={12}>
+                                <AutomateSavingsCard
+                                    amountSaved={
+                                        (automatedInteractionsTrend?.data
+                                            ?.value ?? 0) *
+                                        moneySavedPerInteraction
+                                    }
+                                    teamTimeSaved={
+                                        resolutionTimeTrend.data?.value
+                                    }
+                                    customersTimeSaved={
+                                        firstResponseTimeTrend.data?.value
+                                    }
+                                />
+                            </DashboardGridCell>
+                        )}
                 </>
             </DashboardSection>
             <section data-candu-id="automate-landing-page-checklist" />
