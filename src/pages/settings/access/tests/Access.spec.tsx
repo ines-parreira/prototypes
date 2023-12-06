@@ -23,12 +23,20 @@ const accessSettings = fromJS({
         allowed_domains: ['gorgias.com', 'gorgias.io'],
     },
 })
-const accessSettingsStar = fromJS({
+const accessSettingsOnlyWildcards = fromJS({
     id: 1,
     type: AccountSettingType.Access,
     data: {
         signup_mode: AccountSettingAccessSignupMode.AllowedDomains,
         allowed_domains: ['*.*'],
+    },
+})
+const accessSettingsDangerousWildcard = fromJS({
+    id: 1,
+    type: AccountSettingType.Access,
+    data: {
+        signup_mode: AccountSettingAccessSignupMode.AllowedDomains,
+        allowed_domains: ['*gorgias.com'],
     },
 })
 const accessSettingsGeneric = fromJS({
@@ -78,7 +86,7 @@ describe('<Access/>', () => {
             <Provider store={mockStore()}>
                 <AccessContainer
                     accountDomain="acme"
-                    accessSettings={accessSettingsStar}
+                    accessSettings={accessSettingsOnlyWildcards}
                     submitSetting={jest.fn()}
                 />
             </Provider>
@@ -86,6 +94,22 @@ describe('<Access/>', () => {
 
         expect(() =>
             getByText('You cannot use only wildcards as a domain.')
+        ).not.toThrow()
+    })
+
+    it('should show an error and block submit when using a dangerous sub-domain wildcard', () => {
+        const {getByText} = render(
+            <Provider store={mockStore()}>
+                <AccessContainer
+                    accountDomain="acme"
+                    accessSettings={accessSettingsDangerousWildcard}
+                    submitSetting={jest.fn()}
+                />
+            </Provider>
+        )
+
+        expect(() =>
+            getByText('You cannot use wildcards not separated by a dot.')
         ).not.toThrow()
     })
 

@@ -54,6 +54,11 @@ function validateDomain(domain: string): string | undefined {
     if (!domain.match(/^[\w\d\-.*]+$/)) {
         return 'Invalid special character(s). Only “*” and “,” are allowed.'
     }
+
+    // Ensure wildcards are always preceded or followed by a dot
+    if (domain.match(/\*[^.]|[^.]\*/)) {
+        return 'You cannot use wildcards not separated by a dot.'
+    }
 }
 
 function validateDomains(domains: string): string {
