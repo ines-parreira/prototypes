@@ -1,4 +1,6 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState} from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import Tooltip from 'pages/common/components/Tooltip'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -27,7 +29,10 @@ export const DrillDownDownloadButton = () => {
         hasRole(currentUser, UserRole.Agent)
     )
 
-    return (
+    const hasAnalyticsDrillDownExport: boolean =
+        useFlags()[FeatureFlagKey.AnalyticsDrillDownExport]
+
+    return !hasAnalyticsDrillDownExport ? null : (
         <>
             <Button
                 id={tooltipTargetID}
