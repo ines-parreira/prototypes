@@ -97,7 +97,7 @@ const TextInputWithVariables = ({
 
     return (
         <ToolbarProvider workflowVariables={variables}>
-            <InputGroup>
+            <InputGroup className={css.container}>
                 <InputGroupContext.Consumer>
                     {(inputGroupContext) => (
                         <>

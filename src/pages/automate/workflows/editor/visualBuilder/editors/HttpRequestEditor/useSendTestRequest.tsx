@@ -12,6 +12,9 @@ const renderWithVariables = (
     )
 }
 
+const corsProxyBaseUrl = 'https://cors-proxy.gorgias.workers.dev'
+const corsProxyKey = '8e6f1be6-hvcl-6975-iuhu-f45d4c8e8b86'
+
 const useSendTestRequest = (
     config: Pick<
         HttpRequestNodeType['data'],
@@ -65,9 +68,13 @@ const useSendTestRequest = (
                     headers['content-type'] = config.bodyContentType
                 }
 
+                headers['x-gorgias-cors-proxy-key'] = corsProxyKey
+
                 const res = await fetch(
-                    // TODO: add CORS proxy
-                    renderWithVariables(config.url, variables),
+                    `${corsProxyBaseUrl}/${renderWithVariables(
+                        config.url,
+                        variables
+                    )}`,
                     {
                         method: config.method,
                         headers,
