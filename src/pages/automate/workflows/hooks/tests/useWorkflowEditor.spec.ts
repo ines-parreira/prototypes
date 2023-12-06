@@ -1,4 +1,5 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+import _noop from 'lodash/noop'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useWorkflowEditor} from '../useWorkflowEditor'
 import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
@@ -50,7 +51,9 @@ describe('useWorkflowEditor', () => {
         updateMock({})
     })
     it('generates an empty workflow configuration when is new', () => {
-        const {result} = renderHook(() => useWorkflowEditor(1, 'a', true))
+        const {result} = renderHook(() =>
+            useWorkflowEditor(1, 'a', true, _noop)
+        )
         expect(result.current.configuration.name).toEqual('')
     })
 
@@ -59,7 +62,7 @@ describe('useWorkflowEditor', () => {
             fetchWorkflowConfiguration: () => Promise.resolve(null),
         })
         const {result, waitForNextUpdate} = renderHook(() =>
-            useWorkflowEditor(1, 'a', false)
+            useWorkflowEditor(1, 'a', false, _noop)
         )
         await waitForNextUpdate()
         expect(result.current.hookError).toBeDefined()
@@ -112,7 +115,7 @@ describe('useWorkflowEditor', () => {
                 } as WorkflowConfiguration),
         })
         const {result, waitForNextUpdate, rerender} = renderHook(() =>
-            useWorkflowEditor(1, 'a', false)
+            useWorkflowEditor(1, 'a', false, _noop)
         )
         expect(result.current.isFetchPending).toBe(true)
         // wait for asynchronous effect to update the local configuration

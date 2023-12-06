@@ -9,6 +9,9 @@ import React, {
 } from 'react'
 import {useThrottleFn} from 'react-use'
 
+import {validateJSON, validateWebhookURL} from 'utils'
+import {saveFileAsDownloaded} from 'utils/file'
+import {Notification, NotificationStatus} from 'state/notifications/types'
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -16,6 +19,7 @@ import {
 } from '../models/workflowConfiguration.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {
+    HttpRequestNodeType,
     MultipleChoicesNodeType,
     VisualBuilderGraph,
     VisualBuilderNode,
@@ -37,7 +41,6 @@ import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
-import {validateJSON, validateWebhookURL} from '../../../../utils'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -88,6 +91,11 @@ export type WorkflowEditorContext = {
     >
     translationSizeToLimitRate: number
     configurationSizeToLimitRate: number
+    handleDownloadHttpRequestEventLogs: (
+        node: HttpRequestNodeType
+    ) => Promise<void>
+    isDownloadPending: boolean
+    checkNewVisualBuilderNode: (nodeId: string) => boolean
 }
 
 export const WorkflowEditorContext = createContext<
@@ -109,6 +117,7 @@ export const withWorkflowEditorContext =
             currentAccountId: number
             workflowId: string
             isNewWorkflow: boolean
+            notifyMerchant: (message: Notification) => void
         }
     >(
         Component: React.FC<WrappedProps>
@@ -117,7 +126,8 @@ export const withWorkflowEditorContext =
         const contextValue = useWorkflowEditor(
             props.currentAccountId,
             props.workflowId,
-            props.isNewWorkflow
+            props.isNewWorkflow,
+            props.notifyMerchant
         )
         return (
             <WorkflowEditorContext.Provider value={contextValue}>
@@ -129,15 +139,18 @@ export const withWorkflowEditorContext =
 export function useWorkflowEditor(
     currentAccountId: number,
     workflowId: string,
-    isNew: boolean
+    isNew: boolean,
+    notifyMerchant: (message: Notification) => void
 ): WorkflowEditorContext {
     const {
         fetchWorkflowConfiguration,
         upsertWorkflowConfiguration,
         workflowConfigurationFactory,
+        downloadWorkflowConfigurationStepLogs,
     } = useWorkflowApi()
     const [isFetchPending, setIsFetchPending] = useState(!isNew)
     const [isSavePending, setIsSavePending] = useState(false)
+    const [isDownloadPending, setIsDownloadPending] = useState(false)
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
         useState<VisualBuilderNode['id'] | null>(null)
@@ -463,6 +476,48 @@ export function useWorkflowEditor(
         },
         [deleteTranslation, visualBuilderGraphDirty, dispatch]
     )
+    const handleDownloadHttpRequestEventLogs = useCallback(
+        async (node: HttpRequestNodeType) => {
+            setIsDownloadPending(true)
+
+            try {
+                const data = await downloadWorkflowConfigurationStepLogs(
+                    visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
+                    node.data.wfConfigurationRef
+                        .wfConfigurationHttpRequestStepId
+                )
+
+                saveFileAsDownloaded(
+                    `${
+                        node.data.name ?? 'Request name'
+                    }-event-logs-${new Date().toISOString()}.csv`,
+                    data,
+                    'text/csv'
+                )
+            } catch {
+                notifyMerchant({
+                    status: NotificationStatus.Error,
+                    title: 'Failed to download event logs.',
+                })
+            } finally {
+                setIsDownloadPending(false)
+            }
+        },
+        [
+            visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
+            downloadWorkflowConfigurationStepLogs,
+            notifyMerchant,
+        ]
+    )
+    const checkNewVisualBuilderNode = useCallback(
+        (nodeId: string) => {
+            if (isNew) {
+                return true
+            }
+            return !visualBuilderGraph.nodes.some((node) => node.id === nodeId)
+        },
+        [isNew, visualBuilderGraph.nodes]
+    )
 
     return {
         hookError,
@@ -490,6 +545,9 @@ export function useWorkflowEditor(
         translateGraph,
         translationSizeToLimitRate: currentTranslationSizeToLimitRate ?? 0,
         configurationSizeToLimitRate: configurationDirtySizeToLimitRate ?? 0,
+        handleDownloadHttpRequestEventLogs,
+        isDownloadPending,
+        checkNewVisualBuilderNode,
     }
 }
 
@@ -609,5 +667,8 @@ export function createWorkflowEditorContextForPreview(
         translateGraph: (graph) => graph,
         translationSizeToLimitRate: 0,
         configurationSizeToLimitRate: 0,
+        handleDownloadHttpRequestEventLogs: () => Promise.resolve(),
+        isDownloadPending: false,
+        checkNewVisualBuilderNode: () => false,
     }
 }

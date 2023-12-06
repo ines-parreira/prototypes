@@ -11,6 +11,7 @@ import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkfl
 import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 import MessageContentFormField from '../components/MessageContentFormField'
+import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
 
@@ -41,33 +42,39 @@ export default function AutomatedMessageEditor({
     )
 
     return (
-        <Drawer.Content>
-            <div className={css.container}>
-                <div className={css.formField}>
-                    <Label className={css.label} isRequired={true}>
-                        Message
-                    </Label>
-                    <MessageContentFormField
-                        content={nodeInEdition.data.content}
-                        handleUpdateContent={handleUpdateContent}
-                        workflowVariables={workflowVariables}
-                    />
+        <>
+            <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
+            <Drawer.Content>
+                <div className={css.container}>
+                    <div className={css.formField}>
+                        <Label className={css.label} isRequired={true}>
+                            Message
+                        </Label>
+                        <MessageContentFormField
+                            content={nodeInEdition.data.content}
+                            handleUpdateContent={handleUpdateContent}
+                            workflowVariables={workflowVariables}
+                        />
+                    </div>
+                    {previewLanguage && (
+                        <>
+                            <TranslationPreviewHeader />
+                            <div className={css.formField}>
+                                <Label className={css.labelDisabled}>
+                                    Message
+                                </Label>
+                                <TranslationsPreviewField
+                                    nodeId={nodeInEdition.id}
+                                    tkey={
+                                        nodeInEdition.data.content.text_tkey ??
+                                        ''
+                                    }
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
-                {previewLanguage && (
-                    <>
-                        <TranslationPreviewHeader />
-                        <div className={css.formField}>
-                            <Label className={css.labelDisabled}>Message</Label>
-                            <TranslationsPreviewField
-                                nodeId={nodeInEdition.id}
-                                tkey={
-                                    nodeInEdition.data.content.text_tkey ?? ''
-                                }
-                            />
-                        </div>
-                    </>
-                )}
-            </div>
-        </Drawer.Content>
+            </Drawer.Content>
+        </>
     )
 }

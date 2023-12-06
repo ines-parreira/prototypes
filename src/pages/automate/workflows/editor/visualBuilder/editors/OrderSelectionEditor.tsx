@@ -12,6 +12,7 @@ import TranslationPreviewHeader from '../components/translations/TranslationPrev
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 import MessageContentFormField from '../components/MessageContentFormField'
 import SupportedChannelsWarning from '../components/SupportedChannelsWarning'
+import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
 
@@ -41,40 +42,47 @@ export default function OrderSelectionEditor({
         [visualBuilderGraph, nodeInEdition.id]
     )
     return (
-        <Drawer.Content>
-            <div className={css.container}>
-                <SupportedChannelsWarning nodeType={nodeInEdition.type} />
-                <div className={css.formField}>
-                    <Label className={css.label} isRequired={true}>
-                        Message
-                    </Label>
-                    <div className={css.withDescription}>
-                        <MessageContentFormField
-                            content={nodeInEdition.data.content}
-                            handleUpdateContent={handleUpdateContent}
-                            workflowVariables={workflowVariables}
-                        />
-                        <div className={css.description}>
-                            Prompt customers to select an order. Customers will
-                            be required to authenticate to see past orders.
+        <>
+            <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
+            <Drawer.Content>
+                <div className={css.container}>
+                    <SupportedChannelsWarning nodeType={nodeInEdition.type} />
+                    <div className={css.formField}>
+                        <Label className={css.label} isRequired={true}>
+                            Message
+                        </Label>
+                        <div className={css.withDescription}>
+                            <MessageContentFormField
+                                content={nodeInEdition.data.content}
+                                handleUpdateContent={handleUpdateContent}
+                                workflowVariables={workflowVariables}
+                            />
+                            <div className={css.description}>
+                                Prompt customers to select an order. Customers
+                                will be required to authenticate to see past
+                                orders.
+                            </div>
                         </div>
                     </div>
+                    {previewLanguage && (
+                        <>
+                            <TranslationPreviewHeader />
+                            <div className={css.formField}>
+                                <Label className={css.labelDisabled}>
+                                    Message
+                                </Label>
+                                <TranslationsPreviewField
+                                    nodeId={nodeInEdition.id}
+                                    tkey={
+                                        nodeInEdition.data.content.text_tkey ??
+                                        ''
+                                    }
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
-                {previewLanguage && (
-                    <>
-                        <TranslationPreviewHeader />
-                        <div className={css.formField}>
-                            <Label className={css.labelDisabled}>Message</Label>
-                            <TranslationsPreviewField
-                                nodeId={nodeInEdition.id}
-                                tkey={
-                                    nodeInEdition.data.content.text_tkey ?? ''
-                                }
-                            />
-                        </div>
-                    </>
-                )}
-            </div>
-        </Drawer.Content>
+            </Drawer.Content>
+        </>
     )
 }

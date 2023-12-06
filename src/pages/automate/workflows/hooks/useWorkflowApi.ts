@@ -60,6 +60,10 @@ type WorkflowApi = {
     duplicateWorkflowConfiguration: (
         configurationId: string
     ) => Promise<WorkflowConfiguration>
+    downloadWorkflowConfigurationStepLogs: (
+        configurationInternalId: string,
+        stepId: string
+    ) => Promise<string>
 }
 
 export default function useWorkflowApi(): WorkflowApi {
@@ -189,6 +193,21 @@ export default function useWorkflowApi(): WorkflowApi {
         },
         []
     )
+    const downloadWorkflowConfigurationStepLogs = useCallback(
+        (configurationInternalId: string, stepId: string) => {
+            setIsFetchPending(true)
+            return apiClient
+                .get<string>(
+                    `/configurations/${configurationInternalId}/steps/${stepId}/logs/export`,
+                    {timeout: 60_000}
+                )
+                .then((res) => res.data)
+                .finally(() => {
+                    setIsFetchPending(false)
+                })
+        },
+        []
+    )
     return {
         isFetchPending,
         isUpdatePending,
@@ -202,6 +221,7 @@ export default function useWorkflowApi(): WorkflowApi {
         fetchWorkflowTranslations,
         upsertWorkflowTranslations,
         deleteWorkflowTranslations,
+        downloadWorkflowConfigurationStepLogs,
     }
 }
 

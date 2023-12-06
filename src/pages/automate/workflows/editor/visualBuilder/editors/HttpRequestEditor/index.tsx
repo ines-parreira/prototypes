@@ -14,9 +14,11 @@ import {validateJSON} from 'utils'
 import {Drawer} from 'pages/common/components/Drawer'
 import Button from 'pages/common/components/button/Button'
 import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
+import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 import css from '../NodeEditor.less'
 import Headers from './Headers'
 import MethodSelect from './MethodSelect'
@@ -34,7 +36,13 @@ export default function HttpRequestEditor({
 }: {
     nodeInEdition: HttpRequestNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useWorkflowEditorContext()
+    const {
+        dispatch,
+        visualBuilderGraph,
+        checkNewVisualBuilderNode,
+        handleDownloadHttpRequestEventLogs,
+        isDownloadPending,
+    } = useWorkflowEditorContext()
     const {isErrored} = useIsHttpRequestNodeErrored(nodeInEdition)
     const {isLoading: isTestRequestLoading, sendTestRequest} =
         useSendTestRequest(nodeInEdition.data, (result) => {
@@ -51,6 +59,10 @@ export default function HttpRequestEditor({
         inputRef?.focus({preventScroll: true})
     }, [inputRef])
 
+    const isNodeNew = useMemo(
+        () => checkNewVisualBuilderNode(nodeInEdition.id),
+        [nodeInEdition.id, checkNewVisualBuilderNode]
+    )
     const workflowVariables = useMemo(
         () =>
             getWorkflowVariableListForNode(
@@ -73,6 +85,21 @@ export default function HttpRequestEditor({
 
     return (
         <>
+            <NodeEditorDrawerHeader nodeInEdition={nodeInEdition}>
+                <Button
+                    fillStyle="ghost"
+                    intent="secondary"
+                    isLoading={isDownloadPending}
+                    isDisabled={isNodeNew}
+                    onClick={() => {
+                        void handleDownloadHttpRequestEventLogs(nodeInEdition)
+                    }}
+                >
+                    <ButtonIconLabel icon="download">
+                        Download Event logs
+                    </ButtonIconLabel>
+                </Button>
+            </NodeEditorDrawerHeader>
             <Drawer.Content>
                 <div className={css.container}>
                     <div className={css.formField}>
