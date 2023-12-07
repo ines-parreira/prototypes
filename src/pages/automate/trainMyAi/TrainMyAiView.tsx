@@ -4,8 +4,6 @@ import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import AutomateView from 'pages/automate/common/components/AutomateView'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 
 import {SegmentEvent} from 'common/segment'
 import LinkButton from 'pages/common/components/button/LinkButton'
@@ -25,9 +23,7 @@ const TrainMyAiView = () => {
         shopType: string
         shopName: string
     }>()
-    const {isLoading: isLoadingHelpCenters} = useHelpCenterList({
-        per_page: HELP_CENTER_MAX_CREATION,
-    })
+
     const {selfServiceConfiguration} = useSelfServiceConfiguration(
         shopType,
         shopName
@@ -61,8 +57,7 @@ const TrainMyAiView = () => {
 
     const recommendations = [] // a stub until data is ready
 
-    const isLoading =
-        !selfServiceConfiguration || isLoadingHelpCenters || isFetchPending
+    const isLoading = !selfServiceConfiguration || isFetchPending
 
     const isHelpCenterEmpty = !helpCenterArticlesCount
     return (

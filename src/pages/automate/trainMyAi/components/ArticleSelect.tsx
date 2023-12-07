@@ -1,0 +1,229 @@
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import get from 'lodash/get'
+import classNames from 'classnames'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+
+import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
+import {Components} from '../../../../rest_api/help_center_api/client.generated'
+import Button from '../../../common/components/button/Button'
+import DropdownSearch from '../../../common/components/dropdown/DropdownSearch'
+import DropdownSection from '../../../common/components/dropdown/DropdownSection'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from '../../../common/forms/input/SelectInputBox'
+import css from './ArticleSelect.less'
+
+type Props = {
+    helpCenterId: number
+    onSelect: (id: number) => void
+}
+
+const ArticleRow = ({
+    article,
+    onClick,
+}: {
+    article: Components.Schemas.CategoryTreeArticleDto
+    onClick: (value: number) => void
+}) => {
+    return (
+        <DropdownItem
+            key={article.id}
+            onClick={onClick}
+            option={{
+                label: article.translation_versions?.current?.title || '',
+                value: article.id,
+            }}
+        />
+    )
+}
+
+const CategoryRow = ({
+    category,
+    onClick,
+    i,
+}: {
+    category: Components.Schemas.CategoryTreeDto
+    onClick: (value: string) => void
+    i: number
+}) => {
+    return (
+        <DropdownItem
+            key={category.id}
+            data-category-id={category.id}
+            onClick={onClick}
+            option={{
+                label: category.translation?.title || '',
+                value: `category_${i}`,
+            }}
+        >
+            {(highlatedLabel) => (
+                <div className={css.categoryLabel}>
+                    {highlatedLabel}
+                    <i className={classNames('material-icons', css.chevron)}>
+                        chevron_right
+                    </i>
+                </div>
+            )}
+        </DropdownItem>
+    )
+}
+
+const ArticleSelect = ({helpCenterId, onSelect}: Props) => {
+    const targetRef = useRef<HTMLDivElement>(null)
+    const floatingRef = useRef<HTMLDivElement>(null)
+    const searchRef = useRef<HTMLInputElement>(null)
+    const [value, setValue] = useState<number>()
+    const [search, setSearch] = useState<string>('')
+
+    const {data, map} = useHelpCenterArticleTree(helpCenterId)
+    const [isOpen, setIsOpen] = useState(false)
+    const [path, setPath] = useState<string>('')
+
+    useEffect(() => {
+        setSearch('')
+        if (searchRef) {
+            searchRef.current?.focus()
+        }
+    }, [path, searchRef])
+
+    const handleClickBack = useCallback(() => {
+        setPath(path.split('.').slice(0, -1).join('.'))
+    }, [path, setPath])
+
+    const handleCategoryClick = useCallback(
+        (value: string) => {
+            const i = value.split('_')[1]
+            setPath(`${path ? '.' : ''}children[${i}]`)
+        },
+        [path, setPath]
+    )
+
+    const handleSubmit = useCallback(() => {
+        if (!value) return
+        onSelect(value)
+    }, [value, onSelect])
+
+    const isAtRootLevel = path === ''
+
+    const currentTreeNode: Components.Schemas.CategoryTreeDto | null = get(
+        data,
+        path,
+        data
+    )
+
+    const categories = currentTreeNode?.children
+    const articles = currentTreeNode?.articles
+
+    return (
+        <div className={css.container}>
+            <SelectInputBox
+                className={css.selectInput}
+                floating={floatingRef}
+                placeholder="Select an article"
+                label={value ? map.get(value) : ''}
+                onToggle={setIsOpen}
+                ref={targetRef}
+            >
+                <SelectInputBoxContext.Consumer>
+                    {(context) => {
+                        const handleArticleClick = (articleId: number) => {
+                            setValue(articleId)
+                            setPath('')
+                            setIsOpen(false)
+                            context?.onBlur()
+                        }
+                        return (
+                            <Dropdown
+                                placement="bottom"
+                                className={css.dropdown}
+                                isOpen={isOpen}
+                                onToggle={() => context!.onBlur()}
+                                ref={floatingRef}
+                                target={targetRef}
+                                value={value}
+                                contained
+                                shouldFlip={false}
+                            >
+                                {!isAtRootLevel && (
+                                    <DropdownHeader
+                                        prefix={
+                                            <i className="material-icons">
+                                                arrow_back
+                                            </i>
+                                        }
+                                        onClick={handleClickBack}
+                                    >
+                                        Back
+                                    </DropdownHeader>
+                                )}
+                                <DropdownSearch
+                                    value={search}
+                                    onChange={setSearch}
+                                    ref={searchRef}
+                                    autoFocus
+                                />
+                                <DropdownBody>
+                                    {!!categories?.length && (
+                                        <DropdownSection title="Categories">
+                                            {categories.map((category, i) => (
+                                                <CategoryRow
+                                                    key={category.id}
+                                                    category={category}
+                                                    i={i}
+                                                    onClick={
+                                                        handleCategoryClick
+                                                    }
+                                                />
+                                            ))}
+                                        </DropdownSection>
+                                    )}
+                                    {!!articles?.length && isAtRootLevel && (
+                                        <DropdownSection
+                                            title={'Uncategorized articles'}
+                                        >
+                                            {articles.map((article) => (
+                                                <ArticleRow
+                                                    key={article.id}
+                                                    onClick={handleArticleClick}
+                                                    article={article}
+                                                />
+                                            ))}
+                                        </DropdownSection>
+                                    )}
+                                    {articles &&
+                                        !isAtRootLevel &&
+                                        articles.map((article) => (
+                                            <ArticleRow
+                                                key={article.id}
+                                                onClick={handleArticleClick}
+                                                article={article}
+                                            />
+                                        ))}
+                                    {isAtRootLevel && (
+                                        <DropdownSection title="No Response">
+                                            <DropdownItem
+                                                onClick={handleArticleClick}
+                                                option={{
+                                                    label: 'No relevant articles',
+                                                    value: -1,
+                                                }}
+                                            />
+                                        </DropdownSection>
+                                    )}
+                                </DropdownBody>
+                            </Dropdown>
+                        )
+                    }}
+                </SelectInputBoxContext.Consumer>
+            </SelectInputBox>
+            <Button isDisabled={!value} onClick={handleSubmit}>
+                Select Article
+            </Button>
+        </div>
+    )
+}
+
+export default ArticleSelect

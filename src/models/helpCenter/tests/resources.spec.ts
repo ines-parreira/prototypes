@@ -1,5 +1,6 @@
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {getHelpCenterArticles} from '../resources'
+import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
+import {getHelpCenterArticles, getCategoryTree} from '../resources'
 
 const help_center_id = 1
 
@@ -26,6 +27,49 @@ describe('resources', () => {
             )
 
             expect(result).toEqual([])
+        })
+    })
+
+    describe('getCategoryTree', () => {
+        it('should return null when client is not set', async () => {
+            const result = await getCategoryTree(
+                undefined,
+                {
+                    help_center_id,
+                    parent_category_id: HELP_CENTER_ROOT_CATEGORY_ID,
+                },
+                {locale: 'en-US'}
+            )
+
+            expect(result).toBeNull()
+        })
+
+        it('should return correct params from API', async () => {
+            const response = {
+                created_datetime: '2023-11-21T11:08:23.932Z',
+                updated_datetime: '2023-11-21T11:08:23.932Z',
+                id: 0,
+                help_center_id,
+                available_locales: [],
+                unlisted_id: 'id',
+                children: [],
+                articles: [],
+            }
+            const client = {
+                getCategoryTree: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({data: response})),
+            }
+            const result = await getCategoryTree(
+                client as unknown as HelpCenterClient,
+                {
+                    help_center_id,
+                    parent_category_id: HELP_CENTER_ROOT_CATEGORY_ID,
+                },
+                {locale: 'en-US'}
+            )
+
+            expect(result).toEqual(response)
         })
     })
 })

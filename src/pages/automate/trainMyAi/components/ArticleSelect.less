@@ -1,0 +1,30 @@
+:local {
+    .container {
+        width: 100%;
+        gap: 8px;
+        display: flex;
+        .selectInput:hover {
+            cursor: pointer;
+        }
+        .selectInput > div:only-child {
+            border-color: var(--neutral-grey-3);
+            box-shadow: none;
+        }
+    }
+
+    .dropdown {
+        width: max(min-content, 275px);
+    }
+
+    .categoryLabel {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .chevron {
+        color: var(--neutral-grey-4);
+        margin-left: auto;
+        font-size: 20px;
+    }
+}
