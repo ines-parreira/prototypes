@@ -3,6 +3,8 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useAsyncFn, useEffectOnce, useKey, usePrevious} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 

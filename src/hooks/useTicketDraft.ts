@@ -1,5 +1,7 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useEffectOnce, usePrevious} from 'react-use'
 import {RawDraftContentState, SelectionState, convertFromRaw} from 'draft-js'
 

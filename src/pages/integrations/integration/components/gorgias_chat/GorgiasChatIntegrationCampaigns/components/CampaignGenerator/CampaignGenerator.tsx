@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import _get from 'lodash/get'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useLocalStorage} from 'react-use'
 import {Map} from 'immutable'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'

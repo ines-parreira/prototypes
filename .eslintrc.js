@@ -63,6 +63,13 @@ module.exports = {
                             'Please use useAppSelector from /hooks/useAppSelector instead.',
                     },
                 ],
+                patterns: [
+                    {
+                        group: ['react-use', 'react-use/*'],
+                        message:
+                            'Usage of react-use is being deprecated in the project, please use your own implementation instead',
+                    },
+                ],
             },
         ],
         'no-restricted-properties': [

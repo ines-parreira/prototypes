@@ -6,6 +6,8 @@ import React, {
     useRef,
 } from 'react'
 import {Container} from 'reactstrap'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useEffectOnce} from 'react-use'
 
 import PageHeader from 'pages/common/components/PageHeader'

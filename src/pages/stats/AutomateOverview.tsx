@@ -1,6 +1,8 @@
 import classnames from 'classnames'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import moment, {Moment} from 'moment'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useLocalStorage} from 'react-use'
 import {Scale, TooltipItem} from 'chart.js'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'

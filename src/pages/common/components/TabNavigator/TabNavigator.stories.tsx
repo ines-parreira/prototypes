@@ -1,5 +1,7 @@
 import React, {ComponentProps, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useUpdateEffect} from 'react-use'
 
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'

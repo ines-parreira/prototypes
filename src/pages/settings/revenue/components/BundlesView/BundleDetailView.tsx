@@ -5,6 +5,8 @@ import {Link, useParams} from 'react-router-dom'
 import classnames from 'classnames'
 
 import _head from 'lodash/head'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useAsyncFn} from 'react-use'
 import css from 'pages/settings/settings.less'
 

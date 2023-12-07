@@ -8,6 +8,8 @@ import {
     useNodesInitialized,
 } from 'reactflow'
 import _keyBy from 'lodash/keyBy'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {usePrevious} from 'react-use'
 import classNames from 'classnames'
 

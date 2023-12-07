@@ -1,6 +1,8 @@
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useAsyncFn, useList, usePrevious, useUpdateEffect} from 'react-use'
 
 import {TicketChannel} from 'business/types/ticket'

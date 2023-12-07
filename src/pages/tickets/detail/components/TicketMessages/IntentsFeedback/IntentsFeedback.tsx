@@ -3,6 +3,8 @@ import _isEqual from 'lodash/isEqual'
 import React, {useState, useMemo, useEffect, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useAsyncFn} from 'react-use'
 
 import {sendIntentFeedbackSuccess} from '../../../../../../state/ticket/actions'

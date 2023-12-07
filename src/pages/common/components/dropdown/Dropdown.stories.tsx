@@ -1,4 +1,6 @@
 import React, {ComponentProps, useCallback, useRef, useState} from 'react'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useDebounce, useEffectOnce, usePrevious} from 'react-use'
 import {Meta, Story} from '@storybook/react'
 

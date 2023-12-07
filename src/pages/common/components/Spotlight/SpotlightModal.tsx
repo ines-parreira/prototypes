@@ -11,6 +11,8 @@ import React, {
 import {stringify} from 'qs'
 import {useLocation} from 'react-router-dom'
 import classnames from 'classnames'
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
