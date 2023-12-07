@@ -85,22 +85,27 @@ const Modal = (
     const bodyId = `${modalId}-desc`
     const labelId = `${modalId}-title`
 
-    const handleCloseRequest = useCallback(() => {
-        if (isOpen && isClosable) {
-            onClose()
-        }
-    }, [isClosable, isOpen, onClose])
+    useKey(
+        'Escape',
+        (event) => {
+            if (isOpen && isClosable) {
+                event.stopPropagation()
 
-    useKey('Escape', handleCloseRequest, undefined, [handleCloseRequest])
+                onClose()
+            }
+        },
+        {target: document.body},
+        [isOpen, isClosable, onClose]
+    )
 
     const handleClose = useCallback(
         (event: MouseEvent) => {
-            if (ref.current?.contains(event.target as Node)) {
+            if (!isClosable || ref.current?.contains(event.target as Node)) {
                 return
             }
-            handleCloseRequest()
+            onClose()
         },
-        [handleCloseRequest]
+        [isClosable, onClose]
     )
 
     const contextValue = useMemo(
