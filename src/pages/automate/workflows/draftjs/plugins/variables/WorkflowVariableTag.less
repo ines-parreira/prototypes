@@ -22,7 +22,14 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 50ch;
+
+        &.normal {
+            max-width: 50ch;
+        }
+
+        &.small {
+            max-width: 10ch;
+        }
 
         &::before {
             content: attr(aria-label);

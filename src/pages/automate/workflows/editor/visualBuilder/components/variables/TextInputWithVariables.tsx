@@ -39,7 +39,7 @@ const TextInputWithVariables = ({
 
     const plugins = useMemo(
         () => [
-            createWorkflowVariablesPlugin(),
+            createWorkflowVariablesPlugin({size: 'small'}),
             createSingleLinePlugin({stripEntities: false}),
         ],
         []

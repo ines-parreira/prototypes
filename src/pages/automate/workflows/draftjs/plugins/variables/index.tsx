@@ -8,10 +8,16 @@ import {
 } from 'pages/common/draftjs/plugins/types'
 import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
 
-import WorkflowVariableTag from './WorkflowVariableTag'
+import WorkflowVariableTag, {
+    WorkflowVariableTagProps,
+} from './WorkflowVariableTag'
 import {addEntityToVariable} from './utils'
 
-export default function createWorkflowVariablesPlugin() {
+type Options = {
+    size?: WorkflowVariableTagProps['size']
+}
+
+export default function createWorkflowVariablesPlugin(options: Options = {}) {
     return {
         decorators: [
             {
@@ -35,7 +41,7 @@ export default function createWorkflowVariablesPlugin() {
                     const value = contentState.getEntity(entityKey).getData()
                         .value as string
                     return (
-                        <WorkflowVariableTag value={value}>
+                        <WorkflowVariableTag value={value} size={options.size}>
                             {children}
                         </WorkflowVariableTag>
                     )
