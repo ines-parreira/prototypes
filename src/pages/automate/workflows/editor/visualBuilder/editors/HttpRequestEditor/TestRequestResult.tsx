@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react'
 import _noop from 'lodash/noop'
+import _isString from 'lodash/isString'
 import {JSONPath} from 'jsonpath-plus'
 
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -146,22 +147,32 @@ const TestRequestResult = ({isLoading, result, variables, onRetest}: Props) => {
                 {json && variables.length > 0 && (
                     <div className={css.field}>
                         <Label>Variables</Label>
-                        {variables.map((variable) => (
-                            <div key={variable.id} className={css.variable}>
-                                <TextInput value={variable.name} isDisabled />
-                                <TextInput
-                                    value={JSON.stringify(
-                                        JSONPath({
-                                            wrap: false,
-                                            preventEval: true,
-                                            path: variable.jsonpath,
-                                            json,
-                                        })
-                                    )}
-                                    isDisabled
-                                />
-                            </div>
-                        ))}
+                        {variables.map((variable) => {
+                            const value =
+                                JSONPath({
+                                    wrap: false,
+                                    preventEval: true,
+                                    path: variable.jsonpath,
+                                    json,
+                                }) ?? ''
+
+                            return (
+                                <div key={variable.id} className={css.variable}>
+                                    <TextInput
+                                        value={variable.name}
+                                        isDisabled
+                                    />
+                                    <TextInput
+                                        value={
+                                            _isString(value)
+                                                ? value
+                                                : JSON.stringify(value)
+                                        }
+                                        isDisabled
+                                    />
+                                </div>
+                            )
+                        })}
                     </div>
                 )}
             </ModalBody>
