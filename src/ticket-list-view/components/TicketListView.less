@@ -8,15 +8,13 @@
     }
 
     .list {
-        padding: 16px;
+        flex-grow: 1;
+        overflow-x: hidden;
         overflow-y: scroll;
-        display: flex;
-        height: 100%;
-        flex-direction: column;
-
+        margin: 16px 0 0;
+        padding: 0 16px 8px;
         scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0);
         scrollbar-width: thin;
-        margin-right: 3px;
 
         &::-webkit-scrollbar-thumb {
             visibility: initial;

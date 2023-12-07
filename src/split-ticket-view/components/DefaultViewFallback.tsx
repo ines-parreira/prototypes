@@ -23,7 +23,7 @@ export default function DefaultViewFallback({viewId: urlViewId}: Params) {
     )
 
     const viewId = useMemo(
-        () => urlViewId ?? defaultViewId!.toString(),
+        () => (urlViewId ? parseInt(urlViewId, 10) : defaultViewId!),
         [defaultViewId, urlViewId]
     )
 
