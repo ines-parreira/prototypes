@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .content {
+        text-transform: uppercase;
+        display: flex;
+        .caption-allcaps();
+        color: var(--neutral-grey-4);
+        justify-content: space-between;
+        padding: @layout-spacing-xs @layout-spacing-s;
+    }
+
+    .divider {
+        width: 100%;
+        height: 1px;
+        background-color: var(--neutral-grey-3);
+    }
+}

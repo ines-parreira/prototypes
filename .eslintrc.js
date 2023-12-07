@@ -127,6 +127,7 @@ module.exports = {
     ignorePatterns: [
         'src/types/**',
         'src/rest_api/help_center_api/**',
+        'src/rest_api/ssp_api/client.generated.d.ts',
         'src/coverage/**',
     ],
     settings: {

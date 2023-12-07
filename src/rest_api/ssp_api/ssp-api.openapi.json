@@ -1,0 +1,290 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ssp-api",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/article-recommendation/predictions": {
+            "get": {
+                "summary": "Get Article Recommendation Predictions",
+                "operationId": "getArticleRecommendationPredictions",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "shop_type",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "shop_name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "help_center_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/predictionResponseDataDTO"
+                                            }
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/predictionResponseMetaDTO"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/article-recommendation/predictions/{id}": {
+            "patch": {
+                "summary": "Update Article Recommendation Predictions",
+                "operationId": "updateArticleRecommendationPredictions",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/predictionResponseDataDTO"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/predictionResponseMetaDTO"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "predictionResponseMetaDTO": {
+                "type": "object",
+                "required": [
+                    "pagination",
+                    "totalDistinctArticles",
+                    "totalLabeledArticles"
+                ],
+                "properties": {
+                    "pagination": {
+                        "type": "object",
+                        "required": [
+                            "currentPage",
+                            "nextPage",
+                            "totalPages",
+                            "totalSize",
+                            "pageSize",
+                            "pageLimit"
+                        ],
+                        "properties": {
+                            "currentPage": {
+                                "type": "number",
+                                "example": 1
+                            },
+                            "nextPage": {
+                                "type": "number",
+                                "nullable": true,
+                                "example": 2
+                            },
+                            "totalPages": {
+                                "type": "number",
+                                "example": 2
+                            },
+                            "totalSize": {
+                                "type": "number",
+                                "example": 72
+                            },
+                            "pageSize": {
+                                "type": "number",
+                                "example": 50
+                            },
+                            "pageLimit": {
+                                "type": "number",
+                                "example": 50
+                            }
+                        }
+                    },
+                    "totalDistinctArticles": {
+                        "type": "number",
+                        "example": 5
+                    },
+                    "totalLabeledArticles": {
+                        "type": "number",
+                        "example": 2
+                    }
+                }
+            },
+            "predictionResponseDataDTO": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "message",
+                    "conversationId",
+                    "shop_name",
+                    "shop_type",
+                    "locale",
+                    "accountId",
+                    "helpCenterId",
+                    "articleId",
+                    "articleIdFeedback",
+                    "createdDatetime",
+                    "updatedDatetime"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "example": 1
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "What's my order status?"
+                    },
+                    "conversationId": {
+                        "type": "string",
+                        "example": "7a53c1de-993c-4cc3-992c-3f973df46e2e"
+                    },
+                    "shopName": {
+                        "type": "string",
+                        "example": "my-store"
+                    },
+                    "shopType": {
+                        "type": "string",
+                        "example": "shopify"
+                    },
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "en-GB",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
+                        ],
+                        "example": "en-US"
+                    },
+                    "accountId": {
+                        "type": "number",
+                        "example": 1
+                    },
+                    "helpCenterId": {
+                        "type": "number",
+                        "example": 1
+                    },
+                    "articleId": {
+                        "type": "number",
+                        "example": 1
+                    },
+                    "articleIdFeedback": {
+                        "type": "number",
+                        "nullable": true,
+                        "example": 1
+                    },
+                    "isHelpful": {
+                        "type": "boolean",
+                        "nullable": true,
+                        "example": 1
+                    },
+                    "createdDatetime": {
+                        "type": "string",
+                        "example": "2023-11-09T12:51:05.141Z"
+                    },
+                    "updatedDatetime": {
+                        "type": "string",
+                        "example": "2023-11-09T12:51:05.141Z"
+                    }
+                }
+            }
+        }
+    }
+}

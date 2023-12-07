@@ -20,15 +20,51 @@
     }
 
     .rightCol {
-        background-image: url('../../../assets/img/gorgias-logo.svg');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-color: var(--neutral-grey-1);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        overflow-y: scroll;
         border-left: 1px solid var(--neutral-grey-3);
+    }
+
+    .rightCol.empty {
+        background-color: var(--neutral-grey-1);
+        justify-content: center;
+        text-align: center;
+    }
+
+    .rightCol.empty .container {
+        display: flex;
+        gap: @layout-spacing-m;
+        flex-direction: column;
+        align-items: center;
+        max-width: 500px;
+        justify-content: center;
+        align-self: center;
+
+        .description {
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-xs;
+            color: var(--neutral-grey-6);
+
+            .title {
+                .heading-section-semibold();
+            }
+            .subtitle {
+                .body-regular();
+            }
+        }
     }
 
     .content {
         padding: @layout-spacing-s @layout-spacing-m;
+    }
+
+    .headerContent {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
     }
 
     .content.empty {
