@@ -4,11 +4,12 @@ import React from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {ARTICLE_RECOMMENDATION} from 'pages/automate/common/components/constants'
 import {CLOSED_MANY_HELP_CENTERS_ALERT_KEY} from '../constants'
 
+import {FeatureFlagKey} from '../../../../config/featureFlags'
 import css from './ArticleRecommendationAlerts.less'
 
 export const NoHelpCenterAlert = () => (
@@ -79,19 +80,40 @@ export const ConnectedChannelsInfoAlert = ({
 }: {
     shopName: string
     shopType: string
-}) => (
-    <Alert className={css.alert} icon>
-        Enable {ARTICLE_RECOMMENDATION} in{' '}
-        <Link
-            to={{
-                pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
-                state: {
-                    from: 'article-recommendation',
-                },
-            }}
-        >
-            channels
-        </Link>
-        .
-    </Alert>
-)
+}) => {
+    const isTrainMyAiEnabled = useFlags()[FeatureFlagKey.TrainMyAiEnabled]
+
+    return (
+        <Alert className={css.alert} icon>
+            Control where customers receive article recommendations in{' '}
+            <Link
+                to={{
+                    pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
+                    state: {
+                        from: 'article-recommendation',
+                    },
+                }}
+            >
+                connected channels
+            </Link>
+            .
+            {isTrainMyAiEnabled && (
+                <>
+                    <br />
+                    Improve Article Recommendation performance in{' '}
+                    <Link
+                        to={{
+                            pathname: `/app/automation/${shopType}/${shopName}/train-my-ai`,
+                            state: {
+                                from: 'article-recommendation',
+                            },
+                        }}
+                    >
+                        Train my AI
+                    </Link>
+                    .
+                </>
+            )}
+        </Alert>
+    )
+}

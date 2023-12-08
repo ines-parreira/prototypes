@@ -21,6 +21,7 @@ import Header from './components/Header'
 import ArticleRecommendationDisabled from './components/ArticleRecommendationDisabled'
 import RecommendationPagination from './components/RecommendationPagination'
 import css from './TrainMyAiView.less'
+import {RecommendationDisabled} from './components/TrainMyAiAlerts'
 
 const TrainMyAiView = () => {
     const leftColRef = useRef<HTMLDivElement>(null)
@@ -107,7 +108,15 @@ const TrainMyAiView = () => {
             {isArticleRecommendationEnabled || hasArticleRecommendations ? (
                 <>
                     <div ref={leftColRef} className={css.leftCol}>
-                        <Header hasAlert={!isArticleRecommendationEnabled}>
+                        <Header
+                            alert={
+                                !isArticleRecommendationEnabled ? (
+                                    <RecommendationDisabled
+                                        link={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                                    />
+                                ) : undefined
+                            }
+                        >
                             {articleRecommndationsData?.meta && (
                                 <div className={css.headerContent}>
                                     <ProgressBar

@@ -2,13 +2,13 @@ import React, {PropsWithChildren} from 'react'
 import css from './Header.less'
 
 type Props = PropsWithChildren<{
-    hasAlert?: boolean
+    alert?: React.ReactNode
 }>
 
-const Header = ({children}: Props) => {
+const Header = ({children, alert}: Props) => {
     return (
         <div className={css.header}>
-            {/* TODO https://linear.app/gorgias/issue/AUTEN-2486/article-recommendation-disabled-alert */}
+            {alert}
             <h2 className={css.title}>Train Article Recommendation</h2>
             <div className={css.description}>
                 Review customer messages, check if recommended articles are
