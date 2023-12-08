@@ -30,6 +30,7 @@ export default function useIsHttpRequestNodeErrored(
     )
     const isErrored =
         !name ||
+        !url ||
         hasInvalidVariables ||
         headers.some((header) => !header.name.trim() || !header.value.trim()) ||
         formUrlencoded.some((item) => !item.key.trim() || !item.value.trim()) ||

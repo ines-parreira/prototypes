@@ -554,12 +554,13 @@ export function useWorkflowEditor(
 }
 
 function isHttpRequestStepIncomplete({
+    url,
     name,
     headers = {},
     variables,
     body,
 }: WorkflowStepHttpRequest['settings']) {
-    if (!name.trim()) {
+    if (!name.trim() || !url) {
         return true
     }
 
