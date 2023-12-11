@@ -11,15 +11,26 @@ type Props = {
     value?: CustomFieldValue
     onChange: (value: Maybe<CustomFieldValue>) => void
     className?: any
+    isRequired?: boolean
 }
 
 /**
  * Component that shows the relevant value input for a given custom field.
  * For text or numbers, a basic input, and for dropdowns, a select input.
  */
-function CustomFieldInput({customField, value, className, ...props}: Props) {
+function CustomFieldInput({
+    customField,
+    value,
+    className,
+    isRequired,
+    ...props
+}: Props) {
     const definition = customField.definition
-    const baseFieldProps = {isRequired: customField.required, ...props}
+    const baseFieldProps = {
+        isRequired:
+            isRequired !== undefined ? isRequired : customField.required,
+        ...props,
+    }
 
     // Text input
     if (

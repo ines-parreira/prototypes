@@ -17,6 +17,8 @@ import {NotificationStatus} from 'state/notifications/types'
 import history from 'pages/history'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
+import {Macro} from 'models/macro/types'
+import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
 jest.mock('../../../history')
@@ -198,6 +200,73 @@ describe('<MacrosSettingsForm/>', () => {
                     1,
                     '/app/automation/macros'
                 )
+                done()
+            })
+        })
+    })
+
+    it('should remove empty custom field macro', (done) => {
+        const macroActions = [
+            {
+                name: MacroActionName.SetCustomFieldValue,
+                type: MacroActionType.User,
+                description: 'Set a custom field value',
+                title: 'Set custom field',
+                arguments: {
+                    custom_field_id: 1,
+                    value: 'ok',
+                },
+            },
+            {
+                name: MacroActionName.SetCustomFieldValue,
+                type: MacroActionType.User,
+                description: 'Set a custom field value',
+                title: 'Set custom field',
+                arguments: {
+                    custom_field_id: 2,
+                    value: 'ok',
+                },
+            },
+            {
+                name: MacroActionName.SetCustomFieldValue,
+                type: MacroActionType.User,
+                description: 'Set a custom field value',
+                title: 'Set custom field',
+                arguments: {
+                    custom_field_id: 3,
+                    value: '',
+                },
+            },
+        ]
+        const customFieldsMacro: Macro = {
+            id: 3,
+            name: 'Set some custom fields',
+            actions: macroActions,
+            created_datetime: '2017-08-01T17:56:51.220733+00:00',
+            updated_datetime: '2017-08-01T17:56:51.220744+00:00',
+            usage: 0,
+            language: null,
+            uri: '',
+            category: null,
+            external_id: null,
+        }
+        const component = mount(
+            <MacrosSettingsFormContainer
+                {...minProps}
+                macros={{
+                    '1': customFieldsMacro,
+                }}
+            />
+        )
+
+        setImmediate(() => {
+            component.update()
+            component.find(Button).at(0).simulate('submit')
+            setImmediate(() => {
+                expect(mockUpdateMacro).toHaveBeenNthCalledWith(1, {
+                    ...customFieldsMacro,
+                    actions: macroActions.slice(0, 2),
+                })
                 done()
             })
         })

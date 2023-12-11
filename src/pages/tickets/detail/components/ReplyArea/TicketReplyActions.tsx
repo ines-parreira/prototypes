@@ -84,17 +84,35 @@ export default function TicketReplyActions({
             </div>
             <Collapse isOpen={isOpen} className={css.scrollable}>
                 {sortedBackendActions.map(
-                    (action: Map<any, any>, key: number | undefined) => (
-                        <TicketReplyAction
-                            key={key}
-                            index={(
-                                appliedMacro.get('actions') as List<any>
-                            ).indexOf(action)}
-                            action={action}
-                            remove={onDelete}
-                            ticketId={ticketId}
-                        />
-                    )
+                    (action: Map<any, any>, mapKey?: number | undefined) => {
+                        // It is critical to have a proper key here
+                        let key: string = action.get('name')
+                        const customFieldId = action.getIn([
+                            'arguments',
+                            'custom_field_id',
+                        ]) as number | undefined
+                        if (customFieldId !== undefined) {
+                            key += `_${customFieldId}`
+                        } else {
+                            key += `_${
+                                action.get(
+                                    'title',
+                                    mapKey?.toString() || ''
+                                ) as string
+                            }`
+                        }
+                        return (
+                            <TicketReplyAction
+                                key={key}
+                                index={(
+                                    appliedMacro.get('actions') as List<any>
+                                ).indexOf(action)}
+                                action={action}
+                                remove={onDelete}
+                                ticketId={ticketId}
+                            />
+                        )
+                    }
                 )}
             </Collapse>
         </div>

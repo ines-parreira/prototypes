@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<CustomFieldName /> should render custom field name 1`] = `
+<span>
+  
+  Field 
+  Input field
+</span>
+`;
+
 exports[`<Preview /> should multiple actions preview 1`] = `
 <div
   class="component"
@@ -75,6 +83,51 @@ exports[`<Preview /> should render backend action preview 1`] = `
     >
       Add internal note
     </span>
+  </div>
+</div>
+`;
+
+exports[`<Preview /> should render setCustomFieldValue actions preview 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="macroData"
+  >
+    <strong
+      class="text-muted mr-2"
+    >
+      <span>
+        
+        Field 
+        Input field
+      </span>
+      :
+    </strong>
+    <b
+      class="integrationAction"
+    >
+      Custom field value
+    </b>
+  </div>
+  <div
+    class="macroData"
+  >
+    <strong
+      class="text-muted mr-2"
+    >
+      <span>
+        
+        Field 
+        Input field
+      </span>
+      :
+    </strong>
+    <b
+      class="integrationAction"
+    >
+      Custom field value
+    </b>
   </div>
 </div>
 `;

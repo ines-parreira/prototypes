@@ -118,13 +118,17 @@ export default class SelectField extends Component<Props, State> {
     componentWillReceiveProps(nextProps: Props) {
         const hasNewOptions = !_isEqual(this.props.options, nextProps.options)
 
-        if (this.props.value !== nextProps.value || hasNewOptions) {
+        if (
+            this.props.value !== nextProps.value ||
+            hasNewOptions ||
+            nextProps.showSelectedOption !== this.props.showSelectedOption
+        ) {
             this.setState({
                 filteredOptions: this._filterOptions(
                     nextProps.options,
                     this.state.input,
                     nextProps.value,
-                    this.props.showSelectedOption
+                    nextProps.showSelectedOption
                 ),
             })
         }

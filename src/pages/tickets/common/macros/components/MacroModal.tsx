@@ -71,7 +71,10 @@ export class MacroModalContainer extends Component<Props, State> {
         activeView: fromJS({}),
     }
 
-    multipleActionsNames = ['http'] // actions names that can be set multiple times in the same macro
+    multipleActionsNames = [
+        MacroActionName.Http,
+        MacroActionName.SetCustomFieldValue,
+    ] // actions names that can be set multiple times in the same macro
 
     constructor(props: Props) {
         super(props)
@@ -292,7 +295,9 @@ export class MacroModalContainer extends Component<Props, State> {
                 filteredActions.toJS(),
                 (first: Record<string, unknown>, second) => {
                     if (
-                        this.multipleActionsNames.includes(first.name as string)
+                        this.multipleActionsNames.includes(
+                            first.name as MacroActionName
+                        )
                     ) {
                         return false
                     }

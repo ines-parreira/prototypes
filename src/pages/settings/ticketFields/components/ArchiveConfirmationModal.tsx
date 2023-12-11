@@ -28,6 +28,11 @@ export default function ArchiveConfirmationModal({
                 new tickets. Tickets that already have it will keep the values
                 associated to them.
             </p>
+            <p>
+                This field may be in use in rules and macros. Make sure to edit
+                the rules and macros, as they will not be able to apply a value
+                on an archived field.
+            </p>
             <p>Are you sure you want to archive this field?</p>
         </ConfirmationModal>
     )
