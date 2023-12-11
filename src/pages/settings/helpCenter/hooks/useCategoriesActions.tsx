@@ -73,6 +73,7 @@ export const useCategoriesActions = () => {
 
             try {
                 // Get just one level so that we can calculate the number of articles in child categories
+                setIsLoading(true)
                 const {data} = await client.getCategoryTree({
                     help_center_id: helpCenterId,
                     parent_category_id:
@@ -93,7 +94,6 @@ export const useCategoriesActions = () => {
                         articleCount: category.articles?.length ?? 0,
                     })
                 )
-
                 dispatch(updateCategoriesArticleCount(categoryArticleCountList))
             } catch (err) {
                 reportError(err as Error)
@@ -130,11 +130,11 @@ export const useCategoriesActions = () => {
                         shouldReset,
                     })
                 )
+                await fetchCategoryArticleCount(parentCategoryId, locale)
             } catch (err) {
                 reportError(err as Error)
             } finally {
                 setIsLoading(false)
-                void fetchCategoryArticleCount(parentCategoryId, locale)
             }
         },
         [client, dispatch, fetchCategoryArticleCount, helpCenterId]
@@ -470,13 +470,13 @@ export const useCategoriesActions = () => {
             fetchCategoryArticleCount,
         }),
         [
+            isLoading,
             createCategory,
             createCategoryTranslation,
             deleteCategory,
             deleteCategoryTranslation,
             fetchCategories,
             getCategoryTranslation,
-            isLoading,
             updateCategoriesPositions,
             updateCategoryTranslation,
             fetchCategoryArticleCount,

@@ -33,12 +33,14 @@ export type CategoriesTableProps = Pick<
 > & {
     onReorderFinish: (params: CategoriesPositionsType) => void
     shouldRenderEmptyUncategorizedRow: boolean
+    isLoading: boolean
 }
 
 export const CategoriesTable = ({
     onReorderFinish,
     renderArticleList,
     shouldRenderEmptyUncategorizedRow,
+    isLoading,
 }: CategoriesTableProps): JSX.Element => {
     const categoriesById = useAppSelector(getCategoriesById)
     const dispatch = useAppDispatch()
@@ -117,6 +119,7 @@ export const CategoriesTable = ({
                     title="Uncategorized articles"
                     renderArticleList={renderArticleList}
                     tooltip="Uncategorized articles will always be the last ones on the list in the live Help Center."
+                    isCountBadgeLoading={isLoading}
                 />
                 {topCategories.map((category, index) => (
                     <CategoriesTableRow
@@ -136,6 +139,7 @@ export const CategoriesTable = ({
                         onDropEntity={handleOnReorderFinish}
                         onDragStart={handleOnDragStart}
                         onCancelDnD={handleOnCancelDnD}
+                        isCountBadgeLoading={isLoading}
                     />
                 ))}
             </TableBody>

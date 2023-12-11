@@ -98,6 +98,7 @@ describe('<CategoriesTableRow />', () => {
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"
                     shouldRenderRowWithoutArticles={false}
+                    isCountBadgeLoading={false}
                 />
             </ReduxProvider>
         )
@@ -155,6 +156,7 @@ describe('<CategoriesTableRow />', () => {
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"
                     shouldRenderRowWithoutArticles={false}
+                    isCountBadgeLoading={false}
                 />
             </ReduxProvider>
         )
@@ -212,6 +214,7 @@ describe('<CategoriesTableRow />', () => {
                             return null
                         }}
                         title={category.translation.title}
+                        isCountBadgeLoading={false}
                     />
                 </DndProvider>
             </ReduxProvider>
@@ -276,6 +279,7 @@ describe('<CategoriesTableRow />', () => {
                             return null
                         }}
                         title={categories[0].translation.title}
+                        isCountBadgeLoading={false}
                     />
                 </DndProvider>
             </ReduxProvider>
@@ -337,6 +341,7 @@ describe('<CategoriesTableRow />', () => {
                             return null
                         }}
                         title={categories[0].translation.title}
+                        isCountBadgeLoading={false}
                     />
                 </DndProvider>
             </ReduxProvider>
@@ -397,6 +402,7 @@ describe('<CategoriesTableRow />', () => {
                             return null
                         }}
                         title={categories[0].translation.title}
+                        isCountBadgeLoading={false}
                     />
                 </DndProvider>
             </ReduxProvider>

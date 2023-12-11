@@ -70,6 +70,7 @@ export type CategoriesTableRowProps = {
     tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
     onDragStart: (children: number[]) => void
+    isCountBadgeLoading: boolean
 } & RowEventListeners
 
 type FixedCategoriesTableRowProps = {
@@ -352,6 +353,9 @@ export const CategoriesTableRow = ({
                                                         props.onCancelDnD
                                                     }
                                                     onDragStart={onDragStart}
+                                                    isCountBadgeLoading={
+                                                        props.isCountBadgeLoading
+                                                    }
                                                 />
                                             )
                                         }
@@ -417,16 +421,15 @@ export const CategoriesTableRow = ({
         ) : (
             <span className={css['caret-placeholder']} />
         )
-    const countBadge =
-        isLoading && !hasArticles && !hasSubcategories ? (
-            <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
-        ) : (
-            <Badge pill color="light" className={css.count}>
-                {hasArticles || hasSubcategories
-                    ? articlesCount + subcategoriesCount
-                    : 'No Published Articles'}
-            </Badge>
-        )
+    const countBadge = props.isCountBadgeLoading ? (
+        <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
+    ) : (
+        <Badge pill color="light" className={css.count}>
+            {hasArticles || hasSubcategories
+                ? articlesCount + subcategoriesCount
+                : 'No Published Articles'}
+        </Badge>
+    )
     const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
     const handleOnClick = useCallback(() => {
         if (hasArticles || hasSubcategories) {

@@ -171,6 +171,7 @@ export const CategoriesViews = ({
                     renderArticleList={renderArticleList}
                     onReorderFinish={handleOnReorder}
                     shouldRenderEmptyUncategorizedRow={!showCreateFirst}
+                    isLoading={isLoading}
                 />
             )}
         </>

@@ -31,6 +31,7 @@ export type BaseCategoriesTableRowProps = {
     ) => ReactElement
     tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
+    isCountBadgeLoading: boolean
 }
 
 type FixedCategoriesTableRowProps = {
@@ -63,6 +64,7 @@ export const CategoriesTableBasicRow = ({
     title = '',
     tooltip,
     shouldRenderRowWithoutArticles = true,
+    isCountBadgeLoading,
 }: BaseCategoriesTableRowProps): JSX.Element | null => {
     const [isOpen, setOpen] = useState(false)
 
@@ -151,14 +153,13 @@ export const CategoriesTableBasicRow = ({
     ) : (
         <span className={css['caret-placeholder']} />
     )
-    const countBadge =
-        isLoading && !hasArticles ? (
-            <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
-        ) : (
-            <Badge pill color="light" className={css.count}>
-                {hasArticles ? itemCount : 'No Published Articles'}
-            </Badge>
-        )
+    const countBadge = isCountBadgeLoading ? (
+        <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
+    ) : (
+        <Badge pill color="light" className={css.count}>
+            {hasArticles ? itemCount : 'No Published Articles'}
+        </Badge>
+    )
     const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
     const headerCell = (
         <BodyCell
