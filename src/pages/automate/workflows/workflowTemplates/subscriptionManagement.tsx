@@ -3,6 +3,7 @@ import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.mode
 import {
     WorkflowConfiguration,
     WorkflowTemplate,
+    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
@@ -10,6 +11,7 @@ export const SUBSCRIPTION_MANAGEMENT: WorkflowTemplate = {
     slug: 'subscription-management',
     name: 'Subscription management',
     description: 'Help customers make changes to their subscriptions.',
+    label: WorkflowTemplateLabelType.SubscriptionManagement,
     getConfiguration: (
         id: string,
         account_id: number

@@ -5,12 +5,14 @@ import {Link} from 'react-router-dom'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 
+import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
+
 import {FLOWS} from '../common/components/constants'
-import CreateCustomWorkflowFooter from './components/CreateCustomWorkflowFooter'
 import WorkflowTemplateCard from './components/WorkflowTemplateCard'
 import {WORKFLOW_TEMPLATES_LIST} from './workflowTemplates'
 
 import css from './WorkflowTemplatesView.less'
+import WorkflowCustomFlowCard from './components/WorkflowCustomFlowCard'
 
 type Props = {
     goToNewWorkflowPage: () => void
@@ -38,15 +40,24 @@ const WorkflowTemplatesView = ({
                         </Breadcrumb>
                     }
                 >
-                    <Button onClick={goToNewWorkflowPage}>
-                        Create custom flow
+                    <Button onClick={goToNewWorkflowPage} intent="secondary">
+                        Create Custom Flow
                     </Button>
                 </PageHeader>
             </div>
             <Container fluid className={css.container}>
+                <div className={css.backWrapper}>
+                    <Link to={workflowsUrl} className="d-flex">
+                        <img src={ArrowBackwardIcon} alt="Back" />
+                        Back To Flows
+                    </Link>
+                </div>
+
+                <h1 className={css.title}>Flow templates</h1>
+
                 <div className={css.description}>
-                    Start with a flow template that you can customize to fit
-                    your needs.
+                    Start with a Flow template that you can customize to fit
+                    your needs:
                 </div>
 
                 <div className={css.templatesContainer}>
@@ -59,11 +70,10 @@ const WorkflowTemplatesView = ({
                             }
                         />
                     ))}
+                    <WorkflowCustomFlowCard
+                        goToNewWorkflowPage={goToNewWorkflowPage}
+                    />
                 </div>
-
-                <CreateCustomWorkflowFooter
-                    goToNewWorkflowPage={goToNewWorkflowPage}
-                />
             </Container>
         </div>
     )

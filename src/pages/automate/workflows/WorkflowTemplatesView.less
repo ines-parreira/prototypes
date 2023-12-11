@@ -12,13 +12,35 @@
         padding: @layout-spacing-m;
     }
 
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+        letter-spacing: -0.4px;
+        margin-bottom: @layout-spacing-xxs;
+    }
+
     .description {
         padding-bottom: @layout-spacing-m;
     }
 
     .templatesContainer {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: @layout-spacing-s;
+    }
+
+    .backWrapper {
+        a {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--neutral-grey-5);
+
+            img {
+                margin-right: 5px;
+            }
+        }
+        margin-bottom: @layout-spacing-xl;
     }
 }

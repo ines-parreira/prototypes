@@ -2,10 +2,31 @@ import React, {useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {WorkflowTemplate} from '../models/workflowConfiguration.types'
+import {
+    WorkflowTemplate,
+    WorkflowTemplateLabelType,
+} from '../models/workflowConfiguration.types'
 import {WorkflowTemplateModal} from './WorkflowTemplateModal'
 
 import css from './WorkflowTemplateCard.less'
+
+const workflowLabelStyles: Record<
+    WorkflowTemplateLabelType,
+    {color: string; backgroundColor: string}
+> = {
+    [WorkflowTemplateLabelType.ProductQuestion]: {
+        color: '#242F8C',
+        backgroundColor: '#EAF1FF',
+    },
+    [WorkflowTemplateLabelType.Policies]: {
+        color: '#605708',
+        backgroundColor: '#FFFDEA',
+    },
+    [WorkflowTemplateLabelType.SubscriptionManagement]: {
+        color: '#6F0C86',
+        backgroundColor: '#FAEAFF',
+    },
+}
 
 type Props = {
     template: WorkflowTemplate
@@ -32,6 +53,12 @@ const WorkflowTemplateCard = ({
         <>
             <div className={css.container} onClick={handleClick}>
                 <div className={css.header}>
+                    <div
+                        className={css.label}
+                        style={workflowLabelStyles[template.label]}
+                    >
+                        {template.label}
+                    </div>
                     <Button size="small" intent="secondary">
                         Preview
                     </Button>

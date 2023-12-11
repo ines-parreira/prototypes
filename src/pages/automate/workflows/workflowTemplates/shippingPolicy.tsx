@@ -3,6 +3,7 @@ import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.mode
 import {
     WorkflowConfiguration,
     WorkflowTemplate,
+    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
@@ -11,6 +12,7 @@ export const SHIPPING_POLICY: WorkflowTemplate = {
     name: 'Shipping policy',
     description:
         'Give shipping policy details to customers based location and method.',
+    label: WorkflowTemplateLabelType.Policies,
     getConfiguration: (
         id: string,
         account_id: number

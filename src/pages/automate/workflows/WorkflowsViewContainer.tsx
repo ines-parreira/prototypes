@@ -20,6 +20,19 @@ export default function WorkflowsViewContainer() {
     const history = useHistory()
     const dispatch = useAppDispatch()
 
+    const newWorkflowUrl = `${history.location.pathname}/new`
+
+    const goToNewWorkflowPage = useCallback(() => {
+        history.push(newWorkflowUrl)
+    }, [history, newWorkflowUrl])
+
+    const goToNewWorkflowFromTemplatePage = useCallback(
+        (templateSlug: string) => {
+            history.push(`${newWorkflowUrl}?template=${templateSlug}`)
+        },
+        [history, newWorkflowUrl]
+    )
+
     const goToWorkflowTemplatesPage = useCallback(() => {
         history.push(`${history.location.pathname}/templates`)
     }, [history])
@@ -64,8 +77,12 @@ export default function WorkflowsViewContainer() {
             <WorkflowsView
                 shopName={shopName}
                 shopType={shopType}
+                goToNewWorkflowPage={goToNewWorkflowPage}
                 goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
                 goToEditWorkflowPage={goToEditWorkflowPage}
+                goToNewWorkflowFromTemplatePage={
+                    goToNewWorkflowFromTemplatePage
+                }
                 quickResponsesUrl={quickResponsesUrl}
                 connectedChannelsUrl={connectedChannelsUrl}
                 notifyMerchant={notifyMerchant}

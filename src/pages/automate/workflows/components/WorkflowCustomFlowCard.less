@@ -1,0 +1,24 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        border-radius: 4px;
+        border: 1px dashed var(--neutral-grey-3);
+        background: var(--neutral-grey-1);
+        padding: @layout-spacing-s;
+        cursor: pointer;
+        transition: ease-in-out 0.2s;
+
+        &:hover {
+            box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        }
+    }
+
+    .header {
+        display: flex;
+        margin-bottom: 20px;
+        font-size: 32px;
+        color: var(--neutral-grey-3);
+    }
+}

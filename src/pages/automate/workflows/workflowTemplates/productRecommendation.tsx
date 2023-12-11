@@ -3,6 +3,7 @@ import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.mode
 import {
     WorkflowConfiguration,
     WorkflowTemplate,
+    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
@@ -11,6 +12,7 @@ export const PRODUCT_RECOMMENDATION: WorkflowTemplate = {
     name: 'Product recommendation',
     description:
         'Ask customers questions and recommend specific products based on their answers.',
+    label: WorkflowTemplateLabelType.ProductQuestion,
     getConfiguration: (
         id: string,
         account_id: number

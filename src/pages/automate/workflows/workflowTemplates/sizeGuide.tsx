@@ -4,6 +4,7 @@ import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.mode
 import {
     WorkflowConfiguration,
     WorkflowTemplate,
+    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
 
 export const SIZE_GUIDE: WorkflowTemplate = {
@@ -11,6 +12,7 @@ export const SIZE_GUIDE: WorkflowTemplate = {
     name: 'Size guide',
     description:
         'Provide customers with sizing guidance based on product type.',
+    label: WorkflowTemplateLabelType.ProductQuestion,
     getConfiguration: (
         id: string,
         account_id: number

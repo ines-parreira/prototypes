@@ -17,11 +17,13 @@ const WorkflowTemplatesViewContainer = () => {
     const newWorkflowUrl = `${workflowsUrl}/new`
 
     const goToNewWorkflowPage = useCallback(() => {
-        history.push(newWorkflowUrl)
+        history.push(`${newWorkflowUrl}?from=templates`)
     }, [history, newWorkflowUrl])
     const goToNewWorkflowFromTemplatePage = useCallback(
         (templateSlug: string) => {
-            history.push(`${newWorkflowUrl}?template=${templateSlug}`)
+            history.push(
+                `${newWorkflowUrl}?template=${templateSlug}&from=templates`
+            )
         },
         [history, newWorkflowUrl]
     )

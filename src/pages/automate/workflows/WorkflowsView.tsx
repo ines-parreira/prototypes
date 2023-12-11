@@ -16,7 +16,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FLOWS} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
-import CreateWorkflowFooter from './components/CreateWorkflowFooter'
+import WorkflowsEmptyState from './components/WorkflowsEmptyState'
 import WorkflowsList from './components/WorkflowsList'
 
 import css from './WorkflowsView.less'
@@ -26,8 +26,10 @@ import {useStoreWorkflowsApi} from './hooks/useStoreWorkflowsApi'
 type WorkflowsViewProps = {
     shopType: string
     shopName: string
+    goToNewWorkflowPage: () => void
     goToWorkflowTemplatesPage: () => void
     goToEditWorkflowPage: (workflowId: string) => void
+    goToNewWorkflowFromTemplatePage: (templateSlug: string) => void
     quickResponsesUrl: string
     connectedChannelsUrl: string
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
@@ -36,8 +38,10 @@ type WorkflowsViewProps = {
 export default function WorkflowsView({
     shopName,
     shopType,
+    goToNewWorkflowPage,
     goToWorkflowTemplatesPage,
     goToEditWorkflowPage,
+    goToNewWorkflowFromTemplatePage,
     notifyMerchant,
     connectedChannelsUrl,
 }: WorkflowsViewProps) {
@@ -79,22 +83,23 @@ export default function WorkflowsView({
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
                 <PageHeader title={FLOWS}>
-                    {hasStoreWorkflows && (
-                        <div className={css.headerContainer}>
-                            <Button
-                                className="float-right"
-                                onClick={goToWorkflowTemplatesPage}
-                            >
-                                Create new flow
-                            </Button>
-                        </div>
-                    )}
+                    <div className={css.headerContainer}>
+                        <Button
+                            onClick={goToNewWorkflowPage}
+                            intent="secondary"
+                        >
+                            Create Custom Flow
+                        </Button>
+                        <Button onClick={goToWorkflowTemplatesPage}>
+                            Create From Template
+                        </Button>
+                    </div>
                 </PageHeader>
             </div>
 
             {isFetchPending || !storeIntegrationId ? (
                 <Loader data-testid="loader" />
-            ) : (
+            ) : hasStoreWorkflows ? (
                 <Container fluid className={css.pageContainer}>
                     <div className={css.pageContainerHeadline}>
                         <div className={css.descriptionContainer}>
@@ -145,29 +150,29 @@ export default function WorkflowsView({
                             />
                         </div>
                     </div>
-                    {hasStoreWorkflows ? (
-                        <WorkflowsList
-                            storeIntegrationId={storeIntegrationId}
-                            notifyMerchant={notifyMerchant}
-                            storeWorkflows={workflows}
-                            onDelete={(workflowId) =>
-                                removeWorkflowFromStore(
-                                    workflowId,
-                                    storeIntegrationId
-                                )
-                            }
-                            onDuplicate={duplicateWorkflow}
-                            goToEditWorkflowPage={goToEditWorkflowPage}
-                            isUpdatePending={isUpdatePending}
-                        />
-                    ) : (
-                        <CreateWorkflowFooter
-                            goToWorkflowTemplatesPage={
-                                goToWorkflowTemplatesPage
-                            }
-                        />
-                    )}
+                    <WorkflowsList
+                        storeIntegrationId={storeIntegrationId}
+                        notifyMerchant={notifyMerchant}
+                        storeWorkflows={workflows}
+                        onDelete={(workflowId) =>
+                            removeWorkflowFromStore(
+                                workflowId,
+                                storeIntegrationId
+                            )
+                        }
+                        onDuplicate={duplicateWorkflow}
+                        goToEditWorkflowPage={goToEditWorkflowPage}
+                        isUpdatePending={isUpdatePending}
+                    />
                 </Container>
+            ) : (
+                <WorkflowsEmptyState
+                    goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
+                    goToNewWorkflowPage={goToNewWorkflowPage}
+                    goToNewWorkflowFromTemplatePage={
+                        goToNewWorkflowFromTemplatePage
+                    }
+                />
             )}
         </div>
     )

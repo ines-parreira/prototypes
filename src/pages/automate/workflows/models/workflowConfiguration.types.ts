@@ -150,10 +150,17 @@ export type WorkflowConfigurationShallow = Omit<
     }>
 }
 
+export enum WorkflowTemplateLabelType {
+    ProductQuestion = 'Product Question',
+    Policies = 'Policies',
+    SubscriptionManagement = 'Subscription Management',
+}
+
 export type WorkflowTemplate = {
     slug: string
     name: string
     description: string
+    label: WorkflowTemplateLabelType
     getConfiguration: (
         id: string,
         accountId: number // TODO: it shouldn't be a user input

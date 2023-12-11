@@ -3,6 +3,7 @@ import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.mode
 import {
     WorkflowConfiguration,
     WorkflowTemplate,
+    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
@@ -10,6 +11,7 @@ export const RETURN_AND_EXCHANGE_POLICY: WorkflowTemplate = {
     slug: 'return-and-exchange-policy',
     name: 'Return and exchange policy',
     description: 'Provide return and exchange policies based on location.',
+    label: WorkflowTemplateLabelType.Policies,
     getConfiguration: (
         id: string,
         account_id: number

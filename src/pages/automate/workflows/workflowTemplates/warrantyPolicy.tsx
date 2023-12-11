@@ -3,6 +3,7 @@ import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.mode
 import {
     WorkflowConfiguration,
     WorkflowTemplate,
+    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
@@ -10,6 +11,7 @@ export const WARRANTY_POLICY: WorkflowTemplate = {
     slug: 'warranty-policy',
     name: 'Warranty policy',
     description: 'Provide warranty information based on product.',
+    label: WorkflowTemplateLabelType.Policies,
     getConfiguration: (
         id: string,
         account_id: number

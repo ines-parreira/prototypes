@@ -1,0 +1,78 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .pageContainer {
+        padding: 0;
+    }
+
+    .pageHeaderContainer {
+        padding: 0 64px;
+        background: var(--main-latte);
+        overflow: hidden;
+    }
+
+    .pageHeader {
+        gap: @layout-spacing-m;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1074px;
+    }
+
+    .pageIntro {
+        max-width: 380px;
+    }
+
+    .pageTitle {
+        color: var(--neutral-grey-6);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+        letter-spacing: -0.4px;
+    }
+
+    .pageDescription {
+        color: var(--neutral-grey-5);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+    }
+
+    .templatesImage {
+        height: 220px;
+        position: relative;
+        bottom: -5px;
+    }
+
+    .pageContent {
+        padding: @layout-spacing-m;
+    }
+
+    .startWithText {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .seeAllTemplates {
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .arrowIcon {
+        font-size: 20px;
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .divider {
+        text-transform: none;
+        font-weight: 400;
+        margin: @layout-spacing-m 0;
+    }
+
+    .templatePlaceholder {
+        visibility: none;
+    }
+}

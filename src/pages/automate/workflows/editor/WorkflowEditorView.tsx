@@ -63,7 +63,8 @@ function WorkflowEditorViewWrapped({
     shopName,
     shopType,
 }: WorkflowEditorViewProps) {
-    const {template: templateSlug} = useSearch<{template: string | undefined}>()
+    const {template: templateSlug, from: fromView} =
+        useSearch<{template: string | undefined; from: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
 
     const handleNotify = useCallback(
@@ -145,7 +146,11 @@ function WorkflowEditorViewWrapped({
         workflowEditorContext.handleDiscard()
     }
     const handleCancel = () => {
-        goToWorkflowTemplatesPage()
+        if (fromView === 'templates') {
+            goToWorkflowTemplatesPage()
+        } else {
+            goToWorkflowsListPage()
+        }
     }
     const handleSave = async () => {
         const configurationError = workflowEditorContext.handleValidate()
