@@ -5,6 +5,8 @@ import _keyBy from 'lodash/keyBy'
 import {v4 as uuidv4} from 'uuid'
 import {fromJS} from 'immutable'
 
+// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
+// eslint-disable-next-line no-restricted-imports
 import {useEffectOnce} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
