@@ -1612,36 +1612,6 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         icon: 'cancel',
         arguments: {},
     },
-    {
-        execution: ActionTemplateExecution.Back,
-        name: MacroActionName.SetCustomFieldValue,
-        title: 'Set ticket field',
-        icon: 'label',
-        arguments: {
-            custom_field_id: {
-                label: 'Field',
-                // the default as a string here allows us to rule out empty actions
-                // in src/pages/settings/macros/MacrosSettingsForm.tsx
-                default: '',
-                editable: false,
-                required: false,
-                display_order: 1,
-                input: {
-                    type: 'custom_field-select',
-                },
-            },
-            value: {
-                label: 'Value',
-                default: '',
-                editable: true,
-                required: false,
-                display_order: 2,
-                input: {
-                    type: 'custom_field-input',
-                },
-            },
-        },
-    },
 ]
 
 export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>(

@@ -32,7 +32,6 @@ type AvailableActions =
     | MacroActionName.AddInternalNote
     | MacroActionName.ForwardByEmail
     | MacroActionName.ExcludeFromCSAT
-    | MacroActionName.SetCustomFieldValue
 
 const ACTION_COMPONENT_MAPPER: Record<
     AvailableActions,
@@ -48,7 +47,6 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.AddInternalNote]: SimpleActionPreview,
     [MacroActionName.ForwardByEmail]: SimpleActionPreview,
     [MacroActionName.ExcludeFromCSAT]: SimpleActionPreview,
-    [MacroActionName.SetCustomFieldValue]: SimpleActionPreview,
 }
 
 export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {

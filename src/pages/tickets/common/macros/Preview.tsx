@@ -1,9 +1,4 @@
-import React, {
-    Component,
-    ComponentClass,
-    ComponentProps,
-    ReactNode,
-} from 'react'
+import React, {Component, ComponentClass, ComponentProps} from 'react'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
 import {Map, List, fromJS} from 'immutable'
@@ -12,12 +7,12 @@ import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {Action} from 'models/ticket/types'
 import {getIconFromActionType} from 'models/macroAction/helpers'
+
 import {actionTypeToName, MacroActionName} from 'models/macroAction/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
 import {isRichType} from 'tickets/common/utils'
+
 import {
     TagLabel,
     AgentLabel,
@@ -34,7 +29,6 @@ import {getActionTemplate} from 'utils'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 import {ActionTemplateExecution} from 'config'
 
-import {CustomField} from 'models/customField/types'
 import css from './Preview.less'
 
 type Props = {
@@ -291,31 +285,6 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderSetCustomFieldValues() {
-        const SCFActions = (this.props.actions.toJS() as Action[]).filter(
-            (action) => action.name === MacroActionName.SetCustomFieldValue
-        )
-
-        if (!SCFActions.length) return null
-
-        return SCFActions.map((action, index) => (
-            <div className={css.macroData} key={index}>
-                <strong className="text-muted mr-2">
-                    <CustomFieldName
-                        customFieldId={
-                            action.arguments
-                                ?.custom_field_id as CustomField['id']
-                        }
-                    />
-                    :
-                </strong>
-                <b className={css.integrationAction}>
-                    {action.arguments?.value as ReactNode}
-                </b>
-            </div>
-        ))
-    }
-
     renderActions(integrationType: string, integrationActions: List<any>) {
         if (!integrationActions?.size) return null
 
@@ -405,7 +374,6 @@ class Preview extends Component<Props> {
                 {this.renderResponseText(
                     findAction(MacroActionName.SetResponseText)
                 )}
-                {this.renderSetCustomFieldValues()}
             </div>
         )
     }
@@ -414,19 +382,3 @@ class Preview extends Component<Props> {
 export default withLDConsumer()(
     Preview as any as ComponentClass<Omit<Props, 'flags'>>
 )
-
-export function CustomFieldName({
-    customFieldId,
-}: {
-    customFieldId: CustomField['id']
-}) {
-    const {data, isLoading} = useCustomFieldDefinition(customFieldId)
-    if (isLoading) return null
-
-    return (
-        <span>
-            {data?.deactivated_datetime ? <strong>Archived </strong> : ''}
-            Field {data?.label}
-        </span>
-    )
-}

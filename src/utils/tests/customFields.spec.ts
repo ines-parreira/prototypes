@@ -1,12 +1,8 @@
 import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {macroFixture, setCustomFieldValueAction} from 'fixtures/macro'
-import {Macro} from 'models/macro/types'
-
 import {
     isCustomFieldValueEmpty,
     isFieldErrored,
     getInvalidTicketFieldIds,
-    mergeFieldsStateWithMacroValues,
 } from '../customFields'
 
 describe('isCustomFieldValueEmpty', () => {
@@ -90,35 +86,5 @@ describe('getInvalidTicketFieldIds', () => {
         expect(
             getInvalidTicketFieldIds({fieldsState, fieldDefinitions})
         ).toEqual([2])
-    })
-})
-
-describe('mergeFieldsStateWithMacroValues', () => {
-    it('should return a fields state where macro action values, related to field values, replace their respective field value', () => {
-        const fieldsState = {
-            1: {id: 1, value: 'ok'},
-            2: {id: 2, value: 'ok'},
-        }
-        const appliedMacro: Macro = {
-            ...macroFixture,
-            actions: [
-                setCustomFieldValueAction,
-                // the action below should not be taken into account
-                // because it is empty
-                {
-                    ...setCustomFieldValueAction,
-                    arguments: {
-                        custom_field_id: 2,
-                        value: '',
-                    },
-                },
-            ],
-        }
-        expect(
-            mergeFieldsStateWithMacroValues({fieldsState, appliedMacro})
-        ).toEqual({
-            1: {id: 1, value: setCustomFieldValueAction.arguments.value},
-            2: {id: 2, value: 'ok'},
-        })
     })
 })

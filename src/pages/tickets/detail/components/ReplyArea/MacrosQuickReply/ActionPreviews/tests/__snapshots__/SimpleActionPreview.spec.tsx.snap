@@ -28,29 +28,6 @@ exports[`<SimpleActionPreview/> should render add attachmeents action 1`] = `
 </div>
 `;
 
-exports[`<SimpleActionPreview/> should render add custom field action 1`] = `
-<div
-  class="wrapper"
->
-  <div
-    class="actionName"
-  >
-    Set ticket field
-  </div>
-  <div
-    class="propsColumnWrapper"
-  >
-    <div>
-      <div>
-        CustomFieldName
-      </div>
-      : 
-      Custom field value
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<SimpleActionPreview/> should render set status action 1`] = `
 <div
   class="wrapper"

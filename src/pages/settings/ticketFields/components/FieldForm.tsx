@@ -15,7 +15,6 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import Label from 'pages/common/forms/Label/Label'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
@@ -24,8 +23,6 @@ import DropdownInput from './DropdownInput'
 import TypeSelectInput from './TypeSelectInput'
 
 import css from './FieldForm.less'
-
-const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
 
 interface FieldFormProps {
     field: CustomField | CustomFieldInput
@@ -113,7 +110,7 @@ export default function FieldForm(props: FieldFormProps) {
         }
     }
 
-    const handleArchivingCustomField = useCallback(
+    const handleArchivingCustomFieldCallback = useCallback(
         async (archived: boolean) => {
             setIsLoading(true)
             await mutateAsync(archived)
@@ -193,7 +190,7 @@ export default function FieldForm(props: FieldFormProps) {
                     isDisabled={isCustomField(props.field)}
                 />
                 <Caption>
-                    Field type can’t be changed once it’s been saved.
+                    Field type can't be changed once it's been saved.
                 </Caption>
             </div>
             {form.definition.data_type === 'text' &&
@@ -225,7 +222,6 @@ export default function FieldForm(props: FieldFormProps) {
             <div className={css.buttons}>
                 <div className={css.leftGroup}>
                     <Button
-                        id={SAVE_BUTTON_ID}
                         intent="primary"
                         onClick={handleSubmit}
                         isDisabled={!isFormValid}
@@ -237,11 +233,6 @@ export default function FieldForm(props: FieldFormProps) {
                     <Button intent="secondary" onClick={props.onClose}>
                         Cancel
                     </Button>
-                    <Tooltip disabled={!isFormDirty} target={SAVE_BUTTON_ID}>
-                        Note: The values you have changed may be in use in rules
-                        and macros. Make sure to edit the rules and macros, as
-                        they will not be able to apply an invalid value.
-                    </Tooltip>
                 </div>
 
                 {isCustomField(props.field) && (
@@ -262,7 +253,9 @@ export default function FieldForm(props: FieldFormProps) {
                                     ticketFieldLabel={props.field.label}
                                     isOpen={archiveModalVisible}
                                     onConfirm={async () => {
-                                        await handleArchivingCustomField(true)
+                                        await handleArchivingCustomFieldCallback(
+                                            true
+                                        )
                                         setArchiveModalVisible(false)
                                     }}
                                     onClose={() =>
@@ -278,7 +271,9 @@ export default function FieldForm(props: FieldFormProps) {
                                 isDisabled={isLoading}
                                 isLoading={isLoading}
                                 onClick={async () => {
-                                    await handleArchivingCustomField(false)
+                                    await handleArchivingCustomFieldCallback(
+                                        false
+                                    )
                                 }}
                             >
                                 Unarchive field

@@ -261,14 +261,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
           >
             Exclude ticket from CSAT
           </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            Set ticket field
-          </button>
           <div
             class="dropdown-divider"
             tabindex="-1"

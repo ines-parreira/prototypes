@@ -95,10 +95,7 @@ export function MacrosSettingsFormContainer({
         setMacroForm({
             ...macroForm,
             actions: _uniqWith(filteredActions.toJS(), (first, second) => {
-                if (
-                    first.name === 'http' ||
-                    first.name === MacroActionName.SetCustomFieldValue
-                ) {
+                if (first.name === 'http') {
                     return false
                 }
 
@@ -114,11 +111,8 @@ export function MacrosSettingsFormContainer({
                 ...macroForm,
                 actions: actions.filter(
                     (action) =>
-                        (action.name !== MacroActionName.AddTags ||
-                            action.arguments.tags) &&
-                        (action.arguments.custom_field_id === undefined ||
-                            (action.arguments.custom_field_id !== undefined &&
-                                action.arguments.value !== ''))
+                        action.name !== MacroActionName.AddTags ||
+                        action.arguments.tags
                 ),
                 language: language || null,
             }

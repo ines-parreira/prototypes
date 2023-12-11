@@ -1391,17 +1391,6 @@ describe('ticket utils', () => {
             ) //Body got concatenated
         })
 
-        it('should not squash old actions with the same name', () => {
-            const oldActions = fromJS([httpAction, httpAction])
-            const newActions = fromJS([setClosedStatusAction])
-
-            expect(mergeActions(oldActions, newActions).toJS()).toEqual([
-                setClosedStatusAction,
-                httpAction,
-                httpAction,
-            ])
-        })
-
         it('should handle same actions stacking', () => {
             const oldActions = fromJS([setOpenStatusAction, setSubjectAction])
             const newActions = fromJS([

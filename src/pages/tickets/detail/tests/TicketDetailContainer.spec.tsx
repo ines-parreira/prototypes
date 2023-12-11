@@ -25,7 +25,6 @@ import {
 } from 'state/newMessage/errors'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
-    assumeMock,
     flushPromises,
     makeExecuteKeyboardAction,
     renderWithRouter,
@@ -39,7 +38,6 @@ import {triggerTicketFieldsErrors} from 'state/ticket/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketChannel} from 'business/types/ticket'
 import * as voiceCallQueries from 'models/voiceCall/queries'
-import * as customFieldsUtils from 'utils/customFields'
 import TicketView from '../components/TicketView'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 
@@ -111,11 +109,6 @@ jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-
-jest.spyOn(customFieldsUtils, 'mergeFieldsStateWithMacroValues')
-const spiedMergeFieldsStateWithMacroValues = assumeMock(
-    customFieldsUtils.mergeFieldsStateWithMacroValues
-)
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
@@ -1356,18 +1349,12 @@ describe('TicketDetailContainer component', () => {
             expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(2, [
                 ticketInputFieldDefinition.id,
             ])
-            expect(spiedMergeFieldsStateWithMacroValues).toHaveBeenCalledTimes(
-                1
-            )
             makeExecuteKeyboardAction(shortcutManagerMock)(
                 'SUBMIT_CLOSE_TICKET'
             )
             expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(3, [
                 ticketInputFieldDefinition.id,
             ])
-            expect(spiedMergeFieldsStateWithMacroValues).toHaveBeenCalledTimes(
-                2
-            )
         })
     })
 

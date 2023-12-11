@@ -175,7 +175,7 @@ export default function MultiLevelSelect({
                 })}
             >
                 {autoWidth && (
-                    <span onClick={handleFocus} className={css.autoWidthSpan}>
+                    <span onClick={handleFocus}>
                         {isValueEmpty ? placeholder : displayValue}
                     </span>
                 )}

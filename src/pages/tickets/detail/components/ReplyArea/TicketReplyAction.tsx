@@ -7,8 +7,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {FORM_CONTENT_TYPE} from 'config'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 import {MacroActionName} from 'models/macroAction/types'
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
-import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -266,7 +264,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                             )
                         case 'tags-select':
                             return (
-                                <div className={css.tagsSelect} key={key}>
+                                <div className={css.tagsSelect}>
                                     <AddTagsAction
                                         key={key}
                                         index={0}
@@ -283,40 +281,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     />
                                 </div>
                             )
-                        case 'custom_field-select':
-                            return null
-                        case 'custom_field-input':
-                            if (!actionArgs.get('custom_field_id')) {
-                                return null
-                            }
-                            return (
-                                <div
-                                    key={key}
-                                    className="d-flex align-items-center"
-                                >
-                                    <CustomFieldSelect
-                                        value={actionArgs.get(
-                                            'custom_field_id'
-                                        )}
-                                        className={css.customFieldSelect}
-                                        viewMode
-                                    />
-                                    <CustomFieldIdInput
-                                        onChange={(value) =>
-                                            this.setValue(key, value!)
-                                        }
-                                        customFieldId={actionArgs.get(
-                                            'custom_field_id'
-                                        )}
-                                        value={value}
-                                        className={css.customFieldInput}
-                                        isRequired={false}
-                                    />
-                                </div>
-                            )
                         default:
                             return (
-                                <div key={key}>
+                                <>
                                     {isInline && args.label && (
                                         <Label
                                             isRequired={!!args.required}
@@ -345,7 +312,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                                 : args.label
                                         }
                                     />
-                                </div>
+                                </>
                             )
                     }
                 })}

@@ -15,6 +15,7 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
+import {getInvalidTicketFieldIds} from 'utils/customFields'
 import useSearch from 'hooks/useSearch'
 import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -54,8 +55,10 @@ import {
     isTicketNavigationAvailable,
     setCustomer,
     setStatus,
+    triggerTicketFieldsErrors,
 } from 'state/ticket/actions'
 import {updateCursor} from 'state/tickets/actions'
+import {getTicketFieldState} from 'state/ticket/selectors'
 import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
 import LocalForageManager from 'services/localForageManager/localForageManager'
@@ -69,12 +72,12 @@ import {
     pickedTicketFields,
 } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import Loader from 'pages/common/components/Loader/Loader'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useListVoiceCalls} from 'models/voiceCall/queries'
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
-import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
 
 export type SubmitArgs = {
     status?: TicketStatus
@@ -108,6 +111,7 @@ export const TicketDetailContainer = ({
     submitTicket,
     ticket,
     updateCursor,
+    fieldsState,
 }: ConnectedProps<typeof connector>) => {
     const dispatch = useAppDispatch()
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
@@ -139,6 +143,14 @@ export const TicketDetailContainer = ({
         ticketIdParamRef.current = ticketIdParam
     })
 
+    const {
+        data: {data: fieldDefinitions = []} = {},
+        isLoading: isTicketFieldDefinitionLoading,
+    } = useCustomFieldDefinitions({
+        archived: false,
+        object_type: 'Ticket',
+    })
+
     const [isTicketHidden, setIsTicketHidden] = useState(false)
 
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
@@ -164,8 +176,6 @@ export const TicketDetailContainer = ({
         ticket.get('channel') === TicketChannel.Phone &&
         !voiceCallsData &&
         isVoiceCallsDataLoading
-
-    const {checkTicketFieldErrors} = useTicketFieldsCheck(ticketId)
 
     useEffect(() => {
         void fetchTags()
@@ -293,12 +303,6 @@ export const TicketDetailContainer = ({
         action,
         resetMessage = true,
     }: SubmitArgs) => {
-        if (
-            status === TicketStatus.Closed &&
-            checkTicketFieldErrors({includeMacro: true})
-        ) {
-            return
-        }
         if (newMessage.getIn(['_internal', 'loading', 'submitMessage'])) {
             // We're already submitting something, we dont want to POST twice.
             // Or the ticket isn't dirty, and we don't want to send an empty message.
@@ -306,6 +310,23 @@ export const TicketDetailContainer = ({
         }
 
         if (!canSendMessage) {
+            return
+        }
+
+        const invalidFields = getInvalidTicketFieldIds({
+            fieldsState,
+            fieldDefinitions,
+        })
+
+        if (
+            !isTicketFieldDefinitionLoading &&
+            status === TicketStatus.Closed &&
+            invalidFields.length
+        ) {
+            logEvent(SegmentEvent.CustomFieldTicketValueRequiredMissingError, {
+                ticketId,
+            })
+            dispatch(triggerTicketFieldsErrors(invalidFields))
             return
         }
 
@@ -570,10 +591,26 @@ export const TicketDetailContainer = ({
 
     const handleStatusChange = (status: string) => {
         if (status === TicketStatus.Closed) {
-            if (checkTicketFieldErrors()) return
             logEvent(SegmentEvent.TicketCloseAction, {
                 ticketId,
             })
+        }
+
+        const invalidFields = getInvalidTicketFieldIds({
+            fieldsState,
+            fieldDefinitions,
+        })
+
+        if (
+            !isTicketFieldDefinitionLoading &&
+            status === TicketStatus.Closed &&
+            invalidFields.length
+        ) {
+            logEvent(SegmentEvent.CustomFieldTicketValueRequiredMissingError, {
+                ticketId,
+            })
+            dispatch(triggerTicketFieldsErrors(invalidFields))
+            return
         }
 
         return setStatus(status, () => {
@@ -611,6 +648,7 @@ const connector = connect(
         newMessage: state.newMessage,
         canSendMessage: canSend(state),
         newMessageSource: getNewMessageSource(state),
+        fieldsState: getTicketFieldState(state),
     }),
     {
         clearTicket,
