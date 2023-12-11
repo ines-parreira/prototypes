@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import _uniq from 'lodash/uniq'
 
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
@@ -15,6 +15,7 @@ import {Drawer} from 'pages/common/components/Drawer'
 import Button from 'pages/common/components/button/Button'
 import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
@@ -55,6 +56,8 @@ export default function HttpRequestEditor({
     const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null)
     const [isTestRequestModalOpen, setIsTestRequestModalOpen] = useState(false)
 
+    const downloadLogsButtonRef = useRef<HTMLButtonElement>(null)
+
     useEffect(() => {
         inputRef?.focus({preventScroll: true})
     }, [inputRef])
@@ -87,6 +90,7 @@ export default function HttpRequestEditor({
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition}>
                 <Button
+                    ref={downloadLogsButtonRef}
                     fillStyle="ghost"
                     intent="secondary"
                     isLoading={isDownloadPending}
@@ -99,6 +103,11 @@ export default function HttpRequestEditor({
                         Download Event logs
                     </ButtonIconLabel>
                 </Button>
+                {isNodeNew && (
+                    <Tooltip target={downloadLogsButtonRef}>
+                        Save this flow in order to download event logs.
+                    </Tooltip>
+                )}
             </NodeEditorDrawerHeader>
             <Drawer.Content>
                 <div className={css.container}>
