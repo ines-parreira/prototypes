@@ -2,9 +2,6 @@ import React, {ReactNode, useContext, useEffect, useMemo, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {usePrevious} from 'react-use'
 
 import BlankState from 'pages/common/components/BlankState/BlankState'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -28,6 +25,7 @@ import {
     ViewImmutable,
     ViewNavDirection,
 } from 'state/views/types'
+import usePrevious from 'hooks/usePrevious'
 
 import HeaderCell from './Table/HeaderCell'
 import Row from './Table/Row'

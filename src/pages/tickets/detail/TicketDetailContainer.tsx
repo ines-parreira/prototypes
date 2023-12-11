@@ -5,7 +5,7 @@ import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsyncFn, useKey, usePrevious} from 'react-use'
+import {useAsyncFn, useKey} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -66,6 +66,7 @@ import LocalForageManager from 'services/localForageManager/localForageManager'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import useEffectOnce from 'hooks/useEffectOnce'
+import usePrevious from 'hooks/usePrevious'
 import {Ticket} from 'models/ticket/types'
 import {
     PickedTicket,

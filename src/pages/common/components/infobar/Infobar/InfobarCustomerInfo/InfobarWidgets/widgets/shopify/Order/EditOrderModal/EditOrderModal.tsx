@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useUpdateEffect, usePrevious} from 'react-use'
+import {useUpdateEffect} from 'react-use'
 
 import {getEditOrderState} from 'state/infobarActions/shopify/editOrder/selectors'
 import {
@@ -35,6 +35,7 @@ import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/Infobar
 import DraftOrderTable from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/DraftOrderTable/DraftOrderTable'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import usePrevious from 'hooks/usePrevious'
 
 import EditOrderForm from '../EditOrderForm/EditOrderForm'
 

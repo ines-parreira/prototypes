@@ -1,15 +1,13 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {usePrevious} from 'react-use'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {Event, useModalManager} from 'hooks/useModalManager'
+import usePrevious from 'hooks/usePrevious'
 import {
     Article,
     ArticleTranslationWithRating,

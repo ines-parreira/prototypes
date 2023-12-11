@@ -7,9 +7,6 @@ import React, {
 } from 'react'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {usePrevious} from 'react-use'
 import {
     Dropdown,
     DropdownItem,
@@ -24,6 +21,7 @@ import {UserRole} from 'config/types/user'
 import history from 'pages/history'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import usePrevious from 'hooks/usePrevious'
 import {FetchMacrosOptions} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'

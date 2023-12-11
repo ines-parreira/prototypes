@@ -1,13 +1,14 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useKey, usePrevious} from 'react-use'
+import {useKey} from 'react-use'
 import classNames from 'classnames'
 import _camelCase from 'lodash/camelCase'
 
 import {Drawer} from 'pages/common/components/Drawer'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {TranslationsPreviewProvider} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import usePrevious from 'hooks/usePrevious'
 
 import css from './NodeEditorDrawer.less'
 import TriggerButtonEditor from './editors/TriggerButtonEditor'

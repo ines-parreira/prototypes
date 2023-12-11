@@ -1,8 +1,5 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {usePrevious} from 'react-use'
 import {RawDraftContentState, SelectionState, convertFromRaw} from 'draft-js'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
@@ -37,6 +34,7 @@ import {
 } from 'state/ticket/actions'
 import {getAppliedMacro, getProperty} from 'state/ticket/selectors'
 import useEffectOnce from './useEffectOnce'
+import usePrevious from './usePrevious'
 
 export const DRAFT_TICKET_STORE = 'ticket-drafts'
 

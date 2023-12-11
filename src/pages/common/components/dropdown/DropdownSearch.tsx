@@ -10,11 +10,12 @@ import React, {
 } from 'react'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {usePrevious, useUnmount, useUpdateEffect} from 'react-use'
+import {useUnmount, useUpdateEffect} from 'react-use'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import useEffectOnce from 'hooks/useEffectOnce'
+import usePrevious from 'hooks/usePrevious'
 
 import {DropdownContext} from './Dropdown'
 
