@@ -5,11 +5,12 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsyncFn, useEffectOnce} from 'react-use'
+import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {CursorDirection, CursorMeta, OrderDirection} from 'models/api/types'
 import {fetchTeams} from 'models/team/resources'
 import {

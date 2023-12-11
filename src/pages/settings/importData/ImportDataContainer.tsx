@@ -1,9 +1,6 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import {bindActionCreators} from 'redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
@@ -16,6 +13,7 @@ import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import * as integrationSelectors from 'state/integrations/selectors'
 import * as integrationActions from 'state/integrations/actions'
 import Button from 'pages/common/components/button/Button'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import css from '../settings.less'
 import ImportZendeskDataList from './zendesk/ImportZendeskDataList'

@@ -2,13 +2,11 @@ import React, {useMemo} from 'react'
 
 import {Link} from 'react-router-dom'
 
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import {AutoReplyWismoSettings} from 'state/rules/types'

@@ -2,7 +2,7 @@ import React from 'react'
 import {useParams} from 'react-router-dom'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useEffectOnce, useUpdateEffect} from 'react-use'
+import {useUpdateEffect} from 'react-use'
 
 import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -11,6 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {getBody} from 'state/ticket/selectors'
 import {fetchTicket} from 'state/ticket/actions'
 import useTitle from 'hooks/useTitle'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import css from './TicketPrintContainer.less'
 

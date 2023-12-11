@@ -10,15 +10,13 @@ import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
 import {Store} from 'redux'
 import {QueryClientProvider} from '@tanstack/react-query'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 
 import {appQueryClient} from 'api/queryClient'
 import {Core} from 'core/app'
 import {RootState} from 'state/types'
 import {getLDClient, LDContext} from 'utils/launchDarkly'
 import {envVars, NodeEnv} from 'utils/environment'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import history from './history'
 import Routes from './routes'

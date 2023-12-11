@@ -3,9 +3,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link, useParams} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -28,6 +25,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'

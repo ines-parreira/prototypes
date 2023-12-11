@@ -2,7 +2,7 @@ import React, {createContext, useContext, useMemo, useState} from 'react'
 import {get, isEmpty, isString, noop} from 'lodash'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useDebounce, useEffectOnce, useLocalStorage} from 'react-use'
+import {useDebounce, useLocalStorage} from 'react-use'
 import {isValidPhoneNumber} from 'libphonenumber-js'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
@@ -23,6 +23,8 @@ import {
     getMigrationProgress,
     registerNumber,
 } from 'models/integration/resources/whatsapp'
+
+import useEffectOnce from './useEffectOnce'
 
 type Target = {
     phone_number: string

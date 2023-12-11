@@ -1,13 +1,11 @@
 import React, {useCallback} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useMount} from 'react-use'
 import {Map, List} from 'immutable'
 import {DropdownItem} from 'reactstrap'
 import {CancelToken} from 'axios'
 
 import Search from 'pages/common/components/Search'
 import useCancellableRequest from 'hooks/useCancellableRequest'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {fieldEnumSearch} from 'state/views/actions'
 
 type Props = {
@@ -55,7 +53,7 @@ export default function FilterDropdownSearch({
         ]
     )
 
-    useMount(() => {
+    useEffectOnce(() => {
         void handleSearch('')
     })
 

@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import Button from 'pages/common/components/button/Button'
 
 import gmailImg from 'assets/img/integrations/gmail.png'
@@ -17,6 +14,7 @@ import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {getIntegrationsByTypes} from 'state/integrations/helpers'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchIntegrations} from 'state/integrations/actions'
 import IntegrationList from '../IntegrationList'
 import {fetchEmailDomains} from './resources'

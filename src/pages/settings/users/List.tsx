@@ -5,7 +5,7 @@ import {Container} from 'reactstrap'
 import {List, Map} from 'immutable'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsyncFn, useEffectOnce} from 'react-use'
+import {useAsyncFn} from 'react-use'
 
 import {toImmutable} from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -27,6 +27,7 @@ import {getPaginatedAgents} from 'state/agents/selectors'
 import {getAccessSettings} from 'state/currentAccount/selectors'
 import {AccountSettingAccessSignupMode as SignupMode} from 'state/currentAccount/types'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import {isStarterTierPrice} from 'models/billing/utils'
 import Row from './Row'

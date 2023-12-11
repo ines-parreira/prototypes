@@ -16,9 +16,6 @@ import {
 } from 'reactstrap'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -32,6 +29,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import {
     getLanguagesFromChatConfig,

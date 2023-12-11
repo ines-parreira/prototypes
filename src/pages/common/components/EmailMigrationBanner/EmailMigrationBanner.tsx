@@ -1,10 +1,8 @@
 import React, {ComponentProps} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import {useHistory, useLocation} from 'react-router-dom'
 import {EmailMigrationStatus} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {getEmailMigrationStatus} from 'state/integrations/selectors'
 import BannerNotification from '../BannerNotifications/BannerNotification'
 import useMigrationBannerStatus from './hooks/useMigrationBannerStatus'
