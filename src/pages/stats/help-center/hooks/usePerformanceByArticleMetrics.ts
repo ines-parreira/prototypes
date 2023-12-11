@@ -99,12 +99,18 @@ export const usePerformanceByArticleMetrics = ({
                 const helpCenterArticle = helpCenterArticles?.find(
                     (article) => article.id === articleId
                 )
-                const ratingRate = helpCenterArticle
-                    ? (helpCenterArticle.rating.up /
-                          (helpCenterArticle.rating.up +
-                              helpCenterArticle.rating.down)) *
-                      100
-                    : null
+
+                let ratingRate = null
+                if (helpCenterArticle) {
+                    const rate =
+                        (helpCenterArticle.rating.up /
+                            (helpCenterArticle.rating.up +
+                                helpCenterArticle.rating.down)) *
+                        100
+
+                    ratingRate = isNaN(rate) ? null : rate
+                }
+
                 const rating = helpCenterArticle
                     ? `${helpCenterArticle.rating.up} | ${helpCenterArticle.rating.down}`
                     : null

@@ -187,6 +187,81 @@ describe('usePerformanceByArticleMetrics', () => {
         })
     })
 
+    it('should return formatted data when rating rate is not valid', () => {
+        mockUseGetHelpCenterArticleList.mockReturnValue({
+            data: {
+                data: [
+                    {
+                        id: 1,
+                        name: 'Set up Voice (Phone)',
+                        rating: {up: 0, down: 0},
+                        updated_datetime: '1970-01-19T20:48:32.000',
+                    },
+                ],
+            },
+            isLoading: false,
+        } as unknown as UseQueryResult<Components.Schemas.ArticlesListPageDto>)
+        mockUseMetricPerDimension.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                allData: [
+                    {
+                        [HelpCenterTrackingEventDimensions.ArticleTitle]:
+                            'Set up Voice (Phone)',
+                        [HelpCenterTrackingEventDimensions.ArticleSlug]:
+                            'set-up-voice-(phone)-1',
+                        [HelpCenterTrackingEventDimensions.ArticleId]: '1',
+                        [HelpCenterTrackingEventDimensions.LocaleCode]: 'en-US',
+                        [HelpCenterTrackingEventMeasures.ArticleView]: '1',
+                    },
+                ],
+                decile: null,
+            },
+        })
+        const {result} = renderHook(() =>
+            usePerformanceByArticleMetrics({
+                statsFilters,
+                timezone,
+                helpCenterDomain,
+                itemPerPage,
+                currentPage,
+                helpCenterId,
+            })
+        )
+
+        expect(result.current).toEqual({
+            total: 0,
+            isLoading: false,
+            data: [
+                [
+                    {
+                        link: `http://${helpCenterDomain}/en-US/set-up-voice-(phone)-1`,
+                        type: 'string',
+                        value: 'Set up Voice (Phone)',
+                    },
+                    {
+                        type: 'number',
+                        value: 1,
+                    },
+                    {
+                        type: 'percent',
+                        value: null,
+                    },
+                    {
+                        type: 'string',
+                        value: '0 | 0',
+                    },
+                    {
+                        type: 'date',
+                        value: '1970-01-19T20:48:32.000',
+                    },
+                ],
+            ],
+        })
+    })
+
     it('should return null for each field when data is empty', () => {
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,
