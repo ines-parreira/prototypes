@@ -293,6 +293,7 @@ export default function HttpRequestEditor({
 
                         setIsTestRequestModalOpen(true)
                     }}
+                    intent="secondary"
                 >
                     {nodeInEdition.data.testRequestResult
                         ? 'View Test Results'
