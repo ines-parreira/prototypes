@@ -1,4 +1,5 @@
 import React, {useMemo} from 'react'
+import moment from 'moment'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
@@ -29,8 +30,11 @@ import HelpCenterOverviewSection from '../components/HelpCenterOverviewSection/H
 import UnpublishedHelpCenterAlert from '../components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 import {HelpCenterStatsEmptyState} from '../components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
 import HelpCenterStatsLanguageFilter from '../components/HelpCenterStatsLanguageFilter/HelpCenterStatsLanguageFilter'
+import PartialDataAlert from '../components/PartialDataAlert/PartialDataAlert'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
+
+const DATE_WHEN_START_COLLECTION_EVENTS = '2023-11-16'
 
 type HelpCenterStatsComponentProps = {
     helpCenters: NonEmptyArray<HelpCenter>
@@ -57,6 +61,10 @@ const HelpCenterStatsComponent = ({
         setStatsFilters({localeCodes})
     }
 
+    const isEndDateBeforeStartCollectionEvents = moment(
+        statsFilters.period.start_datetime
+    ).isBefore(DATE_WHEN_START_COLLECTION_EVENTS)
+
     return (
         <div className="full-width">
             <StatsPage
@@ -81,6 +89,15 @@ const HelpCenterStatsComponent = ({
                 }
             >
                 <DashboardSection title="" className="pb-0">
+                    {isEndDateBeforeStartCollectionEvents && (
+                        <DashboardGridCell>
+                            <PartialDataAlert
+                                collectionStartDate={
+                                    DATE_WHEN_START_COLLECTION_EVENTS
+                                }
+                            />
+                        </DashboardGridCell>
+                    )}
                     {selectedHelpCenter.deactivated_datetime !== null && (
                         <DashboardGridCell>
                             <UnpublishedHelpCenterAlert
