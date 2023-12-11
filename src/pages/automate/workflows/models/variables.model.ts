@@ -136,7 +136,7 @@ export const buildWorkflowVariableFromNode = (
                 },
             ],
         }
-    } else if (node.type === 'http_request') {
+    } else if (node.type === 'http_request' && node.data.variables.length) {
         const {
             data: {
                 name,
