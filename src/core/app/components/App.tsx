@@ -8,6 +8,7 @@ import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigration
 import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
 import {useTheme} from 'theme'
 
+import RoutingRuleDecomissionBanner from 'pages/common/components/RoutingRuleDecomissionBanner/RoutingRuleDecomissionBanner'
 import useAppShortcuts from '../hooks/useAppShortcuts'
 import usePollingManager from '../hooks/usePollingManager'
 import useSharedLogic from '../hooks/useSharedLogic'
@@ -32,6 +33,7 @@ export default function App({children}: Props) {
         <AppNode className={theme}>
             <BannerNotifications />
             <EmailMigrationBanner />
+            <RoutingRuleDecomissionBanner />
             <ScriptTagMigrationBanner />
             <ScriptTagMigrationModal />
             {children}

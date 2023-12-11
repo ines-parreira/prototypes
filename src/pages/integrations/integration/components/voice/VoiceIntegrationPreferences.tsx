@@ -31,6 +31,8 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import settingsCss from 'pages/settings/settings.less'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 import css from './VoiceIntegrationPreferences.less'
 
 type Props = {
@@ -43,6 +45,9 @@ export default function VoiceIntegrationPreferences({
     const [isInitialized, setIsInitialized] = useState(false)
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
+    const [phoneTeamId, setPhoneTeamId] = useState<number | undefined>(
+        integration?.meta?.phone_team_id
+    )
     const [preferences, setPreferences] = useState<PhoneIntegrationPreferences>(
         {
             record_inbound_calls: false,
@@ -66,12 +71,13 @@ export default function VoiceIntegrationPreferences({
                         meta: {
                             emoji,
                             preferences,
+                            phone_team_id: phoneTeamId,
                         },
                     })
                 )
             )
         },
-        [integration, title, emoji, preferences, dispatch]
+        [integration, title, emoji, preferences, dispatch, phoneTeamId]
     )
 
     const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
@@ -146,7 +152,71 @@ export default function VoiceIntegrationPreferences({
                         </Row>
                         <Row>
                             <Col>
-                                <h4 className="mb-3">Inbound calls</h4>
+                                <h4 className="mb-4">Inbound calls</h4>
+                                {!isIvr && (
+                                    <Row>
+                                        <Col>
+                                            <h5>Route the call to a team</h5>
+                                            <Alert
+                                                type={AlertType.Error}
+                                                icon={true}
+                                                className="mb-3"
+                                            >
+                                                This new configuration will be
+                                                implemented from January 10th
+                                                onwards. Kindly review and
+                                                adjust your{' '}
+                                                <strong>team preference</strong>{' '}
+                                                prior to this date. During the
+                                                transition period, your current
+                                                routing rules will still be
+                                                directing calls to your
+                                                designated team as usual.
+                                            </Alert>
+                                            <FormGroup>
+                                                <VoiceIntegrationPreferencesTeamSelect
+                                                    value={phoneTeamId}
+                                                    onChange={(teamId) =>
+                                                        setPhoneTeamId(teamId)
+                                                    }
+                                                />
+                                            </FormGroup>
+                                            <h5 className="mt-4 mb-3">
+                                                Set ringing behaviour
+                                            </h5>
+                                            <FormGroup>
+                                                <RadioFieldSet
+                                                    options={[
+                                                        {
+                                                            label: 'Round-robin ringing',
+                                                            value: PhoneRingingBehaviour.RoundRobin,
+                                                            caption:
+                                                                'Calls assigned to a team will ring available agents one-by-one, ordered by the time since an agent last received a call.',
+                                                        },
+                                                        {
+                                                            label: 'Broadcast ringing',
+                                                            value: PhoneRingingBehaviour.Broadcast,
+                                                            caption:
+                                                                'Calls assigned to a team will ring all available agents simultaneously.',
+                                                        },
+                                                    ]}
+                                                    onChange={(value) =>
+                                                        setPreferences(
+                                                            (preferences) => ({
+                                                                ...preferences,
+                                                                ringing_behaviour:
+                                                                    value as PhoneRingingBehaviour,
+                                                            })
+                                                        )
+                                                    }
+                                                    selectedValue={
+                                                        preferences.ringing_behaviour
+                                                    }
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                )}
                                 <FormGroup>
                                     {!isIvr && (
                                         <CheckBox
@@ -162,6 +232,7 @@ export default function VoiceIntegrationPreferences({
                                                     })
                                                 )
                                             }
+                                            className="mt-3"
                                         >
                                             Start recording automatically
                                         </CheckBox>
@@ -219,45 +290,6 @@ export default function VoiceIntegrationPreferences({
                                 </Col>
                             </Row>
                         )}
-                        {!isIvr && (
-                            <Row>
-                                <Col>
-                                    <h4 className="mt-3 mb-3">
-                                        Set ringing behavior for teams
-                                    </h4>
-                                    <FormGroup>
-                                        <RadioFieldSet
-                                            options={[
-                                                {
-                                                    label: 'Round-robin ringing',
-                                                    value: PhoneRingingBehaviour.RoundRobin,
-                                                    caption:
-                                                        'Calls assigned to a team will ring available agents one-by-one, ordered by the time since an agent last received a call.',
-                                                },
-                                                {
-                                                    label: 'Broadcast ringing',
-                                                    value: PhoneRingingBehaviour.Broadcast,
-                                                    caption:
-                                                        'Calls assigned to a team will ring all available agents simultaneously.',
-                                                },
-                                            ]}
-                                            onChange={(value) =>
-                                                setPreferences(
-                                                    (preferences) => ({
-                                                        ...preferences,
-                                                        ringing_behaviour:
-                                                            value as PhoneRingingBehaviour,
-                                                    })
-                                                )
-                                            }
-                                            selectedValue={
-                                                preferences.ringing_behaviour
-                                            }
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                        )}
                         <div className="mt-5">
                             <Button
                                 type="submit"
@@ -269,6 +301,7 @@ export default function VoiceIntegrationPreferences({
                             <ConfirmButton
                                 className="float-right"
                                 intent="destructive"
+                                fillStyle="ghost"
                                 isDisabled={!isInitialized}
                                 isLoading={isDeleting}
                                 onConfirm={handleDelete}

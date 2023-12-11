@@ -1,0 +1,25 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .dropdownItem {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        padding: @layout-spacing-xs;
+    }
+
+    .teamDetails {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .membersCount {
+        color: var(--neutral-grey-4);
+        font-size: 12px;
+    }
+
+    .error {
+        color: var(--feedback-error-2);
+        margin-bottom: @layout-spacing-xs;
+    }
+}
