@@ -124,6 +124,12 @@ const CATEGORIES: Category[] = [
                 text: 'Macros',
                 requiredFeatureFlags: [FeatureFlagKey.AutomateRebranding],
             },
+            {
+                requiredRole: ADMIN_ROLE,
+                to: 'auto-merge',
+                text: 'Auto-merge',
+                requiredFeatureFlags: [FeatureFlagKey.AutoMergeAccountSetting],
+            },
         ],
     },
     {

@@ -18,6 +18,7 @@ export enum AccountSettingType {
     TicketAssignment = 'ticket-assignment',
     ViewsOrdering = 'views-ordering',
     ViewsVisibility = 'views-visibility',
+    AutoMerge = 'auto-merge',
 }
 
 export enum AccountFeature {
@@ -62,6 +63,7 @@ export type AccountSetting =
     | ViewsOrderingAccountSetting
     | AccountSettingAccess
     | AccountSettingViewsVisibility
+    | AccountSettingAutoMerge
 
 export type AccountSettingBusinessHours = {
     id: number
@@ -134,6 +136,17 @@ export type AccountSettingViewsVisibility = {
     type: AccountSettingType.ViewsVisibility
     data: {
         hidden_views: number[]
+    }
+}
+
+export type AccountSettingAutoMerge = {
+    id: number
+    type: AccountSettingType.AutoMerge
+    data: {
+        tickets?: {
+            enabled: boolean
+            merging_window_days: number
+        }
     }
 }
 

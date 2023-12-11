@@ -9,6 +9,7 @@ import {RootState} from 'state/types'
 import {
     AccountFeature,
     AccountSettingAgentsTableConfig,
+    AccountSettingAutoMerge,
     AccountSettingBusinessHours,
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
@@ -157,6 +158,14 @@ export const getViewsVisibilitySettings = createSelector(
         setting.isEmpty()
             ? undefined
             : (setting.toJS() as AccountSettingViewsVisibility)
+)
+
+export const getAutoMergeSettings = createSelector(
+    createSettingByTypeSelector(AccountSettingType.AutoMerge),
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingAutoMerge)
 )
 
 export const getBusinessHoursRangesByUserTimezone = createSelector(

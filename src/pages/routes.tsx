@@ -99,6 +99,7 @@ import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNe
 import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
@@ -945,6 +946,13 @@ export function SettingsRoutes() {
             <Route path={`${path}/ticket-assignment`} exact>
                 <App content={TicketAssignment} navbar={SettingsNavbar} />
             </Route>
+            <Route
+                path={`${path}/auto-merge`}
+                exact
+                render={() => (
+                    <App content={AutoMergeSettings} navbar={SettingsNavbar} />
+                )}
+            />
         </Switch>
     )
 }

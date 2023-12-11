@@ -73,4 +73,5 @@ export enum FeatureFlagKey {
     MLFeaturesKillswitch = 'ml-features-killswitch',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     AutomateLandingPage = 'automate-landing-page',
+    AutoMergeAccountSetting = 'auto-merge-account-setting',
 }
