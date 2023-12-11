@@ -369,6 +369,12 @@ export function useWorkflowEditor(
             throw e
         }
         setRemoteConfiguration(configurationDirty)
+        dispatch({
+            type: 'RESET_GRAPH',
+            graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
+                configurationDirty
+            ),
+        })
         setIsSavePending(false)
     }, [
         isDirty,
@@ -376,6 +382,7 @@ export function useWorkflowEditor(
         visualBuilderGraphDirty,
         saveTranslations,
         isNew,
+        dispatch,
     ])
 
     const handleDiscard = useCallback(() => {
