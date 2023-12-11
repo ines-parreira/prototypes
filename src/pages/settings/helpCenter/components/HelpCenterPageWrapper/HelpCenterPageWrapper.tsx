@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {Container} from 'reactstrap'
 import {Link, useHistory} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {HelpCenter} from 'models/helpCenter/types'
 import PageHeader from 'pages/common/components/PageHeader'
 
@@ -20,6 +21,7 @@ import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateS
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {TicketChannel} from 'business/types/ticket'
 import Tooltip from 'pages/common/components/Tooltip'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../../utils/helpCenter.utils'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
@@ -79,6 +81,9 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
         dispatch(changeViewLanguage(validLocaleCode(value)))
     }
 
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
     const onDiscard = () => {
         dispatch(changeViewLanguage(locale))
         setShowCloseModal(false)
@@ -113,62 +118,65 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 }
             >
                 <div className={css.header}>
-                    {hasAutomate ? (
-                        helpCenter.shop_name ? (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                onClick={() => {
-                                    history.push(
-                                        `/app/automation/shopify/${
-                                            helpCenter.shop_name as string
-                                        }/connected-channels?type=${
-                                            TicketChannel.HelpCenter
-                                        }&id=${helpCenter.id}`,
-                                        {from: 'help-center-settings'}
-                                    )
-                                }}
-                            >
-                                <ButtonIconLabel icon="bolt">
-                                    Go to automate settings
-                                </ButtonIconLabel>
-                            </Button>
-                        ) : (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                onClick={() => {
-                                    if (isConnectStoreLinkEnabled) {
+                    {!changeAutomateSettingButtomPosition &&
+                        (hasAutomate ? (
+                            helpCenter.shop_name ? (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
                                         history.push(
-                                            `/app/settings/help-center/${helpCenter.id}/preferences`
+                                            `/app/automation/shopify/${
+                                                helpCenter.shop_name as string
+                                            }/connected-channels?type=${
+                                                TicketChannel.HelpCenter
+                                            }&id=${helpCenter.id}`,
+                                            {from: 'help-center-settings'}
                                         )
-                                    }
-                                }}
-                            >
-                                <ButtonIconLabel
-                                    icon="warning"
-                                    className={css.connectStoreWarning}
+                                    }}
                                 >
-                                    Connect store to enable Automate
-                                </ButtonIconLabel>
-                            </Button>
-                        )
-                    ) : (
-                        <>
-                            <AutomateSubscriptionButton
-                                fillStyle="ghost"
-                                label="Upgrade your help center with automate"
-                                onClick={() => setIsAutomationModalOpened(true)}
-                            />
-                            <AutomateSubscriptionModal
-                                confirmLabel="Subscribe"
-                                isOpen={isAutomationModalOpened}
-                                onClose={() =>
-                                    setIsAutomationModalOpened(false)
-                                }
-                            />
-                        </>
-                    )}
+                                    <ButtonIconLabel icon="bolt">
+                                        Go to automate settings
+                                    </ButtonIconLabel>
+                                </Button>
+                            ) : (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        if (isConnectStoreLinkEnabled) {
+                                            history.push(
+                                                `/app/settings/help-center/${helpCenter.id}/publish-track`
+                                            )
+                                        }
+                                    }}
+                                >
+                                    <ButtonIconLabel
+                                        icon="warning"
+                                        className={css.connectStoreWarning}
+                                    >
+                                        Connect store to enable Automate
+                                    </ButtonIconLabel>
+                                </Button>
+                            )
+                        ) : (
+                            <>
+                                <AutomateSubscriptionButton
+                                    fillStyle="ghost"
+                                    label="Upgrade your help center with automate"
+                                    onClick={() =>
+                                        setIsAutomationModalOpened(true)
+                                    }
+                                />
+                                <AutomateSubscriptionModal
+                                    confirmLabel="Subscribe"
+                                    isOpen={isAutomationModalOpened}
+                                    onClose={() =>
+                                        setIsAutomationModalOpened(false)
+                                    }
+                                />
+                            </>
+                        ))}
                     {showLanguageSelector && (
                         <LanguageSelect
                             value={viewLanguage}
@@ -214,6 +222,8 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
             <HelpCenterNavigation
                 cannotUpdateHelpCenter={cannotUpdateHelpCenter}
                 helpCenterId={helpCenter.id}
+                helpCenterShopName={helpCenter.shop_name}
+                isConnectStoreLinkEnabled={isConnectStoreLinkEnabled}
             />
             {fluidContainer ? (
                 <Container

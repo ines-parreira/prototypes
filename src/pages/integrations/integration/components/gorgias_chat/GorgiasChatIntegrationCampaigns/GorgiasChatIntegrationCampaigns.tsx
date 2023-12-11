@@ -5,6 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {removeLinksFromHtml} from 'utils/html'
 import {
     createCampaign,
@@ -16,6 +17,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {IntegrationType} from 'models/integration/constants'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {CampaignsList} from './containers/CampaignsList'
 import {CampaignListOptions} from './providers/CampaignListOptions'
@@ -83,6 +85,9 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
         return campaignsList.toJS() as ChatCampaign[]
     }, [integration])
 
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
     return (
         <CampaignListOptions>
             <div className="full-width">
@@ -102,9 +107,11 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
                         </Breadcrumb>
                     }
                 >
-                    <GorgiasChatIntegrationConnectedChannel
-                        integration={integration}
-                    />
+                    {!changeAutomateSettingButtomPosition && (
+                        <GorgiasChatIntegrationConnectedChannel
+                            integration={integration}
+                        />
+                    )}
                     <Link
                         to={
                             `/app/settings/channels/${IntegrationType.GorgiasChat}/` +

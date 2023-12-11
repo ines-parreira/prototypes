@@ -2,6 +2,8 @@ import React, {useMemo, useState} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 
+import {useEffectOnce} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
@@ -19,6 +21,8 @@ import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
 
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ORDER_MANAGEMENT} from '../common/components/constants'
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
@@ -75,6 +79,16 @@ const OrderManagementView = () => {
                 .filter((value): value is string => Boolean(value)),
         [channels]
     )
+
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    useEffectOnce(() => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingPageViewed, {
+            page: 'Order Management',
+        })
+    })
 
     const {applicationsAutomationSettings} =
         useApplicationsAutomationSettings(chatApplicationIds)

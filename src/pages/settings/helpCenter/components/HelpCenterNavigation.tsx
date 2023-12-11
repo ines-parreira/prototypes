@@ -1,18 +1,50 @@
-import React from 'react'
-import {NavLink} from 'react-router-dom'
+import React, {useState} from 'react'
+import {NavLink, useHistory} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomate} from 'state/billing/selectors'
+import Button from 'pages/common/components/button/Button'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import css from './HelpCenterNavigation.less'
 
 type Props = {
     helpCenterId: string | number
+    helpCenterShopName?: string | null
     cannotUpdateHelpCenter?: boolean
+    isConnectStoreLinkEnabled?: boolean
 }
 
 export const HelpCenterNavigation: React.FC<Props> = ({
     cannotUpdateHelpCenter = false,
     helpCenterId,
+    helpCenterShopName,
+    isConnectStoreLinkEnabled = true,
 }: Props) => {
     const baseURL = `/app/settings/help-center/${helpCenterId}`
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const history = useHistory()
+
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
+
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    const logHelpCenterEvent = (version: string) => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingButtonClicked, {
+            channel: TicketChannel.HelpCenter,
+            version,
+        })
+    }
 
     if (cannotUpdateHelpCenter) {
         return null
@@ -32,6 +64,64 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                 Customization
             </NavLink>
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
+            {changeAutomateSettingButtomPosition &&
+                (hasAutomate ? (
+                    helpCenterShopName ? (
+                        <Button
+                            fillStyle="ghost"
+                            intent="primary"
+                            onClick={() => {
+                                logHelpCenterEvent('Setting')
+                                history.push(
+                                    `/app/automation/shopify/${helpCenterShopName}/connected-channels?type=${TicketChannel.HelpCenter}&id=${helpCenterId}`,
+                                    {from: 'help-center-settings'}
+                                )
+                            }}
+                        >
+                            <ButtonIconLabel icon="bolt">
+                                Automate Settings
+                            </ButtonIconLabel>
+                        </Button>
+                    ) : (
+                        <Button
+                            fillStyle="ghost"
+                            intent="primary"
+                            onClick={() => {
+                                logHelpCenterEvent('Store')
+                                if (isConnectStoreLinkEnabled) {
+                                    history.push(
+                                        `/app/settings/help-center/${helpCenterId}/publish-track`
+                                    )
+                                }
+                            }}
+                        >
+                            <ButtonIconLabel
+                                icon="warning"
+                                className={css.connectStoreWarning}
+                            >
+                                Connect to Automate
+                            </ButtonIconLabel>
+                        </Button>
+                    )
+                ) : (
+                    <>
+                        <AutomateSubscriptionButton
+                            fillStyle="ghost"
+                            label="Upgrade to Automate"
+                            onClick={() => {
+                                logHelpCenterEvent('Upsell')
+                                setIsAutomationModalOpened(true)
+                            }}
+                        />
+                        <AutomateSubscriptionModal
+                            confirmLabel="Subscribe"
+                            isOpen={isAutomationModalOpened}
+                            onClose={() => {
+                                setIsAutomationModalOpened(false)
+                            }}
+                        />
+                    </>
+                ))}
         </SecondaryNavbar>
     )
 }

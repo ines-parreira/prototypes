@@ -1,6 +1,8 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
+import {useEffectOnce} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Label from 'pages/common/forms/Label/Label'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
@@ -12,7 +14,8 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
-import {SegmentEvent} from 'common/segment'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import ArticleRecommendationHelpCenter from './components/ArticleRecommendationHelpCenter'
@@ -76,6 +79,15 @@ const ArticleRecommendationView = () => {
     const isHelpCenterDirty = dirtyHelpCenterId !== helpCenterId
     const isHelpCenterEmpty = helpCenterArticlesCount === 0
     const isLoading = !selfServiceConfiguration || isLoadingHelpCenters
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    useEffectOnce(() => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingPageViewed, {
+            page: 'Article Recommendation',
+        })
+    })
 
     return (
         <AutomateView title={ARTICLE_RECOMMENDATION} isLoading={isLoading}>

@@ -46,6 +46,7 @@ type State = {
     isUpdating: boolean
     isInitialized: boolean
     chatMultiLanguageFeatureFlag: boolean
+    changeAutomateSettingButtomPosition: boolean
 }
 
 export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
@@ -58,6 +59,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
         isUpdating: false,
         isInitialized: false,
         chatMultiLanguageFeatureFlag: false,
+        changeAutomateSettingButtomPosition: false,
     }
 
     _initState = () => {
@@ -76,11 +78,17 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
         const chatMultiLanguageFeatureFlag =
             !!getLDClient().allFlags()[FeatureFlagKey.ChatMultiLanguages]
 
+        const changeAutomateSettingButtomPosition =
+            !!getLDClient().allFlags()[
+                FeatureFlagKey.ChangeAutomateSettingButtomPosition
+            ]
+
         this.setState({
             quickRepliesEnabled: quickRepliesState.get('enabled') || false,
             quickReplies,
             isInitialized: true,
             chatMultiLanguageFeatureFlag,
+            changeAutomateSettingButtomPosition,
         })
     }
 
@@ -216,9 +224,11 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         </Breadcrumb>
                     }
                 >
-                    <GorgiasChatIntegrationConnectedChannel
-                        integration={integration}
-                    />
+                    {!this.state.changeAutomateSettingButtomPosition && (
+                        <GorgiasChatIntegrationConnectedChannel
+                            integration={integration}
+                        />
+                    )}
                 </PageHeader>
 
                 <GorgiasChatIntegrationHeader integration={integration} />

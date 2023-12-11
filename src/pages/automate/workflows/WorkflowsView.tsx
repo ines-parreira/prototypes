@@ -2,13 +2,16 @@ import React from 'react'
 import {Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
+import {useEffectOnce} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert from 'pages/common/components/Alert/Alert'
 import Video from 'pages/common/components/Video/Video'
 
-import {SegmentEvent} from 'common/segment'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {FLOWS} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import CreateWorkflowFooter from './components/CreateWorkflowFooter'
@@ -59,6 +62,16 @@ export default function WorkflowsView({
     const hasStoreWorkflows = workflows.length > 0
     const isFetchPending =
         isStoreWorkflowsFetchPending || isWorkflowsApiFetchPending
+
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    useEffectOnce(() => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingPageViewed, {
+            page: 'Workflows',
+        })
+    })
 
     return (
         <div className="full-width overflow-auto">

@@ -2,6 +2,7 @@ import React, {useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useEffectOnce} from 'react-use'
 import {TicketChannel} from 'business/types/ticket'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -19,7 +20,7 @@ import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowCo
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
-import {SegmentEvent} from 'common/segment'
+import {SegmentEvent, logEvent} from 'common/segment'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../workflows/hooks/useWorkflowChannelSupport'
@@ -78,6 +79,15 @@ const ConnectedChannelsView = () => {
     const helpCenterArticlesCount = useHelpCenterPublishedArticlesCount(
         articleRecommendationHelpCenterId
     )
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    useEffectOnce(() => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingPageViewed, {
+            page: 'Connected Channels',
+        })
+    })
 
     const connectedChannelsViewContext =
         useMemo<ConnectedChannelsViewContextType>(

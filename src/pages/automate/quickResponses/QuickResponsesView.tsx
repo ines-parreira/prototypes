@@ -5,6 +5,8 @@ import _keyBy from 'lodash/keyBy'
 import {v4 as uuidv4} from 'uuid'
 import {fromJS} from 'immutable'
 
+import {useEffectOnce} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -13,7 +15,8 @@ import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import useSearch from 'hooks/useSearch'
-import {SegmentEvent} from 'common/segment'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
     QUICK_RESPONSES,
@@ -74,6 +77,16 @@ const QuickResponsesView = () => {
                 .filter((value): value is string => Boolean(value)),
         [chatChannels]
     )
+
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    useEffectOnce(() => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingPageViewed, {
+            page: 'Quick Responses',
+        })
+    })
 
     const {applicationsAutomationSettings} =
         useApplicationsAutomationSettings(chatApplicationIds)

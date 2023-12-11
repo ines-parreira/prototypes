@@ -11,6 +11,9 @@ import {entitiesInitialState} from 'fixtures/entities'
 import {RootState, StoreDispatch} from 'state/types'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
+jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
+    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+})
 describe('<GorgiasChatIntegrationNavigation />', () => {
     const integration = {
         id: 16,

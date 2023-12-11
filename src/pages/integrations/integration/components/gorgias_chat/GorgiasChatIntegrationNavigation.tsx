@@ -12,6 +12,7 @@ import {IntegrationType} from '../../../../../models/integration/types'
 
 import css from './GorgiasChatIntegrationNavigation.less'
 import useIsQuickRepliesEnabled from './GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import GorgiasChatIntegrationConnectedChannel from './GorgiasChatIntegrationConnectedChannel'
 
 type Props = {
     integration: Map<any, any>
@@ -30,6 +31,8 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     )
     const isChatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
     return (
         <SecondaryNavbar>
@@ -58,6 +61,11 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
                     />
                 )}
             </NavLink>
+            {changeAutomateSettingButtomPosition && (
+                <GorgiasChatIntegrationConnectedChannel
+                    integration={integration}
+                />
+            )}
         </SecondaryNavbar>
     )
 }

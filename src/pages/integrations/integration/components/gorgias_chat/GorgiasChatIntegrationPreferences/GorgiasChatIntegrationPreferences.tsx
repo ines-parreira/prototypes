@@ -750,6 +750,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const renameContactFormEnabled =
             flags?.[FeatureFlagKey.ChatRenameContactForm]
 
+        const changeAutomateSettingButtomPosition =
+            flags?.[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
         const liveChatAvailabilityOptions = [
             {
                 caption:
@@ -960,9 +963,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             </Breadcrumb>
                         }
                     >
-                        <GorgiasChatIntegrationConnectedChannel
-                            integration={integration}
-                        />
+                        {!changeAutomateSettingButtomPosition && (
+                            <GorgiasChatIntegrationConnectedChannel
+                                integration={integration}
+                            />
+                        )}
                     </PageHeader>
 
                     <GorgiasChatIntegrationHeader integration={integration} />

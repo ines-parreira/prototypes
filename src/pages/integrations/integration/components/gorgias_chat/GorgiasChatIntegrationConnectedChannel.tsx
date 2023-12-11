@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Map} from 'immutable'
 import {useHistory} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
@@ -10,6 +11,8 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {TicketChannel} from 'business/types/ticket'
 
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './GorgiasChatIntegrationConnectedChannel.less'
 
 type Props = {
@@ -25,19 +28,39 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
     const shopName = integration.getIn(['meta', 'shop_name']) as string | null
     const shopType = integration.getIn(['meta', 'shop_type']) as string | null
 
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    const logChatEvent = (version: string) => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingButtonClicked, {
+            channel: TicketChannel.Chat,
+            version,
+        })
+    }
+
     if (!hasAutomate) {
         return (
             <>
                 <AutomateSubscriptionButton
                     className={css.automationSubscriptionButton}
                     fillStyle="ghost"
-                    label="Upgrade your chat with automate"
-                    onClick={() => setIsAutomationModalOpened(true)}
+                    label={
+                        changeAutomateSettingButtomPosition
+                            ? 'Upgrade to Automate'
+                            : 'Upgrade your chat with automate'
+                    }
+                    onClick={() => {
+                        logChatEvent('Upsell')
+                        setIsAutomationModalOpened(true)
+                    }}
                 />
                 <AutomateSubscriptionModal
                     confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
-                    onClose={() => setIsAutomationModalOpened(false)}
+                    onClose={() => {
+                        setIsAutomationModalOpened(false)
+                    }}
                 />
             </>
         )
@@ -49,16 +72,19 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
                 fillStyle="ghost"
                 intent="primary"
                 onClick={() => {
-                    history.push(
-                        `/app/settings/channels/gorgias_chat/${integrationId}/installation`
-                    )
+                    logChatEvent('Store'),
+                        history.push(
+                            `/app/settings/channels/gorgias_chat/${integrationId}/installation`
+                        )
                 }}
             >
                 <ButtonIconLabel
                     icon="warning"
                     className={css.connectStoreWarning}
                 >
-                    Connect store to enable Automate
+                    {changeAutomateSettingButtomPosition
+                        ? 'Connect Store'
+                        : 'Connect store to enable Automate'}
                 </ButtonIconLabel>
             </Button>
         )
@@ -69,6 +95,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
             fillStyle="ghost"
             intent="primary"
             onClick={() => {
+                logChatEvent('Setting')
                 history.push(
                     `/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`,
                     {from: 'chat-integration'}
@@ -76,7 +103,9 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
             }}
         >
             <ButtonIconLabel icon="bolt">
-                Go to automate settings
+                {changeAutomateSettingButtomPosition
+                    ? 'Automate Settings'
+                    : 'Go to automate settings'}
             </ButtonIconLabel>
         </Button>
     )

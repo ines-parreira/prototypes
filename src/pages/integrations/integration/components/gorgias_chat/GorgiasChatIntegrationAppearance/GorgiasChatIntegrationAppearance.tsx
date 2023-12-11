@@ -252,6 +252,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatLauncherCustomization]
     const isChatHeaderPictureStyleEnabled =
         useFlags()[FeatureFlagKey.ChatHeaderPictureStyle]
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
     const storeIntegrations = storeIntegrationsProp as List<Map<any, any>>
 
@@ -893,7 +895,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     </Breadcrumb>
                 }
             >
-                {isUpdate && (
+                {isUpdate && !changeAutomateSettingButtomPosition && (
                     <GorgiasChatIntegrationConnectedChannel
                         integration={integration}
                     />

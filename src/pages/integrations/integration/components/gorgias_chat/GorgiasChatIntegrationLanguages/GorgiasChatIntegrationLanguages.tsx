@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Language} from 'constants/languages'
 import DropdownButtonWithSearch, {
     Option as DropdownOption,
@@ -11,6 +12,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {IntegrationType} from 'models/integration/constants'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {GorgiasChatIntegrationLanguagesTable} from './components/GorgiasChatIntegrationLanguagesTable'
 import {GorgiasChatIntegrationLanguagesTableRow} from './components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRow'
@@ -39,6 +41,8 @@ const GorgiasChatIntegrationLanguages = ({
     const onAddLanguage = async (option: DropdownOption) => {
         await addLanguage({language: option.value as Language})
     }
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
     return (
         <div className="full-width">
@@ -58,10 +62,11 @@ const GorgiasChatIntegrationLanguages = ({
                     </Breadcrumb>
                 }
             >
-                <GorgiasChatIntegrationConnectedChannel
-                    integration={integration}
-                />
-
+                {!changeAutomateSettingButtomPosition && (
+                    <GorgiasChatIntegrationConnectedChannel
+                        integration={integration}
+                    />
+                )}
                 <DropdownButtonWithSearch
                     label="Add Language"
                     options={languagesAvailable}

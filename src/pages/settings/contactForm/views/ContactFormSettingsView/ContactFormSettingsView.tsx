@@ -8,6 +8,7 @@ import {
     useHistory,
 } from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -38,6 +39,8 @@ import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactForm
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {getHasAutomate} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import css from './ContactFormSettingsView.less'
@@ -57,6 +60,9 @@ const ContactFormSettingsView = (): JSX.Element => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
+
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
     useEffect(() => {
         if (!isIdValid) return history.push(CONTACT_FORM_BASE_PATH)
@@ -109,6 +115,14 @@ const ContactFormSettingsView = (): JSX.Element => {
         window.open(contactForm.url_template, '_blank')?.focus()
     }
 
+    const logContactFormEvent = (version: string) => {
+        if (!changeAutomateSettingButtomPosition) return
+        logEvent(SegmentEvent.AutomateSettingButtonClicked, {
+            channel: TicketChannel.ContactForm,
+            version,
+        })
+    }
+
     return (
         <div className="full-width">
             <PageHeader
@@ -129,60 +143,63 @@ const ContactFormSettingsView = (): JSX.Element => {
                 }
             >
                 <div className={css.header}>
-                    {hasAutomate ? (
-                        contactForm.shop_name ? (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                onClick={() => {
-                                    history.push(
-                                        `/app/automation/shopify/${
-                                            contactForm.shop_name as string
-                                        }/connected-channels?type=${
-                                            TicketChannel.ContactForm
-                                        }&id=${contactForm.id}`,
-                                        {from: 'contact-form-settings'}
-                                    )
-                                }}
-                            >
-                                <ButtonIconLabel icon="bolt">
-                                    Go to automate settings
-                                </ButtonIconLabel>
-                            </Button>
-                        ) : (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                onClick={() => {
-                                    history.push(
-                                        `/app/settings/contact-form/${contactForm.id}/preferences`
-                                    )
-                                }}
-                            >
-                                <ButtonIconLabel
-                                    icon="warning"
-                                    className={css.connectStoreWarning}
+                    {!changeAutomateSettingButtomPosition &&
+                        (hasAutomate ? (
+                            contactForm.shop_name ? (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        history.push(
+                                            `/app/automation/shopify/${
+                                                contactForm.shop_name as string
+                                            }/connected-channels?type=${
+                                                TicketChannel.ContactForm
+                                            }&id=${contactForm.id}`,
+                                            {from: 'contact-form-settings'}
+                                        )
+                                    }}
                                 >
-                                    Connect store to enable Automate
-                                </ButtonIconLabel>
-                            </Button>
-                        )
-                    ) : (
-                        <>
-                            <AutomateSubscriptionButton
-                                fillStyle="ghost"
-                                label="Upgrade your contact form with automate"
-                                onClick={() => setIsAutomationModalOpened(true)}
-                            />
-                            <AutomateSubscriptionModal
-                                confirmLabel="Subscribe"
-                                isOpen={isAutomationModalOpened}
-                                onClose={() =>
-                                    setIsAutomationModalOpened(false)
-                                }
-                            />
-                        </>
-                    )}
+                                    <ButtonIconLabel icon="bolt">
+                                        Go to automate settings
+                                    </ButtonIconLabel>
+                                </Button>
+                            ) : (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        history.push(
+                                            `/app/settings/contact-form/${contactForm.id}/preferences`
+                                        )
+                                    }}
+                                >
+                                    <ButtonIconLabel
+                                        icon="warning"
+                                        className={css.connectStoreWarning}
+                                    >
+                                        Connect store to enable Automate
+                                    </ButtonIconLabel>
+                                </Button>
+                            )
+                        ) : (
+                            <>
+                                <AutomateSubscriptionButton
+                                    fillStyle="ghost"
+                                    label="Upgrade your contact form with automate"
+                                    onClick={() =>
+                                        setIsAutomationModalOpened(true)
+                                    }
+                                />
+                                <AutomateSubscriptionModal
+                                    confirmLabel="Subscribe"
+                                    isOpen={isAutomationModalOpened}
+                                    onClose={() =>
+                                        setIsAutomationModalOpened(false)
+                                    }
+                                />
+                            </>
+                        ))}
                     <Button
                         aria-label="contact form preview"
                         intent="secondary"
@@ -203,6 +220,66 @@ const ContactFormSettingsView = (): JSX.Element => {
                         {name}
                     </NavLink>
                 ))}
+                {changeAutomateSettingButtomPosition &&
+                    (hasAutomate ? (
+                        contactForm.shop_name ? (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                onClick={() => {
+                                    logContactFormEvent('Setting')
+                                    history.push(
+                                        `/app/automation/shopify/${
+                                            contactForm.shop_name as string
+                                        }/connected-channels?type=${
+                                            TicketChannel.ContactForm
+                                        }&id=${contactForm.id}`,
+                                        {from: 'contact-form-settings'}
+                                    )
+                                }}
+                            >
+                                <ButtonIconLabel icon="bolt">
+                                    Automate Settings
+                                </ButtonIconLabel>
+                            </Button>
+                        ) : (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                onClick={() => {
+                                    logContactFormEvent('Store')
+                                    history.push(
+                                        `/app/settings/contact-form/${contactForm.id}/preferences`
+                                    )
+                                }}
+                            >
+                                <ButtonIconLabel
+                                    icon="warning"
+                                    className={css.connectStoreWarning}
+                                >
+                                    Connect Store
+                                </ButtonIconLabel>
+                            </Button>
+                        )
+                    ) : (
+                        <>
+                            <AutomateSubscriptionButton
+                                fillStyle="ghost"
+                                label="Upgrade to Automate"
+                                onClick={() => {
+                                    logContactFormEvent('Upsell')
+                                    setIsAutomationModalOpened(true)
+                                }}
+                            />
+                            <AutomateSubscriptionModal
+                                confirmLabel="Subscribe"
+                                isOpen={isAutomationModalOpened}
+                                onClose={() => {
+                                    setIsAutomationModalOpened(false)
+                                }}
+                            />
+                        </>
+                    ))}
             </SecondaryNavbar>
             <CurrentContactFormContext.Provider value={contactForm}>
                 <Switch>

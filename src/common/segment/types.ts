@@ -1,5 +1,7 @@
 export enum SegmentEvent {
     AnalyticsStatsDatepickerOpen = 'analytics/stats/datepicker-open',
+    AutomateSettingButtonClicked = 'automate/setting-button-clicked',
+    AutomateSettingPageViewed = 'automate/setting-page-viewed',
     BigCommerceCreateOrderCancel = 'bigcommerce/create-order/cancel',
     BigCommerceCreateOrderOpen = 'bigcommerce/create-order/open-modal',
     BigCommerceCreateOrderSubmitCreate = 'bigcommerce/create-order/submit-create',

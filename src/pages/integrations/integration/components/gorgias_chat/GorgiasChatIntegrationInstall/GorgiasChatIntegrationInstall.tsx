@@ -3,6 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {deleteIntegration} from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -20,6 +21,7 @@ import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/s
 import warningIcon from 'assets/img/icons/warning.svg'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
@@ -69,6 +71,8 @@ const GorgiasChatIntegrationInstall = ({
 
     const {showScriptTagMigrationBanner, hasShopifyScriptTagScope} =
         useChatMigrationBanner(integration)
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
     return (
         <>
@@ -100,9 +104,11 @@ const GorgiasChatIntegrationInstall = ({
                         </Breadcrumb>
                     }
                 >
-                    <GorgiasChatIntegrationConnectedChannel
-                        integration={integration}
-                    />
+                    {!changeAutomateSettingButtomPosition && (
+                        <GorgiasChatIntegrationConnectedChannel
+                            integration={integration}
+                        />
+                    )}
                 </PageHeader>
 
                 <GorgiasChatIntegrationHeader
