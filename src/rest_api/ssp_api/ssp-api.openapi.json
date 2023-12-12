@@ -114,21 +114,28 @@
                         "required": true
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "articleIdFeedback": {
+                                        "type": "number",
+                                        "example": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/predictionResponseDataDTO"
-                                        },
-                                        "meta": {
-                                            "$ref": "#/components/schemas/predictionResponseMetaDTO"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/predictionResponseDataDTO"
                                 }
                             }
                         }
@@ -207,6 +214,7 @@
                     "accountId",
                     "helpCenterId",
                     "articleId",
+                    "isHelpful",
                     "articleIdFeedback",
                     "createdDatetime",
                     "updatedDatetime"

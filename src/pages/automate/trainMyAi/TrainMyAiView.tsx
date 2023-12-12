@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useRef} from 'react'
+import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import Button from 'pages/common/components/button/Button'
@@ -9,6 +9,7 @@ import {useArticleRecommendationPredictions} from 'models/articleRecommendationP
 import {SegmentEvent} from 'common/segment'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
+import {useGetHelpCenter} from 'models/helpCenter/queries'
 import {TRAIN_MY_AI} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
@@ -20,11 +21,14 @@ import MessageCard from './components/MessageCard'
 import Header from './components/Header'
 import ArticleRecommendationDisabled from './components/ArticleRecommendationDisabled'
 import RecommendationPagination from './components/RecommendationPagination'
+import PreviewSection from './components/PreviewSection'
 import css from './TrainMyAiView.less'
 import {RecommendationDisabled} from './components/TrainMyAiAlerts'
+import useHelpCenterArticleTree from './hooks/useHelpCenterArticleTree'
 
 const TrainMyAiView = () => {
     const leftColRef = useRef<HTMLDivElement>(null)
+    const rightColRef = useRef<HTMLDivElement>(null)
 
     useHistoryTracking(SegmentEvent.AutomateArticleRecommendationVisited)
     const {shopType, shopName} = useParams<{
@@ -52,12 +56,27 @@ const TrainMyAiView = () => {
     const helpCenterId =
         selfServiceConfiguration?.article_recommendation_help_center_id
 
+    const {
+        data: helpCenterData,
+        isInitialLoading: helpCenterInitialLoading,
+        isError: helpCenterIsError,
+    } = useGetHelpCenter(
+        helpCenterId as number,
+        {},
+        {enabled: typeof helpCenterId === 'number'}
+    )
+
+    const isHelpCenterSelfServiceDeactivated =
+        !!helpCenterData?.self_service_deactivated_datetime || helpCenterIsError
+
     const isArticleRecommendationEnabled = useMemo(
         () =>
-            Object.values(applicationsAutomationSettings).some(
-                (settings) => settings.articleRecommendation.enabled
-            ) && helpCenterId,
-        [applicationsAutomationSettings, helpCenterId]
+            chatApplicationsIds.some(
+                (chatApplicationsId) =>
+                    applicationsAutomationSettings[chatApplicationsId]
+                        ?.articleRecommendation?.enabled
+            ) && !!helpCenterId,
+        [applicationsAutomationSettings, chatApplicationsIds, helpCenterId]
     )
 
     const helpCenterArticlesCount =
@@ -65,9 +84,9 @@ const TrainMyAiView = () => {
 
     const [currentPage, setCurrentPage] = useState(1)
     const {
-        data: articleRecommndationsData,
-        isInitialLoading,
-        isFetched,
+        data: articleRecommendationsData,
+        isInitialLoading: isInitialLoadingArticleRecommndations,
+        isFetched: isFetchedArticleRecommendations,
     } = useArticleRecommendationPredictions({
         page: currentPage,
         shopName,
@@ -75,12 +94,22 @@ const TrainMyAiView = () => {
         helpCenterId,
     })
 
-    const isLoading = !selfServiceConfiguration || isFetchPending
+    const {map: helpCenterArticleTreeMap} =
+        useHelpCenterArticleTree(helpCenterId)
 
-    const isHelpCenterEmpty = !helpCenterArticlesCount
+    const isLoading =
+        !selfServiceConfiguration ||
+        isFetchPending ||
+        isInitialLoadingArticleRecommndations ||
+        helpCenterInitialLoading
+
+    const isHelpCenterEmpty =
+        helpCenterArticlesCount === undefined
+            ? null
+            : helpCenterArticlesCount === 0
 
     const hasArticleRecommendations = Boolean(
-        articleRecommndationsData?.meta?.pagination.totalSize
+        articleRecommendationsData?.meta?.pagination.totalSize
     )
 
     const [selectedRecommendationIndex, setSelectedRecommendationIndex] =
@@ -91,10 +120,43 @@ const TrainMyAiView = () => {
             return null
         }
         const articleRecommendationData =
-            articleRecommndationsData?.data?.[selectedRecommendationIndex]
+            articleRecommendationsData?.data?.[selectedRecommendationIndex]
 
         return articleRecommendationData
-    }, [articleRecommndationsData, selectedRecommendationIndex])
+    }, [articleRecommendationsData, selectedRecommendationIndex])
+
+    const isAllFeedbacksProvided =
+        typeof articleRecommendationsData?.meta?.pagination.totalSize ===
+            'number' &&
+        typeof articleRecommendationsData?.meta?.totalLabeledArticles ===
+            'number' &&
+        articleRecommendationsData.meta.pagination.totalSize ===
+            articleRecommendationsData.meta.totalLabeledArticles
+
+    const handleConfirmFeedback = useCallback(() => {
+        if (selectedRecommendationIndex === null) return
+        const nextIndex = selectedRecommendationIndex + 1
+        if (
+            typeof articleRecommendationsData?.meta?.pagination.pageSize ===
+                'number' &&
+            nextIndex < articleRecommendationsData.meta.pagination.pageSize
+        ) {
+            setSelectedRecommendationIndex(nextIndex)
+        }
+    }, [articleRecommendationsData, selectedRecommendationIndex])
+
+    useEffect(() => {
+        rightColRef.current?.scrollTo({
+            top: 0,
+            behavior: 'auto',
+        })
+    }, [selectedRecommendationIndex])
+
+    useEffect(() => {
+        if (isAllFeedbacksProvided) {
+            setSelectedRecommendationIndex(null)
+        }
+    }, [isAllFeedbacksProvided])
 
     return (
         <AutomateView
@@ -102,10 +164,13 @@ const TrainMyAiView = () => {
             isLoading={isLoading}
             className={classNames(css.container, {
                 [css.enabled]:
-                    isArticleRecommendationEnabled || hasArticleRecommendations,
+                    !isHelpCenterSelfServiceDeactivated &&
+                    (isArticleRecommendationEnabled ||
+                        hasArticleRecommendations),
             })}
         >
-            {isArticleRecommendationEnabled || hasArticleRecommendations ? (
+            {!isHelpCenterSelfServiceDeactivated &&
+            (isArticleRecommendationEnabled || hasArticleRecommendations) ? (
                 <>
                     <div ref={leftColRef} className={css.leftCol}>
                         <Header
@@ -117,70 +182,87 @@ const TrainMyAiView = () => {
                                 ) : undefined
                             }
                         >
-                            {articleRecommndationsData?.meta && (
-                                <div className={css.headerContent}>
-                                    <ProgressBar
-                                        value={
-                                            articleRecommndationsData.meta
-                                                .totalLabeledArticles
+                            {articleRecommendationsData?.meta &&
+                                hasArticleRecommendations && (
+                                    <div className={css.headerContent}>
+                                        <ProgressBar
+                                            value={
+                                                articleRecommendationsData.meta
+                                                    .totalLabeledArticles
+                                            }
+                                            maxValue={Math.min(
+                                                articleRecommendationsData.meta
+                                                    .pagination.totalSize,
+                                                25 *
+                                                    articleRecommendationsData
+                                                        .meta
+                                                        .totalDistinctArticles
+                                            )}
+                                            labelType="fraction"
+                                        />
+                                        <RecommendationDivisor />
+                                    </div>
+                                )}
+                        </Header>
+                        {isFetchedArticleRecommendations &&
+                            !hasArticleRecommendations && (
+                                <div
+                                    className={classNames(
+                                        css.content,
+                                        css.empty,
+                                        {
+                                            [css.withButton]: isHelpCenterEmpty,
                                         }
-                                        maxValue={Math.min(
-                                            articleRecommndationsData.meta
-                                                .pagination.totalSize,
-                                            25 *
-                                                articleRecommndationsData.meta
-                                                    .totalDistinctArticles
-                                        )}
-                                        labelType="fraction"
-                                    />
-                                    <RecommendationDivisor />
+                                    )}
+                                >
+                                    <div className={css.description}>
+                                        {isHelpCenterEmpty
+                                            ? `There are no articles published in ${shopName} Help Center.`
+                                            : 'No recommendations have been sent yet'}
+                                    </div>
+                                    {typeof helpCenterId === 'number' &&
+                                    isHelpCenterEmpty ? (
+                                        <LinkButton
+                                            target=""
+                                            href={`/app/settings/help-center/${helpCenterId}/articles`}
+                                        >
+                                            Add articles to your help center
+                                        </LinkButton>
+                                    ) : (
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
+                                            rel="noopener noreferrer"
+                                            target="_blank"
+                                        >
+                                            Learn about Article Recommendation
+                                            and AI training
+                                        </a>
+                                    )}
                                 </div>
                             )}
-                        </Header>
-                        {isFetched && !hasArticleRecommendations && (
-                            <div
-                                className={classNames(css.content, css.empty, {
-                                    [css.withButton]: isHelpCenterEmpty,
-                                })}
-                            >
-                                <div className={css.description}>
-                                    {isHelpCenterEmpty
-                                        ? `There are no articles published in ${shopName} Help Center.`
-                                        : 'No recommendations have been sent yet'}
-                                </div>
-                                {helpCenterId && isHelpCenterEmpty ? (
-                                    <LinkButton
-                                        target=""
-                                        href={`/app/settings/help-center/${helpCenterId}/articles`}
-                                    >
-                                        Add articles to your help center
-                                    </LinkButton>
-                                ) : (
-                                    <a
-                                        href="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
-                                        rel="noopener noreferrer"
-                                        target="_blank"
-                                    >
-                                        Learn about Article Recommendation and
-                                        AI training
-                                    </a>
-                                )}
-                            </div>
-                        )}
 
                         <div className={css.content}>
-                            {isInitialLoading ? (
+                            {isInitialLoadingArticleRecommndations ? (
                                 <Loader />
                             ) : (
-                                articleRecommndationsData?.data &&
-                                articleRecommndationsData.data.map(
+                                articleRecommendationsData?.data &&
+                                articleRecommendationsData.data.map(
                                     (
-                                        {id, message, articleIdFeedback},
+                                        {
+                                            id,
+                                            message,
+                                            articleIdFeedback,
+                                            articleId,
+                                        },
                                         index
                                     ) => {
+                                        const title =
+                                            helpCenterArticleTreeMap.get(
+                                                articleIdFeedback || articleId
+                                            ) ?? 'Deleted article'
                                         return (
                                             <MessageCard
-                                                articleTitle={''}
+                                                articleTitle={title}
                                                 isSelected={
                                                     selectedRecommendationIndex ===
                                                     index
@@ -198,67 +280,114 @@ const TrainMyAiView = () => {
                                     }
                                 )
                             )}
-                            {isFetched && hasArticleRecommendations && (
-                                <RecommendationPagination
-                                    page={
-                                        articleRecommndationsData?.meta
-                                            ?.pagination.currentPage
-                                    }
-                                    count={
-                                        articleRecommndationsData?.meta
-                                            ?.pagination.totalPages
-                                    }
-                                    onChange={(page) => {
-                                        setCurrentPage(page)
-                                        setSelectedRecommendationIndex(null)
-                                        leftColRef.current?.scrollTo({
-                                            top: 0,
-                                            behavior: 'auto',
-                                        })
-                                    }}
-                                />
-                            )}
+                            {isFetchedArticleRecommendations &&
+                                hasArticleRecommendations && (
+                                    <RecommendationPagination
+                                        page={
+                                            articleRecommendationsData?.meta
+                                                ?.pagination.currentPage
+                                        }
+                                        count={
+                                            articleRecommendationsData?.meta
+                                                ?.pagination.totalPages
+                                        }
+                                        onChange={(page) => {
+                                            setCurrentPage(page)
+                                            setSelectedRecommendationIndex(null)
+                                            leftColRef.current?.scrollTo({
+                                                top: 0,
+                                                behavior: 'auto',
+                                            })
+                                        }}
+                                    />
+                                )}
                         </div>
                     </div>
                     <div
+                        ref={rightColRef}
                         className={classNames(css.rightCol, {
                             [css.empty]: !selectedRecommendationData,
                         })}
                     >
-                        {!selectedRecommendationData && (
+                        {!selectedRecommendationData ? (
                             <div className={css.container}>
-                                <img src={gorgiasLogo} alt="Gorgias" />
+                                {hasArticleRecommendations &&
+                                isAllFeedbacksProvided ? (
+                                    <span
+                                        role="img"
+                                        aria-label="party popper"
+                                        className={css.partyPopper}
+                                    >
+                                        🎉
+                                    </span>
+                                ) : (
+                                    <img src={gorgiasLogo} alt="Gorgias" />
+                                )}
+
                                 {hasArticleRecommendations && (
                                     <>
-                                        <div className={css.description}>
-                                            <div className={css.title}>
-                                                Provide feedback on Article
-                                                Recommendations.
+                                        {isAllFeedbacksProvided ? (
+                                            <div className={css.description}>
+                                                <div className={css.title}>
+                                                    Great work!
+                                                </div>
+                                                <div className={css.subtitle}>
+                                                    You’ve provided feedback on
+                                                    every Article
+                                                    Recommendation.
+                                                    <br />
+                                                    Check again later for more.
+                                                </div>
                                             </div>
-                                            <div className={css.subtitle}>
-                                                Start by providing feedback for
-                                                articles that could deflect the
-                                                most tickets and aim to match 25
-                                                messages to each article for
-                                                best results.
-                                            </div>
-                                        </div>
-                                        <Button
-                                            onClick={() => {
-                                                setSelectedRecommendationIndex(
-                                                    0
-                                                )
-                                                leftColRef.current?.scrollTo({
-                                                    top: 0,
-                                                    behavior: 'auto',
-                                                })
-                                            }}
-                                        >
-                                            Provide feedback
-                                        </Button>
+                                        ) : (
+                                            <>
+                                                <div
+                                                    className={css.description}
+                                                >
+                                                    <div className={css.title}>
+                                                        Provide feedback on
+                                                        Article Recommendations.
+                                                    </div>
+                                                    <div
+                                                        className={css.subtitle}
+                                                    >
+                                                        Start by providing
+                                                        feedback for articles
+                                                        that could deflect the
+                                                        most tickets and aim to
+                                                        match 25 messages to
+                                                        each article for best
+                                                        results.
+                                                    </div>
+                                                </div>
+                                                <Button
+                                                    onClick={() => {
+                                                        setSelectedRecommendationIndex(
+                                                            0
+                                                        )
+                                                        leftColRef.current?.scrollTo(
+                                                            {
+                                                                top: 0,
+                                                                behavior:
+                                                                    'auto',
+                                                            }
+                                                        )
+                                                    }}
+                                                >
+                                                    Provide feedback
+                                                </Button>
+                                            </>
+                                        )}
                                     </>
                                 )}
                             </div>
+                        ) : (
+                            <PreviewSection
+                                key={selectedRecommendationIndex}
+                                page={currentPage}
+                                recommendations={selectedRecommendationData}
+                                onConfirmFeedback={handleConfirmFeedback}
+                            />
                         )}
                     </div>
                 </>

@@ -92,3 +92,20 @@ export const articleRecommendationPredictionsResponseFixture: Paths.GetArticleRe
             totalLabeledArticles: 4,
         },
     }
+
+export const updateArticleRecommendationPredictionsResponseFixture: Paths.UpdateArticleRecommendationPredictions.Responses.$200 =
+    {
+        id: 1,
+        message: 'no relevant feedback',
+        conversationId: '7a53c1de-993c-4cc3-992c-3f973df46e2e',
+        shopName: 'test-store',
+        shopType: 'shopify',
+        locale: 'en-US',
+        accountId: 1,
+        helpCenterId: 3,
+        articleId: 19,
+        articleIdFeedback: -1,
+        isHelpful: false,
+        createdDatetime: '2023-12-03T16:26:52.897Z',
+        updatedDatetime: '2023-12-01T15:59:21.371Z',
+    }

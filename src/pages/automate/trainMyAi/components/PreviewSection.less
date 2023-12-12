@@ -1,0 +1,20 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+
+        &.loader {
+            height: 100%;
+        }
+
+        .preview {
+            display: flex;
+            flex-direction: column;
+            padding: @layout-spacing-m;
+            height: 100%;
+        }
+    }
+}

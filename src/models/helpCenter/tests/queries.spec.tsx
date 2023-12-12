@@ -4,8 +4,12 @@ import {renderHook} from '@testing-library/react-hooks'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {
     useGetHelpCenterArticleList,
+    useGetHelpCenter,
+    useGetHelpCenterArticle,
     useGetHelpCenterCategoryTree,
 } from '../queries'
 import * as resources from '../resources'
@@ -16,6 +20,8 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 
 const getHelpCenterArticles = jest.spyOn(resources, 'getHelpCenterArticles')
+const getHelpCenterArticle = jest.spyOn(resources, 'getHelpCenterArticle')
+const getHelpCenter = jest.spyOn(resources, 'getHelpCenter')
 const getCategoryTree = jest.spyOn(resources, 'getCategoryTree')
 
 const queryClient = mockQueryClient()
@@ -155,6 +161,106 @@ describe('queries', () => {
             )
 
             expect(getCategoryTree).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetHelpCenterArticle ', () => {
+        it('should return correct data on success', async () => {
+            getHelpCenterArticle.mockReturnValue(
+                Promise.resolve(getSingleArticleEnglish)
+            )
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const articleId = 1
+            const locale = 'en-US'
+            const {result, waitFor} = renderHook(
+                () => useGetHelpCenterArticle(articleId, helpCenterId, locale),
+                {
+                    wrapper,
+                }
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(getSingleArticleEnglish)
+        })
+        it('should return undefined if arguments not provided', async () => {
+            getHelpCenterArticle.mockReturnValue(
+                Promise.resolve(getSingleArticleEnglish)
+            )
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const articleId = 1
+            const locale = 'en-US'
+            const {result, waitFor} = renderHook(
+                () => useGetHelpCenterArticle(articleId, helpCenterId, locale),
+                {
+                    wrapper,
+                }
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(false))
+            expect(result.current.data).toStrictEqual(undefined)
+        })
+
+        it('should not call the api function when client is not set', () => {
+            getHelpCenterArticle.mockReturnValue(
+                Promise.resolve(getSingleArticleEnglish)
+            )
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+            const articleId = 1
+            const locale = 'en-US'
+            renderHook(
+                () => useGetHelpCenterArticle(articleId, helpCenterId, locale),
+                {
+                    wrapper,
+                }
+            )
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
+        })
+    })
+    describe('useGetHelpCenter', () => {
+        it('should return correct data on success', async () => {
+            getHelpCenter.mockReturnValue(
+                Promise.resolve(getSingleHelpCenterResponseFixture) as any
+            )
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const {result, waitFor} = renderHook(
+                () => useGetHelpCenter(helpCenterId, {}),
+                {
+                    wrapper,
+                }
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(
+                getSingleHelpCenterResponseFixture
+            )
+        })
+
+        it('should not call the api function when client is not set', () => {
+            getHelpCenter.mockReturnValue(
+                Promise.resolve(getSingleHelpCenterResponseFixture) as any
+            )
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+            renderHook(() => useGetHelpCenter(helpCenterId, {}), {
+                wrapper,
+            })
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
         })
     })
 })

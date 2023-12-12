@@ -1,7 +1,12 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import {Paths} from '../../rest_api/help_center_api/client.generated'
 import {useHelpCenterApi} from '../../pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {getHelpCenterArticles, getCategoryTree} from './resources'
+import {
+    getHelpCenterArticles,
+    getCategoryTree,
+    getHelpCenter,
+    getHelpCenterArticle,
+} from './resources'
 
 export const helpCenterStatsKeys = {
     all: (helpCenterId: number) =>
@@ -72,6 +77,59 @@ export const useGetHelpCenterCategoryTree = (
                     parent_category_id: parentCategoryId,
                 },
                 queryParams
+            ),
+        ...overrides,
+        enabled: !!client && (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetHelpCenterArticle = (
+    articleId?: Paths.GetArticle.Parameters.Id,
+    helpCenterId?: Paths.GetArticle.Parameters.HelpCenterId,
+    locale?: Paths.GetArticle.Parameters.Locale,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getHelpCenterArticle>>
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: ['help-center-article', helpCenterId, articleId, locale],
+        queryFn: async () =>
+            getHelpCenterArticle(
+                client,
+                {
+                    help_center_id: helpCenterId!,
+                    id: articleId!,
+                },
+                {
+                    locale: locale!,
+                }
+            ),
+        ...overrides,
+        enabled:
+            !!client &&
+            articleId !== undefined &&
+            helpCenterId !== undefined &&
+            !!locale &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetHelpCenter = (
+    helpCenterId: Paths.GetHelpCenter.Parameters.HelpCenterId,
+    queryParameters: Paths.GetHelpCenter.QueryParameters,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getHelpCenter>>>
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: ['help-center', helpCenterId, queryParameters],
+        queryFn: async () =>
+            getHelpCenter(
+                client,
+                {help_center_id: helpCenterId},
+                queryParameters
             ),
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),

@@ -1,0 +1,14 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+
+        p {
+            color: var(--neutral-grey-6);
+            .heading-page-semibold();
+        }
+    }
+}

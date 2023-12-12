@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
@@ -28,5 +29,40 @@ export const getCategoryTree = async (
         ...queryParams,
     })
 
+    return response.data
+}
+
+export const getHelpCenterArticle = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetArticle.PathParameters,
+    queryParams: Paths.GetArticle.QueryParameters
+) => {
+    if (!client) return null
+
+    try {
+        const response = await client.getArticle({
+            ...pathParams,
+            ...queryParams,
+        })
+        return response.data
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            return null
+        }
+        throw error
+    }
+}
+
+export const getHelpCenter = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetHelpCenter.PathParameters,
+    queryParams: Paths.GetHelpCenter.QueryParameters
+) => {
+    if (!client) return null
+
+    const response = await client.getHelpCenter({
+        ...pathParams,
+        ...queryParams,
+    })
     return response.data
 }

@@ -1,0 +1,115 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        padding: @layout-spacing-m @layout-spacing-m 0 @layout-spacing-m;
+        position: sticky;
+        top: 0;
+
+        .messageContainer {
+            display: flex;
+            color: var(--neutral-grey-6);
+            .heading-section-semibold();
+            gap: @layout-spacing-xs;
+            padding-bottom: @layout-spacing-m;
+
+            i {
+                color: var(--neutral-grey-4);
+                font-size: 20px;
+            }
+        }
+
+        .banner {
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-s;
+
+            .aiBanner {
+                background-color: var(--accessory-magenta-1, #faeaff);
+                padding: @layout-spacing-xs;
+                display: flex;
+                gap: @layout-spacing-xs;
+
+                i {
+                    color: var(--accessory-magenta-3, #6f0c86);
+                    font-size: 20px;
+                }
+
+                .content {
+                    color: var(--neutral-grey-6);
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 20px;
+                    letter-spacing: -0.14px;
+                }
+
+                b {
+                    font-weight: 700;
+                }
+            }
+
+            .customerFeedback {
+                display: flex;
+                .caption-allcaps();
+                color: var(--neutral-grey-5);
+
+                i {
+                    padding-inline: @layout-spacing-xxs;
+                }
+
+                .helpful {
+                    color: var(--feedback-success-4);
+                }
+
+                .notHelpful {
+                    color: var(--feedback-error-3);
+                }
+            }
+        }
+    }
+
+    .feedback {
+        background-color: white;
+        padding-top: @layout-spacing-m;
+
+        .question {
+            padding-bottom: 12px;
+            color: var(--neutral-grey-6);
+            .body-semibold();
+        }
+
+        .editor {
+            display: flex;
+            min-height: 32px;
+            .edit {
+                display: flex;
+                align-items: center;
+                gap: @layout-spacing-xxs;
+                color: var(--neutral-grey-6);
+                .body-regular();
+                i {
+                    color: var(--neutral-grey-5);
+                    padding: @layout-spacing-xxs;
+                    cursor: pointer;
+                }
+            }
+
+            .improve {
+                display: flex;
+                flex-wrap: wrap;
+                gap: @layout-spacing-xs;
+            }
+        }
+
+        .divider {
+            margin-top: @layout-spacing-m;
+            width: 100%;
+            height: 1px;
+            background-color: var(--neutral-grey-3);
+        }
+    }
+}

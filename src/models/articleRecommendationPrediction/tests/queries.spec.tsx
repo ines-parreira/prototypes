@@ -1,11 +1,17 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import React from 'react'
 import MockAdapter from 'axios-mock-adapter'
-import {renderHook} from '@testing-library/react-hooks'
+import {renderHook, act} from '@testing-library/react-hooks'
 import axios from 'axios'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useArticleRecommendationPredictions} from '../queries'
-import {articleRecommendationPredictionsResponseFixture} from './article-recommendation-prediction.fixture'
+import {
+    useArticleRecommendationPredictions,
+    useUpdateArticleRecommendationPredictions,
+} from '../queries'
+import {
+    articleRecommendationPredictionsResponseFixture,
+    updateArticleRecommendationPredictionsResponseFixture,
+} from './article-recommendation-prediction.fixture'
 
 let mockedServer: MockAdapter
 const queryClient = mockQueryClient()
@@ -70,6 +76,39 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toBe(false))
             expect(result.current.data).toBe(undefined)
+        })
+    })
+
+    describe('useUpdateArticleRecommendationPredictions', () => {
+        it('should return correct data on success', async () => {
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onPatch(/article-recommendation\/predictions/)
+                .reply(
+                    200,
+                    updateArticleRecommendationPredictionsResponseFixture
+                )
+
+            const {result, waitFor} = renderHook(
+                () => useUpdateArticleRecommendationPredictions(),
+                {
+                    wrapper,
+                }
+            )
+
+            act(() => {
+                result.current.mutate([
+                    updateArticleRecommendationPredictionsResponseFixture.id,
+                ])
+            })
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+            expect(result.current.data?.data).toEqual(
+                updateArticleRecommendationPredictionsResponseFixture
+            )
         })
     })
 })

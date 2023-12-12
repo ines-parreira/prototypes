@@ -29,7 +29,6 @@ describe('resources', () => {
             expect(result).toEqual([])
         })
     })
-
     describe('getCategoryTree', () => {
         it('should return null when client is not set', async () => {
             const result = await getCategoryTree(

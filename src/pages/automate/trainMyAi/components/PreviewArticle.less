@@ -1,0 +1,66 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+
+        .articleContainer {
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-s;
+
+            .infoContainer {
+                display: flex;
+                justify-content: space-between;
+                .titleContainer {
+                    display: flex;
+                    flex-direction: column;
+                    gap: @layout-spacing-xxs;
+                    .subTitle {
+                        color: var(--neutral-grey-5);
+                        .caption-allcaps();
+                    }
+                    .title {
+                        color: var(--neutral-grey-6);
+                        .heading-section-semibold();
+                    }
+                }
+
+                i {
+                    color: var(--neutral-grey-5);
+                    padding: 6px;
+                    font-size: 20px;
+                    align-self: center;
+                    cursor: pointer;
+                }
+            }
+            .contentContainer {
+                z-index: -1;
+                border-radius: 4px;
+                background: var(--neutral-grey-1);
+                display: flex;
+                padding: @layout-spacing-xl;
+                flex-direction: column;
+                align-items: center;
+                gap: var(--spacing-m, 24px);
+                align-self: stretch;
+
+                p,
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6 {
+                    background: var(--neutral-grey-1, #f9f9f9) !important;
+                    color: var(
+                        --modern-neutral-grey-6,
+                        var(--neutral-grey-6, #222)
+                    ) !important;
+                }
+            }
+        }
+    }
+}

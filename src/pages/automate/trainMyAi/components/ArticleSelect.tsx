@@ -19,6 +19,7 @@ import css from './ArticleSelect.less'
 type Props = {
     helpCenterId: number
     onSelect: (id: number) => void
+    onChange: (id: number) => void
 }
 
 const ArticleRow = ({
@@ -71,7 +72,7 @@ const CategoryRow = ({
     )
 }
 
-const ArticleSelect = ({helpCenterId, onSelect}: Props) => {
+const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const searchRef = useRef<HTMLInputElement>(null)
@@ -96,7 +97,7 @@ const ArticleSelect = ({helpCenterId, onSelect}: Props) => {
     const handleCategoryClick = useCallback(
         (value: string) => {
             const i = value.split('_')[1]
-            setPath(`${path ? '.' : ''}children[${i}]`)
+            setPath(`${path ? path + '.' : ''}children[${i}]`)
         },
         [path, setPath]
     )
@@ -134,6 +135,7 @@ const ArticleSelect = ({helpCenterId, onSelect}: Props) => {
                             setPath('')
                             setIsOpen(false)
                             context?.onBlur()
+                            onChange(articleId)
                         }
                         return (
                             <Dropdown

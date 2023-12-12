@@ -63,7 +63,7 @@ declare namespace Components {
        * example:
        * 1
        */
-      isHelpful?: boolean | null;
+      isHelpful: boolean | null;
       /**
        * example:
        * 2023-11-09T12:51:05.141Z
@@ -161,11 +161,15 @@ declare namespace Paths {
     export interface PathParameters {
       id: Parameters.Id;
     }
+    export interface RequestBody {
+      /**
+       * example:
+       * 1
+       */
+      articleIdFeedback?: number;
+    }
     namespace Responses {
-      export interface $200 {
-        data?: Components.Schemas.PredictionResponseDataDTO;
-        meta?: Components.Schemas.PredictionResponseMetaDTO;
-      }
+      export type $200 = Components.Schemas.PredictionResponseDataDTO;
     }
   }
 }
@@ -184,7 +188,7 @@ export interface OperationMethods {
    */
   'updateArticleRecommendationPredictions'(
     parameters?: Parameters<Paths.UpdateArticleRecommendationPredictions.PathParameters & Paths.UpdateArticleRecommendationPredictions.HeaderParameters> | null,
-    data?: any,
+    data?: Paths.UpdateArticleRecommendationPredictions.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateArticleRecommendationPredictions.Responses.$200>
 }
@@ -206,7 +210,7 @@ export interface PathsDictionary {
      */
     'patch'(
       parameters?: Parameters<Paths.UpdateArticleRecommendationPredictions.PathParameters & Paths.UpdateArticleRecommendationPredictions.HeaderParameters> | null,
-      data?: any,
+      data?: Paths.UpdateArticleRecommendationPredictions.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateArticleRecommendationPredictions.Responses.$200>
   }
