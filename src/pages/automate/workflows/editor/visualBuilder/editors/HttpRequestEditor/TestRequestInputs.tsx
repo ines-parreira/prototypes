@@ -13,9 +13,15 @@ type Props = {
     isLoading: boolean
     inputs: WorkflowVariable[]
     onSendTestRequest: (values: Record<string, string>) => Promise<void>
+    onClose: () => void
 }
 
-const TestRequestInputs = ({isLoading, inputs, onSendTestRequest}: Props) => {
+const TestRequestInputs = ({
+    isLoading,
+    inputs,
+    onSendTestRequest,
+    onClose,
+}: Props) => {
     const [values, setValues] = useState<Record<string, string>>({})
 
     const isDisabled = inputs.some((input) => !values[input.value])
@@ -40,6 +46,9 @@ const TestRequestInputs = ({isLoading, inputs, onSendTestRequest}: Props) => {
                 ))}
             </ModalBody>
             <ModalActionsFooter>
+                <Button intent="secondary" onClick={onClose}>
+                    Close
+                </Button>
                 <Button
                     isLoading={isLoading}
                     isDisabled={isDisabled}

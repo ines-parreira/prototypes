@@ -29,6 +29,7 @@ const TestRequestModal = ({
                 result={result}
                 variables={variables}
                 onRetest={sendTestRequest}
+                onClose={onClose}
             />
         </Modal>
     )

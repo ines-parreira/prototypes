@@ -13,6 +13,7 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
 import css from './TestRequestResult.less'
 
@@ -21,6 +22,7 @@ type Props = {
     result: NonNullable<HttpRequestNodeType['data']['testRequestResult']>
     variables: HttpRequestNodeType['data']['variables']
     onRetest: () => void
+    onClose: () => void
 }
 
 const getBadgeType = (status: number) => {
@@ -100,7 +102,13 @@ const statusTextByStatus: Record<number, string> = {
     511: 'Network Authentication Required',
 }
 
-const TestRequestResult = ({isLoading, result, variables, onRetest}: Props) => {
+const TestRequestResult = ({
+    isLoading,
+    result,
+    variables,
+    onRetest,
+    onClose,
+}: Props) => {
     const json = useMemo(() => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return result.content && validateJSON(result.content)
@@ -176,6 +184,11 @@ const TestRequestResult = ({isLoading, result, variables, onRetest}: Props) => {
                     </div>
                 )}
             </ModalBody>
+            <ModalActionsFooter>
+                <Button intent="secondary" onClick={onClose}>
+                    Close
+                </Button>
+            </ModalActionsFooter>
         </>
     )
 }

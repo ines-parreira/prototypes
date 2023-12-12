@@ -35,12 +35,14 @@ const TestRequestModalWithInputs = ({
                     result={result}
                     variables={variables}
                     onRetest={onReset}
+                    onClose={onClose}
                 />
             ) : (
                 <TestRequestInputs
                     isLoading={isLoading}
                     inputs={inputs}
                     onSendTestRequest={sendTestRequest}
+                    onClose={onClose}
                 />
             )}
         </Modal>
