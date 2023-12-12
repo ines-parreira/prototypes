@@ -1,7 +1,54 @@
 @import '~@gorgias/design-tokens/dist/css/colorTokens';
 @import 'stats/colors';
+@import '~@gorgias/design-tokens/dist/css/color/merchantDark.css';
+@import '~@gorgias/design-tokens/dist/css/color/merchantLight.css';
 
 :root {
+    :global(.light),
+    :global(.dark) {
+        --navbar-background-color: var(--neutral-grey-1);
+        --navbar-background-color-h: var(--neutral-grey-1-h);
+        --navbar-background-color-s: var(--neutral-grey-1-s);
+        --navbar-background-color-l: var(--neutral-grey-1-l);
+
+        --navbar-text-color: var(--neutral-grey-5);
+        --navbar-title-color: var(--neutral-grey-6);
+        --navbar-border-color: var(--neutral-grey-2);
+        --navbar-link-hover-background-color: var(--neutral-grey-2);
+        --navbar-link-hover-text: var(--navbar-text-color);
+        --navbar-chat-ticket-new: var(--neutral-grey-6);
+
+        --navbar-block-toggle-active-color: var(--navbar-text-color);
+        --navbar-block-toggle-active-background-color: var(--neutral-grey-3);
+        --navbar-block-toggle-hover-background-color: unset;
+        --navbar-block-toggle-hover-color: var(--neutral-grey-6);
+
+        --scrollbar-thumb: var(--neutral-grey-4);
+        --scrollbar-track: var(--neutral-grey-1);
+    }
+
+    :global(.modern) {
+        --navbar-background-color: var(--neutral-grey-6);
+        --navbar-background-color-h: var(--neutral-grey-6-h);
+        --navbar-background-color-s: var(--neutral-grey-6-s);
+        --navbar-background-color-l: var(--neutral-grey-6-l);
+
+        --navbar-text-color: var(--neutral-grey-4);
+        --navbar-title-color: var(--neutral-grey-0);
+        --navbar-border-color: var(--neutral-grey-6);
+        --navbar-link-hover-background-color: var(--neutral-grey-5);
+        --navbar-link-hover-text: var(--neutral-grey-2);
+        --navbar-chat-ticket-new: var(--neutral-grey-2);
+
+        --navbar-block-toggle-active-color: var(--neutral-grey-0);
+        --navbar-block-toggle-active-background-color: var(--neutral-grey-4);
+        --navbar-block-toggle-hover-background-color: var(--neutral-grey-6);
+        --navbar-block-toggle-hover-color: var(--neutral-grey-1);
+
+        --scrollbar-thumb: var(--neutral-grey-5);
+        --scrollbar-track: var(--neutral-grey-6);
+    }
+
     /*---  Colors  ---*/
     --black: #1b1c1d;
     --black-h: 210;

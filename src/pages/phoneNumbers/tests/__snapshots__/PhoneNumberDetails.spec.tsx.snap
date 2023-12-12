@@ -148,7 +148,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
           Connected integrations
         </h4>
         <div
-          class="appRow border-bottom ml-1 mr-1 disabledApp row"
+          class="appRow ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -391,7 +391,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
           Connected integrations
         </h4>
         <div
-          class="appRow border-bottom ml-1 mr-1 disabledApp row"
+          class="appRow ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -664,7 +664,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
           Connected integrations
         </h4>
         <div
-          class="appRow border-bottom ml-1 mr-1 row"
+          class="appRow ml-1 mr-1 row"
         >
           <div
             class="col-lg-8"
@@ -932,7 +932,7 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
           Connected integrations
         </h4>
         <div
-          class="appRow border-bottom ml-1 mr-1 disabledApp row"
+          class="appRow ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1223,7 +1223,7 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
           Connected integrations
         </h4>
         <div
-          class="appRow border-bottom ml-1 mr-1 disabledApp row"
+          class="appRow ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1496,7 +1496,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
           Connected integrations
         </h4>
         <div
-          class="appRow border-bottom ml-1 mr-1 disabledApp row"
+          class="appRow ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1739,7 +1739,7 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           Connected integrations
         </h4>
         <div
-          class="appRow border-bottom ml-1 mr-1 disabledApp row"
+          class="appRow ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"

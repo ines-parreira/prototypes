@@ -13,6 +13,9 @@
         z-index: 2;
         width: 100%;
         height: 100%;
+        border-right: 1px solid var(--navbar-border-color);
+        background: var(--navbar-background-color);
+        color: var(--navbar-text-color);
 
         @media @mobiles {
             min-width: 0;
@@ -80,7 +83,6 @@
         display: flex;
         flex-direction: column;
         width: inherit;
-        background: var(--neutral-grey-6);
         min-width: 200px;
         max-width: 350px;
     }
@@ -103,9 +105,9 @@
     .nav-dropdown {
         &:global.show > button {
             background-color: hsl(
-                var(--neutral-grey-6-h),
-                var(--neutral-grey-6-s),
-                calc(var(--neutral-grey-6-l) - 4%)
+                var(--navbar-background-color-h),
+                var(--navbar-background-color-s),
+                calc(var(--navbar-background-color-l) - 4%)
             );
         }
     }
@@ -119,7 +121,7 @@
         border: 0;
         border-radius: 0;
 
-        color: var(--neutral-grey-0);
+        color: var(--navbar-title-color);
         .heading-subsection-semibold();
 
         > div {
@@ -133,32 +135,24 @@
 
         &:hover {
             background-color: hsl(
-                var(--neutral-grey-6-h),
-                var(--neutral-grey-6-s),
-                calc(var(--neutral-grey-6-l) - 4%)
+                var(--navbar-background-color-h),
+                var(--navbar-background-color-s),
+                calc(var(--navbar-background-color-l) - 4%)
             );
-            color: var(--neutral-grey-0);
+            color: var(--navbar-title-color);
         }
 
         &:active {
             background-color: hsl(
-                var(--neutral-grey-6-h),
-                var(--neutral-grey-6-s),
-                calc(var(--neutral-grey-6-l) - 8%)
-            );
-        }
-
-        &.show > button {
-            background-color: hsl(
-                var(--neutral-grey-6-h),
-                var(--neutral-grey-6-s),
-                calc(var(--neutral-grey-6-l) - 4%)
+                var(--navbar-background-color-h),
+                var(--navbar-background-color-s),
+                calc(var(--navbar-background-color-l) - 8%)
             );
         }
     }
 
     .dropdown-toggle-dropup {
-        background: var(--neutral-grey-6);
+        background: var(--navbar-background-color);
         border-width: 1px 0 0;
         padding-top: 12px;
         padding-bottom: 12px;
@@ -166,14 +160,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: var(--neutral-grey-0);
+        color: var(--navbar-title-color);
+
         .body-semibold();
 
         &.active {
             background-color: hsl(
-                var(--neutral-grey-6-h),
-                var(--neutral-grey-6-s),
-                calc(var(--neutral-grey-6-l) - 8%)
+                var(--navbar-background-color-h),
+                var(--navbar-background-color-s),
+                calc(var(--navbar-background-color-l) - 8%)
             );
         }
 
@@ -190,7 +185,6 @@
         */
         margin: 0 0 0 -5px;
         border-radius: 0;
-        border: solid 1px #cfe0ee;
         border-top: none;
         padding: 4px 0;
     }
@@ -204,13 +198,11 @@
         outline: none;
 
         &:global.current {
-            color: var(--neutral-grey-6);
             font-weight: 600;
         }
 
         &:global:hover {
             background-color: var(--neutral-grey-2);
-            color: var(--neutral-grey-6);
         }
     }
 
@@ -220,16 +212,16 @@
         padding-bottom: 24px;
         margin-right: 3px;
 
-        scrollbar-color: var(--neutral-grey-5) var(--neutral-grey-6);
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-thumb);
         scrollbar-width: thin;
 
         &::-webkit-scrollbar-thumb {
-            background: var(--neutral-grey-5);
+            background: var(--scrollbar-thumb);
             visibility: initial;
         }
 
         &::-webkit-scrollbar-track {
-            background-color: var(--neutral-grey-6);
+            background-color: var(--scrollbar-track);
         }
     }
 
@@ -282,10 +274,7 @@
         padding: 0 8px;
         transition: background-color 0.2s linear;
 
-        &:hover {
-            background: var(--neutral-grey-1);
-        }
-
+        &:hover,
         &:focus {
             background: var(--neutral-grey-2);
         }

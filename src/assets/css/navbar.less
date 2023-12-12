@@ -7,7 +7,7 @@
 
     .category-title {
         .caption-allcaps();
-        color: var(--neutral-grey-4);
+        color: var(--navbar-text-color);
         display: flex;
         height: 32px;
         line-height: 32px;
@@ -37,6 +37,7 @@
 
     .link {
         .body-regular();
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -44,7 +45,7 @@
         vertical-align: middle;
         user-select: none;
         transition: @item-transition;
-        color: var(--neutral-grey-4);
+        color: var(--navbar-text-color);
         padding: 4px 8px;
 
         overflow: hidden;
@@ -55,19 +56,17 @@
             opacity: 0.3;
         }
 
-        &:global.active,
-        &:global:active,
         &:global:hover {
-            background-color: var(--neutral-grey-5);
-            border-radius: 4px;
-            color: var(--neutral-grey-2);
+            background-color: var(--navbar-link-hover-background-color);
+            color: var(--navbar-link-hover-text);
 
             :local .item-count {
-                color: var(--neutral-grey-2);
+                color: var(--navbar-link-hover-text);
             }
         }
 
-        &:global.active {
+        &:global.active,
+        &:global:active {
             background-color: var(--main-primary);
             color: var(--neutral-grey-0);
 

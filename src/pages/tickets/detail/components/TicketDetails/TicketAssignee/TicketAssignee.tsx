@@ -245,8 +245,8 @@ const TicketAssignee = ({
                 )}
             </DropdownToggle>
             <DropdownMenu
+                className={css.menu}
                 right={menuDirection === 'right'}
-                style={{width: '260px', zIndex: 1051}}
                 container={dropdownContainer}
                 modifiers={{
                     preventOverflow: {boundariesElement: 'viewport'},

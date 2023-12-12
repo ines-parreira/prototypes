@@ -1,6 +1,6 @@
 :local {
     .title {
-        color: var(--neutral-grey-4);
+        color: var(--navbar-text-color);
         flex-grow: 1;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -10,7 +10,7 @@
 
     .toggle {
         border: none;
-        color: var(--neutral-grey-4) !important;
+        color: var(--navbar-text-color) !important;
         font-size: 14px;
         line-height: 20px;
         padding: 3px 6px;
@@ -18,12 +18,16 @@
 
         &:hover,
         &:focus {
-            background-color: var(--neutral-grey-6);
-            color: var(--neutral-grey-1) !important;
+            background-color: var(--navbar-block-toggle-hover-background-color);
+            color: var(--navbar-block-toggle-hover-color) !important;
+            box-shadow: unset;
         }
 
         &:active {
-            background-color: var(--neutral-grey-4) !important;
+            background-color: var(
+                --navbar-block-toggle-active-background-color
+            ) !important;
+            color: var(--navbar-block-toggle-active-color);
         }
     }
 

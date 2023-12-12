@@ -16,9 +16,8 @@ exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
   </button>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="menu dropdown-menu"
     role="menu"
-    style="width: 260px; z-index: 1051;"
     tabindex="-1"
   >
     <h6
@@ -74,9 +73,8 @@ exports[`<SetAssigneeAction/> render() should render team dropdown with current 
   </button>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="menu dropdown-menu"
     role="menu"
-    style="width: 260px; z-index: 1051;"
     tabindex="-1"
   >
     <h6
@@ -152,9 +150,8 @@ exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
   </button>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="menu dropdown-menu"
     role="menu"
-    style="width: 260px; z-index: 1051;"
     tabindex="-1"
   >
     <h6
@@ -235,9 +232,8 @@ exports[`<SetAssigneeAction/> render() should render user dropdown with current 
   </button>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="menu dropdown-menu"
     role="menu"
-    style="width: 260px; z-index: 1051;"
     tabindex="-1"
   >
     <h6

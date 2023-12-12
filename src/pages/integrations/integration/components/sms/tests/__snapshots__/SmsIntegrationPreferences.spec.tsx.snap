@@ -74,7 +74,7 @@ exports[`<SmsIntegrationPreferences/> render() should render 1`] = `
               Phone number
             </h4>
             <div
-              class="appRow border-bottom ml-1 mr-1 row"
+              class="appRow ml-1 mr-1 row"
             >
               <div
                 class="pl-0 col-lg-8"
@@ -219,7 +219,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
               Phone number
             </h4>
             <div
-              class="appRow border-bottom ml-1 mr-1 row"
+              class="appRow ml-1 mr-1 row"
             >
               <div
                 class="pl-0 col-lg-8"

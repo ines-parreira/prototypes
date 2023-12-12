@@ -128,7 +128,6 @@ export default function VoiceIntegrationPreferences({
                                 <Row
                                     className={classnames(
                                         css.appRow,
-                                        'border-bottom',
                                         'ml-1',
                                         'mr-1'
                                     )}

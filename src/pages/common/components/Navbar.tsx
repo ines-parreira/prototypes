@@ -455,7 +455,7 @@ export class Navbar extends Component<Props, State> {
                         className={classnames(
                             css['dropdown-toggle'],
                             css['dropdown-toggle-dropup'],
-                            {active: this.state.bottomDropdownOpen}
+                            {[css.active]: this.state.bottomDropdownOpen}
                         )}
                         onClick={this._toggleBottomDropdown}
                     >

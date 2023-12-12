@@ -256,20 +256,14 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                     <h4 className="mb-3">Connected integrations</h4>
                     {hasCapability(phoneNumber, IntegrationType.Phone) && (
                         <Row
-                            className={classnames(
-                                css.appRow,
-                                'border-bottom',
-                                'ml-1',
-                                'mr-1',
-                                {
-                                    [css.disabledApp]:
-                                        !voiceIntegration ||
-                                        !hasCapability(
-                                            phoneNumber,
-                                            IntegrationType.Phone
-                                        ),
-                                }
-                            )}
+                            className={classnames(css.appRow, 'ml-1', 'mr-1', {
+                                [css.disabledApp]:
+                                    !voiceIntegration ||
+                                    !hasCapability(
+                                        phoneNumber,
+                                        IntegrationType.Phone
+                                    ),
+                            })}
                         >
                             <Col lg={8}>
                                 <i className="material-icons md-2 align-middle mr-3">

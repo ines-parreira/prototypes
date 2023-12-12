@@ -105,7 +105,6 @@ export default function WhatsAppIntegrationPreferences({
                                 <Row
                                     className={classnames(
                                         css.appRow,
-                                        'border-bottom',
                                         'ml-1',
                                         'mr-1'
                                     )}

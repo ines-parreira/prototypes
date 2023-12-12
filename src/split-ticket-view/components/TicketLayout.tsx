@@ -7,6 +7,7 @@ import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import {Config, Panel, Panels} from 'panels'
 
 import DefaultViewFallback from './DefaultViewFallback'
+import css from './TicketLayout.less'
 
 type Params = {
     viewId: string
@@ -32,7 +33,7 @@ export default function TicketLayout({
             <Panel>
                 <DefaultViewFallback viewId={viewId} />
             </Panel>
-            <Panel>
+            <Panel className={css.container}>
                 <TicketDetail />
             </Panel>
             <Panel>
