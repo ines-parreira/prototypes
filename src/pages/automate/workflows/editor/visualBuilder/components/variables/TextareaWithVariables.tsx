@@ -1,12 +1,12 @@
 import 'draft-js/dist/Draft.css'
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {ContentState, EditorState} from 'draft-js'
+import {ContentState, EditorState, Modifier} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 
 import classnames from 'classnames'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import {contentStateFromTextOrHTML} from 'utils/editor'
+import {contentStateFromTextOrHTML, EditorHandledNotHandled} from 'utils/editor'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 import {insertText} from 'utils'
@@ -58,6 +58,33 @@ const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
             )
         )
     }
+    const handlePastedText = useCallback(
+        (
+            text: string,
+            _html: string | undefined,
+            editorState: EditorState
+        ): EditorHandledNotHandled => {
+            const contentState = Modifier.replaceWithFragment(
+                editorState.getCurrentContent(),
+                editorState.getSelection(),
+                contentStateFromTextOrHTML(
+                    text.replace(/\r\n|\r|\n{{/g, '{{')
+                ).getBlockMap()
+            )
+
+            const newEditorState = (
+                EditorState.push as (
+                    editorState: EditorState,
+                    contentState: ContentState
+                ) => EditorState
+            )(editorState, contentState)
+
+            handleChange(newEditorState)
+
+            return EditorHandledNotHandled.Handled
+        },
+        [handleChange]
+    )
 
     useEffect(() => {
         setEditorState((editorState) => {
@@ -88,11 +115,11 @@ const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
                         <Editor
                             editorState={editorState}
                             onChange={handleChange}
-                            stripPastedStyles
                             ref={(editor) => {
                                 editorRef.current = editor
                             }}
                             plugins={plugins}
+                            handlePastedText={handlePastedText}
                         />
                     </div>
                     <div className={css.variables}>
