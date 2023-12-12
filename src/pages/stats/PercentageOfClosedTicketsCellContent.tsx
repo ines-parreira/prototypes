@@ -59,7 +59,7 @@ export const PercentageOfClosedTicketsCellContent = ({
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
                 <DrillDownModalTrigger
-                    enabled={!!data.value}
+                    enabled={false}
                     metricData={buildAgentMetric(
                         TableColumn.PercentageOfClosedTickets,
                         agent
