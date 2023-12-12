@@ -139,8 +139,8 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                     statsFilters,
                     timezone,
                     String(metricName.customFieldId),
-                    sorting,
-                    metricName.customFieldValue || []
+                    metricName.customFieldValue,
+                    sorting
                 )
         case OverviewMetric.OpenTickets:
             return openTicketsPerTicketQueryFactory

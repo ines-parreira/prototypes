@@ -60,6 +60,7 @@ export const TableBodyRowExpandable = <T,>({
                         level={level + 1}
                         RowContentComponent={RowContentComponent}
                         rowContentProps={{
+                            ...rowContentProps,
                             ...tag,
                             onClick: toggleExpand,
                         }}

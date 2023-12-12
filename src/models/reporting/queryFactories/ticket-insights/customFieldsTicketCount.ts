@@ -66,8 +66,8 @@ export const customFieldsTicketCountPerTicketQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: string,
-    sorting?: OrderDirection,
-    customFieldsValueStrings?: string[]
+    customFieldsValueStrings: string[] | null,
+    sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customFieldsTicketCountQueryFactory(
         filters,
@@ -81,7 +81,7 @@ export const customFieldsTicketCountPerTicketQueryFactory = (
         measures: [],
         filters: [
             ...baseQuery.filters,
-            ...(customFieldsValueStrings
+            ...(customFieldsValueStrings !== null
                 ? [
                       {
                           member: TicketCustomFieldsMember.TicketCustomFieldsValueString,

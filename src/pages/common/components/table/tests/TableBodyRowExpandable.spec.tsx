@@ -12,12 +12,14 @@ type Data = {
     value: number
 }
 
-const SampleRowContentComponent = ({label, value}: Data) => (
-    <>
-        <BodyCell>{label}</BodyCell>
-        <BodyCell>{value}</BodyCell>
-    </>
-)
+const SampleRowContentComponentMock = jest
+    .fn()
+    .mockImplementation(({label, value}: Data) => (
+        <>
+            <BodyCell>{label}</BodyCell>
+            <BodyCell>{value}</BodyCell>
+        </>
+    ))
 
 describe('<TableBodyRowExpandable />', () => {
     const level1Label = 'Level 1.1'
@@ -49,12 +51,13 @@ describe('<TableBodyRowExpandable />', () => {
                 ],
             },
         ],
+        otherProp: '123',
     }
 
     it('should render the component with it`s props but no children initially', () => {
         render(
             <TableBodyRowExpandable<WithChildren<Data>>
-                RowContentComponent={SampleRowContentComponent}
+                RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
             />
         )
@@ -66,7 +69,7 @@ describe('<TableBodyRowExpandable />', () => {
     it('should show children 1 level below after clicking expand icon', () => {
         render(
             <TableBodyRowExpandable<WithChildren<Data>>
-                RowContentComponent={SampleRowContentComponent}
+                RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
             />
         )
@@ -79,31 +82,35 @@ describe('<TableBodyRowExpandable />', () => {
         expect(screen.queryByText(level3Label)).not.toBeInTheDocument()
     })
 
-    it('should show allow expanding all levels', () => {
+    it('should show allow expanding all levels and pass common props to each', () => {
         render(
             <TableBodyRowExpandable<WithChildren<Data>>
-                RowContentComponent={SampleRowContentComponent}
+                RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
             />
         )
 
         act(() => {
             userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
-            // userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
         })
         act(() => {
-            // userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
             userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
         })
 
         expect(screen.queryByText(level2Label)).toBeInTheDocument()
         expect(screen.queryByText(level3Label)).toBeInTheDocument()
+        expect(SampleRowContentComponentMock).toHaveBeenCalledTimes(7)
+        expect(SampleRowContentComponentMock).toHaveBeenNthCalledWith(
+            7,
+            expect.objectContaining({otherProp: sampleData.otherProp}),
+            {}
+        )
     })
 
     it('should hide all levels below', () => {
         render(
             <TableBodyRowExpandable<WithChildren<Data>>
-                RowContentComponent={SampleRowContentComponent}
+                RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
             />
         )

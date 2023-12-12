@@ -133,7 +133,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             const query = customFieldsTicketCountPerTicketQueryFactory(
                 statsFilters,
                 timezone,
-                customFieldId
+                customFieldId,
+                null
             )
 
             expect(query).toEqual({
@@ -166,7 +167,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 statsFilters,
                 timezone,
                 customFieldId,
-                undefined,
                 customFieldsValueStrings
             )
 
