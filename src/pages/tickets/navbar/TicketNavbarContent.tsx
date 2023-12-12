@@ -1,9 +1,6 @@
 import React, {useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {DropTargetMonitor} from 'react-dnd'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {produce} from 'immer'
 
 import {UserViewsOrderingSettingData} from 'config/types/user'
@@ -19,8 +16,8 @@ import {
     optimisticUserSettingsSet,
 } from 'state/ui/ticketNavbar/actions'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-
 import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
+import useLocalStorage from 'hooks/useLocalStorage'
 import TicketNavbarDropTarget, {
     TicketNavbarDragObject,
     TicketNavbarDropResult,

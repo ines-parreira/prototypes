@@ -1,7 +1,4 @@
 import React, {useMemo} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {useRouteMatch} from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -12,6 +9,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {compare} from 'utils'
 import navbarCss from 'assets/css/navbar.less'
 import useEffectOnce from 'hooks/useEffectOnce'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {useIsAutomateRebranding} from '../hooks/useIsAutomateRebranding'
 import AutomateNavbarSectionBlock from './AutomateNavbarSectionBlock'
 

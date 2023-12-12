@@ -1,14 +1,16 @@
 import {renderHook} from '@testing-library/react-hooks'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import * as reactUse from 'react-use'
+
 import moment from 'moment'
 import {
     CUTOFF_DATETIME,
     useIsHiddenByLegacyFlag,
 } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsHiddenByLegacyFlag'
+import * as useLocalStorageImports from 'hooks/useLocalStorage'
 
-const useLocalStorageSpy = jest.spyOn(reactUse, 'useLocalStorage') as jest.Mock
+const useLocalStorageSpy = jest.spyOn(
+    useLocalStorageImports,
+    'default'
+) as jest.Mock
 jest.mock('react-use', () => ({
     useLocalStorage: jest.fn(),
 }))

@@ -1,7 +1,4 @@
 import React, {useMemo, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
 
@@ -16,6 +13,7 @@ import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustome
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
 import useAppSelector from 'hooks/useAppSelector'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {StatsFilters} from 'models/stat/types'
 import StatsPage from 'pages/stats/StatsPage'
 import {

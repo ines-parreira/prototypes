@@ -7,9 +7,7 @@ import {
 } from '@testing-library/react'
 import {Provider} from 'react-redux'
 import React, {ComponentProps} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import * as reactUse from 'react-use'
+
 import {mockStore} from 'utils/testing'
 import {
     migrationOutboundVerificationNotStarted,
@@ -20,11 +18,15 @@ import {
     EmailMigrationOutboundVerification,
     OutboundVerificationType,
 } from 'models/integration/types'
+import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import MigrationDomainList from '../EmailMigration/MigrationDomainList'
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
-const useLocalStorageSpy = jest.spyOn(reactUse, 'useLocalStorage') as jest.Mock
+const useLocalStorageSpy = jest.spyOn(
+    useLocalStorageImports,
+    'default'
+) as jest.Mock
 
 jest.mock(
     '../EmailMigration/DomainVerificationAccordionItem',

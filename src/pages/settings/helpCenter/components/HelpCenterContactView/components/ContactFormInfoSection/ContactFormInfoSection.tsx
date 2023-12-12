@@ -1,13 +1,11 @@
 import React, {useCallback, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classnames from 'classnames'
 import settingsCss from 'pages/settings/settings.less'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {EmailContactInfoDto} from 'models/helpCenter/types'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import TextArea from 'pages/common/forms/TextArea'

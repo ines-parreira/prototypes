@@ -1,9 +1,7 @@
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {useMemo} from 'react'
 import moment from 'moment'
 import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/constants'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 export const CUTOFF_DATETIME = moment('2023-08-15T00:00:00.000Z')
 

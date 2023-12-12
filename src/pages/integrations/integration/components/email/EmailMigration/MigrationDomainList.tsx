@@ -1,7 +1,4 @@
 import React, {useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import {
@@ -10,6 +7,7 @@ import {
     EmailMigrationSenderVerificationIntegration,
     OutboundVerificationType,
 } from 'models/integration/types'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {SenderInformation} from 'models/singleSenderVerification/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'

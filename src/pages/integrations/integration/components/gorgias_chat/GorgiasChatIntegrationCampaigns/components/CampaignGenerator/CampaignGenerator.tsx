@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import _get from 'lodash/get'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {Map} from 'immutable'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
@@ -11,6 +8,7 @@ import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {isAdmin} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useLocalStorage from 'hooks/useLocalStorage'
 import closeIcon from 'assets/img/icons/close.svg'
 
 import {useIsHiddenByLegacyFlag} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsHiddenByLegacyFlag'

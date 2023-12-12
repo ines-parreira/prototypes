@@ -1,9 +1,6 @@
 import classnames from 'classnames'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import moment, {Moment} from 'moment'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useLocalStorage} from 'react-use'
 import {Scale, TooltipItem} from 'chart.js'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
@@ -54,6 +51,7 @@ import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCos
 import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useSearch from 'hooks/useSearch'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {mergeStatsFilters} from 'state/stats/actions'
 import {
     SHORT_FORMAT,
