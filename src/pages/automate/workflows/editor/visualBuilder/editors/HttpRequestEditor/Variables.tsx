@@ -50,8 +50,12 @@ const Variables = ({variables, onChange, onDelete, onAdd}: Props) => {
                     </IconButton>
                 </div>
             ))}
-            {variables.length > 0 && <div>Variable name and JSONPath</div>}
-            <Button intent="secondary" onClick={onAdd}>
+            {variables.length > 0 && (
+                <div className={css.description}>
+                    Variable name and JSONPath
+                </div>
+            )}
+            <Button intent="secondary" onClick={onAdd} size="small">
                 <ButtonIconLabel icon="add">Add Variable</ButtonIconLabel>
             </Button>
         </div>

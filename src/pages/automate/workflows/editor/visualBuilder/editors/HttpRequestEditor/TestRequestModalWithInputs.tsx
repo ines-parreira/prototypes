@@ -16,6 +16,12 @@ type Props = {
     variables: HttpRequestNodeType['data']['variables']
     result: HttpRequestNodeType['data']['testRequestResult']
     inputs: WorkflowVariable[]
+    onChangeVariable: (
+        index: number,
+        variable: HttpRequestNodeType['data']['variables'][number]
+    ) => void
+    onDeleteVariable: (index: number) => void
+    onAddVariable: () => void
 }
 
 const TestRequestModalWithInputs = ({
@@ -27,15 +33,21 @@ const TestRequestModalWithInputs = ({
     variables,
     result,
     inputs,
+    onChangeVariable,
+    onDeleteVariable,
+    onAddVariable,
 }: Props) => {
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} size="large" isScrollable>
             {result ? (
                 <TestRequestResult
                     result={result}
                     variables={variables}
                     onRetest={onReset}
                     onClose={onClose}
+                    onChangeVariable={onChangeVariable}
+                    onDeleteVariable={onDeleteVariable}
+                    onAddVariable={onAddVariable}
                 />
             ) : (
                 <TestRequestInputs

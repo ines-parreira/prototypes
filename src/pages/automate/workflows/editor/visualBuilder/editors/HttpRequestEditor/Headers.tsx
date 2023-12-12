@@ -55,11 +55,11 @@ const Headers = ({variables, headers, onChange, onDelete, onAdd}: Props) => {
                 </div>
             ))}
             {headers.length > 0 && (
-                <div>
+                <div className={css.description}>
                     Key and value pairs to be added as headers in all requests
                 </div>
             )}
-            <Button intent="secondary" onClick={onAdd}>
+            <Button intent="secondary" onClick={onAdd} size="small">
                 <ButtonIconLabel icon="add">Add Header</ButtonIconLabel>
             </Button>
         </div>

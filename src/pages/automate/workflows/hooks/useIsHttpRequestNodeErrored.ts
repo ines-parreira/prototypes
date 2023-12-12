@@ -7,7 +7,8 @@ import {isValidLiquidSyntaxInNode} from '../models/variables.model'
 import {useWorkflowEditorContext} from './useWorkflowEditor'
 
 export default function useIsHttpRequestNodeErrored(
-    node: Pick<HttpRequestNodeType, 'id' | 'data'>
+    node: Pick<HttpRequestNodeType, 'id' | 'data'>,
+    allowMissingVariables = false
 ) {
     const {
         name,
@@ -34,9 +35,10 @@ export default function useIsHttpRequestNodeErrored(
         hasInvalidVariables ||
         headers.some((header) => !header.name.trim() || !header.value.trim()) ||
         formUrlencoded.some((item) => !item.key.trim() || !item.value.trim()) ||
-        variables.some(
-            (variable) => !variable.name.trim() || !variable.jsonpath.trim()
-        ) ||
+        (!allowMissingVariables &&
+            variables.some(
+                (variable) => !variable.name.trim() || !variable.jsonpath.trim()
+            )) ||
         !isValidLiquidSyntaxInNode({data: node.data, type: 'http_request'}) ||
         !!validateWebhookURL(url) ||
         (bodyContentType === 'application/json' && !validateJSON(json ?? ''))

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import _uniq from 'lodash/uniq'
 
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
@@ -44,7 +44,7 @@ export default function HttpRequestEditor({
         handleDownloadHttpRequestEventLogs,
         isDownloadPending,
     } = useWorkflowEditorContext()
-    const {isErrored} = useIsHttpRequestNodeErrored(nodeInEdition)
+    const {isErrored} = useIsHttpRequestNodeErrored(nodeInEdition, true)
     const {isLoading: isTestRequestLoading, sendTestRequest} =
         useSendTestRequest(nodeInEdition.data, (result) => {
             dispatch({
@@ -85,6 +85,37 @@ export default function HttpRequestEditor({
             parseWorkflowVariable(variable, workflowVariables)
         )
     }, [workflowVariables, nodeInEdition.data])
+
+    const handleAddVariable = useCallback(() => {
+        dispatch({
+            type: 'ADD_HTTP_REQUEST_VARIABLE',
+            httpRequestNodeId: nodeInEdition.id,
+        })
+    }, [dispatch, nodeInEdition.id])
+    const handleDeleteVariable = useCallback(
+        (index: number) => {
+            dispatch({
+                type: 'DELETE_HTTP_REQUEST_VARIABLE',
+                httpRequestNodeId: nodeInEdition.id,
+                index,
+            })
+        },
+        [dispatch, nodeInEdition.id]
+    )
+    const handleChangeVariable = useCallback(
+        (
+            index: number,
+            variable: HttpRequestNodeType['data']['variables'][number]
+        ) => {
+            dispatch({
+                type: 'SET_HTTP_REQUEST_VARIABLE',
+                httpRequestNodeId: nodeInEdition.id,
+                index,
+                variable,
+            })
+        },
+        [dispatch, nodeInEdition.id]
+    )
 
     return (
         <>
@@ -249,32 +280,19 @@ export default function HttpRequestEditor({
                             )}
                         </div>
                     )}
-                    <div className={css.divider} />
                     <div className={css.formField}>
-                        <Label>Create variables</Label>
+                        <div className={css.withDescription}>
+                            <Label>Flow variables</Label>
+                            <div>
+                                Create variables from the request response which
+                                can be used in subsequent steps
+                            </div>
+                        </div>
                         <Variables
                             variables={nodeInEdition.data.variables}
-                            onChange={(index, variable) => {
-                                dispatch({
-                                    type: 'SET_HTTP_REQUEST_VARIABLE',
-                                    httpRequestNodeId: nodeInEdition.id,
-                                    index,
-                                    variable,
-                                })
-                            }}
-                            onDelete={(index) => {
-                                dispatch({
-                                    type: 'DELETE_HTTP_REQUEST_VARIABLE',
-                                    httpRequestNodeId: nodeInEdition.id,
-                                    index,
-                                })
-                            }}
-                            onAdd={() => {
-                                dispatch({
-                                    type: 'ADD_HTTP_REQUEST_VARIABLE',
-                                    httpRequestNodeId: nodeInEdition.id,
-                                })
-                            }}
+                            onChange={handleChangeVariable}
+                            onDelete={handleDeleteVariable}
+                            onAdd={handleAddVariable}
                         />
                     </div>
                 </div>
@@ -316,6 +334,9 @@ export default function HttpRequestEditor({
                         variables={nodeInEdition.data.variables}
                         result={nodeInEdition.data.testRequestResult}
                         inputs={variables}
+                        onChangeVariable={handleChangeVariable}
+                        onDeleteVariable={handleDeleteVariable}
+                        onAddVariable={handleAddVariable}
                     />
                 ) : (
                     nodeInEdition.data.testRequestResult && (
@@ -328,6 +349,9 @@ export default function HttpRequestEditor({
                             sendTestRequest={sendTestRequest}
                             variables={nodeInEdition.data.variables}
                             result={nodeInEdition.data.testRequestResult}
+                            onChangeVariable={handleChangeVariable}
+                            onDeleteVariable={handleDeleteVariable}
+                            onAddVariable={handleAddVariable}
                         />
                     )
                 )}

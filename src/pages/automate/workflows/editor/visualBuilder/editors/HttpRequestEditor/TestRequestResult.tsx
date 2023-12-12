@@ -14,6 +14,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './TestRequestResult.less'
 
@@ -23,6 +24,12 @@ type Props = {
     variables: HttpRequestNodeType['data']['variables']
     onRetest: () => void
     onClose: () => void
+    onChangeVariable: (
+        index: number,
+        variable: HttpRequestNodeType['data']['variables'][number]
+    ) => void
+    onDeleteVariable: (index: number) => void
+    onAddVariable: () => void
 }
 
 const getBadgeType = (status: number) => {
@@ -108,6 +115,9 @@ const TestRequestResult = ({
     variables,
     onRetest,
     onClose,
+    onChangeVariable,
+    onDeleteVariable,
+    onAddVariable,
 }: Props) => {
     const json = useMemo(() => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -156,37 +166,83 @@ const TestRequestResult = ({
                         className={css.textarea}
                     />
                 </div>
-                {json && variables.length > 0 && (
-                    <div className={css.field}>
-                        <Label>Variables</Label>
-                        {variables.map((variable) => {
-                            const value =
-                                JSONPath({
-                                    wrap: false,
-                                    preventEval: true,
-                                    path: variable.jsonpath,
-                                    json,
-                                }) ?? ''
-
-                            return (
-                                <div key={variable.id} className={css.variable}>
-                                    <TextInput
-                                        value={variable.name}
-                                        isDisabled
-                                    />
-                                    <TextInput
-                                        value={
-                                            _isString(value)
-                                                ? value
-                                                : JSON.stringify(value)
-                                        }
-                                        isDisabled
-                                    />
-                                </div>
-                            )
-                        })}
+                <div className={css.field}>
+                    <div>
+                        <Label>Flow variables</Label>
+                        <div className={css.description}>
+                            Create variables from the request response which can
+                            be used in subsequent steps
+                        </div>
                     </div>
-                )}
+                    {variables.map((variable, index) => {
+                        const value =
+                            JSONPath({
+                                wrap: false,
+                                preventEval: true,
+                                path: variable.jsonpath,
+                                json,
+                            }) ?? ''
+
+                        return (
+                            <div key={variable.id} className={css.variable}>
+                                <TextInput
+                                    value={variable.name}
+                                    placeholder="Variable name"
+                                    onChange={(name) => {
+                                        onChangeVariable(index, {
+                                            ...variable,
+                                            name,
+                                        })
+                                    }}
+                                />
+                                <TextInput
+                                    value={variable.jsonpath}
+                                    placeholder="JSONPath"
+                                    onChange={(jsonpath) => {
+                                        onChangeVariable(index, {
+                                            ...variable,
+                                            jsonpath,
+                                        })
+                                    }}
+                                />
+                                <TextInput
+                                    value={
+                                        _isString(value)
+                                            ? value
+                                            : JSON.stringify(value)
+                                    }
+                                    placeholder="Value"
+                                    isDisabled
+                                />
+                                <IconButton
+                                    intent="destructive"
+                                    fillStyle="ghost"
+                                    onClick={() => {
+                                        onDeleteVariable(index)
+                                    }}
+                                >
+                                    close
+                                </IconButton>
+                            </div>
+                        )
+                    })}
+                    {variables.length > 0 && (
+                        <div className={css.helper}>
+                            <span>Variable name and JSONPath</span>
+                            <span>Test result</span>
+                        </div>
+                    )}
+                    <Button
+                        intent="secondary"
+                        onClick={onAddVariable}
+                        className={css.addVariableButton}
+                        size="small"
+                    >
+                        <ButtonIconLabel icon="add">
+                            Add Variable
+                        </ButtonIconLabel>
+                    </Button>
+                </div>
             </ModalBody>
             <ModalActionsFooter>
                 <Button intent="secondary" onClick={onClose}>

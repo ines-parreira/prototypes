@@ -12,6 +12,12 @@ type Props = {
     sendTestRequest: (variables?: Record<string, string>) => Promise<void>
     variables: HttpRequestNodeType['data']['variables']
     result: NonNullable<HttpRequestNodeType['data']['testRequestResult']>
+    onChangeVariable: (
+        index: number,
+        variable: HttpRequestNodeType['data']['variables'][number]
+    ) => void
+    onDeleteVariable: (index: number) => void
+    onAddVariable: () => void
 }
 
 const TestRequestModal = ({
@@ -21,15 +27,21 @@ const TestRequestModal = ({
     sendTestRequest,
     variables,
     result,
+    onChangeVariable,
+    onDeleteVariable,
+    onAddVariable,
 }: Props) => {
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} size="large" isScrollable>
             <TestRequestResult
                 isLoading={isLoading}
                 result={result}
                 variables={variables}
                 onRetest={sendTestRequest}
                 onClose={onClose}
+                onChangeVariable={onChangeVariable}
+                onDeleteVariable={onDeleteVariable}
+                onAddVariable={onAddVariable}
             />
         </Modal>
     )

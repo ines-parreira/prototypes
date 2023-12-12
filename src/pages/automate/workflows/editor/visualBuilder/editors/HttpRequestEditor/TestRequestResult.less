@@ -1,3 +1,4 @@
+@import (reference) '~css/typography.less';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
@@ -30,7 +31,23 @@
 
     .variable {
         display: grid;
-        grid-template-columns: 188px 1fr;
+        grid-template-columns: 188px 1fr 188px 20px;
         gap: @layout-spacing-xs;
+    }
+
+    .addVariableButton {
+        align-self: flex-start;
+    }
+
+    .description {
+        margin-top: @layout-spacing-xxs;
+    }
+
+    .helper {
+        .caption-regular();
+        display: grid;
+        grid-template-columns: 1fr 216px;
+        gap: @layout-spacing-xs;
+        color: var(--neutral-grey-5);
     }
 }
