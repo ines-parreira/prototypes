@@ -53,12 +53,18 @@ export type ShopperOrder = {
     shipping_amount: number | null
     tax_amount: number | null
     total_amount: number
-    financial_status: string | null
-    fulfillment_status: string | null
+    external_status: string | null
+    external_fulfillment_status: string | null
+    external_payment_status: string | null
+    status: string | null
+    payment_status: string | null
     line_items: LineItem[]
     created_datetime: string
     updated_datetime: string | null
+    processed_datetime: string | null
+    canceled_datetime: string | null
     deleted_datetime: string | null
+    shopper_external_id: string
 }
 
 export type ShopperAddress = {

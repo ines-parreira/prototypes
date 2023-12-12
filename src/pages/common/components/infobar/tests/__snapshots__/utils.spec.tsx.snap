@@ -1052,6 +1052,11 @@ exports[`widgets infobar utils jsonToWidgets() should convert json to widgets 1`
               "widgets": Immutable.List [
                 Immutable.Map {
                   "type": "text",
+                  "title": "Canceled datetime",
+                  "path": "canceled_datetime",
+                },
+                Immutable.Map {
+                  "type": "text",
                   "title": "Created datetime",
                   "path": "created_datetime",
                 },
@@ -1077,18 +1082,23 @@ exports[`widgets infobar utils jsonToWidgets() should convert json to widgets 1`
                 },
                 Immutable.Map {
                   "type": "text",
+                  "title": "External fulfillment status",
+                  "path": "external_fulfillment_status",
+                },
+                Immutable.Map {
+                  "type": "text",
                   "title": "External id",
                   "path": "external_id",
                 },
                 Immutable.Map {
                   "type": "text",
-                  "title": "Financial status",
-                  "path": "financial_status",
+                  "title": "External payment status",
+                  "path": "external_payment_status",
                 },
                 Immutable.Map {
                   "type": "text",
-                  "title": "Fulfillment status",
-                  "path": "fulfillment_status",
+                  "title": "External status",
+                  "path": "external_status",
                 },
                 Immutable.Map {
                   "type": "text",
@@ -1107,8 +1117,28 @@ exports[`widgets infobar utils jsonToWidgets() should convert json to widgets 1`
                 },
                 Immutable.Map {
                   "type": "text",
+                  "title": "Payment status",
+                  "path": "payment_status",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Processed datetime",
+                  "path": "processed_datetime",
+                },
+                Immutable.Map {
+                  "type": "text",
                   "title": "Shipping amount",
                   "path": "shipping_amount",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Shopper external id",
+                  "path": "shopper_external_id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Status",
+                  "path": "status",
                 },
                 Immutable.Map {
                   "type": "text",

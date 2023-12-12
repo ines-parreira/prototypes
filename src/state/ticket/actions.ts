@@ -9,9 +9,9 @@ import {Moment} from 'moment'
 import {compressToEncodedURIComponent} from 'lz-string'
 
 import {
+    TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
-    TicketChannel,
 } from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
@@ -68,6 +68,12 @@ import {mapNormalizedToArray} from 'models/ticket/mappers'
 
 import {CustomerExternalData} from 'models/customerExternalData/types'
 import {nestedReplace} from 'tickets/common/utils'
+import {
+    EcommerceStore,
+    Shopper,
+    ShopperAddress,
+    ShopperOrder,
+} from 'models/customerEcommerceData/types'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
@@ -158,6 +164,44 @@ export const mergeCustomerExternalData = (
         type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
         customerId,
         externalData,
+    }
+}
+export const mergeCustomerEcommerceDataShopper = (
+    customerId: number,
+    store: EcommerceStore,
+    shopper: Shopper
+) => {
+    return {
+        type: types.MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
+        customerId,
+        store,
+        shopper,
+    }
+}
+
+export const mergeCustomerEcommerceDataShopperAddress = (
+    customerId: number,
+    storeUUID: EcommerceStore['uuid'],
+    shopperAddress: ShopperAddress
+) => {
+    return {
+        type: types.MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
+        customerId,
+        storeUUID,
+        shopperAddress,
+    }
+}
+
+export const mergeCustomerEcommerceDataOrder = (
+    customerId: number,
+    storeUUID: EcommerceStore['uuid'],
+    shopperOrder: ShopperOrder
+) => {
+    return {
+        type: types.MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
+        customerId,
+        storeUUID,
+        shopperOrder,
     }
 }
 

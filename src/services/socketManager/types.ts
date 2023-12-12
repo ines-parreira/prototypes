@@ -10,6 +10,12 @@ import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
 import {ActionData} from 'state/infobar/utils'
 import {VoiceCall} from 'models/voiceCall/types'
+import {
+    EcommerceStore,
+    Shopper,
+    ShopperAddress,
+    ShopperOrder,
+} from 'models/customerEcommerceData/types'
 
 export type SendData = {
     clientId?: string
@@ -83,6 +89,12 @@ export enum SocketEventType {
     VoiceCallUpdated = 'voice-call-updated',
     WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
     WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',
+    ShopperCreated = 'shopper-created',
+    ShopperUpdated = 'shopper-updated',
+    ShopperAddressCreated = 'shopper-address-created',
+    ShopperAddressUpdated = 'shopper-address-updated',
+    OrderCreated = 'order-created',
+    OrderUpdated = 'order-updated',
 }
 
 export enum JoinEventType {
@@ -353,6 +365,41 @@ export type VoiceCallUpdatedEvent = {
     voice_call: VoiceCall
 }
 
+export type ShopperEvent = {
+    event: {
+        type: SocketEventType.ShopperCreated | SocketEventType.ShopperUpdated
+        data: {
+            customer_id: number
+            store: EcommerceStore
+            shopper: Shopper
+        }
+    }
+}
+
+export type ShopperAddressEvent = {
+    event: {
+        type:
+            | SocketEventType.ShopperAddressCreated
+            | SocketEventType.ShopperAddressUpdated
+        data: {
+            customer_id: number
+            store_uuid: EcommerceStore['uuid']
+            shopper_address: ShopperAddress
+        }
+    }
+}
+
+export type OrderEvent = {
+    event: {
+        type: SocketEventType.OrderCreated | SocketEventType.OrderUpdated
+        data: {
+            customer_id: number
+            store_uuid: EcommerceStore['uuid']
+            order: ShopperOrder
+        }
+    }
+}
+
 export type ServerMessage =
     | CustomerUpdatedEvent
     | CustomerExternalDataUpdatedEvent
@@ -388,6 +435,9 @@ export type ServerMessage =
     | WhatsAppOnboardingFailedEvent
     | VoiceCallCreatedEvent
     | VoiceCallUpdatedEvent
+    | ShopperEvent
+    | ShopperAddressEvent
+    | OrderEvent
 
 export type WSMessage = {
     type?: BroadcastChannelEvent | MessagePortEvent | SocketEvent

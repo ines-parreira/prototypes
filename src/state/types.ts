@@ -1,18 +1,18 @@
-import {Map, List} from 'immutable'
+import {List, Map} from 'immutable'
 import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {
     EmailDomain,
-    EmailMigrationInboundVerification,
     EmailMigrationBannerStatus,
+    EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
     GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
-    EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
-import {PaginationMeta, OrderDirection} from 'models/api/types'
+import {OrderDirection, PaginationMeta} from 'models/api/types'
 import {Tag} from 'models/tag/types'
 import {TicketEvent} from 'models/ticket/types'
 import {Customer} from 'models/customer/types'
@@ -20,6 +20,12 @@ import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {CustomerExternalData} from 'models/customerExternalData/types'
+import {
+    EcommerceStore,
+    Shopper,
+    ShopperAddress,
+    ShopperOrder,
+} from 'models/customerEcommerceData/types'
 import {BillingContact} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
@@ -28,7 +34,7 @@ import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
 import {Message} from './newMessage/types'
 import rootReducer from './reducers'
-import {Rule, RulePriority, RuleOperation} from './rules/types'
+import {Rule, RuleOperation, RulePriority} from './rules/types'
 import {UIState} from './ui/reducers'
 import {Widget, WidgetContextType, WidgetType} from './widgets/types'
 import {TwilioState} from './twilio/types'
@@ -194,6 +200,11 @@ export type GorgiasAction = {
     discountCode?: DiscountCode
     transactions?: List<Map<any, any>>
     queryKey?: string
+    store?: EcommerceStore
+    storeUUID?: EcommerceStore['uuid']
+    shopper?: Shopper
+    shopperAddress?: ShopperAddress
+    shopperOrder?: ShopperOrder
 }
 
 export type CurrentUser = Map<any, any>

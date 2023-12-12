@@ -1,6 +1,5 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map} from 'immutable'
-import {Moment} from 'moment'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import * as newMessageTypes from 'state/newMessage/constants'
@@ -22,19 +21,22 @@ import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
 } from 'state/widgets/constants'
-import * as types from '../constants'
+import {
+    mergeCustomerEcommerceDataOrder,
+    mergeCustomerEcommerceDataShopper,
+    mergeCustomerEcommerceDataShopperAddress,
+} from 'state/ticket/actions'
+import {
+    ecommerceStoreFixture,
+    shopperAddressFixture,
+    shopperFixture,
+    shopperOrderFixture,
+} from 'models/customerEcommerceData/fixtures'
+import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
 import reducer, {initialState} from '../reducers'
+import * as types from '../constants'
 
-// mock Date object
-const DATE_TO_USE = new Date('2017')
-global.Date = jest.fn(() => DATE_TO_USE) as any
-;(
-    global.Date as typeof global.Date & {
-        toISOString: () => string
-    }
-).toISOString = (Date as unknown as {toISOString: () => string}).toISOString
-
-jest.mock('../../newMessage/ticketReplyCache', () => {
+jest.mock('state/newMessage/ticketReplyCache', () => {
     const Immutable: {fromJS: typeof fromJS} = jest.requireActual('immutable')
 
     return {
@@ -55,13 +57,6 @@ jest.mock('../helpers', () => {
     } as {
         shouldDeduplicateAuditLogEvents: () => boolean
     }
-})
-
-jest.mock('moment', () => {
-    const moment: jest.Mock<Moment> = jest.requireActual('moment')
-    const fn: jest.Mock<Moment> = jest.fn(() => moment(new Date()))
-    Object.assign(fn, moment)
-    return fn
 })
 
 describe('ticket reducers', () => {
@@ -86,6 +81,8 @@ describe('ticket reducers', () => {
     })
 
     it('should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR', () => {
+        jest.useFakeTimers()
+        jest.setSystemTime(new Date('2017-01-01'))
         const newMessage = {
             source: {
                 type: 'email',
@@ -158,6 +155,8 @@ describe('ticket reducers', () => {
                 } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
+
+        jest.useRealTimers()
     })
 
     it('should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS', () => {
@@ -403,6 +402,8 @@ describe('ticket reducers', () => {
     })
 
     it('should handle SNOOZE_TICKET on timedelta', () => {
+        jest.useFakeTimers()
+        jest.setSystemTime(new Date('2017-01-01'))
         const action = {
             type: types.SNOOZE_TICKET,
             args: fromJS({
@@ -414,6 +415,7 @@ describe('ticket reducers', () => {
                 .set('snooze_datetime', '2017-01-02T00:00:00Z')
                 .set('status', 'closed')
         )
+        jest.useRealTimers()
     })
     it('should handle SET_AGENT', () => {
         expect(
@@ -1233,6 +1235,196 @@ describe('ticket reducers', () => {
             expect(
                 newState.getIn(['customer', CUSTOMER_EXTERNAL_DATA_KEY])
             ).toEqual(fromJS(externalDataNewValue))
+        })
+    })
+
+    describe('handle MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER', () => {
+        it('should do nothing since there is no customer in state', () => {
+            const newState = reducer(
+                initialState,
+                mergeCustomerEcommerceDataShopper(
+                    1,
+                    ecommerceStoreFixture,
+                    shopperFixture
+                )
+            )
+            expect(newState.get('customer')).toBeNull()
+        })
+
+        it('should update the shopper data of the customer', () => {
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                        ecommerce_data: {},
+                    },
+                }),
+                mergeCustomerEcommerceDataShopper(
+                    1,
+                    ecommerceStoreFixture,
+                    shopperFixture
+                )
+            )
+
+            expect(
+                newState.getIn([
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    ecommerceStoreFixture.uuid,
+                    'store',
+                ])
+            ).toEqual(fromJS(ecommerceStoreFixture))
+
+            expect(
+                newState.getIn([
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    ecommerceStoreFixture.uuid,
+                    'shopper',
+                ])
+            ).toEqual(fromJS(shopperFixture))
+        })
+    })
+
+    describe('handle MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS', () => {
+        it('should do nothing since there is no customer in state', () => {
+            const newState = reducer(
+                initialState,
+                mergeCustomerEcommerceDataShopperAddress(
+                    1,
+                    ecommerceStoreFixture.uuid,
+                    shopperAddressFixture
+                )
+            )
+            expect(newState.get('customer')).toBeNull()
+        })
+
+        it('should update the shopper address of the customer keeping only the latest', () => {
+            const fixtureCreatedDatetime = new Date(
+                shopperAddressFixture.created_datetime
+            )
+            const addresses = Array.from(
+                Array(types.MAX_ADDRESSES_PER_SHOPPER).keys()
+            ).map((_, i) => {
+                return {
+                    ...shopperAddressFixture,
+                    id: types.MAX_ADDRESSES_PER_SHOPPER - i,
+                    created_datetime: new Date(
+                        fixtureCreatedDatetime.setDate(
+                            fixtureCreatedDatetime.getDate() - (i + 1)
+                        )
+                    ).toISOString(),
+                }
+            })
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                        ecommerce_data: {
+                            [ecommerceStoreFixture.uuid]: {
+                                store: ecommerceStoreFixture,
+                                addresses,
+                            },
+                        },
+                    },
+                }),
+                mergeCustomerEcommerceDataShopperAddress(
+                    1,
+                    ecommerceStoreFixture.uuid,
+                    {
+                        ...shopperAddressFixture,
+                        id: types.MAX_ADDRESSES_PER_SHOPPER + 1,
+                    }
+                )
+            )
+
+            const newAddresses: ShopperAddress[] = (
+                newState.getIn([
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    ecommerceStoreFixture.uuid,
+                    'addresses',
+                ]) as List<Map<any, any>> | undefined
+            )?.toJS()
+            expect(newAddresses.length).toEqual(types.MAX_ADDRESSES_PER_SHOPPER)
+            expect(newAddresses[0].id).toEqual(
+                types.MAX_ADDRESSES_PER_SHOPPER + 1
+            )
+        })
+    })
+
+    describe('handle MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER', () => {
+        it('should do nothing since there is no customer in state', () => {
+            const newState = reducer(
+                initialState,
+                mergeCustomerEcommerceDataOrder(
+                    1,
+                    ecommerceStoreFixture.uuid,
+                    shopperOrderFixture
+                )
+            )
+            expect(newState.get('customer')).toBeNull()
+        })
+
+        it('should update the shopper order of the customer keeping only the latest', () => {
+            const fixtureCreatedDatetime = new Date(
+                shopperOrderFixture.created_datetime
+            )
+            const orders = Array.from(
+                Array(types.MAX_ORDERS_PER_SHOPPER).keys()
+            ).map((_, i) => {
+                return {
+                    ...shopperOrderFixture,
+                    id: types.MAX_ORDERS_PER_SHOPPER - i,
+                    created_datetime: new Date(
+                        fixtureCreatedDatetime.setDate(
+                            fixtureCreatedDatetime.getDate() - (i + 1)
+                        )
+                    ).toISOString(),
+                }
+            })
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                        ecommerce_data: {
+                            [ecommerceStoreFixture.uuid]: {
+                                store: ecommerceStoreFixture,
+                                orders,
+                            },
+                        },
+                    },
+                }),
+                mergeCustomerEcommerceDataOrder(1, ecommerceStoreFixture.uuid, {
+                    ...shopperOrderFixture,
+                    id: types.MAX_ORDERS_PER_SHOPPER + 1,
+                })
+            )
+
+            expect(
+                newState.getIn([
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    ecommerceStoreFixture.uuid,
+                    'store',
+                ])
+            ).toEqual(fromJS(ecommerceStoreFixture))
+
+            const newOrders: ShopperOrder[] = (
+                newState.getIn([
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    ecommerceStoreFixture.uuid,
+                    'orders',
+                ]) as List<Map<any, any>> | undefined
+            )?.toJS()
+            expect(newOrders.length).toEqual(types.MAX_ORDERS_PER_SHOPPER)
+            expect(newOrders[0].id).toEqual(types.MAX_ORDERS_PER_SHOPPER + 1)
         })
     })
 

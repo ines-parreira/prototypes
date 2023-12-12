@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
 
 import {FETCH_TICKET_REPLY_MACRO} from 'common/state'
@@ -18,17 +18,18 @@ import {
     CUSTOMER_EXTERNAL_DATA_KEY,
 } from 'state/widgets/constants'
 import {parseTimeDelta} from 'tickets/common/utils'
-import {
-    getPendingMessageIndex,
-    injectAISuggestionEvents,
-    mergeActions,
-} from './utils'
+import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
 } from './helpers'
 import {TicketState} from './types'
+import {
+    getPendingMessageIndex,
+    injectAISuggestionEvents,
+    mergeActions,
+} from './utils'
 
 export const initialState: TicketState = fromJS({
     state: {
@@ -615,6 +616,134 @@ export default function reducer(
             }
 
             return nextState
+        }
+
+        case types.MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER: {
+            const {customerId, store, shopper} = action
+            if (!store || !shopper) {
+                return state
+            }
+
+            // if received customer data does not concern current customer of ticket, do nothing
+            if (customerId !== state.getIn(['customer', 'id'])) {
+                return state
+            }
+
+            return state
+                .setIn(
+                    [
+                        'customer',
+                        CUSTOMER_ECOMMERCE_DATA_KEY,
+                        store.uuid,
+                        'store',
+                    ],
+                    fromJS(store)
+                )
+                .setIn(
+                    [
+                        'customer',
+                        CUSTOMER_ECOMMERCE_DATA_KEY,
+                        store.uuid,
+                        'shopper',
+                    ],
+                    fromJS(shopper)
+                )
+        }
+
+        case types.MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS: {
+            const {customerId, storeUUID, shopperAddress} = action
+            if (!storeUUID || !shopperAddress) {
+                return state
+            }
+
+            // if received customer data does not concern current customer of ticket, do nothing
+            if (customerId !== state.getIn(['customer', 'id'])) {
+                return state
+            }
+
+            const addressesPath = [
+                'customer',
+                CUSTOMER_ECOMMERCE_DATA_KEY,
+                storeUUID,
+                'addresses',
+            ]
+            let addresses: ShopperAddress[] = (
+                state.getIn(addressesPath) as List<Map<any, any>> | undefined
+            )?.toJS()
+            if (!addresses) {
+                return state.setIn(addressesPath, fromJS([shopperAddress]))
+            }
+
+            // replace the existing address
+            const existingAddressIndex = addresses.findIndex(
+                (address: ShopperAddress) => address.id === shopperAddress.id
+            )
+            if (existingAddressIndex !== -1) {
+                addresses[existingAddressIndex] = shopperAddress
+                return state.setIn(addressesPath, fromJS(addresses))
+            }
+
+            // add the new address to the list
+            // and keep the latest MAX_ADDRESSES_PER_SHOPPER addresses
+            addresses.push(shopperAddress)
+            addresses = addresses.sort((a, b) => {
+                const aCreatedAt = new Date(a.created_datetime)
+                const bCreatedAt = new Date(b.created_datetime)
+                return bCreatedAt.getTime() - aCreatedAt.getTime()
+            })
+            while (addresses.length > types.MAX_ADDRESSES_PER_SHOPPER) {
+                addresses.pop()
+            }
+
+            return state.setIn(addressesPath, fromJS(addresses))
+        }
+
+        case types.MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER: {
+            const {customerId, storeUUID, shopperOrder} = action
+            if (!storeUUID || !shopperOrder) {
+                return state
+            }
+
+            // if received customer data does not concern current customer of ticket, do nothing
+            if (customerId !== state.getIn(['customer', 'id'])) {
+                return state
+            }
+
+            const ordersPath = [
+                'customer',
+                CUSTOMER_ECOMMERCE_DATA_KEY,
+                storeUUID,
+                'orders',
+            ]
+            let orders: ShopperOrder[] = (
+                state.getIn(ordersPath) as List<Map<any, any>> | undefined
+            )?.toJS()
+            if (!orders) {
+                return state.setIn(ordersPath, fromJS([shopperOrder]))
+            }
+
+            // replace the existing order
+            const existingOrderIndex = orders.findIndex(
+                (order: ShopperOrder) => order.id === shopperOrder.id
+            )
+            if (existingOrderIndex !== -1) {
+                orders[existingOrderIndex] = shopperOrder
+                return state.setIn(ordersPath, fromJS(orders))
+            }
+
+            // add the new order to the list
+            // and keep the latest MAX_ORDERS_PER_SHOPPER orders
+            orders.push(shopperOrder)
+            orders = orders.sort((a, b) => {
+                const aCreatedAt = new Date(a.created_datetime)
+                const bCreatedAt = new Date(b.created_datetime)
+                return bCreatedAt.getTime() - aCreatedAt.getTime()
+            })
+            while (orders.length > types.MAX_ORDERS_PER_SHOPPER) {
+                orders.pop()
+            }
+
+            return state.setIn(ordersPath, fromJS(orders))
         }
 
         case types.DELETE_TICKET_PENDING_MESSAGE: {

@@ -23,6 +23,17 @@ import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {ViewType} from 'models/view/types'
 
+import {
+    ecommerceStoreFixture,
+    shopperAddressFixture,
+    shopperFixture,
+    shopperOrderFixture,
+} from 'models/customerEcommerceData/fixtures'
+import {
+    MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
+    MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
+    MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
+} from 'state/ticket/constants'
 import {initialState} from '../reducers'
 import * as actions from '../actions'
 
@@ -158,6 +169,60 @@ describe('ticket actions', () => {
             })
         )
         return expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('mergeCustomerEcommerceDataShopper()', () => {
+        store.dispatch(
+            actions.mergeCustomerEcommerceDataShopper(
+                1,
+                ecommerceStoreFixture,
+                shopperFixture
+            )
+        )
+        expect(store.getActions()).toMatchObject([
+            {
+                type: MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
+                customerId: 1,
+                store: ecommerceStoreFixture,
+                shopper: shopperFixture,
+            },
+        ])
+    })
+
+    it('mergeCustomerEcommerceDataShopperAddress()', () => {
+        store.dispatch(
+            actions.mergeCustomerEcommerceDataShopperAddress(
+                1,
+                ecommerceStoreFixture.uuid,
+                shopperAddressFixture
+            )
+        )
+        expect(store.getActions()).toMatchObject([
+            {
+                type: MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
+                customerId: 1,
+                storeUUID: ecommerceStoreFixture.uuid,
+                shopperAddress: shopperAddressFixture,
+            },
+        ])
+    })
+
+    it('mergeCustomerEcommerceDataOrder()', () => {
+        store.dispatch(
+            actions.mergeCustomerEcommerceDataOrder(
+                1,
+                ecommerceStoreFixture.uuid,
+                shopperOrderFixture
+            )
+        )
+        expect(store.getActions()).toMatchObject([
+            {
+                type: MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
+                customerId: 1,
+                storeUUID: ecommerceStoreFixture.uuid,
+                shopperOrder: shopperOrderFixture,
+            },
+        ])
     })
 
     describe('ticketPartialUpdate()', () => {

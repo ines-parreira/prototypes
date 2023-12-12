@@ -49,8 +49,11 @@ import {
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
     MacroParamsUpdatedEvent,
+    OrderEvent,
     OutboundPhoneCallInitiated,
     ReceivedEvent,
+    ShopperAddressEvent,
+    ShopperEvent,
     SocketEventType,
     TicketAssignedEvent,
     TicketChatUpdatedEvent,
@@ -756,6 +759,84 @@ const receivedEvents: ReceivedEvent[] = [
 
                     return newData
                 }
+            )
+        },
+    },
+    {
+        name: SocketEventType.ShopperCreated,
+        onReceive: function (json) {
+            const eventData = json as ShopperEvent
+            reduxStore.dispatch(
+                ticketActions.mergeCustomerEcommerceDataShopper(
+                    eventData.event.data.customer_id,
+                    eventData.event.data.store,
+                    eventData.event.data.shopper
+                )
+            )
+        },
+    },
+    {
+        name: SocketEventType.ShopperUpdated,
+        onReceive: function (json) {
+            const eventData = json as ShopperEvent
+            reduxStore.dispatch(
+                ticketActions.mergeCustomerEcommerceDataShopper(
+                    eventData.event.data.customer_id,
+                    eventData.event.data.store,
+                    eventData.event.data.shopper
+                )
+            )
+        },
+    },
+    {
+        name: SocketEventType.ShopperAddressCreated,
+        onReceive: function (json) {
+            const eventData = json as ShopperAddressEvent
+            reduxStore.dispatch(
+                ticketActions.mergeCustomerEcommerceDataShopperAddress(
+                    eventData.event.data.customer_id,
+                    eventData.event.data.store_uuid,
+                    eventData.event.data.shopper_address
+                )
+            )
+        },
+    },
+    {
+        name: SocketEventType.ShopperAddressUpdated,
+        onReceive: function (json) {
+            const eventData = json as ShopperAddressEvent
+            reduxStore.dispatch(
+                ticketActions.mergeCustomerEcommerceDataShopperAddress(
+                    eventData.event.data.customer_id,
+                    eventData.event.data.store_uuid,
+                    eventData.event.data.shopper_address
+                )
+            )
+        },
+    },
+    {
+        name: SocketEventType.OrderCreated,
+        onReceive: function (json) {
+            const eventData = json as OrderEvent
+            reduxStore.dispatch(
+                ticketActions.mergeCustomerEcommerceDataOrder(
+                    eventData.event.data.customer_id,
+                    eventData.event.data.store_uuid,
+                    eventData.event.data.order
+                )
+            )
+        },
+    },
+    {
+        name: SocketEventType.OrderUpdated,
+        onReceive: function (json) {
+            const eventData = json as OrderEvent
+            reduxStore.dispatch(
+                ticketActions.mergeCustomerEcommerceDataOrder(
+                    eventData.event.data.customer_id,
+                    eventData.event.data.store_uuid,
+                    eventData.event.data.order
+                )
             )
         },
     },

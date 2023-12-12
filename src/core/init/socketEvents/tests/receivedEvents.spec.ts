@@ -26,8 +26,11 @@ import * as notificationActions from 'state/notifications/actions'
 import {handleViewsCount} from 'state/views/actions'
 import {
     CustomerExternalDataUpdatedEvent,
+    OrderEvent,
     OutboundPhoneCallInitiated,
     ReceivedEvent,
+    ShopperAddressEvent,
+    ShopperEvent,
     SocketEventType,
 } from 'services/socketManager/types'
 import {view} from 'fixtures/views'
@@ -48,11 +51,22 @@ import {
 } from 'state/entities/sections/actions'
 import * as ticketActions from 'state/ticket/actions'
 import history from 'pages/history'
-import {mergeCustomerExternalData} from 'state/ticket/actions'
+import {
+    mergeCustomerEcommerceDataOrder,
+    mergeCustomerEcommerceDataShopper,
+    mergeCustomerEcommerceDataShopperAddress,
+    mergeCustomerExternalData,
+} from 'state/ticket/actions'
 import * as voiceCallTypes from 'models/voiceCall/types'
 import {appQueryClient} from 'api/queryClient'
 import {voiceCallsKeys} from 'models/voiceCall/queries'
 
+import {
+    ecommerceStoreFixture,
+    shopperAddressFixture,
+    shopperFixture,
+    shopperOrderFixture,
+} from 'models/customerEcommerceData/fixtures'
 import receivedEvents from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated
@@ -1086,6 +1100,90 @@ describe('receivedEvents', () => {
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: [{id: 1}, {id: 2}],
             })
+        })
+
+        describe('Shopper events', () => {
+            it.each([
+                SocketEventType.ShopperCreated,
+                SocketEventType.ShopperUpdated,
+            ])(
+                'should dispatch the shopper data for customer id',
+                (eventType) => {
+                    const handler = _find(receivedEvents, {
+                        name: eventType,
+                    }) as ReceivedEvent
+                    const shopperEvent = {
+                        event: {
+                            type: eventType,
+                            data: {
+                                customer_id: 123,
+                                store: ecommerceStoreFixture,
+                                shopper: shopperFixture,
+                            },
+                        },
+                    } as ShopperEvent
+                    handler.onReceive(shopperEvent)
+                    expect(
+                        mergeCustomerEcommerceDataShopper
+                    ).toHaveBeenCalledTimes(1)
+                }
+            )
+        })
+
+        describe('Shopper address events', () => {
+            it.each([
+                SocketEventType.ShopperAddressCreated,
+                SocketEventType.ShopperAddressUpdated,
+            ])(
+                'should dispatch the shopper address data for customer id',
+                (eventType) => {
+                    const handler = _find(receivedEvents, {
+                        name: eventType,
+                    }) as ReceivedEvent
+                    const shopperEvent = {
+                        event: {
+                            type: eventType,
+                            data: {
+                                customer_id: 123,
+                                store_uuid: ecommerceStoreFixture.uuid,
+                                shopper_address: shopperAddressFixture,
+                            },
+                        },
+                    } as ShopperAddressEvent
+                    handler.onReceive(shopperEvent)
+                    expect(
+                        mergeCustomerEcommerceDataShopperAddress
+                    ).toHaveBeenCalledTimes(1)
+                }
+            )
+        })
+
+        describe('Ecommerce order events', () => {
+            it.each([
+                SocketEventType.OrderCreated,
+                SocketEventType.OrderUpdated,
+            ])(
+                'should dispatch the order data for customer id',
+                (eventType) => {
+                    const handler = _find(receivedEvents, {
+                        name: eventType,
+                    }) as ReceivedEvent
+                    const orderEvent = {
+                        event: {
+                            type: eventType,
+                            data: {
+                                customer_id: 123,
+                                store_uuid: ecommerceStoreFixture.uuid,
+                                order: shopperOrderFixture,
+                            },
+                        },
+                    } as OrderEvent
+                    handler.onReceive(orderEvent)
+                    expect(
+                        mergeCustomerEcommerceDataOrder
+                    ).toHaveBeenCalledTimes(1)
+                }
+            )
         })
     })
 })
