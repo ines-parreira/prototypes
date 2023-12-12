@@ -52,7 +52,14 @@ const Variables = ({variables, onChange, onDelete, onAdd}: Props) => {
             ))}
             {variables.length > 0 && (
                 <div className={css.description}>
-                    Variable name and JSONPath
+                    Variable name and{' '}
+                    <a
+                        target="_blank"
+                        href="https://link.gorgias.com/ou5"
+                        rel="noopener noreferrer"
+                    >
+                        JSONPath
+                    </a>
                 </div>
             )}
             <Button intent="secondary" onClick={onAdd} size="small">

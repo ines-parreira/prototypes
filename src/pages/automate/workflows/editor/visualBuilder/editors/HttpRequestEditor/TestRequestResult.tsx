@@ -228,7 +228,16 @@ const TestRequestResult = ({
                     })}
                     {variables.length > 0 && (
                         <div className={css.helper}>
-                            <span>Variable name and JSONPath</span>
+                            <span>
+                                Variable name and{' '}
+                                <a
+                                    target="_blank"
+                                    href="https://link.gorgias.com/ou5"
+                                    rel="noopener noreferrer"
+                                >
+                                    JSONPath
+                                </a>
+                            </span>
                             <span>Test result</span>
                         </div>
                     )}
