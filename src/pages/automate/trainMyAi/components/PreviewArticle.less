@@ -37,23 +37,20 @@
                 }
             }
             .contentContainer {
-                z-index: -1;
                 border-radius: 4px;
                 background: var(--neutral-grey-1);
-                display: flex;
                 padding: @layout-spacing-xl;
-                flex-direction: column;
-                align-items: center;
-                gap: var(--spacing-m, 24px);
-                align-self: stretch;
+                overflow: auto;
 
+                div,
                 p,
                 h1,
                 h2,
                 h3,
                 h4,
                 h5,
-                h6 {
+                h6,
+                span {
                     background: var(--neutral-grey-1, #f9f9f9) !important;
                     color: var(
                         --modern-neutral-grey-6,

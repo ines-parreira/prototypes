@@ -50,16 +50,12 @@ export default function PreviewHeader({articleData}: Props) {
                         </i>
                     )}
                 </div>
-                <div className={css.contentContainer}>
-                    {
-                        <div
-                            className={css.content}
-                            dangerouslySetInnerHTML={{
-                                __html: articleData?.translation.content,
-                            }}
-                        />
-                    }
-                </div>
+                <div
+                    className={css.contentContainer}
+                    dangerouslySetInnerHTML={{
+                        __html: articleData?.translation.content,
+                    }}
+                ></div>
             </div>
         </div>
     )
