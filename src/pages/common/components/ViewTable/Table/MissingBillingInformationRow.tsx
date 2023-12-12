@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useMemo, useState} from 'react'
 import {Modal, ModalHeader, Form, ModalBody, ModalFooter} from 'reactstrap'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsync, useAsyncFn, useWindowSize} from 'react-use'
+import {useAsync, useWindowSize} from 'react-use'
 import {fromJS} from 'immutable'
 import {AnyAction} from 'redux'
 
@@ -24,6 +24,7 @@ import {
 import {BillingContact, PaymentMethodType} from 'state/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {fetchContact, updateContact} from 'state/billing/actions'
 import BillingAddressInputs from 'pages/settings/billing/common/BillingAddressInputs'
 

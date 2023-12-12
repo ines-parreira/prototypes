@@ -1,9 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import classnames from 'classnames'
 import {Col, Form, FormGroup, Row} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 
 import InputField from 'pages/common/forms/input/InputField'
 import {
@@ -24,6 +21,7 @@ import {notify} from 'state/notifications/actions'
 import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import history from 'pages/history'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'

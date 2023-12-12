@@ -1,7 +1,4 @@
 import {useEffect, useMemo, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {List, Map, fromJS} from 'immutable'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -13,6 +10,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {IntegrationType} from 'models/integration/constants'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 

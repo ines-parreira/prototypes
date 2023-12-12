@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {Col, Container} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
@@ -13,6 +10,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {SET_EMAIL_PROVIDER_MIGRATIONS} from 'state/integrations/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {getEmailMigrations} from 'state/integrations/selectors'
 import SteppedNavBar from '../SteppedNavBar/SteppedNavBar'
 import MigrationEmailForwarding from './MigrationEmailForwarding'

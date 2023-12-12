@@ -1,14 +1,12 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {CsvError, parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {
     DROPDOWN_CSV_TEMPLATE,
     DROPDOWN_NESTING_DELIMITER,

@@ -1,7 +1,4 @@
 import React, {useEffect} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useModalManager} from 'hooks/useModalManager'
@@ -26,6 +23,7 @@ import {
 import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
 import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
+import useAsyncFn from 'hooks/useAsyncFn'
 
 import {reportError} from 'utils/errors'
 import {useSearchContext} from '../../providers/SearchContext'

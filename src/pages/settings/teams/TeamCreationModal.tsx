@@ -9,7 +9,7 @@ import React, {
 } from 'react'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsyncFn, useList} from 'react-use'
+import {useList} from 'react-use'
 import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
 import {Map} from 'immutable'
 
@@ -17,6 +17,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {createTeam} from 'models/team/resources'
 import {Team} from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'

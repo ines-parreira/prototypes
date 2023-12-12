@@ -1,7 +1,4 @@
 import React from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 import history from 'pages/history'
 import {
@@ -13,6 +10,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getVerification} from 'models/singleSenderVerification/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {setVerification} from 'state/entities/singleSenderVerification/actions'

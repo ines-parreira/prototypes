@@ -3,9 +3,6 @@ import _debounce from 'lodash/debounce'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useHistory, useParams} from 'react-router-dom'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {DropTargetMonitor} from 'react-dnd'
 
 import navbarCss from 'assets/css/navbar.less'
@@ -19,6 +16,7 @@ import {
 } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {createAccountSetting, updateAccountSetting} from 'models/account'
 import {
     fetchSections,

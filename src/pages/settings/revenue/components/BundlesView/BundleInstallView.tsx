@@ -5,9 +5,6 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
 import {List, Map} from 'immutable'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import css from 'pages/settings/settings.less'
 
 import PageHeader from 'pages/common/components/PageHeader'
@@ -27,6 +24,7 @@ import Button from 'pages/common/components/button/Button'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 
 import client from 'models/api/resources'
 import history from 'pages/history'

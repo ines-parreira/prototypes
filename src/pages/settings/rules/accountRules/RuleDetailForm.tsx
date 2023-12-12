@@ -1,9 +1,6 @@
 import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams} from 'react-router-dom'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import {fetchRule} from 'models/rule/resources'
@@ -12,6 +9,7 @@ import {ruleFetched} from 'state/entities/rules/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import history from 'pages/history'
+import useAsyncFn from 'hooks/useAsyncFn'
 
 import {RootState} from 'state/types'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'

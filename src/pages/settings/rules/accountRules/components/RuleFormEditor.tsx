@@ -2,9 +2,6 @@ import classnames from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Navbar, Nav} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {
     ManagedRule,
     ManagedRuleEmptySettings,
@@ -20,6 +17,7 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import PageHeader from 'pages/common/components/PageHeader'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {
     ruleCreated,
     ruleDeleted,

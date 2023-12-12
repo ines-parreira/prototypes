@@ -1,7 +1,4 @@
 import React, {ChangeEvent, useState, useCallback, useMemo} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {Input, ListGroup, ListGroupItem, Modal} from 'reactstrap'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
@@ -18,6 +15,7 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useDebounce from 'hooks/useDebounce'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {useModalManager} from 'hooks/useModalManager'

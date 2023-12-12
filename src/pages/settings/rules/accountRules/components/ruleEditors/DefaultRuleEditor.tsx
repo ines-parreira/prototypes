@@ -8,9 +8,6 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {FormGroup, Label} from 'reactstrap'
 import moment from 'moment'
 import {Map, List} from 'immutable'
@@ -43,7 +40,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-
+import useAsyncFn from 'hooks/useAsyncFn'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'

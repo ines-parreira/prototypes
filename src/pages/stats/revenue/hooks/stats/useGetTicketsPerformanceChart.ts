@@ -1,12 +1,10 @@
 import {useEffect, useMemo, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {getTicketsPerformanceData} from 'pages/stats/revenue/clients/RevenueAttributionClient'
 import {RevenueAttributionFilterParams} from 'pages/stats/revenue/clients/types'
 import {getDataFromStatResult} from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CampaignGraphData} from 'pages/stats/revenue/services/types'
 import {TicketChannel} from 'business/types/ticket'
+import useAsyncFn from 'hooks/useAsyncFn'
 
 export type GetTicketsPerformanceQuery = {
     isFetching: boolean

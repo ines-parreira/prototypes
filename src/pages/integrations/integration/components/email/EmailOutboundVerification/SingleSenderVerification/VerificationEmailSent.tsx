@@ -1,8 +1,5 @@
 import React, {useEffect, useRef} from 'react'
 import classNames from 'classnames'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 import {useHistory} from 'react-router-dom'
 import {
@@ -12,6 +9,7 @@ import {
 import {resendVerificationEmail} from 'models/singleSenderVerification/resources'
 import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Alert from 'pages/common/components/Alert/Alert'

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsyncFn, useSetState} from 'react-use'
+import {useSetState} from 'react-use'
 import {Spinner} from 'reactstrap'
 import {ParamType} from 'openapi-client-axios'
 
@@ -21,6 +21,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 
 import {getAccessToken} from 'rest_api/auth'
 

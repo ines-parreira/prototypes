@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 import {useHistory, useLocation} from 'react-router-dom'
 import {startEmailMigration} from 'models/integration/resources/email'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Button from 'pages/common/components/button/Button'

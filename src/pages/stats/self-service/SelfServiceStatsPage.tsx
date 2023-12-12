@@ -1,7 +1,4 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -50,6 +47,7 @@ import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/work
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import useStatResource from 'hooks/reporting/useStatResource'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,

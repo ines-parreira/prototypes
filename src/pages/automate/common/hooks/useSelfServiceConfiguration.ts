@@ -1,11 +1,10 @@
 import {useCallback, useEffect, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
+
 import {Draft} from 'immer'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {

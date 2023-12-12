@@ -8,9 +8,6 @@ import React, {
 import {Button} from 'reactstrap'
 import classnames from 'classnames'
 import axios, {AxiosError, CancelToken} from 'axios'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -23,6 +20,7 @@ import {
 } from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {downloadStat} from 'models/stat/resources'
 import {saveFileAsDownloaded} from 'utils/file'
 import {notify} from 'state/notifications/actions'

@@ -4,9 +4,6 @@ import _uniqWith from 'lodash/uniqWith'
 import React, {SyntheticEvent, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useParams} from 'react-router-dom'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -47,6 +44,7 @@ import settingsCss from 'pages/settings/settings.less'
 import {MacroApiError} from 'state/macro/types'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {MacroActionName} from 'models/macroAction/types'
+import useAsyncFn from 'hooks/useAsyncFn'
 
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'

@@ -1,13 +1,11 @@
 import React, {FormEvent, useEffect, useState} from 'react'
 import {Form, FormGroup, Container, Label, Input} from 'reactstrap'
 
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 import client from 'models/api/resources'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'

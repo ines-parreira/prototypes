@@ -3,9 +3,6 @@ import classNames from 'classnames'
 import React, {ChangeEvent, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {uploadFiles} from 'common/utils'
@@ -20,6 +17,7 @@ import Button from 'pages/common/components/button/Button'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import css from './MacrosCSVImportPopover.less'
