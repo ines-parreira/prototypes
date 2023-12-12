@@ -7,25 +7,25 @@ import _isString from 'lodash/isString'
 import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
 import classNames from 'classnames'
 
-import analyticsColors from 'assets/css/new/stats/colors.json'
+import analyticsColors from 'assets/css/new/stats/modern.json'
 import {toImmutable} from 'common/utils'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
     findChannelNameKey,
     formatDuration,
     formatNumber,
-} from '../pages/stats/common/utils'
-import {TagLabel} from '../pages/common/utils/labels'
-import {IntentName} from '../models/intent/types'
-import {humanizeString, lightenDarkenColor} from '../utils'
-import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
-import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPerAgentViewLink'
-import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
-import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreatedPerChannelViewLink'
-import {AutomateStatsSelfServiceMetric} from '../pages/stats/AutomateStatsSelfServiceMetric'
-import {SelectableOption} from '../pages/common/forms/SelectField/types'
-import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
-import {REASONS_DROPDOWN_OPTIONS} from '../models/selfServiceConfiguration/constants'
+} from 'pages/stats/common/utils'
+import {TagLabel} from 'pages/common/utils/labels'
+import {IntentName} from 'models/intent/types'
+import {humanizeString, lightenDarkenColor} from 'utils'
+import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
+import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
+import TicketsCreatedPerTagViewLink from 'pages/stats/common/TicketsCreatedPerTagViewLink'
+import TicketsCreatedPerChannelViewLink from 'pages/stats/common/TicketsCreatedPerChannelViewLink'
+import {AutomateStatsSelfServiceMetric} from 'pages/stats/AutomateStatsSelfServiceMetric'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
+import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 
 import css from './stats.less'
 // Available Stats. These names should match names in `g/stats/config`
