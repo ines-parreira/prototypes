@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
 
-import {validateJSON, validateWebhookURL} from 'utils'
+import {validateHttpHeaderName, validateJSON, validateWebhookURL} from 'utils'
 
 import {HttpRequestNodeType} from '../models/visualBuilderGraph.types'
 import {isValidLiquidSyntaxInNode} from '../models/variables.model'
@@ -33,7 +33,10 @@ export default function useIsHttpRequestNodeErrored(
         !name ||
         !url ||
         hasInvalidVariables ||
-        headers.some((header) => !header.name.trim() || !header.value.trim()) ||
+        headers.some(
+            (header) =>
+                !validateHttpHeaderName(header.name) || !header.value.trim()
+        ) ||
         formUrlencoded.some((item) => !item.key.trim() || !item.value.trim()) ||
         (!allowMissingVariables &&
             variables.some(

@@ -1279,3 +1279,13 @@ export function validateJSON(json: string) {
         return false
     }
 }
+
+// c.f. https://github.com/nodejs/node/blob/1b60054fffc0c67a711cdf3efbcc8f44afab0ce2/lib/_http_common.js#L206
+const httpHeaderNameCharRegex = /^[\^_`a-zA-Z\-0-9!#$%&'*+.|~]+$/
+
+/**
+ * Verifies that the given val is a valid HTTP header name
+ */
+export function validateHttpHeaderName(header: string) {
+    return httpHeaderNameCharRegex.test(header)
+}

@@ -11,7 +11,7 @@ import React, {
 // eslint-disable-next-line no-restricted-imports
 import {useThrottleFn} from 'react-use'
 
-import {validateJSON, validateWebhookURL} from 'utils'
+import {validateHttpHeaderName, validateJSON, validateWebhookURL} from 'utils'
 import {saveFileAsDownloaded} from 'utils/file'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import {
@@ -636,6 +636,14 @@ function validate(conf: WorkflowConfiguration): Maybe<string> {
         .some((s) => !validateJSON(s.settings.body || ''))
     if (jsonInvalid) {
         return 'Invalid JSON'
+    }
+    const headerNameInvalid = httpRequestSteps.some((s) =>
+        Object.entries(s.settings.headers ?? {}).some(
+            ([k]) => !validateHttpHeaderName(k)
+        )
+    )
+    if (headerNameInvalid) {
+        return 'Invalid header name in HTTP request'
     }
     if (isPayloadTooLarge(emptyTranslatedTexts(conf))) {
         return 'This Flow is too large to save. Please remove steps and try again.'
