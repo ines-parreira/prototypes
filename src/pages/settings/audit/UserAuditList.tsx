@@ -5,7 +5,7 @@ import moment from 'moment-timezone'
 import axios, {AxiosError, CancelToken} from 'axios'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsyncFn, useDebounce} from 'react-use'
+import {useAsyncFn} from 'react-use'
 import _isEqual from 'lodash/isEqual'
 
 import {auditLogEventsFetched} from 'state/entities/auditLogEvents/actions'
@@ -32,6 +32,7 @@ import usePrevious from 'hooks/usePrevious'
 import {getMoment} from 'utils/date'
 import {humanizeString} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import useDebounce from 'hooks/useDebounce'
 
 import css from '../settings.less'
 import {DATETIME_LABEL_FORMAT} from './constants'

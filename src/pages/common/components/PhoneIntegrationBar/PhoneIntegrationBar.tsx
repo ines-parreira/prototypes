@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useBeforeUnload, useTimeoutFn} from 'react-use'
+import {useBeforeUnload} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import useTimeoutFn from 'hooks/useTimeoutFn'
 import {useDevice} from 'hooks/integrations/phone/useDevice'
 import {useDevice_DEPRECATED} from 'hooks/integrations/phone/useDevice_DEPRECATED'
 

@@ -1,7 +1,4 @@
 import React, {Dispatch, useEffect, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useDebounce} from 'react-use'
 import classnames from 'classnames'
 
 import {
@@ -11,6 +8,7 @@ import {
 } from 'models/integration/types'
 import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import useDebounce from 'hooks/useDebounce'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,

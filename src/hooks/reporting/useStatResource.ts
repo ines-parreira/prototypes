@@ -1,7 +1,4 @@
 import {useCallback, useEffect, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useDebounce} from 'react-use'
 import axios, {AxiosError, CancelToken} from 'axios'
 import _isEqual from 'lodash/isEqual'
 
@@ -18,6 +15,7 @@ import {StatsState as StatsUIState} from 'state/ui/stats/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import useDebounce from 'hooks/useDebounce'
 
 export const DEFAULT_ERROR_MESSAGE =
     'Failed to retrieve statistic. Please retry in a few seconds.'

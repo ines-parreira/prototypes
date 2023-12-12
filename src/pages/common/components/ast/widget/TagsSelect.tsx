@@ -1,9 +1,6 @@
 import React, {useMemo, useState} from 'react'
 import _isString from 'lodash/isString'
 
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useDebounce} from 'react-use'
 import {CancelToken} from 'axios'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
@@ -14,6 +11,7 @@ import {createTag, fetchTags} from 'models/tag/resources'
 import {tagsFetched, tagCreated} from 'state/entities/tags/actions'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import useDebounce from 'hooks/useDebounce'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import SelectField from '../../../forms/SelectField/SelectField'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'

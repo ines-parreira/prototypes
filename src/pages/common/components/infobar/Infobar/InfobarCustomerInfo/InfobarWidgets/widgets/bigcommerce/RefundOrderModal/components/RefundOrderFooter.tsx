@@ -1,7 +1,4 @@
 import React, {Dispatch, useRef, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useDebounce} from 'react-use'
 import classNames from 'classnames'
 import TextArea from 'pages/common/forms/TextArea'
 import Label from 'pages/common/forms/Label/Label'
@@ -14,6 +11,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import Button from 'pages/common/components/button/Button'
+import useDebounce from 'hooks/useDebounce'
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,

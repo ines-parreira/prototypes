@@ -1,9 +1,6 @@
 import React, {useState} from 'react'
 import {Container} from 'reactstrap'
 import {Link, NavLink, useParams} from 'react-router-dom'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useDebounce} from 'react-use'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useTitle from 'hooks/useTitle'
@@ -18,6 +15,7 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/types'
+import useDebounce from 'hooks/useDebounce'
 
 import css from './TicketFields.less'
 

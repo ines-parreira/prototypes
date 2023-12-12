@@ -1,7 +1,4 @@
 import React, {ChangeEvent, useState, useEffect, useCallback} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useDebounce} from 'react-use'
 import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
 import classnames from 'classnames'
@@ -17,6 +14,7 @@ import {notify} from 'state/notifications/actions'
 import {getIconFromType} from 'state/integrations/helpers'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useDebounce from 'hooks/useDebounce'
 import {IntegrationType} from 'models/integration/constants'
 import {Product, Variant} from 'constants/integrations/types/shopify'
 import Button from 'pages/common/components/button/Button'
