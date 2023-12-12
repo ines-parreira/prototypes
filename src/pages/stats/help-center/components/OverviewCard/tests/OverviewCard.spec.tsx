@@ -1,26 +1,34 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import OverviewCard, {OverviewCardProps} from '../OverviewCard'
+
+const mockStore = configureMockStore([thunk])
+const store = mockStore()
 
 const renderComponent = (props: Partial<OverviewCardProps>) => {
     return render(
-        <OverviewCard
-            isLoading={false}
-            trendValue={2}
-            prevTrendValue={1}
-            showTip={true}
-            title="Article Overview"
-            hintTitle="hint"
-            startDate="1696516016305"
-            endDate="1696516016305"
-            tipContent={
-                <div>
-                    learn about strategies you can use to increase article views
-                    for your Help Center
-                </div>
-            }
-            {...props}
-        />
+        <Provider store={store}>
+            <OverviewCard
+                isLoading={false}
+                trendValue={2}
+                prevTrendValue={1}
+                showTip={true}
+                title="Article Overview"
+                hintTitle="hint"
+                startDate="1696516016305"
+                endDate="1696516016305"
+                tipContent={
+                    <div>
+                        learn about strategies you can use to increase article
+                        views for your Help Center
+                    </div>
+                }
+                {...props}
+            />
+        </Provider>
     )
 }
 

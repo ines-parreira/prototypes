@@ -1,6 +1,9 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import HelpCenterOverviewSection from '../HelpCenterOverviewSection'
 
 jest.mock('../../../hooks/useHelpCenterTrend', () => ({
@@ -14,12 +17,17 @@ const defaultStatsFilters = {
     },
 }
 
+const mockStore = configureMockStore([thunk])
+const store = mockStore()
+
 const renderComponent = () => {
     render(
-        <HelpCenterOverviewSection
-            statsFilters={defaultStatsFilters}
-            timezone="US"
-        />
+        <Provider store={store}>
+            <HelpCenterOverviewSection
+                statsFilters={defaultStatsFilters}
+                timezone="US"
+            />
+        </Provider>
     )
 }
 

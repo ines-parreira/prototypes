@@ -1,6 +1,9 @@
 import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
 
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import OverviewCard from './OverviewCard'
 
 const meta: Meta<typeof OverviewCard> = {
@@ -23,8 +26,16 @@ const meta: Meta<typeof OverviewCard> = {
 export default meta
 
 type Story = StoryObj<typeof OverviewCard>
+
+const mockStore = configureMockStore([thunk])
+const store = mockStore()
+
 export const ArticleOverview: Story = {
-    render: (args) => <OverviewCard {...args} />,
+    render: (args) => (
+        <Provider store={store}>
+            <OverviewCard {...args} />
+        </Provider>
+    ),
     args: {
         trendValue: 45620,
         prevTrendValue: 44707,
@@ -33,8 +44,8 @@ export const ArticleOverview: Story = {
         title: 'Article overview',
         hintTitle:
             'Total number of article views, including duplicate views by the same user',
-        startDate: '1696516016305',
-        endDate: '1696516016305',
+        startDate: '2023-12-11T23:59:59-08:00',
+        endDate: '2023-12-05T00:00:00-08:00',
         tipContent: (
             <div>
                 Check out our{' '}
@@ -53,15 +64,19 @@ export const ArticleOverview: Story = {
 }
 
 export const SearchOverview: Story = {
-    render: (args) => <OverviewCard {...args} />,
+    render: (args) => (
+        <Provider store={store}>
+            <OverviewCard {...args} />
+        </Provider>
+    ),
     args: {
         trendValue: 12540,
         prevTrendValue: 10503,
         showTip: true,
         isLoading: false,
         title: 'Searches',
-        startDate: '1696516016305',
-        endDate: '1696516016305',
+        startDate: '2023-12-11T23:59:59-08:00',
+        endDate: '2023-12-05T00:00:00-08:00',
         hintTitle: 'Total number of searches performed in the Help Center',
         tipContent: (
             <>

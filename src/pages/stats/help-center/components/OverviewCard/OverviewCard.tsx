@@ -7,6 +7,9 @@ import TrendBadge from 'pages/stats/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {formatDatetime} from 'utils'
 import css from './OverviewCard.less'
 
 export type OverviewCardProps = {
@@ -34,6 +37,17 @@ const OverviewCard = ({
 }: OverviewCardProps) => {
     const periodStart = formatReportingQueryDate(startDate)
     const periodEnd = formatReportingQueryDate(endDate)
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.LongDateWithYear
+    )
+    const formattedStartDate = formatDatetime(
+        periodStart,
+        datetimeFormat
+    ).toString()
+    const formattedEndDate = formatDatetime(
+        periodEnd,
+        datetimeFormat
+    ).toString()
 
     return (
         <MetricCard
@@ -55,7 +69,7 @@ const OverviewCard = ({
                         value={trendValue}
                         format="percent"
                         interpretAs="more-is-better"
-                        tooltip={`Compared to: ${periodStart} - ${periodEnd}`}
+                        tooltip={`Compared to: ${formattedStartDate} - ${formattedEndDate}`}
                     />
                 )
             }
