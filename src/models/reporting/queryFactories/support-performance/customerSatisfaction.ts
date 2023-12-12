@@ -67,9 +67,7 @@ export const customerSatisfactionMetricDrillDownQueryFactory = (
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
-              order: [
-                  [TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting],
-              ],
+              order: [[TicketSatisfactionSurveyDimension.SurveyScore, sorting]],
           }
         : {}),
 })
