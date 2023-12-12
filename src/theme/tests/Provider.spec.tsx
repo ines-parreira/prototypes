@@ -20,6 +20,10 @@ describe('Provider', () => {
         )
 
         expect(getByText('Test component')).toBeInTheDocument()
-        expect(theme).toEqual(['modern', expect.any(Function)])
+        expect(theme).toEqual({
+            savedTheme: 'modern',
+            theme: 'modern',
+            setTheme: expect.any(Function),
+        })
     })
 })

@@ -43,6 +43,7 @@ Object.defineProperty(window, 'matchMedia', {
             removeListener: jest.fn(),
         }
     }),
+    writable: true,
 })
 
 //jsdom does not support HTMLMediaElement

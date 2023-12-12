@@ -12,6 +12,7 @@ import {billingState} from 'fixtures/billing'
 import {user} from 'fixtures/users'
 import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
 import {RootState} from 'state/types'
+import {ThemeProvider} from 'theme'
 import {renderWithRouter} from 'utils/testing'
 
 import SettingsNavbar from '../SettingsNavbar'
@@ -37,7 +38,9 @@ describe('<SettingsNavbar />', () => {
 
             renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
-                    <SettingsNavbar />
+                    <ThemeProvider>
+                        <SettingsNavbar />
+                    </ThemeProvider>
                 </Provider>,
                 {path: '/'}
             )
@@ -56,7 +59,9 @@ describe('<SettingsNavbar />', () => {
         })
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
-                <SettingsNavbar />
+                <ThemeProvider>
+                    <SettingsNavbar />
+                </ThemeProvider>
             </Provider>,
             {path: '/'}
         )

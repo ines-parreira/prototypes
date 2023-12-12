@@ -10,5 +10,5 @@ export default function useSetTheme() {
         )
     }
 
-    return ctx[1]
+    return ctx.setTheme
 }

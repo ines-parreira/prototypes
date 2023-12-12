@@ -16,6 +16,8 @@ import {
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as utils from 'utils'
+import {Theme, ThemeValue} from 'theme'
+
 import {Navbar} from '../Navbar'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
@@ -45,6 +47,9 @@ describe('<Navbar />', () => {
         flags: {
             [FeatureFlagKey.AutomateRebranding]: false,
         },
+        savedTheme: 'modern' as Theme,
+        theme: 'modern' as ThemeValue,
+        setTheme: jest.fn(),
     }
 
     window.noticeable = {

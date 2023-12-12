@@ -14,16 +14,16 @@ import DateRangePicker, {
 } from 'react-bootstrap-daterangepicker'
 import {Tooltip} from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     DateTimeFormatType,
     DateTimeFormatMapper,
     DateTimeResultFormatType,
 } from 'constants/datetime'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {getTimezone} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
 import {formatDatetime} from 'utils'
-import {RootState} from '../../../state/types'
-import {getTimezone} from '../../../state/currentUser/selectors'
 
 import css from './PeriodPicker.less'
 

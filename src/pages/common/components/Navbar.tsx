@@ -43,10 +43,12 @@ import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
 import {hasRole, isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
+import {Theme, useSavedTheme, useSetTheme, useTheme, withTheme} from 'theme'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AGENT_ROLE} from 'config/user'
 import {UserRole} from 'config/types/user'
+import {Themes} from 'theme/types'
 import Avatar from './Avatar/Avatar'
 import DropdownBody from './dropdown/DropdownBody'
 import DropdownHeader from './dropdown/DropdownHeader'
@@ -145,9 +147,14 @@ type OwnProps = {
     flags?: LDFlagSet
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+type Props = OwnProps &
+    ConnectedProps<typeof connector> & {
+        setTheme: ReturnType<typeof useSetTheme>
+        theme: ReturnType<typeof useTheme>
+        savedTheme: ReturnType<typeof useSavedTheme>
+    }
 
-type ActiveScreen = 'main' | 'gorgias-updates' | 'learn'
+type ActiveScreen = 'main' | 'gorgias-updates' | 'learn' | 'theme'
 
 type State = {
     bottomDropdownOpen: boolean
@@ -329,6 +336,10 @@ export class Navbar extends Component<Props, State> {
         }
     }
 
+    updateTheme = (name: string) => {
+        this.props.setTheme(name as Theme)
+    }
+
     render() {
         const {
             available,
@@ -340,8 +351,10 @@ export class Navbar extends Component<Props, State> {
             navbarContentRef,
             flags,
             splitTicketViewToggle,
+            theme,
+            savedTheme,
         } = this.props
-        const {isResizing} = this.state
+        const {isResizing, navbarWidth} = this.state
         const isBasicOrPro = ['pro', 'basic'].some((priceType) =>
             currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
@@ -351,9 +364,7 @@ export class Navbar extends Component<Props, State> {
                 className={classnames(css.sidebar, {
                     [css.isResizing]: isResizing,
                 })}
-                style={
-                    disableResize ? {} : {width: `${this.state.navbarWidth}px`}
-                }
+                style={disableResize ? {} : {width: `${navbarWidth}px`}}
             >
                 <div
                     className={classnames(css['nav-primary'], {
@@ -502,6 +513,45 @@ export class Navbar extends Component<Props, State> {
                                     />
                                 </div>
                                 <hr className={css.separator} />
+                                {!!flags?.[FeatureFlagKey.NewThemes] && (
+                                    <>
+                                        <div
+                                            onClick={() => {
+                                                this.setState({
+                                                    activeScreen: 'theme',
+                                                })
+                                            }}
+                                            className={classnames(
+                                                css['dropdown-item-user-menu'],
+                                                css.wrapper
+                                            )}
+                                        >
+                                            <DropdownItemLabel
+                                                className={css.submenu}
+                                                suffix={
+                                                    <i
+                                                        className={classnames(
+                                                            'material-icons',
+                                                            css[
+                                                                'sub-menu-chevron'
+                                                            ]
+                                                        )}
+                                                    >
+                                                        chevron_right
+                                                    </i>
+                                                }
+                                            >
+                                                <span className={css.label}>
+                                                    Theme:
+                                                </span>
+                                                <span className={css.value}>
+                                                    {Themes[theme].label}
+                                                </span>
+                                            </DropdownItemLabel>
+                                        </div>
+                                        <hr className={css.separator} />
+                                    </>
+                                )}
                                 <DropdownBody>
                                     <NavLink
                                         to="/app/settings/profile"
@@ -846,7 +896,7 @@ export class Navbar extends Component<Props, State> {
                                     <div
                                         className={classnames(
                                             css['dropdown-item-user-menu'],
-                                            css['latest-updates']
+                                            css.justify
                                         )}
                                         onClick={() => {
                                             logEvent(
@@ -943,6 +993,57 @@ export class Navbar extends Component<Props, State> {
                                     </div>
                                 </DropdownBody>
                             </Screen>
+
+                            <Screen name="theme">
+                                <DropdownHeader
+                                    onClick={() => {
+                                        this.setState({
+                                            activeScreen: 'main',
+                                        })
+                                    }}
+                                    className={css['dropdown-item']}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                    >
+                                        arrow_back
+                                    </i>
+                                    Back
+                                </DropdownHeader>
+                                <DropdownBody>
+                                    {Object.entries(Themes).map(
+                                        ([name, {label}]) => (
+                                            <div
+                                                key={name}
+                                                className={classnames(
+                                                    css[
+                                                        'dropdown-item-user-menu'
+                                                    ],
+                                                    css.justify
+                                                )}
+                                                onClick={() =>
+                                                    this.updateTheme(name)
+                                                }
+                                            >
+                                                {label}
+                                                {savedTheme === name && (
+                                                    <span
+                                                        className={classnames(
+                                                            css.check,
+                                                            'material-icons'
+                                                        )}
+                                                    >
+                                                        done
+                                                    </span>
+                                                )}
+                                            </div>
+                                        )
+                                    )}
+                                </DropdownBody>
+                            </Screen>
                             <div id="noticeable-widget" />
                         </Screens>
                     </Dropdown>
@@ -950,9 +1051,9 @@ export class Navbar extends Component<Props, State> {
                 {!disableResize && (
                     <div
                         className={classnames(css['sidebar-resizer'], {
-                            [css.isTouched]: this.state.isResizing,
+                            [css.isTouched]: isResizing,
                         })}
-                        style={{left: `${this.state.navbarWidth}px`}}
+                        style={{left: `${navbarWidth}px`}}
                         onMouseDown={this.startResizing}
                         onTouchMove={this.startResizing}
                     />
@@ -982,4 +1083,4 @@ const connector = connect(
     }
 )
 
-export default connector(withLDConsumer()(Navbar))
+export default connector(withTheme(withLDConsumer()(Navbar)))

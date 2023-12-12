@@ -22,6 +22,7 @@ import {
     legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
 } from 'fixtures/productPrices'
+import {ThemeProvider} from 'theme'
 
 import AutomateNavbar from '../AutomateNavbar'
 
@@ -70,7 +71,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
@@ -98,7 +101,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
@@ -123,7 +128,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
@@ -170,7 +177,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
@@ -198,7 +207,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
@@ -219,7 +230,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
@@ -262,7 +275,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
@@ -286,7 +301,9 @@ describe('<AutomateNavbar />', () => {
                     })}
                 >
                     <DndProvider backend={HTML5Backend}>
-                        <AutomateNavbar />
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
                     </DndProvider>
                 </Provider>
             )
