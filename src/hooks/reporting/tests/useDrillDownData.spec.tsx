@@ -48,19 +48,22 @@ describe('useDrillDownData', () => {
     }
     const userTimezone = 'someTimeZone'
     const metricDimension = TicketMessagesDimension.MessagesCount
-    const rowData = [
-        {
-            [TicketDimension.TicketId]: '777',
-            [EnrichmentFields.TicketName]: 'Some Ticket',
-            [EnrichmentFields.Description]: 'Some description',
-            [EnrichmentFields.Channel]: TicketChannel.FacebookMention,
-            [EnrichmentFields.Status]: TicketStatus.Open,
-            [EnrichmentFields.CreatedDatetime]: '2023-04-07T00:00:00.000',
-            [EnrichmentFields.ContactReason]: 'some contact reason',
-            [EnrichmentFields.AssigneeId]: '1',
-            [metricDimension]: 12,
-        },
-    ]
+    const exampleRow = {
+        [TicketDimension.TicketId]: '777',
+        [EnrichmentFields.TicketName]: 'Some Ticket',
+        [EnrichmentFields.Description]: 'Some description',
+        [EnrichmentFields.Channel]: TicketChannel.FacebookMention,
+        [EnrichmentFields.Status]: TicketStatus.Open,
+        [EnrichmentFields.CreatedDatetime]: '2023-04-07T00:00:00.000',
+        [EnrichmentFields.ContactReason]: 'some contact reason',
+        [EnrichmentFields.AssigneeId]: '1',
+        [EnrichmentFields.IsUnread]: true,
+        [metricDimension]: 12,
+    }
+    const rowData = [exampleRow]
+    const metricData: DrillDownMetric = {
+        metricName: OverviewMetric.MessagesSent,
+    }
 
     beforeEach(() => {
         getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
@@ -77,10 +80,6 @@ describe('useDrillDownData', () => {
     })
 
     it('should return formatted Data', () => {
-        const metricData: DrillDownMetric = {
-            metricName: OverviewMetric.MessagesSent,
-        }
-
         const {result} = renderHook(() => useDrillDownData(metricData), {
             wrapper: ({children}) => (
                 <Provider store={mockStore({})}>{children}</Provider>
@@ -96,5 +95,35 @@ describe('useDrillDownData', () => {
                 formatDrillDownRowData(row, agents, metricDimension)
             ),
         })
+    })
+
+    it('should assume unread Tickets when is_unread missing', () => {
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+            data: {
+                allData: [
+                    {
+                        ...exampleRow,
+                        [EnrichmentFields.IsUnread]: undefined,
+                    },
+                ],
+            } as unknown as any,
+            isFetching: false,
+            isError: false,
+        })
+        const metricData: DrillDownMetric = {
+            metricName: OverviewMetric.MessagesSent,
+        }
+
+        const {result} = renderHook(() => useDrillDownData(metricData), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore({})}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.data).toContainEqual(
+            expect.objectContaining({
+                ticket: expect.objectContaining({isRead: false}),
+            })
+        )
     })
 })

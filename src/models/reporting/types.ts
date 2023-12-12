@@ -113,4 +113,5 @@ export enum EnrichmentFields {
     AssigneeId = 'Ticket.assignee_user_id',
     CreatedDatetime = 'Ticket.created_datetime',
     ContactReason = 'Ticket.contact_reason',
+    IsUnread = 'Ticket.is_unread',
 }

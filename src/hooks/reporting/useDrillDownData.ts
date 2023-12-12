@@ -48,6 +48,7 @@ export const defaultEnrichmentFields: EnrichmentFields[] = [
     EnrichmentFields.AssigneeId,
     EnrichmentFields.CreatedDatetime,
     EnrichmentFields.ContactReason,
+    EnrichmentFields.IsUnread,
 ]
 
 export const formatDrillDownRowData = (
@@ -60,7 +61,7 @@ export const formatDrillDownRowData = (
         subject: row[EnrichmentFields.TicketName] || null,
         description: row[EnrichmentFields.Description] || null,
         channel: row[EnrichmentFields.Channel] || null,
-        isRead: row[EnrichmentFields.Status] || false,
+        isRead: !(row[EnrichmentFields.IsUnread] ?? true),
         created: row[EnrichmentFields.CreatedDatetime] || null,
         contactReason: row[EnrichmentFields.ContactReason] || null,
     },
