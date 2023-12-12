@@ -149,7 +149,10 @@ describe('closedTicketsPerTicketQueryFactory', () => {
         ).toEqual({
             ...closedTicketsQueryFactory(statsFilters, timezone),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...closedTicketsQueryFactory(statsFilters, timezone).filters,
                 TicketDrillDownFilter,
@@ -167,13 +170,16 @@ describe('closedTicketsPerTicketQueryFactory', () => {
         ).toEqual({
             ...closedTicketsQueryFactory(filters, timezone),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...closedTicketsQueryFactory(filters, timezone).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
-            order: [[TicketMeasure.TicketCount, sorting]],
+            order: [[TicketDimension.CreatedDatetime, sorting]],
         })
     })
 })

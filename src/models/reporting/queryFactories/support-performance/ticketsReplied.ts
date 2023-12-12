@@ -98,7 +98,7 @@ export const ticketsRepliedMetricPerTickerQueryFactory = (
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...ticketsRepliedQueryFactory(filters, timezone),
     measures: [],
-    dimensions: [TicketDimension.TicketId],
+    dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
     filters: [
         ...ticketsRepliedQueryFactory(filters, timezone).filters,
         TicketDrillDownFilter,
@@ -106,7 +106,7 @@ export const ticketsRepliedMetricPerTickerQueryFactory = (
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
-              order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
+              order: [[TicketDimension.CreatedDatetime, sorting]],
           }
         : {}),
 })

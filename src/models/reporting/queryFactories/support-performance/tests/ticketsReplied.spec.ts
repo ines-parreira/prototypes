@@ -327,7 +327,10 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
         ).toEqual({
             ...ticketsRepliedQueryFactory(statsFilters, timezone),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...ticketsRepliedQueryFactory(statsFilters, timezone).filters,
                 TicketDrillDownFilter,
@@ -349,13 +352,16 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
         ).toEqual({
             ...ticketsRepliedQueryFactory(filters, timezone),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...ticketsRepliedQueryFactory(filters, timezone).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
-            order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
+            order: [[TicketDimension.CreatedDatetime, sorting]],
         })
     })
 })

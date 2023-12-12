@@ -71,7 +71,10 @@ describe('openTicketsPerTicketQueryFactory', () => {
         expect(query).toEqual({
             ...openTicketsQueryFactory(statsFilters, timezone),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...openTicketsQueryFactory(statsFilters, timezone).filters,
                 TicketDrillDownFilter,
@@ -90,13 +93,16 @@ describe('openTicketsPerTicketQueryFactory', () => {
         expect(query).toEqual({
             ...openTicketsQueryFactory(statsFilters, timezone),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...openTicketsQueryFactory(statsFilters, timezone).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
-            order: [[TicketMeasure.TicketCount, sorting]],
+            order: [[TicketDimension.CreatedDatetime, sorting]],
         })
     })
 })
