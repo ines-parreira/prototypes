@@ -10,7 +10,7 @@ export const DrillDownInfobar = ({
 }: {
     metricData: DrillDownMetric
 }) => {
-    const {data, perPage} = useDrillDownData(metricData)
+    const {perPage} = useDrillDownData(metricData)
 
     return (
         <div className={css.wrapper}>
@@ -18,8 +18,7 @@ export const DrillDownInfobar = ({
                 <i className="material-icons">info</i>
             </div>
             <div className={css.text}>
-                <strong>{perPage}</strong> out of{' '}
-                <strong>{data.length} tickets</strong> are shown.
+                <strong>{perPage}</strong> shown.
             </div>
             <DrillDownDownloadButton />
         </div>

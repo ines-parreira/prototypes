@@ -16,6 +16,7 @@ import {UserRole} from 'config/types/user'
 import css from './DrillDownDownloadButton.less'
 
 export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
+const TOTAL_TICKETS_COUNT_PLACEHOLDER = 'All'
 const NO_PERMISSIONS_CONTENT =
     'You don’t have enough permissions to download this content.'
 const tooltipTargetID = 'download-drill-down-tooltip'
@@ -43,7 +44,7 @@ export const DrillDownDownloadButton = () => {
                         setRequestDownload(true)
                         void dispatch(
                             notify({
-                                message: `<strong>${657} tickets</strong> will be exported. You will receive the download link via email at <strong>${
+                                message: `<strong>${TOTAL_TICKETS_COUNT_PLACEHOLDER} tickets</strong> will be exported. You will receive the download link via email at <strong>${
                                     currentUser.get('email') as string
                                 }</strong> once the export is done.`,
                                 allowHTML: true,
@@ -63,7 +64,7 @@ export const DrillDownDownloadButton = () => {
                     </ButtonIconLabel>
                 ) : (
                     <ButtonIconLabel icon="download" position="left">
-                        Download {657} tickets
+                        Download {TOTAL_TICKETS_COUNT_PLACEHOLDER} tickets
                     </ButtonIconLabel>
                 )}
             </Button>

@@ -5,7 +5,10 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
+import {
+    DRILL_DOWN_PER_PAGE,
+    useDrillDownData,
+} from 'hooks/reporting/useDrillDownData'
 import {DrillDownInfobar} from 'pages/stats/DrillDownInfobar'
 
 jest.mock('pages/stats/DrillDownDownloadButton', () => ({
@@ -37,11 +40,12 @@ describe('<DrillDownInfobar />', () => {
 
     useDrillDownDataMock.mockReturnValue({
         data,
+        perPage: DRILL_DOWN_PER_PAGE,
     } as any)
 
     it('should render the infobar', () => {
         render(<DrillDownInfobar metricData={metricData} />)
 
-        expect(screen.getByText(`${data.length} tickets`)).toBeInTheDocument()
+        expect(screen.getByText(`${DRILL_DOWN_PER_PAGE}`)).toBeInTheDocument()
     })
 })
