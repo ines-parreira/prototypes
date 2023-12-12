@@ -115,6 +115,10 @@ const TestRequestResult = ({
             ? JSON.parse(result.content)
             : null
     }, [result.content])
+    const prettifiedJSON = useMemo(
+        () => (json ? JSON.stringify(json, null, 2) : null),
+        [json]
+    )
 
     return (
         <>
@@ -146,7 +150,7 @@ const TestRequestResult = ({
                     <Label>Response</Label>
                     <TextArea
                         onChange={_noop}
-                        value={result.content}
+                        value={prettifiedJSON ?? result.content}
                         isDisabled
                         autoRowHeight
                         className={css.textarea}
