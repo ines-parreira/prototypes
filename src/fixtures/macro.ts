@@ -245,6 +245,16 @@ export const addInternalNoteAction: MacroAction = {
     },
 }
 
+export const setCustomFieldValueAction: MacroAction = {
+    name: MacroActionName.SetCustomFieldValue,
+    type: MacroActionType.User,
+    title: 'Set ticket field',
+    arguments: {
+        custom_field_id: 1,
+        value: 'Custom field value',
+    },
+}
+
 export const macroFixture = {
     category: null,
     usage: 0,

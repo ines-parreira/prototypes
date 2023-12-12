@@ -342,7 +342,10 @@ export const getBody = createImmutableSelector(
 export const getAppliedMacro = createImmutableSelector(
     getTicketState,
     (state) =>
-        state.getIn(['state', 'appliedMacro'], fromJS({})) as Map<any, any>
+        state.getIn(['state', 'appliedMacro'], fromJS({})) as Map<
+            any,
+            any
+        > | null
 )
 
 export const getTopRankMacroState = createImmutableSelector(

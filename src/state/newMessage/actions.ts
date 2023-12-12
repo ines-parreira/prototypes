@@ -1188,8 +1188,10 @@ export function prepareTicketMessage({
             const topRankMacroState =
                 ticketSelectors.getTopRankMacroState(state)
             const appliedMacro = ticketSelectors.getAppliedMacro(state)
+
             if (
                 topRankMacroState?.state === 'pending' &&
+                appliedMacro &&
                 appliedMacro.get('id') === topRankMacroState.macroId
             ) {
                 logEvent(SegmentEvent.TopRankMacro, {

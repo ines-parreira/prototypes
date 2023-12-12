@@ -27,6 +27,7 @@ import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
 import ResponseAction from './actions/ResponseAction'
 import SetAssigneeAction from './actions/SetAssigneeAction'
+import SetCustomFieldValueAction from './actions/SetCustomFieldValueAction'
 import AddTagsAction from './actions/AddTagsAction'
 import HttpAction from './actions/HttpAction'
 import AddAttachmentsAction from './actions/AddAttachmentsAction'
@@ -155,8 +156,10 @@ export class MacroEdit extends Component<Props> {
                     name !== MacroActionName.ForwardByEmail
             )
             // remove actions that have already been used
+            // except for SetCustomFieldValue which is allowed multiple times
             .filter(
                 (action) =>
+                    action.name === MacroActionName.SetCustomFieldValue ||
                     !this.props.actions.find(
                         (usedActions: Map<any, any>) =>
                             usedActions.get('name') === action.name
@@ -368,6 +371,19 @@ export class MacroEdit extends Component<Props> {
                 config = {
                     title: 'Exclude ticket from CSAT',
                     content: null,
+                }
+                break
+            case MacroActionName.SetCustomFieldValue:
+                config = {
+                    title: 'Set ticket field',
+                    content: (
+                        <SetCustomFieldValueAction
+                            index={index}
+                            action={action}
+                            actions={this.props.actions}
+                            updateActionArgs={this._updateActionArguments}
+                        />
+                    ),
                 }
                 break
             default: {

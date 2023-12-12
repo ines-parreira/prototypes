@@ -85,3 +85,12 @@ exports[`<CustomFieldSelect/> should render 1`] = `
   </div>
 </div>
 `;
+
+exports[`<CustomFieldSelect/> should render static text if it's in view mode with an archived prefix if selected field is archived 1`] = `
+<strong>
+  (Archived)
+   
+  Input field
+  :
+</strong>
+`;

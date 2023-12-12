@@ -3,12 +3,18 @@ import {render} from '@testing-library/react'
 
 import {
     snoozeTicketAction,
+    setCustomFieldValueAction,
     setSubjectAction,
     setOpenStatusAction,
     addAttachmentsAction,
-} from '../../../../../../../../fixtures/macro'
+} from 'fixtures/macro'
+import {MacroAction} from 'models/macroAction/types'
+
 import {SimpleActionPreview} from '../SimpleActionPreview'
-import {MacroAction} from '../../../../../../../../models/macroAction/types'
+
+jest.mock('pages/tickets/common/macros/Preview.tsx', () => ({
+    CustomFieldName: () => <div>CustomFieldName</div>,
+}))
 
 describe('<SimpleActionPreview/>', () => {
     it.each([
@@ -16,6 +22,7 @@ describe('<SimpleActionPreview/>', () => {
         ['set subject', setSubjectAction],
         ['set status', setOpenStatusAction],
         ['add attachmeents', addAttachmentsAction],
+        ['add custom field', setCustomFieldValueAction],
     ])('should render %s action', (_, action: MacroAction) => {
         const {container} = render(<SimpleActionPreview action={action} />)
         expect(container.firstChild).toMatchSnapshot()

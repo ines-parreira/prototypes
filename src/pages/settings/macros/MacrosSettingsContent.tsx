@@ -106,7 +106,7 @@ export function MacrosSettingsContentContainer({
 
     return (
         <div className="full-width">
-            <PageHeader title="Manage macros">
+            <PageHeader title="Macros">
                 <div className="d-flex">
                     <Search
                         className="mr-2"
@@ -146,15 +146,11 @@ export function MacrosSettingsContentContainer({
                 <div className={css.description}>
                     <div className={css.descriptionText}>
                         <p>
-                            Macros are used to automatize your agent support
-                            responses. You can create new macros or delete
-                            existing ones.
-                        </p>
-                        <p>
-                            For example, you can create a macro for letting your
-                            clients know the shipment status of their order or
-                            for sending a gift card. Check out the video on the
-                            right to find out more about working with macros.
+                            Macros are pre-made responses to customer questions
+                            that can be applied to tickets directly from the
+                            ticket view. You can personalize macros with
+                            customer variables and configure actions to trigger
+                            when macros are sent.
                         </p>
                     </div>
                 </div>

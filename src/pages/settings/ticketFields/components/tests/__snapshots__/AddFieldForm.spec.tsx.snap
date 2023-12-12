@@ -160,7 +160,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
     <div
       class="caption"
     >
-      Field type can't be changed once it's been saved.
+      Field type can’t be changed once it’s been saved.
     </div>
   </div>
   <div
@@ -250,6 +250,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         aria-disabled="true"
         class="wrapper fill primary medium isDisabled"
         data-testid="save-button"
+        id="custom-fields-form-save-button"
         type="button"
       >
         Create field

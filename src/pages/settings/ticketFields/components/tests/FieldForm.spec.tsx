@@ -1,14 +1,15 @@
 import React, {ReactNode} from 'react'
 import {omit} from 'lodash'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {createMemoryHistory} from 'history'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {
     ticketInputFieldDefinition,
     customFieldInputDefinition,
@@ -17,7 +18,7 @@ import {
 } from 'fixtures/customField'
 import {CustomField, CustomFieldInput} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import FieldForm from '../FieldForm'
@@ -48,6 +49,11 @@ jest.mock(
             return <div>{children}</div>
         }
 )
+
+jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
+    jest.fn(() => null)
+)
+const mockedUnsavedChangesPrompt = assumeMock(UnsavedChangesPrompt)
 
 describe('<FieldForm/>', () => {
     beforeEach(() => {
@@ -83,14 +89,37 @@ describe('<FieldForm/>', () => {
             onClose: jest.fn(),
         }
 
-        const {container} = render(
+        render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <FieldForm {...props} />
                 </Provider>{' '}
             </QueryClientProvider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('ACTIVE'))
+        expect(screen.getByText(/Field type can’t be changed/))
+    })
+
+    it('should show a tooltip on hover save after doing a change', async () => {
+        const props = {
+            field: ticketInputFieldDefinition,
+            onSubmit: jest.fn(),
+            onClose: jest.fn(),
+        }
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
+        userEvent.hover(screen.getByText(/Save changes/))
+        await waitFor(() => {
+            expect(screen.getByText(/The values you have changed/))
+        })
     })
 
     it('should disable the save button if the form is not valid', async () => {
@@ -226,14 +255,13 @@ describe('<FieldForm/>', () => {
     })
 
     it('should prompt for confirmation when closing the page with unsaved changes', async () => {
-        const history = createMemoryHistory()
         const props = {
             field: customFieldInputDefinition,
             onSubmit: jest.fn(),
             onClose: jest.fn(),
         }
 
-        const {findByLabelText, findByText} = renderWithRouter(
+        const {findByLabelText} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <FieldForm {...props} />
@@ -243,12 +271,7 @@ describe('<FieldForm/>', () => {
 
         const nameInput = await findByLabelText(/Name/)
         fireEvent.change(nameInput, {target: {value: 'New name'}})
-
-        history.push('/')
-
-        await findByText(
-            'Your changes to this page will be lost if you don’t save them.'
-        )
+        expect(mockedUnsavedChangesPrompt).toHaveBeenCalledTimes(1)
     })
 
     it('should not trigger a submit when pressing enter in a field', async () => {

@@ -6,6 +6,7 @@ import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import * as Label from 'pages/common/utils/labels'
 import {fileIconFromContentType} from 'pages/tickets/common/utils'
 import {getActionTemplate} from 'utils'
+import {CustomFieldName} from 'pages/tickets/common/macros/Preview'
 
 import {BaseActionPreview} from './BaseActionPreview'
 
@@ -81,6 +82,14 @@ export const SimpleActionPreview = ({action}: Props) => {
                 )
             case MacroActionName.ExcludeFromCSAT:
                 return null
+            case MacroActionName.SetCustomFieldValue:
+                if (!args.custom_field_id) return null
+                return (
+                    <div>
+                        <CustomFieldName customFieldId={args.custom_field_id} />
+                        : {args.value}
+                    </div>
+                )
             default:
                 break
         }

@@ -876,9 +876,11 @@ export const mergeActionsJS = (oldActions: any[], newActions: any[]): any => {
 
 export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
     let actions = newActions
+    // If they are no actions with the same name in the new macro, we keep all the old ones
+    // But they are some with the same name in the new macro, we discard the old ones
     oldActions.forEach((oldAction: Map<any, any>) => {
         const name = oldAction.get('name')
-        const macroActionIndex = actions.findIndex(
+        const macroActionIndex = newActions.findIndex(
             (macroAction: Map<any, any>) => macroAction.get('name') === name
         )
         if (macroActionIndex !== -1) {

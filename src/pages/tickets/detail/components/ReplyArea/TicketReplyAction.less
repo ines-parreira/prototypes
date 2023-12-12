@@ -45,6 +45,36 @@
         }
     }
 
+    .customFieldSelect {
+        :global .dropdown-toggle {
+            font-weight: 500;
+            background-color: var(--neutral-grey-2);
+            color: var(--neutral-grey-6);
+
+            i {
+                color: var(--neutral-grey-6);
+            }
+        }
+    }
+
+    .customFieldInput {
+        .inputField;
+        width: auto;
+        margin-left: 0.5rem;
+
+        &:global(.custom-field-input--number) {
+            min-width: 15em;
+        }
+
+        &:global(.custom-field-input--dropdown) > span {
+            background: var(--neutral-grey-0);
+            border: 1px solid var(--neutral-grey-3);
+            border-radius: 4px;
+            display: flex;
+            line-height: 30px;
+        }
+    }
+
     .selectFieldWrapper {
         display: flex;
         width: fit-content;
@@ -60,7 +90,7 @@
 
     .spacer {
         flex-grow: 1;
-        min-width: 5em;
+        min-width: 2em;
     }
 
     .responseAction :global(.rich-textarea-wrapper) {

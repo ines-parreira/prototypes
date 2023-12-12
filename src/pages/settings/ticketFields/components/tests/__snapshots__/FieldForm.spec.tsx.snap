@@ -139,7 +139,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
     <div
       class="caption"
     >
-      Field type can't be changed once it's been saved.
+      Field type can’t be changed once it’s been saved.
     </div>
   </div>
   <div
@@ -173,6 +173,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
         aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
+        id="custom-fields-form-save-button"
         type="button"
       >
         Save changes
@@ -339,7 +340,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
     <div
       class="caption"
     >
-      Field type can't be changed once it's been saved.
+      Field type can’t be changed once it’s been saved.
     </div>
   </div>
   <div
@@ -555,6 +556,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
         aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
+        id="custom-fields-form-save-button"
         type="button"
       >
         Save changes
@@ -721,7 +723,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
     <div
       class="caption"
     >
-      Field type can't be changed once it's been saved.
+      Field type can’t be changed once it’s been saved.
     </div>
   </div>
   <div
@@ -734,6 +736,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
         aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
+        id="custom-fields-form-save-button"
         type="button"
       >
         Save changes
@@ -900,7 +903,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
     <div
       class="caption"
     >
-      Field type can't be changed once it's been saved.
+      Field type can’t be changed once it’s been saved.
     </div>
   </div>
   <div
@@ -913,6 +916,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
         aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
+        id="custom-fields-form-save-button"
         type="button"
       >
         Save changes
@@ -1080,7 +1084,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
     <div
       class="caption"
     >
-      Field type can't be changed once it's been saved.
+      Field type can’t be changed once it’s been saved.
     </div>
   </div>
   <div
@@ -1114,206 +1118,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
         aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
-        type="button"
-      >
-        Save changes
-      </button>
-      <button
-        aria-disabled="false"
-        class="wrapper fill secondary medium"
-        type="button"
-      >
-        Cancel
-      </button>
-    </div>
-    <div
-      class="rightGroup"
-    >
-      <button
-        aria-disabled="false"
-        class="wrapper fill secondary medium"
-        type="button"
-      >
-        Archive field
-      </button>
-    </div>
-  </div>
-</form>
-`;
-
-exports[`<FieldForm/> should show archiving status and disable type change on edit 1`] = `
-<form>
-  <div
-    class="formRow"
-  >
-    <label
-      class="label formLabel"
-    >
-      Status
-    </label>
-    <div
-      class="badge"
-    >
-      ACTIVE
-    </div>
-  </div>
-  <div
-    class="formRow"
-  >
-    <label
-      class="label label"
-      for="input-text-34"
-    >
-      Name
-      <abbr
-        aria-label="required"
-        class="abbr"
-        title="required"
-      >
-        *
-      </abbr>
-    </label>
-    <div
-      class="wrapper"
-    >
-      <input
-        aria-describedby="input-text-34-caption"
-        class="input"
-        id="input-text-34"
-        name="label"
-        placeholder="e.g. Contact Reason"
-        required=""
-        type="text"
-        value="Input field"
-      />
-    </div>
-    <div
-      class="caption"
-      id="input-text-34-caption"
-    >
-      Visible to agents
-    </div>
-  </div>
-  <div
-    class="formRow"
-  >
-    <label
-      class="label label"
-      for="textarea-36"
-    >
-      Description
-    </label>
-    <textarea
-      aria-describedby="textarea-36-caption"
-      class="textarea"
-      id="textarea-36"
-      name="description"
-      placeholder="e.g. Reasons why customers reach out to us"
-      rows="1"
-    >
-      This is an input field
-    </textarea>
-    <div
-      class="caption"
-      id="textarea-36-caption"
-    >
-      Not visible to agents
-    </div>
-  </div>
-  <div
-    class="formRow"
-  >
-    <label
-      class="label label"
-      for="checkbox-37"
-    >
-      <input
-        class="input"
-        id="checkbox-37"
-        name="checkbox-37"
-        type="checkbox"
-      />
-      Required to close ticket
-    </label>
-    <div
-      class="caption caption"
-    >
-      Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work.
-    </div>
-  </div>
-  <div
-    class="formRow"
-  >
-    <label
-      class="label formLabel"
-      for="type"
-    >
-      Type
-      <abbr
-        aria-label="required"
-        class="abbr"
-        title="required"
-      >
-        *
-      </abbr>
-    </label>
-    <div
-      class="wrapper"
-      role="listbox"
-      tabindex="-1"
-    >
-      <div
-        class="inputWrapper isDisabled"
-      >
-        <div
-          class="input isGreyed"
-        >
-          Text
-        </div>
-        <i
-          class="affix suffix toggle material-icons"
-        >
-          arrow_drop_down
-        </i>
-      </div>
-    </div>
-    <div
-      class="caption"
-    >
-      Field type can't be changed once it's been saved.
-    </div>
-  </div>
-  <div
-    class="formRow"
-  >
-    <label
-      class="label label"
-      for="input-text-38"
-    >
-      Placeholder
-    </label>
-    <div
-      class="wrapper"
-    >
-      <input
-        class="input"
-        id="input-text-38"
-        name="settings.placeholder"
-        type="text"
-        value="Some placeholder"
-      />
-    </div>
-  </div>
-  <div
-    class="buttons"
-  >
-    <div
-      class="leftGroup"
-    >
-      <button
-        aria-disabled="false"
-        class="wrapper fill primary medium"
-        data-testid="save-button"
+        id="custom-fields-form-save-button"
         type="button"
       >
         Save changes

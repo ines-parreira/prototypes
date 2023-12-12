@@ -77,7 +77,11 @@ export class TicketReplyArea extends Component<Props, State> {
         this.bindKeys()
     }
 
-    applyTopRankMacro(macro: Map<any, any>, state: TopRankMacroState['state']) {
+    applyTopRankMacro(
+        macro: Map<any, any> | null,
+        state: TopRankMacroState['state']
+    ) {
+        if (!macro) return
         void this.props.applyMacro(
             macro,
             this.props.currentTicket.get('id'),

@@ -10,7 +10,9 @@ exports[`<CustomFieldInput/> should render a boolean dropdown 1`] = `
       id="rule-custom-field-2"
       style="width: 82px;"
     >
-      <span>
+      <span
+        class="autoWidthSpan"
+      >
         Select an option
       </span>
       <input
@@ -85,7 +87,9 @@ exports[`<CustomFieldInput/> should render a text dropdown 1`] = `
       id="rule-custom-field-2"
       style="width: 82px;"
     >
-      <span>
+      <span
+        class="autoWidthSpan"
+      >
         Select an option
       </span>
       <input
