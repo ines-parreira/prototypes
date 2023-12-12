@@ -280,6 +280,26 @@ export default function HttpRequestEditor({
                             )}
                         </div>
                     )}
+                    <Button
+                        className={css.testRequestButton}
+                        isLoading={isTestRequestLoading}
+                        isDisabled={isErrored}
+                        onClick={() => {
+                            if (
+                                !variables.length &&
+                                !nodeInEdition.data.testRequestResult
+                            ) {
+                                void sendTestRequest()
+                            }
+
+                            setIsTestRequestModalOpen(true)
+                        }}
+                        intent="secondary"
+                    >
+                        {nodeInEdition.data.testRequestResult
+                            ? 'View Test Results'
+                            : 'Test request'}
+                    </Button>
                     <div className={css.formField}>
                         <div className={css.withDescription}>
                             <Label>Flow variables</Label>
@@ -297,65 +317,44 @@ export default function HttpRequestEditor({
                     </div>
                 </div>
             </Drawer.Content>
-            <Drawer.Footer>
-                <Button
-                    isLoading={isTestRequestLoading}
-                    isDisabled={isErrored}
-                    onClick={() => {
-                        if (
-                            !variables.length &&
-                            !nodeInEdition.data.testRequestResult
-                        ) {
-                            void sendTestRequest()
-                        }
-
-                        setIsTestRequestModalOpen(true)
+            {variables.length > 0 ? (
+                <TestRequestModalWithInputs
+                    isOpen={isTestRequestModalOpen}
+                    onClose={() => {
+                        setIsTestRequestModalOpen(false)
                     }}
-                    intent="secondary"
-                >
-                    {nodeInEdition.data.testRequestResult
-                        ? 'View Test Results'
-                        : 'Test request'}
-                </Button>
-                {variables.length > 0 ? (
-                    <TestRequestModalWithInputs
+                    isLoading={isTestRequestLoading}
+                    sendTestRequest={sendTestRequest}
+                    onReset={() => {
+                        dispatch({
+                            type: 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT',
+                            httpRequestNodeId: nodeInEdition.id,
+                        })
+                    }}
+                    variables={nodeInEdition.data.variables}
+                    result={nodeInEdition.data.testRequestResult}
+                    inputs={variables}
+                    onChangeVariable={handleChangeVariable}
+                    onDeleteVariable={handleDeleteVariable}
+                    onAddVariable={handleAddVariable}
+                />
+            ) : (
+                nodeInEdition.data.testRequestResult && (
+                    <TestRequestModal
                         isOpen={isTestRequestModalOpen}
                         onClose={() => {
                             setIsTestRequestModalOpen(false)
                         }}
                         isLoading={isTestRequestLoading}
                         sendTestRequest={sendTestRequest}
-                        onReset={() => {
-                            dispatch({
-                                type: 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT',
-                                httpRequestNodeId: nodeInEdition.id,
-                            })
-                        }}
                         variables={nodeInEdition.data.variables}
                         result={nodeInEdition.data.testRequestResult}
-                        inputs={variables}
                         onChangeVariable={handleChangeVariable}
                         onDeleteVariable={handleDeleteVariable}
                         onAddVariable={handleAddVariable}
                     />
-                ) : (
-                    nodeInEdition.data.testRequestResult && (
-                        <TestRequestModal
-                            isOpen={isTestRequestModalOpen}
-                            onClose={() => {
-                                setIsTestRequestModalOpen(false)
-                            }}
-                            isLoading={isTestRequestLoading}
-                            sendTestRequest={sendTestRequest}
-                            variables={nodeInEdition.data.variables}
-                            result={nodeInEdition.data.testRequestResult}
-                            onChangeVariable={handleChangeVariable}
-                            onDeleteVariable={handleDeleteVariable}
-                            onAddVariable={handleAddVariable}
-                        />
-                    )
-                )}
-            </Drawer.Footer>
+                )
+            )}
         </>
     )
 }
