@@ -129,6 +129,8 @@ describe('<SearchTermsTable/>', () => {
                             '10',
                         [HelpCenterTrackingEventMeasures.SearchArticlesClickedCount]:
                             '3',
+                        [HelpCenterTrackingEventMeasures.SearchArticlesClickedCountUnique]:
+                            '3',
                     },
                 ],
                 decile: null,

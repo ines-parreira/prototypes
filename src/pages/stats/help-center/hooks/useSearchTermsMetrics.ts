@@ -61,6 +61,13 @@ export const useSearchTermsMetrics = ({
                     ]
                 )
 
+                const articlesClickedUnique = Number(
+                    value[
+                        HelpCenterTrackingEventMeasures
+                            .SearchArticlesClickedCountUnique
+                    ]
+                )
+
                 const clickThroughRate = (articlesClicked / searchCount) * 100
 
                 return [
@@ -76,8 +83,12 @@ export const useSearchTermsMetrics = ({
                         type: TableCellType.Number,
                         value: isNaN(articlesClicked) ? null : articlesClicked,
                         onClick:
-                            searchTerm && articlesClicked > 0
-                                ? () => onModalOpen(searchTerm, articlesClicked)
+                            searchTerm && articlesClickedUnique > 0
+                                ? () =>
+                                      onModalOpen(
+                                          searchTerm,
+                                          articlesClickedUnique
+                                      )
                                 : undefined,
                     },
                     {

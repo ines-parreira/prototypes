@@ -109,6 +109,8 @@ describe('useSearchTermsMetrics', () => {
                             '10',
                         [HelpCenterTrackingEventMeasures.SearchArticlesClickedCount]:
                             '5',
+                        [HelpCenterTrackingEventMeasures.SearchArticlesClickedCountUnique]:
+                            '3',
                         [HelpCenterTrackingEventDimensions.SearchQuery]:
                             'report issue',
                     },

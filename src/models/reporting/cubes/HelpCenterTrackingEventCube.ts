@@ -29,6 +29,7 @@ export enum HelpCenterTrackingEventMeasures {
     ArticleView = 'HelpCenterTrackingEvent.articleViewCount',
     SearchRequestedQueryCount = 'HelpCenterTrackingEvent.searchRequestedQueryCount',
     SearchArticlesClickedCount = 'HelpCenterTrackingEvent.searchArticlesClickedCount',
+    SearchArticlesClickedCountUnique = 'HelpCenterTrackingEvent.searchArticlesClickedCountUnique',
     UniqueSearchQueryCount = 'HelpCenterTrackingEvent.uniqueSearchQueryCount',
 }
 
@@ -37,6 +38,7 @@ export enum HelpCenterTrackingEventSegment {
     SearchRequestedOnly = 'HelpCenterTrackingEvent.searchRequestedOnly',
     SearchResultClickedOnly = 'HelpCenterTrackingEvent.searchResultClickedOnly',
     NoSearchResultOnly = 'HelpCenterTrackingEvent.noSearchResultOnly',
+    SearchRequestWithClicks = 'HelpCenterTrackingEvent.searchRequestWithClicks',
 }
 
 export type HelpCenterTrackingEventCube = Cube<

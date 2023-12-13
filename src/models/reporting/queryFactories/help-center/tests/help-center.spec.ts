@@ -42,6 +42,7 @@ describe('help center queries factories', () => {
             [
                 HelpCenterTrackingEventMeasures.SearchRequestedQueryCount,
                 HelpCenterTrackingEventMeasures.SearchArticlesClickedCount,
+                HelpCenterTrackingEventMeasures.SearchArticlesClickedCountUnique,
             ],
             [HelpCenterTrackingEventDimensions.SearchQuery],
             [
@@ -50,7 +51,7 @@ describe('help center queries factories', () => {
                     OrderDirection.Desc,
                 ],
             ],
-            undefined,
+            [HelpCenterTrackingEventSegment.SearchRequestWithClicks],
             searchResultTermsQueryFactory,
         ],
         [

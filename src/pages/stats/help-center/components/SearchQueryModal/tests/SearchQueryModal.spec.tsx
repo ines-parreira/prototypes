@@ -34,7 +34,7 @@ const renderComponent = (
                 }}
                 timezone=""
                 searchQuery=""
-                articleClickedCount={0}
+                articlesCount={0}
                 helpCenterDomain="acme"
                 {...props}
             />

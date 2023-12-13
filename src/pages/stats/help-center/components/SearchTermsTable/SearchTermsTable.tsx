@@ -54,7 +54,7 @@ type ModalStateType =
     | {
           isOpen: true
           searchQuery: string
-          articleClickedCount: number
+          articlesCount: number
       }
 
 const modalIntiState: ModalStateType = {
@@ -70,7 +70,11 @@ const SearchTermsTable = ({
 
     const [modalState, setModalState] = useState<ModalStateType>(modalIntiState)
     const onModalOpen = (searchQuery: string, articleClickedCount: number) => {
-        setModalState({isOpen: true, searchQuery, articleClickedCount})
+        setModalState({
+            isOpen: true,
+            searchQuery,
+            articlesCount: articleClickedCount,
+        })
     }
 
     const {data, total, isLoading} = useSearchTermsMetrics({
@@ -124,9 +128,7 @@ const SearchTermsTable = ({
                                 searchQuery={modalState.searchQuery}
                                 onClose={onModalClose}
                                 helpCenterDomain={helpCenterDomain}
-                                articleClickedCount={
-                                    modalState.articleClickedCount
-                                }
+                                articlesCount={modalState.articlesCount}
                             />
                         )}
                     </Modal>

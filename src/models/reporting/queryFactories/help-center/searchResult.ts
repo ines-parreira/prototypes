@@ -20,7 +20,9 @@ export const searchResultTermsQueryFactory = (
     measures: [
         HelpCenterTrackingEventMeasures.SearchRequestedQueryCount,
         HelpCenterTrackingEventMeasures.SearchArticlesClickedCount,
+        HelpCenterTrackingEventMeasures.SearchArticlesClickedCountUnique,
     ],
+    segments: [HelpCenterTrackingEventSegment.SearchRequestWithClicks],
     dimensions: [HelpCenterTrackingEventDimensions.SearchQuery],
     timezone,
     filters: [

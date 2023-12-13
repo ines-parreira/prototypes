@@ -26,7 +26,7 @@ type SearchQueryModalProps = {
     statsFilters: StatsFilters
     timezone: string
     searchQuery: string
-    articleClickedCount: number
+    articlesCount: number
     helpCenterDomain: string
 }
 
@@ -35,7 +35,7 @@ const SearchQueryModal = ({
     statsFilters,
     timezone,
     searchQuery,
-    articleClickedCount,
+    articlesCount,
     helpCenterDomain,
 }: SearchQueryModalProps) => {
     const [currentPage, setCurrentPage] = useState(1)
@@ -52,6 +52,8 @@ const SearchQueryModal = ({
         helpCenterDomain,
     })
 
+    const count = Math.ceil(articlesCount / ITEMS_PER_PAGE)
+
     return (
         <>
             <ModalHeader toggle={onClose}>{searchQuery}</ModalHeader>
@@ -60,10 +62,14 @@ const SearchQueryModal = ({
                     isLoading={isLoading}
                     currentPage={currentPage}
                     onPageChange={onPageChange}
-                    count={articleClickedCount}
+                    count={count}
+                    /*
+                     * We use this number to show skeleton. Because most of the time we have only 1 page it's better to avoid "page jump" after loading
+                     * and show only needed amount of lines.
+                     */
                     pageSize={
-                        articleClickedCount < ITEMS_PER_PAGE
-                            ? articleClickedCount
+                        articlesCount < ITEMS_PER_PAGE
+                            ? articlesCount
                             : ITEMS_PER_PAGE
                     }
                     columns={columns}
