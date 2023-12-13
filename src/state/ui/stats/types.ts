@@ -37,12 +37,12 @@ export enum OverviewMetric {
 
 export enum TableColumn {
     AgentName = 'agent_name',
-    CustomerSatisfaction = 'customer_satisfaction_per_agent',
-    MedianFirstResponseTime = 'median_first_response_time',
-    MedianResolutionTime = 'median_resolution_time',
-    MessagesSent = 'messages_sent',
-    PercentageOfClosedTickets = 'percentage_of_closed_tickets',
-    ClosedTickets = 'closed_tickets',
-    RepliedTickets = 'replied_tickets',
-    OneTouchTickets = 'one_touch_tickets',
+    CustomerSatisfaction = 'agent_customer_satisfaction',
+    MedianFirstResponseTime = 'agent_median_first_response_time',
+    MedianResolutionTime = 'agent_median_resolution_time',
+    MessagesSent = 'agent_messages_sent',
+    PercentageOfClosedTickets = 'agent_percentage_of_closed_tickets',
+    ClosedTickets = 'agent_closed_tickets',
+    RepliedTickets = 'agent_replied_tickets',
+    OneTouchTickets = 'agent_one_touch_tickets',
 }

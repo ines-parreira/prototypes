@@ -53,21 +53,28 @@ export const customerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...customerSatisfactionQueryFactory(filters, timezone),
-    measures: [],
-    dimensions: [
-        TicketDimension.TicketId,
-        TicketSatisfactionSurveyDimension.SurveyScore,
-    ],
-    filters: [
-        ...customerSatisfactionQueryFactory(filters, timezone).filters,
-        TicketDrillDownFilter,
-    ],
-    limit: DRILLDOWN_QUERY_LIMIT,
-    ...(sorting
-        ? {
-              order: [[TicketSatisfactionSurveyDimension.SurveyScore, sorting]],
-          }
-        : {}),
-})
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    const baseQuery = customerSatisfactionMetricPerAgentQueryFactory(
+        filters,
+        timezone,
+        sorting
+    )
+    return {
+        ...baseQuery,
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketSatisfactionSurveyDimension.SurveyScore,
+            ...baseQuery.dimensions,
+        ],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [
+                      [TicketSatisfactionSurveyDimension.SurveyScore, sorting],
+                  ],
+              }
+            : {}),
+    }
+}

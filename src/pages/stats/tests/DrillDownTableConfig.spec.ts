@@ -1,10 +1,20 @@
+import moment from 'moment/moment'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {StatsFilters} from 'models/stat/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import {AgentsMetrics, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
 
+jest.mock(
+    'models/reporting/queryFactories/support-performance/customerSatisfaction'
+)
+const customerSatisfactionQueryFactoryMock = assumeMock(
+    customerSatisfactionMetricDrillDownQueryFactory
+)
 describe('getDrillDownQuery', () => {
-    const supportedMetrics: DrillDownMetric[] = [
+    const agentsMetrics: AgentsMetrics[] = [
         {metricName: TableColumn.CustomerSatisfaction, perAgentId: 123},
         {metricName: TableColumn.MedianFirstResponseTime, perAgentId: 123},
         {metricName: TableColumn.MedianResolutionTime, perAgentId: 123},
@@ -13,6 +23,8 @@ describe('getDrillDownQuery', () => {
         {metricName: TableColumn.ClosedTickets, perAgentId: 123},
         {metricName: TableColumn.RepliedTickets, perAgentId: 123},
         {metricName: TableColumn.OneTouchTickets, perAgentId: 123},
+    ]
+    const supportedMetrics: DrillDownMetric[] = [
         {
             metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
             customFieldId: 123,
@@ -29,10 +41,31 @@ describe('getDrillDownQuery', () => {
         {metricName: OverviewMetric.CustomerSatisfaction},
     ]
 
-    it.each(supportedMetrics)(
+    it.each([...supportedMetrics, ...agentsMetrics])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
             expect(getDrillDownQuery(metricName)).toEqual(expect.any(Function))
         }
     )
+
+    it('should be populated with agentId filter ($metricName_', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric = agentsMetrics[0]
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({agents: [drillDownMetric.perAgentId]}),
+            timezone,
+            undefined
+        )
+    })
 })

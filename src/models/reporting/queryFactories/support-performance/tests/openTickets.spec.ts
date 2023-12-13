@@ -6,7 +6,7 @@ import {
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
 import {
-    openTicketsPerTicketQueryFactory,
+    openTicketsPerTicketDrillDownQueryFactory,
     openTicketsQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/openTickets'
 import {ReportingFilterOperator} from 'models/reporting/types'
@@ -66,7 +66,10 @@ describe('openTicketsPerTicketQueryFactory', () => {
     const sorting = OrderDirection.Asc
 
     it('should build a query', () => {
-        const query = openTicketsPerTicketQueryFactory(statsFilters, timezone)
+        const query = openTicketsPerTicketDrillDownQueryFactory(
+            statsFilters,
+            timezone
+        )
 
         expect(query).toEqual({
             ...openTicketsQueryFactory(statsFilters, timezone),
@@ -84,7 +87,7 @@ describe('openTicketsPerTicketQueryFactory', () => {
     })
 
     it('should build a query with sorting', () => {
-        const query = openTicketsPerTicketQueryFactory(
+        const query = openTicketsPerTicketDrillDownQueryFactory(
             statsFilters,
             timezone,
             sorting

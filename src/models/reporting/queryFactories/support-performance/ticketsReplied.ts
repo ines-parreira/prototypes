@@ -91,22 +91,30 @@ export const ticketsRepliedMetricPerAgentQueryFactory = (
         : {}),
 })
 
-export const ticketsRepliedMetricPerTickerQueryFactory = (
+export const ticketsRepliedMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...ticketsRepliedQueryFactory(filters, timezone),
-    measures: [],
-    dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
-    filters: [
-        ...ticketsRepliedQueryFactory(filters, timezone).filters,
-        TicketDrillDownFilter,
-    ],
-    limit: DRILLDOWN_QUERY_LIMIT,
-    ...(sorting
-        ? {
-              order: [[TicketDimension.CreatedDatetime, sorting]],
-          }
-        : {}),
-})
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    const baseQuery = ticketsRepliedMetricPerAgentQueryFactory(
+        filters,
+        timezone,
+        sorting
+    )
+    return {
+        ...baseQuery,
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketDimension.CreatedDatetime,
+            ...baseQuery.dimensions,
+        ],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [[TicketDimension.CreatedDatetime, sorting]],
+              }
+            : {}),
+    }
+}

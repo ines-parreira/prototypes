@@ -5,6 +5,7 @@ import {
     TicketMeasure,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ReportingGranularity,
     ReportingQuery,
@@ -64,22 +65,27 @@ export const closedTicketsPerAgentQueryFactory = (
         : {}),
 })
 
-export const closedTicketsPerTicketQueryFactory = (
+export const closedTicketsPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...closedTicketsQueryFactory(filters, timezone),
-    measures: [],
-    dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
-    filters: [
-        ...closedTicketsQueryFactory(filters, timezone).filters,
-        TicketDrillDownFilter,
-    ],
-    limit: DRILLDOWN_QUERY_LIMIT,
-    ...(sorting
-        ? {
-              order: [[TicketDimension.CreatedDatetime, sorting]],
-          }
-        : {}),
-})
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    const baseQuery = closedTicketsPerAgentQueryFactory(filters, timezone)
+    return {
+        ...baseQuery,
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketMessagesDimension.FirstHelpdeskMessageUserId,
+            TicketDimension.CreatedDatetime,
+            ...baseQuery.dimensions,
+        ],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [[TicketDimension.CreatedDatetime, sorting]],
+              }
+            : {}),
+    }
+}

@@ -7,11 +7,13 @@ import {
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    TicketMessagesDimension,
+    TicketMessagesMember,
+} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     closedTicketsPerAgentQueryFactory,
-    closedTicketsPerTicketQueryFactory,
-    closedTicketsQueryFactory,
+    closedTicketsPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -145,16 +147,20 @@ describe('closedTicketsPerTicketQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            closedTicketsPerTicketQueryFactory(statsFilters, timezone)
+            closedTicketsPerTicketDrillDownQueryFactory(statsFilters, timezone)
         ).toEqual({
-            ...closedTicketsQueryFactory(statsFilters, timezone),
+            ...closedTicketsPerAgentQueryFactory(statsFilters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
+                TicketMessagesDimension.FirstHelpdeskMessageUserId,
                 TicketDimension.CreatedDatetime,
+                ...closedTicketsPerAgentQueryFactory(statsFilters, timezone)
+                    .dimensions,
             ],
             filters: [
-                ...closedTicketsQueryFactory(statsFilters, timezone).filters,
+                ...closedTicketsPerAgentQueryFactory(statsFilters, timezone)
+                    .filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -166,16 +172,23 @@ describe('closedTicketsPerTicketQueryFactory', () => {
         const filters = {...statsFilters, agents}
 
         expect(
-            closedTicketsPerTicketQueryFactory(filters, timezone, sorting)
+            closedTicketsPerTicketDrillDownQueryFactory(
+                filters,
+                timezone,
+                sorting
+            )
         ).toEqual({
-            ...closedTicketsQueryFactory(filters, timezone),
+            ...closedTicketsPerAgentQueryFactory(filters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
+                TicketMessagesDimension.FirstHelpdeskMessageUserId,
                 TicketDimension.CreatedDatetime,
+                ...closedTicketsPerAgentQueryFactory(statsFilters, timezone)
+                    .dimensions,
             ],
             filters: [
-                ...closedTicketsQueryFactory(filters, timezone).filters,
+                ...closedTicketsPerAgentQueryFactory(filters, timezone).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,

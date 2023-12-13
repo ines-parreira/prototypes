@@ -159,6 +159,10 @@ describe('customerSatisfactionMetricDrillDownQueryFactory', () => {
             dimensions: [
                 TicketDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
+                ...customerSatisfactionMetricPerAgentQueryFactory(
+                    statsFilters,
+                    timezone
+                ).dimensions,
             ],
             filters: [
                 ...customerSatisfactionMetricPerAgentQueryFactory(
@@ -190,6 +194,11 @@ describe('customerSatisfactionMetricDrillDownQueryFactory', () => {
             dimensions: [
                 TicketDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
+                ...customerSatisfactionMetricPerAgentQueryFactory(
+                    {...statsFilters, agents},
+                    timezone,
+                    sorting
+                ).dimensions,
             ],
             filters: [
                 ...customerSatisfactionMetricPerAgentQueryFactory(

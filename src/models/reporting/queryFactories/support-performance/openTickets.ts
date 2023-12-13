@@ -38,7 +38,7 @@ export const openTicketsQueryFactory = (
     ],
 })
 
-export const openTicketsPerTicketQueryFactory = (
+export const openTicketsPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection

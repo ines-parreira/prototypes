@@ -74,25 +74,29 @@ export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
         : {}),
 })
 
-export const firstResponseTimeMetricPerTicketQueryFactory = (
+export const firstResponseTimeMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery<TicketCubeWithJoins> => ({
-    ...medianFirstResponseTimeQueryFactory(filters, timezone),
-    measures: [],
-    dimensions: [
-        TicketDimension.TicketId,
-        TicketMessagesDimension.FirstResponseTime,
-    ],
-    filters: [
-        ...medianFirstResponseTimeQueryFactory(filters, timezone).filters,
-        TicketDrillDownFilter,
-    ],
-    limit: DRILLDOWN_QUERY_LIMIT,
-    ...(sorting
-        ? {
-              order: [[TicketMessagesDimension.FirstResponseTime, sorting]],
-          }
-        : {}),
-})
+): ReportingQuery<TicketCubeWithJoins> => {
+    const baseQuery = medianFirstResponseTimeMetricPerAgentQueryFactory(
+        filters,
+        timezone
+    )
+    return {
+        ...baseQuery,
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketMessagesDimension.FirstResponseTime,
+            ...baseQuery.dimensions,
+        ],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [[TicketMessagesDimension.FirstResponseTime, sorting]],
+              }
+            : {}),
+    }
+}

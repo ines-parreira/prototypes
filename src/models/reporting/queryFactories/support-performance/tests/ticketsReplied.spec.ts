@@ -10,7 +10,7 @@ import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ticketsRepliedMetricPerAgentQueryFactory,
-    ticketsRepliedMetricPerTickerQueryFactory,
+    ticketsRepliedMetricPerTicketDrillDownQueryFactory,
     ticketsRepliedQueryFactory,
     ticketsRepliedTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
@@ -323,16 +323,26 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            ticketsRepliedMetricPerTickerQueryFactory(statsFilters, timezone)
+            ticketsRepliedMetricPerTicketDrillDownQueryFactory(
+                statsFilters,
+                timezone
+            )
         ).toEqual({
-            ...ticketsRepliedQueryFactory(statsFilters, timezone),
+            ...ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
                 TicketDimension.CreatedDatetime,
+                ...ticketsRepliedMetricPerAgentQueryFactory(
+                    statsFilters,
+                    timezone
+                ).dimensions,
             ],
             filters: [
-                ...ticketsRepliedQueryFactory(statsFilters, timezone).filters,
+                ...ticketsRepliedMetricPerAgentQueryFactory(
+                    statsFilters,
+                    timezone
+                ).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -344,20 +354,23 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
         const filters = {...statsFilters, agents}
 
         expect(
-            ticketsRepliedMetricPerTickerQueryFactory(
+            ticketsRepliedMetricPerTicketDrillDownQueryFactory(
                 filters,
                 timezone,
                 sorting
             )
         ).toEqual({
-            ...ticketsRepliedQueryFactory(filters, timezone),
+            ...ticketsRepliedMetricPerAgentQueryFactory(filters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
                 TicketDimension.CreatedDatetime,
+                ...ticketsRepliedMetricPerAgentQueryFactory(filters, timezone)
+                    .dimensions,
             ],
             filters: [
-                ...ticketsRepliedQueryFactory(filters, timezone).filters,
+                ...ticketsRepliedMetricPerAgentQueryFactory(filters, timezone)
+                    .filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,

@@ -114,7 +114,7 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
     }
 }
 
-export const ticketsCreatedPerTicketQueryFactory = (
+export const ticketsCreatedPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection

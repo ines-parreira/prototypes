@@ -6,7 +6,7 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
-    customFieldsTicketCountPerTicketQueryFactory,
+    customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {ReportingFilterOperator} from 'models/reporting/types'
@@ -130,7 +130,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
 
     describe('customFieldsTicketCountPerTicketQueryFactory', () => {
         it('should build expected query', () => {
-            const query = customFieldsTicketCountPerTicketQueryFactory(
+            const query = customFieldsTicketCountPerTicketDrillDownQueryFactory(
                 statsFilters,
                 timezone,
                 customFieldId,
@@ -163,7 +163,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 'some::label',
                 'some::other::label',
             ]
-            const query = customFieldsTicketCountPerTicketQueryFactory(
+            const query = customFieldsTicketCountPerTicketDrillDownQueryFactory(
                 statsFilters,
                 timezone,
                 customFieldId,

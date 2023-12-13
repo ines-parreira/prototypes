@@ -14,7 +14,7 @@ import {
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     medianResolutionTimeMetricPerAgentQueryFactory,
-    resolutionTimeMetricPerTicketQueryFactory,
+    resolutionTimeMetricPerTicketDrillDownQueryFactory,
     medianResolutionTimeQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
@@ -158,7 +158,10 @@ describe('resolutionTimeMetricPerTicketQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            resolutionTimeMetricPerTicketQueryFactory(statsFilters, timezone)
+            resolutionTimeMetricPerTicketDrillDownQueryFactory(
+                statsFilters,
+                timezone
+            )
         ).toEqual({
             ...medianResolutionTimeQueryFactory(statsFilters, timezone),
             measures: [],
@@ -180,7 +183,7 @@ describe('resolutionTimeMetricPerTicketQueryFactory', () => {
         const filters = {...statsFilters, agents}
 
         expect(
-            resolutionTimeMetricPerTicketQueryFactory(
+            resolutionTimeMetricPerTicketDrillDownQueryFactory(
                 filters,
                 timezone,
                 sorting

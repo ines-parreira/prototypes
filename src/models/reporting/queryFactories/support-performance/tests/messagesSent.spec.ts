@@ -10,7 +10,7 @@ import {
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     messagesSentMetricPerAgentQueryFactory,
-    messagesSentMetricPerTicketQueryFactory,
+    messagesSentMetricPerTicketDrillDownQueryFactory,
     messagesSentQueryFactory,
     messagesSentTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -193,13 +193,17 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            messagesSentMetricPerTicketQueryFactory(statsFilters, timezone)
+            messagesSentMetricPerTicketDrillDownQueryFactory(
+                statsFilters,
+                timezone
+            )
         ).toEqual({
             ...messagesSentQueryFactory(statsFilters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
                 TicketMessagesDimension.MessagesCount,
+                ...messagesSentQueryFactory(statsFilters, timezone).dimensions,
             ],
             filters: [
                 ...messagesSentQueryFactory(statsFilters, timezone).filters,
@@ -214,16 +218,23 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
         const filters = {...statsFilters, agents}
 
         expect(
-            messagesSentMetricPerTicketQueryFactory(filters, timezone, sorting)
+            messagesSentMetricPerTicketDrillDownQueryFactory(
+                filters,
+                timezone,
+                sorting
+            )
         ).toEqual({
-            ...messagesSentQueryFactory(filters, timezone),
+            ...messagesSentMetricPerAgentQueryFactory(filters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
                 TicketMessagesDimension.MessagesCount,
+                ...messagesSentMetricPerAgentQueryFactory(filters, timezone)
+                    .dimensions,
             ],
             filters: [
-                ...messagesSentQueryFactory(filters, timezone).filters,
+                ...messagesSentMetricPerAgentQueryFactory(filters, timezone)
+                    .filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,

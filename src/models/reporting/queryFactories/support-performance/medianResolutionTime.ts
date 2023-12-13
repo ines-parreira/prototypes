@@ -50,7 +50,7 @@ export const medianResolutionTimeMetricPerAgentQueryFactory = (
         : {}),
 })
 
-export const resolutionTimeMetricPerTicketQueryFactory = (
+export const resolutionTimeMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection

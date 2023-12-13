@@ -62,7 +62,7 @@ export const customFieldsTicketCountQueryFactory = (
         : {}),
 })
 
-export const customFieldsTicketCountPerTicketQueryFactory = (
+export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: string,

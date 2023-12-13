@@ -9,7 +9,7 @@ import {
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {
-    ticketsCreatedPerTicketQueryFactory,
+    ticketsCreatedPerTicketDrillDownQueryFactory,
     ticketsCreatedQueryFactory,
     ticketsCreatedTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -137,7 +137,7 @@ describe('ticketsCreatedPerTicketQueryFactory', () => {
     const sorting = OrderDirection.Asc
 
     it('should build expected query', () => {
-        const query = ticketsCreatedPerTicketQueryFactory(
+        const query = ticketsCreatedPerTicketDrillDownQueryFactory(
             statsFilters,
             timezone
         )
@@ -158,7 +158,7 @@ describe('ticketsCreatedPerTicketQueryFactory', () => {
     })
 
     it('should build expected query with sorting', () => {
-        const query = ticketsCreatedPerTicketQueryFactory(
+        const query = ticketsCreatedPerTicketDrillDownQueryFactory(
             statsFilters,
             timezone,
             sorting
