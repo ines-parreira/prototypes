@@ -9,9 +9,9 @@ import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
+import _isEqual from 'lodash/isEqual'
 import {CallForwardingCountries} from 'business/twilio'
 import {UploadType} from 'common/types'
-import {AVAILABLE_LANGUAGES} from 'config'
 import {EditableUserProfile, User, UserSetting} from 'config/types/user'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -23,8 +23,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {logEvent, SegmentEvent} from 'common/segment'
 import DateAndTimeFormatting from './DateAndTimeFormatting'
 
 const defaultContent: Pick<
@@ -69,7 +68,6 @@ type State = {
     }
     password_confirmation?: string
     timezone: string
-    hasDateAndTimeFormattingUserSetting?: boolean
 }
 
 export class YourProfileView extends Component<Props, State> {
@@ -85,10 +83,6 @@ export class YourProfileView extends Component<Props, State> {
                 isLoading: false,
                 preferences: props.preferences.get('data'),
                 hasChangedEmail: false,
-                hasDateAndTimeFormattingUserSetting: getLDClient().variation(
-                    FeatureFlagKey.DateAndTimeFormattingUserSetting,
-                    false
-                ),
             },
             this._getForm(props)
         )
@@ -118,14 +112,11 @@ export class YourProfileView extends Component<Props, State> {
 
     _handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
-        const toOmitKeys = this.state.hasDateAndTimeFormattingUserSetting
-            ? ['meta', 'language']
-            : ['meta']
         const normalizedValues = _pick(
             this.state,
             // metadata is not editable from this component
             // so there is no point to send potential outdated data.
-            Object.keys(_omit(defaultContent, toOmitKeys))
+            Object.keys(_omit(defaultContent, ['meta', 'language']))
         ) as EditableUserProfile
 
         this.setState({isLoading: true})
@@ -135,6 +126,20 @@ export class YourProfileView extends Component<Props, State> {
                 data.mergeDeep(this.state.preferences)
             )
             .toJS()
+
+        if (
+            !_isEqual(
+                (this.props.preferences.get('data') as Map<string, any>).toJS(),
+                this.state.preferences.toJS()
+            )
+        ) {
+            logEvent(SegmentEvent.UserSettingsUpdated, {
+                newSettings: this.state.preferences.toJS(),
+                oldSettings: (
+                    this.props.preferences.get('data') as Map<string, any>
+                ).toJS(),
+            })
+        }
 
         const [user] = await Promise.all([
             this.props.updateCurrentUser(normalizedValues),
@@ -164,23 +169,8 @@ export class YourProfileView extends Component<Props, State> {
         })
     }
 
-    async componentDidMount() {
-        await getLDClient().waitUntilReady()
-        this.setState({
-            hasDateAndTimeFormattingUserSetting: getLDClient().variation(
-                FeatureFlagKey.DateAndTimeFormattingUserSetting,
-                false
-            ),
-        })
-    }
-
     render() {
-        const {
-            isLoading,
-            hasChangedEmail,
-            password_confirmation,
-            hasDateAndTimeFormattingUserSetting,
-        } = this.state
+        const {isLoading, hasChangedEmail, password_confirmation} = this.state
 
         return (
             <div className="full-width">
@@ -295,70 +285,36 @@ export class YourProfileView extends Component<Props, State> {
                                             fullWidth
                                         />
                                     </FormGroup>
-                                    {hasDateAndTimeFormattingUserSetting ? (
-                                        <DateAndTimeFormatting
-                                            dateFormat={
-                                                this.state.preferences.get(
-                                                    'date_format'
-                                                ) as string
-                                            }
-                                            timeFormat={
-                                                this.state.preferences.get(
-                                                    'time_format'
-                                                ) as string
-                                            }
-                                            onSelectDateFormat={(
-                                                value: string
-                                            ) =>
-                                                this.setState({
-                                                    preferences:
-                                                        this.state.preferences.set(
-                                                            'date_format',
-                                                            value
-                                                        ),
-                                                })
-                                            }
-                                            onSelectTimeFormat={(
-                                                value: string
-                                            ) =>
-                                                this.setState({
-                                                    preferences:
-                                                        this.state.preferences.set(
-                                                            'time_format',
-                                                            value
-                                                        ),
-                                                })
-                                            }
-                                        />
-                                    ) : (
-                                        <FormGroup
-                                            className={settingsCss.inputField}
-                                        >
-                                            <Label className="control-label">
-                                                Language
-                                            </Label>
-                                            <SelectField
-                                                value={this.state.language}
-                                                onChange={(value) =>
-                                                    this.setState({
-                                                        language:
-                                                            value.toString(),
-                                                    })
-                                                }
-                                                options={AVAILABLE_LANGUAGES.map(
-                                                    (locale) => ({
-                                                        value: locale.localeName,
-                                                        label: locale.displayName,
-                                                    })
-                                                )}
-                                                fullWidth
-                                            />
-                                            <FormText color="muted">
-                                                Changing the language only
-                                                changes the time format
-                                            </FormText>
-                                        </FormGroup>
-                                    )}
+                                    <DateAndTimeFormatting
+                                        dateFormat={
+                                            this.state.preferences.get(
+                                                'date_format'
+                                            ) as string
+                                        }
+                                        timeFormat={
+                                            this.state.preferences.get(
+                                                'time_format'
+                                            ) as string
+                                        }
+                                        onSelectDateFormat={(value: string) =>
+                                            this.setState({
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'date_format',
+                                                        value
+                                                    ),
+                                            })
+                                        }
+                                        onSelectTimeFormat={(value: string) =>
+                                            this.setState({
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'time_format',
+                                                        value
+                                                    ),
+                                            })
+                                        }
+                                    />
                                 </div>
                             </div>
                             <FormGroup

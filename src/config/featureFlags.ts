@@ -36,7 +36,6 @@ export enum FeatureFlagKey {
     ConvertCampaignBundleWarning = 'convert-campaign-bundle-warning',
     ConvertCampaignCapping = 'convert-campaign-capping',
     CustomerTimelineButton = 'customer-timeline-button',
-    DateAndTimeFormattingUserSetting = 'date-and-time-formatting-user-setting',
     DecoupleContactForm = 'decouple-contact-form',
     DisplayVoiceAnalytics = 'display-voice-analytics',
     EarlyAdopter = 'early-adopter',

@@ -255,6 +255,7 @@ export enum SegmentEvent {
     AutomatePaywallModalUpsellSubscribe = 'automate/paywall-modal-upsell-subscribe',
     SidebarViewsChanged = 'sidebar-views-changed',
     AutoMergeSettingsUpdated = 'auto-merge-settings-updated',
+    UserSettingsUpdated = 'user-settings-updated',
 }
 
 export type SegmentEventToSend = {

@@ -18,7 +18,11 @@ class YourProfileContainer extends Component<Props> {
         // Reload the page when modifying currentUser.language (e.g. the timeformat), to refresh all moment instances
         if (
             this.props.currentUser.get('language') !==
-            nextProps.currentUser.get('language')
+                nextProps.currentUser.get('language') ||
+            this.props.preferences.getIn(['data', 'date_format']) !==
+                nextProps.preferences.getIn(['data', 'date_format']) ||
+            this.props.preferences.getIn(['data', 'time_format']) !==
+                nextProps.preferences.getIn(['data', 'time_format'])
         ) {
             window.location.reload(false) // reload only from the cache; we just need all the `moment` objects to reinit
         }

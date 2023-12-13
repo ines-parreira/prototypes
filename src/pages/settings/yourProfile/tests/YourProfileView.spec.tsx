@@ -9,8 +9,11 @@ import thunk from 'redux-thunk'
 import {user} from 'fixtures/users'
 
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
-import {getLDClient} from 'utils/launchDarkly'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {YourProfileView} from '../components/YourProfileView'
+
+jest.mock('common/segment')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockedStore = configureMockStore([thunk])
 const minProps: ComponentProps<typeof YourProfileView> = {
@@ -24,9 +27,6 @@ jest.mock('moment-timezone', () => {
         tz: {names: () => []},
     }
 })
-jest.mock('utils/launchDarkly')
-const variationMock = getLDClient().variation as jest.Mock
-;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
 
 const defaultState = {}
 
@@ -34,8 +34,8 @@ describe('YourProfileView', () => {
     const realDateNow = Date.now.bind(global.Date)
 
     beforeEach(() => {
+        jest.resetAllMocks()
         global.Date.now = jest.fn(() => 1587000000000)
-        variationMock.mockImplementation(() => true)
     })
 
     afterEach(() => {
@@ -43,17 +43,11 @@ describe('YourProfileView', () => {
     })
 
     describe('render', () => {
-        it.each([true, false])(
-            'should render current user profile form',
-            (hasDateAndTimeFormattingUserSetting) => {
-                variationMock.mockImplementation(
-                    () => hasDateAndTimeFormattingUserSetting
-                )
-                const component = shallow(<YourProfileView {...minProps} />)
+        it('should render current user profile form', () => {
+            const component = shallow(<YourProfileView {...minProps} />)
 
-                expect(component).toMatchSnapshot()
-            }
-        )
+            expect(component).toMatchSnapshot()
+        })
 
         it('should expand to show the phone number field when enabling call forwarding', async () => {
             const {findByText, getByLabelText} = render(
@@ -69,46 +63,47 @@ describe('YourProfileView', () => {
     })
 
     describe('_handleSubmit', () => {
-        it.each([true, false])(
-            'should submit user data',
-            (hasDateAndTimeFormattingUserSetting) => {
-                variationMock.mockImplementation(
-                    () => hasDateAndTimeFormattingUserSetting
+        it('should submit user data', () => {
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
+            const submitSetting = jest
+                .fn()
+                .mockReturnValueOnce(Promise.resolve())
+            const preferences: Map<any, any> = fromJS({data: {foo: 'bar'}})
+            const newPreferences: Map<any, any> = fromJS({hello: 'world'})
+            const expectedPreferences = preferences
+                .update('data', (data: Map<any, any>) =>
+                    data.mergeDeep(newPreferences)
                 )
-                const updateCurrentUserSpy = jest.fn(() =>
-                    Promise.resolve(user)
-                )
-                const submitSetting = jest
-                    .fn()
-                    .mockReturnValueOnce(Promise.resolve())
-                const preferences: Map<any, any> = fromJS({data: {foo: 'bar'}})
-                const newPreferences: Map<any, any> = fromJS({hello: 'world'})
-                const expectedPreferences = preferences
-                    .update('data', (data: Map<any, any>) =>
-                        data.mergeDeep(newPreferences)
-                    )
-                    .toJS()
+                .toJS()
 
-                const component = shallow<YourProfileView>(
-                    <YourProfileView
-                        {...minProps}
-                        updateCurrentUser={updateCurrentUserSpy}
-                        submitSetting={submitSetting}
-                        preferences={fromJS({data: {foo: 'bar'}})}
-                    />
-                ).instance()
-                component.setState({preferences: newPreferences})
+            const component = shallow<YourProfileView>(
+                <YourProfileView
+                    {...minProps}
+                    updateCurrentUser={updateCurrentUserSpy}
+                    submitSetting={submitSetting}
+                    preferences={fromJS({data: {foo: 'bar'}})}
+                />
+            ).instance()
+            component.setState({preferences: newPreferences})
 
-                void component._handleSubmit({
-                    preventDefault: jest.fn(),
-                } as unknown as SyntheticEvent)
-                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
-                expect(submitSetting).toHaveBeenCalledWith(
-                    expectedPreferences,
-                    false
-                )
-            }
-        )
+            void component._handleSubmit({
+                preventDefault: jest.fn(),
+            } as unknown as SyntheticEvent)
+            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+            expect(submitSetting).toHaveBeenCalledWith(
+                expectedPreferences,
+                false
+            )
+            expect(logEventMock).toHaveBeenLastCalledWith(
+                SegmentEvent.UserSettingsUpdated,
+                {
+                    newSettings: newPreferences.toJS(),
+                    oldSettings: (
+                        preferences.get('data') as Map<any, any>
+                    ).toJS(),
+                }
+            )
+        })
 
         it(
             'should submit user data and reset the password confirmation field ' +
@@ -138,6 +133,7 @@ describe('YourProfileView', () => {
                         ).toMatchSnapshot()
                         expect(component.state.hasChangedEmail).toBe(false)
                         expect(component.state.password_confirmation).toBe('')
+                        expect(logEventMock).toHaveBeenCalledTimes(0)
                         done()
                     })
             }
@@ -190,6 +186,17 @@ describe('YourProfileView', () => {
                 expect(submitSettingSpy).toHaveBeenCalledWith(
                     expectedPreferences.toJS(),
                     false
+                )
+                expect(logEventMock).toHaveBeenLastCalledWith(
+                    SegmentEvent.UserSettingsUpdated,
+                    {
+                        newSettings: (
+                            expectedPreferences.get('data') as Map<any, any>
+                        ).toJS(),
+                        oldSettings: (
+                            preferences.get('data') as Map<any, any>
+                        ).toJS(),
+                    }
                 )
             }
         )
