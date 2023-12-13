@@ -5,13 +5,13 @@ import PerformanceTip from 'pages/stats/PerformanceTip'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {AUTOMATED_INTERACTIONS_LABEL} from './constants'
-import {AutomationMetricProps} from './types'
+import {AutomateMetricProps} from './types'
 import {getTrendProps} from './utils'
 
 export const AutomatedInteractionsMetric = ({
     trend: automatedInteractionsTrend,
     showTips,
-}: AutomationMetricProps) => {
+}: AutomateMetricProps) => {
     return (
         <MetricCard
             isLoading={automatedInteractionsTrend.isFetching}

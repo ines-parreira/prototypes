@@ -3,12 +3,12 @@ import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import MetricCard from 'pages/stats/MetricCard'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {TIME_SAVED_ON_FIRST_RESPONSE} from './constants'
-import {BaseAutomationMetricProps} from './types'
+import {BaseAutomateMetricProps} from './types'
 import {getTrendProps, toDuration} from './utils'
 
-export const AutomationDecreaseInFirstResponseTimeMetric = ({
+export const DecreaseInFirstResponseTimeMetric = ({
     trend: firstResponseTimeTrend,
-}: BaseAutomationMetricProps) => {
+}: BaseAutomateMetricProps) => {
     return (
         <MetricCard
             title={TIME_SAVED_ON_FIRST_RESPONSE}

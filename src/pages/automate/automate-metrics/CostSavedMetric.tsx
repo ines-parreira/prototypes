@@ -4,12 +4,12 @@ import MetricCard from 'pages/stats/MetricCard'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {formatCurrency} from 'pages/stats/common/utils'
 import {COST_SAVED} from './constants'
-import {BaseAutomationMetricProps} from './types'
+import {BaseAutomateMetricProps} from './types'
 import {getTrendProps} from './utils'
 
-export const AutomationCostSavedMetric = ({
+export const CostSavedMetric = ({
     trend: costSavedTrend,
-}: BaseAutomationMetricProps) => {
+}: BaseAutomateMetricProps) => {
     return (
         <MetricCard
             title={COST_SAVED}

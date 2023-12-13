@@ -1,4 +1,4 @@
-import {firstResponseTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomationQueryFactory'
+import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -11,8 +11,8 @@ import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/suppor
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
-import {resolutionTimeWithAutomationQueryFactory} from '../../models/reporting/queryFactories/automate/resolutionTimeWithAutomation'
-import {overallTimeSavedWithAutomationQueryFactory} from '../../models/reporting/queryFactories/automate/overallTimeSavedWithAutomation'
+import {resolutionTimeWithAutomateFeaturesQueryFactory} from '../../models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
+import {overallTimeSavedQueryFactory} from '../../models/reporting/queryFactories/automate/overallTimeSaved'
 import {automationRateQueryFactory} from '../../models/reporting/queryFactories/automate/automationRate'
 import {automatedInteractionsQueryFactory} from '../../models/reporting/queryFactories/automate/automatedInteractions'
 
@@ -141,8 +141,8 @@ export const useFirstResponseTimeWithAutomationTrend = (
     timezone: string
 ) =>
     useMetricTrend(
-        firstResponseTimeWithAutomationQueryFactory(filters, timezone),
-        firstResponseTimeWithAutomationQueryFactory(
+        firstResponseTimeWithAutomateFeaturesQueryFactory(filters, timezone),
+        firstResponseTimeWithAutomateFeaturesQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )
@@ -153,8 +153,8 @@ export const useResolutionTimeWithAutomationTrend = (
     timezone: string
 ) =>
     useMetricTrend(
-        resolutionTimeWithAutomationQueryFactory(filters, timezone),
-        resolutionTimeWithAutomationQueryFactory(
+        resolutionTimeWithAutomateFeaturesQueryFactory(filters, timezone),
+        resolutionTimeWithAutomateFeaturesQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )
@@ -165,8 +165,8 @@ export const useOverallTimeSavedWithAutomationTrend = (
     timezone: string
 ) =>
     useMetricTrend(
-        overallTimeSavedWithAutomationQueryFactory(filters, timezone),
-        overallTimeSavedWithAutomationQueryFactory(
+        overallTimeSavedQueryFactory(filters, timezone),
+        overallTimeSavedQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )

@@ -1,4 +1,4 @@
-import {automateDefaultFilters} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomationQueryFactory'
+import {automateDefaultFilters} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventDimension,

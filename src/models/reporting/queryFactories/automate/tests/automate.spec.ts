@@ -1,12 +1,12 @@
 import moment from 'moment/moment'
 
-import {overallTimeSavedWithAutomationQueryFactory} from 'models/reporting/queryFactories/automate/overallTimeSavedWithAutomation'
-import {resolutionTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomation'
+import {overallTimeSavedQueryFactory} from 'models/reporting/queryFactories/automate/overallTimeSaved'
+import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
 import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
 } from 'models/reporting/cubes/AutomationBillingEventCube'
-import {firstResponseTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomationQueryFactory'
+import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
@@ -27,18 +27,18 @@ describe('Automate', () => {
     describe.each([
         [
             'FirstResponseTimeWithAutomation',
-            AutomationBillingEventMeasure.FirstResponseTimeWithAutomation,
-            firstResponseTimeWithAutomationQueryFactory,
+            AutomationBillingEventMeasure.FirstResponseTimeWithAutomateFeatures,
+            firstResponseTimeWithAutomateFeaturesQueryFactory,
         ],
         [
             'ResolutionTimeWithAutomation',
-            AutomationBillingEventMeasure.ResolutionTimeWithAutomation,
-            resolutionTimeWithAutomationQueryFactory,
+            AutomationBillingEventMeasure.ResolutionTimeWithAutomateFeatures,
+            resolutionTimeWithAutomateFeaturesQueryFactory,
         ],
         [
             'OverallTimeSaved',
             AutomationBillingEventMeasure.OverallTimeSaved,
-            overallTimeSavedWithAutomationQueryFactory,
+            overallTimeSavedQueryFactory,
         ],
         [
             'AutomationRate',

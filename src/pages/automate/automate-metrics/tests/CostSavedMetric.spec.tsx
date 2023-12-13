@@ -1,7 +1,7 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
-import {AutomationCostSavedMetric} from '../AutomationCostSavedMetric'
+import {CostSavedMetric} from '../CostSavedMetric'
 import {COST_SAVED} from '../constants'
 
 export type MetricTrend = {
@@ -22,23 +22,21 @@ const trend: MetricTrend = {
     },
 }
 
-describe('AutomationCostSavedMetric', () => {
+describe('CostSavedMetric', () => {
     it('should render correctly', () => {
-        render(<AutomationCostSavedMetric trend={trend} />)
+        render(<CostSavedMetric trend={trend} />)
 
         expect(screen.getByText(COST_SAVED)).toBeInTheDocument()
     })
 
     it('should render the correct value', () => {
-        render(<AutomationCostSavedMetric trend={trend} />)
+        render(<CostSavedMetric trend={trend} />)
 
         expect(screen.getByText('$300')).toBeInTheDocument()
     })
 
     it('should render a loading state', () => {
-        render(
-            <AutomationCostSavedMetric trend={{...trend, isFetching: true}} />
-        )
+        render(<CostSavedMetric trend={{...trend, isFetching: true}} />)
 
         expect(screen.queryByText('$300')).not.toBeInTheDocument()
     })

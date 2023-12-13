@@ -1,9 +1,9 @@
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 
-export interface BaseAutomationMetricProps {
+export interface BaseAutomateMetricProps {
     trend: MetricTrend
 }
 
-export interface AutomationMetricProps extends BaseAutomationMetricProps {
+export interface AutomateMetricProps extends BaseAutomateMetricProps {
     showTips?: boolean
 }

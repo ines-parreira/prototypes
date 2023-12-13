@@ -3,8 +3,8 @@ import {BillableDataCubeWithJoins} from 'models/reporting/cubes/BillableDataCube
 import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
 
 export enum AutomationBillingEventMeasure {
-    FirstResponseTimeWithAutomation = 'AutomationBillingEvent.firstResponseTimeWithAutomation',
-    ResolutionTimeWithAutomation = 'AutomationBillingEvent.resolutionTimeWithAutomation',
+    FirstResponseTimeWithAutomateFeatures = 'AutomationBillingEvent.firstResponseTimeWithAutomateFeatures',
+    ResolutionTimeWithAutomateFeatures = 'AutomationBillingEvent.resolutionTimeWithAutomateFeatures',
     OverallTimeSaved = 'AutomationBillingEvent.overallTimeSaved',
     AutomationRate = 'AutomationBillingEvent.automationRate',
     AutomatedInteractions = 'AutomationBillingEvent.automatedInteractions',

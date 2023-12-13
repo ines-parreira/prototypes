@@ -19,11 +19,13 @@ export const automateDefaultFilters = (filters: StatsFilters) => [
     ...statsFiltersToReportingFilters(AutomateStatsFiltersMembers, filters),
 ]
 
-export const firstResponseTimeWithAutomationQueryFactory = (
+export const firstResponseTimeWithAutomateFeaturesQueryFactory = (
     filters: StatsFilters,
     timezone: string
 ) => ({
-    measures: [AutomationBillingEventMeasure.FirstResponseTimeWithAutomation],
+    measures: [
+        AutomationBillingEventMeasure.FirstResponseTimeWithAutomateFeatures,
+    ],
     dimensions: [],
     timezone,
     filters: automateDefaultFilters(filters),

@@ -96,7 +96,7 @@ exports[`metric trends Automate useFirstResponseTimeWithAutomationTrend should c
     },
   ],
   "measures": [
-    "AutomationBillingEvent.firstResponseTimeWithAutomation",
+    "AutomationBillingEvent.firstResponseTimeWithAutomateFeatures",
   ],
   "timezone": "UTC",
 }
@@ -164,7 +164,7 @@ exports[`metric trends Automate useResolutionTimeWithAutomationTrend should crea
     },
   ],
   "measures": [
-    "AutomationBillingEvent.resolutionTimeWithAutomation",
+    "AutomationBillingEvent.resolutionTimeWithAutomateFeatures",
   ],
   "timezone": "UTC",
 }

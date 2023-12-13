@@ -1,4 +1,4 @@
-export const AUTOMATION_TIME_SAVED = 'Time saved'
+export const TIME_SAVED = 'Time saved'
 export const AUTOMATION_RATE_LABEL = 'Automation rate'
 export const AUTOMATED_INTERACTIONS_LABEL = 'Automated interactions'
 export const TIME_SAVED_ON_FIRST_RESPONSE = 'Decrease in first response time'

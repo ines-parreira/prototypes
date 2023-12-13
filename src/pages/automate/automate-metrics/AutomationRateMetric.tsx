@@ -5,13 +5,13 @@ import PerformanceTip from 'pages/stats/PerformanceTip'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {AUTOMATION_RATE_FIXED_STATS, AUTOMATION_RATE_LABEL} from './constants'
-import {AutomationMetricProps} from './types'
+import {AutomateMetricProps} from './types'
 import {getTrendProps, toPercentage} from './utils'
 
 export const AutomationRateMetric = ({
     trend: automationRateTrend,
     showTips,
-}: AutomationMetricProps) => {
+}: AutomateMetricProps) => {
     const automationRateValue = automationRateTrend.data?.value || 0
 
     const automationRateSentiment = useMemo(() => {

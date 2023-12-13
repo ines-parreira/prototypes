@@ -2,8 +2,8 @@ import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBi
 
 export type AutomatedInteractionByFeatures = Exclude<
     AutomationBillingEventMeasure,
-    | AutomationBillingEventMeasure.FirstResponseTimeWithAutomation
-    | AutomationBillingEventMeasure.ResolutionTimeWithAutomation
+    | AutomationBillingEventMeasure.FirstResponseTimeWithAutomateFeatures
+    | AutomationBillingEventMeasure.ResolutionTimeWithAutomateFeatures
     | AutomationBillingEventMeasure.OverallTimeSaved
     | AutomationBillingEventMeasure.AutomationRate
     | AutomationBillingEventMeasure.AutomatedInteractions

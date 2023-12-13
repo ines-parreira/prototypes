@@ -2,16 +2,16 @@ import React from 'react'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import MetricCard from 'pages/stats/MetricCard'
 import TrendBadge from 'pages/stats/TrendBadge'
-import {AUTOMATION_TIME_SAVED} from './constants'
-import {BaseAutomationMetricProps} from './types'
+import {TIME_SAVED} from './constants'
+import {BaseAutomateMetricProps} from './types'
 import {getTrendProps, toDuration} from './utils'
 
-export const AutomationTimeSavedMetric = ({
+export const TimeSavedMetric = ({
     trend: resolutionTimeTrend,
-}: BaseAutomationMetricProps) => {
+}: BaseAutomateMetricProps) => {
     return (
         <MetricCard
-            title={AUTOMATION_TIME_SAVED}
+            title={TIME_SAVED}
             hint={{
                 title: 'How much time agents would have spent resolving your automated interactions, based on your average resolution time.',
             }}
