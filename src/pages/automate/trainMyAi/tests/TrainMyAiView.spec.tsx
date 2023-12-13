@@ -468,7 +468,7 @@ describe('<TrainMyAiView />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render first article recommendation preview when clicking "Provide feedback"', () => {
+    it('should render first unanswered article recommendation preview when clicking "Provide feedback"', () => {
         useArticleRecommendationPredictionsMock.mockImplementation(() => {
             return {
                 data: articleRecommendationPredictionsResponseFixture,
@@ -532,9 +532,13 @@ describe('<TrainMyAiView />', () => {
 
         fireEvent.click(screen.getByText('Provide feedback'))
         expect(screen.queryByText('Provide feedback')).not.toBeInTheDocument()
+        expect(screen.queryByText('This article exists')).toBeInTheDocument()
+
+        // not answered prediction has two identical article titles
+        // for the ai banner and for the article preview
         expect(
-            screen.queryByText(helpCenterArticleData.translation.title)
-        ).toBeInTheDocument()
+            screen.queryAllByText(helpCenterArticleData.translation.title)
+        ).toHaveLength(2)
     })
 
     it('should render completition message if feedback provided to all recommendations"', () => {

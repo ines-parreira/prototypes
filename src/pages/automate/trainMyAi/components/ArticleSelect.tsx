@@ -123,10 +123,11 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
             <SelectInputBox
                 className={css.selectInput}
                 floating={floatingRef}
-                placeholder="Select an article"
+                placeholder="Select an article..."
                 label={value ? map.get(value) : ''}
                 onToggle={setIsOpen}
                 ref={targetRef}
+                autoFocus
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => {

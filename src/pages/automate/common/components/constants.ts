@@ -11,7 +11,7 @@ export const ORDER_MANAGEMENT = 'Order Management'
 export const QUICK_RESPONSES = 'Quick Responses'
 export const FLOWS = 'Flows'
 export const CHANNELS = 'Channels'
-export const TRAIN_MY_AI = 'Train my AI'
+export const TRAIN_MY_AI = 'Train My AI'
 
 export type PaywallFeature = {
     headerTitle: string

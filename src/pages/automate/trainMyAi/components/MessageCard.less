@@ -7,9 +7,10 @@
         width: 100%;
         display: flex;
         align-items: center;
-        height: 72px;
-        padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s
-            calc(@layout-spacing-s - 4px);
+        max-height: 72px;
+        min-height: 56px;
+        padding: @layout-spacing-s;
+        padding-left: calc(@layout-spacing-s - 4px);
         gap: @layout-spacing-s;
         background: var(--neutral-grey-0);
         border-radius: 4px;
@@ -19,6 +20,26 @@
         &:hover {
             background: var(--neutral-grey-1);
             cursor: pointer;
+        }
+        &:focus {
+            outline: none;
+        }
+        &:focus-visible {
+            outline: none;
+            padding: calc(@layout-spacing-s - 1px);
+            padding-left: calc(@layout-spacing-s - 1px);
+            border: 1px solid var(--main-primary);
+            box-shadow: 0 0 0 2px
+                hsla(
+                    var(--main-primary-h),
+                    var(--main-primary-s),
+                    var(--main-primary-l),
+                    0.2
+                );
+        }
+        &.selected:focus-visible {
+            padding-left: calc(@layout-spacing-s - 4px);
+            border-left: 4px solid var(--main-primary);
         }
 
         &.selected {

@@ -133,17 +133,33 @@ const TrainMyAiView = () => {
         articleRecommendationsData.meta.pagination.totalSize ===
             articleRecommendationsData.meta.totalLabeledArticles
 
+    const nextUnansweredRecommendationIndex = useCallback(
+        (data: typeof articleRecommendationsData, startFrom = -1) => {
+            if (!data || !data.data) {
+                return null
+            }
+            const index = data.data.findIndex(
+                (item, i) => item.articleIdFeedback === null && i > startFrom
+            )
+
+            return typeof index === 'number' && index >= 0 ? index : null
+        },
+        []
+    )
+
     const handleConfirmFeedback = useCallback(() => {
         if (selectedRecommendationIndex === null) return
-        const nextIndex = selectedRecommendationIndex + 1
-        if (
-            typeof articleRecommendationsData?.meta?.pagination.pageSize ===
-                'number' &&
-            nextIndex < articleRecommendationsData.meta.pagination.pageSize
-        ) {
-            setSelectedRecommendationIndex(nextIndex)
-        }
-    }, [articleRecommendationsData, selectedRecommendationIndex])
+        const nextIndex = nextUnansweredRecommendationIndex(
+            articleRecommendationsData,
+            selectedRecommendationIndex
+        )
+
+        setSelectedRecommendationIndex(nextIndex)
+    }, [
+        articleRecommendationsData,
+        selectedRecommendationIndex,
+        nextUnansweredRecommendationIndex,
+    ])
 
     useEffect(() => {
         rightColRef.current?.scrollTo({
@@ -363,7 +379,9 @@ const TrainMyAiView = () => {
                                                 <Button
                                                     onClick={() => {
                                                         setSelectedRecommendationIndex(
-                                                            0
+                                                            nextUnansweredRecommendationIndex(
+                                                                articleRecommendationsData
+                                                            )
                                                         )
                                                         leftColRef.current?.scrollTo(
                                                             {

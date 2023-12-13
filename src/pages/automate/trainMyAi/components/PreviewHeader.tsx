@@ -72,7 +72,7 @@ export default function PreviewHeader({
             </div>
             <div className={css.feedback}>
                 <div className={css.question}>
-                    {hasFeedback || articleDeleted
+                    {hasFeedback || articleDeleted || showDropdown
                         ? 'Which article should have been sent?'
                         : 'Was this the best article to recommend?'}
                 </div>
