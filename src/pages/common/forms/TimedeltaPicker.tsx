@@ -5,9 +5,6 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useUpdateEffect} from 'react-use'
 
 import {
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
@@ -19,6 +16,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import {reportError} from 'utils/errors'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import css from './TimedeltaPicker.less'
 

@@ -21,7 +21,7 @@ import {
 } from 'reactstrap'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useUnmount, useUpdateEffect} from 'react-use'
+import {useUnmount} from 'react-use'
 import * as Sentry from '@sentry/react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -78,6 +78,7 @@ import {FetchViewItemsOptions} from 'state/views/types'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
 import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'

@@ -3,9 +3,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Button} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useUpdateEffect} from 'react-use'
 
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 
@@ -42,6 +39,7 @@ import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
 

@@ -3,7 +3,7 @@ import pluralize from 'pluralize'
 import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useList, useUpdateEffect} from 'react-use'
+import {useList} from 'react-use'
 
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -12,6 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import {createRule} from 'models/rule/resources'
 import {Team} from 'models/team/types'
 import Button from 'pages/common/components/button/Button'

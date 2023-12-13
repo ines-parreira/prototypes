@@ -3,9 +3,6 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useUpdateEffect} from 'react-use'
 
 import {
     onCancel,
@@ -32,6 +29,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import {InfobarModalProps} from '../../../types'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
@@ -71,6 +69,7 @@ export const RefundOrderModalContainer = ({
 }: Props) => {
     const previousIsOpen = usePrevious(isOpen)
     const {integrationId} = useContext(IntegrationContext)
+
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
             void onInit(integrationId!, data.order)

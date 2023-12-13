@@ -8,9 +8,6 @@ import React, {
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useUpdateEffect} from 'react-use'
 import {
     Button,
     Form,
@@ -44,6 +41,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
 

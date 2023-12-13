@@ -9,9 +9,6 @@ import React, {
 } from 'react'
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useUpdateEffect} from 'react-use'
 import classnames from 'classnames'
 
 import {countries} from 'config/countries'
@@ -31,6 +28,7 @@ import {
     buildInternationalNumber,
     formatAsNationalNumber,
 } from 'pages/phoneNumbers/utils'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import css from './PhoneNumberInput.less'
 

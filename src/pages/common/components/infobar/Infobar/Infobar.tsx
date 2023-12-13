@@ -3,9 +3,6 @@ import classnames from 'classnames'
 import {useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {AxiosError, CancelToken} from 'axios'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useUpdateEffect} from 'react-use'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {isAdmin} from 'utils'
@@ -35,6 +32,7 @@ import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import {SearchResponse} from 'models/search/types'
 import {setActiveCustomerAsReceiver} from 'state/newMessage/actions'
 
