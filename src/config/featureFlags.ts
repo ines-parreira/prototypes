@@ -69,7 +69,6 @@ export enum FeatureFlagKey {
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     SplitTicketView = 'split-ticket-view',
-    TaapNewReplyMessageChannelSelector = 'taap-new-reply-message-channel-selector',
     TicketNavigationArrows = 'ticket-navigation-arrows',
     TrainMyAiEnabled = 'train-my-ai-enabled',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',

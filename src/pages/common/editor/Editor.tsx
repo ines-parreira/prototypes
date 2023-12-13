@@ -1,10 +1,8 @@
 import cn from 'classnames'
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {MacrosProperties} from 'models/macro/types'
 import {Ticket} from 'models/ticket/types'
-import DEPRECATED_ReplyMessageChannel from 'pages/tickets/detail/components/ReplyArea/DEPRECATED_ReplyMessageChannel'
 import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
 import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
@@ -12,7 +10,6 @@ import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 import ChannelSelect from 'pages/tickets/detail/components/ReplyArea/ChannelSelect'
 import MessageSourceFields from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields'
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import useForm from './hooks/useForm'
@@ -35,10 +32,7 @@ export default function Editor({
     submit,
     ticket,
 }: Props) {
-    const {showWhatsAppTemplateEditor, whatsAppMessageTemplatesEnabled} =
-        useWhatsAppEditor()
-    const newReplyChannelEnabled =
-        useFlags()[FeatureFlagKey.TaapNewReplyMessageChannelSelector]
+    const {showWhatsAppTemplateEditor} = useWhatsAppEditor()
 
     const {formRef, onSubmit, setTicketStatus} = useForm(submit)
     const {
@@ -64,18 +58,10 @@ export default function Editor({
             onFocus={onFocus}
         >
             <form ref={formRef} id="ticket-reply-editor" onSubmit={onSubmit}>
-                {newReplyChannelEnabled ? (
-                    <div className={css.replyChannel}>
-                        <ChannelSelect />
-                        <MessageSourceFields />
-                    </div>
-                ) : (
-                    <DEPRECATED_ReplyMessageChannel
-                        whatsAppMessageTemplatesEnabled={
-                            whatsAppMessageTemplatesEnabled
-                        }
-                    />
-                )}
+                <div className={css.replyChannel}>
+                    <ChannelSelect />
+                    <MessageSourceFields />
+                </div>
                 <ReplyForm>
                     {showWhatsAppTemplateEditor && (
                         <WhatsAppMessageTemplateReplyArea />
