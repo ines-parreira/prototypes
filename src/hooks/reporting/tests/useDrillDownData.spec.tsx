@@ -126,4 +126,26 @@ describe('useDrillDownData', () => {
             })
         )
     })
+
+    it('should return null when assignee missing', () => {
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+            data: {
+                allData: [
+                    {...exampleRow, [EnrichmentFields.AssigneeId]: undefined},
+                ],
+            } as unknown as any,
+            isFetching: false,
+            isError: false,
+        })
+
+        const {result} = renderHook(() => useDrillDownData(metricData), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore({})}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.data).toContainEqual(
+            expect.objectContaining({assignee: null})
+        )
+    })
 })

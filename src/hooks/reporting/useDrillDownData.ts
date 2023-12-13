@@ -25,9 +25,11 @@ export interface TicketDetails {
 export interface DrillDownRowData {
     ticket: TicketDetails
     metricValue: number
-    assignee: {
-        id: number
-    } & Partial<User>
+    assignee:
+        | ({
+              id: number
+          } & Partial<User>)
+        | null
 }
 
 interface DrillDownData {
@@ -66,13 +68,15 @@ export const formatDrillDownRowData = (
         contactReason: row[EnrichmentFields.ContactReason] || null,
     },
     metricValue: row[metricField],
-    assignee: {
-        id: row[EnrichmentFields.AssigneeId],
-        name:
-            agents.find(
-                (agent) => agent.id === row[EnrichmentFields.AssigneeId]
-            )?.name || '',
-    },
+    assignee: row[EnrichmentFields.AssigneeId]
+        ? {
+              id: row[EnrichmentFields.AssigneeId],
+              name:
+                  agents.find(
+                      (agent) => agent.id === row[EnrichmentFields.AssigneeId]
+                  )?.name || '',
+          }
+        : null,
 })
 
 export const getDrillDownMetricOrder = (

@@ -30,23 +30,24 @@ describe('<DrillDownTable />', () => {
     const agentName = 'Agent name'
     const ticketSubject = 'Ticket subject'
     const metricData: DrillDownMetric = {metricName: OverviewMetric.OpenTickets}
-    const data: DrillDownRowData[] = [
-        {
-            ticket: {
-                id: 1,
-                channel: TicketMessageSourceType.Chat,
-                description: 'description',
-                isRead: true,
-                subject: ticketSubject,
-                created: '22/12/2023',
-                contactReason: 'reason',
-            },
-            assignee: {
-                id: 1,
-                name: agentName,
-            },
-            metricValue: 15,
+    const exampleRow = {
+        ticket: {
+            id: 1,
+            channel: TicketMessageSourceType.Chat,
+            description: 'description',
+            isRead: true,
+            subject: ticketSubject,
+            created: '22/12/2023',
+            contactReason: 'reason',
         },
+        assignee: {
+            id: 1,
+            name: agentName,
+        },
+        metricValue: 15,
+    }
+    const data: DrillDownRowData[] = [
+        exampleRow,
         {
             ticket: {
                 id: 2,
@@ -100,5 +101,21 @@ describe('<DrillDownTable />', () => {
         )
 
         expect(screen.getByText(metricTitle)).toBeInTheDocument()
+    })
+
+    it('should not render Avatar if no assignee', () => {
+        useDrillDownDataMock.mockReturnValue({
+            data: [{...exampleRow, assignee: null}],
+            currentPage,
+            perPage: 1,
+        } as any)
+
+        render(
+            <Provider store={mockStore({})}>
+                <DrillDownTable metricData={metricData} />
+            </Provider>
+        )
+
+        expect(document.querySelector('.agent')).not.toBeInTheDocument()
     })
 })

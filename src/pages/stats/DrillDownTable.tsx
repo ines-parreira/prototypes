@@ -100,11 +100,13 @@ export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
                                     </BodyCell>
                                 )}
                                 <BodyCell width={180}>
-                                    <AgentAvatar
-                                        agent={item.assignee}
-                                        avatarSize={24}
-                                        className={css.agent}
-                                    />
+                                    {item.assignee && (
+                                        <AgentAvatar
+                                            agent={item.assignee}
+                                            avatarSize={24}
+                                            className={css.agent}
+                                        />
+                                    )}
                                 </BodyCell>
 
                                 <BodyCell width={180}>
