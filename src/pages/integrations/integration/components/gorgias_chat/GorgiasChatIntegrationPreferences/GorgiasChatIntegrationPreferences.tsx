@@ -152,6 +152,7 @@ type State = {
     translations: Translations | undefined
     texts: TextsMultiLanguage
     privacyPolicyDisclaimerText: string | undefined
+    sendChatTranscript: boolean
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -189,6 +190,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         translations: undefined,
         texts: multiLanguageInitialTextsEmptyData,
         privacyPolicyDisclaimerText: undefined,
+        sendChatTranscript: true,
     }
 
     _initState = (integration: Map<any, any>) => {
@@ -253,6 +255,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'linked_email_integration',
+                    ]),
+                    sendChatTranscript: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'send_chat_transcript',
                     ]),
                     offlineModeEnabledDatetime: integration.getIn([
                         'meta',
@@ -474,6 +481,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    _setSendChatTranscript = (value: boolean) => {
+        this.setState({sendChatTranscript: value})
+    }
+
     // TODO. Refactor with `GorgiasTranslateInputField` as they are very similar.
     _onChangeTicketRichField = (value: EditorState) => {
         let html = convertToHTML(value.getCurrentContent())
@@ -522,6 +533,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 this.state.offlineModeEnabledDatetime,
             live_chat_availability: this.state.liveChatAvailability,
             control_ticket_volume: this.state.controlTicketVolume,
+            send_chat_transcript: this.state.sendChatTranscript,
         }
 
         const payload = fromJS({
@@ -590,6 +602,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             liveChatAvailability,
             avatar,
             controlTicketVolume,
+            sendChatTranscript,
         } = this.state
 
         const {
@@ -603,6 +616,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         } = this.props
         const chatMultiLanguagesEnabled =
             flags?.[FeatureFlagKey.ChatMultiLanguages]
+        const chatTranscriptEnabled = flags?.[FeatureFlagKey.ChatTranscript]
 
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
@@ -1461,50 +1475,136 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             )}
                                     </div>
                                 )}
-                                <div className={css.formSection}>
-                                    <h4
-                                        className={classnames(
-                                            css.title,
-                                            'mb-1'
-                                        )}
-                                    >
-                                        Forward chat replies to customer emails
-                                    </h4>
+                                {!chatTranscriptEnabled ? (
+                                    <div className={css.formSection}>
+                                        <h4
+                                            className={classnames(
+                                                css.title,
+                                                'mb-1'
+                                            )}
+                                        >
+                                            Forward chat replies to customer
+                                            emails
+                                        </h4>
 
-                                    <p className="mb-3">
-                                        When customers don't see your live chat
-                                        response after an hour, Gorgias will
-                                        automatically send your message to the
-                                        customer's email address (if available).
-                                        Customers also receive satisfaction
-                                        surveys for chat tickets via email.
-                                    </p>
-                                    <Label
-                                        className="control-label"
-                                        for="linkedEmailIntegration"
-                                    >
-                                        Select which email address sends these
-                                        messages
-                                    </Label>
-                                    <SelectField
-                                        placeholder="Select an email integration"
-                                        value={linkedEmailIntegration}
-                                        options={emailIntegrations.map(
-                                            (integration) => ({
-                                                label:
-                                                    `${integration.name} ` +
-                                                    `<${integration.meta.address}>`,
-                                                value: integration.id,
-                                            })
-                                        )}
-                                        fullWidth
-                                        onChange={(integrationId) => {
-                                            this._setLinkedEmailIntegration(
-                                                integrationId as number
-                                            )
-                                        }}
-                                    />
-                                </div>
+                                        <p className="mb-3">
+                                            When customers don't see your live
+                                            chat response after an hour, Gorgias
+                                            will automatically send your message
+                                            to the customer's email address (if
+                                            available). Customers also receive
+                                            satisfaction surveys for chat
+                                            tickets via email.
+                                        </p>
+                                        <Label
+                                            className="control-label"
+                                            for="linkedEmailIntegration"
+                                        >
+                                            Select which email address sends
+                                            these messages
+                                        </Label>
+                                        <SelectField
+                                            placeholder="Select an email integration"
+                                            value={linkedEmailIntegration}
+                                            options={emailIntegrations.map(
+                                                (integration) => ({
+                                                    label:
+                                                        `${integration.name} ` +
+                                                        `<${integration.meta.address}>`,
+                                                    value: integration.id,
+                                                })
+                                            )}
+                                            fullWidth
+                                            onChange={(integrationId) => {
+                                                this._setLinkedEmailIntegration(
+                                                    integrationId as number
+                                                )
+                                            }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className={css.formSection}>
+                                        <h4
+                                            className={classnames(
+                                                css.title,
+                                                'mb-1'
+                                            )}
+                                        >
+                                            Connect email
+                                        </h4>
+
+                                        <p className={css.mb24}>
+                                            Connect an email to your chat to
+                                            send conversation transcripts,
+                                            offline capture confirmation, and{' '}
+                                            <Link to="/app/settings/satisfaction-surveys">
+                                                satisfaction surveys
+                                            </Link>{' '}
+                                            to your customers.
+                                        </p>
+                                        <Label
+                                            className="control-label"
+                                            for="linkedEmailIntegration"
+                                        >
+                                            Select which email address sends
+                                            these messages
+                                        </Label>
+                                        <SelectField
+                                            placeholder="Select an email integration"
+                                            value={linkedEmailIntegration}
+                                            options={emailIntegrations.map(
+                                                (integration) => ({
+                                                    label:
+                                                        `${integration.name} ` +
+                                                        `<${integration.meta.address}>`,
+                                                    value: integration.id,
+                                                })
+                                            )}
+                                            fullWidth
+                                            onChange={(integrationId) => {
+                                                this._setLinkedEmailIntegration(
+                                                    integrationId as number
+                                                )
+                                            }}
+                                        />
+
+                                        <div
+                                            className={classnames(
+                                                css.formGroup,
+                                                css.mt32,
+                                                'd-flex'
+                                            )}
+                                        >
+                                            <ToggleInput
+                                                onClick={
+                                                    this._setSendChatTranscript
+                                                }
+                                                isToggled={sendChatTranscript}
+                                                aria-label="Chat transcript"
+                                            />
+                                            <div
+                                                className={classnames(
+                                                    css.toggleInfo,
+                                                    'ml-1'
+                                                )}
+                                            >
+                                                <b>
+                                                    Send chat transcripts to
+                                                    customer email
+                                                </b>
+                                                {sendChatTranscript && (
+                                                    <div className="form-text text-muted">
+                                                        When customers don't see
+                                                        your message in chat, we
+                                                        automatically send them
+                                                        a transcripts after 30
+                                                        minutes.
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                             <Button
                                 type="submit"
