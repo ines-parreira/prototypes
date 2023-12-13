@@ -8,7 +8,7 @@ export const Themes = {
     light: {
         label: 'Light',
     },
-    modern: {
+    ['modern light']: {
         label: 'Default',
     },
 }

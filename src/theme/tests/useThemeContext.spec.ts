@@ -8,8 +8,8 @@ describe('useThemeContext', () => {
 
         expect(result.current).toEqual(
             expect.objectContaining({
-                savedTheme: 'modern',
-                theme: 'modern',
+                savedTheme: 'modern light',
+                theme: 'modern light',
                 setTheme: expect.any(Function),
             })
         )
@@ -18,7 +18,7 @@ describe('useThemeContext', () => {
     it('should return the modern theme by default', () => {
         const {result} = renderHook(() => useThemeContext())
 
-        expect(result.current.theme).toEqual('modern')
+        expect(result.current.theme).toEqual('modern light')
     })
 
     it('should return the dark theme if using preferred theme media query', () => {

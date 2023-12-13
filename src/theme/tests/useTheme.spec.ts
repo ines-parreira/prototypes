@@ -15,6 +15,6 @@ describe('useSetTheme', () => {
     it('should return the active theme', () => {
         const {result} = renderHook(() => useTheme(), {wrapper: Provider})
 
-        expect(result.current).toBe('modern')
+        expect(result.current).toBe('modern light')
     })
 })
