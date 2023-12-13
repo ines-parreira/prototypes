@@ -5,19 +5,15 @@ import {fromJS} from 'immutable'
 import {mockStore, renderWithRouter} from 'utils/testing'
 import {IntegrationType} from 'models/integration/constants'
 import * as hooks from 'common/hooks'
-import {UserRole} from 'config/types/user'
-import * as utils from 'utils'
 import RoutingRuleDecomissionBanner from '../RoutingRuleDecomissionBanner'
 
-const isAdminSpy = jest.spyOn(utils, 'isAdmin')
 const usePersistedStateSpy = jest.spyOn(hooks, 'usePersistedState')
 
 describe('RoutingRuleDecomissionBanner', () => {
     afterEach(cleanup)
 
-    it('should always render banner when there are phone integrations for admins', () => {
-        usePersistedStateSpy.mockReturnValue([false, jest.fn()])
-        isAdminSpy.mockReturnValue(true)
+    it('should render banner when there are phone integrations', () => {
+        usePersistedStateSpy.mockReturnValue([true, jest.fn()])
 
         renderWithRouter(
             <Provider
@@ -29,7 +25,6 @@ describe('RoutingRuleDecomissionBanner', () => {
                             },
                         ],
                     }),
-                    currentUser: fromJS({name: UserRole.Admin}),
                 } as any)}
             >
                 <RoutingRuleDecomissionBanner />
@@ -38,16 +33,10 @@ describe('RoutingRuleDecomissionBanner', () => {
         expect(
             screen.getByText(/routing rules will no longer be in use/i)
         ).toBeVisible()
-
-        const closeIcon = screen.queryByRole('img', {
-            name: /close\-icon/i,
-        })
-        expect(closeIcon).toBeNull()
     })
 
-    it('should not render banner for non-admins if they previously dismissed it', () => {
+    it('should not render banner if it was previously dismissed', () => {
         usePersistedStateSpy.mockReturnValue([false, jest.fn()])
-        isAdminSpy.mockReturnValue(false)
 
         renderWithRouter(
             <Provider
@@ -59,7 +48,6 @@ describe('RoutingRuleDecomissionBanner', () => {
                             },
                         ],
                     }),
-                    currentUser: fromJS({name: UserRole.Agent}),
                 } as any)}
             >
                 <RoutingRuleDecomissionBanner />
@@ -70,10 +58,9 @@ describe('RoutingRuleDecomissionBanner', () => {
         ).toBeNull()
     })
 
-    it('non-admins should be able to dismiss banner', () => {
+    it('users should be able to dismiss banner', () => {
         const dismissFn = jest.fn()
         usePersistedStateSpy.mockReturnValue([true, dismissFn])
-        isAdminSpy.mockReturnValue(false)
 
         renderWithRouter(
             <Provider
@@ -85,7 +72,6 @@ describe('RoutingRuleDecomissionBanner', () => {
                             },
                         ],
                     }),
-                    currentUser: fromJS({name: UserRole.Agent}),
                 } as any)}
             >
                 <RoutingRuleDecomissionBanner />
