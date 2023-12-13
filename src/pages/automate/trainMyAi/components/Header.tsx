@@ -14,7 +14,7 @@ const Header = ({children, alert}: Props) => {
                 Review customer messages, check if recommended articles are
                 helpful, and provide feedback to improve future recommendations.
                 <a
-                    href="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
+                    href="https://link.gorgias.com/tar"
                     rel="noopener noreferrer"
                     target="_blank"
                 >

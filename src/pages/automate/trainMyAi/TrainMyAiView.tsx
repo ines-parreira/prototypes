@@ -230,7 +230,7 @@ const TrainMyAiView = () => {
                                         </LinkButton>
                                     ) : (
                                         <a
-                                            href="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
+                                            href="https://link.gorgias.com/m1k"
                                             rel="noopener noreferrer"
                                             target="_blank"
                                         >
