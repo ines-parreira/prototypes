@@ -1311,7 +1311,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             'mb-1'
                                         )}
                                     >
-                                        Autoresponder
+                                        Auto-reply with wait time
                                     </h4>
                                     <p
                                         className={classnames('mb-4', {
@@ -1323,8 +1323,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             business hours
                                         </Link>
                                         , let customers know how fast they can
-                                        expect a response with an autoresponder.
-                                        A message is sent in new chat tickets
+                                        expect a response with an auto-reply. A
+                                        message is sent in new chat tickets
                                         after 30 seconds without replies from an
                                         agent.
                                     </p>
@@ -1336,7 +1336,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             isToggled={autoResponderEnabled}
                                         />
                                         <div className="ml-1">
-                                            <b>Enable autoresponder</b>
+                                            <b>
+                                                Send auto-reply with wait time
+                                            </b>
                                         </div>
                                     </div>
 

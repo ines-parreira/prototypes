@@ -1276,7 +1276,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             <h4
               className="title mb-1"
             >
-              Autoresponder
+              Auto-reply with wait time
             </h4>
             <p
               className="mb-4"
@@ -1288,7 +1288,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               >
                 business hours
               </Link>
-              , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
+              , let customers know how fast they can expect a response with an auto-reply. A message is sent in new chat tickets after 30 seconds without replies from an agent.
             </p>
             <div
               className="mb-4 d-flex align-items-center"
@@ -1301,7 +1301,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                 className="ml-1"
               >
                 <b>
-                  Enable autoresponder
+                  Send auto-reply with wait time
                 </b>
               </div>
             </div>
@@ -1806,7 +1806,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             <h4
               className="title mb-1"
             >
-              Autoresponder
+              Auto-reply with wait time
             </h4>
             <p
               className="mb-4"
@@ -1818,7 +1818,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               >
                 business hours
               </Link>
-              , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
+              , let customers know how fast they can expect a response with an auto-reply. A message is sent in new chat tickets after 30 seconds without replies from an agent.
             </p>
             <div
               className="mb-4 d-flex align-items-center"
@@ -1831,7 +1831,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 className="ml-1"
               >
                 <b>
-                  Enable autoresponder
+                  Send auto-reply with wait time
                 </b>
               </div>
             </div>

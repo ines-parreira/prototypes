@@ -988,7 +988,7 @@ function GorgiasTranslateText({
                     />
 
                     <GorgiasTranslateInputGroup
-                        title="Autoresponder"
+                        title="Auto-reply with wait time"
                         keys={autoResponderKeys}
                         filtersForKeys={{}}
                         textsPerLanguage={textsOfSelectedLanguage}
