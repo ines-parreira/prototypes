@@ -23,6 +23,8 @@ jest.mock('../Ticket', () => jest.fn())
 const TicketMock = Ticket as jest.Mock
 
 describe('<TicketListView />', () => {
+    let loadMore: jest.Mock
+
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue({
             name: 'view name',
@@ -42,12 +44,22 @@ describe('<TicketListView />', () => {
         TicketMock.mockImplementation(({ticket}: {ticket: TicketPartial}) => {
             return <p>{ticket.id}</p>
         })
-        useTicketsMock.mockReturnValue([ticket])
+        loadMore = jest.fn()
+        useTicketsMock.mockReturnValue({loadMore, tickets: [ticket]})
     })
 
     it('should display a list of tickets', () => {
         const {getByText} = render(<TicketListView viewId={123} />)
-
         expect(getByText(ticket.id)).toBeInTheDocument()
+    })
+
+    it('should call loadMore when the end of the list is reached', () => {
+        render(<TicketListView viewId={123} />)
+        const [[{endReached}]] = VirtuosoMock.mock.calls as [
+            [{endReached: () => void}]
+        ]
+
+        endReached()
+        expect(loadMore).toHaveBeenCalledWith()
     })
 })

@@ -4,7 +4,10 @@ import {MockedTickets, Response} from './mockUtils'
 
 import type {TicketPartial} from './types'
 
-export type Listener = (tickets: TicketPartial[]) => void
+export type Listener = (
+    tickets: TicketPartial[],
+    cursor: CursorMeta['next_cursor']
+) => void
 export type Unsubscribe = () => void
 
 const POLLING_INTERVAL = 2000
@@ -12,13 +15,19 @@ const POLLING_INTERVAL = 2000
 export default class TicketUpdatesManager {
     private mockedTickets: MockedTickets | null = null
 
-    private nextCursor: CursorMeta['next_cursor'] = null
+    private initialLoaded = false
     private listener: Listener | null = null
+    private loading = false
+    private nextCursor: CursorMeta['next_cursor'] = null
     private tickets: TicketPartial[] = []
     private viewId: number
 
     constructor(viewId: number) {
         this.viewId = viewId
+    }
+
+    async loadMore() {
+        await this.getPage()
     }
 
     subscribe(listener: Listener): Unsubscribe {
@@ -35,13 +44,24 @@ export default class TicketUpdatesManager {
     }
 
     private async getPage() {
-        if (!this.mockedTickets || !this.listener) return
+        if (
+            !this.mockedTickets ||
+            !this.listener ||
+            this.loading ||
+            (this.initialLoaded && !this.nextCursor)
+        ) {
+            return
+        }
+
+        this.loading = true
 
         const response = await this.mockedTickets.getPage()
         this.nextCursor = response.meta.next_cursor
-        this.tickets = response.data
+        this.tickets = [...this.tickets, ...response.data]
+        this.listener(this.tickets, this.nextCursor)
 
-        this.listener(this.tickets)
+        this.loading = false
+        this.initialLoaded = true
     }
 
     private receiveUpdates = (response: Response) => {
@@ -50,7 +70,7 @@ export default class TicketUpdatesManager {
         this.nextCursor = response.meta.next_cursor
         this.tickets = response.data
 
-        this.listener(this.tickets)
+        this.listener(this.tickets, this.nextCursor)
     }
 
     private async start() {

@@ -51,6 +51,7 @@ function generateTicket(): TicketPartial {
 export class MockedTickets {
     private intervalId: ReturnType<typeof setInterval> | undefined
     private listener: Listener | null = null
+    private pageCount = 0
     private tickets: TicketPartial[] = []
 
     async getPage() {
@@ -66,12 +67,14 @@ export class MockedTickets {
         const response: ApiListResponseCursorPagination<TicketPartial[]> = {
             data: tickets,
             meta: {
-                next_cursor: null,
+                next_cursor: this.pageCount >= 3 ? null : 'random-cursor',
                 prev_cursor: null,
             },
             object: '',
             uri: '',
         }
+
+        this.pageCount = this.pageCount + 1
 
         return response
     }
@@ -106,7 +109,7 @@ export class MockedTickets {
         const response: ApiListResponseCursorPagination<TicketPartial[]> = {
             data: this.tickets,
             meta: {
-                next_cursor: null,
+                next_cursor: this.pageCount >= 3 ? null : 'random-cursor',
                 prev_cursor: null,
             },
             object: '',

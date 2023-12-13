@@ -12,11 +12,21 @@ describe('useTickets', () => {
 
     beforeEach(() => {
         partials = [{id: 123, updated_datetime: '28-11-2023T13:36:57'}]
+        useTicketPartialsMock.mockReturnValue({
+            hasMore: false,
+            loading: false,
+            loadMore: jest.fn(),
+            partials,
+        })
     })
 
     it('should return tickets', () => {
-        useTicketPartialsMock.mockReturnValue({partials})
         const {result} = renderHook(() => useTickets(123))
-        expect(result.current).toBe(partials)
+        expect(result.current).toEqual({
+            hasMore: false,
+            loading: false,
+            loadMore: expect.any(Function),
+            tickets: partials,
+        })
     })
 })

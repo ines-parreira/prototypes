@@ -1,7 +1,9 @@
 import useTicketPartials from './useTicketPartials'
 
 export default function useTickets(viewId: number) {
-    const {partials} = useTicketPartials(viewId)
+    const {hasMore, loading, loadMore, partials} = useTicketPartials(viewId)
 
-    return partials
+    const tickets = partials
+
+    return {hasMore, loading, loadMore, tickets}
 }

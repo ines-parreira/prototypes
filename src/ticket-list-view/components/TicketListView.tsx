@@ -17,7 +17,7 @@ type Props = {
 
 export default function TicketListView({viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
-    const tickets = useTickets(viewId)
+    const {loadMore, tickets} = useTickets(viewId)
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketPartial) => (
@@ -33,8 +33,10 @@ export default function TicketListView({viewId}: Props) {
             </div>
             <div className={css.list}>
                 <Virtuoso
+                    atBottomThreshold={TICKET_HEIGHT * 2}
                     className={css.scroller}
                     data={tickets}
+                    endReached={loadMore}
                     fixedItemHeight={TICKET_HEIGHT}
                     itemContent={getItemContent}
                 />

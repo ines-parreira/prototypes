@@ -1,15 +1,41 @@
-import {useEffect, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
+
+import {CursorMeta} from 'models/api/types'
 
 import TicketUpdatesManager from '../TicketUpdatesManager'
 import {TicketPartial} from '../types'
 
+type State = {
+    cursor: CursorMeta['next_cursor']
+    loading: boolean
+    partials: TicketPartial[]
+}
+
 export default function useTicketPartials(viewId: number) {
-    const [partials, setPartials] = useState<TicketPartial[]>([])
+    const [{cursor, loading, partials}, setState] = useState<State>({
+        cursor: null,
+        loading: false,
+        partials: [],
+    })
 
-    useEffect(() => {
-        const client = new TicketUpdatesManager(viewId)
-        return client.subscribe(setPartials)
-    }, [viewId])
+    const client = useMemo(() => new TicketUpdatesManager(viewId), [viewId])
 
-    return {partials}
+    useEffect(
+        () =>
+            client.subscribe((partials, cursor) => {
+                setState((s) => ({...s, cursor, partials}))
+            }),
+        [client]
+    )
+
+    const loadMore = useCallback(() => {
+        if (!cursor) return
+
+        void client.loadMore()
+    }, [client, cursor])
+
+    return useMemo(
+        () => ({hasMore: !!cursor, loading, loadMore, partials}),
+        [cursor, loading, loadMore, partials]
+    )
 }
