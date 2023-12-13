@@ -241,6 +241,7 @@ export function EditOrderModalContainer({
                     onSubmit={(lineItem) => {
                         void addCustomRow(integrationId!, lineItem)
                     }}
+                    container={modalRef}
                 />
             </div>
             {payload ? (
