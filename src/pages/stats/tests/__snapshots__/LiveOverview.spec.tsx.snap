@@ -435,6 +435,9 @@ exports[`LiveOverview should render the filters and stats when stats filters are
               </i>
             </span>
           </h5>
+          <div
+            class="buttonContainer"
+          />
         </div>
         <div>
           <div

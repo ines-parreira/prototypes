@@ -373,17 +373,21 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           >
             Volume per flow
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <div
           class="row"
@@ -528,17 +532,21 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           >
             Products with most issues and return requests
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <table
           class="table table table-hover"
@@ -738,17 +746,21 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <table
           class="table table table-hover"
@@ -912,17 +924,21 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <table
           class="table table table-hover"
@@ -1108,17 +1124,21 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <table
           class="table table table-hover"
@@ -1243,17 +1263,21 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           >
             Products with most issues and return requests
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <table
           class="table table table-hover"
@@ -1825,17 +1849,21 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           >
             Volume per flow
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <div
           class="row"
@@ -1980,6 +2008,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           >
             Products with most issues and return requests
           </h5>
+          <div
+            class="buttonContainer"
+          />
         </div>
         <div
           class="text-muted"
@@ -2006,6 +2037,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               </i>
             </span>
           </h5>
+          <div
+            class="buttonContainer"
+          />
         </div>
         <div
           class="preview"
@@ -2061,6 +2095,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               </i>
             </span>
           </h5>
+          <div
+            class="buttonContainer"
+          />
         </div>
         <div
           class="preview"
@@ -2116,6 +2153,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               </i>
             </span>
           </h5>
+          <div
+            class="buttonContainer"
+          />
         </div>
         <div
           class="preview"
@@ -2163,6 +2203,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           >
             Products with most issues and return requests
           </h5>
+          <div
+            class="buttonContainer"
+          />
         </div>
         <div
           class="preview"

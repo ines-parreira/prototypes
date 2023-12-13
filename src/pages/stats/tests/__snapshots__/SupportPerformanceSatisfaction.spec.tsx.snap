@@ -956,17 +956,21 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
+          <div
+            class="buttonContainer"
           >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
+            <button
+              class="csvButton btn btn-secondary"
+              type="button"
             >
-              file_download
-            </i>
-            CSV
-          </button>
+              <i
+                class="material-icons mr-1 csvButtonIcon"
+              >
+                file_download
+              </i>
+              CSV
+            </button>
+          </div>
         </div>
         <table
           class="table table table-hover"

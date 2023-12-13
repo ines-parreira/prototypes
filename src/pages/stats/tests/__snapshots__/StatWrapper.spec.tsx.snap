@@ -23,26 +23,30 @@ exports[`StatWrapper should display spinner while downloading the stat 1`] = `
     >
       First response time (percentiles)
     </h5>
-    <button
-      class="csvButton btn btn-secondary disabled"
-      disabled=""
-      type="button"
+    <div
+      class="buttonContainer"
     >
-      <div
-        class="container csvLoader mr-1"
+      <button
+        class="csvButton btn btn-secondary disabled"
+        disabled=""
+        type="button"
       >
         <div
-          class="inner"
-          style="min-height: 14px;"
+          class="container csvLoader mr-1"
         >
-          <i
-            class="icon-custom icon-circle-o-notch md-spin"
-            style="font-size: 14px;"
-          />
+          <div
+            class="inner"
+            style="min-height: 14px;"
+          >
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 14px;"
+            />
+          </div>
         </div>
-      </div>
-      CSV
-    </button>
+        CSV
+      </button>
+    </div>
   </div>
   children
 </div>
@@ -89,6 +93,9 @@ exports[`StatWrapper should pass stat to children function 1`] = `
     >
       First response time (percentiles)
     </h5>
+    <div
+      class="buttonContainer"
+    />
   </div>
   {
   "data": {
@@ -162,17 +169,21 @@ exports[`StatWrapper should render the download button when isDownloadable is se
     >
       First response time (percentiles)
     </h5>
-    <button
-      class="csvButton btn btn-secondary"
-      type="button"
+    <div
+      class="buttonContainer"
     >
-      <i
-        class="material-icons mr-1 csvButtonIcon"
+      <button
+        class="csvButton btn btn-secondary"
+        type="button"
       >
-        file_download
-      </i>
-      CSV
-    </button>
+        <i
+          class="material-icons mr-1 csvButtonIcon"
+        >
+          file_download
+        </i>
+        CSV
+      </button>
+    </div>
   </div>
   children
 </div>
@@ -216,6 +227,9 @@ exports[`StatWrapper should render the help icon and help tooltip when help text
         </div>
       </span>
     </h5>
+    <div
+      class="buttonContainer"
+    />
   </div>
   children
 </div>
@@ -233,6 +247,9 @@ exports[`StatWrapper should render the loader when stat is fetching 1`] = `
     >
       First response time (percentiles)
     </h5>
+    <div
+      class="buttonContainer"
+    />
   </div>
   <div
     class="container"

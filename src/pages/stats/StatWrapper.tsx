@@ -40,6 +40,11 @@ type Props = {
     resourceName: string
     statsFilters: StatsFilters
     helpText?: ReactNode
+    visibilityLink?: {
+        href: string
+        icon?: ReactNode
+        label: string
+    }
     helpAutoHide?: boolean
     isDownloadable?: boolean
     loaderHeight?: string
@@ -58,6 +63,7 @@ export default function StatWrapper({
     children,
     className,
     helpAutoHide,
+    visibilityLink,
     ...wrapperProps
 }: Props) {
     const dispatch = useAppDispatch()
@@ -138,34 +144,42 @@ export default function StatWrapper({
                             </span>
                         )}
                     </h5>
-                    {isDownloadable && (
-                        <Button
-                            onClick={handleCancellableDownloadStat}
-                            className={css.csvButton}
-                            disabled={isDownloading || isFetchingStat}
-                        >
-                            {isDownloading ? (
-                                <Loader
-                                    size="14px"
-                                    minHeight="14px"
-                                    className={classnames(
-                                        css.csvLoader,
-                                        'mr-1'
-                                    )}
-                                />
-                            ) : (
-                                <i
-                                    className={classnames(
-                                        'material-icons mr-1',
-                                        css.csvButtonIcon
-                                    )}
-                                >
-                                    file_download
-                                </i>
-                            )}
-                            CSV
-                        </Button>
-                    )}
+                    <div className={css.buttonContainer}>
+                        {!!visibilityLink && (
+                            <Button tag="a" href={visibilityLink.href}>
+                                {visibilityLink.icon}
+                                {visibilityLink.label}
+                            </Button>
+                        )}
+                        {isDownloadable && (
+                            <Button
+                                onClick={handleCancellableDownloadStat}
+                                className={css.csvButton}
+                                disabled={isDownloading || isFetchingStat}
+                            >
+                                {isDownloading ? (
+                                    <Loader
+                                        size="14px"
+                                        minHeight="14px"
+                                        className={classnames(
+                                            css.csvLoader,
+                                            'mr-1'
+                                        )}
+                                    />
+                                ) : (
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-1',
+                                            css.csvButtonIcon
+                                        )}
+                                    >
+                                        file_download
+                                    </i>
+                                )}
+                                CSV
+                            </Button>
+                        )}
+                    </div>
                 </div>
             )}
             {isFetchingStat ? (

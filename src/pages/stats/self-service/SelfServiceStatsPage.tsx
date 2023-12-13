@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import classnames from 'classnames'
 import {assetsUrl} from 'utils'
 import {
     SELF_SERVICE_OVERVIEW,
@@ -77,6 +78,7 @@ import css from './SelfServiceStatsPage.less'
 export const SelfServiceStatsPage = (): JSX.Element => {
     const isNewAutomateFeatureEnabled =
         useFlags()[FeatureFlagKey.NewAutomationAddon]
+    const isTrainMyAiEnabled = useFlags()[FeatureFlagKey.TrainMyAiEnabled]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
     const [workflowConfigurations, setWorkflowConfigurations] = useState<
@@ -245,6 +247,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                 | 'orderManagement'
                 | 'quickResponses'
                 | 'articleRecommendation'
+                | 'trainMyAi'
         ) => {
             if (!storeIntegrations.length) return '/app/automation/'
 
@@ -259,6 +262,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/quick-responses`
                 case 'articleRecommendation':
                     return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/article-recommendation`
+                case 'trainMyAi':
+                    return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/train-my-ai`
                 default:
                     return '/app/automation/'
             }
@@ -459,6 +464,26 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </span>
                         }
                         helpAutoHide={false}
+                        visibilityLink={
+                            isTrainMyAiEnabled &&
+                            !articleRecommendationDisabled &&
+                            !articleRecommendationPerformanceNoData
+                                ? {
+                                      href: buildCtaRedirectUrl('trainMyAi'),
+                                      label: 'Improve Article Recommendation',
+                                      icon: (
+                                          <i
+                                              className={classnames(
+                                                  'material-icons mr-1',
+                                                  css.articleLinkIcon
+                                              )}
+                                          >
+                                              auto_awesome
+                                          </i>
+                                      ),
+                                  }
+                                : undefined
+                        }
                         isDownloadable={!articleRecommendationPerformanceNoData}
                     >
                         {(stat) => (

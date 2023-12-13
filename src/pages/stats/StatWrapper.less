@@ -1,3 +1,5 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .wrapper {
         padding: 30px;
@@ -31,5 +33,10 @@
                 );
             }
         }
+    }
+
+    .buttonContainer {
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 }
