@@ -2,14 +2,12 @@ import React from 'react'
 
 import {Form} from 'reactstrap'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useSessionStorage} from 'react-use'
 import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import {TicketPurpose} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
+import useSessionStorage from 'hooks/useSessionStorage'
 import {isTrialing as useIsTrialing} from 'state/currentAccount/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 import BackLink from '../../components/BackLink/BackLink'

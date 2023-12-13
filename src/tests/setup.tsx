@@ -68,9 +68,9 @@ global.document.createRange = () =>
         },
     } as Range)
 
-// Mock of the localStorage API
-// to be able to test portion of code which access the localStorage API
-class LocalStorageMock {
+// Mock for localStorage and sessionStorage APIs
+// to be able to test portion of code which access these APIs
+class WebStorageMock {
     store: Record<string, unknown>
 
     constructor() {
@@ -97,7 +97,11 @@ class LocalStorageMock {
 }
 
 Object.defineProperty(window, 'localStorage', {
-    value: new LocalStorageMock(),
+    value: new WebStorageMock(),
+})
+
+Object.defineProperty(window, 'sessionStorage', {
+    value: new WebStorageMock(),
 })
 
 // Mock historyAPI
