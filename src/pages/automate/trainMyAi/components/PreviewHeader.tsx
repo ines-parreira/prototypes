@@ -71,57 +71,65 @@ export default function PreviewHeader({
                 </div>
             </div>
             <div className={css.feedback}>
-                <div className={css.question}>
-                    {hasFeedback || articleDeleted || showDropdown
-                        ? 'Which article should have been sent?'
-                        : 'Was this the best article to recommend?'}
-                </div>
-
-                <div className={css.editor}>
-                    {isFeedbackProvided ? (
-                        <div className={css.edit}>
-                            <div>Thanks for the feedback!</div>
+                {isFeedbackProvided ? (
+                    <div className={css.confirm}>
+                        <div>Thanks for the feedback!</div>
+                    </div>
+                ) : (
+                    <>
+                        <div className={css.question}>
+                            {hasFeedback || articleDeleted || showDropdown
+                                ? 'Which article should have been sent?'
+                                : 'Was this the best article to recommend?'}
                         </div>
-                    ) : showDropdown ? (
-                        <ArticleSelect
-                            helpCenterId={recommendations.helpCenterId}
-                            onSelect={onSelectArticle}
-                            onChange={onChange}
-                        />
-                    ) : hasFeedback || articleDeleted ? (
-                        <div className={css.edit}>
-                            {articleTitle && (
-                                <>
-                                    <div>{articleTitle}</div>
-                                    <i
+
+                        <div className={css.editor}>
+                            {showDropdown ? (
+                                <ArticleSelect
+                                    helpCenterId={recommendations.helpCenterId}
+                                    onSelect={onSelectArticle}
+                                    onChange={onChange}
+                                />
+                            ) : hasFeedback || articleDeleted ? (
+                                <div className={css.edit}>
+                                    {articleTitle && (
+                                        <>
+                                            <div>{articleTitle}</div>
+                                            <i
+                                                onClick={() =>
+                                                    setShowDropdown(true)
+                                                }
+                                                className={'material-icons'}
+                                            >
+                                                edit
+                                            </i>
+                                        </>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className={css.improve}>
+                                    <Button
+                                        intent="secondary"
                                         onClick={() => setShowDropdown(true)}
-                                        className={'material-icons'}
                                     >
-                                        edit
-                                    </i>
-                                </>
+                                        Improve recommendation
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            onSelectArticle(
+                                                recommendations.articleId
+                                            )
+                                        }}
+                                    >
+                                        Keep recommendation
+                                    </Button>
+                                </div>
                             )}
                         </div>
-                    ) : (
-                        <div className={css.improve}>
-                            <Button
-                                intent="secondary"
-                                onClick={() => setShowDropdown(true)}
-                            >
-                                Improve recommendation
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    onSelectArticle(recommendations.articleId)
-                                }}
-                            >
-                                Keep recommendation
-                            </Button>
-                        </div>
-                    )}
-                </div>
-                <div className={css.divider}></div>
+                    </>
+                )}
             </div>
+            <div className={css.divider}></div>
         </div>
     )
 }
