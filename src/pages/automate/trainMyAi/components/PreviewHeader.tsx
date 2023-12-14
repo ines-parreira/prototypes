@@ -63,10 +63,7 @@ export default function PreviewHeader({
                             helpful
                         </div>
                     ) : (
-                        <div className={css.notHelpful}>
-                            <i className={'material-icons'}>thumb_down</i>
-                            unhelpful
-                        </div>
+                        'Needed more help'
                     )}
                 </div>
             </div>
