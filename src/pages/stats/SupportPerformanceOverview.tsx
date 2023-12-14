@@ -81,6 +81,7 @@ import ChartCard from './ChartCard'
 import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
 
+const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
 const DEFAULT_TIMEZONE = 'UTC'
@@ -266,7 +267,7 @@ export default function SupportPerformanceOverview() {
             ) : null}
 
             <StatsPage
-                title="Overview"
+                title={SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE}
                 filters={
                     <>
                         <SupportPerformanceFilters />

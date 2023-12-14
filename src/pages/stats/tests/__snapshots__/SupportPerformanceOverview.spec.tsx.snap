@@ -60,7 +60,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
           class="align-items-center"
         >
           <span>
-            Overview
+            Support performance overview
           </span>
         </h1>
         <div>
