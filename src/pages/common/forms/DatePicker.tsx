@@ -14,8 +14,6 @@ import {Tooltip} from 'reactstrap'
 import moment, {Moment} from 'moment-timezone'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import {useTheme} from 'theme'
-
 import css from './DatePicker.less'
 
 type Props = {
@@ -59,7 +57,6 @@ export const DatePicker = ({
                 : moment().tz(),
         [startDate]
     )
-    const theme = useTheme()
 
     useEffect(() => {
         isOpenRef.current = isOpen
@@ -189,10 +186,7 @@ export const DatePicker = ({
                 }}
                 onShow={(event, target) => {
                     dateRangerPickerElement.current = target.container?.get(0)
-                    dateRangerPickerElement.current.classList.add(
-                        theme,
-                        'displayed'
-                    )
+                    dateRangerPickerElement.current.classList.add('displayed')
 
                     const cancelBtn =
                         dateRangerPickerElement.current?.querySelector(
@@ -227,7 +221,6 @@ export const DatePicker = ({
                 onHide={() => {
                     endHandlingTooltipHover()
                     dateRangerPickerElement.current?.classList.remove(
-                        theme,
                         'displayed'
                     )
                 }}

@@ -801,8 +801,9 @@ describe('widgets infobar utils', () => {
         })
 
         it('should return an age string label because passed type is `date`', () => {
+            // FIXME: this test will fail every added year
             expect(utils.stringifyRawData(1513269240000, 'age')).toBe(
-                '5 (2017-12-14)'
+                '6 (2017-12-14)'
             )
         })
 

@@ -23,7 +23,6 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getTimezone} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
-import {useTheme} from 'theme'
 import {formatDatetime} from 'utils'
 
 import css from './PeriodPicker.less'
@@ -70,7 +69,6 @@ export const PeriodPickerContainer = ({
     const dateRangerPickerElement = useRef<HTMLElement>()
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [tooltipTarget, setTooltipTarget] = useState<HTMLElement | null>(null)
-    const theme = useTheme()
 
     useEffect(() => {
         return endHandlingTooltipHover
@@ -226,7 +224,6 @@ export const PeriodPickerContainer = ({
                             dateRangerPickerElement.current =
                                 target.container?.get(0)
                             dateRangerPickerElement.current.classList.add(
-                                theme,
                                 'displayed'
                             )
 
@@ -261,7 +258,6 @@ export const PeriodPickerContainer = ({
                         onHide={() => {
                             endHandlingTooltipHover()
                             dateRangerPickerElement.current?.classList.remove(
-                                theme,
                                 'displayed'
                             )
                         }}
