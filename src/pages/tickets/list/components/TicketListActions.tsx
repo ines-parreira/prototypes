@@ -23,6 +23,7 @@ import {
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
+import {useAppNode} from 'appNode'
 import {SegmentEvent, logEvent} from 'common/segment'
 import shortcutManager from 'services/shortcutManager'
 import * as viewsActions from 'state/views/actions'
@@ -102,6 +103,7 @@ export const TicketListActionsContainer = ({
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
         useState(false)
     const [isLaunchingJob, setIsLaunchingJob] = useState(false)
+    const appNode = useAppNode()
 
     const hasSelectedItems = !selectedItemsIds.isEmpty()
     const isDisabled = !hasSelectedItems || isLaunchingJob || !areFiltersValid
@@ -773,6 +775,7 @@ export const TicketListActionsContainer = ({
                     target="bulk-more-button"
                     toggle={toggleDeleteConfirmation}
                     trigger="legacy"
+                    container={appNode ?? undefined}
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>

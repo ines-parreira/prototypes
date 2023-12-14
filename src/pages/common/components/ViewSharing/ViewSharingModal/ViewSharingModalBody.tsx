@@ -2,11 +2,12 @@ import React, {useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {List, Map} from 'immutable'
 
-import * as agentSelectors from '../../../../../state/agents/selectors'
-import * as teamsSelectors from '../../../../../state/teams/selectors'
-import RadioChoiceField from '../../../forms/RadioChoiceField'
-import {ViewVisibility} from '../../../../../models/view/types'
-import {RootState} from '../../../../../state/types'
+import RadioChoiceField from 'pages/common/forms/RadioChoiceField'
+import {ViewVisibility} from 'models/view/types'
+import {getAgents} from 'state/agents/selectors'
+import {getTeams} from 'state/teams/selectors'
+import {RootState} from 'state/types'
+
 import Loader from '../../Loader/Loader'
 import Alert, {AlertType} from '../../Alert/Alert'
 
@@ -63,7 +64,7 @@ export function ViewSharingModalBodyContainer({
             teams.filter((team) =>
                 selectedTeams.every(
                     (selectedTeam: Map<any, any>) =>
-                        selectedTeam.get('id') !== team!.get('id')
+                        selectedTeam.get('id') !== team?.get('id')
                 )
             ) as List<any>,
         [teams, selectedTeams]
@@ -132,8 +133,8 @@ export function ViewSharingModalBodyContainer({
 }
 
 const connector = connect((state: RootState) => ({
-    users: agentSelectors.getAgents(state),
-    teams: teamsSelectors.getTeams(state).toList(),
+    users: getAgents(state),
+    teams: getTeams(state).toList(),
 }))
 
 export default connector(ViewSharingModalBodyContainer)

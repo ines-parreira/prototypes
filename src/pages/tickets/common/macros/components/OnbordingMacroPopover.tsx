@@ -10,6 +10,7 @@ import {Link} from 'react-router-dom'
 import {Popover, PopoverBody} from 'reactstrap'
 import classnames from 'classnames'
 
+import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -176,6 +177,7 @@ function MacroPopOver({
     target: MutableRefObject<HTMLElement | null>
 }) {
     const popoverBodyRef = useRef(null)
+    const appNode = useAppNode()
 
     return (
         <>
@@ -188,6 +190,7 @@ function MacroPopOver({
                         event.stopPropagation()
                     }}
                     trigger="legacy"
+                    container={appNode ?? undefined}
                 >
                     {({scheduleUpdate}) => {
                         // React-Virtuoso is preventing Popperjs initial update

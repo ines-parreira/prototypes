@@ -12,6 +12,7 @@ import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import _get from 'lodash/get'
 import classnames from 'classnames'
 
+import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
 import useId from 'hooks/useId'
@@ -65,13 +66,16 @@ export default function ConfirmationPopover({
         setElement(element)
     }, [])
     const hideTimeoutRef = useRef<number | null>(null)
+    const appNode = useAppNode()
+    const rootElement = appNode ?? undefined
+
     const container = useMemo(
         () =>
             containerElement ??
             (buttonProps?.type === 'submit'
-                ? element?.parentElement || undefined
-                : undefined),
-        [buttonProps?.type, containerElement, element]
+                ? element?.parentElement || rootElement
+                : rootElement),
+        [buttonProps?.type, containerElement, element, rootElement]
     )
 
     useEffect(

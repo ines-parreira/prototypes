@@ -3,17 +3,19 @@ import {Modal} from 'reactstrap'
 import classNames from 'classnames'
 import Slider from 'react-slick'
 
-import {assetsUrl} from 'utils'
+import {useAppNode} from 'appNode'
 import IconButton from 'pages/common/components/button/IconButton'
+import {assetsUrl} from 'utils'
 
-import css from './Detail.less'
 import {ProductDetail} from './types'
+import css from './Detail.less'
 
 export default function Slides(props: Pick<ProductDetail, 'screenshots'>) {
     const {screenshots = []} = props
     const [isModalOpen, setModalOpen] = useState(false)
     const [initialSlide, setInitialSlide] = useState(0)
     const sliderRef = useRef<HTMLDivElement>(null)
+    const appNode = useAppNode()
 
     return (
         <>
@@ -53,6 +55,7 @@ export default function Slides(props: Pick<ProductDetail, 'screenshots'>) {
                         close
                     </IconButton>
                 }
+                container={appNode ?? undefined}
             >
                 <Slider
                     slidesToShow={1}

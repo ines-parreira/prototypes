@@ -11,6 +11,7 @@ import {Container, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import axios, {AxiosError, CancelToken} from 'axios'
 import {Map} from 'immutable'
 
+import {useAppNode} from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -62,6 +63,7 @@ const ManageTags = () => {
                 .keySeq(),
         [toggledTags]
     )
+    const appNode = useAppNode()
 
     const createFetchTags =
         (cancelToken: CancelToken) =>
@@ -224,6 +226,7 @@ const ManageTags = () => {
                             toggle={toggleCreationPopup}
                             trigger="legacy"
                             fade={false}
+                            container={appNode ?? undefined}
                         >
                             <PopoverHeader>Create a new tag</PopoverHeader>
                             <PopoverBody>

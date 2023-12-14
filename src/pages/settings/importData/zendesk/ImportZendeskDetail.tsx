@@ -12,6 +12,7 @@ import {
     Table,
 } from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import {
     fetchIntegration,
     updateOrCreateIntegration,
@@ -47,6 +48,7 @@ export const ImportZendeskDetail = ({
 }: ConnectedProps<typeof connector>) => {
     const [isPopoverOpened, setIsPopoverOpened] = useState(false)
     const {integrationId} = useParams<{integrationId: string}>()
+    const appNode = useAppNode()
 
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDateWithTime
@@ -139,7 +141,6 @@ export const ImportZendeskDetail = ({
                                 </ButtonIconLabel>
                             </Button>
                             <Popover
-                                className={css.learnPopover}
                                 placement="bottom-start"
                                 isOpen={isPopoverOpened}
                                 target="learn-button"
@@ -147,9 +148,10 @@ export const ImportZendeskDetail = ({
                                     setIsPopoverOpened(false)
                                 }}
                                 trigger="legacy"
+                                container={appNode ?? undefined}
                             >
                                 <PopoverBody>
-                                    <div className="align-content-center mb-1">
+                                    <div className="align-content-center mb-3">
                                         You’ve made the decision to transform
                                         the way your organization executes
                                         support. Now it’s time to implement that

@@ -16,6 +16,7 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {UserRole} from 'config/types/user'
 import history from 'pages/history'
@@ -71,6 +72,7 @@ export function TicketMacrosContainer({
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isCreatingMacro, setIsCreatingMacro] = useState(false)
     const prevIsDeleting = usePrevious(isDeleting)
+    const appNode = useAppNode()
 
     // brings the preview to top when previewing another macro
     useEffect(() => {
@@ -215,6 +217,7 @@ export function TicketMacrosContainer({
                                 toggle={toggleMacroDeleteConfirmOpen}
                                 trigger="legacy"
                                 fade={false}
+                                container={appNode ?? undefined}
                             >
                                 <PopoverBody>
                                     <p>

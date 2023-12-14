@@ -1,13 +1,78 @@
 // popover style
-.popover {
-    max-width: 350px;
-
-    color: #333;
-    font-size: 1rem;
-}
-
-// can't style reactstrap popovers
 // https://github.com/reactstrap/reactstrap/issues/449
 .popover {
+    max-width: 350px;
+    background-color: var(--neutral-grey-1);
+    color: var(--neutral-grey-6);
+    font-size: 1rem;
     z-index: 1051 !important;
+    border-color: var(--neutral-grey-3);
+
+    &.bs-popover-auto {
+        &[x-placement^='top'],
+        &.bs-popover-top {
+            > .arrow::before {
+                border-top-color: var(--neutral-grey-3);
+            }
+        }
+
+        &[x-placement^='top'],
+        &.bs-popover-top {
+            > .arrow::after {
+                border-top-color: var(--neutral-grey-1);
+            }
+        }
+
+        &[x-placement^='right'],
+        &.bs-popover-right {
+            > .arrow::before {
+                border-right-color: var(--neutral-grey-3);
+            }
+        }
+
+        &[x-placement^='right'],
+        &.bs-popover-right {
+            > .arrow::after {
+                border-right-color: var(--neutral-grey-1);
+            }
+        }
+
+        &[x-placement^='bottom'],
+        &.bs-popover-bottom {
+            > .arrow::before {
+                border-bottom-color: var(--neutral-grey-3);
+            }
+        }
+
+        &[x-placement^='bottom'],
+        &.bs-popover-bottom {
+            > .arrow::after {
+                border-bottom-color: var(--neutral-grey-1);
+            }
+        }
+
+        &[x-placement^='left'],
+        &.bs-popover-left {
+            > .arrow::before {
+                border-left-color: var(--neutral-grey-3);
+            }
+        }
+
+        &[x-placement^='left'],
+        &.bs-popover-left {
+            > .arrow::after {
+                border-left-color: var(--neutral-grey-1);
+            }
+        }
+    }
+}
+
+.popover-body {
+    color: var(--neutral-grey-6);
+    padding: 16px;
+}
+
+.popover-header {
+    background-color: var(--neutral-grey-0);
+    border-color: var(--neutral-grey-3);
 }

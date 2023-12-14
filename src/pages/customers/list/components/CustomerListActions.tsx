@@ -12,6 +12,7 @@ import {
 import _isUndefined from 'lodash/isUndefined'
 import {List, Map} from 'immutable'
 
+import {WithAppNodeProps, withAppNode} from 'appNode'
 import shortcutManager from 'services/shortcutManager/index'
 import {bulkDeleteCustomer} from 'state/customers/actions'
 import {
@@ -26,7 +27,8 @@ import css from './CustomerListActions.less'
 type Props = {
     selectedItemsIds: List<any>
     view: Map<any, any>
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    WithAppNodeProps
 
 type State = {
     popoverOpen: string
@@ -99,8 +101,13 @@ class CustomerListActions extends Component<Props, State> {
     }
 
     _renderBulkActions = () => {
-        const {allViewItemsSelected, getViewCount, view, selectedItemsIds} =
-            this.props
+        const {
+            allViewItemsSelected,
+            appNode,
+            getViewCount,
+            view,
+            selectedItemsIds,
+        } = this.props
 
         const areItemsSelected = this._hasChecked()
 
@@ -139,6 +146,7 @@ class CustomerListActions extends Component<Props, State> {
                     target="bulk-more-button"
                     toggle={this.toggleDeleteConfirmation}
                     trigger="legacy"
+                    container={appNode ?? undefined}
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>
@@ -174,4 +182,4 @@ const connector = connect(
     }
 )
 
-export default connector(CustomerListActions)
+export default connector(withAppNode(CustomerListActions))

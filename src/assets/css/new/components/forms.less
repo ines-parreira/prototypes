@@ -18,6 +18,15 @@
                 0.1
             );
     }
+
+    &:disabled,
+    &[readonly] {
+        background-color: var(--neutral-grey-3);
+    }
+
+    &::placeholder {
+        color: var(--neutral-grey-5) !important;
+    }
 }
 
 .form-row {
@@ -29,4 +38,9 @@
 .form-row > [class*='col-'] {
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.input-group-text {
+    background-color: var(--neutral-grey-1);
+    border-color: var(--neutral-grey-3);
 }

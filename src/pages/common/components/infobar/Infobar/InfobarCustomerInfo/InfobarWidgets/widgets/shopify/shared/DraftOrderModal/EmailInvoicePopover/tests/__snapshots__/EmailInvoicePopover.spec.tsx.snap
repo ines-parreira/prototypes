@@ -18,7 +18,6 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
     </strong>
   </Button>
   <Popover
-    container={<body />}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"

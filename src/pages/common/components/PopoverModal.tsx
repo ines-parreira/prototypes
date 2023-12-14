@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import React, {useRef, useState, ReactNode, RefObject} from 'react'
 import {Popover, PopoverHeader, PopoverBody, PopoverProps} from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
@@ -24,6 +25,7 @@ const PopoverModal = ({
 }: Props) => {
     const ref: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null)
     const [isOpen, setOpen] = useState<boolean>(false)
+    const appNode = useAppNode()
 
     const togglePopover = () => {
         setOpen(!isOpen)
@@ -49,6 +51,7 @@ const PopoverModal = ({
                     isOpen={isOpen}
                     target={ref.current}
                     toggle={togglePopover}
+                    container={appNode ?? undefined}
                 >
                     {header && <PopoverHeader>{header}</PopoverHeader>}
                     <PopoverBody>{children}</PopoverBody>

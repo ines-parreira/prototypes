@@ -16,6 +16,7 @@ import {
 import {NavLink, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
 
+import {WithAppNodeProps, withAppNode} from 'appNode'
 import {GorgiasApiError} from 'models/api/types'
 import {deleteTeam, fetchTeam, updateTeam} from 'models/team/resources'
 import {Team} from 'models/team/types'
@@ -43,7 +44,7 @@ import css from './Form.less'
 
 type OwnProps = RouteComponentProps<{id: string}>
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+type Props = OwnProps & ConnectedProps<typeof connector> & WithAppNodeProps
 
 type State = {
     team?: Team
@@ -265,6 +266,9 @@ export class FormContainer extends Component<Props, State> {
                                             hideArrow={true}
                                             className={css.popover}
                                             trigger="legacy"
+                                            container={
+                                                this.props.appNode ?? undefined
+                                            }
                                         >
                                             <PopoverBody className="p-0">
                                                 <EmojiPicker
@@ -354,4 +358,4 @@ const connector = connect(
     }
 )
 
-export default withRouter(connector(FormContainer))
+export default withRouter(connector(withAppNode(FormContainer)))

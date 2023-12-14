@@ -6,6 +6,7 @@ import {useAsync, useWindowSize} from 'react-use'
 import {fromJS} from 'immutable'
 import {AnyAction} from 'redux'
 
+import {useAppNode} from 'appNode'
 import useDimensions from 'hooks/useDimensions'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {AlertType} from 'pages/common/components/Alert/Alert'
@@ -51,6 +52,7 @@ export default function MissingBillingInformationRow() {
         () => viewportWidth - (rowDimensions?.x || 0),
         [viewportWidth, rowDimensions]
     )
+    const appNode = useAppNode()
 
     const {loading: isFetching} = useAsync(async () => {
         if (!contact && isAdmin) {
@@ -112,6 +114,7 @@ export default function MissingBillingInformationRow() {
                 centered
                 isOpen={isModalOpened}
                 toggle={() => setIsModalOpened(false)}
+                container={appNode ?? undefined}
             >
                 <Form onSubmit={handleSubmit}>
                     <ModalHeader

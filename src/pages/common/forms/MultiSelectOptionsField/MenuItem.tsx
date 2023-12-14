@@ -22,7 +22,7 @@ export default function MenuItem({
     return (
         <DropdownItem
             type="button"
-            className={classNames(css.option, {
+            className={classNames({
                 [`${css['option--focused']}`]: isActive,
                 [css.optionDeprecated]: isDeprecated,
             })}

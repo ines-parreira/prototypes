@@ -59,7 +59,7 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
               tabindex="-1"
             >
               <button
-                class="option option--focused dropdown-item"
+                class="option--focused dropdown-item"
                 role="menuitem"
                 tabindex="0"
                 type="button"
@@ -69,7 +69,7 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
                 </span>
               </button>
               <button
-                class="option dropdown-item"
+                class="dropdown-item"
                 role="menuitem"
                 tabindex="0"
                 type="button"
@@ -79,7 +79,7 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
                 </span>
               </button>
               <button
-                class="option dropdown-item"
+                class="dropdown-item"
                 role="menuitem"
                 tabindex="0"
                 type="button"
@@ -89,7 +89,7 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
                 </span>
               </button>
               <button
-                class="option dropdown-item"
+                class="dropdown-item"
                 role="menuitem"
                 tabindex="0"
                 type="button"

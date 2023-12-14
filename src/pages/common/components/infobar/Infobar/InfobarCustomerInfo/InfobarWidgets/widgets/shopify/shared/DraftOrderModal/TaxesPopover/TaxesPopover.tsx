@@ -137,13 +137,12 @@ export default class TaxesPopover extends Component<Props, State> {
                     <strong>{children}</strong>
                 </Button>
                 <Popover
-                    popperClassName={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
                     toggle={this._toggle}
                     trigger="legacy"
-                    container={container?.current ?? document.body}
+                    container={container?.current ?? undefined}
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="py-3">

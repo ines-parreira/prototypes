@@ -9,6 +9,8 @@ import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
+import {useAppNode} from 'appNode'
+
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -78,6 +80,8 @@ export function RuleRow({
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
     const {rulesUrl} = useIsAutomateRebranding()
+    const appNode = useAppNode()
+
     useEffect(() => {
         if (rule.type === RuleType.Managed && shouldDisplayError) {
             const settings = (rule as ManagedRule).settings
@@ -401,6 +405,7 @@ export function RuleRow({
                     target={`rule-name-${rule.id}`}
                     trigger="legacy"
                     className={css.descriptionPopover}
+                    container={appNode ?? undefined}
                 >
                     <PopoverBody>
                         <div className={css.descriptionWrapper}>

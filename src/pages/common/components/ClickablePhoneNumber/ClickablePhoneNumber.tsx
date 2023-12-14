@@ -1,14 +1,15 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
+
+import {useAppNode} from 'appNode'
+import useAppSelector from 'hooks/useAppSelector'
+import Tooltip from 'pages/common/components/Tooltip'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import {
     getPhoneIntegrations,
     getSmsIntegrations,
 } from 'state/integrations/selectors'
-import useAppSelector from 'hooks/useAppSelector'
 
-import Tooltip from 'pages/common/components/Tooltip'
-
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import PhoneIntegrationsDropdownList from './PhoneIntegrationsDropdownList'
 import SmsIntegrationsDropdownList from './SmsIntegrationsDropdownList'
 import css from './ClickablePhoneNumber.less'
@@ -31,6 +32,7 @@ const ClickablePhoneNumber = ({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [showPhoneIntegrations, setShowPhoneIntegrations] = useState(false)
     const [showSmsIntegrations, setShowSmsIntegrations] = useState(false)
+    const appNode = useAppNode()
 
     const hasPhoneIntegrations = !!phoneIntegrations.length
     const hasSmsIntegrations = !!smsIntegrations.length
@@ -91,7 +93,10 @@ const ClickablePhoneNumber = ({
                     <Tooltip target={id}>{tooltipMessage}</Tooltip>
                     {formattedAddress}
                 </DropdownToggle>
-                <DropdownMenu container="body" className={css.dropdownMenu}>
+                <DropdownMenu
+                    container={appNode ?? undefined}
+                    className={css.dropdownMenu}
+                >
                     {hasPhoneIntegrations &&
                         hasSmsIntegrations &&
                         !showPhoneIntegrations &&

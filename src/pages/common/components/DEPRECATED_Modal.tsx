@@ -8,18 +8,21 @@ import {
 } from 'reactstrap'
 import _noop from 'lodash/noop'
 
+import {WithAppNodeProps, withAppNode} from 'appNode'
+
 type Props = {
     children: ReactNode
-    dismissible: boolean
+    dismissible?: boolean
     onClose: () => void
     header?: string | ReactNode
     footer?: ReactNode
     headerClassName?: string
     footerClassName?: string
     bodyClassName?: string
-} & RemoveIndex<ModalProps>
+} & RemoveIndex<ModalProps> &
+    WithAppNodeProps
 
-export default class DEPRECATED_Modal extends Component<Props> {
+class DEPRECATED_Modal extends Component<Props> {
     static defaultProps: Pick<Props, 'dismissible'> = {
         dismissible: true,
     }
@@ -42,6 +45,8 @@ export default class DEPRECATED_Modal extends Component<Props> {
             headerClassName,
             bodyClassName,
             footerClassName,
+            appNode,
+            container,
             ...rest
         } = this.props
 
@@ -56,6 +61,7 @@ export default class DEPRECATED_Modal extends Component<Props> {
         return (
             <BootstrapModal
                 isOpen={isOpen}
+                container={container ?? appNode ?? undefined}
                 {...toggleProps}
                 {...rest}
                 fade={false}
@@ -75,3 +81,5 @@ export default class DEPRECATED_Modal extends Component<Props> {
         )
     }
 }
+
+export default withAppNode(DEPRECATED_Modal)

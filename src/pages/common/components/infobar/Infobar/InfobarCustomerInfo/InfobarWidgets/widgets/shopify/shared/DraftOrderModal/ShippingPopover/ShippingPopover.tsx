@@ -277,7 +277,6 @@ export default class ShippingPopover extends Component<Props, State> {
                     </span>
                 )}
                 <Popover
-                    popperClassName={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}

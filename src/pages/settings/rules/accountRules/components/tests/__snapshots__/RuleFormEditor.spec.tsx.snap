@@ -146,7 +146,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
                       tabindex="-1"
                     >
                       <button
-                        class="option option--focused dropdown-item"
+                        class="option--focused dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -156,7 +156,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
                         </span>
                       </button>
                       <button
-                        class="option dropdown-item"
+                        class="dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -166,7 +166,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
                         </span>
                       </button>
                       <button
-                        class="option dropdown-item"
+                        class="dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -176,7 +176,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
                         </span>
                       </button>
                       <button
-                        class="option dropdown-item"
+                        class="dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -487,7 +487,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
                       tabindex="-1"
                     >
                       <button
-                        class="option option--focused dropdown-item"
+                        class="option--focused dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -497,7 +497,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
                         </span>
                       </button>
                       <button
-                        class="option dropdown-item"
+                        class="dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -507,7 +507,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
                         </span>
                       </button>
                       <button
-                        class="option dropdown-item"
+                        class="dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -517,7 +517,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
                         </span>
                       </button>
                       <button
-                        class="option dropdown-item"
+                        class="dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"

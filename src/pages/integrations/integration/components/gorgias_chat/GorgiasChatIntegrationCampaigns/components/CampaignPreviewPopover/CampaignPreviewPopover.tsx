@@ -9,6 +9,8 @@ import React, {
 import {Popover} from 'reactstrap'
 import _uniqBy from 'lodash/uniqBy'
 
+import {useAppNode} from 'appNode'
+
 import {TRIGGER_LIST} from '../../constants/triggers'
 import {CampaignTrigger} from '../../types/CampaignTrigger'
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
@@ -32,6 +34,7 @@ export const CampaignPreviewPopover = ({
 }: Props) => {
     const innerRef = useRef<HTMLSpanElement>(null)
     const [isOpen, setOpen] = useState<boolean>(false)
+    const appNode = useAppNode()
 
     const uniqueTriggers = useMemo(() => {
         return _uniqBy(triggers, 'key').filter((trigger) => {
@@ -81,6 +84,7 @@ export const CampaignPreviewPopover = ({
                 hideArrow
                 popperClassName={css.popover}
                 innerClassName={css.content}
+                container={appNode ?? undefined}
             >
                 <div className={css.container}>
                     <p className={css.title}>Message</p>

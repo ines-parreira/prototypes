@@ -7,36 +7,29 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 import {fromJS, Map, List} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 
+import {useAppNode} from 'appNode'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {ViewVisibility, View} from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
-import GorgiasApi from '../../../../../services/gorgiasApi'
-import {notify} from '../../../../../state/notifications/actions'
-import {RootState} from '../../../../../state/types'
-import {ViewVisibility, View} from '../../../../../models/view/types'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {viewUpdated} from '../../../../../state/entities/views/actions'
+import GorgiasApi from 'services/gorgiasApi'
+import {viewUpdated} from 'state/entities/views/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import ViewSharingModalBody from './ViewSharingModalBody'
 import css from './ViewSharingModal.less'
 
-type OwnProps = {
+type Props = {
     view: Map<any, any>
     isOpen: boolean
     toggle: () => void
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
-
-export function ViewSharingModalContainer({
-    view,
-    isOpen,
-    currentUser,
-    toggle,
-    notify,
-    viewUpdated,
-}: Props) {
+function ViewSharingModal({view, isOpen, toggle}: Props) {
+    const currentUser = useAppSelector((state) => state.currentUser)
     const {
         isSaving,
         isLoading,
@@ -53,6 +46,8 @@ export function ViewSharingModalContainer({
         onRemoveUser,
         save,
     } = useViewSharing(view, currentUser)
+    const dispatch = useAppDispatch()
+    const appNode = useAppNode()
 
     const isShared = visibility === ViewVisibility.Shared
     const shouldSelectSomething =
@@ -60,17 +55,19 @@ export function ViewSharingModalContainer({
     const disabled = isLoading || isSaving || shouldSelectSomething
 
     const onSaveSuccess = (data: View) => {
-        void notify({
-            status: NotificationStatus.Success,
-            message: "View's sharing options saved",
-        })
-        viewUpdated(data)
+        void dispatch(
+            notify({
+                status: NotificationStatus.Success,
+                message: "View's sharing options saved",
+            })
+        )
+        dispatch(viewUpdated(data))
 
         toggle()
     }
 
     return (
-        <Modal isOpen={isOpen} toggle={toggle}>
+        <Modal isOpen={isOpen} toggle={toggle} container={appNode ?? undefined}>
             <ModalHeader toggle={toggle}>
                 Update view sharing: <b>{view.get('name')}</b>
             </ModalHeader>
@@ -115,15 +112,7 @@ export function ViewSharingModalContainer({
     )
 }
 
-// TODO(@samy): when we can use `useDispatch`, directly do `dispatch(notify(...))` in the hook (same with `useStore`)
-const connector = connect(
-    (state: RootState) => ({
-        currentUser: state.currentUser,
-    }),
-    {notify, viewUpdated}
-)
-
-export default connector(ViewSharingModalContainer)
+export default ViewSharingModal
 
 function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
     const user = useRef(currentUser)

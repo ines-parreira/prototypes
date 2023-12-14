@@ -26,6 +26,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
+import {useAppNode} from 'appNode'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
 import {
@@ -52,6 +53,7 @@ export default function Wrapper({widget, template, source}: Props) {
     const id = useId()
     const uniqueId = 'card-wrapper-' + id
     const [isPopupOpen, setPopupOpen] = useState(false)
+    const appNode = useAppNode()
 
     const handleClosePopover = useCallback(() => {
         setPopupOpen(false)
@@ -144,6 +146,7 @@ export default function Wrapper({widget, template, source}: Props) {
                                                 setPopupOpen(false)
                                             }}
                                             trigger="legacy"
+                                            container={appNode ?? undefined}
                                         >
                                             <PopoverBody>
                                                 <WrapperEdit

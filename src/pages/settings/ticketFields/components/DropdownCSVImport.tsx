@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import {CsvError, parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 
+import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
@@ -60,6 +61,7 @@ export const DropdownCSVImport = ({
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
     const [pickedFile, setPickedFile] = useState<File | null>(null)
     const tooltipId = 'app-permission-tooltip-' + useId()
+    const appNode = useAppNode()
 
     const [{loading: isImporting}, handleImport] = useAsyncFn(async () => {
         if (!pickedFile) {
@@ -129,6 +131,7 @@ export const DropdownCSVImport = ({
                 toggle={toggleModal}
                 centered
                 className={css.modal}
+                container={appNode ?? undefined}
             >
                 <ModalHeader toggle={toggleModal}>
                     Import values from CSV

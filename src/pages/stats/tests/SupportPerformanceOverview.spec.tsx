@@ -77,8 +77,6 @@ jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
     <div>ChannelsStatsFilter</div>
 ))
 
-jest.mock('theme/useTheme.ts', () => () => 'modern')
-
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend
 )

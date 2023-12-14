@@ -367,3 +367,5 @@ Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
 global.fetch = jest.fn(() =>
     Promise.resolve({arrayBuffer: () => ({})} as Response)
 )
+
+jest.mock('theme/useTheme.ts', () => () => 'light')

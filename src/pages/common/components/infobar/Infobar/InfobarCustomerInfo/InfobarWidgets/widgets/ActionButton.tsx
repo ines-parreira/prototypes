@@ -12,6 +12,7 @@ import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
 import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
+import {WithAppNodeProps, withAppNode} from 'appNode'
 import {
     CustomerContext,
     CustomerContextType,
@@ -61,7 +62,8 @@ type Props = {
     integrationId: IntegrationContextType['integrationId']
     setModalOpen?: (param: boolean) => void
     className?: string
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    WithAppNodeProps
 
 type State = {
     isUiOpen: boolean
@@ -291,7 +293,7 @@ export class ActionButtonContainer extends Component<Props, State> {
     }
 
     renderPopover() {
-        const {options, popover, title} = this.props
+        const {options, popover, title, appNode} = this.props
         const {actionName, isUiOpen} = this.state
         const multipleOptions = options.length > 1
 
@@ -301,18 +303,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                 isOpen={isUiOpen}
                 target={this.id}
                 toggle={this.toggleUi}
-                tether={{
-                    // Necessary to avoid the popover being displayed outside of the window.
-                    // http://tether.io/#constraints
-                    constraints: [
-                        {
-                            to: 'scrollParent',
-                            attachment: 'together none',
-                            pin: true,
-                        },
-                        {to: 'window', attachment: 'together none', pin: true},
-                    ],
-                }}
+                container={appNode ?? undefined}
                 trigger="legacy"
             >
                 <PopoverHeader>{title}</PopoverHeader>
@@ -403,4 +394,6 @@ const connector = connect(
     }
 )
 
-export default connector(withActionButtonContext(ActionButtonContainer))
+export default connector(
+    withActionButtonContext(withAppNode(ActionButtonContainer))
+)

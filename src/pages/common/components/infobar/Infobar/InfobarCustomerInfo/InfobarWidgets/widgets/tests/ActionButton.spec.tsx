@@ -32,6 +32,7 @@ describe('ActionButton component', () => {
         actionError: null,
         customerId: null,
         integrationId: 1,
+        appNode: null,
     }
 
     afterEach(cleanup)

@@ -28,22 +28,6 @@ exports[`ActionButton component should display a single option with a checkbox p
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-4"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >
@@ -120,22 +104,6 @@ exports[`ActionButton component should display a single option with a number par
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-3"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >
@@ -216,22 +184,6 @@ exports[`ActionButton component should display a single option with a select par
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-5"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >
@@ -329,22 +281,6 @@ exports[`ActionButton component should display a single option with a text param
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-2"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >
@@ -422,22 +358,6 @@ exports[`ActionButton component should display a single option with no parameter
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-1"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >
@@ -505,22 +425,6 @@ exports[`ActionButton component should display multiple options with a common pa
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-7"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >
@@ -643,22 +547,6 @@ exports[`ActionButton component should display multiple options with different p
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-8"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >
@@ -781,22 +669,6 @@ exports[`ActionButton component should display multiple options without paramete
     placement="bottom"
     placementPrefix="bs-popover"
     target="action-button-6"
-    tether={
-      {
-        "constraints": [
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
     toggle={[Function]}
     trigger="legacy"
   >

@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import {Form, Popover, PopoverBody} from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
@@ -59,6 +60,7 @@ export default function Editor(props: Props) {
     const [popoverOpen, setPopoverOpen] = useState(false)
     const [redirectionLinkTitle, setRedirectionLinkTitle] = useState(link.label)
     const [redirectionLinkUrl, setRedirectionLinkUrl] = useState(link.url)
+    const appNode = useAppNode()
 
     useEffect(() => {
         setCanSubmit(checkCanSubmit(redirectionLinkTitle, redirectionLinkUrl))
@@ -118,6 +120,7 @@ export default function Editor(props: Props) {
             target={target}
             toggle={togglePopover}
             trigger="legacy"
+            container={appNode ?? undefined}
         >
             <PopoverBody>
                 <Form onSubmit={handleSubmit}>

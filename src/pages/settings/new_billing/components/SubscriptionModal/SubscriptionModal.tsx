@@ -1,6 +1,8 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
+
+import {useAppNode} from 'appNode'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {useUpdateSubscription} from 'pages/settings/new_billing/hooks/useUpdateSubscription'
@@ -63,6 +65,7 @@ const SubscriptionModal = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const appNode = useAppNode()
 
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
@@ -124,6 +127,7 @@ const SubscriptionModal = ({
                 toggle={onClose}
                 fade={fade}
                 centered
+                container={appNode ?? undefined}
             >
                 <ModalHeader toggle={onClose}>{headerDescription}</ModalHeader>
                 <ModalBody className={css.modalBody} data-candu-id={canduId}>

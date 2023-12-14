@@ -2,14 +2,13 @@ import React from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
 import classnames from 'classnames'
 
+import {useAppNode} from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import {
     setSourceExtra,
     setShowConvertToForwardPopover,
 } from 'state/newMessage/actions'
-
 import {
     getShowConvertToForwardPopover,
     getNewMessageExtra,
@@ -29,6 +28,7 @@ const ConvertToForwardPopover: React.FC<Props> = ({target}) => {
     const showConvertToForwardPopover = useAppSelector(
         getShowConvertToForwardPopover
     )
+    const appNode = useAppNode()
 
     const onClose = () => dispatch(setShowConvertToForwardPopover(false))
 
@@ -45,6 +45,7 @@ const ConvertToForwardPopover: React.FC<Props> = ({target}) => {
             fade={true}
             popperClassName={css.popover}
             trigger="legacy"
+            container={appNode ?? undefined}
         >
             <PopoverBody>
                 <p>This thread has been converted to email.</p>

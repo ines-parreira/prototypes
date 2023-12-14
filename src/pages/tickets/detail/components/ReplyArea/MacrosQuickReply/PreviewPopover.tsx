@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 import _noop from 'lodash/noop'
 import {Popover, PopoverBody} from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import {MacroAction} from 'models/macroAction/types'
 
 import {ActionPreviews} from './ActionPreviews/ActionPreviews'
@@ -35,6 +36,8 @@ export const PreviewPopover = ({isOpen, targetId, actions}: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen])
 
+    const appNode = useAppNode()
+
     return (
         <Popover
             target={targetId}
@@ -43,6 +46,7 @@ export const PreviewPopover = ({isOpen, targetId, actions}: Props) => {
             placement="top-end"
             flip={false}
             popperClassName={css.previewPopover}
+            container={appNode ?? undefined}
         >
             <PopoverBody
                 className={css.popoverBody}

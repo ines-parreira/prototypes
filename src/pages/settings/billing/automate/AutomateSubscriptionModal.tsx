@@ -2,6 +2,8 @@ import React, {ElementType, useEffect, useMemo, useRef, useState} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
+
+import {useAppNode} from 'appNode'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
 
@@ -114,6 +116,7 @@ const AutomateSubscriptionModal = ({
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
+    const appNode = useAppNode()
 
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
@@ -207,6 +210,7 @@ const AutomateSubscriptionModal = ({
                 })}
                 fade={fade}
                 centered
+                container={appNode ?? undefined}
             >
                 <ModalHeader toggle={onClose}>{header}</ModalHeader>
                 <ModalBody

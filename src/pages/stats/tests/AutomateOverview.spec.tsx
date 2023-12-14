@@ -103,8 +103,6 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 jest.mock('services/reporting/automateOverviewReportingService')
 const saveReportMock = assumeMock(saveReport)
 
-jest.mock('theme/useTheme.ts', () => () => 'modern')
-
 describe('<AutomateOverview />', () => {
     function getIntegration(id: number, type: IntegrationType) {
         return {

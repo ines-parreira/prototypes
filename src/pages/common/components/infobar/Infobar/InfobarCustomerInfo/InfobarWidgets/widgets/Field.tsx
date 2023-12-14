@@ -5,6 +5,7 @@ import {Popover, PopoverBody} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 
+import {WithAppNodeProps, withAppNode} from 'appNode'
 import {RootState} from 'state/types'
 import {
     removeEditedWidget,
@@ -24,7 +25,8 @@ type Props = {
     widget: Map<string, unknown>
     template: Map<string, unknown>
     copyableValue: string | null
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    WithAppNodeProps
 
 export class Field extends React.Component<Props, {displayPopup: boolean}> {
     uniqueId: string
@@ -121,7 +123,7 @@ export class Field extends React.Component<Props, {displayPopup: boolean}> {
      * @private
      */
     _renderPopover = () => {
-        const {isEditing, template, widget} = this.props
+        const {isEditing, template, widget, appNode} = this.props
 
         if (!isEditing) {
             return null
@@ -134,6 +136,7 @@ export class Field extends React.Component<Props, {displayPopup: boolean}> {
                 target={this.uniqueId}
                 toggle={this._togglePopup}
                 trigger="legacy"
+                container={appNode ?? document.body}
             >
                 <PopoverBody>
                     <FieldEdit template={template} widget={widget} />
@@ -183,4 +186,4 @@ const connector = connect((state: RootState) => ({
     widgetsState: state.widgets,
 }))
 
-export default connector(Field)
+export default connector(withAppNode(Field))

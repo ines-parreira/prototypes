@@ -187,7 +187,7 @@ exports[`MultiSelectField should render the select field with no selected option
                             onSelect={[Function]}
                           >
                             <DropdownItem
-                              className="option option--focused"
+                              className="option--focused"
                               onMouseDown={[Function]}
                               onMouseEnter={[Function]}
                               tag="button"
@@ -195,7 +195,7 @@ exports[`MultiSelectField should render the select field with no selected option
                               type="button"
                             >
                               <button
-                                className="option option--focused dropdown-item"
+                                className="option--focused dropdown-item"
                                 onClick={[Function]}
                                 onMouseDown={[Function]}
                                 onMouseEnter={[Function]}
@@ -216,7 +216,7 @@ exports[`MultiSelectField should render the select field with no selected option
                             onSelect={[Function]}
                           >
                             <DropdownItem
-                              className="option"
+                              className=""
                               onMouseDown={[Function]}
                               onMouseEnter={[Function]}
                               tag="button"
@@ -224,7 +224,7 @@ exports[`MultiSelectField should render the select field with no selected option
                               type="button"
                             >
                               <button
-                                className="option dropdown-item"
+                                className="dropdown-item"
                                 onClick={[Function]}
                                 onMouseDown={[Function]}
                                 onMouseEnter={[Function]}
@@ -245,7 +245,7 @@ exports[`MultiSelectField should render the select field with no selected option
                             onSelect={[Function]}
                           >
                             <DropdownItem
-                              className="option"
+                              className=""
                               onMouseDown={[Function]}
                               onMouseEnter={[Function]}
                               tag="button"
@@ -253,7 +253,7 @@ exports[`MultiSelectField should render the select field with no selected option
                               type="button"
                             >
                               <button
-                                className="option dropdown-item"
+                                className="dropdown-item"
                                 onClick={[Function]}
                                 onMouseDown={[Function]}
                                 onMouseEnter={[Function]}

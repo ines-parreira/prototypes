@@ -41,6 +41,9 @@
 .daterangepicker {
     font-family: 'Inter', sans-serif;
     padding: 24px;
+    background-color: var(--neutral-grey-0);
+    border: 1px solid var(--neutral-grey-3);
+    color: var(--neutral-grey-6);
 
     .calendar-time {
         margin: 0 0 10px;
@@ -48,6 +51,9 @@
 
     .drp-calendar {
         .calendar-table {
+            background-color: var(--neutral-grey-0);
+            border: unset;
+
             thead {
                 th.available:hover {
                     background-color: var(--neutral-grey-1);
@@ -153,6 +159,10 @@
 
                 &.active {
                     background-color: var(--main-primary);
+                }
+
+                &:hover {
+                    background-color: var(--neutral-grey-2);
                 }
 
                 @media @mobiles {
@@ -300,7 +310,7 @@
 
         &:hover,
         &.available:not(.active):hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-2);
         }
 
         &.disabled {
@@ -312,6 +322,7 @@
 
         &.off.available {
             color: var(--neutral-grey-4);
+            background-color: var(--neutral-grey-0);
         }
 
         &.in-range:not(.active):not(.off) {

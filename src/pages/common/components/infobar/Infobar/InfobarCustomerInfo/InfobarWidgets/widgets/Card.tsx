@@ -5,6 +5,7 @@ import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {WithAppNodeProps, withAppNode} from 'appNode'
 import {IntegrationType} from 'models/integration/constants'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
@@ -45,7 +46,8 @@ type Props = {
     isParentList: boolean
     open: boolean
     removeBorderTop: boolean
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    WithAppNodeProps
 
 export class Card extends React.Component<
     Props,
@@ -139,7 +141,7 @@ export class Card extends React.Component<
      * @private
      */
     renderPopover = () => {
-        const {isEditing, TitleWrapper} = this.props
+        const {isEditing, TitleWrapper, appNode} = this.props
 
         if (!isEditing) {
             return null
@@ -163,6 +165,7 @@ export class Card extends React.Component<
                 target={this.uniqueId}
                 toggle={this.togglePopup}
                 trigger="legacy"
+                container={appNode ?? undefined}
             >
                 <PopoverBody>
                     <WidgetEdit
@@ -495,7 +498,7 @@ const connector = connect((state: RootState) => ({
     widgetsState: state.widgets,
 }))
 
-export default connector(Card)
+export default connector(withAppNode(Card))
 
 function isRootWidget(templatePath: string) {
     // We must handle the case where the first widget after the wrapper

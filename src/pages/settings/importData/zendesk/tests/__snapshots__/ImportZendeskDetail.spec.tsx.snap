@@ -713,7 +713,7 @@ exports[`<ImportZendeskDetail/> rendering should display the popover 1`] = `
     class="popover-body"
   >
     <div
-      class="align-content-center mb-1"
+      class="align-content-center mb-3"
     >
       You’ve made the decision to transform the way your organization executes support. Now it’s time to implement that change. Here are the steps and resources required for successfully launching Gorgias with a Zendesk import. Please note that we can only import about 2,500 tickets per hour from Zendesk. Therefore, if there is a lot of Zendesk data, the import can take a few days.
     </div>

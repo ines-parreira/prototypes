@@ -3,9 +3,10 @@ import 'emoji-mart/css/emoji-mart.css'
 import {EditorState} from 'draft-js'
 import {EmojiData} from 'emoji-mart'
 
+import {insertText} from 'utils'
+import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
+
 import {ActionInjectedProps} from '../types'
-import {insertText} from '../../../../../../utils'
-import EmojiPicker from '../../../../components/EmojiPicker/EmojiPicker'
 
 import Popover from './ButtonPopover'
 

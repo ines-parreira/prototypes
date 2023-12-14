@@ -274,7 +274,6 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                     <span className={css.title}>{value.get('title')}</span>
                 ) : null}
                 <Popover
-                    popperClassName={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}

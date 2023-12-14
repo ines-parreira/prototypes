@@ -3,6 +3,8 @@ import {renderHook} from '@testing-library/react-hooks'
 import Provider from '../Provider'
 import useTheme from '../useTheme'
 
+jest.unmock('theme/useTheme.ts')
+
 describe('useSetTheme', () => {
     it('should throw an error when used outside of the provider', () => {
         const {result} = renderHook(() => useTheme())

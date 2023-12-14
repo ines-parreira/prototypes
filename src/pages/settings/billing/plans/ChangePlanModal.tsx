@@ -7,6 +7,7 @@ import React, {
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
+import {useAppNode} from 'appNode'
 import ArrowForward from 'assets/img/icons/arrow-forward.svg'
 import {getFormattedAmount} from 'models/billing/utils'
 import {
@@ -88,6 +89,8 @@ export const ChangePlanModal = ({
             ),
         [currentAutomationPrice, currentHelpdeskAddons, automationPrices]
     )
+    const appNode = useAppNode()
+
     const formattedName =
         currentHelpdeskPrice &&
         convertLegacyPlanNameToPublicPlanName(currentHelpdeskPrice.name)
@@ -101,6 +104,7 @@ export const ChangePlanModal = ({
                 toggle={onClose}
                 className={css.modal}
                 centered
+                container={appNode ?? undefined}
             >
                 <ModalHeader toggle={onClose}>{header}</ModalHeader>
                 <ModalBody className="p-0">

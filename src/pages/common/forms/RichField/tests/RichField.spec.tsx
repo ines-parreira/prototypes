@@ -1,6 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import {mount, shallow} from 'enzyme'
+import {mount} from 'enzyme'
+
 import _noop from 'lodash/noop'
 import {ContentState, EditorState} from 'draft-js'
 import configureMockStore from 'redux-mock-store'
@@ -13,6 +14,16 @@ import RichField from '../RichField'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('reactstrap', () => {
+    const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
+
+    return {
+        ...reactstrap,
+        Popover: (props: Record<string, any>) => {
+            return props.isOpen ? <div {...props}>{props.children}</div> : null
+        },
+    }
+})
 
 describe('RichField', () => {
     const mockStore = configureMockStore([thunk])
@@ -27,7 +38,7 @@ describe('RichField', () => {
     })
 
     it('should render a basic input', () => {
-        const component = shallow(
+        const {container} = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -35,11 +46,11 @@ describe('RichField', () => {
                 />
             </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a MentionSuggestions component to the DOM if in internal-note mode', () => {
-        const component = shallow(
+        const {container} = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -48,14 +59,14 @@ describe('RichField', () => {
                 />
             </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render immutable variable', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
 
-        const component = mount(
+        const {container} = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -64,10 +75,9 @@ describe('RichField', () => {
                         html: 'html {{current_user.name}}',
                     }}
                 />
-            </Provider>,
-            {attachTo: div}
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render mutable variable', () => {
@@ -101,7 +111,7 @@ describe('RichField', () => {
         document.body.appendChild(div)
 
         const contentState = ContentState.createFromText('foo')
-        const component = mount(
+        const {container} = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -111,10 +121,9 @@ describe('RichField', () => {
                         html: convertToHTML(contentState),
                     }}
                 />
-            </Provider>,
-            {attachTo: div}
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should count the characters in the text', () => {

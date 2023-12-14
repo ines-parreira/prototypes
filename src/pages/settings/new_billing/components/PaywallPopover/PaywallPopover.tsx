@@ -1,5 +1,7 @@
 import React, {ReactNode, RefObject} from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
+
+import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
 
 type Props = {
@@ -23,6 +25,8 @@ const PaywallPopover = ({
     buttonContent,
     buttonClassName,
 }: Props) => {
+    const appNode = useAppNode()
+
     return (
         iconRef.current && (
             <Popover
@@ -34,6 +38,7 @@ const PaywallPopover = ({
                 target={iconRef.current}
                 trigger="focus hover"
                 boundariesElement="window"
+                container={appNode ?? undefined}
             >
                 <PopoverBody className="d-flex p-3 flex-column align-items-center">
                     {tagline ? (

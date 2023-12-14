@@ -4,6 +4,7 @@ import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
+import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
     DISCOUNT_MODAL_NAME,
@@ -49,6 +50,7 @@ export default function DiscountCodeResults({
     const [discountCodes, setDiscountResults] = useState<DiscountCode[]>([])
     const currentAccount = useAppSelector(getCurrentAccountState)
     const ticket = useAppSelector(getTicketState)
+    const appNode = useAppNode()
 
     const shopifyScope = useMemo<string[]>(() => {
         const scope = integration.getIn(['oauth', 'scope']) as List<string>
@@ -250,6 +252,7 @@ export default function DiscountCodeResults({
                 size="lg"
                 // it has to be above popover which is currently set to 1560
                 zIndex={1561}
+                container={appNode ?? undefined}
             >
                 <DiscountCodeCreateModal
                     onClose={handleCloseModal}

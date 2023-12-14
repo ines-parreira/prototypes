@@ -3,6 +3,8 @@
         border: none !important;
         border-radius: 4px !important;
         width: 300px !important;
+        background-color: var(--neutral-grey-1);
+        color: var(--neutral-grey-6);
 
         .emoji-mart-search {
             margin-bottom: 6px;
@@ -27,8 +29,16 @@
             display: none;
         }
 
+        .emoji-mart-anchors {
+            color: var(--neutral-grey-5);
+        }
+
         .emoji-mart-anchor {
             cursor: pointer;
+
+            &:hover {
+                color: var(--neutral-grey-4);
+            }
         }
 
         .emoji-mart-emoji span {
@@ -49,6 +59,13 @@
 
             span {
                 font-size: 14px;
+                background-color: var(--neutral-grey-1);
+            }
+        }
+
+        .emoji-mart-emoji {
+            &:hover::before {
+                background-color: var(--neutral-grey-3);
             }
         }
     }

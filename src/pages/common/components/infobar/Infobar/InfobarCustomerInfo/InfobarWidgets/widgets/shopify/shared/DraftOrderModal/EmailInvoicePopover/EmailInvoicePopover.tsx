@@ -168,7 +168,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
                     target={id}
                     toggle={this._toggle}
                     trigger="legacy"
-                    container={container?.current ?? document.body}
+                    container={container?.current ?? undefined}
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">

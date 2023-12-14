@@ -9,6 +9,7 @@ import {Popover} from 'reactstrap'
 import {EmojiData, BaseEmoji} from 'emoji-mart'
 import classNames from 'classnames'
 
+import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
@@ -35,6 +36,7 @@ const EmojiSelect = ({
     const [isOpen, setIsOpen] = useState(false)
     const iconRef: RefObject<HTMLSpanElement> = useRef(null)
     const toggle = () => setIsOpen(!isOpen)
+    const appNode = useAppNode()
 
     return (
         <div className={classNames(css.picker, className)}>
@@ -59,7 +61,7 @@ const EmojiSelect = ({
                     toggle={toggle}
                     fade={false}
                     trigger="legacy"
-                    container={container}
+                    container={container ?? appNode ?? undefined}
                 >
                     <div className={css.popover}>
                         <EmojiPicker

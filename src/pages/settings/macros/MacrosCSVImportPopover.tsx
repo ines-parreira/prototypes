@@ -1,9 +1,9 @@
 import classNames from 'classnames'
-
 import React, {ChangeEvent, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {uploadFiles} from 'common/utils'
 import {createJob} from 'models/job/resources'
@@ -35,6 +35,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
     const hiddenFileInputRef = useRef<HTMLInputElement>(null)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const dispatch = useAppDispatch()
+    const appNode = useAppNode()
 
     const [{loading: isImporting}, handleImport] = useAsyncFn(async () => {
         if (!pickedFile) return
@@ -112,6 +113,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
             onClose={onClose}
             centered
             toggle={toggleModal}
+            container={appNode ?? undefined}
         >
             <ModalHeader toggle={toggleModal}>
                 Import macros from CSV

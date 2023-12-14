@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import pluralize from 'pluralize'
 import _flatten from 'lodash/flatten'
 
+import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
@@ -73,6 +74,7 @@ export const RuleRecipeModal = ({
             : []
     )
     const hasAutomate = useAppSelector(getHasAutomate)
+    const appNode = useAppNode()
 
     const isBehindPaywall = rule.type === RuleType.Managed && !hasAutomate
 
@@ -236,6 +238,7 @@ export const RuleRecipeModal = ({
             size="lg"
             className={css.modalContainer}
             centered
+            container={appNode ?? undefined}
         >
             <ModalHeader toggle={onToggle}>
                 <div className={css.header}>

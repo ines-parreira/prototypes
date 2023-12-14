@@ -1,5 +1,8 @@
 import React, {useCallback, useRef} from 'react'
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+
+import {useAppNode} from 'appNode'
+
 import css from './GorgiasTranslateText.less'
 
 export type Props = {
@@ -18,6 +21,7 @@ const GorgiasTranslateExitModal = ({
     fade = true,
 }: Props) => {
     const buttonWrapper = useRef<HTMLDivElement>(null)
+    const appNode = useAppNode()
 
     const onCloseCallback = useCallback(() => {
         onClose()
@@ -38,6 +42,7 @@ const GorgiasTranslateExitModal = ({
             className={css.modal}
             fade={fade}
             centered
+            container={appNode ?? undefined}
         >
             <ModalHeader toggle={onCloseCallback}>Save changes?</ModalHeader>
             <ModalBody className={css.modalBody}>

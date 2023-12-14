@@ -1,10 +1,11 @@
 import React from 'react'
-import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {render} from '@testing-library/react'
 
+import userEvent from '@testing-library/user-event'
 import {RootState, StoreDispatch} from 'state/types'
 import {submitSetting} from 'state/currentAccount/actions'
 import {integrationsState} from 'fixtures/integrations'
@@ -43,14 +44,13 @@ describe('SatisfactionSurveyView', () => {
         it('should render current survey settings form', () => {
             const div = document.createElement('div')
             document.body.appendChild(div)
-            const component = mount(
+            const {container} = render(
                 <Provider store={store}>
                     <SatisfactionSurveyView />
-                </Provider>,
-                {attachTo: div}
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
@@ -58,14 +58,13 @@ describe('SatisfactionSurveyView', () => {
         it('should submit user data', () => {
             const div = document.createElement('div')
             document.body.appendChild(div)
-            const component = mount(
+            const {getByText} = render(
                 <Provider store={store}>
                     <SatisfactionSurveyView />
-                </Provider>,
-                {attachTo: div}
+                </Provider>
             )
 
-            component.find('form').simulate('submit')
+            userEvent.click(getByText(/Save/))
 
             expect(mockSubmitSetting.mock.calls).toMatchSnapshot()
         })

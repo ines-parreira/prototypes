@@ -1,23 +1,20 @@
 import React, {useCallback, useState} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
-
 import {connect, ConnectedProps} from 'react-redux'
 
+import {useAppNode} from 'appNode'
+import {FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH} from 'config/integrations/facebook'
 import {triggerTicketFieldsRefreshAndInvalidation} from 'common/state'
-import {TICKET_PARTIAL_UPDATE_ERROR} from 'state/ticket/constants'
-import {goToNextTicket, setStatus} from 'state/ticket/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {Actor, Meta, Source} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
-
-import {FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH} from '../../../../../config/integrations/facebook'
-import {Actor, Meta, Source} from '../../../../../models/ticket/types'
-
-import * as infobarActions from '../../../../../state/infobar/actions'
-
-import TicketMessageEmbeddedCard from '../../TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
-import {StoreDispatch} from '../../../../../state/types'
-import {COMMENT_TICKET_PRIVATE_REPLY_EVENT} from '../../../../tickets/detail/components/PrivateReplyEvent/constants'
+import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+import {COMMENT_TICKET_PRIVATE_REPLY_EVENT} from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
+import * as infobarActions from 'state/infobar/actions'
+import {goToNextTicket, setStatus} from 'state/ticket/actions'
+import {TICKET_PARTIAL_UPDATE_ERROR} from 'state/ticket/constants'
+import {StoreDispatch} from 'state/types'
 
 import css from './PrivateReplyModal.less'
 
@@ -75,6 +72,7 @@ function PrivateReplyModal({
             goToNextTicket,
             meta
         )
+    const appNode = useAppNode()
 
     const placeholder = isFacebookComment
         ? 'Reply via Facebook Messenger'
@@ -82,7 +80,7 @@ function PrivateReplyModal({
     const modalHeaderText = isFacebookComment ? 'Message' : 'Direct message'
 
     return (
-        <Modal isOpen={isOpen} toggle={toggle}>
+        <Modal isOpen={isOpen} toggle={toggle} container={appNode ?? undefined}>
             <ModalHeader toggle={toggle}>
                 {modalHeaderText} {sender.firstname} {sender.lastname}
             </ModalHeader>

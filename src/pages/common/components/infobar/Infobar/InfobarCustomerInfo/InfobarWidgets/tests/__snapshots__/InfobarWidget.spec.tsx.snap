@@ -2,7 +2,7 @@
 
 exports[`InfobarWidget card widget should display the widget 1`] = `
 "<ContextProvider value={{...}}>
-  <Connect(Card) isEditing={false} isParentList={false} source={{...}} widget={{...}} template={{...}} parent={[undefined]} open={true} removeBorderTop={false} />
+  <Connect(withAppNode(Card)) isEditing={false} isParentList={false} source={{...}} widget={{...}} template={{...}} parent={[undefined]} open={true} removeBorderTop={false} />
 </ContextProvider>"
 `;
 
@@ -18,7 +18,7 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
     }
   }
 >
-  <Connect(Card)
+  <Connect(withAppNode(Card))
     extensionUsed="bigcommerce"
     isEditing={false}
     isParentList={false}
@@ -76,7 +76,7 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
     }
   }
 >
-  <Connect(Card)
+  <Connect(withAppNode(Card))
     extensionUsed="magento2"
     isEditing={false}
     isParentList={false}
@@ -134,7 +134,7 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
     }
   }
 >
-  <Connect(Card)
+  <Connect(withAppNode(Card))
     extensionUsed="recharge"
     isEditing={false}
     isParentList={false}
@@ -192,7 +192,7 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
     }
   }
 >
-  <Connect(Card)
+  <Connect(withAppNode(Card))
     extensionUsed="shopify"
     isEditing={false}
     isParentList={false}

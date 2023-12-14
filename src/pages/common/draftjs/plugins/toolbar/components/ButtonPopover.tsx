@@ -1,6 +1,7 @@
 import React, {ReactNode, useCallback, useEffect, useRef} from 'react'
 import {Popover} from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import {ModalContext} from 'pages/common/components/modal/Modal'
 
 import Button from './Button'
@@ -36,6 +37,7 @@ export default function ButtonPopover({
         }
     }, [isOpen, onClose, onOpen])
     const buttonRef = useRef<HTMLButtonElement>(null)
+    const appNode = useAppNode()
 
     // on mobile size the editor toolbar becomes hidden, we force closing the popover if opened
     useEffect(() => {
@@ -71,7 +73,7 @@ export default function ButtonPopover({
                         }}
                         target={buttonRef}
                         className={css.popover}
-                        container={context.ref}
+                        container={context.ref ?? appNode ?? undefined}
                         trigger="legacy"
                         placement="right-end"
                     >
