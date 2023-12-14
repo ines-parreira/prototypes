@@ -25,16 +25,19 @@ type Props = {
 const ArticleRow = ({
     article,
     onClick,
+    title,
 }: {
-    article: Components.Schemas.CategoryTreeArticleDto
+    article: Partial<Components.Schemas.CategoryTreeArticleDto> & {id: number}
     onClick: (value: number) => void
+    title?: string
 }) => {
     return (
         <DropdownItem
             key={article.id}
             onClick={onClick}
             option={{
-                label: article.translation_versions?.current?.title || '',
+                label:
+                    article.translation_versions?.current?.title || title || '',
                 value: article.id,
             }}
         />
@@ -82,6 +85,7 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
     const {data, map} = useHelpCenterArticleTree(helpCenterId)
     const [isOpen, setIsOpen] = useState(false)
     const [path, setPath] = useState<string>('')
+    const allArticles = Array.from(map.entries())
 
     useEffect(() => {
         setSearch('')
@@ -117,7 +121,6 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
 
     const categories = currentTreeNode?.children
     const articles = currentTreeNode?.articles
-
     return (
         <div className={css.container}>
             <SelectInputBox
@@ -183,21 +186,26 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
                                             ))}
                                         </DropdownSection>
                                     )}
-                                    {!!articles?.length && isAtRootLevel && (
-                                        <DropdownSection
-                                            title={'Uncategorized articles'}
-                                        >
-                                            {articles.map((article) => (
-                                                <ArticleRow
-                                                    key={article.id}
-                                                    onClick={handleArticleClick}
-                                                    article={article}
-                                                />
-                                            ))}
-                                        </DropdownSection>
-                                    )}
+                                    {!!articles?.length &&
+                                        isAtRootLevel &&
+                                        !search && (
+                                            <DropdownSection
+                                                title={'Uncategorized articles'}
+                                            >
+                                                {articles.map((article) => (
+                                                    <ArticleRow
+                                                        key={article.id}
+                                                        onClick={
+                                                            handleArticleClick
+                                                        }
+                                                        article={article}
+                                                    />
+                                                ))}
+                                            </DropdownSection>
+                                        )}
                                     {articles &&
                                         !isAtRootLevel &&
+                                        !search &&
                                         articles.map((article) => (
                                             <ArticleRow
                                                 key={article.id}
@@ -205,7 +213,8 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
                                                 article={article}
                                             />
                                         ))}
-                                    {isAtRootLevel && (
+
+                                    {isAtRootLevel && !search && (
                                         <DropdownSection title="No Response">
                                             <DropdownItem
                                                 onClick={handleArticleClick}
@@ -216,6 +225,15 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
                                             />
                                         </DropdownSection>
                                     )}
+                                    {!!search &&
+                                        allArticles.map(([id, title]) => (
+                                            <ArticleRow
+                                                key={id}
+                                                onClick={handleArticleClick}
+                                                article={{id}}
+                                                title={title}
+                                            />
+                                        ))}
                                 </DropdownBody>
                             </Dropdown>
                         )
