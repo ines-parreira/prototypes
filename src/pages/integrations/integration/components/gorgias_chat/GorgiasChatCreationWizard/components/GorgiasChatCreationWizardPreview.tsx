@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
@@ -12,6 +12,8 @@ import {
 } from 'models/integration/types'
 
 import {
+    GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -49,6 +51,10 @@ type Props = {
         label?: string
     }
     showOfflineMessages?: boolean
+    isWidgetConversation?: boolean
+    showGoBackButton?: boolean
+    renderPoweredBy?: boolean
+    renderFooter?: boolean
 }
 
 const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
@@ -62,6 +68,11 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
     isOpen,
     launcher,
     showOfflineMessages: showOfflineMessagesProp,
+    isWidgetConversation,
+    showGoBackButton,
+    renderPoweredBy,
+    renderFooter,
+    children,
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -111,6 +122,57 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
 
     const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
+    const previewContent = useMemo(() => {
+        if (children) {
+            return children
+        }
+
+        if (isOnline && !showOfflineMessages) {
+            return (
+                <MessageContent
+                    className={css.messageContent}
+                    avatar={avatar}
+                    conversationColor={conversationColor}
+                    customerInitialMessages={[
+                        widgetTranslatedTexts?.previewCustomerInitialMessage,
+                    ]}
+                    agentMessages={[
+                        {
+                            content:
+                                widgetTranslatedTexts?.previewAgentInitialMessage,
+                            isHtml: false,
+                            attachments: [],
+                        },
+                    ]}
+                    currentUser={currentUser}
+                    language={language}
+                />
+            )
+        }
+
+        return (
+            <ChatIntegrationPreviewContent>
+                <ConversationTimestamp />
+                <OfflineMessages
+                    mainColor={mainColor}
+                    chatTitle={name}
+                    language={language}
+                />
+            </ChatIntegrationPreviewContent>
+        )
+    }, [
+        children,
+        conversationColor,
+        currentUser,
+        isOnline,
+        showOfflineMessages,
+        language,
+        mainColor,
+        name,
+        widgetTranslatedTexts?.previewCustomerInitialMessage,
+        widgetTranslatedTexts?.previewAgentInitialMessage,
+    ])
+
     return (
         <div className={css.wrapper}>
             <div
@@ -145,37 +207,20 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 showBackground={false}
                 isOpen={isOpen}
                 launcher={launcher}
-                renderFooter={!showOfflineMessages && isOnline}
+                renderFooter={
+                    renderFooter === undefined
+                        ? !showOfflineMessages && isOnline
+                        : renderFooter
+                }
+                isWidgetConversation={isWidgetConversation}
+                showGoBackButton={showGoBackButton}
+                autoResponderEnabled={
+                    GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT
+                }
+                autoResponderReply={GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC}
+                renderPoweredBy={renderPoweredBy}
             >
-                {isOnline && !showOfflineMessages ? (
-                    <MessageContent
-                        className={css.messageContent}
-                        avatar={avatar}
-                        conversationColor={conversationColor}
-                        customerInitialMessages={[
-                            widgetTranslatedTexts?.previewCustomerInitialMessage,
-                        ]}
-                        agentMessages={[
-                            {
-                                content:
-                                    widgetTranslatedTexts?.previewAgentInitialMessage,
-                                isHtml: false,
-                                attachments: [],
-                            },
-                        ]}
-                        currentUser={currentUser}
-                        language={language}
-                    />
-                ) : (
-                    <ChatIntegrationPreviewContent>
-                        <ConversationTimestamp />
-                        <OfflineMessages
-                            mainColor={mainColor}
-                            chatTitle={name}
-                            language={language}
-                        />
-                    </ChatIntegrationPreviewContent>
-                )}
+                {previewContent}
             </ChatIntegrationPreview>
         </div>
     )

@@ -6,16 +6,17 @@
         width: 100%;
         max-width: 1000px;
         min-width: 480px;
+        display: flex;
         flex-direction: column;
     }
 
     .content {
+        flex-grow: 1;
         padding: 0 @layout-spacing-m @layout-spacing-m @layout-spacing-m;
     }
 
     .preview {
         flex-grow: 1;
-        position: sticky;
         background: var(--neutral-grey-1);
         padding: @layout-spacing-m @layout-spacing-m 0 @layout-spacing-m;
 
@@ -29,6 +30,8 @@
         justify-content: center;
         width: 100%;
         max-width: 684px;
+        position: sticky;
+        top: 0;
     }
 
     .wizardProgressHeader {
@@ -66,6 +69,7 @@
     .footer {
         position: sticky;
         bottom: 0;
+        z-index: 1;
     }
 
     .footerShadow {
@@ -85,5 +89,15 @@
         z-index: 3;
         background: var(--neutral-grey-0);
         padding: @layout-spacing-m;
+    }
+
+    .previewPlaceholder {
+        width: 384px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        padding: 42px;
+        color: var(--neutral-grey-5);
     }
 }

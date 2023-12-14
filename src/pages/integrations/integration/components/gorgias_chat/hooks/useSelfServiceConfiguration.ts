@@ -4,6 +4,8 @@ import {Map} from 'immutable'
 import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
+// TO DO: Merge with src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/hooks/useSelfServiceConfiguration.ts
+
 type SelfServiceConfigurationResult = {
     selfServiceConfigurationEnabled: boolean
     selfServiceConfiguration: SelfServiceConfiguration

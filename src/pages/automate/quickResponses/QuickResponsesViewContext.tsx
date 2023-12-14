@@ -9,6 +9,7 @@ export type QuickResponsesViewContextType = {
     hasError: boolean
     setError: (path: string, hasError: boolean) => void
     isLimitReached: boolean
+    isDisabled?: boolean
     storeIntegration: StoreIntegration | undefined
 }
 

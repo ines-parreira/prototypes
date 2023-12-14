@@ -17,7 +17,7 @@ exports[`<GorgiasChatCreationWizardStepBranding /> submits form when fields have
       "meta": Immutable.Map {
         "language": "en-US",
         "wizard": Immutable.Map {
-          "step": "installation",
+          "step": "automate",
         },
       },
     },

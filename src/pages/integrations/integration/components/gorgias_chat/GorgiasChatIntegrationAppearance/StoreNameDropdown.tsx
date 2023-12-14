@@ -14,6 +14,7 @@ type Props = {
     storeIntegrationId: number | null
     onChange: (newShopIntegrationIdValue: number) => void
     hasError?: boolean
+    isDisabled?: boolean
 }
 
 export const StoreNameDropdown = ({
@@ -22,6 +23,7 @@ export const StoreNameDropdown = ({
     storeIntegrationId,
     onChange,
     hasError,
+    isDisabled,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -69,10 +71,12 @@ export const StoreNameDropdown = ({
                 className={css.dropdown}
                 isOpen={isOpen}
                 toggle={() => setIsOpen(!isOpen)}
+                disabled={isDisabled}
             >
                 <DropdownToggle
                     className={classnames({[css.hasError]: hasError})}
                     caret
+                    disabled={isDisabled}
                 >
                     {storeIntegration ? (
                         <span className={css.dropdownValue}>

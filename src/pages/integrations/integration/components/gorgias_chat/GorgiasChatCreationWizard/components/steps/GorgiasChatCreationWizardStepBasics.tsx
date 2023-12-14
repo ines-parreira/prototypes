@@ -132,11 +132,11 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         ])
     )
 
+    const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
+
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
     const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
-
-    const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
 
     const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
         Map<any, any> | false

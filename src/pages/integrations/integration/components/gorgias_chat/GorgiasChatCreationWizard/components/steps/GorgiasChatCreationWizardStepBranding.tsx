@@ -127,7 +127,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                 .setIn(
                     ['wizard', 'step'],
                     shouldGoToNextStep
-                        ? GorgiasChatCreationWizardSteps.Installation
+                        ? GorgiasChatCreationWizardSteps.Automate
                         : GorgiasChatCreationWizardSteps.Branding
                 )
                 .toJS(),

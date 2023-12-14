@@ -40,7 +40,7 @@ const QuickResponsesAccordionItem = ({
     onDelete,
     onToggle,
 }: Props) => {
-    const {isUpdatePending, hasError, isLimitReached} =
+    const {isUpdatePending, isDisabled, hasError, isLimitReached} =
         useQuickResponsesViewContext()
     const {isExpanded} = useAccordionItemContext()
     const showAttachmentUploadDisclaimer =
@@ -87,6 +87,7 @@ const QuickResponsesAccordionItem = ({
                 <div id={toggleInputId} onClick={handleToggleStopPropagation}>
                     <ToggleInput
                         isDisabled={
+                            isDisabled ||
                             isUpdatePendingOrHasError ||
                             (isLimitReached && isDeactivated)
                         }

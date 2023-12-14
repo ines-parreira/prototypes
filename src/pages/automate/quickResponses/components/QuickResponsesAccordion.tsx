@@ -14,7 +14,9 @@ type Props = {
     onExpandedItemChange: (
         expandedItem: QuickResponsePolicy['id'] | null
     ) => void
-    onHoveredItemChange: (hoveredItem: QuickResponsePolicy['id'] | null) => void
+    onHoveredItemChange?: (
+        hoveredItem: QuickResponsePolicy['id'] | null
+    ) => void
     onPreviewChange: (items: QuickResponsePolicy[]) => void
     onChange: (items: QuickResponsePolicy[]) => void
     onDelete: (items: QuickResponsePolicy[]) => void
@@ -29,7 +31,8 @@ const QuickResponsesAccordion = ({
     onChange,
     onDelete,
 }: Props) => {
-    const {isUpdatePending, hasError} = useQuickResponsesViewContext()
+    const {isUpdatePending, isDisabled, hasError} =
+        useQuickResponsesViewContext()
 
     const handleReorder = (reorderedItemIds: QuickResponsePolicy['id'][]) => {
         const itemsById = items.reduce<
@@ -86,13 +89,13 @@ const QuickResponsesAccordion = ({
             expandedItem={expandedItem}
             onChange={onExpandedItemChange}
             onHoveredItemChange={onHoveredItemChange}
-            isDisabled={isUpdatePending || hasError}
+            isDisabled={isUpdatePending || isDisabled || hasError}
         >
             {items.map((item) => (
                 <SortableAccordionItem
                     key={item.id}
                     id={item.id}
-                    isDisabled={hasError}
+                    isDisabled={isDisabled || hasError}
                 >
                     <QuickResponsesAccordionItem
                         key={item.id}

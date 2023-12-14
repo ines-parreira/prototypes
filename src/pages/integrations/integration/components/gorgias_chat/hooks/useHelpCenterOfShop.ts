@@ -1,0 +1,48 @@
+import {useState, useEffect} from 'react'
+// eslint-disable-next-line no-restricted-imports
+import {useAsyncFn} from 'react-use'
+
+import {IntegrationType} from 'models/integration/constants'
+import {HelpCenter} from 'models/helpCenter/types'
+
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
+
+const useHelpCenterOfShop = (shopName?: string, shopType?: string) => {
+    const {client} = useHelpCenterApi()
+
+    const [helpCenters, setHelpCenters] = useState<HelpCenter[]>([])
+
+    const [{loading: isLoadingHelpCenters}, fetchHelpCenters] =
+        useAsyncFn(async () => {
+            if (client && shopType === IntegrationType.Shopify) {
+                try {
+                    const {
+                        data: {data: fetchedHelpCenters},
+                    } = await client.listHelpCenters({
+                        shop_name: shopName,
+                        per_page: HELP_CENTER_MAX_CREATION,
+                    })
+
+                    setHelpCenters(fetchedHelpCenters)
+                    return
+                } catch (err) {
+                    console.error(err)
+                }
+
+                setHelpCenters([])
+            }
+        }, [shopName, shopType, client])
+
+    useEffect(() => {
+        void fetchHelpCenters()
+    }, [shopName, shopType, client, fetchHelpCenters])
+
+    return {
+        helpCenters,
+        isLoadingHelpCenters,
+    }
+}
+
+export default useHelpCenterOfShop

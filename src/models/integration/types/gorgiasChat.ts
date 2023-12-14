@@ -67,6 +67,8 @@ export type GorgiasChatIntegrationMeta = {
     wizard?: {
         step: GorgiasChatCreationWizardSteps
         status: GorgiasChatCreationWizardStatus
+        installation_method?: GorgiasChatCreationWizardInstallationMethod
+        quick_response_ids?: string[]
     }
     installation?: GorgiasChatMetaInstallation
 }
@@ -169,6 +171,7 @@ export enum GorgiasChatCreationWizardStatus {
 export enum GorgiasChatCreationWizardSteps {
     Basics = 'basics',
     Branding = 'branding',
+    Automate = 'automate',
     Installation = 'installation',
 }
 

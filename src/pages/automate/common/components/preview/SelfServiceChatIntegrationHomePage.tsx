@@ -35,9 +35,13 @@ const StyledCard = styled(Card)`
 
 type Props = {
     integration: GorgiasChatIntegration
+    disableAnimations?: boolean
 }
 
-const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
+const SelfServiceChatIntegrationHomePage = ({
+    integration,
+    disableAnimations,
+}: Props) => {
     const history = useHistory()
     const {
         selfServiceConfiguration,
@@ -139,7 +143,7 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
     return (
         <div
             className={classnames(css.container, {
-                [css.isInitialEntry]: isInitialEntry,
+                [css.isInitialEntry]: !disableAnimations && isInitialEntry,
             })}
         >
             <div className={css.contentContainer}>

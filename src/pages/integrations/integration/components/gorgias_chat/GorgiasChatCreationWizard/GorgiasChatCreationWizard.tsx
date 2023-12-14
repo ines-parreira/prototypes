@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 import {Link, Redirect} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {IntegrationType} from 'models/integration/types'
 
@@ -16,6 +18,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics'
 import GorgiasChatCreationWizardStepBranding from './components/steps/GorgiasChatCreationWizardStepBranding'
+import GorgiasChatCreationWizardStepAutomate from './components/steps/GorgiasChatCreationWizardStepAutomate'
 import GorgiasChatCreationWizardStepInstallation from './components/steps/GorgiasChatCreationWizardStepInstallation'
 
 import css from './GorgiasChatCreationWizard.less'
@@ -26,13 +29,24 @@ type Props = {
     isUpdate: boolean
 }
 
-const steps = Object.values(GorgiasChatCreationWizardSteps)
-
 const GorgiasChatCreationWizard: React.FC<Props> = ({
     integration,
     loading,
     isUpdate,
 }) => {
+    const isAutomateStepEnabled =
+        useFlags()[FeatureFlagKey.ChatCreationWizardAutomateStep]
+
+    const steps = Object.values(GorgiasChatCreationWizardSteps).filter(
+        (step) => {
+            if (step === GorgiasChatCreationWizardSteps.Automate) {
+                return isAutomateStepEnabled
+            }
+
+            return true
+        }
+    )
+
     const integrationId = integration.get('id')
 
     const [hasIntegrationLoaded, setHasIntegrationLoaded] = useState(
@@ -41,10 +55,16 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
 
     const wizardStatus = integration.getIn(['meta', 'wizard', 'status'])
 
-    const initialStep = integration.getIn(
+    const wizardStep = integration.getIn(
         ['meta', 'wizard', 'step'],
         GorgiasChatCreationWizardSteps.Basics
     )
+
+    const initialStep =
+        !isAutomateStepEnabled &&
+        wizardStep === GorgiasChatCreationWizardSteps.Automate
+            ? GorgiasChatCreationWizardSteps.Installation
+            : wizardStep
 
     useEffect(() => {
         if (!isUpdate || integrationId) {
@@ -99,6 +119,18 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                                     integration={integration}
                                 />
                             </WizardStep>
+                            {isAutomateStepEnabled && (
+                                <WizardStep
+                                    name={
+                                        GorgiasChatCreationWizardSteps.Automate
+                                    }
+                                >
+                                    <GorgiasChatCreationWizardStepAutomate
+                                        isSubmitting={isSubmitting}
+                                        integration={integration}
+                                    />
+                                </WizardStep>
+                            )}
                             <WizardStep
                                 name={
                                     GorgiasChatCreationWizardSteps.Installation
