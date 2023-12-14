@@ -57,9 +57,25 @@ export default function TrainMyAiPreview({
 
     const onSelectArticle = async (id: number) => {
         setIsFeedbackProvided(true)
-        await mutateAsync([{id: recommendations.id}, {articleIdFeedback: id}], {
-            onError: () => setIsFeedbackProvided(false),
-        })
+        await mutateAsync(
+            [
+                {id: recommendations.id},
+                {
+                    data: {articleIdFeedback: id},
+                    meta: previewArticleData
+                        ? {
+                              articleSlugFeedback:
+                                  previewArticleData.translation.slug,
+                              articleTitleFeedback:
+                                  previewArticleData.translation.title,
+                          }
+                        : undefined,
+                },
+            ],
+            {
+                onError: () => setIsFeedbackProvided(false),
+            }
+        )
     }
 
     const onChangeArticle = (id: number) => {

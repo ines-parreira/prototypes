@@ -110,6 +110,7 @@ const helpCenterArticleData = {
         article_id: 10,
         content: '<div>This article exists</div>',
         title: 'Article A',
+        slug: 'article-a',
     },
 }
 
@@ -1093,7 +1094,18 @@ describe('<TrainMyAiView />', () => {
         expect(screen.getByText('This article exists')).toBeInTheDocument()
 
         expect(updateMutateMock).toBeCalledWith(
-            [{id: 1}, {articleIdFeedback: 10}],
+            [
+                {id: 1},
+                {
+                    data: {articleIdFeedback: 10},
+                    meta: {
+                        articleSlugFeedback:
+                            helpCenterArticleData.translation.slug,
+                        articleTitleFeedback:
+                            helpCenterArticleData.translation.title,
+                    },
+                },
+            ],
             {onError: expect.any(Function)}
         )
     })

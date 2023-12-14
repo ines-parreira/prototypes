@@ -119,10 +119,37 @@
                         "application/json": {
                             "schema": {
                                 "type": "object",
+                                "required": [
+                                    "data"
+                                ],
                                 "properties": {
-                                    "articleIdFeedback": {
-                                        "type": "number",
-                                        "example": 1
+                                    "data": {
+                                        "type": "object",
+                                        "description": "Resource data",
+                                        "properties": {
+                                            "articleIdFeedback": {
+                                                "type": "number",
+                                                "example": 1
+                                            }
+                                        }
+                                    },
+                                    "meta": {
+                                        "type": "object",
+                                        "description": "Resource metadata",
+                                        "required": [
+                                            "articleTitleFeedback",
+                                            "articleSlugFeedback"
+                                        ],
+                                        "properties": {
+                                            "articleTitleFeedback": {
+                                                "type": "string",
+                                                "example": "Article Title"
+                                            },
+                                            "articleSlugFeedback": {
+                                                "type": "string",
+                                                "example": "article-slug"
+                                            }
+                                        }
                                     }
                                 }
                             }

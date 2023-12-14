@@ -163,10 +163,30 @@ declare namespace Paths {
     }
     export interface RequestBody {
       /**
-       * example:
-       * 1
+       * Resource data
        */
-      articleIdFeedback?: number;
+      data: {
+        /**
+         * example:
+         * 1
+         */
+        articleIdFeedback?: number;
+      };
+      /**
+       * Resource metadata
+       */
+      meta?: {
+        /**
+         * example:
+         * Article Title
+         */
+        articleTitleFeedback: string;
+        /**
+         * example:
+         * article-slug
+         */
+        articleSlugFeedback: string;
+      };
     }
     namespace Responses {
       export type $200 = Components.Schemas.PredictionResponseDataDTO;
