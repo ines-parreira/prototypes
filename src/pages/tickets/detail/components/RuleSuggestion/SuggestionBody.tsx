@@ -1,11 +1,9 @@
 import React, {useEffect, CSSProperties} from 'react'
 import {fromJS} from 'immutable'
 import {Collapse} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useMeasure} from 'react-use'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
 import {MacroAction} from 'models/macroAction/types'
+import useMeasure from 'hooks/useMeasure'
 import css from './SuggestionBody.less'
 import {SuggestionStates} from './InTicketSuggestion'
 

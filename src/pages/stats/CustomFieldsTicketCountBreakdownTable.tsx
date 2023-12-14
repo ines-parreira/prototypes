@@ -1,12 +1,10 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import useMeasure from 'react-use/lib/useMeasure'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useMeasure from 'hooks/useMeasure'
 import {OrderDirection} from 'models/api/types'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'

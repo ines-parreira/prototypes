@@ -5,9 +5,6 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useMeasure} from 'react-use'
 import {emailTicket} from 'state/ticket/tests/fixtures'
 import {billingState} from 'fixtures/billing'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
@@ -17,6 +14,7 @@ import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {emptyManagedRule, emptyRule} from 'fixtures/rule'
 import {UserRole} from 'config/types/user'
+import useMeasure from 'hooks/useMeasure'
 import RuleSuggestion, {
     getRuleSuggestionContent,
     isSuggestionEmpty,
@@ -25,13 +23,10 @@ import RuleSuggestion, {
 jest.mock('state/newMessage/actions.ts')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 
-jest.mock('react-use', () => {
-    const originalModule = jest.requireActual('react-use')
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('hooks/useMeasure', () => {
     return {
         __esModule: true,
-        ...originalModule,
-        useMeasure: jest.fn().mockImplementation(() => [undefined, 0]),
+        default: jest.fn().mockImplementation(() => [undefined, 0]),
     }
 })
 

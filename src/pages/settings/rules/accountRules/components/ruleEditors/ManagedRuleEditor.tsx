@@ -8,9 +8,6 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useMeasure} from 'react-use'
 import {Label} from 'reactstrap'
 import moment from 'moment'
 import _isEqual from 'lodash/isEqual'
@@ -20,6 +17,7 @@ import {convertFromHTML, convertToHTML} from 'utils/editor'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import useMeasure from 'hooks/useMeasure'
 import {activateRule} from 'models/rule/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'

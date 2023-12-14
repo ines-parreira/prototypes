@@ -1,9 +1,6 @@
 import React, {useEffect} from 'react'
 import ReactPlayer from 'react-player'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import useMeasure from 'react-use/lib/useMeasure'
 
 import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
 import {
@@ -14,6 +11,7 @@ import {
 import {AgentDisplayName} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
 import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useMeasure from 'hooks/useMeasure'
 
 import {CAMPAIGN_MAX_HEIGHT} from '../../../../constants/visuals'
 import {CampaignProduct} from '../../../../types/CampaignProduct'
