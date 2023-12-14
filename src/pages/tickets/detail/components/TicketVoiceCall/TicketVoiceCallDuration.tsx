@@ -1,7 +1,4 @@
 import React, {useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useInterval} from 'react-use'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
 import {Badge} from 'gorgias-design-system/Badge/Badge'
 import {
@@ -9,6 +6,7 @@ import {
     getFormattedDurationOngoingCall,
     isFinalVoiceCallStatus,
 } from 'models/voiceCall/utils'
+import useInterval from 'hooks/useInterval'
 
 interface TicketVoiceCallDurationProps {
     voiceCall: VoiceCall
