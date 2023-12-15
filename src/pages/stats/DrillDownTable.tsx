@@ -6,6 +6,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     DrillDownMetric,
@@ -18,7 +19,10 @@ import {
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 
-import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
+import {
+    DRILL_DOWN_PER_PAGE,
+    useDrillDownData,
+} from 'hooks/reporting/useDrillDownData'
 import {DrillDownTicketDetailsCell} from './DrillDownTicketDetailsCell'
 import {TruncateCellContent} from './TruncateCellContent'
 import {AgentAvatar} from './AgentAvatar'
@@ -37,7 +41,7 @@ export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
         getDrillDownMetricColumn
     )
 
-    const {perPage, currentPage, onPageChange, data} =
+    const {perPage, currentPage, onPageChange, data, isFetching} =
         useDrillDownData(metricData)
 
     return (
@@ -77,60 +81,88 @@ export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
                         />
                     </TableHead>
                     <TableBody>
-                        {data.map((item) => (
-                            <TableBodyRow
-                                key={item.ticket.id}
-                                className={classNames(css.tableRow, {
-                                    [css.isHighlighted]: !item.ticket.isRead,
-                                })}
-                            >
-                                <DrillDownTicketDetailsCell
-                                    ticketDetails={item.ticket}
-                                    bodyCellProps={{
-                                        width: showMetric ? 300 : 440,
-                                    }}
-                                />
-                                {showMetric && (
-                                    <BodyCell width={140}>
-                                        {formatMetricValue(
-                                            item.metricValue,
-                                            metricValueFormat,
-                                            NOT_AVAILABLE_PLACEHOLDER
-                                        )}
-                                    </BodyCell>
-                                )}
-                                <BodyCell width={180}>
-                                    {item.assignee && (
-                                        <AgentAvatar
-                                            agent={item.assignee}
-                                            avatarSize={24}
-                                            className={css.agent}
-                                        />
-                                    )}
-                                </BodyCell>
+                        {isFetching
+                            ? new Array(DRILL_DOWN_PER_PAGE)
+                                  .fill(null)
+                                  .map((_, rowIndex) => (
+                                      <TableBodyRow key={rowIndex}>
+                                          <BodyCell>
+                                              <Skeleton
+                                                  inline
+                                                  width={showMetric ? 260 : 400}
+                                              />
+                                          </BodyCell>
+                                          <BodyCell>
+                                              <Skeleton inline width={108} />
+                                          </BodyCell>
+                                          <BodyCell>
+                                              <Skeleton inline width={148} />
+                                          </BodyCell>
+                                          <BodyCell>
+                                              <Skeleton inline width={148} />
+                                          </BodyCell>
+                                          <BodyCell>
+                                              <Skeleton inline width={160} />
+                                          </BodyCell>
+                                      </TableBodyRow>
+                                  ))
+                            : data.map((item) => (
+                                  <TableBodyRow
+                                      key={item.ticket.id}
+                                      className={classNames(css.tableRow, {
+                                          [css.isHighlighted]:
+                                              !item.ticket.isRead,
+                                      })}
+                                  >
+                                      <DrillDownTicketDetailsCell
+                                          ticketDetails={item.ticket}
+                                          bodyCellProps={{
+                                              width: showMetric ? 300 : 440,
+                                          }}
+                                      />
+                                      {showMetric && (
+                                          <BodyCell width={140}>
+                                              {formatMetricValue(
+                                                  item.metricValue,
+                                                  metricValueFormat,
+                                                  NOT_AVAILABLE_PLACEHOLDER
+                                              )}
+                                          </BodyCell>
+                                      )}
+                                      <BodyCell width={180}>
+                                          {item.assignee && (
+                                              <AgentAvatar
+                                                  agent={item.assignee}
+                                                  avatarSize={24}
+                                                  className={css.agent}
+                                              />
+                                          )}
+                                      </BodyCell>
 
-                                <BodyCell width={180}>
-                                    {item.ticket.created ? (
-                                        <DatetimeLabel
-                                            dateTime={item.ticket.created}
-                                        />
-                                    ) : (
-                                        NOT_AVAILABLE_PLACEHOLDER
-                                    )}
-                                </BodyCell>
-                                <BodyCell width={200}>
-                                    {item.ticket.contactReason ? (
-                                        <TruncateCellContent
-                                            content={item.ticket.contactReason}
-                                        />
-                                    ) : (
-                                        <span className={css.noData}>
-                                            {NOT_AVAILABLE_PLACEHOLDER}
-                                        </span>
-                                    )}
-                                </BodyCell>
-                            </TableBodyRow>
-                        ))}
+                                      <BodyCell width={180}>
+                                          {item.ticket.created ? (
+                                              <DatetimeLabel
+                                                  dateTime={item.ticket.created}
+                                              />
+                                          ) : (
+                                              NOT_AVAILABLE_PLACEHOLDER
+                                          )}
+                                      </BodyCell>
+                                      <BodyCell width={200}>
+                                          {item.ticket.contactReason ? (
+                                              <TruncateCellContent
+                                                  content={
+                                                      item.ticket.contactReason
+                                                  }
+                                              />
+                                          ) : (
+                                              <span className={css.noData}>
+                                                  {NOT_AVAILABLE_PLACEHOLDER}
+                                              </span>
+                                          )}
+                                      </BodyCell>
+                                  </TableBodyRow>
+                              ))}
                     </TableBody>
                 </TableWrapper>
             </div>

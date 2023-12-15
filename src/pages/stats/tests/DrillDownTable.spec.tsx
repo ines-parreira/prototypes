@@ -18,6 +18,12 @@ import {
 } from 'state/ui/stats/drillDownSlice'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
+const MOCK_SKELETON_TEST_ID = 'skeleton'
+
+jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
+    <div data-testid={MOCK_SKELETON_TEST_ID} />
+))
+
 jest.mock('state/ui/stats/drillDownSlice')
 const getDrillDownMetricColumnMock = assumeMock(getDrillDownMetricColumn)
 jest.mock('hooks/reporting/useDrillDownData')
@@ -117,5 +123,22 @@ describe('<DrillDownTable />', () => {
         )
 
         expect(document.querySelector('.agent')).not.toBeInTheDocument()
+    })
+
+    it('should render the table with skeletons on loading', () => {
+        useDrillDownDataMock.mockReturnValue({
+            data,
+            currentPage,
+            perPage: 1,
+            isFetching: true,
+        } as any)
+
+        render(
+            <Provider store={mockStore({})}>
+                <DrillDownTable metricData={metricData} />
+            </Provider>
+        )
+
+        expect(screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length).not.toBe(0)
     })
 })
