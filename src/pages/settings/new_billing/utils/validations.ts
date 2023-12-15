@@ -34,7 +34,7 @@ export const validatePostalCode = (
         return postalCodeTrimmed.length === 5 &&
             !isNaN(Number(postalCodeTrimmed)) &&
             501 <= parseInt(postalCodeTrimmed) &&
-            parseInt(postalCodeTrimmed) <= 99500
+            parseInt(postalCodeTrimmed) <= 99950
             ? noError
             : error
     }

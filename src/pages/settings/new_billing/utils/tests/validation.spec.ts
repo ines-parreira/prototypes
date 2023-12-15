@@ -4,15 +4,15 @@ const noError = undefined
 const error = 'Postal code is invalid'
 
 describe('validatePostalCode for the US', () => {
-    it('should return no error if between 00501 and 99500 (inclusive)', () => {
-        for (let postalCode = 501; postalCode <= 99500; postalCode++) {
+    it('should return no error if between 00501 and 99950 (inclusive)', () => {
+        for (let postalCode = 501; postalCode <= 99950; postalCode++) {
             const postalCodeString = postalCode.toString().padStart(5, '0')
             expect(validatePostalCode(postalCodeString, 'US')).toBe(noError)
         }
 
         expect(validatePostalCode('00500', 'US')).toBe(error)
 
-        expect(validatePostalCode('99501', 'US')).toBe(error)
+        expect(validatePostalCode('99951', 'US')).toBe(error)
     })
 
     it('should return an error if not a 5 characters string exactly (without counting spaces)', () => {
