@@ -2,15 +2,17 @@ import React, {ComponentProps, SyntheticEvent} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {user} from 'fixtures/users'
-
-import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {YourProfileView} from '../components/YourProfileView'
+import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
+import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
+import {Theme} from 'theme/types'
+import {getLDClient} from 'utils/launchDarkly'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -21,12 +23,20 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     currentUser: fromJS(user),
     submitSetting: jest.fn(),
     preferences: fromJS({data: {}}),
+    setTheme: jest.fn(),
+    savedTheme: 'dark' as Theme,
 }
 jest.mock('moment-timezone', () => {
     return {
         tz: {names: () => []},
     }
 })
+
+jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
+;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
+
+jest.mock('pages/common/components/UnsavedChangesPrompt', () => () => null)
 
 const defaultState = {}
 
@@ -36,6 +46,15 @@ describe('YourProfileView', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         global.Date.now = jest.fn(() => 1587000000000)
+        variationMock.mockImplementation(() => true)
+        Object.defineProperty(window, 'matchMedia', {
+            value: jest.fn(() => {
+                return {
+                    matches: false,
+                }
+            }),
+            writable: true,
+        })
     })
 
     afterEach(() => {
@@ -43,11 +62,15 @@ describe('YourProfileView', () => {
     })
 
     describe('render', () => {
-        it('should render current user profile form', () => {
-            const component = shallow(<YourProfileView {...minProps} />)
+        it.each([true, false])(
+            'should render current user profile form',
+            (hasNewFeatureActive) => {
+                variationMock.mockImplementation(() => hasNewFeatureActive)
+                const component = shallow(<YourProfileView {...minProps} />)
 
-            expect(component).toMatchSnapshot()
-        })
+                expect(component).toMatchSnapshot()
+            }
+        )
 
         it('should expand to show the phone number field when enabling call forwarding', async () => {
             const {findByText, getByLabelText} = render(
@@ -200,6 +223,27 @@ describe('YourProfileView', () => {
                 )
             }
         )
+    })
+
+    describe('change theme from Settings', () => {
+        it('should change the existing theme', async () => {
+            jest.spyOn(localStorage, 'getItem').mockReturnValue('"dark"')
+            const setThemeSpy = jest.fn()
+
+            render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView {...minProps} setTheme={setThemeSpy} />
+                </Provider>
+            )
+
+            // Dark theme is selected by default
+            await waitFor(() =>
+                expect(screen.getAllByRole('radio')[5]).toBeChecked()
+            )
+            // Select light theme
+            userEvent.click(screen.getAllByRole('radio')[6])
+            expect(setThemeSpy).toHaveBeenCalledWith('light')
+        })
     })
 
     describe('_saveProfilePicture', () => {

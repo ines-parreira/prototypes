@@ -91,6 +91,347 @@ exports[`YourProfileView render should render current user profile form 1`] = `
 <div
   className="full-width"
 >
+  <Component
+    onDiscard={[Function]}
+    onSave={[Function]}
+    when={false}
+  />
+  <PageHeader
+    title="Your profile"
+  />
+  <Container
+    className="pageContainer"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="headingSection"
+    >
+      Personal information
+    </div>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div
+        className="flex flex-wrap"
+      >
+        <div
+          className="leftSideWrapper"
+        >
+          <div
+            className="section"
+          >
+            <InputField
+              className="inputField"
+              isRequired={true}
+              label="Your name"
+              name="name"
+              onChange={[Function]}
+              placeholder="John Doe"
+              value="Alex Plugaru"
+            />
+            <InputField
+              className="inputField"
+              isRequired={true}
+              label="Your email"
+              name="email"
+              onChange={[Function]}
+              placeholder="john.doe@acme.com"
+              type="email"
+              value="alex@gorgias.io"
+            />
+            <InputField
+              caption={
+                <span>
+                  Your bio can be used in signatures as a variable. Admins can set up signatures
+                   
+                  <Link
+                    to="/app/settings/channels/email"
+                  >
+                    in each email integration
+                  </Link>
+                </span>
+              }
+              className="inputField"
+              label="Your bio"
+              name="bio"
+              onChange={[Function]}
+              type="text"
+              value="CTO"
+            />
+          </div>
+          <div
+            className="headingSection"
+          >
+            Date and time settings
+          </div>
+          <div
+            className="section"
+          >
+            <FormGroup
+              className="inputField"
+              tag="div"
+            >
+              <Label
+                className="control-label"
+                tag="label"
+                widths={
+                  [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Timezone
+              </Label>
+              <SelectField
+                allowCustomValue={false}
+                fixedWidth={false}
+                fullWidth={true}
+                id={null}
+                onChange={[Function]}
+                onSearchChange={[Function]}
+                options={[]}
+                placeholder="Select an option"
+                required={false}
+                singular="option"
+                style={{}}
+                value="EST"
+              />
+            </FormGroup>
+            <DateAndTimeFormatting
+              onSelectDateFormat={[Function]}
+              onSelectTimeFormat={[Function]}
+            />
+          </div>
+        </div>
+        <FormGroup
+          className="profilePicture inputField"
+          tag="div"
+        >
+          <Label
+            className="control-label"
+            tag="label"
+            widths={
+              [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Profile picture
+          </Label>
+          <Avatar
+            className="mb16"
+            email=""
+            name="Alex Plugaru"
+            shape="square"
+            size={100}
+            style={{}}
+            url="https://config.gorgias.io/production/picture"
+          />
+          <Connect(FileFieldContainer)
+            className="mb16"
+            maxSize={500000}
+            noPreview={true}
+            onChange={[Function]}
+            returnFiles={false}
+            uploadType="profile_picture"
+          />
+          <FormText
+            color="muted"
+            tag="small"
+          >
+            The picture must be square and weight less than 500kB.
+          </FormText>
+          <a
+            className="text-danger"
+            href="#"
+            onClick={[Function]}
+          >
+            Remove Picture
+          </a>
+        </FormGroup>
+      </div>
+      <div
+        className="contentWrapper"
+      >
+        <div
+          className="headingSection"
+        >
+          Account preferences
+        </div>
+        <div
+          className="section"
+        >
+          <div
+            className="headingSubsection"
+          >
+            Theme
+          </div>
+          <div
+            className="section"
+          >
+            <ThemeList
+              onChangeTheme={[Function]}
+              savedTheme="dark"
+            />
+          </div>
+          <div
+            className="headingSubsection"
+          >
+            Macro display
+          </div>
+          <div
+            className="subsection"
+          >
+            <FormGroup
+              className="inputField body-regular"
+              tag="div"
+            >
+              <Group
+                className="inputField"
+                orientation="vertical"
+              >
+                <ToggleInput
+                  name="prefill_best_macro"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="material-icons AIIcon"
+                  >
+                    auto_awesome
+                  </i>
+                  AI Macro prediction
+                </ToggleInput>
+                <FormText
+                  className="macroDescription"
+                  color="muted"
+                  tag="small"
+                >
+                  Automatically select macros based on ticket content.
+                   
+                  <a
+                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                  </a>
+                </FormText>
+              </Group>
+              <Group
+                className="inputField"
+                orientation="vertical"
+              >
+                <ToggleInput
+                  isToggled={true}
+                  name="show_macros_suggestions"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="material-icons AIIcon"
+                  >
+                    auto_awesome
+                  </i>
+                  AI Macro suggestions
+                </ToggleInput>
+                <FormText
+                  className="macroDescription"
+                  color="muted"
+                  tag="small"
+                >
+                  Display suggested macros that can be applied to tickets with one click.
+                   
+                  <a
+                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                  </a>
+                </FormText>
+              </Group>
+              <Group
+                className="inputField"
+                orientation="vertical"
+              >
+                <ToggleInput
+                  name="show_macros"
+                  onClick={[Function]}
+                >
+                  Display macro search view by default
+                </ToggleInput>
+                <FormText
+                  className="macroDescription"
+                  color="muted"
+                  tag="small"
+                >
+                  Always display the macro search view when responding to incoming emails.
+                   
+                  <a
+                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                  </a>
+                </FormText>
+              </Group>
+            </FormGroup>
+          </div>
+          <FormGroup
+            className="inputField mb40"
+            tag="div"
+          >
+            <div
+              className="headingSubsection"
+            >
+              Forward calls to an external number
+            </div>
+            <p
+              className="body-regular"
+            >
+              When you are routed a call in Gorgias, forward the call to a mobile device or landline.
+            </p>
+            <ToggleInput
+              className="inputField subsection"
+              isToggled={false}
+              name="forward_calls"
+              onClick={[Function]}
+            >
+              Enable call forwarding
+            </ToggleInput>
+          </FormGroup>
+        </div>
+      </div>
+      <ForwardRef(Button)
+        isLoading={false}
+        type="submit"
+      >
+        Save Changes
+      </ForwardRef(Button)>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`YourProfileView render should render current user profile form 2`] = `
+<div
+  className="full-width"
+>
+  <Component
+    onDiscard={[Function]}
+    onSave={[Function]}
+    when={false}
+  />
   <PageHeader
     title="Your profile"
   />

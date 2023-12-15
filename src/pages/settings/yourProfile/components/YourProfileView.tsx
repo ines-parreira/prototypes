@@ -24,7 +24,12 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
 import {logEvent, SegmentEvent} from 'common/segment'
-import DateAndTimeFormatting from './DateAndTimeFormatting'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useSavedTheme, useSetTheme, withTheme} from 'theme'
+import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 
 const defaultContent: Pick<
     State,
@@ -53,6 +58,8 @@ type Props = {
         notification: boolean
     ) => Promise<unknown>
     preferences: Map<any, any>
+    setTheme: ReturnType<typeof useSetTheme>
+    savedTheme: ReturnType<typeof useSavedTheme>
 }
 
 type State = {
@@ -68,21 +75,30 @@ type State = {
     }
     password_confirmation?: string
     timezone: string
+    hasNewThemes?: boolean
 }
 
 export class YourProfileView extends Component<Props, State> {
     isInitialized: boolean
+    initialTheme: ReturnType<typeof useSavedTheme>
+    isDirty: boolean
 
     constructor(props: Props) {
         super(props)
 
         this.isInitialized = false
+        this.initialTheme = props.savedTheme
+        this.isDirty = false
 
         this.state = _merge(
             {
                 isLoading: false,
                 preferences: props.preferences.get('data'),
                 hasChangedEmail: false,
+                hasNewThemes: getLDClient().variation(
+                    FeatureFlagKey.NewThemes,
+                    false
+                ),
             },
             this._getForm(props)
         )
@@ -110,8 +126,13 @@ export class YourProfileView extends Component<Props, State> {
         ) as typeof defaultContent
     }
 
-    _handleSubmit = async (event: SyntheticEvent) => {
-        event.preventDefault()
+    _handleSubmit = async (event?: SyntheticEvent) => {
+        if (event) {
+            event.preventDefault()
+        }
+        this.isDirty = false
+        this.initialTheme = this.props.savedTheme
+
         const normalizedValues = _pick(
             this.state,
             // metadata is not editable from this component
@@ -169,11 +190,34 @@ export class YourProfileView extends Component<Props, State> {
         })
     }
 
+    async componentDidMount() {
+        await getLDClient().waitUntilReady()
+        this.setState({
+            hasNewThemes: getLDClient().variation(
+                FeatureFlagKey.NewThemes,
+                false
+            ),
+        })
+    }
+
     render() {
-        const {isLoading, hasChangedEmail, password_confirmation} = this.state
+        const {
+            isLoading,
+            hasChangedEmail,
+            password_confirmation,
+            hasNewThemes,
+        } = this.state
 
         return (
             <div className="full-width">
+                <UnsavedChangesPrompt
+                    onSave={() => this._handleSubmit()}
+                    onDiscard={() => {
+                        this.isDirty = false
+                        this.props.setTheme(this.initialTheme)
+                    }}
+                    when={this.isDirty}
+                />
                 <PageHeader title="Your profile" />
                 <Container fluid className={settingsCss.pageContainer}>
                     <div className={settingsCss.headingSection}>
@@ -189,9 +233,10 @@ export class YourProfileView extends Component<Props, State> {
                                         placeholder="John Doe"
                                         isRequired
                                         value={this.state.name}
-                                        onChange={(name) =>
+                                        onChange={(name) => {
+                                            this.isDirty = true
                                             this.setState({name})
-                                        }
+                                        }}
                                         className={settingsCss.inputField}
                                     />
                                     <InputField
@@ -201,7 +246,10 @@ export class YourProfileView extends Component<Props, State> {
                                         placeholder="john.doe@acme.com"
                                         isRequired
                                         value={this.state.email}
-                                        onChange={this._onEmailChange}
+                                        onChange={(email) => {
+                                            this.isDirty = true
+                                            this._onEmailChange(email)
+                                        }}
                                         className={settingsCss.inputField}
                                     />
                                     {hasChangedEmail ? (
@@ -212,11 +260,14 @@ export class YourProfileView extends Component<Props, State> {
                                             placeholder="Your password"
                                             isRequired
                                             value={password_confirmation}
-                                            onChange={(password_confirmation) =>
+                                            onChange={(
+                                                password_confirmation
+                                            ) => {
+                                                this.isDirty = true
                                                 this.setState({
                                                     password_confirmation,
                                                 })
-                                            }
+                                            }}
                                             className={settingsCss.inputField}
                                         />
                                     ) : null}
@@ -235,7 +286,10 @@ export class YourProfileView extends Component<Props, State> {
                                             </span>
                                         }
                                         value={this.state.bio}
-                                        onChange={(bio) => this.setState({bio})}
+                                        onChange={(bio) => {
+                                            this.isDirty = true
+                                            this.setState({bio})
+                                        }}
                                         className={settingsCss.inputField}
                                     />
                                 </div>
@@ -277,11 +331,12 @@ export class YourProfileView extends Component<Props, State> {
                                                         .tz(item.value)
                                                         .utcOffset()
                                             )}
-                                            onChange={(value) =>
+                                            onChange={(value) => {
+                                                this.isDirty = true
                                                 this.setState({
                                                     timezone: value.toString(),
                                                 })
-                                            }
+                                            }}
                                             fullWidth
                                         />
                                     </FormGroup>
@@ -296,7 +351,8 @@ export class YourProfileView extends Component<Props, State> {
                                                 'time_format'
                                             ) as string
                                         }
-                                        onSelectDateFormat={(value: string) =>
+                                        onSelectDateFormat={(value: string) => {
+                                            this.isDirty = true
                                             this.setState({
                                                 preferences:
                                                     this.state.preferences.set(
@@ -304,8 +360,9 @@ export class YourProfileView extends Component<Props, State> {
                                                         value
                                                     ),
                                             })
-                                        }
-                                        onSelectTimeFormat={(value: string) =>
+                                        }}
+                                        onSelectTimeFormat={(value: string) => {
+                                            this.isDirty = true
                                             this.setState({
                                                 preferences:
                                                     this.state.preferences.set(
@@ -313,7 +370,7 @@ export class YourProfileView extends Component<Props, State> {
                                                         value
                                                     ),
                                             })
-                                        }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -392,6 +449,32 @@ export class YourProfileView extends Component<Props, State> {
                                 Account preferences
                             </div>
                             <div className={settingsCss.section}>
+                                {hasNewThemes && (
+                                    <>
+                                        <div
+                                            className={
+                                                settingsCss.headingSubsection
+                                            }
+                                        >
+                                            Theme
+                                        </div>
+                                        <div className={settingsCss.section}>
+                                            <ThemeList
+                                                savedTheme={
+                                                    this.props.savedTheme
+                                                }
+                                                onChangeTheme={(
+                                                    theme: ReturnType<
+                                                        typeof useSavedTheme
+                                                    >
+                                                ) => {
+                                                    this.isDirty = true
+                                                    this.props.setTheme(theme)
+                                                }}
+                                            />
+                                        </div>
+                                    </>
+                                )}
                                 <div className={settingsCss.headingSubsection}>
                                     Macro display
                                 </div>
@@ -413,7 +496,8 @@ export class YourProfileView extends Component<Props, State> {
                                                         'prefill_best_macro'
                                                     ) as boolean
                                                 }
-                                                onClick={(value: boolean) =>
+                                                onClick={(value: boolean) => {
+                                                    this.isDirty = true
                                                     this.setState({
                                                         preferences:
                                                             this.state.preferences.set(
@@ -421,7 +505,7 @@ export class YourProfileView extends Component<Props, State> {
                                                                 value
                                                             ),
                                                     })
-                                                }
+                                                }}
                                             >
                                                 <i
                                                     className={classnames(
@@ -462,7 +546,8 @@ export class YourProfileView extends Component<Props, State> {
                                                         true
                                                     ) as boolean
                                                 }
-                                                onClick={(value: boolean) =>
+                                                onClick={(value: boolean) => {
+                                                    this.isDirty = true
                                                     this.setState({
                                                         preferences:
                                                             this.state.preferences.set(
@@ -470,7 +555,7 @@ export class YourProfileView extends Component<Props, State> {
                                                                 value
                                                             ),
                                                     })
-                                                }
+                                                }}
                                             >
                                                 <i
                                                     className={classnames(
@@ -511,7 +596,8 @@ export class YourProfileView extends Component<Props, State> {
                                                         'show_macros'
                                                     ) as boolean
                                                 }
-                                                onClick={(value: boolean) =>
+                                                onClick={(value: boolean) => {
+                                                    this.isDirty = true
                                                     this.setState({
                                                         preferences:
                                                             this.state.preferences.set(
@@ -519,7 +605,7 @@ export class YourProfileView extends Component<Props, State> {
                                                                 value
                                                             ),
                                                     })
-                                                }
+                                                }}
                                             >
                                                 Display macro search view by
                                                 default
@@ -575,6 +661,7 @@ export class YourProfileView extends Component<Props, State> {
                                             ) as boolean) ?? false
                                         }
                                         onClick={(value: boolean) => {
+                                            this.isDirty = true
                                             this.setState({
                                                 preferences:
                                                     this.state.preferences.set(
@@ -597,6 +684,7 @@ export class YourProfileView extends Component<Props, State> {
                                                     ) as string) ?? ''
                                                 }
                                                 onChange={(value: string) => {
+                                                    this.isDirty = true
                                                     this.setState({
                                                         preferences:
                                                             this.state.preferences.set(
@@ -628,4 +716,4 @@ export class YourProfileView extends Component<Props, State> {
     }
 }
 
-export default YourProfileView
+export default withTheme(YourProfileView)
