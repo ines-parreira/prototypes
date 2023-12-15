@@ -57,6 +57,18 @@ declare global {
                 HTMLElement,
                 {root: HTMLElement; shadowChild: ShadowRoot}
             >
+            init: (params: {
+                clientToken: string
+                userId: string
+                traits?: Record<string, unknown>
+                variables?: Record<string, unknown>
+                hmac?: string
+                callbacks?: Record<string, unknown>
+            }) => void
+            providerProps?: {
+                clientToken: string
+                userId: string
+            }
         }
     }
 

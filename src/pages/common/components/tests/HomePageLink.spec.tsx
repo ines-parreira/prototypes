@@ -21,6 +21,7 @@ describe('<HomePageLink />', () => {
         canduNodes.set(canduRoot, {shadowChild: canduRoot})
         window.Candu = {
             elementCanduRootMap: canduNodes,
+            init: jest.fn(),
         }
         const {baseElement, queryByTestId} = render(<HomePageLink />)
 
@@ -34,6 +35,7 @@ describe('<HomePageLink />', () => {
         canduNodes.set(canduRoot, {shadowChild: canduRoot})
         window.Candu = {
             elementCanduRootMap: canduNodes,
+            init: jest.fn(),
         }
         const {baseElement, queryByTestId} = render(<HomePageLink />)
 

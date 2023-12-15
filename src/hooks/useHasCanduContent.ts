@@ -1,5 +1,7 @@
 import {useEffect, useRef, useState} from 'react'
 
+import {useTheme} from 'theme'
+
 const CONTENT_ATTRIBUTE_NAME = 'data-candu-content-id'
 const CONTENT_SELECTOR = `[${CONTENT_ATTRIBUTE_NAME}]`
 
@@ -67,6 +69,27 @@ const useHasCanduContent = <T extends HTMLElement>(canduId: string) => {
             observer.disconnect()
         }
     }, [hasCanduContent])
+
+    const theme = useTheme()
+
+    useEffect(() => {
+        if (hasCanduContent && window.Candu?.providerProps) {
+            window.Candu?.init({
+                clientToken: window.Candu.providerProps.clientToken,
+                userId: window.Candu.providerProps.userId,
+                callbacks: {
+                    openGorgiasChat: function () {
+                        if (window.GorgiasChat) {
+                            window.GorgiasChat.open()
+                        }
+                    },
+                },
+                traits: {
+                    theme: theme === 'dark' ? theme : 'light',
+                },
+            })
+        }
+    }, [hasCanduContent, theme])
 
     return {hasCanduContent, ref}
 }
