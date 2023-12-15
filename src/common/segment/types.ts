@@ -162,6 +162,7 @@ export enum SegmentEvent {
     GrammarlyEnabled = 'grammarly-enabled',
     UndoSentMessage = 'undo-sent-message',
     PaywallUpgradeButtonSelected = 'paywall-upgrade-button-selected',
+    StatClicked = 'stat-clicked',
     StatDownloadClicked = 'stat-download-clicked',
     StatViewLinkClicked = 'stat-view-link-clicked',
     CustomActionLinksStart = 'widget/custom-link/start-creation',
