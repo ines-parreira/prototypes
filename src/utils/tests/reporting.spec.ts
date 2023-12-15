@@ -77,7 +77,7 @@ describe('reporting utils', () => {
                     "member": "HelpCenterTrackingEvent.localeCode",
                     "operator": "equals",
                     "values": [
-                      "en-US",
+                      "en-us",
                     ],
                   },
                 ]

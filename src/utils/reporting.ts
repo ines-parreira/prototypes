@@ -141,7 +141,7 @@ export const statsFiltersToReportingFilters = (
         filters.push({
             member: members.localeCodes,
             operator: ReportingFilterOperator.Equals,
-            values: localeCodes,
+            values: localeCodes.map((localeCode) => localeCode.toLowerCase()),
         })
     }
     if (channels?.length && members.channels) {
