@@ -1597,7 +1597,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                         When customers don't see
                                                         your message in chat, we
                                                         automatically send them
-                                                        a transcripts after 30
+                                                        a transcript after 30
                                                         minutes.
                                                     </div>
                                                 )}
