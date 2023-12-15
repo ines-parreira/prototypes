@@ -1,10 +1,11 @@
 import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import moment from 'moment-timezone'
-
 import {Options} from 'daterangepicker'
 
 import DatePicker from '../DatePicker'
+
+jest.mock('theme/useTheme.ts', () => () => 'modern light')
 
 describe('DatePicker', () => {
     const datetime = moment('2021-05-12')
@@ -31,7 +32,7 @@ describe('DatePicker', () => {
         const ranges: Options['ranges'] = {
             tomorrow: [datetime.add(1, 'days'), datetime.add(1, 'days')],
         }
-        const {container} = render(
+        const {baseElement} = render(
             <DatePicker
                 {...minProps}
                 isOpen={true}
@@ -45,7 +46,7 @@ describe('DatePicker', () => {
             </DatePicker>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(baseElement).toMatchSnapshot()
     })
 
     it('should display the opened date picker', () => {
@@ -126,5 +127,20 @@ describe('DatePicker', () => {
         fireEvent.click(getByText('Apply'))
 
         expect(onSubmit.mock.calls).toMatchSnapshot()
+    })
+
+    it('should open the datepicker with multiple themes', () => {
+        render(
+            <DatePicker {...minProps} isOpen={true}>
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        const [dateRangePickerElement] = document.getElementsByClassName(
+            'daterangepicker'
+        ) as unknown as HTMLDivElement[]
+
+        expect(dateRangePickerElement.classList.contains('modern')).toBe(true)
+        expect(dateRangePickerElement.classList.contains('light')).toBe(true)
     })
 })
