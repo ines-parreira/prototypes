@@ -96,6 +96,11 @@ export const oauthPermissions: Record<string, OAuthPermission> = {
         name: 'Help Center',
         description: 'Help Center related configurations.',
     },
+    billing: {
+        icon: 'paid',
+        name: 'Billing',
+        description: 'Get and update billing settings.',
+    },
 
     // Legacy scope
     'write:all': {
