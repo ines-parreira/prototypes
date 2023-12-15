@@ -1,260 +1,192 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a non-shopify store should render correct section 1`] = `
-<section>
-  <div
-    class="card disabled"
-    data-testid="contact-form-auto-embed-card"
-    id="contact-form-auto-embed-card"
-  >
-    <div>
-      <h3
-        class="title"
-      >
-        Automatically embed on your website
-        <div
-          class="badge badge"
-        >
-          RECOMMENDED
-        </div>
-      </h3>
-      <div>
-        Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
-      </div>
-    </div>
-    <button
-      aria-disabled="true"
-      class="wrapper fill primary medium isDisabled"
-      data-testid="contact-form-auto-embed-card__embed-button"
-      type="button"
+<div
+  class="card disabled"
+  data-testid="contact-form-auto-embed-card"
+  id="contact-form-auto-embed-card"
+>
+  <div>
+    <h3
+      class="title"
     >
-      Embed Form
-    </button>
+      Automatically embed on your website
+      <div
+        class="badge badge"
+      >
+        RECOMMENDED
+      </div>
+    </h3>
+    <div>
+      Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
+    </div>
   </div>
-</section>
+  <button
+    aria-disabled="true"
+    class="wrapper fill primary medium isDisabled"
+    data-testid="contact-form-auto-embed-card__embed-button"
+    type="button"
+  >
+    Embed Form
+  </button>
+</div>
 `;
 
 exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a shopify store when update permissions needed should render correct section 1`] = `
-<section>
+<div
+  class="alert warning closable"
+>
   <div
-    class="alert warning closable"
+    class="iconContainer"
   >
-    <div
-      class="iconContainer"
-    >
-      <img
-        alt="icon"
-        src="test-file-stub"
-      />
-    </div>
-    <div
-      class="content"
-    >
-      <span
-        class="label"
-      >
-        To use the auto-embed feature for your form,
-         
-        <a
-          to="/app/settings/integrations/shopify/3"
-        >
-          update your Shopify app permissions
-        </a>
-        .
-      </span>
-    </div>
-    <div
-      aria-label="Close Icon"
-      class="close"
-    >
-      <img
-        alt="close-icon"
-        class="closeIcon"
-        src="test-file-stub"
-      />
-    </div>
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
   </div>
   <div
-    class="card disabled"
-    data-testid="contact-form-auto-embed-card"
-    id="contact-form-auto-embed-card"
+    class="content"
   >
-    <div>
-      <h3
-        class="title"
-      >
-        Automatically embed on your website
-        <div
-          class="badge badge"
-        >
-          RECOMMENDED
-        </div>
-      </h3>
-      <div>
-        Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
-      </div>
-    </div>
-    <button
-      aria-disabled="true"
-      class="wrapper fill primary medium isDisabled"
-      data-testid="contact-form-auto-embed-card__embed-button"
-      type="button"
+    <span
+      class="label"
     >
-      Embed Form
-    </button>
+      To use the auto-embed feature for your form,
+       
+      <a
+        to="/app/settings/integrations/shopify/3"
+      >
+        update your Shopify app permissions
+      </a>
+      .
+    </span>
   </div>
-</section>
+  <div
+    aria-label="Close Icon"
+    class="close"
+  >
+    <img
+      alt="close-icon"
+      class="closeIcon"
+      src="test-file-stub"
+    />
+  </div>
+</div>
 `;
 
 exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a shopify store when update permissions not needed should render correct section 1`] = `
-<section>
-  <div
-    class="card"
-    data-testid="contact-form-auto-embed-card"
-    id="contact-form-auto-embed-card"
-  >
-    <div>
-      <h3
-        class="title"
-      >
-        Automatically embed on your website
-        <div
-          class="badge badge"
-        >
-          RECOMMENDED
-        </div>
-      </h3>
-      <div>
-        Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
-      </div>
-    </div>
-    <button
-      aria-disabled="false"
-      class="wrapper fill primary medium"
-      data-testid="contact-form-auto-embed-card__embed-button"
-      type="button"
+<div
+  class="card"
+  data-testid="contact-form-auto-embed-card"
+  id="contact-form-auto-embed-card"
+>
+  <div>
+    <h3
+      class="title"
     >
-      Embed Form
-    </button>
+      Automatically embed on your website
+      <div
+        class="badge badge"
+      >
+        RECOMMENDED
+      </div>
+    </h3>
+    <div>
+      Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
+    </div>
   </div>
-</section>
+  <button
+    aria-disabled="false"
+    class="wrapper fill primary medium"
+    data-testid="contact-form-auto-embed-card__embed-button"
+    type="button"
+  >
+    Embed Form
+  </button>
+</div>
 `;
 
 exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a shopify store when update permissions not needed should render correct section when store has embedments already 1`] = `
-<section>
-  <div
-    class="card clickable"
-    data-testid="contact-form-auto-embed-card"
-    id="contact-form-auto-embed-card"
+<div
+  class="card clickable"
+  data-testid="contact-form-auto-embed-card"
+  id="contact-form-auto-embed-card"
+>
+  <i
+    class="material-icons text-success"
+    style="font-size: 24px;"
   >
-    <i
-      class="material-icons text-success"
-      style="font-size: 24px;"
+    check_circle
+  </i>
+  <div>
+    <h3
+      class="title"
     >
-      check_circle
-    </i>
+      Automatically embed on your website
+    </h3>
     <div>
-      <h3
-        class="title"
-      >
-        Automatically embed on your website
-      </h3>
-      <div>
-        Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
-      </div>
+      Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
     </div>
-    <i
-      class="material-icons"
-    >
-      keyboard_arrow_right
-    </i>
   </div>
-</section>
+  <i
+    class="material-icons"
+  >
+    keyboard_arrow_right
+  </i>
+</div>
 `;
 
 exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - not connected to any stores should render correct section 1`] = `
-<section>
+<div
+  class="alert warning closable"
+>
   <div
-    class="alert warning closable"
+    class="iconContainer"
   >
-    <div
-      class="iconContainer"
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
     >
-      <img
-        alt="icon"
-        src="test-file-stub"
-      />
-    </div>
-    <div
-      class="content"
-    >
-      <span
-        class="label"
+      <div
+        style="display: flex; justify-content: space-between;"
       >
         <div
-          style="display: flex; justify-content: space-between;"
+          style="display: inline-block;"
         >
-          <div
-            style="display: inline-block;"
+          Connect Shopify to enable auto-embedding to your website.
+        </div>
+        <div
+          style="display: inline-block;"
+        >
+          <a
+            target="_blank"
+            to="/app/settings/contact-form/1/preferences"
           >
-            Connect Shopify to enable auto-embedding to your website.
-          </div>
-          <div
-            style="display: inline-block;"
-          >
-            <a
-              target="_blank"
-              to="/app/settings/contact-form/1/preferences"
+            <span
+              class="connectShopifyBtn"
             >
-              <span
-                class="connectShopifyBtn"
-              >
-                Connect Shopify
-              </span>
-            </a>
-          </div>
+              Connect Shopify
+            </span>
+          </a>
         </div>
-      </span>
-    </div>
-    <div
-      aria-label="Close Icon"
-      class="close"
-    >
-      <img
-        alt="close-icon"
-        class="closeIcon"
-        src="test-file-stub"
-      />
-    </div>
+      </div>
+    </span>
   </div>
   <div
-    class="card disabled"
-    data-testid="contact-form-auto-embed-card"
-    id="contact-form-auto-embed-card"
+    aria-label="Close Icon"
+    class="close"
   >
-    <div>
-      <h3
-        class="title"
-      >
-        Automatically embed on your website
-        <div
-          class="badge badge"
-        >
-          RECOMMENDED
-        </div>
-      </h3>
-      <div>
-        Gorgias will automatically embed the contact form on a new or existing page on your website. This method is code-free.
-      </div>
-    </div>
-    <button
-      aria-disabled="true"
-      class="wrapper fill primary medium isDisabled"
-      data-testid="contact-form-auto-embed-card__embed-button"
-      type="button"
-    >
-      Embed Form
-    </button>
+    <img
+      alt="close-icon"
+      class="closeIcon"
+      src="test-file-stub"
+    />
   </div>
-</section>
+</div>
 `;

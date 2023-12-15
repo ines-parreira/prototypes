@@ -10,6 +10,7 @@ import {
 } from 'reactstrap'
 import {Route, Switch} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Label from 'pages/common/forms/Label/Label'
@@ -28,6 +29,8 @@ import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettin
 import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
+import {FeatureFlagKey} from '../../../../../../config/featureFlags'
+import ContactFormMailtoReplacementSection from '../../../components/ContactFormMailtoReplacementSection/ContactFormMailtoReplacementSection'
 
 const ContactFormPublish = (): JSX.Element => {
     const contactForm = useCurrentContactForm()
@@ -35,6 +38,8 @@ const ContactFormPublish = (): JSX.Element => {
         enabled: Boolean(contactForm.shop_name),
     })
     const {copyButtonText} = useClipboard('#copy-shareable-link')
+    const isHelpCenterAnalyticsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.HelpCenterReplaceMailtoLink]
 
     const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
 
@@ -58,24 +63,29 @@ const ContactFormPublish = (): JSX.Element => {
                     />
                 </Route>
                 <Route exact path={CONTACT_FORM_PUBLISH_PATH}>
-                    <div className={settingsCss.contentWrapper}>
-                        <section className={contactFormCss.mbM}>
-                            <h2
-                                className={classNames(
-                                    contactFormCss.sectionTitle,
-                                    contactFormCss.mbXxs
-                                )}
-                            >
-                                Publish
-                            </h2>
-                            <p>
-                                Display the contact form anywhere on your
-                                website.
-                            </p>
-                        </section>
-
+                    <div
+                        className={classNames(
+                            contactFormCss.container,
+                            settingsCss.contentWrapper
+                        )}
+                    >
                         <section>
-                            <FormGroup className={contactFormCss.mbL}>
+                            <div className={contactFormCss.mbM}>
+                                <h2
+                                    className={classNames(
+                                        contactFormCss.sectionTitle,
+                                        contactFormCss.mbXxs
+                                    )}
+                                >
+                                    Publish
+                                </h2>
+                                <p>
+                                    Display the contact form anywhere on your
+                                    website.
+                                </p>
+                            </div>
+
+                            <FormGroup className={settingsCss.mb0}>
                                 <Label
                                     htmlFor="shareable-link"
                                     className={contactFormCss.mbXs}
@@ -104,28 +114,34 @@ const ContactFormPublish = (): JSX.Element => {
                             </FormGroup>
                         </section>
 
-                        <ContactFormAutoEmbedPublishSection
-                            isDisabled={
-                                isLoading ||
-                                !isWorking ||
-                                (getPageEmbedments.isLoading &&
-                                    !getPageEmbedments.isFetched)
-                            }
-                            contactFormId={contactForm.id}
-                            contactFormShopName={contactForm.shop_name}
-                            pageEmbedments={
-                                isLoading || !isWorking
-                                    ? []
-                                    : getPageEmbedments.data ?? []
-                            }
-                        />
-
                         <section>
+                            <ContactFormAutoEmbedPublishSection
+                                isDisabled={
+                                    isLoading ||
+                                    !isWorking ||
+                                    (getPageEmbedments.isLoading &&
+                                        !getPageEmbedments.isFetched)
+                                }
+                                contactFormId={contactForm.id}
+                                contactFormShopName={contactForm.shop_name}
+                                pageEmbedments={
+                                    isLoading || !isWorking
+                                        ? []
+                                        : getPageEmbedments.data ?? []
+                                }
+                            />
+
                             <ContactFormManualEmbedCard
                                 codeSnippet={contactForm.code_snippet_template}
                                 shopName={contactForm.shop_name}
                             />
                         </section>
+
+                        {isHelpCenterAnalyticsEnabled && (
+                            <section>
+                                <ContactFormMailtoReplacementSection />
+                            </section>
+                        )}
                     </div>
                 </Route>
             </Switch>

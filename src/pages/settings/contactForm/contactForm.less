@@ -1,6 +1,13 @@
 @import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~css/new/mixins';
 
 :local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xl;
+    }
+
     .iconButton {
         i {
             font-size: 18px;

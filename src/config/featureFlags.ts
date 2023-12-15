@@ -52,6 +52,7 @@ export enum FeatureFlagKey {
     HelpCenterAutoEmbed = 'help-center-auto-embed',
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterSubjectLines = 'help-center-subject-lines',
+    HelpCenterReplaceMailtoLink = 'help-center-replace-mailto-link',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MacroForwardByEmail = 'macro-forward-by-email',

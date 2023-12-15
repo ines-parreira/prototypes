@@ -52,7 +52,7 @@ const ContactFormAutoEmbedPublishSection = (
     }
 
     return (
-        <section>
+        <>
             <ContactFormAutoEmbedWarningBanner details={bannerDetails} />
             <ContactFormAutoEmbedCard
                 isDisabled={props.isDisabled}
@@ -63,7 +63,7 @@ const ContactFormAutoEmbedPublishSection = (
                 hasEmbeddedPages={pageEmbedments.length > 0}
                 contactFormId={contactFormId}
             />
-        </section>
+        </>
     )
 }
 
