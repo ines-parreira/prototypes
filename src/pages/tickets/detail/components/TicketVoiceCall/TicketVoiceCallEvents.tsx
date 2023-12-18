@@ -32,16 +32,31 @@ export default function TicketVoiceCallEvents({
         )
     }
 
+    const processedEvents = processEvents(data.data.data)
+
     return (
         <Timeline>
-            {processEvents(data.data.data).map((event, index) => (
-                <TimelineItem key={`call-event-${index}`}>
-                    <div className={classNames(css.statusWrapper, css.inbound)}>
-                        <div>{event.text}</div>
-                        <VoiceCallAgentLabel agentId={event.user_id} />
-                    </div>
-                </TimelineItem>
-            ))}
+            {!!processedEvents.length ? (
+                processedEvents.map((event, index) => (
+                    <TimelineItem key={`call-event-${index}`}>
+                        <div
+                            className={classNames(
+                                css.statusWrapper,
+                                css.inbound
+                            )}
+                        >
+                            <div>{event.text}</div>
+                            <VoiceCallAgentLabel agentId={event.user_id} />
+                        </div>
+                    </TimelineItem>
+                ))
+            ) : (
+                <div className={css.noEventsInfo}>
+                    <strong>No events:</strong> This call was either made
+                    outside of business hours or there were no available agents
+                    to respond
+                </div>
+            )}
         </Timeline>
     )
 }

@@ -73,4 +73,16 @@ describe('TicketVoiceCallEvents', () => {
             mockEvents.length
         )
     })
+
+    it('should render no events message when data is available but there are no displayable events', () => {
+        useListVoiceCallEventsSpy.mockReturnValue({
+            data: {data: {data: []}},
+            isLoading: false,
+            error: null,
+        } as any)
+
+        render(<TicketVoiceCallEvents callId={1} />)
+
+        expect(screen.getByText('No events:')).toBeInTheDocument()
+    })
 })
