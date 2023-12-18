@@ -30,14 +30,14 @@ exports[`<List /> should render 1`] = `
     class="pageContainer container-fluid"
   >
     <p>
-      Manage users for your Gorgias account. Users (Ex: Agents, Admins, etc..) can view tickets and respond to them.
-    </p>
-    <p>
-      You can 
+      Create and manage Gorgias users.
+       
+      You can
+       
       <strong>
-        add as many users as you want
+        add as many users as you need
       </strong>
-      , at no additional cost.
+      , at at no additional cost.
     </p>
     <div
       class="alert info mb-3"

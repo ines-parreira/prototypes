@@ -105,20 +105,20 @@ const UserList = () => {
 
             <Container fluid className={settingsCss.pageContainer}>
                 <p>
-                    Manage users for your Gorgias account. Users (Ex: Agents,
-                    Admins, etc..) can view tickets and respond to them.
+                    Create and manage Gorgias users.{' '}
+                    {isStarterPlan ? (
+                        <>
+                            You can <strong>add up to 3 users</strong>, at no
+                            additional cost.
+                        </>
+                    ) : (
+                        <>
+                            You can{' '}
+                            <strong>add as many users as you need</strong>, at
+                            at no additional cost.
+                        </>
+                    )}
                 </p>
-                {isStarterPlan ? (
-                    <p>
-                        You can <strong>add up to 3 users</strong> at no
-                        additional cost.
-                    </p>
-                ) : (
-                    <p>
-                        You can <strong>add as many users as you want</strong>,
-                        at no additional cost.
-                    </p>
-                )}
                 {accessSettings.getIn(['data', 'signup_mode']) ===
                     SignupMode.Invite && (
                     <LinkAlert
