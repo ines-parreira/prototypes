@@ -66,8 +66,8 @@ const TrainMyAiView = () => {
         {enabled: typeof helpCenterId === 'number'}
     )
 
-    const isHelpCenterSelfServiceDeactivated =
-        !!helpCenterData?.self_service_deactivated_datetime || helpCenterIsError
+    const isHelpCenterSelfServiceDeleted =
+        !!helpCenterData?.deleted_datetime || helpCenterIsError
 
     const isArticleRecommendationEnabled = useMemo(
         () =>
@@ -180,12 +180,12 @@ const TrainMyAiView = () => {
             isLoading={isLoading}
             className={classNames(css.container, {
                 [css.enabled]:
-                    !isHelpCenterSelfServiceDeactivated &&
+                    !isHelpCenterSelfServiceDeleted &&
                     (isArticleRecommendationEnabled ||
                         hasArticleRecommendations),
             })}
         >
-            {!isHelpCenterSelfServiceDeactivated &&
+            {!isHelpCenterSelfServiceDeleted &&
             (isArticleRecommendationEnabled || hasArticleRecommendations) ? (
                 <>
                     <div ref={leftColRef} className={css.leftCol}>
