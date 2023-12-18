@@ -1,7 +1,6 @@
 import React, {useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     ReturnAction,
     ReturnActionType,
@@ -15,8 +14,6 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import loopReturns from 'assets/img/integrations/loop-returns.png'
 import Alert from 'pages/common/components/Alert/Alert'
 
-import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useLoopReturnsIntegrations from '../hooks/useLoopReturnsIntegrations'
 import {DEFAULT_RETURN_ACTION} from '../constants'
 import ReturnOrderAutomatedResponseAction from './ReturnOrderAutomatedResponseAction'
@@ -45,8 +42,6 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const loopReturnsIntegrations = useLoopReturnsIntegrations()
-    const showAttachmentUploadDisclaimer =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
 
     const label = useMemo(() => {
         switch (action.type) {
@@ -176,24 +171,15 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
             {action.type === ReturnActionType.AutomatedResponse && (
-                <>
-                    <ReturnOrderAutomatedResponseAction
-                        responseMessageContent={action.response_message_content}
-                        onChange={(responseMessageContent) => {
-                            onChange({
-                                ...action,
-                                response_message_content:
-                                    responseMessageContent,
-                            })
-                        }}
-                    />
-                    {showAttachmentUploadDisclaimer && (
-                        <UploadingSensitiveInformationDisclaimer
-                            className="mt-4"
-                            message="If you're uploading images, make sure they don't contain sensitive information."
-                        />
-                    )}
-                </>
+                <ReturnOrderAutomatedResponseAction
+                    responseMessageContent={action.response_message_content}
+                    onChange={(responseMessageContent) => {
+                        onChange({
+                            ...action,
+                            response_message_content: responseMessageContent,
+                        })
+                    }}
+                />
             )}
             {action.type === ReturnActionType.LoopReturns && (
                 <Alert className={css.loopReturnsAlert} icon>

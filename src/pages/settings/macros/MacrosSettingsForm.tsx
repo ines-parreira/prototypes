@@ -12,7 +12,6 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -47,8 +46,6 @@ import {MacroActionName} from 'models/macroAction/types'
 import useAsyncFn from 'hooks/useAsyncFn'
 
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
-import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
-import {FeatureFlagKey} from 'config/featureFlags'
 import css from './MacrosSettingsForm.less'
 
 export function MacrosSettingsFormContainer({
@@ -62,8 +59,6 @@ export function MacrosSettingsFormContainer({
 }: ConnectedProps<typeof connector>) {
     const hasAgentPrivileges = useHasAgentPrivileges()
     const {macroId} = useParams<{macroId?: string}>()
-    const showAttachmentUploadDisclaimer =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
 
     const {macrosUrl} = useIsAutomateRebranding()
     const [macroForm, setMacroForm] = useState<MacroDraft>(
@@ -272,12 +267,7 @@ export function MacrosSettingsFormContainer({
                                 setMacroForm({...macroForm, language})
                             }
                         />
-                        {showAttachmentUploadDisclaimer && (
-                            <UploadingSensitiveInformationDisclaimer
-                                className={classnames('mt-3', css.disclaimer)}
-                            />
-                        )}
-                        <FormGroup className="mt-3">
+                        <FormGroup className="mt-5">
                             <Button
                                 type="submit"
                                 className="mr-2"

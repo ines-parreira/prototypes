@@ -1,6 +1,5 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useMemo} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     Article,
     isArticleWithExistingTranslation,
@@ -21,9 +20,6 @@ import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import IconButton from 'pages/common/components/button/IconButton'
 import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
 import Tooltip from 'pages/common/components/Tooltip'
-import Alert from 'pages/common/components/Alert/Alert'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {containsAttachmentURL} from 'pages/settings/helpCenter/utils/containsAttachmentUrl'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
@@ -99,29 +95,6 @@ const HelpCenterArticleModalBasicViewContent = ({
         isFullscreenEditModal,
         setIsFullscreenEditModal,
     } = useEditionManager()
-    const attachmentDisclaimerEnabled: boolean =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
-
-    const [containsAttachment, setContainsAttachment] = useState(
-        () =>
-            selectedArticle !== null &&
-            containsAttachmentURL(selectedArticle.translation.content)
-    )
-
-    const [attachmentDisclaimerClosed, setAttachmentDisclaimerClosed] =
-        useState(false)
-
-    const showAttachmentDisclaimer = useMemo(
-        () =>
-            attachmentDisclaimerEnabled &&
-            !attachmentDisclaimerClosed &&
-            containsAttachment,
-        [
-            attachmentDisclaimerEnabled,
-            attachmentDisclaimerClosed,
-            containsAttachment,
-        ]
-    )
 
     const {lastUpdate, lastUpdateDetailed} = useMemo(() => {
         return selectedArticle &&
@@ -142,20 +115,12 @@ const HelpCenterArticleModalBasicViewContent = ({
 
     const onArticleContentEdit = useCallback(
         (content: string, charCount?: number) => {
-            if (attachmentDisclaimerEnabled && !attachmentDisclaimerClosed) {
-                setContainsAttachment(containsAttachmentURL(content))
-            }
             onArticleChange(
                 {...selectedArticle?.translation, content},
                 charCount
             )
         },
-        [
-            selectedArticle?.translation,
-            onArticleChange,
-            attachmentDisclaimerClosed,
-            attachmentDisclaimerEnabled,
-        ]
+        [selectedArticle?.translation, onArticleChange]
     )
 
     const helpCenter = useCurrentHelpCenter()
@@ -248,18 +213,6 @@ const HelpCenterArticleModalBasicViewContent = ({
                 onChange={onArticleContentEdit}
                 onEditorReady={onEditorReady}
             />
-            {showAttachmentDisclaimer && (
-                <div className={css.attachmentDisclaimerContainer}>
-                    <Alert
-                        icon
-                        onClose={() => setAttachmentDisclaimerClosed(true)}
-                        className={css.attachmentDisclaimer}
-                    >
-                        Make sure you're not uploading files containing
-                        sensitive information.
-                    </Alert>
-                </div>
-            )}
             <HelpCenterEditModalFooter
                 rating={
                     isExistingArticle(selectedArticle)

@@ -15,7 +15,6 @@ import classnames from 'classnames'
 import _getIn from 'lodash/get'
 import esprima from 'esprima'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {fromAST} from 'common/utils'
 import {createRule} from 'models/rule/resources'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
@@ -43,9 +42,6 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import useAsyncFn from 'hooks/useAsyncFn'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
-import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
-import {ActionType} from 'models/rule/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {CodeASTType} from '../../../types'
 import RuleItemButtons from '../../../components/RuleItemButtons'
 import RuleEditor from '../../../components/RuleEditor'
@@ -55,12 +51,6 @@ import {RuleEditorProps, EditorHandle} from '../RuleFormEditor'
 import css from './DefaultRuleEditor.less'
 import commonCss from './RuleEditor.less'
 import {getRuleActions} from './utils'
-
-const actionsWithAttachments: ActionType[] = [
-    'sendEmail',
-    'replyToTicket',
-    'addInternalNote',
-]
 
 const DefaultRuleEditor = (
     {
@@ -81,8 +71,6 @@ const DefaultRuleEditor = (
     const limitStatus = useAppSelector(getRulesLimitStatus)
     const schemas = useAppSelector(getSchemas)
     const hasAgentPrivileges = useHasAgentPrivileges()
-    const showAttachmentUploadDisclaimer =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
 
     const hasMissingFields = !!(errors.size || !ruleDraft.name)
 
@@ -239,13 +227,6 @@ const DefaultRuleEditor = (
     useImperativeHandle(ref, () => ({submit}), [submit])
 
     const ruleActions = useMemo(() => getRuleActions(ruleDraft), [ruleDraft])
-    const hasActionsWithAttachments = useMemo(
-        () =>
-            ruleActions.some((action) =>
-                actionsWithAttachments.includes(action)
-            ),
-        [ruleActions]
-    )
 
     return (
         <div id="rule-form" className={css.form}>
@@ -328,13 +309,6 @@ const DefaultRuleEditor = (
                     </Label>
                 </span>
             </div>
-
-            {showAttachmentUploadDisclaimer && hasActionsWithAttachments && (
-                <UploadingSensitiveInformationDisclaimer
-                    className={commonCss.disclaimer}
-                />
-            )}
-
             <RuleItemButtons
                 ruleId={rule ? rule.id : undefined}
                 canSubmit={canSubmit && !isDuplicatePending}

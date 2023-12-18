@@ -2,7 +2,6 @@ import React, {useEffect, useMemo, useState} from 'react'
 
 import {EditorState} from 'draft-js'
 import Immutable from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {UploadType} from 'common/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
@@ -16,8 +15,6 @@ import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 
-import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {MessageContent} from '../../../models/workflowConfiguration.types'
 
 import css from './MessageContentFormField.less'
@@ -48,8 +45,6 @@ export default function MessageContentFormField({
     const storeIntegration = useSelfServiceStoreIntegrationContext()
     const {visualBuilderChoiceEventIdEditing} = useWorkflowEditorContext()
     const [textareaRef, setTextareaRef] = useState<RichField | null>(null)
-    const showAttachmentUploadDisclaimer =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
     useEffect(() => {
         if (!visualBuilderChoiceEventIdEditing) {
             textareaRef?.focusEditor()
@@ -139,13 +134,6 @@ export default function MessageContentFormField({
                     deleteAttachment={handleDeleteAttachment}
                 />
             </ToolbarProvider>
-
-            {showAttachmentUploadDisclaimer && (
-                <UploadingSensitiveInformationDisclaimer
-                    className="mt-4 mb-2"
-                    message="If you're uploading images, make sure they don't contain sensitive information."
-                />
-            )}
         </div>
     )
 }

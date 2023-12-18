@@ -3,7 +3,6 @@ import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     AUTOMATED_RESPONSE,
     ResponseMessageContent,
@@ -15,8 +14,6 @@ import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useCancelOrderFlow from './hooks/useCancelOrderFlow'
 import CancelOrderEligibility from './components/CancelOrderEligibility'
 import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
@@ -27,9 +24,6 @@ import CancelOrderFlowViewContext, {
 import {DEFAULT_RESPONSE_MESSAGE_CONTENT} from './constants'
 
 const CancelOrderFlowView = () => {
-    const showAttachmentUploadDisclaimer =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
-
     const {shopName} = useParams<{shopName: string}>()
     const {
         isUpdatePending,
@@ -160,13 +154,6 @@ const CancelOrderFlowView = () => {
                         />
                     )}
                 </CancelOrderFlowViewContext.Provider>
-
-                {showAttachmentUploadDisclaimer && (
-                    <UploadingSensitiveInformationDisclaimer
-                        className="mt-4"
-                        message="If you're uploading images, make sure they don't contain sensitive information."
-                    />
-                )}
             </AutomateViewContent>
             <CancelOrderFlowPreview
                 responseMessageContent={

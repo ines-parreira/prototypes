@@ -3,14 +3,11 @@ import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useTrackOrderFlow from './hooks/useTrackOrderFlow'
 import TrackOrderUnfulfilledMessage from './components/TrackOrderUnfulfilledMessage'
 import TrackOrderFlowPreview from './TrackOrderFlowPreviewTrack'
@@ -31,8 +28,6 @@ export default function TrackOrderFlowView() {
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyTrackOrderFlow, setDirtyTrackOrderFlow] =
         useState(trackOrderFlow)
-    const showAttachmentUploadDisclaimer =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
 
     useEffect(() => {
         setDirtyTrackOrderFlow(trackOrderFlow)
@@ -128,12 +123,6 @@ export default function TrackOrderFlowView() {
                         onChange={handleUnfulfilledMessageChange}
                     />
                 </TrackOrderFlowViewContext.Provider>
-                {showAttachmentUploadDisclaimer && (
-                    <UploadingSensitiveInformationDisclaimer
-                        className="mt-4"
-                        message="If you're uploading images, make sure they don't contain sensitive information."
-                    />
-                )}
             </AutomateViewContent>
             <TrackOrderFlowPreview
                 isTextAreaFocused={isTextAreaFocused}

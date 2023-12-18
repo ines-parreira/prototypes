@@ -2,7 +2,6 @@ import React from 'react'
 import {EditorState} from 'draft-js'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {UploadType} from 'common/types'
 import {ReportIssueCaseReasonAction} from 'models/selfServiceConfiguration/types'
@@ -13,8 +12,6 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import {trimHTML} from 'utils/html'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
-import UploadingSensitiveInformationDisclaimer from 'pages/automate/common/components/UploadingSensitiveInformationDisclaimer'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     usePropagateError,
     useReportOrderIssueScenarioFormContext,
@@ -28,9 +25,6 @@ type Props = {
 }
 
 const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
-    const showAttachmentUploadDisclaimer =
-        useFlags()[FeatureFlagKey.AutomateShowAttachmentUploadDisclaimer]
-
     const hasError =
         value.responseMessageContent.text.length >
         AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH
@@ -76,12 +70,6 @@ const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
                     uploadType={UploadType.PublicAttachment}
                 />
             </ToolbarProvider>
-            {showAttachmentUploadDisclaimer && (
-                <UploadingSensitiveInformationDisclaimer
-                    className="mt-4"
-                    message="If you're uploading images, make sure they don't contain sensitive information."
-                />
-            )}
             <ToggleInput
                 className={css.showHelpfulPromptToggleInput}
                 isDisabled={!value.responseMessageContent.text.length}
