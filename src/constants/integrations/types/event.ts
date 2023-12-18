@@ -14,4 +14,8 @@ export enum PhoneIntegrationEvent {
     PhoneCallTransferredToAgent = 'phone-call-transferred-to-agent',
     PhoneCallTransferToAgentFailed = 'phone-call-transfer-to-agent-failed',
     PhoneCallTransferToAgentMissed = 'phone-call-transfer-to-agent-missed',
+    DeclinedPhoneCall = 'declined-phone-call',
+    OutgoingPhoneCallConnected = 'outgoing-phone-call-connected',
+    PhoneCallRinging = 'phone-call-ringing',
+    ChildCallNotAnswered = 'child-call-not-answered',
 }

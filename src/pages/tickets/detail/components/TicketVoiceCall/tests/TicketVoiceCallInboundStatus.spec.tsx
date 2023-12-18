@@ -1,6 +1,8 @@
 import React from 'react'
 import {render} from '@testing-library/react'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketVoiceCallInboundStatus} from '../TicketVoiceCallInboundStatus'
 
 jest.mock(
@@ -10,10 +12,20 @@ jest.mock(
             <div>VoiceCallAgentLabel {agentId}</div>
 )
 
+jest.mock('../CollapsibleDetails', () => () => <div>CollapsibleDetails</div>)
+
 describe('TicketVoiceCallInboundStatus', () => {
     const renderComponent = (voiceCall: VoiceCall) => {
         return render(<TicketVoiceCallInboundStatus voiceCall={voiceCall} />)
     }
+
+    beforeEach(() => {
+        mockFlags({[FeatureFlagKey.NewVoiceCallUIEvents]: false})
+    })
+
+    afterEach(() => {
+        resetLDMocks()
+    })
 
     it.each([
         VoiceCallStatus.Ringing,
@@ -72,5 +84,53 @@ describe('TicketVoiceCallInboundStatus', () => {
         } as VoiceCall
         const {container} = renderComponent(voiceCall)
         expect(container.firstChild).toBeNull()
+    })
+
+    it('should render CollapsibleDetails for answered calls when eventsEnabled is true', () => {
+        mockFlags({[FeatureFlagKey.NewVoiceCallUIEvents]: true})
+
+        const voiceCall: VoiceCall = {
+            status: VoiceCallStatus.Completed,
+            last_answered_by_agent_id: 1,
+            phone_number_destination: '1234567890',
+        } as VoiceCall
+        const {getByText} = renderComponent(voiceCall)
+        expect(getByText('CollapsibleDetails')).toBeInTheDocument()
+    })
+
+    it('should not render CollapsibleDetails for answered calls when eventsEnabled is false', () => {
+        mockFlags({[FeatureFlagKey.NewVoiceCallUIEvents]: false})
+
+        const voiceCall: VoiceCall = {
+            status: VoiceCallStatus.Completed,
+            last_answered_by_agent_id: 1,
+            phone_number_destination: '1234567890',
+        } as VoiceCall
+        const {queryByText} = renderComponent(voiceCall)
+        expect(queryByText('CollapsibleDetails')).not.toBeInTheDocument()
+    })
+
+    it('should render CollapsibleDetails for missed calls when eventsEnabled is true', () => {
+        mockFlags({[FeatureFlagKey.NewVoiceCallUIEvents]: true})
+
+        const voiceCall: VoiceCall = {
+            status: VoiceCallStatus.Ending,
+            last_answered_by_agent_id: null,
+            phone_number_destination: '1234567890',
+        } as VoiceCall
+        const {getByText} = renderComponent(voiceCall)
+        expect(getByText('CollapsibleDetails')).toBeInTheDocument()
+    })
+
+    it('should not render CollapsibleDetails for missed calls when eventsEnabled is false', () => {
+        mockFlags({[FeatureFlagKey.NewVoiceCallUIEvents]: false})
+
+        const voiceCall: VoiceCall = {
+            status: VoiceCallStatus.Ending,
+            last_answered_by_agent_id: null,
+            phone_number_destination: '1234567890',
+        } as VoiceCall
+        const {queryByText} = renderComponent(voiceCall)
+        expect(queryByText('CollapsibleDetails')).not.toBeInTheDocument()
     })
 })

@@ -17,6 +17,10 @@ export const PHONE_CALL_TRANSFER_TO_AGENT_FAILED =
     'phone-call-transfer-to-agent-failed'
 export const PHONE_CALL_TRANSFER_TO_AGENT_MISSED =
     'phone-call-transfer-to-agent-missed'
+export const DECLINED_PHONE_CALL = 'declined-phone-call'
+export const OUTGOING_PHONE_CALL_CONNECTED = 'outgoing-phone-call-connected'
+export const CHILD_CALL_NOT_ANSWERED = 'child-call-not-answered'
+export const PHONE_CALL_RINGING = 'phone-call-ringing'
 
 //$TsFixMe fallback value for js, use PhoneIntegrationEvent enum instead
 export const PHONE_EVENTS_MAP = Object.freeze({
@@ -35,6 +39,10 @@ export const PHONE_EVENTS_MAP = Object.freeze({
     PHONE_CALL_TRANSFERRED_TO_AGENT,
     PHONE_CALL_TRANSFER_TO_AGENT_FAILED,
     PHONE_CALL_TRANSFER_TO_AGENT_MISSED,
+    DECLINED_PHONE_CALL,
+    OUTGOING_PHONE_CALL_CONNECTED,
+    PHONE_CALL_RINGING,
+    CHILD_CALL_NOT_ANSWERED,
 })
 
 export const PHONE_EVENTS = Object.freeze(Object.values(PHONE_EVENTS_MAP))
@@ -46,4 +54,8 @@ export const LEGACY_PHONE_EVENTS = [
     PHONE_CALL_ANSWERED,
     CALL_RECORDING,
     VOICEMAIL_RECORDING,
+    DECLINED_PHONE_CALL,
+    OUTGOING_PHONE_CALL_CONNECTED,
+    PHONE_CALL_RINGING,
+    CHILD_CALL_NOT_ANSWERED,
 ]

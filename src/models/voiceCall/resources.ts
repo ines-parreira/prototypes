@@ -6,6 +6,8 @@ import {
     ListVoiceCallsParams,
     ListCallRecordingsParams,
     VoiceCallRecording,
+    ListCallEventsParams,
+    VoiceCallEvent,
 } from './types'
 
 export async function listVoiceCalls(
@@ -27,6 +29,17 @@ export async function listVoiceCallRecordings(
     const response = await client.get<
         ApiListResponseCursorPagination<VoiceCallRecording[]>
     >(`/api/phone/voice-call-recordings/`, {
+        params,
+        paramsSerializer: stringify,
+    })
+
+    return response
+}
+
+export async function listVoiceCallEvents(params?: ListCallEventsParams) {
+    const response = await client.get<
+        ApiListResponseCursorPagination<VoiceCallEvent[]>
+    >(`/api/phone/voice-call-events/`, {
         params,
         paramsSerializer: stringify,
     })

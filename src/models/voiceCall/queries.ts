@@ -1,7 +1,15 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query'
 
-import {ListCallRecordingsParams, ListVoiceCallsParams} from './types'
-import {listVoiceCallRecordings, listVoiceCalls} from './resources'
+import {
+    ListCallEventsParams,
+    ListCallRecordingsParams,
+    ListVoiceCallsParams,
+} from './types'
+import {
+    listVoiceCallEvents,
+    listVoiceCallRecordings,
+    listVoiceCalls,
+} from './resources'
 
 export const voiceCallsKeys = {
     all: () => ['voiceCalls'] as const,
@@ -12,6 +20,8 @@ export const voiceCallsKeys = {
     ],
     listRecordings: (params?: ListCallRecordingsParams) =>
         [...voiceCallsKeys.all(), 'recordings', params] as const,
+    listEvents: (params?: ListCallEventsParams) =>
+        [...voiceCallsKeys.all(), 'events', params] as const,
 }
 
 export type UseListVoiceCalls = Awaited<ReturnType<typeof listVoiceCalls>>
@@ -36,6 +46,17 @@ export const useListRecordings = (
     return useQuery({
         queryKey: voiceCallsKeys.listRecordings(params),
         queryFn: () => listVoiceCallRecordings(params),
+        ...overrides,
+    })
+}
+
+export const useListVoiceCallEvents = (
+    params?: ListCallEventsParams,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listVoiceCallEvents>>>
+) => {
+    return useQuery({
+        queryKey: voiceCallsKeys.listEvents(params),
+        queryFn: () => listVoiceCallEvents(params),
         ...overrides,
     })
 }

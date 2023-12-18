@@ -1,3 +1,5 @@
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+
 export type VoiceCallDirection = 'inbound' | 'outbound'
 
 export enum VoiceCallStatus {
@@ -63,11 +65,26 @@ export type VoiceCallRecording = {
     error_code: VoiceCallRecordingErrorCode | null
 }
 
+export type VoiceCallEvent = {
+    id: number
+    type: PhoneIntegrationEvent
+    account_id: number
+    call_id: number
+    user_id: number
+    customer_id: number
+    created_datetime: string
+    meta: Record<string, unknown>
+}
+
 export type ListVoiceCallsParams = {
     ticket_id?: number
 }
 
 export type ListCallRecordingsParams = {
+    call_id?: number
+}
+
+export type ListCallEventsParams = {
     call_id?: number
 }
 

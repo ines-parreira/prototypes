@@ -1,6 +1,7 @@
 import moment from 'moment'
 import {getMoment, stringToDatetime} from 'utils/date'
-import {VoiceCall, VoiceCallStatus} from './types'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from './types'
 
 export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
     return [
@@ -49,4 +50,48 @@ export const getFormattedDurationOngoingCall = (
     }
 
     return utcMoment.format('mm:ss')
+}
+
+export const processEvents = (
+    events: VoiceCallEvent[]
+): {text: string; user_id: number}[] => {
+    const result = []
+    const handled = events.filter((event) =>
+        [
+            PhoneIntegrationEvent.PhoneCallAnswered,
+            PhoneIntegrationEvent.DeclinedPhoneCall,
+            PhoneIntegrationEvent.PhoneCallRinging,
+            PhoneIntegrationEvent.ChildCallNotAnswered,
+        ].includes(event.type)
+    )
+
+    for (const event of handled) {
+        if (event.type === PhoneIntegrationEvent.PhoneCallAnswered) {
+            result.push({text: `Answered by`, user_id: event.user_id})
+        } else if (event.type === PhoneIntegrationEvent.DeclinedPhoneCall) {
+            result.push({text: `Declined by`, user_id: event.user_id})
+        } else if (event.type === PhoneIntegrationEvent.PhoneCallRinging) {
+            const missedCallEvent = handled.find(
+                (e) =>
+                    e.user_id === event.user_id &&
+                    e.type === PhoneIntegrationEvent.ChildCallNotAnswered
+            )
+
+            const answeredOrDeclinedEvent = missedCallEvent
+                ? null
+                : handled.find(
+                      (e) =>
+                          e.user_id === event.user_id &&
+                          (e.type === PhoneIntegrationEvent.PhoneCallAnswered ||
+                              e.type ===
+                                  PhoneIntegrationEvent.DeclinedPhoneCall)
+                  )
+
+            if (missedCallEvent || !answeredOrDeclinedEvent) {
+                result.push({text: `Missed by`, user_id: event.user_id})
+            }
+        }
+    }
+
+    return result
 }

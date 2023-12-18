@@ -4,13 +4,18 @@ import React from 'react'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import * as resources from '../resources'
-import {useListVoiceCalls, useListRecordings} from '../queries'
+import {
+    useListVoiceCalls,
+    useListRecordings,
+    useListVoiceCallEvents,
+} from '../queries'
 
 const listVoiceCallsSpy = jest.spyOn(resources, 'listVoiceCalls')
 const listVoiceCallRecordingsSpy = jest.spyOn(
     resources,
     'listVoiceCallRecordings'
 )
+const listVoiceCallEventsSpy = jest.spyOn(resources, 'listVoiceCallEvents')
 
 const queryClient = mockQueryClient()
 const wrapper = ({children}: any) => (
@@ -74,6 +79,35 @@ describe('voiceCall queries', () => {
             )
             const {result, waitFor} = renderHook(
                 () => useListRecordings({call_id: 1}),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+    })
+
+    describe('useListVoiceCallEvents', () => {
+        it('should return correct data on success', async () => {
+            listVoiceCallEventsSpy.mockResolvedValueOnce(
+                axiosSuccessResponse(['testEvent']) as any
+            )
+            const events = ['testEvent']
+            const {result, waitFor} = renderHook(
+                () => useListVoiceCallEvents({call_id: 1}),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data?.data).toStrictEqual(events)
+        })
+
+        it('should return expected error on failure', async () => {
+            listVoiceCallEventsSpy.mockRejectedValueOnce(Error('test error'))
+            const {result, waitFor} = renderHook(
+                () => useListVoiceCallEvents({call_id: 1}),
                 {
                     wrapper,
                 }

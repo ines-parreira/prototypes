@@ -1,10 +1,12 @@
 import * as momentUtils from 'utils/date'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {
     isFinalVoiceCallStatus,
     getFormattedDurationOngoingCall,
     getFormattedDurationEndedCall,
+    processEvents,
 } from '../utils'
-import {VoiceCall, VoiceCallStatus} from '../types'
+import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from '../types'
 
 const getMomentSpy = jest.spyOn(momentUtils, 'getMoment')
 
@@ -74,6 +76,56 @@ describe('voice call utils', () => {
                     started_datetime: '2023-01-01 09:09:09',
                 } as VoiceCall)
             ).toBe('01:01:01')
+        })
+    })
+
+    describe('processEvents', () => {
+        it('should return an empty array when passed an empty array', () => {
+            const result = processEvents([])
+            expect(result).toEqual([])
+        })
+
+        it('should return an array of objects with the correct text and user_id properties', () => {
+            const events: VoiceCallEvent[] = [
+                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 2},
+                {type: PhoneIntegrationEvent.DeclinedPhoneCall, user_id: 2},
+                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 3},
+                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 4},
+                {type: PhoneIntegrationEvent.ChildCallNotAnswered, user_id: 4},
+                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 5},
+                {type: PhoneIntegrationEvent.PhoneCallAnswered, user_id: 5},
+            ] as VoiceCallEvent[]
+            const result = processEvents(events)
+            expect(result).toEqual([
+                {text: 'Declined by', user_id: 2},
+                {text: 'Missed by', user_id: 3},
+                {text: 'Missed by', user_id: 4},
+                {text: 'Answered by', user_id: 5},
+            ])
+        })
+
+        it('should not include events that are not PhoneCallAnswered, DeclinedPhoneCall, PhoneCallRinging, or ChildCallNotAnswered', () => {
+            const events: VoiceCallEvent[] = [
+                {type: PhoneIntegrationEvent.PhoneCallAnswered, user_id: 1},
+                {type: PhoneIntegrationEvent.DeclinedPhoneCall, user_id: 2},
+                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 3},
+                {type: 'some other event', user_id: 4},
+            ] as VoiceCallEvent[]
+            const result = processEvents(events)
+            expect(result).toEqual([
+                {text: 'Answered by', user_id: 1},
+                {text: 'Declined by', user_id: 2},
+                {text: 'Missed by', user_id: 3},
+            ])
+        })
+
+        it('should handle cases where there is a ChildCallNotAnswered event for missed call', () => {
+            const events: VoiceCallEvent[] = [
+                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 1},
+                {type: PhoneIntegrationEvent.ChildCallNotAnswered, user_id: 1},
+            ] as VoiceCallEvent[]
+            const result = processEvents(events)
+            expect(result).toEqual([{text: 'Missed by', user_id: 1}])
         })
     })
 })
