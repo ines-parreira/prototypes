@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react'
 import {Emoji} from 'emoji-mart'
 import pluralize from 'pluralize'
+import classNames from 'classnames'
 import {useListTeams} from 'models/team/queries'
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -13,9 +14,11 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from './VoiceIntegrationPreferencesTeamSelect.less'
 
 type Props = {
-    value?: number
-    onChange: (teamId: number) => void
+    value?: Maybe<number>
+    onChange: (teamId: number | null) => void
 }
+
+export const NO_TEAM_SELECTED_LABEL = 'Route to all available agents'
 
 export default function VoiceIntegrationPreferencesTeamSelect({
     value,
@@ -29,6 +32,10 @@ export default function VoiceIntegrationPreferencesTeamSelect({
     const options = data?.data?.data
     const selectedTeam = options?.find((team) => team.id === value)
 
+    const noTeamSelectedIcon = (
+        <i className={classNames('material-icons', css.icon)}>people</i>
+    )
+
     return (
         <>
             {!!error && (
@@ -36,14 +43,16 @@ export default function VoiceIntegrationPreferencesTeamSelect({
             )}
             <SelectInputBox
                 prefix={
-                    selectedTeam?.decoration?.emoji && (
+                    !selectedTeam ? (
+                        noTeamSelectedIcon
+                    ) : selectedTeam.decoration?.emoji ? (
                         <Emoji
                             emoji={selectedTeam.decoration.emoji}
                             size={20}
                         />
-                    )
+                    ) : null
                 }
-                label={selectedTeam?.name}
+                label={selectedTeam?.name || NO_TEAM_SELECTED_LABEL}
                 onToggle={setIsDropdownOpen}
                 floating={floatingRef}
                 ref={targetRef}
@@ -61,6 +70,18 @@ export default function VoiceIntegrationPreferencesTeamSelect({
                         >
                             <DropdownSearch autoFocus />
                             <DropdownBody>
+                                <DropdownItem
+                                    option={{
+                                        label: NO_TEAM_SELECTED_LABEL,
+                                        value: null,
+                                    }}
+                                    onClick={() => onChange(null)}
+                                    shouldCloseOnSelect
+                                    className={css.dropdownItem}
+                                >
+                                    {noTeamSelectedIcon}
+                                    <div>{NO_TEAM_SELECTED_LABEL}</div>
+                                </DropdownItem>
                                 {options?.map((option) => (
                                     <DropdownItem
                                         key={option.id}

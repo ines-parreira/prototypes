@@ -25,7 +25,7 @@ export type PhoneIntegrationMeta = {
     greeting_message: VoiceMessage
     voicemail: PhoneIntegrationVoicemailSettings
     ivr?: PhoneIntegrationIvrSettings
-    phone_team_id?: number
+    phone_team_id?: Maybe<number>
 }
 
 export enum PhoneRingingBehaviour {

@@ -43,7 +43,7 @@ export default function VoiceIntegrationPreferences({
     const [isInitialized, setIsInitialized] = useState(false)
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
-    const [phoneTeamId, setPhoneTeamId] = useState<number | undefined>(
+    const [phoneTeamId, setPhoneTeamId] = useState<Maybe<number | undefined>>(
         integration?.meta?.phone_team_id
     )
     const [preferences, setPreferences] = useState<PhoneIntegrationPreferences>(
@@ -188,13 +188,13 @@ export default function VoiceIntegrationPreferences({
                                                             label: 'Round-robin ringing',
                                                             value: PhoneRingingBehaviour.RoundRobin,
                                                             caption:
-                                                                'Calls assigned to a team will ring available agents one-by-one, ordered by the time since an agent last received a call.',
+                                                                'Calls ring available agents one-by-one, ordered by the time since an agent last received a call.',
                                                         },
                                                         {
                                                             label: 'Broadcast ringing',
                                                             value: PhoneRingingBehaviour.Broadcast,
                                                             caption:
-                                                                'Calls assigned to a team will ring all available agents simultaneously.',
+                                                                'Calls ring all available agents simultaneously. ',
                                                         },
                                                     ]}
                                                     onChange={(value) =>

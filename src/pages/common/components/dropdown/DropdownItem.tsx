@@ -19,7 +19,7 @@ import {DropdownContext} from './Dropdown'
 
 import css from './DropdownItem.less'
 
-type Props<T extends boolean | number | string> = {
+type Props<T extends boolean | number | string | null> = {
     autoFocus?: boolean
     children?: ReactNode | ((highlightedLabel: ReactNode) => ReactNode)
     className?: string
@@ -32,7 +32,7 @@ type Props<T extends boolean | number | string> = {
     }
 }
 
-const DropdownItem = <T extends boolean | number | string>({
+const DropdownItem = <T extends boolean | number | string | null>({
     autoFocus,
     children,
     className,
