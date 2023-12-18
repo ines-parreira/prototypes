@@ -11,9 +11,6 @@ import React, {
 import {stringify} from 'qs'
 import {useLocation} from 'react-router-dom'
 import classnames from 'classnames'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useUnmount} from 'react-use'
 import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import axios, {CancelToken} from 'axios'
@@ -46,6 +43,7 @@ import {RecentItems} from 'hooks/useRecentItems/constants'
 import usePrevious from 'hooks/usePrevious'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useUpdateEffect from 'hooks/useUpdateEffect'
+import useUnmount from 'hooks/useUnmount'
 import {notify} from 'state/notifications/actions'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {NotificationStatus} from 'state/notifications/types'
