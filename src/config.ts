@@ -397,7 +397,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         type: IntegrationType.Shopify,
         title: 'Shopify',
         description:
-            'Display customer profiles & orders next to tickets. Edit orders with macros.',
+            'Automate basic queries, display customer profiles, manage orders, and drive sales without switching tabs.',
         image: '/img/integrations/shopify.png',
         benefits: [],
         categories: [Category.ECOMMERCE],

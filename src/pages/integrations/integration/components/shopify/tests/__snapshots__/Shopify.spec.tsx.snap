@@ -69,7 +69,7 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
       <p
         class="heroDescription"
       >
-        Display customer profiles & orders next to tickets. Edit orders with macros.
+        Automate basic queries, display customer profiles, manage orders, and drive sales without switching tabs.
       </p>
       <div
         class="heroMeta"
