@@ -105,3 +105,9 @@ export const isPhoneIntegration = (
     integration: Maybe<Integration>
 ): integration is PhoneIntegration =>
     integration?.type === IntegrationType.Phone
+
+export const isStandardPhoneIntegration = (
+    integration: Maybe<Integration>
+): integration is PhoneIntegration =>
+    integration?.type === IntegrationType.Phone &&
+    integration?.meta.function === 'standard'

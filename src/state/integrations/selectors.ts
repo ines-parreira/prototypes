@@ -12,6 +12,7 @@ import {
     isAppIntegration,
     isPhoneIntegration,
     isSmsIntegration,
+    isStandardPhoneIntegration,
     isWhatsAppIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
@@ -292,6 +293,11 @@ export const DEPRECATED_getPhoneIntegrations = createSelector(
 export const getPhoneIntegrations = createSelector(
     getIntegrations,
     (integrations) => integrations.filter(isPhoneIntegration)
+)
+
+export const getStandardPhoneIntegrations = createSelector(
+    getIntegrations,
+    (integrations) => integrations.filter(isStandardPhoneIntegration)
 )
 
 export const getSmsIntegrations = createSelector(

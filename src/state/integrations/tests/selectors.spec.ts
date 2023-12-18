@@ -51,6 +51,7 @@ import {
     getSendersForChannel,
     getIntegrationChannel,
     getIntegrationsByAppId,
+    getStandardPhoneIntegrations,
 } from '../selectors'
 
 jest.mock('api/queryClient', () => ({
@@ -988,5 +989,49 @@ describe('integrations selectors', () => {
                 },
             },
         ])
+    })
+
+    describe('getStandardPhoneIntegrations()', () => {
+        it('should return only the standard phone integrations', () => {
+            const standardIntegration = {
+                id: 1234,
+                type: 'phone',
+                application_id: 'nope',
+                name: 'Test Phone standard',
+                meta: {
+                    function: 'standard',
+                },
+            }
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 123,
+                            type: 'app',
+                            application_id: '64785607477d0a11fc731bfa',
+                            name: 'The Shop',
+                            meta: {
+                                address: 'theshop',
+                            },
+                        },
+                        standardIntegration,
+                        {
+                            id: 1235,
+                            type: 'phone',
+                            application_id: 'nope',
+                            name: 'Test Phone IVR',
+                            meta: {
+                                function: 'ivr',
+                            },
+                        },
+                    ],
+                }),
+            } as RootState
+            const standardPhoneIntegrations =
+                getStandardPhoneIntegrations(state)
+
+            const expected = [standardIntegration]
+            expect(standardPhoneIntegrations).toEqual(expected)
+        })
     })
 })

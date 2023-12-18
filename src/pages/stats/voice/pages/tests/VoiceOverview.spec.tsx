@@ -32,7 +32,14 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceOverview', () => {
     const renderVoiceOverview = (featureEnabled = true) => {
-        const state: Partial<RootState> = {
+        const statsFilters: StatsFilters = {
+            period: {
+                start_datetime: '2023-12-11T00:00:00.000Z',
+                end_datetime: '2023-12-11T23:59:59.999Z',
+            },
+            agents: [agents[0].id],
+        }
+        const state = {
             currentAccount: fromJS({
                 current_subscription: account.current_subscription,
                 features: fromJS({
@@ -43,15 +50,17 @@ describe('VoiceOverview', () => {
             }),
             billing: fromJS(billingState),
             stats: fromJS({
-                filters: {
-                    period: {
-                        start_datetime: '2021-02-03T00:00:00.000Z',
-                        end_datetime: '2021-02-03T23:59:59.999Z',
-                    },
-                    agents: [agents[0].id],
-                } as StatsFilters,
+                filters: statsFilters,
             }),
-        }
+            integrations: fromJS({integrations: []}),
+            ui: {
+                stats: {
+                    cleanStatsFilters: statsFilters,
+                    isFilterDirty: false,
+                    fetchingMap: {},
+                },
+            },
+        } as RootState
         return render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(state)}>
@@ -66,6 +75,9 @@ describe('VoiceOverview', () => {
 
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
         expect(queryByText('Voice add-on features')).toBeNull()
+
+        expect(queryByText('All integrations')).toBeInTheDocument()
+        expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
 
         expect(queryByText(CALL_VOLUME_METRICS_TITLE)).toBeInTheDocument()
         expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
