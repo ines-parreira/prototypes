@@ -349,7 +349,8 @@ export class TableStat extends Component<
                         {isQuickResponseEnabled && (
                             <Link
                                 to={{
-                                    pathname: `/app/automation/${shopType}/${shopName}/quick-responses?quickResponseId=${flowId}`,
+                                    pathname: `/app/automation/${shopType}/${shopName}/quick-responses`,
+                                    search: `?quickResponseId=${flowId}`,
                                     state: {
                                         from: 'stats-automate-performance-by-features',
                                     },
