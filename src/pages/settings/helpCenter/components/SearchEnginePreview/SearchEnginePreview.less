@@ -1,8 +1,3 @@
-@urlBaseColor: #202124;
-@urlItemColor: #5f6368;
-@titleColor: #1a0dab;
-@descriptionColor: #4d5156;
-
 :local {
     .container {
         margin-bottom: 16px;
@@ -31,17 +26,17 @@
     }
 
     .url {
-        color: @urlBaseColor;
+        color: var(--neutral-grey-6);
 
         .url-item {
-            color: @urlItemColor;
+            color: var(--neutral-grey-5);
         }
     }
 
     .title {
         font-size: 20px;
         line-height: 24px;
-        color: @titleColor;
+        color: var(--main-primary);
     }
 
     .description {
@@ -49,7 +44,7 @@
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         line-height: 22px;
-        color: @descriptionColor;
+        color: var(--neutral-grey-5);
         text-overflow: ellipsis;
         overflow: hidden;
     }

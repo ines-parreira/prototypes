@@ -394,11 +394,14 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 <div
                   class="label"
                 >
-                  <img
-                    alt="Facebook"
-                    class="logo"
-                    src="test-file-stub"
-                  />
+                  <div
+                    class="logo-wrapper"
+                  >
+                    <div
+                      class="logo"
+                      style="mask-image: url(test-file-stub);"
+                    />
+                  </div>
                   <span
                     data-testid="Facebook-label"
                   >
@@ -426,11 +429,14 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 <div
                   class="label"
                 >
-                  <img
-                    alt="Twitter"
-                    class="logo"
-                    src="test-file-stub"
-                  />
+                  <div
+                    class="logo-wrapper"
+                  >
+                    <div
+                      class="logo"
+                      style="mask-image: url(test-file-stub);"
+                    />
+                  </div>
                   <span
                     data-testid="Twitter-label"
                   >
@@ -458,11 +464,14 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 <div
                   class="label"
                 >
-                  <img
-                    alt="Instagram"
-                    class="logo"
-                    src="test-file-stub"
-                  />
+                  <div
+                    class="logo-wrapper"
+                  >
+                    <div
+                      class="logo"
+                      style="mask-image: url(test-file-stub);"
+                    />
+                  </div>
                   <span
                     data-testid="Instagram-label"
                   >

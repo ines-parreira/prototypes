@@ -2,8 +2,8 @@ import React from 'react'
 import {FormFeedback, FormGroup, Input} from 'reactstrap'
 import isUrl from 'validator/lib/isURL'
 
-import {isURLOptions} from '../../utils/navigationLinks'
-import {LinkEntity} from '../LinkList'
+import {LinkEntity} from 'pages/settings/helpCenter/components/LinkList'
+import {isURLOptions} from 'pages/settings/helpCenter/utils/navigationLinks'
 
 import css from './SocialNavigationLinks.less'
 
@@ -38,7 +38,15 @@ export const SocialNavigationItem = ({
     return (
         <div className={css['social-item']} data-testid={`${label}-nav`}>
             <div className={css.label}>
-                <img src={logo} alt={label} className={css.logo} />
+                <div className={css['logo-wrapper']}>
+                    <div
+                        className={css.logo}
+                        style={{
+                            WebkitMaskImage: `url(${logo})`,
+                            maskImage: `url(${logo})`,
+                        }}
+                    />
+                </div>
                 <span data-testid={`${label}-label`}>{label}</span>
             </div>
             <div>
