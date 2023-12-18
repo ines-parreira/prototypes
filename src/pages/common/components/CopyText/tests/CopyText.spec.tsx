@@ -10,10 +10,11 @@ jest.mock('../utils', () => ({
 }))
 
 const mockedCopyToClipboard = jest.fn()
-jest.mock('react-use', () => {
-    const module: Record<string, unknown> = jest.requireActual('react-use')
-
-    return {...module, useCopyToClipboard: () => [null, mockedCopyToClipboard]}
+jest.mock('hooks/useCopyToClipboard', () => {
+    return {
+        __esModule: true,
+        default: () => [null, mockedCopyToClipboard],
+    }
 })
 
 describe('<Copytext />', () => {
