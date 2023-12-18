@@ -14,7 +14,6 @@ import {
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import settingsCss from 'pages/settings/settings.less'
 import {reportError} from 'utils/errors'
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
@@ -264,24 +263,15 @@ export const HelpCenterCustomizationView = () => {
             onSaveChanges={handleOnSave}
             showLanguageSelector
         >
-            <section className={settingsCss.mb40}>
+            <section>
                 <div className={css.heading}>
-                    <div>
-                        <div className={css.headingInner}>
-                            <h3>Customization</h3>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section className={settingsCss.mb40}>
-                <div className={css.heading}>
-                    <h4>Header settings</h4>
+                    <h3>Header settings</h3>
                     <p>
                         Change navigation elements at the top of the help
                         center.
                     </p>
                 </div>
-                <div>
+                <div className={css.toggleSection}>
                     <ToggleInput
                         isToggled={isCustomHeaderToggled}
                         onClick={(value) => {
@@ -370,15 +360,13 @@ export const HelpCenterCustomizationView = () => {
                     />
                 )}
             </section>
-            <section className={settingsCss.mb40}>
+            <section>
                 <div className={css.heading}>
-                    <div>
-                        <h4>Footer settings</h4>
-                        <p>
-                            Change navigation elements at the bottom of the help
-                            center.
-                        </p>
-                    </div>
+                    <h3>Footer settings</h3>
+                    <p>
+                        Change navigation elements at the bottom of the help
+                        center.
+                    </p>
                 </div>
                 <div>
                     <ToggleInput
@@ -418,46 +406,48 @@ export const HelpCenterCustomizationView = () => {
                         </div>
                     </ToggleInput>
                 </div>
-                <div className={settingsCss.mb24}>
+                <div className={css.toggleSection}>
                     <UpdateToggle
                         activated={
                             helpCenter.powered_by_deactivated_datetime === null
                         }
                         label="Powered by Gorgias"
-                        description=""
+                        description="Use this toggle to display or hide the Gorgias branding on the footer in Help Center."
                         fieldName="powered_by_deactivated"
                     />
                 </div>
                 {!isCustomFooterToggled ? (
                     <>
-                        <h5>Navigation Links</h5>
-                        <LinkList
-                            name="footer"
-                            titlePlaceholder="Link title"
-                            urlPlaceholder="Link URL"
-                            list={footerNavigation.links.map((item) => ({
-                                id: item.id,
-                                key: item.key,
-                                value: item.value,
-                                label: item.label,
-                            }))}
-                            onChange={(ev, key, id) => {
-                                setIsDirty(true)
-                                footerNavigation.update(
-                                    ev.target.value,
-                                    id,
-                                    key
-                                )
-                            }}
-                            onDelete={(id) => {
-                                setIsDirty(true)
-                                footerNavigation.remove(id)
-                            }}
-                            onAddNew={() => {
-                                setIsDirty(true)
-                                footerNavigation.add(selectedLocale)
-                            }}
-                        />
+                        <div className={css.subsection}>
+                            <h5>Navigation Links</h5>
+                            <LinkList
+                                name="footer"
+                                titlePlaceholder="Link title"
+                                urlPlaceholder="Link URL"
+                                list={footerNavigation.links.map((item) => ({
+                                    id: item.id,
+                                    key: item.key,
+                                    value: item.value,
+                                    label: item.label,
+                                }))}
+                                onChange={(ev, key, id) => {
+                                    setIsDirty(true)
+                                    footerNavigation.update(
+                                        ev.target.value,
+                                        id,
+                                        key
+                                    )
+                                }}
+                                onDelete={(id) => {
+                                    setIsDirty(true)
+                                    footerNavigation.remove(id)
+                                }}
+                                onAddNew={() => {
+                                    setIsDirty(true)
+                                    footerNavigation.add(selectedLocale)
+                                }}
+                            />
+                        </div>
                         <SocialNavigationLinks
                             links={socialNavigation.links}
                             locale={selectedLocale}
@@ -491,9 +481,9 @@ export const HelpCenterCustomizationView = () => {
                     />
                 )}
             </section>
-            <section className={settingsCss.mb40}>
+            <section>
                 <div className={css.heading}>
-                    <h4>Extra HTML</h4>
+                    <h3>Extra HTML</h3>
                     <p>
                         Add extra HTML in the{' '}
                         <a

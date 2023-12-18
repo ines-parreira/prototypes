@@ -1,7 +1,5 @@
 import React from 'react'
 
-import settingsCss from 'pages/settings/settings.less'
-
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {useHelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
@@ -26,10 +24,16 @@ export const HelpCenterPreferencesView: React.FC = () => {
             isDirty={canSavePreferences}
             isConnectStoreLinkEnabled={false}
         >
-            <section className={settingsCss.mb40}>
-                <h3 className={css.title}>Languages</h3>
-                <DefaultLanguageSelect />
+            <section>
+                <div className={css.title}>
+                    <h3>Languages</h3>
+                    <p>
+                        Select the languages in which you will be able to edit
+                        and customize your Help Center.
+                    </p>
+                </div>
                 <AvailableLanguagesTags availableLocales={locales} />
+                <DefaultLanguageSelect />
             </section>
             <SEO helpCenter={helpCenter} />
             <FooterActions />

@@ -9,6 +9,7 @@ import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 type Props = {
     value?: Value | null
     onChange: (value: Value) => void
+    fullWidth?: boolean
     className?: string
 }
 export const LanguageSelect: React.FC<Props> = (props) => {
@@ -25,7 +26,7 @@ export const LanguageSelect: React.FC<Props> = (props) => {
             fixedWidth
             options={localeOptions}
             aria-label="language selector"
-            style={{width: '140px'}}
+            style={props.fullWidth ? {} : {width: '140px'}}
             {...props}
         />
     )

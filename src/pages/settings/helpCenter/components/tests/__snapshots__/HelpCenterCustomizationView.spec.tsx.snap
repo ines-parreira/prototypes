@@ -205,37 +205,20 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
       <div
         class="contentWrapper"
       >
-        <section
-          class="mb40"
-        >
+        <section>
           <div
             class="heading"
           >
-            <div>
-              <div
-                class="headingInner"
-              >
-                <h3>
-                  Customization
-                </h3>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section
-          class="mb40"
-        >
-          <div
-            class="heading"
-          >
-            <h4>
+            <h3>
               Header settings
-            </h4>
+            </h3>
             <p>
               Change navigation elements at the top of the help center.
             </p>
           </div>
-          <div>
+          <div
+            class="toggleSection"
+          >
             <div
               class="toggle"
             >
@@ -288,25 +271,21 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 >
                   add
                 </i>
-                Add Nav Item
+                Add Link
               </button>
             </span>
           </div>
         </section>
-        <section
-          class="mb40"
-        >
+        <section>
           <div
             class="heading"
           >
-            <div>
-              <h4>
-                Footer settings
-              </h4>
-              <p>
-                Change navigation elements at the bottom of the help center.
-              </p>
-            </div>
+            <h3>
+              Footer settings
+            </h3>
+            <p>
+              Change navigation elements at the bottom of the help center.
+            </p>
           </div>
           <div>
             <div
@@ -345,7 +324,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </div>
           </div>
           <div
-            class="mb24"
+            class="toggleSection"
           >
             <div
               class="toggle"
@@ -369,142 +348,151 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 />
                 Powered by Gorgias
               </label>
+              <div
+                class="caption caption"
+              >
+                Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
+              </div>
             </div>
           </div>
-          <h5>
-            Navigation Links
-          </h5>
-          <div>
-            <span
-              id="help-footer"
-            >
-              <button
-                aria-disabled="false"
-                class="wrapper add-link fill secondary medium"
-                type="button"
-              >
-                <i
-                  class="material-icons"
-                >
-                  add
-                </i>
-                Add Nav Item
-              </button>
-            </span>
-          </div>
           <div
-            class="social-list"
+            class="subsection"
           >
+            <h5>
+              Navigation Links
+            </h5>
+            <div>
+              <span
+                id="help-footer"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper add-link fill secondary medium"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    add
+                  </i>
+                  Add Link
+                </button>
+              </span>
+            </div>
+          </div>
+          <div>
             <h5>
               Social network links
             </h5>
             <div
-              class="social-item"
-              data-testid="Facebook-nav"
+              class="social-list"
             >
               <div
-                class="label"
+                class="social-item"
+                data-testid="Facebook-nav"
               >
-                <img
-                  alt="Facebook"
-                  class="logo"
-                  src="test-file-stub"
-                />
-                <span
-                  data-testid="Facebook-label"
-                >
-                  Facebook
-                </span>
-              </div>
-              <div>
                 <div
-                  class="formGroup form-group"
+                  class="label"
                 >
-                  <input
-                    aria-invalid="false"
-                    class="social-input form-control"
-                    placeholder="Facebook page link"
-                    type="text"
-                    value=""
+                  <img
+                    alt="Facebook"
+                    class="logo"
+                    src="test-file-stub"
                   />
+                  <span
+                    data-testid="Facebook-label"
+                  >
+                    Facebook
+                  </span>
+                </div>
+                <div>
+                  <div
+                    class="formGroup form-group"
+                  >
+                    <input
+                      aria-invalid="false"
+                      class="social-input form-control"
+                      placeholder="Facebook page link"
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="social-item"
-              data-testid="Twitter-nav"
-            >
               <div
-                class="label"
+                class="social-item"
+                data-testid="Twitter-nav"
               >
-                <img
-                  alt="Twitter"
-                  class="logo"
-                  src="test-file-stub"
-                />
-                <span
-                  data-testid="Twitter-label"
-                >
-                  Twitter
-                </span>
-              </div>
-              <div>
                 <div
-                  class="formGroup form-group"
+                  class="label"
                 >
-                  <input
-                    aria-invalid="false"
-                    class="social-input form-control"
-                    placeholder="Twitter page link"
-                    type="text"
-                    value=""
+                  <img
+                    alt="Twitter"
+                    class="logo"
+                    src="test-file-stub"
                   />
+                  <span
+                    data-testid="Twitter-label"
+                  >
+                    Twitter
+                  </span>
+                </div>
+                <div>
+                  <div
+                    class="formGroup form-group"
+                  >
+                    <input
+                      aria-invalid="false"
+                      class="social-input form-control"
+                      placeholder="Twitter page link"
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="social-item"
-              data-testid="Instagram-nav"
-            >
               <div
-                class="label"
+                class="social-item"
+                data-testid="Instagram-nav"
               >
-                <img
-                  alt="Instagram"
-                  class="logo"
-                  src="test-file-stub"
-                />
-                <span
-                  data-testid="Instagram-label"
-                >
-                  Instagram
-                </span>
-              </div>
-              <div>
                 <div
-                  class="formGroup form-group"
+                  class="label"
                 >
-                  <input
-                    aria-invalid="false"
-                    class="social-input form-control"
-                    placeholder="Instagram page link"
-                    type="text"
-                    value=""
+                  <img
+                    alt="Instagram"
+                    class="logo"
+                    src="test-file-stub"
                   />
+                  <span
+                    data-testid="Instagram-label"
+                  >
+                    Instagram
+                  </span>
+                </div>
+                <div>
+                  <div
+                    class="formGroup form-group"
+                  >
+                    <input
+                      aria-invalid="false"
+                      class="social-input form-control"
+                      placeholder="Instagram page link"
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <section
-          class="mb40"
-        >
+        <section>
           <div
             class="heading"
           >
-            <h4>
+            <h3>
               Extra HTML
-            </h4>
+            </h3>
             <p>
               Add extra HTML in the
                

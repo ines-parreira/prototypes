@@ -34,23 +34,25 @@ export const SocialNavigationLinks = ({
     onBlurLink,
 }: Props): JSX.Element => {
     return (
-        <div className={css['social-list']}>
+        <div>
             <h5>Social network links</h5>
-            {links.map((link) => {
-                if (LOGO_MAP[link.label.toLowerCase()]) {
-                    return (
-                        <SocialNavigationItem
-                            key={`${link.id}-${locale}`}
-                            id={link.id}
-                            label={link.label}
-                            value={link.value}
-                            logo={LOGO_MAP[link.label.toLowerCase()]}
-                            onBlur={onBlurLink}
-                        />
-                    )
-                }
-                return null
-            })}
+            <div className={css['social-list']}>
+                {links.map((link) => {
+                    if (LOGO_MAP[link.label.toLowerCase()]) {
+                        return (
+                            <SocialNavigationItem
+                                key={`${link.id}-${locale}`}
+                                id={link.id}
+                                label={link.label}
+                                value={link.value}
+                                logo={LOGO_MAP[link.label.toLowerCase()]}
+                                onBlur={onBlurLink}
+                            />
+                        )
+                    }
+                    return null
+                })}
+            </div>
         </div>
     )
 }
