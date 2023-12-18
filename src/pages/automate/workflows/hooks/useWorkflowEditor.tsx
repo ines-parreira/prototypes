@@ -7,13 +7,11 @@ import React, {
     useRef,
     useMemo,
 } from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useThrottleFn} from 'react-use'
 
 import {validateHttpHeaderName, validateJSON, validateWebhookURL} from 'utils'
 import {saveFileAsDownloaded} from 'utils/file'
 import {Notification, NotificationStatus} from 'state/notifications/types'
+import useThrottledValue from 'hooks/useThrottledValue'
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -259,7 +257,7 @@ export function useWorkflowEditor(
     )
     const isDirty = isVisualBuilderGraphDirty || areTranslationsDirty
 
-    const configurationDirtySizeToLimitRate = useThrottleFn(
+    const configurationDirtySizeToLimitRate = useThrottledValue(
         (graph) =>
             getPayloadSizeToLimitRate(
                 emptyTranslatedTexts(
@@ -269,7 +267,7 @@ export function useWorkflowEditor(
         500,
         [visualBuilderGraphDirty]
     )
-    const currentTranslationSizeToLimitRate = useThrottleFn(
+    const currentTranslationSizeToLimitRate = useThrottledValue(
         (graph) => computeCurrentTranslationSizeToLimitRate(graph),
         500,
         [visualBuilderGraphDirty]
