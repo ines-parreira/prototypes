@@ -113,6 +113,12 @@ export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
                                           [css.isHighlighted]:
                                               !item.ticket.isRead,
                                       })}
+                                      onClick={() =>
+                                          window.open(
+                                              `/app/ticket/${item.ticket.id}`,
+                                              '_blank'
+                                          )
+                                      }
                                   >
                                       <DrillDownTicketDetailsCell
                                           ticketDetails={item.ticket}

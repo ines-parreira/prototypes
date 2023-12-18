@@ -24,7 +24,7 @@ describe('<DrillDownTicketDetailsCell />', () => {
     })
 
     it('should render with highlight class name', () => {
-        render(
+        const {container} = render(
             <DrillDownTicketDetailsCell
                 ticketDetails={{
                     ...ticketDetails,
@@ -33,7 +33,7 @@ describe('<DrillDownTicketDetailsCell />', () => {
             />
         )
 
-        expect(screen.getByRole('link')).toHaveClass('highlighted')
+        expect(container.firstChild).toHaveClass('highlighted')
     })
 
     it('should render with placeholder for missing channel', () => {

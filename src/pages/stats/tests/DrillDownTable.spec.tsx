@@ -1,4 +1,5 @@
-import {render, screen} from '@testing-library/react'
+import {act, render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -140,5 +141,27 @@ describe('<DrillDownTable />', () => {
         )
 
         expect(screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length).not.toBe(0)
+    })
+
+    it('should redirect to Ticket page on row click', () => {
+        useDrillDownDataMock.mockReturnValue({
+            data: [{...exampleRow, assignee: null}],
+            currentPage,
+            perPage: 1,
+        } as any)
+
+        render(
+            <Provider store={mockStore({})}>
+                <DrillDownTable metricData={metricData} />
+            </Provider>
+        )
+        act(() => {
+            userEvent.click(screen.getAllByRole('row')[1])
+        })
+
+        expect(window.open).toHaveBeenCalledWith(
+            `/app/ticket/${exampleRow.ticket.id}`,
+            '_blank'
+        )
     })
 })
