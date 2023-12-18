@@ -15,12 +15,12 @@ export const SHIPPING_POLICY: WorkflowTemplate = {
     label: WorkflowTemplateLabelType.Policies,
     getConfiguration: (
         id: string,
-        account_id: number
+        accountId: number
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Shipping policy',
-            account_id,
+            account_id: accountId,
             entrypoint: {
                 label: `🚚 What's your shipping policy?`,
                 label_tkey: ulid(),

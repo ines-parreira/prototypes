@@ -29,6 +29,7 @@ import {
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
     WorkflowStepHandover,
+    WorkflowStepHttpRequest,
     WorkflowStepMessages,
     WorkflowStepTextInput,
     WorkflowStepWorkflowCall,
@@ -393,21 +394,33 @@ export class WorkflowConfigurationBuilder {
     private _selection: WorkflowStep
     constructor({
         name,
+        initialStep: initialStepArg,
         initialMessage,
         ...configuration
-    }: {
-        initialMessage: WorkflowStepMessages['settings']['messages'][number]
-    } & Pick<
-        WorkflowConfiguration,
-        'name' | 'account_id' | 'entrypoint' | 'id'
-    >) {
-        const initialStep: WorkflowStep = {
-            id: ulid(),
-            kind: 'messages',
-            settings: {
-                messages: [initialMessage],
-            },
-        }
+    }:
+        | (
+              | {
+                    initialStep?: never
+                    initialMessage: WorkflowStepMessages['settings']['messages'][number]
+                }
+              | {
+                    initialStep: WorkflowStep
+                    initialMessage?: never
+                }
+          ) &
+              Pick<
+                  WorkflowConfiguration,
+                  'name' | 'account_id' | 'entrypoint' | 'id'
+              >) {
+        const initialStep = initialStepArg
+            ? initialStepArg
+            : ({
+                  id: ulid(),
+                  kind: 'messages',
+                  settings: {
+                      messages: [initialMessage],
+                  },
+              } as WorkflowStepMessages)
         this.data = {
             internal_id: ulid(),
             name,
@@ -569,6 +582,23 @@ export class WorkflowConfigurationBuilder {
             id: ulid(),
             kind: 'handover',
             settings: {},
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    insertHttpRequestStepAndSelect(
+        settings: WorkflowStepHttpRequest['settings']
+    ) {
+        const step: WorkflowStepHttpRequest = {
+            id: ulid(),
+            kind: 'http-request',
+            settings,
         }
         this.data.steps.push(step)
         this.data.transitions.push({

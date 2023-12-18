@@ -26,6 +26,10 @@ const workflowLabelStyles: Record<
         color: '#6F0C86',
         backgroundColor: '#FAEAFF',
     },
+    [WorkflowTemplateLabelType.ThirdPartyActions]: {
+        color: '#605708',
+        backgroundColor: '#FFFDEA',
+    },
 }
 
 type Props = {

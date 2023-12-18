@@ -154,6 +154,7 @@ export enum WorkflowTemplateLabelType {
     ProductQuestion = 'Product Question',
     Policies = 'Policies',
     SubscriptionManagement = 'Subscription Management',
+    ThirdPartyActions = '3rd Party Actions',
 }
 
 export type WorkflowTemplate = {
@@ -163,6 +164,7 @@ export type WorkflowTemplate = {
     label: WorkflowTemplateLabelType
     getConfiguration: (
         id: string,
-        accountId: number // TODO: it shouldn't be a user input
+        accountId: number, // TODO: it shouldn't be a user input
+        integrationId: number
     ) => WorkflowConfiguration
 }

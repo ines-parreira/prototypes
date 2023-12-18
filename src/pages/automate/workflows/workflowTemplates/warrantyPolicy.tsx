@@ -14,12 +14,12 @@ export const WARRANTY_POLICY: WorkflowTemplate = {
     label: WorkflowTemplateLabelType.Policies,
     getConfiguration: (
         id: string,
-        account_id: number
+        accountId: number
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Warranty policy',
-            account_id,
+            account_id: accountId,
             entrypoint: {
                 label: `🏅 What's your warranty policy?`,
                 label_tkey: ulid(),

@@ -216,7 +216,8 @@ function WorkflowEditorViewWrapped({
             const template = WORKFLOW_TEMPLATES[templateSlug]
             const configuration = template.getConfiguration(
                 workflowId,
-                currentAccountId
+                currentAccountId,
+                storeIntegrationId
             )
             workflowEditorContext.dispatch({
                 type: 'RESET_GRAPH',

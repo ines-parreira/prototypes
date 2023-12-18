@@ -1,0 +1,108 @@
+import {ulid} from 'ulidx'
+import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.model'
+import {
+    WorkflowConfiguration,
+    WorkflowTemplate,
+    WorkflowTemplateLabelType,
+} from '../models/workflowConfiguration.types'
+import {
+    NO_ORDERS_WORKFLOW_ID,
+    ORDER_SELECTION_WORKFLOW_ID,
+    WAS_THIS_HELPFUL_WORKFLOW_ID,
+} from '../constants'
+
+export const PROVIDE_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
+    slug: 'provide-loyalty-lion-point-balance',
+    name: 'Provide Loyalty Lion point balance',
+    description:
+        'Give customers their Loyalty Lion point balance, points spent and rewards claimed.',
+    label: WorkflowTemplateLabelType.ThirdPartyActions,
+    getConfiguration: (
+        id: string,
+        accountId: number,
+        integrationId: number
+    ): WorkflowConfiguration => {
+        const b = new WorkflowConfigurationBuilder({
+            id,
+            name: 'Provide Loyalty Lion point balance',
+            account_id: accountId,
+            entrypoint: {
+                label: 'How many loyalty points do I have?',
+                label_tkey: ulid(),
+            },
+            initialStep: {
+                id: ulid(),
+                kind: 'shopper-authentication',
+                settings: {
+                    integration_id: integrationId,
+                },
+            },
+        })
+        b.insertWorkflowCallStepAndSelect(NO_ORDERS_WORKFLOW_ID, {
+            '!': {var: 'customer.orders'},
+        })
+        b.selectParentStep()
+        b.insertMessagesStepAndSelect(
+            [
+                {
+                    content: {
+                        html: '<div>Please select an order associated with your account.</div>',
+                        text: 'Please select an order associated with your account.',
+                    },
+                },
+            ],
+            {'!!': {var: 'customer.orders'}}
+        )
+        b.insertWorkflowCallStepAndSelect(ORDER_SELECTION_WORKFLOW_ID)
+        const pointsApprovedVariableId = ulid()
+        const pointsSpentVariableId = ulid()
+        const rewardsClaimedVariableId = ulid()
+        b.insertHttpRequestStepAndSelect({
+            name: 'Loyalty point balance (make sure credentials are added)',
+            url: 'https://api.loyaltylion.com/v2/customers?email={{customer.email}}',
+            method: 'GET',
+            headers: {
+                authorization: 'Basic [your base64-encoded credentials]',
+                'setup-instructions-1':
+                    'Get your <token>:<secret> value as mentioned on https://developers.loyaltylion.com/api/authentication/token-secret/',
+                'setup-instructions-2':
+                    'Encode your <token>:<secret> using base64 encoding. You can use this tool: https://www.base64encode.org/',
+                'setup-instructions-3':
+                    'Get value on step 2 and replace for [your base64-encoded credentials] on "Authorization" header',
+                'setup-instructions-4':
+                    'Remove all "setup instructions" headers',
+            },
+            variables: [
+                {
+                    id: pointsApprovedVariableId,
+                    name: 'points_approved',
+                    jsonpath: '$.customers[0].points_approved',
+                },
+                {
+                    id: pointsSpentVariableId,
+                    name: 'points_spent',
+                    jsonpath: '$.customers[0].points_spent',
+                },
+                {
+                    id: rewardsClaimedVariableId,
+                    name: 'rewards_claimed',
+                    jsonpath: '$.customers[0].rewards_claimed',
+                },
+            ],
+        })
+        const httpRequestStepId = b.selection.id
+        b.insertMessagesStepAndSelect([
+            {
+                content: {
+                    html: `<div>Here&#x27;s your point balance:</div><div>- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} </div><div>- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} </div><div>- Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} </div>`,
+                    text: `Here's your point balance:
+- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} 
+- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} 
+- Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} `,
+                },
+            },
+        ])
+        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        return b.build()
+    },
+}

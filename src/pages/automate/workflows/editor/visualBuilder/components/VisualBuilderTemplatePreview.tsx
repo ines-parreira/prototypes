@@ -22,6 +22,8 @@ import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
 } from '../../../../common/hooks/useSelfServiceStoreIntegration'
+import OrderSelectionNode from '../nodes/OrderSelectionNode'
+import HttpRequestNode from '../nodes/HttpRequestNode'
 import {VisualBuilderBackground} from './VisualBuilderBackground'
 
 type VisualBuilderTemplatePreviewProps = {
@@ -34,6 +36,8 @@ const nodeTypes = {
     multiple_choices: MultipleChoicesNode,
     text_reply: TextReplyNode,
     file_upload: FileUploadNode,
+    order_selection: OrderSelectionNode,
+    http_request: HttpRequestNode,
     end: EndNode,
 }
 

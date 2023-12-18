@@ -26,7 +26,7 @@ export const WorkflowTemplateModal = ({
     goToNewWorkflowPage,
     template,
 }: Props) => {
-    const workflow = template.getConfiguration('template', 0)
+    const workflow = template.getConfiguration('template', 0, 0)
     const visualBuilderGraph = computeNodesPositions(
         transformWorkflowConfigurationIntoVisualBuilderGraph(workflow)
     )
