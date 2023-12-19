@@ -71,14 +71,14 @@ export const overviewMetricConfig: Record<
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
         hint: {
-            title: 'Number of unique tickets where an agent or rule sent a message within the selected timeframe',
+            title: 'Number of unique tickets where an agent sent a message within the selected timeframe',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#4-tickets-replied',
         },
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
         hint: {
-            title: 'Number of messages sent by an agent or rule within the selected timeframe (excluding internal-notes)',
+            title: 'Number of messages sent by an agent within the selected timeframe (excluding internal-notes)',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#5-messages-sent',
         },
     },
