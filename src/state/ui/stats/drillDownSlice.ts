@@ -1,11 +1,18 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {TableLabels} from 'pages/stats/AgentsTableConfig'
-import {OrderDirection} from 'models/api/types'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {User} from 'config/types/user'
-import {overviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {OrderDirection} from 'models/api/types'
+import {createJob} from 'models/job/resources'
+import {Job, JobType} from 'models/job/types'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {ReportingQuery} from 'models/reporting/types'
+import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
-import {RootState} from 'state/types'
+import {overviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
 
 type CommonMetrics = {
@@ -58,6 +65,11 @@ export type DrillDownMetric =
 export type DrillDownState = {
     isOpen: boolean
     metricData: DrillDownMetric | null
+    export: {
+        isLoading: boolean
+        isError: boolean
+        isRequested: boolean
+    }
 }
 
 const hiddenMetrics: DrillDownMetric['metricName'][] = [
@@ -74,7 +86,41 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
 export const initialState: DrillDownState = {
     isOpen: false,
     metricData: null,
+    export: {
+        isLoading: false,
+        isError: false,
+        isRequested: false,
+    },
 }
+
+export const EXPORT_TICKET_DRILL_DOWN_JOB_ACTION = 'exportTicketDrillDownJob'
+
+export const createExportTicketDrillDownJob = createAsyncThunk<
+    Job,
+    ReportingQuery<HelpdeskMessageCubeWithJoins>,
+    {dispatch: StoreDispatch; state: RootState}
+>(
+    EXPORT_TICKET_DRILL_DOWN_JOB_ACTION,
+    async (
+        query: ReportingQuery<HelpdeskMessageCubeWithJoins>,
+        {dispatch, getState, rejectWithValue}
+    ) => {
+        const currentUser = getCurrentUser(getState())
+        const currentUserEmail = String(currentUser.get('email'))
+
+        try {
+            const response = await createJob({
+                type: JobType.ExportTicketDrilldown,
+                params: {reporting_query: query},
+            })
+            void dispatch(notifyAboutExportSuccess(currentUserEmail))
+
+            return response
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
 
 export const drillDownSlice = createSlice({
     name: 'drillDown',
@@ -84,16 +130,34 @@ export const drillDownSlice = createSlice({
             state.metricData = action.payload
             state.isOpen = true
         },
-        toggleDrillDownModal(state) {
-            state.isOpen = !state.isOpen
+        closeDrillDownModal(state) {
+            state.isOpen = false
+            state.export = initialState.export
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(createExportTicketDrillDownJob.pending, (state) => {
+            state.export.isLoading = true
+            state.export.isRequested = true
+        })
+        builder.addCase(createExportTicketDrillDownJob.fulfilled, (state) => {
+            state.export.isLoading = false
+            state.export.isError = false
+        })
+        builder.addCase(createExportTicketDrillDownJob.rejected, (state) => {
+            state.export.isLoading = false
+            state.export.isError = true
+        })
     },
 })
 
-export const {toggleDrillDownModal, setMetricData} = drillDownSlice.actions
+export const {closeDrillDownModal, setMetricData} = drillDownSlice.actions
 
 export const getDrillDownModalState = (state: RootState) =>
     state.ui[drillDownSlice.name].isOpen
+
+export const getDrillDownExport = (state: RootState) =>
+    state.ui[drillDownSlice.name].export
 
 export const getDrillDownMetric = (state: RootState) => {
     const metricData = state.ui[drillDownSlice.name].metricData
@@ -164,3 +228,10 @@ export const buildAgentMetric = (column: AgentMetricColumn, agent: User) => ({
     metricName: column,
     perAgentId: agent.id,
 })
+
+export const notifyAboutExportSuccess = (currentUserEmail: string) =>
+    notify({
+        message: `<strong>All tickets</strong> will be exported. You will receive the download link via email at <strong>${currentUserEmail}</strong> once the export is done.`,
+        allowHTML: true,
+        status: NotificationStatus.Success,
+    })

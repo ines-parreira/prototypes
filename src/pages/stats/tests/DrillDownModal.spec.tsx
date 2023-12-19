@@ -9,7 +9,7 @@ import {DrillDownInfobar} from 'pages/stats/DrillDownInfobar'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {toggleDrillDownModal} from 'state/ui/stats/drillDownSlice'
+import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
 import {assumeMock} from 'utils/testing'
 import {DrillDownModal} from '../DrillDownModal'
 
@@ -77,7 +77,7 @@ describe('<DrillDownModal />', () => {
         fireEvent.click(screen.getByText('close'))
 
         await waitFor(() => {
-            expect(store.getActions()).toContainEqual(toggleDrillDownModal())
+            expect(store.getActions()).toContainEqual(closeDrillDownModal())
         })
     })
 })

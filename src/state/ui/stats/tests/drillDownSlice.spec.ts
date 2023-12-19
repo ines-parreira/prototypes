@@ -1,20 +1,36 @@
-import {RootState} from 'state/types'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {createJob} from 'models/job/resources'
+import {Job, JobType} from 'models/job/types'
+import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {RootState, StoreDispatch} from 'state/types'
 import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
 import {OrderDirection} from 'models/api/types'
 import {
     initialState,
     setMetricData,
     drillDownSlice,
-    toggleDrillDownModal,
     getDrillDownMetric,
     getDrillDownMetricColumn,
     getDrillDownModalState,
     buildAgentMetric,
+    createExportTicketDrillDownJob,
+    closeDrillDownModal,
 } from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('models/job/resources')
+const createJobMock = assumeMock(createJob)
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+const store = mockStore({
+    ui: {
+        [drillDownSlice.name]: initialState,
+    },
+} as RootState)
 
 describe('drillDownSlice', () => {
     const dateRange = {
@@ -52,16 +68,40 @@ describe('drillDownSlice', () => {
             expect(newState.metricData?.metricName).toEqual(
                 TableColumn.ClosedTickets
             )
-            expect(newState.isOpen).toBeTruthy()
+            expect(newState.isOpen).toEqual(true)
         })
 
-        it('should toggle the modal state', () => {
+        it('should close the modal', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
-                toggleDrillDownModal()
+                closeDrillDownModal()
             )
 
-            expect(newState.isOpen).toEqual(true)
+            expect(newState.isOpen).toEqual(false)
+        })
+
+        it('should set export loading state', () => {
+            const newState = drillDownSlice.reducer(
+                initialState,
+                createExportTicketDrillDownJob.pending
+            )
+
+            expect(newState.export.isLoading).toEqual(true)
+        })
+
+        it.each([
+            createExportTicketDrillDownJob.fulfilled,
+            createExportTicketDrillDownJob.rejected,
+        ])(`should set loading state to false on %s`, (action) => {
+            const newState = drillDownSlice.reducer(
+                {
+                    ...initialState,
+                    export: {...initialState.export, isLoading: true},
+                },
+                action
+            )
+
+            expect(newState.export.isLoading).toEqual(false)
         })
     })
 
@@ -120,6 +160,7 @@ describe('drillDownSlice', () => {
                 metricOrder: OrderDirection.Desc,
             })
         })
+
         it('getDrillDownMetricColumn', () => {
             expect(
                 getDrillDownMetricColumn({
@@ -211,6 +252,29 @@ describe('drillDownSlice', () => {
 
         it('getDrillDownModalState', () => {
             expect(getDrillDownModalState(state)).toEqual(isOpen)
+        })
+    })
+
+    describe('createExportTicketDrillDownJob', () => {
+        createJobMock.mockResolvedValue({id: 123} as unknown as Job)
+
+        it('should fire request with export Job', async () => {
+            const exampleQuery = closedTicketsQueryFactory(
+                {
+                    period: {
+                        start_datetime: '1970-01-01T00:00:00+00:00',
+                        end_datetime: '1970-01-01T00:00:00+00:00',
+                    },
+                },
+                'someTimeZone'
+            )
+
+            await store.dispatch(createExportTicketDrillDownJob(exampleQuery))
+
+            expect(createJobMock).toHaveBeenCalledWith({
+                type: JobType.ExportTicketDrilldown,
+                params: {reporting_query: exampleQuery},
+            })
         })
     })
 

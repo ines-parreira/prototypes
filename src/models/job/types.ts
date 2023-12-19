@@ -1,3 +1,6 @@
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {ReportingQuery} from 'models/reporting/types'
+
 export enum JobStatus {
     CancelRequested = 'cancel_requested',
     Canceled = 'canceled',
@@ -21,20 +24,27 @@ export enum JobType {
     ExportMacro = 'exportMacro',
     ImportMacro = 'importMacro',
     UpdateTicket = 'updateTicket',
+    ExportTicketDrilldown = 'exportTicketDrilldown',
 }
 
 type JobInfo = {
     progress_count: number
 }
 
-export type JobParams = {
-    ticket_ids?: number[]
-    updates?: {
-        status: JobParamsStatus
-    }
-    macro_id?: number
-    apply_and_close?: boolean
-    url?: string
+export type JobParams =
+    | {
+          ticket_ids?: number[]
+          updates?: {
+              status: JobParamsStatus
+          }
+          macro_id?: number
+          apply_and_close?: boolean
+          url?: string
+      }
+    | ReportingQueryJobParams
+
+export type ReportingQueryJobParams = {
+    reporting_query: ReportingQuery<HelpdeskMessageCubeWithJoins>
 }
 
 export type Job = {

@@ -9,9 +9,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {
-    toggleDrillDownModal,
     getDrillDownModalState,
     getDrillDownMetric,
+    closeDrillDownModal,
 } from 'state/ui/stats/drillDownSlice'
 import {DrillDownTable} from './DrillDownTable'
 import {DrillDownInfobar} from './DrillDownInfobar'
@@ -29,7 +29,7 @@ export const DrillDownModal = () => {
             size="huge"
             isOpen={isOpen}
             onClose={() => {
-                dispatch(toggleDrillDownModal())
+                dispatch(closeDrillDownModal())
             }}
         >
             <ModalHeader title={metricData?.title} />

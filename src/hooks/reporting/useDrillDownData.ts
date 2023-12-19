@@ -4,8 +4,10 @@ import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerD
 import {MergedRecord} from 'hooks/reporting/withEnrichment'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
+import {Cubes} from 'models/reporting/cubes'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {EnrichmentFields} from 'models/reporting/types'
+import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getAgentsJS} from 'state/agents/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
@@ -88,18 +90,40 @@ export const getDrillDownMetricOrder = (
         : OrderDirection.Desc
 }
 
-export const useDrillDownData = (
-    metricData: DrillDownMetric
-): DrillDownData => {
+export const useDrillDownQuery = (metricData: DrillDownMetric) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const agents = useAppSelector(getAgentsJS)
-    const query = getDrillDownQuery(metricData)(
+
+    return getDrillDownQuery(metricData)(
         cleanStatsFilters,
         userTimezone,
         getDrillDownMetricOrder(metricData.metricName)
     )
+}
+
+function withoutLimit<Cube extends Cubes>(
+    query: ReportingQuery<Cube>
+): ReportingQuery<Cube> {
+    return {
+        ...query,
+        limit: undefined,
+    }
+}
+
+export const useDrillDownQueryWithoutLimit = (
+    metricData: DrillDownMetric
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    const query = useDrillDownQuery(metricData)
+
+    return withoutLimit(query)
+}
+
+export const useDrillDownData = (
+    metricData: DrillDownMetric
+): DrillDownData => {
+    const query = useDrillDownQuery(metricData)
+    const agents = useAppSelector(getAgentsJS)
     const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
         query,
         defaultEnrichmentFields

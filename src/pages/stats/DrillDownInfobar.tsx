@@ -20,7 +20,7 @@ export const DrillDownInfobar = ({
             <div className={css.text}>
                 <strong>{perPage}</strong> shown.
             </div>
-            <DrillDownDownloadButton />
+            <DrillDownDownloadButton metricData={metricData} />
         </div>
     )
 }

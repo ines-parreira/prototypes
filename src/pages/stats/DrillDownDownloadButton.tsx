@@ -1,34 +1,49 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState} from 'react'
+import React from 'react'
+import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
 import {FeatureFlagKey} from 'config/featureFlags'
-
-import Tooltip from 'pages/common/components/Tooltip'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button from 'pages/common/components/button/Button'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
+import Tooltip from 'pages/common/components/Tooltip'
 import {getCurrentUser} from 'state/currentUser/selectors'
+import {
+    createExportTicketDrillDownJob,
+    DrillDownMetric,
+    getDrillDownExport,
+} from 'state/ui/stats/drillDownSlice'
 import {hasRole} from 'utils'
-import {UserRole} from 'config/types/user'
 
 import css from './DrillDownDownloadButton.less'
 
 export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
-const TOTAL_TICKETS_COUNT_PLACEHOLDER = 'All'
+export const TOTAL_TICKETS_COUNT_PLACEHOLDER = 'All'
+export const DOWNLOAD_LOADING_LABEL = 'Loading'
 const NO_PERMISSIONS_CONTENT =
     'You don’t have enough permissions to download this content.'
 const tooltipTargetID = 'download-drill-down-tooltip'
 
-export const DrillDownDownloadButton = () => {
+export const DrillDownDownloadButton = ({
+    metricData,
+}: {
+    metricData: DrillDownMetric
+}) => {
     const dispatch = useAppDispatch()
+    const {isLoading, isError, isRequested} = useAppSelector(getDrillDownExport)
     const currentUser = useAppSelector(getCurrentUser)
-    const [requestDownload, setRequestDownload] = useState(false)
-    const isDisabled = !(
-        hasRole(currentUser, UserRole.Admin) ||
-        hasRole(currentUser, UserRole.Agent)
-    )
+    const isDisabled =
+        !(
+            hasRole(currentUser, UserRole.Admin) ||
+            hasRole(currentUser, UserRole.Agent)
+        ) || isLoading
+    const query = useDrillDownQueryWithoutLimit(metricData)
+
+    const clickHandler = () => {
+        void dispatch(createExportTicketDrillDownJob(query))
+    }
 
     const hasAnalyticsDrillDownExport: boolean =
         useFlags()[FeatureFlagKey.AnalyticsDrillDownExport]
@@ -39,34 +54,11 @@ export const DrillDownDownloadButton = () => {
                 id={tooltipTargetID}
                 isDisabled={isDisabled}
                 fillStyle="ghost"
-                {...(!requestDownload && {
-                    onClick: () => {
-                        setRequestDownload(true)
-                        void dispatch(
-                            notify({
-                                message: `<strong>${TOTAL_TICKETS_COUNT_PLACEHOLDER} tickets</strong> will be exported. You will receive the download link via email at <strong>${
-                                    currentUser.get('email') as string
-                                }</strong> once the export is done.`,
-                                allowHTML: true,
-                                status: NotificationStatus.Success,
-                            })
-                        )
-                    },
+                {...(!isRequested && {
+                    onClick: clickHandler,
                 })}
             >
-                {requestDownload ? (
-                    <ButtonIconLabel
-                        className={css.success}
-                        icon="check"
-                        position="left"
-                    >
-                        {DOWNLOAD_REQUESTED_LABEL}
-                    </ButtonIconLabel>
-                ) : (
-                    <ButtonIconLabel icon="download" position="left">
-                        Download {TOTAL_TICKETS_COUNT_PLACEHOLDER} tickets
-                    </ButtonIconLabel>
-                )}
+                {getButtonVariant(isRequested, isLoading, isError)}
             </Button>
             <Tooltip
                 disabled={!isDisabled}
@@ -76,5 +68,37 @@ export const DrillDownDownloadButton = () => {
                 {NO_PERMISSIONS_CONTENT}
             </Tooltip>
         </>
+    )
+}
+
+export const getButtonVariant = (
+    isRequested: boolean,
+    exportRequestLoading: boolean,
+    isError: boolean
+) => {
+    if (exportRequestLoading) {
+        return (
+            <ButtonIconLabel icon="download" position="left">
+                {DOWNLOAD_LOADING_LABEL}
+            </ButtonIconLabel>
+        )
+    }
+
+    if (isRequested && !isError) {
+        return (
+            <ButtonIconLabel
+                className={css.success}
+                icon={'check'}
+                position="left"
+            >
+                {DOWNLOAD_REQUESTED_LABEL}
+            </ButtonIconLabel>
+        )
+    }
+
+    return (
+        <ButtonIconLabel icon="download" position="left">
+            {`Download ${TOTAL_TICKETS_COUNT_PLACEHOLDER} tickets`}
+        </ButtonIconLabel>
     )
 }
