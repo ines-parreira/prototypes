@@ -19,7 +19,7 @@ export default function VoiceCallAgentLabel({
     const {data: agent, error} = useAgentDetails(agentId)
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
 
-    if (axios.isAxiosError(error) && error.response?.status === 404) {
+    if (error && axios.isAxiosError(error) && error.response?.status === 404) {
         return (
             <AgentLabel
                 name={`Deleted agent (${formattedPhoneNumber})`}
