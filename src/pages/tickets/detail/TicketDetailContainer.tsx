@@ -3,9 +3,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useKey} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -66,6 +63,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import usePrevious from 'hooks/usePrevious'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {Ticket} from 'models/ticket/types'
+import useKey from 'hooks/useKey'
 import {
     PickedTicket,
     pickedTicketFields,

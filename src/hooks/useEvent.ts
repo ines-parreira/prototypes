@@ -20,7 +20,7 @@ export interface OnOffListener {
     off(name: string, handler: (event?: any) => void, ...args: any[]): void
 }
 
-type UseEventTarget = ElementListener | OnOffListener
+export type UseEventTarget = ElementListener | OnOffListener
 
 const defaultTarget = window
 
@@ -37,7 +37,7 @@ type AddEventListener<T> = T extends ElementListener
     ? T['on']
     : never
 
-type UseEventOptions<T> = Parameters<AddEventListener<T>>[2]
+export type UseEventOptions<T> = Parameters<AddEventListener<T>>[2]
 
 export default function useEvent<T extends UseEventTarget>(
     name: Parameters<AddEventListener<T>>[0],
