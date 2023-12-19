@@ -60,7 +60,9 @@ import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
 import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
 import css from './GorgiasTranslateText.less'
 import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
-import translationsAvailableKeys from './translations-available-keys'
+import translationsAvailableKeys, {
+    deleteUnusedKeys,
+} from './translations-available-keys'
 import isEqualTextsPerLanguage from './utils/CompareTextsPerLanguage'
 
 const generalKeys = Object.keys(translationsAvailableKeys.general)
@@ -568,16 +570,19 @@ function GorgiasTranslateText({
     const updateApplicationTexts = useCallback(async (): Promise<void> => {
         const applicationId: string = integration.getIn(['meta', 'app_id'])
 
+        const processedTranslations: TextsPerLanguage = deleteUnusedKeys(
+            textsOfSelectedLanguage
+        )
+
         if (IsLegacyMonoLanguageMode) {
             await IntegrationsActions.updateApplicationTexts(
                 applicationId,
-                textsOfSelectedLanguage
+                processedTranslations
             )
         } else {
             const mergedData = {
                 ...initialTexts,
-                [language?.get('value') as LanguageChat]:
-                    textsOfSelectedLanguage,
+                [language?.get('value') as LanguageChat]: processedTranslations,
             }
             await IntegrationsActions.updateApplicationTexts(
                 applicationId,

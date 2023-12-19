@@ -1,7 +1,9 @@
+import {omit} from 'lodash'
 import {
     GORGIAS_CHAT_NAME_MAX_LENGTH,
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
 } from 'config/integrations/gorgias_chat'
+import {TextsPerLanguage} from 'rest_api/gorgias_chat_protected_api/types'
 
 export type FilterProps = {
     emailCaptureEnforcement?: string
@@ -10,6 +12,21 @@ export type OptionFormat = {
     maxLength: number
     isRichText?: boolean
     filteredBy?: (props: FilterProps) => boolean
+}
+
+const keysToDelete = [
+    'texts.waitTimeShortNoEmail',
+    'texts.waitTimeMediumNoEmail',
+    'texts.waitTimeLongNoEmail',
+    'texts.emailCaptureOnlineTriggerText',
+    'texts.emailCaptureThanksText',
+    'texts.howCanWeHelpToday',
+    'texts.emailCaptureTriggerTextBase',
+    'texts.thanksForReachingOut',
+]
+
+export const deleteUnusedKeys = (obj: TextsPerLanguage): TextsPerLanguage => {
+    return omit(obj, keysToDelete) as TextsPerLanguage
 }
 
 export default {
@@ -66,11 +83,12 @@ export default {
         'meta.contactFormEmailOutro': {maxLength: 25},
     },
     dynamicWaitTime: {
-        'texts.waitTimeShortNoEmail': {maxLength: 170},
+        'texts.waitTimeShortHeader': {maxLength: 30},
+        'texts.waitTimeMediumHeader': {maxLength: 40},
+        'texts.waitTimeLongHeader': {maxLength: 40},
         'texts.waitTimeShortEmailCaptured': {
             maxLength: 110,
         },
-        'texts.waitTimeMediumNoEmail': {maxLength: 195},
         'texts.waitTimeMediumEmailCaptured': {
             maxLength: 140,
         },
@@ -79,7 +97,6 @@ export default {
         'texts.waitTimeLongEmailCaptured': {
             maxLength: 110,
         },
-        'texts.waitTimeLongNoEmail': {maxLength: 165},
         'texts.getRepliesByEmail': {
             maxLength: 45,
         },
@@ -87,30 +104,13 @@ export default {
     autoResponder: {
         'texts.usualReplyTimeMinutes': {maxLength: 50},
         'texts.usualReplyTimeHours': {maxLength: 50},
-        'texts.emailCaptureTriggerTextBase': {
-            maxLength: 80,
-        },
-        'texts.thanksForReachingOut': {
-            maxLength: 45,
-        },
-        'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 65},
-        'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 65},
+        'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 100},
+        'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 100},
     },
     emailCapture: {
-        'texts.emailCaptureOnlineTriggerText': {
-            maxLength: 80,
-            filteredBy: ({emailCaptureEnforcement}: FilterProps) => {
-                if (emailCaptureEnforcement === 'always-required') {
-                    return false
-                }
-                return true
-            },
-        },
+        'texts.emailCaptureInputLabel': {maxLength: 40},
         'sspTexts.youWillGetRepliesHereAndByEmail': {
             maxLength: 60,
-        },
-        'texts.emailCaptureThanksText': {
-            maxLength: 120,
         },
         'texts.requireEmailCaptureIntro': {
             maxLength: 145,
@@ -121,7 +121,7 @@ export default {
                 return true
             },
         },
-        'texts.howCanWeHelpToday': {maxLength: 45},
+        'sspTexts.email': {maxLength: 10},
     },
     privacyPolicyDisclaimer: {
         'texts.privacyPolicyDisclaimer': {maxLength: 500, isRichText: true},
