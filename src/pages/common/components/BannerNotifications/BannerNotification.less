@@ -79,19 +79,19 @@
     }
 
     /* Success */
-    @successBackgroundColor: var(--feedback-success-0);
+    @successBackgroundColor: var(--accessory-green-1);
     @successBorderColor: var(--feedback-success-1);
 
     /* Error */
-    @errorBackgroundColor: var(--feedback-error-0);
+    @errorBackgroundColor: var(--accessory-red-1);
     @errorBorderColor: var(--feedback-error-1);
 
     /* Info */
-    @infoBackgroundColor: var(--main-primary-0);
+    @infoBackgroundColor: var(--accessory-blue-1);
     @infoBorderColor: var(--main-primary-1);
 
     /* Warning */
-    @warningBackgroundColor: var(--feedback-warning-0);
+    @warningBackgroundColor: var(--accessory-orange-1);
     @warningBorderColor: var(--feedback-warning-1);
 
     .color-variant(@i:1) when (@i <= length(@status)) {

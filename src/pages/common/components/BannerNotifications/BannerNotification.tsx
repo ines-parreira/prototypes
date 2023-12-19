@@ -7,10 +7,7 @@ import warningIcon from 'assets/img/icons/warning2.svg'
 import errorIcon from 'assets/img/icons/error.svg'
 import closeIcon from 'assets/img/icons/close.svg'
 
-import {
-    NotificationStatus,
-    Notification,
-} from '../../../../state/notifications/types'
+import {NotificationStatus, Notification} from 'state/notifications/types'
 
 import css from './BannerNotification.less'
 
