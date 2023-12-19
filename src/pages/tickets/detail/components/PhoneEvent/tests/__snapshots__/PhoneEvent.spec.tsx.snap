@@ -13,9 +13,9 @@ exports[`<PhoneEvent/> render() should render with "View ticket" link" 1`] = `
       <div
         class="icon"
       >
-        <img
-          alt="phone-call-conversation-started"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -53,9 +53,9 @@ exports[`<PhoneEvent/> render() should render with closed details 1`] = `
       <div
         class="icon"
       >
-        <img
-          alt="incoming-phone-call"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -88,9 +88,9 @@ exports[`<PhoneEvent/> render() should render with closed details 2`] = `
       <div
         class="icon"
       >
-        <img
-          alt="outgoing-phone-call"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -123,9 +123,9 @@ exports[`<PhoneEvent/> render() should render with closed details 3`] = `
       <div
         class="icon"
       >
-        <img
-          alt="completed-phone-call"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -158,9 +158,9 @@ exports[`<PhoneEvent/> render() should render with closed details 4`] = `
       <div
         class="icon"
       >
-        <img
-          alt="missed-phone-call"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -186,9 +186,9 @@ exports[`<PhoneEvent/> render() should render with closed details 5`] = `
       <div
         class="icon"
       >
-        <img
-          alt="voicemail-recording"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -228,9 +228,9 @@ exports[`<PhoneEvent/> render() should render with closed details 6`] = `
       <div
         class="icon"
       >
-        <img
-          alt="phone-call-answered"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -263,9 +263,9 @@ exports[`<PhoneEvent/> render() should render with closed details 7`] = `
       <div
         class="icon"
       >
-        <img
-          alt="phone-call-forwarded-to-external-number"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -298,9 +298,9 @@ exports[`<PhoneEvent/> render() should render with closed details 8`] = `
       <div
         class="icon"
       >
-        <img
-          alt="phone-call-forwarded-to-gorgias-number"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -333,9 +333,9 @@ exports[`<PhoneEvent/> render() should render with closed details 9`] = `
       <div
         class="icon"
       >
-        <img
-          alt="phone-call-forwarded"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -361,9 +361,9 @@ exports[`<PhoneEvent/> render() should render with closed details 10`] = `
       <div
         class="icon"
       >
-        <img
-          alt="message-played"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -396,9 +396,9 @@ exports[`<PhoneEvent/> render() should render with opened details 1`] = `
       <div
         class="icon"
       >
-        <img
-          alt="voicemail-recording"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span
@@ -438,9 +438,9 @@ exports[`<PhoneEvent/> render() should render with opened details 2`] = `
       <div
         class="icon"
       >
-        <img
-          alt="completed-phone-call"
-          src="test-file-stub"
+        <div
+          class="logo"
+          style="mask-image: url(test-file-stub);"
         />
       </div>
       <span

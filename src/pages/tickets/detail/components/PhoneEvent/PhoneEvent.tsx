@@ -211,7 +211,13 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
                 <div className={css.content}>
                     {icon && (
                         <div className={css.icon}>
-                            <img src={icon} alt={eventType || ''} />
+                            <div
+                                className={css.logo}
+                                style={{
+                                    WebkitMaskImage: `url(${icon})`,
+                                    maskImage: `url(${icon})`,
+                                }}
+                            />
                         </div>
                     )}
                     {materialIcon !== null && materialIcon}
