@@ -41,7 +41,7 @@ export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
         getDrillDownMetricColumn
     )
 
-    const {perPage, currentPage, onPageChange, data, isFetching} =
+    const {currentPage, pagesCount, onPageChange, data, isFetching} =
         useDrillDownData(metricData)
 
     return (
@@ -172,9 +172,9 @@ export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
                     </TableBody>
                 </TableWrapper>
             </div>
-            {data.length > perPage && (
+            {pagesCount > 1 && (
                 <NumberedPagination
-                    count={Math.ceil(data.length / perPage)}
+                    count={pagesCount}
                     page={currentPage}
                     onChange={onPageChange}
                     className={css.pagination}

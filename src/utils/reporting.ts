@@ -94,7 +94,7 @@ export const TicketDrillDownFilter = {
     values: [],
 }
 
-export const DRILLDOWN_QUERY_LIMIT = 20
+export const DRILLDOWN_QUERY_LIMIT = 100
 
 export const statsFiltersToReportingFilters = (
     members: StatsFiltersMembers,

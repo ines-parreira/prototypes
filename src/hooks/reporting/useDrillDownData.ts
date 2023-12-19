@@ -1,3 +1,4 @@
+import {useState} from 'react'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {User} from 'config/types/user'
 import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
@@ -37,7 +38,9 @@ export interface DrillDownRowData {
 interface DrillDownData {
     isFetching: boolean
     perPage: number
+    pagesCount: number
     currentPage: number
+    totalResults: number
     onPageChange: (page: number) => void
     data: DrillDownRowData[]
 }
@@ -122,6 +125,7 @@ export const useDrillDownQueryWithoutLimit = (
 export const useDrillDownData = (
     metricData: DrillDownMetric
 ): DrillDownData => {
+    const [currentPage, setCurrentPage] = useState(1)
     const query = useDrillDownQuery(metricData)
     const agents = useAppSelector(getAgentsJS)
     const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
@@ -130,14 +134,25 @@ export const useDrillDownData = (
     )
 
     const rowData = someData?.allData || []
+    const totalResults = rowData.length
 
     return {
         isFetching,
         perPage: DRILL_DOWN_PER_PAGE,
-        currentPage: 1,
-        onPageChange: (page: number) => page,
-        data: rowData.map((row) =>
-            formatDrillDownRowData(row, agents, query.dimensions[1])
-        ),
+        currentPage,
+        totalResults,
+        pagesCount: Math.ceil(totalResults / DRILL_DOWN_PER_PAGE),
+        onPageChange: (page: number) =>
+            setCurrentPage(
+                Math.min(page, Math.ceil(totalResults / DRILL_DOWN_PER_PAGE))
+            ),
+        data: rowData
+            .map((row) =>
+                formatDrillDownRowData(row, agents, query.dimensions[1])
+            )
+            .slice(
+                Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
+                Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults)
+            ),
     }
 }

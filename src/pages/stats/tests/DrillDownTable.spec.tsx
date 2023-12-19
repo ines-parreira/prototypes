@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {NumberedPagination} from 'pages/common/components/Paginations'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {OverviewMetric} from 'state/ui/stats/types'
@@ -24,6 +25,8 @@ const MOCK_SKELETON_TEST_ID = 'skeleton'
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
+jest.mock('pages/common/components/Paginations')
+const numberedPaginationMock = assumeMock(NumberedPagination)
 
 jest.mock('state/ui/stats/drillDownSlice')
 const getDrillDownMetricColumnMock = assumeMock(getDrillDownMetricColumn)
@@ -34,6 +37,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<DrillDownTable />', () => {
     const currentPage = 1
+    const pagesCount = 2
     const agentName = 'Agent name'
     const ticketSubject = 'Ticket subject'
     const metricData: DrillDownMetric = {metricName: OverviewMetric.OpenTickets}
@@ -82,6 +86,7 @@ describe('<DrillDownTable />', () => {
         metricTitle: '',
         metricValueFormat: 'decimal',
     })
+    numberedPaginationMock.mockImplementation(() => <div />)
 
     it('should render the table title, table header and rows', () => {
         render(
@@ -162,6 +167,34 @@ describe('<DrillDownTable />', () => {
         expect(window.open).toHaveBeenCalledWith(
             `/app/ticket/${exampleRow.ticket.id}`,
             '_blank'
+        )
+    })
+
+    it('should render Pagination when more then one page of results', () => {
+        const onPageChange = jest.fn()
+        useDrillDownDataMock.mockReturnValue({
+            data,
+            currentPage,
+            perPage: 1,
+            isFetching: true,
+            pagesCount,
+            onPageChange,
+        } as any)
+
+        render(
+            <Provider store={mockStore({})}>
+                <DrillDownTable metricData={metricData} />
+            </Provider>
+        )
+
+        expect(numberedPaginationMock).toHaveBeenCalledWith(
+            {
+                count: pagesCount,
+                page: currentPage,
+                onChange: onPageChange,
+                className: 'pagination',
+            },
+            {}
         )
     })
 })

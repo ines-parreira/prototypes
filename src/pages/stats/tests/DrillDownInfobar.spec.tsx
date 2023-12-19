@@ -41,11 +41,28 @@ describe('<DrillDownInfobar />', () => {
     useDrillDownDataMock.mockReturnValue({
         data,
         perPage: DRILL_DOWN_PER_PAGE,
+        totalResults: data.length,
+        isFetching: false,
     } as any)
 
     it('should render the infobar', () => {
         render(<DrillDownInfobar metricData={metricData} />)
 
-        expect(screen.getByText(`${DRILL_DOWN_PER_PAGE}`)).toBeInTheDocument()
+        expect(
+            screen.getByText(`${data.length}`, {exact: false})
+        ).toBeInTheDocument()
+    })
+
+    it('should render "?" as number of rows when fetching', () => {
+        useDrillDownDataMock.mockReturnValue({
+            data,
+            perPage: DRILL_DOWN_PER_PAGE,
+            totalResults: data.length,
+            isFetching: true,
+        } as any)
+
+        render(<DrillDownInfobar metricData={metricData} />)
+
+        expect(screen.getByText('?', {exact: false})).toBeInTheDocument()
     })
 })

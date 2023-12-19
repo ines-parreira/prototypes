@@ -1,9 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
+import {act, renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {OrderDirection} from 'models/api/types'
 import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {EnrichmentFields, ReportingGranularity} from 'models/reporting/types'
@@ -11,6 +13,7 @@ import {StatsFilters} from 'models/stat/types'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {
+    defaultEnrichmentFields,
     DRILL_DOWN_PER_PAGE,
     formatDrillDownRowData,
     useDrillDownData,
@@ -90,6 +93,8 @@ describe('useDrillDownData', () => {
             isFetching: false,
             perPage: DRILL_DOWN_PER_PAGE,
             currentPage: 1,
+            pagesCount: Math.ceil(rowData.length / DRILL_DOWN_PER_PAGE),
+            totalResults: rowData.length,
             onPageChange: expect.any(Function),
             data: rowData.map((row) =>
                 formatDrillDownRowData(row, agents, metricDimension)
@@ -97,12 +102,35 @@ describe('useDrillDownData', () => {
         })
     })
 
-    it('should assume unread Tickets when is_unread missing', () => {
+    it('should sort ascending CSAT metrics', () => {
+        useMetricPerDimensionWithEnrichmentMock
+        const metricData: DrillDownMetric = {
+            metricName: OverviewMetric.CustomerSatisfaction,
+        }
+        renderHook(() => useDrillDownData(metricData), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore({})}>{children}</Provider>
+            ),
+        })
+
+        expect(useMetricPerDimensionWithEnrichmentMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                order: [
+                    [
+                        TicketSatisfactionSurveyDimension.SurveyScore,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
+            defaultEnrichmentFields
+        )
+    })
+
+    it('should assume unread Tickets when ticket enrichment missing missing and null other fields', () => {
         useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
             data: {
                 allData: [
                     {
-                        ...exampleRow,
                         [EnrichmentFields.IsUnread]: undefined,
                     },
                 ],
@@ -122,7 +150,15 @@ describe('useDrillDownData', () => {
 
         expect(result.current.data).toContainEqual(
             expect.objectContaining({
-                ticket: expect.objectContaining({isRead: false}),
+                ticket: expect.objectContaining({
+                    isRead: false,
+                    id: null,
+                    subject: null,
+                    description: null,
+                    channel: null,
+                    created: null,
+                    contactReason: null,
+                }),
             })
         )
     })
@@ -147,5 +183,26 @@ describe('useDrillDownData', () => {
         expect(result.current.data).toContainEqual(
             expect.objectContaining({assignee: null})
         )
+    })
+
+    it('should switch to next page of data', () => {
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+            data: {
+                allData: new Array(DRILL_DOWN_PER_PAGE + 1).fill(exampleRow),
+            } as unknown as any,
+            isFetching: false,
+            isError: false,
+        })
+
+        const {result} = renderHook(() => useDrillDownData(metricData), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore({})}>{children}</Provider>
+            ),
+        })
+        act(() => {
+            result.current.onPageChange(2)
+        })
+
+        expect(result.current.currentPage).toEqual(2)
     })
 })
