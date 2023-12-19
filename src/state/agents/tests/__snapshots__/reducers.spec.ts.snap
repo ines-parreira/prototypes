@@ -176,7 +176,7 @@ exports[`agents reducers update agent 1`] = `
   "all": [
     {
       "id": 1,
-      "name": "Alex",
+      "name": "Romain",
     },
     {
       "id": 2,

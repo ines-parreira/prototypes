@@ -1,8 +1,9 @@
 import {fromJS, Map, List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
+import {UserRole, User} from 'config/types/user'
+
 import {StoreAction} from '../types'
-import {UserRole, User} from '../../config/types/user'
 import * as currentUserConstants from '../currentUser/constants'
 
 import * as agentsConstants from './constants'
@@ -45,19 +46,17 @@ export default function reducer(
         }
 
         case agentsConstants.UPDATE_AGENT_SUCCESS: {
-            const agent = action.resp as Map<any, any>
+            const agent = action.resp as User
 
             const existingAgentIndex = (
                 state.get('all') as List<any>
-            ).findIndex(
-                (user: Map<any, any>) => user.get('id') === agent.get('id')
-            )
+            ).findIndex((user: Map<any, any>) => user.get('id') === agent.id)
 
             if (!~existingAgentIndex) {
                 return state
             }
 
-            return state.setIn(['all', existingAgentIndex], agent)
+            return state.setIn(['all', existingAgentIndex], fromJS(agent))
         }
 
         case agentsConstants.DELETE_AGENT_SUCCESS: {

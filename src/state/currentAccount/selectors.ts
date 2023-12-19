@@ -21,6 +21,11 @@ import {
 export const getCurrentAccountState = (state: RootState) =>
     state.currentAccount || fromJS({})
 
+export const getAccountOwnerId = createSelector(
+    getCurrentAccountState,
+    (state) => state.get('user_id') as number
+)
+
 export const getCurrentAccountMeta = createSelector(
     getCurrentAccountState,
     (state) => (state.get('meta') as Map<any, any>) || fromJS({})

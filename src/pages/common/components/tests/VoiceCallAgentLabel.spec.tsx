@@ -41,7 +41,7 @@ describe('VoiceCallAgentLabel', () => {
 
     it('should render deleted agent when agent does not exist', () => {
         useAgentDetailsSpy.mockReturnValue({
-            error: {response: {status: 404}},
+            error: {response: {status: 404}, isAxiosError: true},
         } as any)
         renderComponent({agentId: 1, phoneNumber: '1234567890'})
 

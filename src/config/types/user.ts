@@ -1,15 +1,6 @@
 import {DateFormatType, TimeFormatType} from 'constants/datetime'
 import {SoundValue} from 'services/NotificationSounds'
 
-export type AgentRoleMeta = {
-    description: string
-    label: string
-}
-
-export type MetaByAgentRole = {
-    [key: string]: AgentRoleMeta
-}
-
 export enum UserRole {
     ObserverAgent = 'observer-agent',
     LiteAgent = 'lite-agent',
@@ -22,10 +13,11 @@ export type UserDraft = {
     id?: Maybe<number>
     email: string
     name: string
-    role: {name: UserRole}
+    role?: {name: UserRole}
 }
 
 export type User = UserDraft & {
+    role: {name: UserRole}
     active: boolean
     bio: Maybe<string>
     country: string | null

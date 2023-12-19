@@ -1,4 +1,4 @@
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import Modal from '../Modal'
@@ -16,28 +16,28 @@ describe('<Modal />', () => {
         jest.resetAllMocks()
     })
 
-    it('should render an opened modal', () => {
-        const {baseElement} = render(
-            <Modal {...minProps} isOpen={true}>
+    it('should render an opened modal or not according to isOpen prop', async () => {
+        const {rerender} = render(
+            <Modal {...minProps} isOpen>
                 <ModalHeader title="Did you know?" />
-                <ModalBody>
-                    Ares is the Greek god of courage and war. He is one of the
-                    Twelve Olympians, and the son of Zeus and Hera
-                </ModalBody>
             </Modal>
         )
+        expect(screen.getByText('Did you know?'))
 
-        expect(baseElement).toMatchSnapshot()
+        rerender(
+            <Modal {...minProps} isOpen={false}>
+                <ModalHeader title="Did you know?" />
+            </Modal>
+        )
+        await waitFor(() => {
+            expect(screen.queryByText('Did you know?')).not.toBeInTheDocument()
+        })
     })
 
     it('should trigger the provided callback on close', () => {
         const {getByText} = render(
             <Modal {...minProps} isOpen={true}>
                 <ModalHeader title="Did you know?" />
-                <ModalBody>
-                    Ares is the Greek god of courage and war. He is one of the
-                    Twelve Olympians, and the son of Zeus and Hera
-                </ModalBody>
             </Modal>
         )
 
@@ -50,10 +50,6 @@ describe('<Modal />', () => {
         const {container} = render(
             <Modal {...minProps} isOpen={true}>
                 <ModalHeader title="Did you know?" />
-                <ModalBody>
-                    Ares is the Greek god of courage and war. He is one of the
-                    Twelve Olympians, and the son of Zeus and Hera
-                </ModalBody>
             </Modal>
         )
 
@@ -66,10 +62,6 @@ describe('<Modal />', () => {
         const {container} = render(
             <Modal {...minProps} isOpen={false}>
                 <ModalHeader title="Did you know?" />
-                <ModalBody>
-                    Ares is the Greek god of courage and war. He is one of the
-                    Twelve Olympians, and the son of Zeus and Hera
-                </ModalBody>
             </Modal>
         )
 

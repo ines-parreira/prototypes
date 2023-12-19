@@ -49,11 +49,12 @@ const TemplateWithCustomStyle: Story<ComponentProps<typeof Caption>> = ({
 
 const defaultProps: Partial<ComponentProps<typeof Caption>> = {
     children: 'Name',
+    darken: false,
 }
 
 const templateParameters = {
     controls: {
-        include: ['children', 'error'],
+        include: ['children', 'error', 'darken'],
     },
 }
 

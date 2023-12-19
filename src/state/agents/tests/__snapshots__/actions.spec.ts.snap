@@ -1,66 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`agents actions create agent 1`] = `
-[
-  {
-    "resp": Immutable.Map {
-      "data": Immutable.Map {
-        "name": "Alex",
-        "email": "alex@gorgias.io",
-        "role": Immutable.Map {
-          "name": "agent",
-        },
-      },
-    },
-    "type": "CREATE_AGENT_SUCCESS",
-  },
-]
-`;
-
 exports[`agents actions deleteAgent() delete agent 1`] = `
 [
   {
     "id": 1,
     "type": "DELETE_AGENT_SUCCESS",
-  },
-]
-`;
-
-exports[`agents actions deleteAgent() display error 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 400],
-    "reason": "Failed to delete team member",
-    "type": "DELETE_AGENT_ERROR",
-    "verbose": true,
-  },
-]
-`;
-
-exports[`agents actions invite agent 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 404],
-    "reason": "Failed to invite team member",
-    "type": "INVITE_AGENT_ERROR",
-  },
-]
-`;
-
-exports[`agents actions update agent 1`] = `
-[
-  {
-    "resp": Immutable.Map {
-      "data": Immutable.Map {
-        "id": 2,
-        "name": "Alex",
-        "email": "alex@gorgias.io",
-        "role": Immutable.Map {
-          "name": "agent",
-        },
-      },
-    },
-    "type": "UPDATE_AGENT_SUCCESS",
   },
 ]
 `;

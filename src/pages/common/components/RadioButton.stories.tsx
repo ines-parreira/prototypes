@@ -21,13 +21,22 @@ const Template: Story<ComponentProps<typeof RadioButton>> = (props) => (
 
 const templateParameters = {
     controls: {
-        include: ['caption', 'label', 'isDisabled', 'isSelected'],
+        include: [
+            'caption',
+            'label',
+            'isDisabled',
+            'isSelected',
+            'darkenCaption',
+        ],
     },
 }
 
 const defaultProps: Partial<ComponentProps<typeof RadioButton>> = {
     label: 'I am a potato',
     value: 'potato',
+    isDisabled: false,
+    isSelected: false,
+    darkenCaption: false,
 }
 
 export const Default = Template.bind({})

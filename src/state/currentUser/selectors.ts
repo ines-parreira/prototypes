@@ -26,6 +26,11 @@ export const getCurrentUser = createSelector(
     (state) => state
 )
 
+export const getCurrentUserId = createSelector(
+    getCurrentUserState,
+    (state) => state.get('id') as number
+)
+
 export const getSettings = createSelector(
     getCurrentUserState,
     (state) => (state.get('settings') as List<any>) || fromJS([])

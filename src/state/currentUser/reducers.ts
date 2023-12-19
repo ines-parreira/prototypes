@@ -1,8 +1,10 @@
 import {fromJS, Map, List} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import {UserSetting} from '../../config/types/user'
+import {UserSetting, User} from 'config/types/user'
+
 import {GorgiasAction} from '../types'
+import * as agentConstants from '../agents/constants'
 
 import * as constants from './constants'
 import {CurrentUserState} from './types'
@@ -100,6 +102,13 @@ export default function reducer(
         case constants.UPDATE_2FA_STATUS:
             return state.update('has_2fa_enabled', () => action.status)
 
+        case agentConstants.UPDATE_AGENT_SUCCESS: {
+            const agent = action.resp as User
+            if (agent.id === state.get('id')) {
+                return fromJS(agent) as Map<any, any>
+            }
+            return state
+        }
         default:
             return state
     }

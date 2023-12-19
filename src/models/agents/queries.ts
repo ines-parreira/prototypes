@@ -1,8 +1,15 @@
-import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+import {useMutation, UseQueryOptions, useQuery} from '@tanstack/react-query'
 
-import {AxiosError} from 'axios'
+import {MutationOverrides} from 'types/query'
 import {FetchAgentsOptions} from './types'
-import {fetchAgent, fetchAgents} from './resources'
+import {
+    fetchAgent,
+    fetchAgents,
+    createAgent,
+    updateAgent,
+    deleteAgent,
+    inviteAgent,
+} from './resources'
 
 export const agentsKeys = {
     all: () => ['agents'] as const,
@@ -23,17 +30,49 @@ export const useListAgents = (
     })
 }
 
-export const useGetAgent = <TData = Awaited<ReturnType<typeof fetchAgent>>>(
+export const useGetAgent = (
     id: number,
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof fetchAgent>>,
-        AxiosError,
-        TData
-    >
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchAgent>>>
 ) => {
     return useQuery({
         queryKey: agentsKeys.detail(id),
         queryFn: () => fetchAgent(id),
+        ...overrides,
+    })
+}
+
+export const useCreateAgent = (
+    overrides?: MutationOverrides<typeof createAgent>
+) => {
+    return useMutation({
+        mutationFn: (params) => createAgent(...params),
+        ...overrides,
+    })
+}
+
+export const useUpdateAgent = (
+    overrides?: MutationOverrides<typeof updateAgent>
+) => {
+    return useMutation({
+        mutationFn: (params) => updateAgent(...params),
+        ...overrides,
+    })
+}
+
+export const useDeleteAgent = (
+    overrides?: MutationOverrides<typeof deleteAgent>
+) => {
+    return useMutation({
+        mutationFn: (params) => deleteAgent(...params),
+        ...overrides,
+    })
+}
+
+export const useInviteAgent = (
+    overrides?: MutationOverrides<typeof inviteAgent>
+) => {
+    return useMutation({
+        mutationFn: (params) => inviteAgent(...params),
         ...overrides,
     })
 }

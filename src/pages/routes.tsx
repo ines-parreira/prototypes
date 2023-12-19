@@ -78,8 +78,8 @@ import RulesLibrary from 'pages/settings/rules/RulesLibrary'
 import RulesView from 'pages/settings/rules/RulesList'
 import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
 import Access from 'pages/settings/access/Access'
-import TeamList from 'pages/settings/users/List'
-import TeamForm from 'pages/settings/users/Form'
+import AgentList from 'pages/settings/users/List'
+import AgentDetail from 'pages/settings/users/Detail'
 import TeamsList from 'pages/settings/teams/List'
 import TeamsForm from 'pages/settings/teams/Form'
 import List from 'pages/settings/teams/members/List'
@@ -1678,7 +1678,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={() => (
                     <App
                         content={memoizedWithUserRoleRequired(
-                            TeamList as any,
+                            AgentList as any,
                             ADMIN_ROLE,
                             PageSection.Users
                         )}
@@ -1692,7 +1692,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={() => (
                     <App
                         content={memoizedWithUserRoleRequired(
-                            TeamForm,
+                            AgentDetail,
                             ADMIN_ROLE,
                             PageSection.Users
                         )}
@@ -1706,7 +1706,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={() => (
                     <App
                         content={memoizedWithUserRoleRequired(
-                            TeamForm,
+                            AgentDetail,
                             ADMIN_ROLE,
                             PageSection.Users
                         )}
