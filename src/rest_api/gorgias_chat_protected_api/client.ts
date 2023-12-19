@@ -33,7 +33,7 @@ async function buildGorgiasChatProtectedApiClient() {
         withServer: {url: getGorgiasChatApiBaseUrl()},
     })
     apiClient = await api.init<Client>()
-    apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
+    apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor as any)
 
     return apiClient
 }

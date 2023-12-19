@@ -33,7 +33,7 @@ async function buildGorgiasRevenueAddonApiClient() {
         withServer: {url: baseUrl},
     })
     apiClient = await api.init<Client>()
-    apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
+    apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor as any)
 
     return apiClient
 }

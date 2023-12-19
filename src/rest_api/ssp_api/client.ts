@@ -30,7 +30,7 @@ async function buildGorgiasSSPApiClient() {
         withServer: {url: getGorgiasSSPBaseURL()},
     })
     apiClient = await api.init<Client>()
-    apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
+    apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor as any)
 
     return apiClient
 }

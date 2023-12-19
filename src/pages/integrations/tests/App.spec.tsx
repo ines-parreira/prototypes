@@ -53,6 +53,8 @@ describe(`App`, () => {
     })
 
     it('should render', async () => {
+        mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
+
         const {container} = renderWithRouter(
             <Provider store={store}>
                 <App />
@@ -64,7 +66,6 @@ describe(`App`, () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-        mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -90,6 +91,9 @@ describe(`App`, () => {
     })
 
     it('should render the advanced tab', async () => {
+        mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
+        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
+
         const {container} = renderWithRouter(
             <Provider store={store}>
                 <App />
@@ -101,13 +105,16 @@ describe(`App`, () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-        mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
-        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the connections tab when there are conencted integrations', async () => {
+        mockServer
+            .onGet(`/api/apps/${appId}`)
+            .reply(200, {...dummyAppData, is_installed: true})
+        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
+
         const store = mockStore({
             integrations: fromJS({
                 currentAccount: fromJS({domain: '20-1 rpz'}),
@@ -133,10 +140,6 @@ describe(`App`, () => {
             }
         )
 
-        mockServer
-            .onGet(`/api/apps/${appId}`)
-            .reply(200, {...dummyAppData, is_installed: true})
-        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(getByText('App Details')).toBeDefined()
         expect(getByText('Advanced')).toBeDefined()
@@ -144,6 +147,11 @@ describe(`App`, () => {
     })
 
     it('should not render the connections tab with no integrations', async () => {
+        mockServer
+            .onGet(`/api/apps/${appId}`)
+            .reply(200, {...dummyAppData, is_installed: true})
+        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
+
         const {queryByText} = renderWithRouter(
             <Provider store={store}>
                 <App />
@@ -154,10 +162,6 @@ describe(`App`, () => {
             }
         )
 
-        mockServer
-            .onGet(`/api/apps/${appId}`)
-            .reply(200, {...dummyAppData, is_installed: true})
-        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(queryByText('App Details')).not.toBeNull()
         expect(queryByText('Advanced')).not.toBeNull()

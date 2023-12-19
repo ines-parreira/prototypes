@@ -1,5 +1,3 @@
-import qs from 'qs'
-
 import {User, UserDraft} from 'config/types/user'
 import {USER_ROLES} from 'config/user'
 import {FetchAgentsOptions} from 'models/agents/types'
@@ -16,8 +14,8 @@ export const fetchAgents = async (options: FetchAgentsOptions = {}) => {
         '/api/users/',
         {
             params: {limit: 30, ...parameters},
-            paramsSerializer: (params) => {
-                return qs.stringify(params, {arrayFormat: 'repeat'})
+            paramsSerializer: {
+                indexes: null,
             },
         }
     )

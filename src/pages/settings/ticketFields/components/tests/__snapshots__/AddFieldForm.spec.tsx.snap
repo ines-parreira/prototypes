@@ -11,9 +11,13 @@ exports[`<AddFieldForm/> should create custom field if the save button is clicke
   "post": [
     {
       "data": "{"object_type":"Ticket","label":"Test name","required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"dropdown","choices":[]}}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -27,6 +31,11 @@ exports[`<AddFieldForm/> should create custom field if the save button is clicke
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

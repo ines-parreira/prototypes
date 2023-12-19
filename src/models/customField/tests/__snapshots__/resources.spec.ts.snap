@@ -33,9 +33,13 @@ exports[`custom field resources createCustomField should resolve with a new Cust
   "post": [
     {
       "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -49,6 +53,11 @@ exports[`custom field resources createCustomField should resolve with a new Cust
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -87,6 +96,10 @@ exports[`custom field resources getCustomField should resolve with an existing C
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -102,6 +115,11 @@ exports[`custom field resources getCustomField should resolve with an existing C
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields/123",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -149,6 +167,10 @@ exports[`custom field resources getCustomFields should resolve with a list of pa
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -168,6 +190,11 @@ exports[`custom field resources getCustomFields should resolve with a list of pa
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -217,9 +244,13 @@ exports[`custom field resources updateCustomField should resolve with an updated
   "put": [
     {
       "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -233,6 +264,11 @@ exports[`custom field resources updateCustomField should resolve with an updated
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields/123",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -280,9 +316,13 @@ exports[`custom field resources updateCustomFields should resolve with a list of
   "put": [
     {
       "data": "[{"id":123,"priority":999}]",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -296,6 +336,11 @@ exports[`custom field resources updateCustomFields should resolve with a list of
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -339,9 +384,13 @@ exports[`custom field resources updatePartialCustomField should resolve with an 
   "put": [
     {
       "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -355,6 +404,11 @@ exports[`custom field resources updatePartialCustomField should resolve with an 
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/custom-fields/123",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

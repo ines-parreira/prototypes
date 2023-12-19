@@ -197,6 +197,7 @@ exports[`infobar actions search should dispatch search results on success 1`] = 
           "name": "alex",
         },
       ],
+      "searchEngine": undefined,
     },
     "type": "SEARCH_CUSTOMERS_SUCCESS",
   },

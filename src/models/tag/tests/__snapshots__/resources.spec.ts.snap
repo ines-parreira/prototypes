@@ -24,9 +24,13 @@ exports[`tag resources createTag should resolve with a new Tag on success 2`] = 
   "post": [
     {
       "data": "{"name":"billing"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -40,6 +44,11 @@ exports[`tag resources createTag should resolve with a new Tag on success 2`] = 
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/tags/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -83,6 +92,10 @@ exports[`tag resources fetchTags should resolve with a Tag list on success 1`] =
 {
   "config": {
     "data": undefined,
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
@@ -102,6 +115,11 @@ exports[`tag resources fetchTags should resolve with a Tag list on success 1`] =
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/tags/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -155,7 +173,7 @@ exports[`tag resources fetchTags should resolve with a Tag list on success 1`] =
       "prev_cursor": null,
     },
   },
-  "headers": undefined,
+  "headers": {},
   "request": {
     "responseUrl": "/api/tags/",
   },
@@ -188,9 +206,13 @@ exports[`tag resources updateTag should resolve with the updated tag on success 
   "put": [
     {
       "data": "{"id":2,"created_datetime":"2021-01-21T13:10:46.444928+00:00","decoration":null,"deleted_datetime":null,"description":null,"name":"billing","usage":10,"uri":"/api/tags/2/"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -204,6 +226,11 @@ exports[`tag resources updateTag should resolve with the updated tag on success 
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/tags/2/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

@@ -4,6 +4,10 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
 {
   "config": {
     "data": undefined,
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
@@ -22,7 +26,9 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
         "admin",
       ],
     },
-    "paramsSerializer": [Function],
+    "paramsSerializer": {
+      "indexes": null,
+    },
     "timeout": 0,
     "transformRequest": [
       [Function],
@@ -30,6 +36,11 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
     "transformResponse": [
       [Function],
     ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
     "url": "/api/users/",
     "validateStatus": [Function],
     "xsrfCookieName": "XSRF-TOKEN",
@@ -98,7 +109,7 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
       },
     },
   },
-  "headers": undefined,
+  "headers": {},
   "request": {
     "responseUrl": "/api/users/",
   },

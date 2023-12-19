@@ -3054,6 +3054,7 @@ exports[`actions updatePotentialCustomers should return a list of potential cust
   ],
   "meta": {},
   "object": "list",
+  "searchEngine": undefined,
   "uri": "",
 }
 `;

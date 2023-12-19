@@ -10,6 +10,7 @@ import {fetchMacros} from 'models/macro/resources'
 import {Macro, MacroSortableProperties} from 'models/macro/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import Search from 'pages/common/components/Search'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
 
@@ -74,8 +75,6 @@ jest.mock(
     () => 'MacroFilters'
 )
 
-const cancelToken = axios.CancelToken.source().token
-
 describe('<MacrosSettingsContent/>', () => {
     const mappedMacrosFixtures = macrosFixtures
     const mockFetchMacros: jest.MockedFunction<typeof fetchMacros> =
@@ -93,8 +92,8 @@ describe('<MacrosSettingsContent/>', () => {
         notify: mockNotify,
     } as any as ComponentProps<typeof MacrosSettingsContentContainer>
 
-    mockFetchMacros.mockResolvedValue({
-        data: {
+    mockFetchMacros.mockResolvedValue(
+        axiosSuccessResponse({
             data: mappedMacrosFixtures,
             meta: {
                 prev_cursor: 'xxx',
@@ -102,12 +101,8 @@ describe('<MacrosSettingsContent/>', () => {
             },
             uri: '',
             object: '',
-        },
-        status: 200,
-        statusText: 'ok',
-        config: {},
-        headers: {},
-    })
+        })
+    )
 
     it('should match snapshot', () => {
         const component = shallow(
@@ -125,7 +120,7 @@ describe('<MacrosSettingsContent/>', () => {
             {
                 orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
             },
-            {cancelToken}
+            {cancelToken: expect.any(axios.CancelToken)}
         )
         setImmediate(() => {
             expect(mockMacrosFetched).toHaveBeenNthCalledWith(
@@ -160,7 +155,7 @@ describe('<MacrosSettingsContent/>', () => {
             {
                 orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
             },
-            {cancelToken}
+            {cancelToken: expect.any(axios.CancelToken)}
         )
     })
 
@@ -175,7 +170,7 @@ describe('<MacrosSettingsContent/>', () => {
             {
                 orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
             },
-            {cancelToken}
+            {cancelToken: expect.any(axios.CancelToken)}
         )
     })
 
@@ -196,7 +191,7 @@ describe('<MacrosSettingsContent/>', () => {
                 {
                     orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                 },
-                {cancelToken}
+                {cancelToken: expect.any(axios.CancelToken)}
             )
             done()
         })
@@ -204,8 +199,8 @@ describe('<MacrosSettingsContent/>', () => {
 
     it('should refetch macros at previous page if last page is empty', (done) => {
         const prevCursor = 'prevCursor'
-        mockFetchMacros.mockResolvedValue({
-            data: {
+        mockFetchMacros.mockResolvedValue(
+            axiosSuccessResponse({
                 data: mappedMacrosFixtures,
                 meta: {
                     prev_cursor: prevCursor,
@@ -213,12 +208,8 @@ describe('<MacrosSettingsContent/>', () => {
                 },
                 uri: '',
                 object: '',
-            },
-            status: 200,
-            statusText: 'ok',
-            config: {},
-            headers: {},
-        })
+            })
+        )
 
         const component = mount(
             <MacrosSettingsContentContainer
@@ -237,15 +228,15 @@ describe('<MacrosSettingsContent/>', () => {
                     orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                     cursor: prevCursor,
                 },
-                {cancelToken}
+                {cancelToken: expect.any(axios.CancelToken)}
             )
             done()
         })
     })
 
     it('should not refetch macros when the only page is empty', (done) => {
-        mockFetchMacros.mockResolvedValueOnce({
-            data: {
+        mockFetchMacros.mockResolvedValueOnce(
+            axiosSuccessResponse({
                 data: [{id: 1} as unknown as Macro],
                 meta: {
                     prev_cursor: null,
@@ -253,12 +244,8 @@ describe('<MacrosSettingsContent/>', () => {
                 },
                 uri: '',
                 object: '',
-            },
-            status: 200,
-            statusText: 'ok',
-            config: {},
-            headers: {},
-        })
+            })
+        )
         const component = mount(
             <MacrosSettingsContentContainer
                 {...minProps}
@@ -289,7 +276,7 @@ describe('<MacrosSettingsContent/>', () => {
                 orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                 search: 'foobar',
             },
-            {cancelToken}
+            {cancelToken: expect.any(axios.CancelToken)}
         )
     })
 

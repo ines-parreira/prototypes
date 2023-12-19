@@ -1,5 +1,4 @@
 import _omit from 'lodash/omit'
-import {stringify} from 'qs'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
@@ -23,7 +22,6 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
         `/api/views/`,
         {
             params,
-            paramsSerializer: stringify,
         }
     )
 }

@@ -91,11 +91,13 @@ exports[`integrations actions fetchChatIntegrationStatus action should handle er
   },
   {
     "error": {
-      "config": {},
+      "config": {
+        "headers": {},
+      },
       "data": {},
       "headers": {},
       "status": 400,
-      "statusText": "",
+      "statusText": "OK",
     },
     "id": 1,
     "reason": "Failed to fetch Status for Chat ID 1",

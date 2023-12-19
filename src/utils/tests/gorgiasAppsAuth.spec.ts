@@ -17,7 +17,7 @@ describe('gorgiasAppsAuth', () => {
         const interceptor = buildGorgiasAppsAuthInterceptor()
         // eslint-disable-next-line no-restricted-properties
         axiosClient = axios.create()
-        axiosClient.interceptors.request.use(interceptor)
+        axiosClient.interceptors.request.use(interceptor as any)
 
         mockGorgiasAPI = new MockAdapter(client)
         mockAppAPI = new MockAdapter(axiosClient)

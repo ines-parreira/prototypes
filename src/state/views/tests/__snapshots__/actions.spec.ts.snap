@@ -11,9 +11,13 @@ exports[`actions createJob() should call the job API with the view JSON in it's 
   "post": [
     {
       "data": "{"type":"jobTypeValue","scheduled_datetime":"2018-10-01T00:00:15.000Z","params":{"view":{"foo":"bar","type":"ticket-list","filters":{}},"exampleVar":"exampleValue"}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -27,6 +31,11 @@ exports[`actions createJob() should call the job API with the view JSON in it's 
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/jobs/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -48,9 +57,13 @@ exports[`actions createJob() should call the job API with the view id in it's pa
   "post": [
     {
       "data": "{"type":"jobTypeValue","scheduled_datetime":"2018-10-01T00:00:15.000Z","params":{"view_id":1,"exampleVar":"exampleValue"}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -64,6 +77,11 @@ exports[`actions createJob() should call the job API with the view id in it's pa
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/jobs/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -94,6 +112,10 @@ exports[`actions deleteView() should redirect to other view of same type when de
   "delete": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -109,6 +131,11 @@ exports[`actions deleteView() should redirect to other view of same type when de
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -196,6 +223,10 @@ exports[`actions fetchViewItems should fetch current page with cursor 2`] = `
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -211,6 +242,11 @@ exports[`actions fetchViewItems should fetch current page with cursor 2`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items/?cursor=1234",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -261,6 +297,10 @@ exports[`actions fetchViewItems should fetch current page without cursor 2`] = `
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -276,6 +316,11 @@ exports[`actions fetchViewItems should fetch current page without cursor 2`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -326,6 +371,10 @@ exports[`actions fetchViewItems should fetch next page 2`] = `
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -341,6 +390,11 @@ exports[`actions fetchViewItems should fetch next page 2`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items?direction=next&cursor=123&ignored_item=7",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -391,6 +445,10 @@ exports[`actions fetchViewItems should fetch prev page 2`] = `
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -406,6 +464,11 @@ exports[`actions fetchViewItems should fetch prev page 2`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items?direction=prevcursor=123&ignored_item=7",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -437,6 +500,10 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -452,6 +519,11 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -483,6 +555,10 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -498,6 +574,11 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -529,6 +610,10 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
   "get": [
     {
       "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
@@ -544,6 +629,11 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -610,9 +700,13 @@ exports[`actions fetchViewItems should pass the view because it is dirty 2`] = `
   "put": [
     {
       "data": "{"view":{"id":1,"type":"ticket-list","filters":"eq(ticket.channel, 'chat')"}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -626,6 +720,11 @@ exports[`actions fetchViewItems should pass the view because it is dirty 2`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/1/items/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -705,9 +804,13 @@ exports[`actions submitView() should create view when id is 0 1`] = `
   "post": [
     {
       "data": "{"filters":"eq(ticket.channel, \\"chat\\")","type":"ticket-list","name":"My Tickets","shared_with_users":[1],"visibility":"private"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -721,6 +824,11 @@ exports[`actions submitView() should create view when id is 0 1`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -758,9 +866,13 @@ exports[`actions submitView() should update view 1`] = `
   "put": [
     {
       "data": "{"id":99,"type":"ticket-list","name":"My Tickets","filters":"eq(ticket.channel, \\"chat\\")"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -774,6 +886,11 @@ exports[`actions submitView() should update view 1`] = `
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/views/99/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",

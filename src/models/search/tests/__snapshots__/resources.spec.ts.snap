@@ -11,9 +11,13 @@ exports[`search resource search should call the search endpoint with the type 1`
   "post": [
     {
       "data": "{"type":"user_channel_email","query":"foo"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": "application/json",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
       },
@@ -27,6 +31,11 @@ exports[`search resource search should call the search endpoint with the type 1`
       "transformResponse": [
         [Function],
       ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
       "url": "/api/search/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -46,6 +55,7 @@ exports[`search resource search should return results 1`] = `
   ],
   "meta": {},
   "object": "list",
+  "searchEngine": undefined,
   "uri": "",
 }
 `;
