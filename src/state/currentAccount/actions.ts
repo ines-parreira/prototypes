@@ -54,10 +54,18 @@ export function submitSettingSuccess(
     }
 }
 
-export function submitSetting(setting: AccountSetting, notification?: string) {
+const isAccountSettingWithId = (
+    setting: Omit<AccountSetting, 'id'> & {id?: number}
+): setting is AccountSetting => {
+    return 'id' in setting && setting.id !== undefined
+}
+
+export function submitSetting(
+    setting: Omit<AccountSetting, 'id'> & {id?: number},
+    notification?: string
+) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        const isUpdate = !!setting.id
-        const promise = isUpdate
+        const promise = isAccountSettingWithId(setting)
             ? client.put<AccountSetting>(
                   `/api/account/settings/${setting.id}/`,
                   setting
@@ -77,7 +85,12 @@ export function submitSetting(setting: AccountSetting, notification?: string) {
                         })
                     )
 
-                    return dispatch(submitSettingSuccess(setting, isUpdate))
+                    return dispatch(
+                        submitSettingSuccess(
+                            setting,
+                            isAccountSettingWithId(setting)
+                        )
+                    )
                 },
                 (error) => {
                     return dispatch({

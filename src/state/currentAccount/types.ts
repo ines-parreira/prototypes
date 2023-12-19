@@ -2,7 +2,7 @@ import {Map} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
 import {Notification} from 'state/notifications/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {TableSetting} from 'state/ui/stats/types'
 
 export type CurrentAccountState = Map<any, any>
 
@@ -64,6 +64,7 @@ export type AccountSetting =
     | AccountSettingAccess
     | AccountSettingViewsVisibility
     | AccountSettingAutoMerge
+    | AccountSettingAgentsTableConfig
 
 export type AccountSettingBusinessHours = {
     id: number
@@ -105,7 +106,7 @@ export type AccountSettingSatisfactionSurvey = {
 export type AccountSettingAgentsTableConfig = {
     id: number
     type: AccountSettingType.AgentsTableConfig
-    data: TableColumn[]
+    data: TableSetting
 }
 
 export type AccountViewsOrderingSettingData = {

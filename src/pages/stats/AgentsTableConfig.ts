@@ -10,7 +10,11 @@ import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOne
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {
+    TableColumn,
+    TableSetting,
+    TableViewIdentifier,
+} from 'state/ui/stats/types'
 import {isExtraLargeScreen} from 'pages/common/utils/mobile'
 import {TooltipData} from './types'
 
@@ -25,6 +29,26 @@ export const TableColumnsOrder: TableColumn[] = [
     TableColumn.MedianResolutionTime,
     TableColumn.OneTouchTickets,
 ]
+
+export const agentPerformanceMetrics = TableColumnsOrder.map((column) => ({
+    id: column,
+    visibility: true,
+}))
+
+export const agentPerformanceTableViews = [
+    {
+        id: TableViewIdentifier.AgentPerformanceMetrics,
+        name: 'Agent performance metrics',
+        metrics: agentPerformanceMetrics,
+    },
+]
+
+export const SystemTableViews: TableSetting = {
+    active_view: TableViewIdentifier.AgentPerformanceMetrics,
+    views: [],
+}
+
+export const agentPerformanceTableActiveView = agentPerformanceTableViews[0]
 
 export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.AgentName]: 'Agent',

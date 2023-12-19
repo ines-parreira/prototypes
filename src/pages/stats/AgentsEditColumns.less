@@ -1,0 +1,106 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .dropdownToggle {
+        .component-button-small();
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        padding: 2px @layout-spacing-xs;
+        height: @layout-spacing-m;
+        border-radius: @layout-spacing-xxs;
+        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2);
+        transition: all 0.2s linear;
+        cursor: pointer;
+
+        &:hover,
+        &.active {
+            background-color: var(--neutral-grey-3);
+        }
+
+        i {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .dropdownMenuContainer {
+        max-height: 400px;
+        overflow: auto;
+
+        & > div {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .dropdownMenu {
+        @bottomPadding: @layout-spacing-xl + @layout-spacing-xs;
+        position: relative;
+        padding: @layout-spacing-xs @layout-spacing-xs @bottomPadding;
+
+        .dropdownFooter {
+            display: flex;
+        }
+    }
+
+    .dropdownItem {
+        transition: all 0.2s linear;
+        padding: @layout-spacing-xs;
+        cursor: pointer;
+
+        &:hover {
+            .tooltip {
+                opacity: 1;
+            }
+        }
+
+        i {
+            margin: 0;
+            color: var(--neutral-grey-4);
+        }
+
+        label {
+            user-select: none;
+            pointer-events: none;
+            .body-regular();
+        }
+    }
+
+    .dropdownFooter {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: @layout-spacing-xl;
+        padding: @layout-spacing-xs @layout-spacing-s;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2);
+    }
+
+    .dropdownFooterSave {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .drag {
+        line-height: 1;
+
+        &:hover {
+            cursor: grab;
+        }
+    }
+
+    .tooltip {
+        opacity: 0;
+        transition: opacity 0.2s linear;
+        margin-right: 0;
+        margin-left: auto;
+        padding-left: @layout-spacing-xs;
+    }
+}

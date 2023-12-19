@@ -114,7 +114,7 @@ export const AgentsTable = () => {
             setIsTableScrolled(false)
         }
     }
-    const columnsOrder = useAgentsTableConfigSetting()
+    const {columnsOrder} = useAgentsTableConfigSetting()
 
     return (
         <>

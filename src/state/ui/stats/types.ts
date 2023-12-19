@@ -46,3 +46,23 @@ export enum TableColumn {
     RepliedTickets = 'agent_replied_tickets',
     OneTouchTickets = 'agent_one_touch_tickets',
 }
+
+export enum TableViewIdentifier {
+    AgentPerformanceMetrics = 'agent_performance_metrics',
+}
+
+export type TableViewColumn = {
+    id: TableColumn
+    visibility: boolean | null
+}
+
+export type TableView = {
+    id: string
+    name: string
+    metrics: TableViewColumn[]
+}
+
+export type TableSetting = {
+    active_view: TableViewIdentifier | string
+    views: TableView[]
+}

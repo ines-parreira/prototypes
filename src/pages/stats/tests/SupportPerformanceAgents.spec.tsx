@@ -4,7 +4,7 @@ import {MemoryRouter} from 'react-router-dom'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
-import {AgentPerformanceHeatmapSwitch} from 'pages/stats/AgentPerformanceHeatmapSwitch'
+import {AgentsPerformanceCardExtra} from 'pages/stats/AgentsPerformanceCardExtra'
 import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
 import {AgentsTable} from 'pages/stats/AgentsTable'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
@@ -22,10 +22,9 @@ jest.mock('pages/stats/AgentsTable.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-jest.mock('pages/stats/AgentPerformanceHeatmapSwitch.tsx')
-const AgentPerformanceHeatmapSwitchMock = assumeMock(
-    AgentPerformanceHeatmapSwitch
-)
+
+jest.mock('pages/stats/AgentsPerformanceCardExtra.tsx')
+const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
 jest.mock('pages/stats/AgentsShoutouts.tsx')
 const AgentsShoutoutsMock = assumeMock(AgentsShoutouts)
 jest.mock('pages/stats/AnalyticsFooter.tsx')
@@ -42,7 +41,7 @@ const componentMock = () => <div />
 describe('SupportPerformanceAgents', () => {
     SupportPerformanceFiltersMock.mockImplementation(componentMock)
     AgentsShoutoutsMock.mockImplementation(componentMock)
-    AgentPerformanceHeatmapSwitchMock.mockImplementation(componentMock)
+    AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
     AgentsTableMock.mockImplementation(componentMock)
     AnalyticsFooterMock.mockImplementation(componentMock)
     useAgentsMetricsMock.mockReturnValue({
@@ -96,7 +95,7 @@ describe('SupportPerformanceAgents', () => {
             </MemoryRouter>
         )
 
-        expect(AgentPerformanceHeatmapSwitchMock).toHaveBeenCalled()
+        expect(AgentsPerformanceCardExtraMock).toHaveBeenCalled()
         expect(AgentsShoutoutsMock).toHaveBeenCalled()
     })
 })
