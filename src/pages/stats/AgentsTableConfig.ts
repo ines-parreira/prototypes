@@ -35,20 +35,16 @@ export const agentPerformanceMetrics = TableColumnsOrder.map((column) => ({
     visibility: true,
 }))
 
-export const agentPerformanceTableViews = [
-    {
-        id: TableViewIdentifier.AgentPerformanceMetrics,
-        name: 'Agent performance metrics',
-        metrics: agentPerformanceMetrics,
-    },
-]
-
 export const SystemTableViews: TableSetting = {
     active_view: TableViewIdentifier.AgentPerformanceMetrics,
     views: [],
 }
 
-export const agentPerformanceTableActiveView = agentPerformanceTableViews[0]
+export const agentPerformanceTableActiveView = {
+    id: TableViewIdentifier.AgentPerformanceMetrics,
+    name: 'Agent performance metrics',
+    metrics: agentPerformanceMetrics,
+}
 
 export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.AgentName]: 'Agent',

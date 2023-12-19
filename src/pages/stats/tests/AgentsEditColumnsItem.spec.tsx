@@ -1,7 +1,12 @@
+import {createDragDropManager} from 'dnd-core'
 import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import {AgentsEditColumnsItem} from 'pages/stats/AgentsEditColumnsItem'
+
+const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 describe('<AgentsEditColumnsItem>', () => {
     const title = 'item title'
@@ -9,25 +14,38 @@ describe('<AgentsEditColumnsItem>', () => {
         title,
         isChecked: false,
         onChange: (v) => v,
+        option: {id: 'someId'},
+        onDrop: jest.fn(),
     }
 
     it('should render dropdown item', () => {
-        render(<AgentsEditColumnsItem {...minProps} />)
+        render(
+            <DndProvider manager={manager}>
+                <AgentsEditColumnsItem {...minProps} />
+            </DndProvider>
+        )
 
         expect(screen.getByText(title)).toBeInTheDocument()
     })
 
     it('should render disabled dropdown item', () => {
-        const {container} = render(
-            <AgentsEditColumnsItem {...minProps} disabled />
+        render(
+            <DndProvider manager={manager}>
+                <AgentsEditColumnsItem {...minProps} disabled />
+            </DndProvider>
         )
+        const dropdown = document.querySelector('.dropdownItem')
 
-        expect(container.firstChild).toHaveClass('disabled')
+        expect(dropdown).toHaveClass('disabled')
     })
 
     it('should render tooltip on hover dropdown item', async () => {
         const tooltip = 'test tooltip'
-        render(<AgentsEditColumnsItem {...minProps} tooltip={tooltip} />)
+        render(
+            <DndProvider manager={manager}>
+                <AgentsEditColumnsItem {...minProps} tooltip={tooltip} />
+            </DndProvider>
+        )
 
         fireEvent.mouseOver(screen.getByText('info'))
 
@@ -36,7 +54,11 @@ describe('<AgentsEditColumnsItem>', () => {
 
     it('should call onChange on clicking', () => {
         const onChange = jest.fn()
-        render(<AgentsEditColumnsItem {...minProps} onChange={onChange} />)
+        render(
+            <DndProvider manager={manager}>
+                <AgentsEditColumnsItem {...minProps} onChange={onChange} />
+            </DndProvider>
+        )
 
         fireEvent.click(screen.getByText(title))
 

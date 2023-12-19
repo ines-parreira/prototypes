@@ -29,11 +29,6 @@
     .dropdownMenuContainer {
         max-height: 400px;
         overflow: auto;
-
-        & > div {
-            display: flex;
-            align-items: center;
-        }
     }
 
     .dropdownMenu {
@@ -47,6 +42,8 @@
     }
 
     .dropdownItem {
+        display: flex;
+        align-items: center;
         transition: all 0.2s linear;
         padding: @layout-spacing-xs;
         cursor: pointer;

@@ -16,6 +16,24 @@ export const TOGGLE_LABEL = 'Edit Columns'
 export const SAVE_TOOLTIP =
     'Clicking "Save" will update the table for all users.'
 
+const dragToPosition = (
+    columnsList: TableViewColumn[],
+    target: {id: string},
+    from: {id: string}
+): TableViewColumn[] => {
+    const targetPosition = columnsList.findIndex(
+        (column) => column.id === target.id
+    )
+    const fromPosition = columnsList.findIndex(
+        (column) => column.id === from.id
+    )
+
+    const newList = [...columnsList]
+    newList.splice(targetPosition, 0, newList.splice(fromPosition, 1)[0])
+
+    return newList
+}
+
 export const AgentsEditColumns = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [hasChanges, setHasChanges] = useState(false)
@@ -43,6 +61,13 @@ export const AgentsEditColumns = () => {
             )
             setHasChanges(true)
         }
+
+    const dropBefore = (item: {id: string}, from: {id: string}) => {
+        setColumnsVisibility((prevState) =>
+            dragToPosition(prevState, item, from)
+        )
+        return from
+    }
 
     const handleSave = async () => {
         const isNewView = !settings.views.find(
@@ -91,6 +116,8 @@ export const AgentsEditColumns = () => {
                             disabled={id === TableColumn.AgentName}
                             onChange={handleChangeVisibility(id)}
                             tooltip={HeaderTooltips[id]?.title}
+                            onDrop={dropBefore}
+                            option={{id}}
                         />
                     ))}
                 </div>

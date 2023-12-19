@@ -18,20 +18,20 @@ import {
 import {RootState} from 'state/types'
 import {agents} from 'fixtures/agents'
 import {UserRole} from 'config/types/user'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {
     AgentsMetrics,
     drillDownSlice,
     EXPORT_TICKET_DRILL_DOWN_JOB_ACTION,
     initialState,
 } from 'state/ui/stats/drillDownSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 const useFlagsMock = jest.spyOn(LD, 'useFlags')
 
-jest.mock('state/ui/stats/agentPerformanceSlice')
+jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
