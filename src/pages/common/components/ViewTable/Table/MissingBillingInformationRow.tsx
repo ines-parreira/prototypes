@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useMemo, useState} from 'react'
 import {Modal, ModalHeader, Form, ModalBody, ModalFooter} from 'reactstrap'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useAsync, useWindowSize} from 'react-use'
+import {useAsync} from 'react-use'
 import {fromJS} from 'immutable'
 import {AnyAction} from 'redux'
 
@@ -26,6 +26,7 @@ import {BillingContact, PaymentMethodType} from 'state/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useWindowSize from 'hooks/useWindowSize'
 import {fetchContact, updateContact} from 'state/billing/actions'
 import BillingAddressInputs from 'pages/settings/billing/common/BillingAddressInputs'
 
@@ -46,7 +47,7 @@ export default function MissingBillingInformationRow() {
         () => hasRole(currentUser, UserRole.Admin),
         [currentUser]
     )
-    const {width: viewportWidth} = useWindowSize(window.innerWidth)
+    const {width: viewportWidth} = useWindowSize()
     const [rowRef, rowDimensions] = useDimensions()
     const rowMaxWidth = useMemo(
         () => viewportWidth - (rowDimensions?.x || 0),
