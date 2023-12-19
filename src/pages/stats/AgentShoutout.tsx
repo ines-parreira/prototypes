@@ -1,6 +1,5 @@
 import React from 'react'
 import {ShoutoutConfig} from 'pages/stats/AgentsShoutoutsConfig'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Shoutout, {
@@ -9,6 +8,7 @@ import Shoutout, {
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export default function AgentsShoutout(props: ShoutoutConfig) {
     const {useQuery, queryOrder} = props

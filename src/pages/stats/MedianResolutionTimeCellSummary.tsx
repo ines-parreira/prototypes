@@ -2,7 +2,8 @@ import React from 'react'
 import {useMedianResolutionTimeMetric} from 'hooks/reporting/metrics'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const MedianResolutionTimeCellSummary = () => {

@@ -20,7 +20,8 @@ import {
 } from 'pages/stats/CustomFieldsTicketCountBreakdownTable'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {RootState, StoreDispatch} from 'state/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     initialState,
     setOrder,
@@ -36,7 +37,7 @@ jest.mock('hooks/reporting/useCustomFieldsTicketCountPerCustomFields')
 const useCustomFieldsTicketCountPerCustomFieldsMock = assumeMock(
     useCustomFieldsTicketCountPerCustomFields
 )
-jest.mock('state/ui/stats/agentPerformanceSlice')
+jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )

@@ -13,10 +13,10 @@ import {
 import css from 'pages/stats/heatmap.less'
 import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
 import {
-    getCleanStatsFiltersWithTimezone,
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'

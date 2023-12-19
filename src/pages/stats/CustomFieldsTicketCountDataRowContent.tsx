@@ -9,6 +9,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/BreakdownTable.less'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     getHeatmapMode,
     getValueMode,
@@ -20,7 +21,6 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {formatDates, getPeriodEndDateTime} from './utils'
 
 const EXPAND_COLUMN_WIDTH = 24

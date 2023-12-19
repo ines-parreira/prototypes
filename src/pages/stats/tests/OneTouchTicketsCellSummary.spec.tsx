@@ -16,8 +16,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     initialState as agentPerformanceInitialState,
     getSortedAgents,
-    getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 import {agents} from 'fixtures/agents'
 
@@ -30,6 +30,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 jest.mock('hooks/reporting/metrics')
 jest.mock('state/ui/stats/agentPerformanceSlice')
 const getSortedAgentsMock = assumeMock(getSortedAgents)
+jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )

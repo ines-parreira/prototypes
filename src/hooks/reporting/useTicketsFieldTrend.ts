@@ -11,7 +11,8 @@ import {
     TICKET_CUSTOM_FIELDS_API_SEPARATOR,
     TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
 } from 'pages/stats/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {periodToReportingGranularity} from 'utils/reporting'
 import {useCustomFieldsTicketCount} from './metricsPerDimension'

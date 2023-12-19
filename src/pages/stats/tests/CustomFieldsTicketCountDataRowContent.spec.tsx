@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {CustomFieldsTicketCountDataRowContent} from 'pages/stats/CustomFieldsTicketCountDataRowContent'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     getHeatmapMode,
     getValueMode,
@@ -12,7 +13,6 @@ import {
     getSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock, mockStore} from 'utils/testing'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {ReportingGranularity} from 'models/reporting/types'
 
 jest.mock('state/ui/stats/ticketInsightsSlice')
@@ -27,6 +27,8 @@ jest.mock(
 
 const getValueModeMock = assumeMock(getValueMode)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
+jest.mock('state/ui/stats/selectors')
+
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )

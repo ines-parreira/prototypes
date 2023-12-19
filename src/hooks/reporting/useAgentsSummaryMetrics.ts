@@ -9,7 +9,8 @@ import {
     useMessagesSentMetric,
     useOneTouchTicketsMetric,
 } from 'hooks/reporting/metrics'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export function useAgentsSummaryMetrics() {
     const {cleanStatsFilters, userTimezone} = useAppSelector(

@@ -11,8 +11,8 @@ import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getAgentsJS} from 'state/agents/selectors'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
 
 export interface TicketDetails {

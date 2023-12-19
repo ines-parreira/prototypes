@@ -21,15 +21,15 @@ import {
 import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
 import {getAgentsJS} from 'state/agents/selectors'
 import {RootState, StoreDispatch} from 'state/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('state/ui/stats/agentPerformanceSlice')
+jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )

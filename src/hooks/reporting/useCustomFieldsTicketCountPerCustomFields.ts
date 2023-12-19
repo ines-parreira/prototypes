@@ -14,7 +14,8 @@ import {
 } from 'hooks/reporting/withBreakdown'
 import useAppSelector from 'hooks/useAppSelector'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     getCustomFieldsOrder,
     TicketInsightsOrder,

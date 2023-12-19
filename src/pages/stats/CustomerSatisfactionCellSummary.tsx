@@ -6,7 +6,8 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export const CustomerSatisfactionCellSummary = () => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(

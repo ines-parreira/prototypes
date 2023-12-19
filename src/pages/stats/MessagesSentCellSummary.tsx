@@ -2,10 +2,8 @@ import React from 'react'
 import {useMessagesSentMetric} from 'hooks/reporting/metrics'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getCleanStatsFiltersWithTimezone,
-    getSortedAgents,
-} from 'state/ui/stats/agentPerformanceSlice'
+import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const MessagesSentCellSummary = () => {

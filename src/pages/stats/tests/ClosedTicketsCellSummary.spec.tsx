@@ -13,12 +13,10 @@ import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 import {agents} from 'fixtures/agents'
-import {
-    getCleanStatsFiltersWithTimezone,
-    getSortedAgents,
-} from 'state/ui/stats/agentPerformanceSlice'
+import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -27,11 +25,12 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 jest.mock('hooks/reporting/metrics')
-jest.mock('state/ui/stats/agentPerformanceSlice')
-const getSortedAgentsMock = assumeMock(getSortedAgents)
+jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
+jest.mock('state/ui/stats/agentPerformanceSlice')
+const getSortedAgentsMock = assumeMock(getSortedAgents)
 const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

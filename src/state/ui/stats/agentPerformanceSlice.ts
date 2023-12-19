@@ -4,16 +4,12 @@ import {User} from 'config/types/user'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {isMetricForAgent} from 'pages/stats/common/utils'
-import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {getAgentsJS} from 'state/agents/selectors'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getPageStatsFilters} from 'state/stats/selectors'
 
 import {RootState} from 'state/types'
 import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
-import {periodToReportingGranularity} from 'utils/reporting'
 
 type AgentPerformanceSorting = {
     field: TableColumn
@@ -157,21 +153,6 @@ export const getPaginatedAgents = createSelector(
             agents: agents.slice(startingItem, lastItem),
             currentPage,
             perPage,
-        }
-    }
-)
-
-export const getCleanStatsFiltersWithTimezone = createSelector(
-    getCleanStatsFilters,
-    getPageStatsFilters,
-    getTimezone,
-    (cleanStatsFilters, pageStatsFilters, timezone) => {
-        return {
-            userTimezone: timezone || DEFAULT_TIMEZONE,
-            cleanStatsFilters: cleanStatsFilters || pageStatsFilters,
-            granularity: periodToReportingGranularity(
-                cleanStatsFilters?.period || pageStatsFilters?.period
-            ),
         }
     }
 )

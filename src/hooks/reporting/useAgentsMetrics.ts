@@ -11,10 +11,8 @@ import {
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getCleanStatsFiltersWithTimezone,
-    getSortedAgents,
-} from 'state/ui/stats/agentPerformanceSlice'
+import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export function useAgentsMetrics() {
     const {cleanStatsFilters, userTimezone} = useAppSelector(

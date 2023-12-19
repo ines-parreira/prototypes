@@ -7,12 +7,12 @@ import {StatsFilters} from 'models/stat/types'
 import {
     DEFAULT_SORTING_DIRECTION,
     getAgentSorting,
-    getCleanStatsFiltersWithTimezone,
     pageSet,
     sortingLoaded,
     sortingLoading,
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 
 export const useSortingQuery = (

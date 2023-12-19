@@ -9,12 +9,12 @@ import BodyCell, {
 import css from 'pages/stats/heatmap.less'
 import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
 import {
-    getCleanStatsFiltersWithTimezone,
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 import {DrillDownModalTrigger} from './DrillDownModalTrigger'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'

@@ -6,10 +6,8 @@ import {
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getCleanStatsFiltersWithTimezone,
-    getSortedAgents,
-} from 'state/ui/stats/agentPerformanceSlice'
+import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export const ClosedTicketsCellSummary = () => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(

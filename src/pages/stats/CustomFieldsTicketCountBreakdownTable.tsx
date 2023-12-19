@@ -21,7 +21,8 @@ import {
     DataRowProps,
 } from 'pages/stats/CustomFieldsTicketCountDataRowContent'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {setOrder, TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {formatDates} from './utils'
 
