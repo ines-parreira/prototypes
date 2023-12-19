@@ -1,13 +1,11 @@
 import {wyboTheme, Theme, STATUSES} from 'reapop'
 
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
-
 const colors = {
-    [STATUSES.info]: colorTokens['📺 Classic'].Main.Primary.value,
-    [STATUSES.success]: colorTokens['📺 Classic'].Feedback.Success.value,
-    [STATUSES.error]: colorTokens['📺 Classic'].Feedback.Error.value,
-    [STATUSES.warning]: colorTokens['📺 Classic'].Feedback.Warning.value,
-    [STATUSES.loading]: colorTokens['📺 Classic'].Neutral.Grey_4.value,
+    [STATUSES.info]: 'var(--main-primary)',
+    [STATUSES.success]: 'var(--feedback-success)',
+    [STATUSES.error]: 'var(--feedback-error)',
+    [STATUSES.warning]: 'var(--feedback-warning)',
+    [STATUSES.loading]: 'var(--neutral-grey-4)',
 }
 
 const theme: Theme = {
@@ -20,6 +18,7 @@ const theme: Theme = {
     }),
     notification: (notification) => ({
         ...wyboTheme.notification(notification),
+        backgroundColor: 'var(--neutral-grey-0)',
         width: 'auto',
         minWidth: 320,
         maxWidth: 680,
@@ -50,7 +49,7 @@ const theme: Theme = {
     }),
     notificationMessage: (notification) => ({
         ...wyboTheme.notificationMessage(notification),
-        color: colorTokens['📺 Classic'].Neutral.Grey_6.value,
+        color: 'var(--neutral-grey-6)',
         fontSize: 14,
         lineHeight: '20px',
         letterSpacing: '-0.01em',
@@ -65,18 +64,18 @@ const theme: Theme = {
 
         const primaryStyles = {
             background: state.isHovered
-                ? colorTokens['📺 Classic'].Main.Variations.Primary_2.value
+                ? 'var(--main-primary-2)'
                 : state.isActive
-                ? colorTokens['📺 Classic'].Main.Variations.Primary_3.value
-                : colorTokens['📺 Classic'].Main.Primary.value,
+                ? 'var(--main-primary-3)'
+                : 'var(--main-primary)',
             border: '1px solid',
             borderColor: state.isHovered
-                ? colorTokens['📺 Classic'].Main.Primary.value
+                ? 'var(--main-primary)'
                 : state.isActive
-                ? colorTokens['📺 Classic'].Main.Variations.Primary_4.value
-                : colorTokens['📺 Classic'].Main.Variations.Primary_3.value,
+                ? 'var(--main-primary-4)'
+                : 'var(--main-primary-3)',
             borderRadius: 4,
-            color: colorTokens['📺 Classic'].Neutral.Grey_0.value,
+            color: 'var(--neutral-grey-0)',
             padding: '1px 8px',
         }
 
@@ -88,8 +87,8 @@ const theme: Theme = {
             outline: 'none',
             marginLeft: 8,
             color: state.isHovered
-                ? colorTokens['📺 Classic'].Main.Variations.Primary_4.value
-                : colorTokens['📺 Classic'].Main.Primary.value,
+                ? 'var(--main-primary-4)'
+                : 'var(--main-primary)',
             ...(isButtonPrimary && primaryStyles),
         }
     },
@@ -105,7 +104,7 @@ const theme: Theme = {
         margin: '0px 8px',
         height: 11,
         width: 11,
-        color: colorTokens['📺 Classic'].Neutral.Grey_4.value,
+        color: 'var(--neutral-grey-4)',
     }),
 }
 
