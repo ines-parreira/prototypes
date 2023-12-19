@@ -13,7 +13,7 @@ export default function TimelineItem({children}: TimelineItemProps) {
                 <div className={css.dot} />
                 <div className={css.line} />
             </div>
-            <div>{children}</div>
+            {children}
         </div>
     )
 }

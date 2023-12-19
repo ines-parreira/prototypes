@@ -4,6 +4,8 @@ import {useListVoiceCallEvents} from 'models/voiceCall/queries'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import {processEvents} from 'models/voiceCall/utils'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import Timeline from './Timeline'
 import TimelineItem from './TimelineItem'
 
@@ -41,12 +43,27 @@ export default function TicketVoiceCallEvents({
                     <TimelineItem key={`call-event-${index}`}>
                         <div
                             className={classNames(
-                                css.statusWrapper,
-                                css.inbound
+                                css.row,
+                                css.timelineItemContent
                             )}
                         >
-                            <div>{event.text}</div>
-                            <VoiceCallAgentLabel agentId={event.user_id} />
+                            <div
+                                className={classNames(
+                                    css.statusWrapper,
+                                    css.inbound
+                                )}
+                            >
+                                <div>{event.text}</div>
+                                <VoiceCallAgentLabel agentId={event.userId} />
+                            </div>
+                            <DatetimeLabel
+                                dateTime={event.datetime}
+                                className={classNames('text-faded', css.date)}
+                                breakDate
+                                labelFormat={
+                                    DateAndTimeFormatting.TimeDoubleDigitHour
+                                }
+                            />
                         </div>
                     </TimelineItem>
                 ))

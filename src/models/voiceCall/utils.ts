@@ -54,7 +54,7 @@ export const getFormattedDurationOngoingCall = (
 
 export const processEvents = (
     events: VoiceCallEvent[]
-): {text: string; user_id: number}[] => {
+): {text: string; userId: number; datetime: string}[] => {
     const result = []
     const handled = events.filter((event) =>
         [
@@ -66,10 +66,16 @@ export const processEvents = (
     )
 
     for (const event of handled) {
+        let newEvent
+
         if (event.type === PhoneIntegrationEvent.PhoneCallAnswered) {
-            result.push({text: `Answered by`, user_id: event.user_id})
+            newEvent = {
+                text: `Answered by`,
+            }
         } else if (event.type === PhoneIntegrationEvent.DeclinedPhoneCall) {
-            result.push({text: `Declined by`, user_id: event.user_id})
+            newEvent = {
+                text: `Declined by`,
+            }
         } else if (event.type === PhoneIntegrationEvent.PhoneCallRinging) {
             const missedCallEvent = handled.find(
                 (e) =>
@@ -88,8 +94,18 @@ export const processEvents = (
                   )
 
             if (missedCallEvent || !answeredOrDeclinedEvent) {
-                result.push({text: `Missed by`, user_id: event.user_id})
+                newEvent = {
+                    text: `Missed by`,
+                }
             }
+        }
+
+        if (newEvent) {
+            result.push({
+                ...newEvent,
+                userId: event.user_id,
+                datetime: event.created_datetime,
+            })
         }
     }
 

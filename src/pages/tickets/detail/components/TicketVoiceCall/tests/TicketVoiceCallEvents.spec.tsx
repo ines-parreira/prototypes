@@ -22,6 +22,10 @@ jest.mock(
     () => () => <div>Agent Label</div>
 )
 
+jest.mock('pages/common/utils/labels', () => ({
+    DatetimeLabel: ({dateTime}: any) => <div>{dateTime}</div>,
+}))
+
 jest.mock('models/voiceCall/utils', () => ({
     processEvents: (events: any): any => events,
 }))
@@ -57,8 +61,8 @@ describe('TicketVoiceCallEvents', () => {
 
     it('should render timeline with events when data is available', () => {
         const mockEvents = [
-            {text: 'Event 1', user_id: 1},
-            {text: 'Event 2', user_id: 2},
+            {text: 'Event 1', user_id: 1, datetime: '00:01 AM'},
+            {text: 'Event 2', user_id: 2, datetime: '07:11 PM'},
         ]
         useListVoiceCallEventsSpy.mockReturnValue({
             data: {data: {data: mockEvents}},
