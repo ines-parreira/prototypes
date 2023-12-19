@@ -1696,6 +1696,14 @@ declare namespace Components {
       name: string;
       code: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
     }
+    export interface MailtoReplacementConfigDto {
+      emails: string[];
+      contactFormUid: string;
+      shopifyShopName: string;
+    }
+    export interface MailtoReplacementConfigGetDto {
+      emails: string[];
+    }
     export interface NavigationLinkDto {
       /**
        * Creation date
@@ -2393,6 +2401,9 @@ declare namespace Components {
         enabled: boolean;
       };
     }
+    export interface UpsertMailtoReplacementConfigDto {
+      emails: string[];
+    }
     export interface WorkflowHandoverDto {
       contact_form_uid?: string;
       help_center_id?: number;
@@ -2960,6 +2971,28 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.ContactFormDto;
+    }
+  }
+  namespace GetContactFormMailtoReplacementConfig {
+    namespace Parameters {
+      export type ContactFormId = number;
+    }
+    export interface PathParameters {
+      contact_form_id: Parameters.ContactFormId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.MailtoReplacementConfigGetDto;
+    }
+  }
+  namespace GetContactFormShopifyMailtoReplacementConfig {
+    namespace Parameters {
+      export type ShopName = string;
+    }
+    export interface PathParameters {
+      shop_name: Parameters.ShopName;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.MailtoReplacementConfigDto;
     }
   }
   namespace GetCustomDomain {
@@ -3659,6 +3692,18 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UpsertAutomationSettingsDto;
     namespace Responses {
       export type $200 = Components.Schemas.AutomationSettingsDto;
+    }
+  }
+  namespace UpsertContactFormShopifyMailtoReplacement {
+    namespace Parameters {
+      export type ContactFormId = number;
+    }
+    export interface PathParameters {
+      contact_form_id: Parameters.ContactFormId;
+    }
+    export type RequestBody = Components.Schemas.UpsertMailtoReplacementConfigDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.MailtoReplacementConfigDto;
     }
   }
   namespace UpsertHelpCenterAutomationSettings {
@@ -4363,72 +4408,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * listNavigationLinks - List navigation links
-   */
-  'listNavigationLinks'(
-    parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
-  /**
-   * createNavigationLink - Create a navigation link
-   */
-  'createNavigationLink'(
-    parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
-    data?: Paths.CreateNavigationLink.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
-  /**
-   * updateNavigationLink - Update a navigation link
-   */
-  'updateNavigationLink'(
-    parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
-    data?: Paths.UpdateNavigationLink.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
-  /**
-   * deleteNavigationLink - Delete a navigation link
-   */
-  'deleteNavigationLink'(
-    parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * getNavigationLinksPositions - Retrieve navigation links' positions
-   */
-  'getNavigationLinksPositions'(
-    parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
-  /**
-   * setNavigationLinksPositions - Set navigation links' positions
-   * 
-   * If the provided `id`s is missing an item, this item will be sorted last.
-   */
-  'setNavigationLinksPositions'(
-    parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
-    data?: Paths.SetNavigationLinksPositions.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
-  /**
-   * listGoogleFonts - List google fonts
-   */
-  'listGoogleFonts'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * handoverWorkflowExecution - Hand over a workflow execution
-   */
-  'handoverWorkflowExecution'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.HandoverWorkflowExecution.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
    * listContactFormShopifyPageEmbedments - List the Contact Form Shopify Page Embedments
    */
   'listContactFormShopifyPageEmbedments'(
@@ -4516,6 +4495,98 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
+  /**
+   * listNavigationLinks - List navigation links
+   */
+  'listNavigationLinks'(
+    parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
+  /**
+   * createNavigationLink - Create a navigation link
+   */
+  'createNavigationLink'(
+    parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
+    data?: Paths.CreateNavigationLink.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
+  /**
+   * updateNavigationLink - Update a navigation link
+   */
+  'updateNavigationLink'(
+    parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
+    data?: Paths.UpdateNavigationLink.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
+  /**
+   * deleteNavigationLink - Delete a navigation link
+   */
+  'deleteNavigationLink'(
+    parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * getNavigationLinksPositions - Retrieve navigation links' positions
+   */
+  'getNavigationLinksPositions'(
+    parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
+  /**
+   * setNavigationLinksPositions - Set navigation links' positions
+   * 
+   * If the provided `id`s is missing an item, this item will be sorted last.
+   */
+  'setNavigationLinksPositions'(
+    parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
+    data?: Paths.SetNavigationLinksPositions.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
+  /**
+   * listGoogleFonts - List google fonts
+   */
+  'listGoogleFonts'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * handoverWorkflowExecution - Hand over a workflow execution
+   */
+  'handoverWorkflowExecution'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.HandoverWorkflowExecution.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
+   */
+  'getContactFormMailtoReplacementConfig'(
+    parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
+  /**
+   * upsertContactFormShopifyMailtoReplacement - Create, Update or Delete a Contact Form Mailto Replacement Config
+   * 
+   * If the emails array is empty, the config will be deleted
+   */
+  'upsertContactFormShopifyMailtoReplacement'(
+    parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
+    data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
+  /**
+   * getContactFormShopifyMailtoReplacementConfig
+   */
+  'getContactFormShopifyMailtoReplacementConfig'(
+    parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -5307,82 +5378,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
-  ['/api/help-center/help-centers/{help_center_id}/navigation-links']: {
-    /**
-     * createNavigationLink - Create a navigation link
-     */
-    'post'(
-      parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
-      data?: Paths.CreateNavigationLink.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
-    /**
-     * listNavigationLinks - List navigation links
-     */
-    'get'(
-      parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/navigation-links/{id}']: {
-    /**
-     * updateNavigationLink - Update a navigation link
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
-      data?: Paths.UpdateNavigationLink.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
-    /**
-     * deleteNavigationLink - Delete a navigation link
-     */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/navigation-links/{locale}/{group}/positions']: {
-    /**
-     * getNavigationLinksPositions - Retrieve navigation links' positions
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
-    /**
-     * setNavigationLinksPositions - Set navigation links' positions
-     * 
-     * If the provided `id`s is missing an item, this item will be sorted last.
-     */
-    'put'(
-      parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
-      data?: Paths.SetNavigationLinksPositions.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
-  }
-  ['/api/help-center/google-fonts']: {
-    /**
-     * listGoogleFonts - List google fonts
-     */
-    'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/workflows/handover']: {
-    /**
-     * handoverWorkflowExecution - Hand over a workflow execution
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.HandoverWorkflowExecution.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
   ['/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments']: {
     /**
      * createContactFormShopifyPageEmbedment - Create a Contact Form Shopify Page Embedment
@@ -5482,6 +5477,112 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/navigation-links']: {
+    /**
+     * createNavigationLink - Create a navigation link
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
+      data?: Paths.CreateNavigationLink.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
+    /**
+     * listNavigationLinks - List navigation links
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/navigation-links/{id}']: {
+    /**
+     * updateNavigationLink - Update a navigation link
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
+      data?: Paths.UpdateNavigationLink.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
+    /**
+     * deleteNavigationLink - Delete a navigation link
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/navigation-links/{locale}/{group}/positions']: {
+    /**
+     * getNavigationLinksPositions - Retrieve navigation links' positions
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
+    /**
+     * setNavigationLinksPositions - Set navigation links' positions
+     * 
+     * If the provided `id`s is missing an item, this item will be sorted last.
+     */
+    'put'(
+      parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
+      data?: Paths.SetNavigationLinksPositions.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
+  }
+  ['/api/help-center/google-fonts']: {
+    /**
+     * listGoogleFonts - List google fonts
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/workflows/handover']: {
+    /**
+     * handoverWorkflowExecution - Hand over a workflow execution
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.HandoverWorkflowExecution.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
+    /**
+     * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
+    /**
+     * upsertContactFormShopifyMailtoReplacement - Create, Update or Delete a Contact Form Mailto Replacement Config
+     * 
+     * If the emails array is empty, the config will be deleted
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
+      data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
+  }
+  ['/api/help-center/contact-forms/shop-name/{shop_name}/mailto-replacement-config']: {
+    /**
+     * getContactFormShopifyMailtoReplacementConfig
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
   }
 }
 

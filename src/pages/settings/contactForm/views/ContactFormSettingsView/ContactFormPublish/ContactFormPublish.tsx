@@ -139,7 +139,9 @@ const ContactFormPublish = (): JSX.Element => {
 
                         {isHelpCenterAnalyticsEnabled && (
                             <section>
-                                <ContactFormMailtoReplacementSection />
+                                <ContactFormMailtoReplacementSection
+                                    contactFormId={contactForm.id}
+                                />
                             </section>
                         )}
                     </div>

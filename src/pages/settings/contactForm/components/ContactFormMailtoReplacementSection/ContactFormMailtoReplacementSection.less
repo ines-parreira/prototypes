@@ -1,0 +1,38 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .sectionContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+    .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .emptyState {
+        color: var(--neutral-grey-4);
+        font-weight: normal !important;
+    }
+    .list {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+    .item {
+        display: flex;
+        justify-content: space-between;
+
+        gap: @layout-spacing-s;
+        padding: @layout-spacing-s @layout-spacing-m;
+
+        border-bottom: 1px solid var(--neutral-grey-3);
+
+        .body-semibold();
+    }
+    .alert {
+        margin-bottom: @layout-spacing-l;
+    }
+}

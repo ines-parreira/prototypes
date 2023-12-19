@@ -1,16 +1,50 @@
-import React from 'react'
+import React, {useState} from 'react'
+import classNames from 'classnames'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useLocalStorage from 'hooks/useLocalStorage'
+import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import Button from 'pages/common/components/button/Button'
+
+import IconButton from 'pages/common/components/button/IconButton'
+import css from './ContactFormMailtoReplacementSection.less'
+import ContactFormMailtoReplacementSectionItem from './ContactFormMailtoReplacementSectionItem'
+import {useContactFormMailtoReplacementConfig} from './useContactFormMailtoReplacementConfig'
 
 export const ALERT_LOCAL_STORAGE_KEY = `gorgias-contact-form-alert-replace-mailto`
-const ContactFormMailtoReplacementSection = () => {
+
+type ContactFormMailtoReplacementSectionProps = {
+    contactFormId: number
+}
+const ContactFormMailtoReplacementSection = ({
+    contactFormId,
+}: ContactFormMailtoReplacementSectionProps) => {
     const [isAlertDiscarded, setAlertDiscarded] = useLocalStorage(
         ALERT_LOCAL_STORAGE_KEY,
         true
     )
 
-    const onAlertCLose = () => {
+    const {emailList, upsertMailtoReplacementConfig, mailtoReplacementConfig} =
+        useContactFormMailtoReplacementConfig({contactFormId})
+    const [selectedEmails, setSelectedEmails] = useState<string[]>(emailList)
+
+    const onAlertClose = () => {
         setAlertDiscarded(false)
+    }
+
+    const onAddEmails = () => {
+        upsertMailtoReplacementConfig(selectedEmails)
+
+        setSelectedEmails([])
+    }
+
+    const onRemoveEmail = (email: string) => {
+        const newEmails = mailtoReplacementConfig?.emails.filter(
+            (configEmail) => configEmail !== email
+        )
+
+        if (newEmails) {
+            upsertMailtoReplacementConfig(newEmails)
+        }
     }
 
     return (
@@ -23,11 +57,91 @@ const ContactFormMailtoReplacementSection = () => {
             </p>
 
             {isAlertDiscarded && (
-                <Alert type={AlertType.Info} icon onClose={onAlertCLose}>
+                <Alert
+                    type={AlertType.Info}
+                    icon
+                    onClose={onAlertClose}
+                    className={css.alert}
+                >
                     Pages with iFrames, tables, or dynamic content may require
                     manual replacement.
                 </Alert>
             )}
+
+            <div className={css.sectionContainer}>
+                <div className={css.title}>
+                    <h5 className="body-semibold mb-0">
+                        Email links detected{' '}
+                    </h5>
+                    <IconTooltip>
+                        By default, we detect links on your website associated
+                        with the emails integrated in Gorgias.
+                    </IconTooltip>
+                </div>
+
+                {emailList.length === 0 ? (
+                    <div className={classNames(css.item, css.emptyState)}>
+                        No links detected
+                    </div>
+                ) : (
+                    <ul className={css.list}>
+                        {emailList.map((email) => (
+                            <li
+                                key={email}
+                                className={css.item}
+                                data-testid={`email-detected-${email}`}
+                            >
+                                <ContactFormMailtoReplacementSectionItem
+                                    value={email}
+                                    checkedItems={selectedEmails}
+                                    onChange={setSelectedEmails}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+                {mailtoReplacementConfig && (
+                    <>
+                        <h5 className="body-semibold">Email links replaced</h5>
+
+                        <ul className={css.list}>
+                            {mailtoReplacementConfig.emails.map((email) => (
+                                <li
+                                    key={email}
+                                    className={css.item}
+                                    data-testid={`email-replaced-${email}`}
+                                >
+                                    <span>{email}</span>
+
+                                    <IconButton
+                                        onClick={() => {
+                                            onRemoveEmail(email)
+                                        }}
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        data-testid={`revert-email-${email}`}
+                                    >
+                                        undo
+                                    </IconButton>
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                )}
+
+                {emailList.length > 0 && (
+                    <div>
+                        <Button
+                            isDisabled={selectedEmails.length === 0}
+                            intent="secondary"
+                            onClick={onAddEmails}
+                        >
+                            Replace links
+                        </Button>
+                    </div>
+                )}
+            </div>
         </>
     )
 }

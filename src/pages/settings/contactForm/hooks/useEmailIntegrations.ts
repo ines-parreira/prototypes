@@ -1,3 +1,4 @@
+import {useMemo} from 'react'
 import {
     isGenericEmailIntegration,
     isBaseEmailIntegration,
@@ -12,8 +13,14 @@ const emailIntegrationsSelector = integrationsSelectors.getIntegrationsByTypes(
 
 export function useEmailIntegrations() {
     const integrations = useAppSelector(emailIntegrationsSelector)
-    const emailIntegrations = integrations.filter(isGenericEmailIntegration)
-    const defaultIntegration = emailIntegrations.find(isBaseEmailIntegration)
+    const emailIntegrations = useMemo(
+        () => integrations.filter(isGenericEmailIntegration),
+        [integrations]
+    )
+    const defaultIntegration = useMemo(
+        () => emailIntegrations.find(isBaseEmailIntegration),
+        [emailIntegrations]
+    )
 
     return {
         emailIntegrations,

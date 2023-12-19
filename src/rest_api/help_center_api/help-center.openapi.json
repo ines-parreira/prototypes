@@ -2923,6 +2923,324 @@
                 "tags": ["contact-forms"]
             }
         },
+        "/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments": {
+            "post": {
+                "operationId": "createContactFormShopifyPageEmbedment",
+                "summary": "Create a Contact Form Shopify Page Embedment",
+                "description": "The creation endpoint accepts 2 payloads:\n    - {title: string; pageUrlPath: string} - embed in a new page\n    - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page",
+                "parameters": [
+                    {
+                        "name": "contact_form_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateShopifyPageEmbedmentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-form-shopify-page-embedments"]
+            },
+            "get": {
+                "operationId": "listContactFormShopifyPageEmbedments",
+                "summary": "List the Contact Form Shopify Page Embedments",
+                "parameters": [
+                    {
+                        "name": "contact_form_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PageEmbedmentDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-form-shopify-page-embedments"]
+            }
+        },
+        "/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments/{embedment_id}": {
+            "put": {
+                "operationId": "updateContactFormShopifyPageEmbedment",
+                "summary": "Update a Contact Form Shopify Page Embedment",
+                "parameters": [
+                    {
+                        "name": "embedment_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "contact_form_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePageEmbedmentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-form-shopify-page-embedments"]
+            },
+            "delete": {
+                "operationId": "deleteContactFormShopifyPageEmbedment",
+                "summary": "Delete a Contact Form Shopify Page Embedment",
+                "parameters": [
+                    {
+                        "name": "embedment_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "contact_form_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-form-shopify-page-embedments"]
+            }
+        },
+        "/api/help-center/contact-forms/{contact_form_id}/shopify-pages": {
+            "get": {
+                "operationId": "listContactFormShopifyPages",
+                "summary": "List the Contact Form Shopify Pages available for a Contact Form Embedment",
+                "parameters": [
+                    {
+                        "name": "contact_form_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ContactFormPageDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-form-shopify-pages"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/shopify-page-embedments": {
+            "post": {
+                "operationId": "createHelpCenterShopifyPageEmbedment",
+                "summary": "Create a Help Center Form Shopify Page Embedment",
+                "description": "The creation endpoint accepts 2 payloads:\n    - {title: string; pageUrlPath: string} - embed in a new page\n    - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateShopifyPageEmbedmentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-page-embedments"]
+            },
+            "get": {
+                "operationId": "listHelpCenterShopifyPageEmbedments",
+                "summary": "List the Help Center Shopify Page Embedments",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PageEmbedmentDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-page-embedments"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/shopify-page-embedments/{embedment_id}": {
+            "put": {
+                "operationId": "updateHelpCenterShopifyPageEmbedment",
+                "summary": "Update a Help Center Shopify Page Embedment",
+                "parameters": [
+                    {
+                        "name": "embedment_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePageEmbedmentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-page-embedments"]
+            },
+            "delete": {
+                "operationId": "deleteHelpCenterShopifyPageEmbedment",
+                "summary": "Delete a Help Center Shopify Page Embedment",
+                "parameters": [
+                    {
+                        "name": "embedment_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["help-center-shopify-page-embedments"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/shopify-pages": {
+            "get": {
+                "operationId": "listHelpCenterShopifyPages",
+                "summary": "List the Help Center Shopify Pages available for a Help Center Embedment",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/HelpCenterStorePageDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-pages"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/navigation-links": {
             "post": {
                 "operationId": "createNavigationLink",
@@ -3274,46 +3592,10 @@
                 "tags": ["workflows"]
             }
         },
-        "/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments": {
-            "post": {
-                "operationId": "createContactFormShopifyPageEmbedment",
-                "summary": "Create a Contact Form Shopify Page Embedment",
-                "description": "The creation endpoint accepts 2 payloads:\n    - {title: string; pageUrlPath: string} - embed in a new page\n    - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page",
-                "parameters": [
-                    {
-                        "name": "contact_form_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateShopifyPageEmbedmentDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PageEmbedmentDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-form-shopify-page-embedments"]
-            },
+        "/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config": {
             "get": {
-                "operationId": "listContactFormShopifyPageEmbedments",
-                "summary": "List the Contact Form Shopify Page Embedments",
+                "operationId": "getContactFormMailtoReplacementConfig",
+                "summary": "Get a Contact Form Mailto Replacement Config",
                 "parameters": [
                     {
                         "name": "contact_form_id",
@@ -3328,29 +3610,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/PageEmbedmentDto"
-                                    }
+                                    "$ref": "#/components/schemas/MailtoReplacementConfigGetDto"
                                 }
                             }
                         }
                     }
                 },
-                "tags": ["contact-form-shopify-page-embedments"]
-            }
-        },
-        "/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments/{embedment_id}": {
+                "tags": ["contact-form-mailto-replacement-config"]
+            },
             "put": {
-                "operationId": "updateContactFormShopifyPageEmbedment",
-                "summary": "Update a Contact Form Shopify Page Embedment",
+                "operationId": "upsertContactFormShopifyMailtoReplacement",
+                "summary": "Create, Update or Delete a Contact Form Mailto Replacement Config",
+                "description": "If the emails array is empty, the config will be deleted",
                 "parameters": [
-                    {
-                        "name": "embedment_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
                     {
                         "name": "contact_form_id",
                         "required": true,
@@ -3363,7 +3635,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdatePageEmbedmentDto"
+                                "$ref": "#/components/schemas/UpsertMailtoReplacementConfigDto"
                             }
                         }
                     }
@@ -3374,45 +3646,24 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PageEmbedmentDto"
+                                    "$ref": "#/components/schemas/MailtoReplacementConfigDto"
                                 }
                             }
                         }
                     }
                 },
-                "tags": ["contact-form-shopify-page-embedments"]
-            },
-            "delete": {
-                "operationId": "deleteContactFormShopifyPageEmbedment",
-                "summary": "Delete a Contact Form Shopify Page Embedment",
-                "parameters": [
-                    {
-                        "name": "embedment_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "contact_form_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {"204": {"description": ""}},
-                "tags": ["contact-form-shopify-page-embedments"]
+                "tags": ["contact-form-mailto-replacement-config"]
             }
         },
-        "/api/help-center/contact-forms/{contact_form_id}/shopify-pages": {
+        "/api/help-center/contact-forms/shop-name/{shop_name}/mailto-replacement-config": {
             "get": {
-                "operationId": "listContactFormShopifyPages",
-                "summary": "List the Contact Form Shopify Pages available for a Contact Form Embedment",
+                "operationId": "getContactFormShopifyMailtoReplacementConfig",
                 "parameters": [
                     {
-                        "name": "contact_form_id",
+                        "name": "shop_name",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": {"type": "string"}
                     }
                 ],
                 "responses": {
@@ -3421,175 +3672,12 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ContactFormPageDto"
-                                    }
+                                    "$ref": "#/components/schemas/MailtoReplacementConfigDto"
                                 }
                             }
                         }
                     }
-                },
-                "tags": ["contact-form-shopify-pages"]
-            }
-        },
-        "/api/help-center/help-centers/{help_center_id}/shopify-page-embedments": {
-            "post": {
-                "operationId": "createHelpCenterShopifyPageEmbedment",
-                "summary": "Create a Help Center Form Shopify Page Embedment",
-                "description": "The creation endpoint accepts 2 payloads:\n    - {title: string; pageUrlPath: string} - embed in a new page\n    - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateShopifyPageEmbedmentDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PageEmbedmentDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["help-center-shopify-page-embedments"]
-            },
-            "get": {
-                "operationId": "listHelpCenterShopifyPageEmbedments",
-                "summary": "List the Help Center Shopify Page Embedments",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/PageEmbedmentDto"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["help-center-shopify-page-embedments"]
-            }
-        },
-        "/api/help-center/help-centers/{help_center_id}/shopify-page-embedments/{embedment_id}": {
-            "put": {
-                "operationId": "updateHelpCenterShopifyPageEmbedment",
-                "summary": "Update a Help Center Shopify Page Embedment",
-                "parameters": [
-                    {
-                        "name": "embedment_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdatePageEmbedmentDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PageEmbedmentDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["help-center-shopify-page-embedments"]
-            },
-            "delete": {
-                "operationId": "deleteHelpCenterShopifyPageEmbedment",
-                "summary": "Delete a Help Center Shopify Page Embedment",
-                "parameters": [
-                    {
-                        "name": "embedment_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {"204": {"description": ""}},
-                "tags": ["help-center-shopify-page-embedments"]
-            }
-        },
-        "/api/help-center/help-centers/{help_center_id}/shopify-pages": {
-            "get": {
-                "operationId": "listHelpCenterShopifyPages",
-                "summary": "List the Help Center Shopify Pages available for a Help Center Embedment",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/HelpCenterStorePageDto"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["help-center-shopify-pages"]
+                }
             }
         }
     },
@@ -7109,6 +7197,91 @@
                     "fallback_integration"
                 ]
             },
+            "CreateShopifyPageEmbedmentDto": {
+                "type": "object",
+                "properties": {
+                    "page_external_id": {
+                        "type": "string",
+                        "example": 229672878386
+                    },
+                    "page_url_path": {
+                        "type": "string",
+                        "example": "/pages/my-new-page",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "pattern": "SHOPIFY_PAGE_HANDLE_REGEX"
+                    },
+                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"},
+                    "title": {
+                        "type": "string",
+                        "example": "My new page",
+                        "minLength": 1,
+                        "maxLength": 255
+                    }
+                }
+            },
+            "PageEmbedmentDto": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "number", "example": 1},
+                    "page_external_id": {
+                        "type": "string",
+                        "example": "229672878386"
+                    },
+                    "page_title": {
+                        "type": "string",
+                        "example": "My page title"
+                    },
+                    "page_path_url": {
+                        "type": "string",
+                        "example": "my-page-title"
+                    },
+                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"},
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "page_title",
+                    "page_path_url",
+                    "position",
+                    "created_datetime",
+                    "updated_datetime"
+                ]
+            },
+            "UpdatePageEmbedmentDto": {
+                "type": "object",
+                "properties": {
+                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"}
+                },
+                "required": ["position"]
+            },
+            "ContactFormPageDto": {
+                "type": "object",
+                "properties": {
+                    "external_id": {"type": "string"},
+                    "title": {"type": "string"},
+                    "url_path": {"type": "string"},
+                    "body_html": {"type": "string", "nullable": true}
+                },
+                "required": ["external_id", "title", "url_path", "body_html"]
+            },
+            "HelpCenterStorePageDto": {
+                "type": "object",
+                "properties": {
+                    "external_id": {"type": "string"},
+                    "title": {"type": "string"},
+                    "url_path": {"type": "string"},
+                    "body_html": {"type": "string", "nullable": true}
+                },
+                "required": ["external_id", "title", "url_path", "body_html"]
+            },
             "NavigationLinkMeta": {
                 "type": "object",
                 "properties": {
@@ -7366,90 +7539,28 @@
                     "url"
                 ]
             },
-            "CreateShopifyPageEmbedmentDto": {
+            "MailtoReplacementConfigGetDto": {
                 "type": "object",
                 "properties": {
-                    "page_external_id": {
-                        "type": "string",
-                        "example": 229672878386
-                    },
-                    "page_url_path": {
-                        "type": "string",
-                        "example": "/pages/my-new-page",
-                        "minLength": 1,
-                        "maxLength": 255,
-                        "pattern": "SHOPIFY_PAGE_HANDLE_REGEX"
-                    },
-                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"},
-                    "title": {
-                        "type": "string",
-                        "example": "My new page",
-                        "minLength": 1,
-                        "maxLength": 255
-                    }
-                }
-            },
-            "PageEmbedmentDto": {
-                "type": "object",
-                "properties": {
-                    "id": {"type": "number", "example": 1},
-                    "page_external_id": {
-                        "type": "string",
-                        "example": "229672878386"
-                    },
-                    "page_title": {
-                        "type": "string",
-                        "example": "My page title"
-                    },
-                    "page_path_url": {
-                        "type": "string",
-                        "example": "my-page-title"
-                    },
-                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"},
-                    "created_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
-                    "updated_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    }
+                    "emails": {"type": "array", "items": {"type": "string"}}
                 },
-                "required": [
-                    "id",
-                    "page_title",
-                    "page_path_url",
-                    "position",
-                    "created_datetime",
-                    "updated_datetime"
-                ]
+                "required": ["emails"]
             },
-            "UpdatePageEmbedmentDto": {
+            "UpsertMailtoReplacementConfigDto": {
                 "type": "object",
                 "properties": {
-                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"}
+                    "emails": {"type": "array", "items": {"type": "string"}}
                 },
-                "required": ["position"]
+                "required": ["emails"]
             },
-            "ContactFormPageDto": {
+            "MailtoReplacementConfigDto": {
                 "type": "object",
                 "properties": {
-                    "external_id": {"type": "string"},
-                    "title": {"type": "string"},
-                    "url_path": {"type": "string"},
-                    "body_html": {"type": "string", "nullable": true}
+                    "emails": {"type": "array", "items": {"type": "string"}},
+                    "contactFormUid": {"type": "string"},
+                    "shopifyShopName": {"type": "string"}
                 },
-                "required": ["external_id", "title", "url_path", "body_html"]
-            },
-            "HelpCenterStorePageDto": {
-                "type": "object",
-                "properties": {
-                    "external_id": {"type": "string"},
-                    "title": {"type": "string"},
-                    "url_path": {"type": "string"},
-                    "body_html": {"type": "string", "nullable": true}
-                },
-                "required": ["external_id", "title", "url_path", "body_html"]
+                "required": ["emails", "contactFormUid", "shopifyShopName"]
             }
         }
     },
