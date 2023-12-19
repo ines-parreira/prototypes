@@ -105,7 +105,7 @@ describe('agents reducers', () => {
         expect(
             reducer(initialState, {
                 type: constants.CREATE_AGENT_SUCCESS,
-                resp: fromJS({id: 1, name: 'Romain'}),
+                resp: {id: 1, name: 'Romain'},
             }).toJS()
         ).toMatchSnapshot()
     })

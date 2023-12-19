@@ -27,7 +27,7 @@ export default function reducer(
 
         case agentsConstants.CREATE_AGENT_SUCCESS: {
             return state.update('all', (agents) =>
-                (agents as List<any>).push(action.resp as User)
+                (agents as List<any>).push(fromJS(action.resp))
             )
         }
 
