@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-shopify store should render correct section 1`] = `
-<section
+<div
   class="container"
 >
   <div
@@ -33,11 +33,11 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
       Embed Help Center
     </button>
   </div>
-</section>
+</div>
 `;
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions needed should render correct section 1`] = `
-<section
+<div
   class="container"
 >
   <div
@@ -107,11 +107,11 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       Embed Help Center
     </button>
   </div>
-</section>
+</div>
 `;
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions not needed should render correct section 1`] = `
-<section
+<div
   class="container"
 >
   <div
@@ -143,11 +143,11 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       Embed Help Center
     </button>
   </div>
-</section>
+</div>
 `;
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions not needed should render correct section when store has embedments already 1`] = `
-<section
+<div
   class="container"
 >
   <div
@@ -177,5 +177,5 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       keyboard_arrow_right
     </i>
   </div>
-</section>
+</div>
 `;

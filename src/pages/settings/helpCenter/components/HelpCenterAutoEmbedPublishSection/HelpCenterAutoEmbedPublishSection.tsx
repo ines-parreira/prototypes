@@ -53,7 +53,7 @@ const HelpCenterAutoEmbedPublishSection = (
     }
 
     return (
-        <section className={css.container}>
+        <div className={css.container}>
             <HelpCenterAutoEmbedWarningBanner details={bannerDetails} />
             <HelpCenterAutoEmbedCard
                 isDisabled={props.isDisabled}
@@ -64,7 +64,7 @@ const HelpCenterAutoEmbedPublishSection = (
                 hasEmbeddedPages={pageEmbedments.length > 0}
                 helpCenterId={helpCenterId}
             />
-        </section>
+        </div>
     )
 }
 
