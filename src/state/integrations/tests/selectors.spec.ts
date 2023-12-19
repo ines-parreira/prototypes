@@ -52,6 +52,7 @@ import {
     getIntegrationChannel,
     getIntegrationsByAppId,
     getStandardPhoneIntegrations,
+    getInactiveEmailChannels,
 } from '../selectors'
 
 jest.mock('api/queryClient', () => ({
@@ -192,6 +193,16 @@ describe('integrations selectors', () => {
 
     it('should get channels', () => {
         expect(getEmailChannels(state)).toMatchSnapshot()
+    })
+
+    it('should get inactive channels', () => {
+        const emailChannels = getInactiveEmailChannels(state).toJS() as {
+            isDeactivated: boolean
+        }[]
+        const inactiveEmailChannels = emailChannels.filter(
+            (channel: {isDeactivated: boolean}) => channel.isDeactivated
+        )
+        expect(inactiveEmailChannels).toHaveLength(1)
     })
 
     it('should get active channels', () => {

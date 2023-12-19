@@ -357,6 +357,14 @@ export const getEmailChannels = createSelector(
     }
 )
 
+export const getInactiveEmailChannels = createSelector(
+    getEmailChannels,
+    (channels) =>
+        channels
+            .filter((channel: Map<any, any>) => !!channel.get('isDeactivated'))
+            .toList()
+)
+
 export const getActiveEmailChannels = createSelector(
     getEmailChannels,
     (channels) =>

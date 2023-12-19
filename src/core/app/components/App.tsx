@@ -3,6 +3,7 @@ import React, {ReactNode} from 'react'
 import {AppNode} from 'appNode'
 import {AlertNotifications, BannerNotifications} from 'notifications'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
+import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
 import KeyboardHelp from 'pages/common/components/KeyboardHelp/KeyboardHelp'
 import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
 import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
@@ -33,6 +34,7 @@ export default function App({children}: Props) {
         <AppNode className={theme}>
             <BannerNotifications />
             <EmailMigrationBanner />
+            <EmailDisconnectedBanner />
             <RoutingRuleDecomissionBanner />
             <ScriptTagMigrationBanner />
             <ScriptTagMigrationModal />
