@@ -9,9 +9,6 @@ import React, {
     useState,
 } from 'react'
 import classnames from 'classnames'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEvent} from 'react-use'
 
 import {
     GroupContext,
@@ -20,6 +17,7 @@ import {
 import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
 import useId from 'hooks/useId'
 import useEffectOnce from 'hooks/useEffectOnce'
+import useEvent from 'hooks/useEvent'
 
 import css from './TextInput.less'
 

@@ -11,9 +11,6 @@ import React, {
     useState,
     useEffect,
 } from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEvent} from 'react-use'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Group, {
@@ -21,6 +18,7 @@ import Group, {
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 import useEffectOnce from 'hooks/useEffectOnce'
+import useEvent from 'hooks/useEvent'
 
 import {InputGroupContext} from './InputGroup'
 
