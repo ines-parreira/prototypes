@@ -6,7 +6,7 @@ import {DRILLDOWN_QUERY_LIMIT} from 'utils/reporting'
 
 import css from './DrillDownInfobar.less'
 
-const getTheInfo = (totalResults: number) => {
+const getTheInfoLabel = (totalResults: number) => {
     if (totalResults < DRILLDOWN_QUERY_LIMIT) {
         return (
             <>
@@ -37,13 +37,9 @@ export const DrillDownInfobar = ({
                 <i className="material-icons">info</i>
             </div>
             <div className={css.text}>
-                <strong>
-                    First{' '}
-                    {isFetching
-                        ? TOTAL_RESULTS_PLACEHOLDER
-                        : getTheInfo(totalResults)}
-                </strong>{' '}
-                shown.
+                {isFetching
+                    ? TOTAL_RESULTS_PLACEHOLDER
+                    : getTheInfoLabel(totalResults)}
             </div>
             <DrillDownDownloadButton metricData={metricData} />
         </div>
