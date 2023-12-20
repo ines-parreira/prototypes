@@ -11,7 +11,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
 
-export type GorgiasChatCreationWizardQuickResponseModalHandle = {
+export type GorgiasChatCreationWizardQuickResponseNotEnabledModalHandle = {
     open: () => void
 }
 
@@ -19,9 +19,9 @@ type Props = {
     onSave: () => void
 }
 
-const GorgiasChatCreationWizardQuickResponseModal = (
+const GorgiasChatCreationWizardQuickResponseNotEnabledModal = (
     {onSave}: Props,
-    ref: ForwardedRef<GorgiasChatCreationWizardQuickResponseModalHandle>
+    ref: ForwardedRef<GorgiasChatCreationWizardQuickResponseNotEnabledModalHandle>
 ) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -35,17 +35,17 @@ const GorgiasChatCreationWizardQuickResponseModal = (
 
     return (
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-            <ModalHeader title="Missing responses" />
+            <ModalHeader title="Responses not enabled" />
             <ModalBody>
-                You have Quick Responses without a response configured. A ticket
-                will be created when customers interact with them.
+                You have Quick Responses with a response configured but not
+                enabled. Customers will not be able to interact with them.
                 <br />
                 <br />
                 Are you sure you want to continue with installation?
             </ModalBody>
             <ModalActionsFooter>
                 <Button intent="secondary" onClick={() => setIsOpen(false)}>
-                    Configure Response
+                    Enable Quick Responses
                 </Button>
                 <Button
                     onClick={() => {
@@ -61,6 +61,6 @@ const GorgiasChatCreationWizardQuickResponseModal = (
 }
 
 export default forwardRef<
-    GorgiasChatCreationWizardQuickResponseModalHandle,
+    GorgiasChatCreationWizardQuickResponseNotEnabledModalHandle,
     Props
->(GorgiasChatCreationWizardQuickResponseModal)
+>(GorgiasChatCreationWizardQuickResponseNotEnabledModal)

@@ -49,9 +49,12 @@ import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPrevie
 import css from './GorgiasChatCreationWizardStepAutomate.less'
 import useSelfServiceConfiguration from './hooks/useSelfServiceConfiguration'
 import GorgiasChatCreationWizardQuickResponses from './components/GorgiasChatCreationWizardQuickResponses'
-import GorgiasChatCreationWizardQuickResponseModal, {
-    GorgiasChatCreationWizardQuickResponseModalHandle,
-} from './components/GorgiasChatCreationWizardQuickResponseModal'
+import GorgiasChatCreationWizardQuickResponseNotConfiguredModal, {
+    GorgiasChatCreationWizardQuickResponseNotConfiguredModalHandle,
+} from './components/GorgiasChatCreationWizardQuickResponseNotConfiguredModal'
+import GorgiasChatCreationWizardQuickResponseNotEnabledModal, {
+    GorgiasChatCreationWizardQuickResponseNotEnabledModalHandle,
+} from './components/GorgiasChatCreationWizardQuickResponseNotEnabledModal'
 
 type SubmitForm = {
     type: IntegrationType.GorgiasChat
@@ -89,8 +92,15 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const {goToNextStep, goToPreviousStep} = useNavigateWizardSteps()
 
-    const missingResponsesModalRef =
-        useRef<GorgiasChatCreationWizardQuickResponseModalHandle>(null)
+    const quickResponseNotConfiguredModalRef =
+        useRef<GorgiasChatCreationWizardQuickResponseNotConfiguredModalHandle>(
+            null
+        )
+
+    const quickResponseNotEnabledModalRef =
+        useRef<GorgiasChatCreationWizardQuickResponseNotEnabledModalHandle>(
+            null
+        )
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -124,7 +134,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         gorgiasChatIntegration?.meta.wizard?.quick_response_ids || []
 
     const [quickResponses, setQuickResponses] = useState<QuickResponsePolicy[]>(
-        [{...draftQuickResponse, id: uuidv4()}]
+        []
     )
     const [expandedQuickResponseId, setExpandedQuickResponseId] = useState<
         string | null
@@ -177,6 +187,17 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     ({id}) => initialQuickResponses.includes(id)
                 )
             )
+        } else {
+            const draftPolicy =
+                selfServiceConfiguration?.quick_response_policies.find(
+                    ({title}) => title === draftQuickResponse.title
+                )
+
+            if (draftPolicy) {
+                setQuickResponses([draftPolicy])
+            } else {
+                setQuickResponses([{...draftQuickResponse, id: uuidv4()}])
+            }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -187,6 +208,13 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         storeIntegration?.type
     )
 
+    const activeHelpCenters = helpCenters.filter(
+        ({deactivated_datetime, deleted_datetime}) =>
+            !deactivated_datetime && !deleted_datetime
+    )
+
+    const hasActiveHelpCenter = !!activeHelpCenters.length
+
     const [helpCenterId, setHelpCenterId] = useState<number | undefined>()
 
     const hasActiveQuickResponsePoliciesInitially =
@@ -196,11 +224,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 !quickResponse.deactivated_datetime &&
                 !initialQuickResponses.includes(quickResponse.id)
         )
-
-    const hasActiveHelpCenter = !!helpCenters.filter(
-        ({deactivated_datetime, deleted_datetime}) =>
-            !deactivated_datetime && !deleted_datetime
-    ).length
 
     const isOrderManagementEnabled =
         currentIsOrderManagementEnabled ??
@@ -251,12 +274,20 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     }
 
     const updateSSConfiguration = async () => {
+        const quickResponseIds = quickResponses.map(({id}) => id)
+
+        const removedQuickResponseIds = initialQuickResponses.filter(
+            (id) => !quickResponseIds.includes(id)
+        )
+
         const quickResponsePolicies = hasActiveQuickResponsePoliciesInitially
             ? selfServiceConfiguration!.quick_response_policies
             : [
                   ...quickResponses,
                   ...selfServiceConfiguration!.quick_response_policies.filter(
-                      ({id}) => !initialQuickResponses.includes(id)
+                      ({id}) =>
+                          !quickResponseIds.includes(id) &&
+                          !removedQuickResponseIds.includes(id)
                   ),
               ]
 
@@ -265,11 +296,17 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             article_recommendation_help_center_id:
                 isArticleRecommendationEnabled
                     ? selfServiceConfiguration!
-                          .article_recommendation_help_center_id || helpCenterId
+                          .article_recommendation_help_center_id ||
+                      (activeHelpCenters.length > 1
+                          ? helpCenterId
+                          : activeHelpCenters[0].id)
                     : selfServiceConfiguration!
                           .article_recommendation_help_center_id,
             track_order_policy: {
-                enabled: isOrderManagementEnabled,
+                enabled:
+                    storeIntegration?.type === IntegrationType.Shopify
+                        ? isOrderManagementEnabled
+                        : selfServiceConfiguration!.track_order_policy.enabled,
             },
             quick_response_policies: quickResponsePolicies,
         })
@@ -306,8 +343,18 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             )
 
             if (hasQuickResponsesWithoutResponse) {
-                missingResponsesModalRef.current?.open()
+                quickResponseNotConfiguredModalRef.current?.open()
                 return Promise.reject()
+                //eslint-disable-next-line no-else-return
+            } else {
+                const hasQuickResponsesDisabled = quickResponses.some(
+                    ({deactivated_datetime}) => deactivated_datetime
+                )
+
+                if (hasQuickResponsesDisabled) {
+                    quickResponseNotEnabledModalRef.current?.open()
+                    return Promise.reject()
+                }
             }
         }
 
@@ -523,18 +570,21 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             }
                         />
                     </div>
-                    <div className={css.section}>
-                        <div className={css.sectionHeading}>
-                            Order management
+                    {(!storeIntegration ||
+                        storeIntegration?.type === IntegrationType.Shopify) && (
+                        <div className={css.section}>
+                            <div className={css.sectionHeading}>
+                                Order management
+                            </div>
+                            <ToggleInput
+                                onClick={setCurrentIsOrderManagementEnabled}
+                                isToggled={isOrderManagementEnabled}
+                                isDisabled={isFormDisabled}
+                            >
+                                Allow customers to track orders from my chat
+                            </ToggleInput>
                         </div>
-                        <ToggleInput
-                            onClick={setCurrentIsOrderManagementEnabled}
-                            isToggled={isOrderManagementEnabled}
-                            isDisabled={isFormDisabled}
-                        >
-                            Allow customers to track orders from my chat
-                        </ToggleInput>
-                    </div>
+                    )}
                     {(hasActiveHelpCenter ||
                         isLoadingHelpCenters ||
                         !storeIntegration) && (
@@ -558,17 +608,19 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             </ToggleInput>
                             {isArticleRecommendationEnabled &&
                                 !isLoadingSelfServiceConfiguration &&
-                                !selfServiceConfiguration?.article_recommendation_help_center_id && (
+                                !isLoadingHelpCenters &&
+                                !selfServiceConfiguration?.article_recommendation_help_center_id &&
+                                activeHelpCenters.length > 1 && (
                                     <div className={css.helpCenterSection}>
                                         <Label isRequired>
                                             Connect a Help Center
                                         </Label>
                                         <ArticleRecommendationHelpCenter
                                             setHelpCenterId={setHelpCenterId}
-                                            helpCenter={helpCenters.find(
+                                            helpCenter={activeHelpCenters.find(
                                                 ({id}) => helpCenterId === id
                                             )}
-                                            helpCenters={helpCenters}
+                                            helpCenters={activeHelpCenters}
                                         />
                                     </div>
                                 )}
@@ -614,8 +666,12 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     </div>
                 </>
             </GorgiasChatCreationWizardStep>
-            <GorgiasChatCreationWizardQuickResponseModal
-                ref={missingResponsesModalRef}
+            <GorgiasChatCreationWizardQuickResponseNotConfiguredModal
+                ref={quickResponseNotConfiguredModalRef}
+                onSave={() => onSave(true, false, true)}
+            />
+            <GorgiasChatCreationWizardQuickResponseNotEnabledModal
+                ref={quickResponseNotEnabledModalRef}
                 onSave={() => onSave(true, false, true)}
             />
         </>

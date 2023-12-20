@@ -32,7 +32,7 @@ const description: Partial<Record<GorgiasChatCreationWizardSteps, string>> = {
     [GorgiasChatCreationWizardSteps.Branding]:
         "Give the chat widget your brand's look and feel",
     [GorgiasChatCreationWizardSteps.Automate]:
-        'Quickly activate 3 Automate features to start instantly answering common questions',
+        'Quickly activate Automate features to start instantly answering common questions',
     [GorgiasChatCreationWizardSteps.Installation]:
         'Install the chat widget on your website and make it available for customers',
 }
