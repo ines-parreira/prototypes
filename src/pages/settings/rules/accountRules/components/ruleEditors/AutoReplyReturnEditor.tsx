@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 // [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
 // eslint-disable-next-line no-restricted-imports
-import {useStateValidator, useMap} from 'react-use'
+import {useStateValidator} from 'react-use'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import isURL from 'validator/lib/isURL'
@@ -19,9 +19,14 @@ export const AutoReplyReturnEditor = ({
     settings,
     onChange,
 }: ManagedRuleDetailProps<AutoReplyReturnSettings>) => {
-    const [settingsFields, {set: setSettingsField}] = useMap<
+    const [settingsFields, setSettingsFields] = useState<
         Omit<typeof settings, 'slug'>
     >({...settings, return_portal_url: settings.return_portal_url ?? ''})
+
+    const setSettingsField = <Key extends keyof typeof settingsFields>(
+        key: Key,
+        value: typeof settings[Key]
+    ) => setSettingsFields((prev) => ({...prev, [key]: value}))
 
     const [[hasInvalidField, fieldsErrorMessage]] = useStateValidator<
         [boolean, {[key in keyof typeof settingsFields]: string}],
