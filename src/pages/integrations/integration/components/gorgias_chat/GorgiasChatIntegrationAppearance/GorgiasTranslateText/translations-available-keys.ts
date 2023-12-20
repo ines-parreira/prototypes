@@ -7,6 +7,7 @@ import {TextsPerLanguage} from 'rest_api/gorgias_chat_protected_api/types'
 
 export type FilterProps = {
     emailCaptureEnforcement?: string
+    isAutomateSubscriber?: boolean
 }
 export type OptionFormat = {
     maxLength: number
@@ -27,6 +28,17 @@ const keysToDelete = [
 
 export const deleteUnusedKeys = (obj: TextsPerLanguage): TextsPerLanguage => {
     return omit(obj, keysToDelete) as TextsPerLanguage
+}
+
+const filterByAutomateSubscriber = ({isAutomateSubscriber}: FilterProps) => {
+    return Boolean(isAutomateSubscriber)
+}
+
+const filterByEmailCapture = ({emailCaptureEnforcement}: FilterProps) => {
+    if (emailCaptureEnforcement !== 'always-required') {
+        return false
+    }
+    return true
 }
 
 export default {
@@ -93,6 +105,18 @@ export default {
             maxLength: 140,
         },
         'texts.waitTimeAgentsAreBusy': {maxLength: 155},
+        'sspTexts.sorryToHearThatEmailNotRequired': {
+            maxLength: 70,
+            filteredBy: filterByAutomateSubscriber,
+        },
+        'texts.waitTimeMediumSorryToHearThat': {
+            maxLength: 105,
+            filteredBy: filterByAutomateSubscriber,
+        },
+        'texts.waitTimeAgentsAreBusySorryToHearThat': {
+            maxLength: 95,
+            filteredBy: filterByAutomateSubscriber,
+        },
         'texts.waitForAnAgent': {maxLength: 30},
         'texts.waitTimeLongEmailCaptured': {
             maxLength: 110,
@@ -106,6 +130,14 @@ export default {
         'texts.usualReplyTimeHours': {maxLength: 50},
         'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 100},
         'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 100},
+        'sspTexts.sorryToHearThatHandoverToLiveChatFewMinutes': {
+            maxLength: 85,
+            filteredBy: filterByAutomateSubscriber,
+        },
+        'sspTexts.sorryToHearThatHandoverToLiveChatFewHours': {
+            maxLength: 85,
+            filteredBy: filterByAutomateSubscriber,
+        },
     },
     emailCapture: {
         'texts.emailCaptureInputLabel': {maxLength: 40},
@@ -114,12 +146,11 @@ export default {
         },
         'texts.requireEmailCaptureIntro': {
             maxLength: 145,
-            filteredBy: ({emailCaptureEnforcement}: FilterProps) => {
-                if (emailCaptureEnforcement !== 'always-required') {
-                    return false
-                }
-                return true
-            },
+            filteredBy: filterByEmailCapture,
+        },
+        'sspTexts.sorryToHearThatEmailRequired': {
+            maxLength: 65,
+            filteredBy: filterByAutomateSubscriber,
         },
         'sspTexts.email': {maxLength: 10},
     },

@@ -56,6 +56,7 @@ import {NotificationStatus} from '../../../../../../../state/notifications/types
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
 
+import useIsAutomateSubscriber from '../../hooks/useIsAutomateSubscriber'
 import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
 import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
 import css from './GorgiasTranslateText.less'
@@ -140,6 +141,8 @@ function GorgiasTranslateText({
         useFlags()[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
 
     const integrationChat = integration.toJS() as GorgiasChatIntegration
+
+    const isAutomateSubscriber = useIsAutomateSubscriber(integrationChat)
 
     const segments = location.pathname.split('/')
     const [lastSegment, setLastSegment] = useState<string | undefined>(
@@ -971,7 +974,8 @@ function GorgiasTranslateText({
                     <GorgiasTranslateInputGroup
                         title="Dynamic wait time"
                         keys={dynamicWaitTimeKeys}
-                        filtersForKeys={{}}
+                        filtersForKeys={{isAutomateSubscriber}}
+                        isFilteredByActive
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
@@ -984,7 +988,11 @@ function GorgiasTranslateText({
                     <GorgiasTranslateInputGroup
                         title="Email capture"
                         keys={emailCaptureKeys}
-                        filtersForKeys={filterForlEmailCaptureKeys}
+                        filtersForKeys={{
+                            ...filterForlEmailCaptureKeys,
+                            isAutomateSubscriber,
+                        }}
+                        isFilteredByActive
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
@@ -995,7 +1003,8 @@ function GorgiasTranslateText({
                     <GorgiasTranslateInputGroup
                         title="Auto-reply with wait time"
                         keys={autoResponderKeys}
-                        filtersForKeys={{}}
+                        filtersForKeys={{isAutomateSubscriber}}
+                        isFilteredByActive
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
