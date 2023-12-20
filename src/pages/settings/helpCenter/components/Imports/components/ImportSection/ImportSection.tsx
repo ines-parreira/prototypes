@@ -1,7 +1,4 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useSetState} from 'react-use'
 import {Spinner} from 'reactstrap'
 import {ParamType} from 'openapi-client-axios'
 
@@ -104,7 +101,7 @@ export const ImportSection: React.FC<Props> = ({
     migrationStateModalOpenRef.current = migrationStateModalOpen
 
     const [fetchedProviders, setFetchedProviders] =
-        useSetState<FetchedProvidersState>({
+        useState<FetchedProvidersState>({
             data: null,
             isLoading: isMigrationAvailable,
             isError: false,
@@ -113,7 +110,7 @@ export const ImportSection: React.FC<Props> = ({
      * The migration session that is currently in progress
      */
     const [currentMigrationSession, setCurrentMigrationSession] =
-        useSetState<FetchedMigrationSessionState>({
+        useState<FetchedMigrationSessionState>({
             data: null,
             isFirstTimeLoading: isMigrationAvailable,
         })
@@ -191,6 +188,7 @@ export const ImportSection: React.FC<Props> = ({
                 setMigrationStateModalOpen(true)
                 setCurrentMigrationSession({
                     data: createdSession,
+                    isFirstTimeLoading: false,
                 })
             } catch (e) {
                 void dispatch(
@@ -216,6 +214,7 @@ export const ImportSection: React.FC<Props> = ({
             setMigrationStateModalOpen(true) // In case the user closed the modal while loading
             setCurrentMigrationSession({
                 data: resultingRevertSession,
+                isFirstTimeLoading: false,
             })
         } catch (e) {
             void dispatch(
@@ -241,6 +240,7 @@ export const ImportSection: React.FC<Props> = ({
             setMigrationStateModalOpen(true) // In case the user closed the modal while loading
             setCurrentMigrationSession({
                 data: resultingSession,
+                isFirstTimeLoading: false,
             })
         } catch (e) {
             void dispatch(
@@ -299,11 +299,13 @@ export const ImportSection: React.FC<Props> = ({
                 } else {
                     setCurrentMigrationSession({
                         isFirstTimeLoading: false,
+                        data: null,
                     })
                 }
             } catch (e) {
                 setCurrentMigrationSession({
                     isFirstTimeLoading: false,
+                    data: null,
                 })
                 void dispatch(
                     notify({
@@ -336,7 +338,10 @@ export const ImportSection: React.FC<Props> = ({
             if (!responseIsSession(session)) return
 
             if (sessionHasProgressStatus(session)) {
-                setCurrentMigrationSession({data: session})
+                setCurrentMigrationSession({
+                    data: session,
+                    isFirstTimeLoading: false,
+                })
                 return
             }
 
@@ -351,9 +356,15 @@ export const ImportSection: React.FC<Props> = ({
                             status: NotificationStatus.Success,
                         })
                     )
-                    setCurrentMigrationSession({data: null})
+                    setCurrentMigrationSession({
+                        data: null,
+                        isFirstTimeLoading: false,
+                    })
                 } else {
-                    setCurrentMigrationSession({data: session})
+                    setCurrentMigrationSession({
+                        data: session,
+                        isFirstTimeLoading: false,
+                    })
                 }
             } else {
                 migrationFailed = true
@@ -373,7 +384,7 @@ export const ImportSection: React.FC<Props> = ({
                     ...longNotificationOptions,
                 })
             )
-            setCurrentMigrationSession({data: null})
+            setCurrentMigrationSession({data: null, isFirstTimeLoading: false})
         }
     }, [
         dispatch,
@@ -516,16 +527,19 @@ export const ImportSection: React.FC<Props> = ({
                     setFetchedProviders({
                         data: availableProviders,
                         isLoading: false,
+                        isError: false,
                     })
                 } else {
                     setFetchedProviders({
                         data: null,
                         isLoading: false,
+                        isError: false,
                     })
                     setIsMigrationAvailable(false)
                 }
             } catch (e) {
                 setFetchedProviders({
+                    data: null,
                     isLoading: false,
                     isError: true,
                 })
