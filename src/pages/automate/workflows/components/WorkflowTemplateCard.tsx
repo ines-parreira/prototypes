@@ -15,20 +15,20 @@ const workflowLabelStyles: Record<
     {color: string; backgroundColor: string}
 > = {
     [WorkflowTemplateLabelType.ProductQuestion]: {
-        color: '#242F8C',
-        backgroundColor: '#EAF1FF',
+        color: 'var(--accessory-blue-3)',
+        backgroundColor: 'var(--accessory-blue-1)',
     },
     [WorkflowTemplateLabelType.Policies]: {
-        color: '#605708',
-        backgroundColor: '#FFFDEA',
+        color: 'var(--accessory-yellow-3)',
+        backgroundColor: 'var(--accessory-yellow-1)',
     },
     [WorkflowTemplateLabelType.SubscriptionManagement]: {
-        color: '#6F0C86',
-        backgroundColor: '#FAEAFF',
+        color: 'var(--accessory-magenta-3)',
+        backgroundColor: 'var(--accessory-magenta-1)',
     },
     [WorkflowTemplateLabelType.ThirdPartyActions]: {
-        color: '#605708',
-        backgroundColor: '#FFFDEA',
+        color: 'var(--accessory-yellow-3)',
+        backgroundColor: 'var(--accessory-yellow-1)',
     },
 }
 

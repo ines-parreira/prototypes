@@ -1,6 +1,5 @@
 import React, {ReactNode} from 'react'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
 import {VisualBuilderNode} from './models/visualBuilderGraph.types'
@@ -10,28 +9,28 @@ export const colorByVisualBuilderNodeType: Record<
     {color: string; backgroundColor: string}
 > = {
     automated_message: {
-        color: colors['📺 Classic'].Accessory.Purple_text.value,
-        backgroundColor: colors['📺 Classic'].Accessory.Pink_bg.value,
+        color: 'var(--accessory-magenta-3)',
+        backgroundColor: 'var(--accessory-magenta-1)',
     },
     multiple_choices: {
-        color: colors['📺 Classic'].Main.Variations.Primary_4.value,
-        backgroundColor: colors['📺 Classic'].Accessory.Blue_bg.value,
+        color: 'var(--main-primary-4)',
+        backgroundColor: 'var(--accessory-blue-1)',
     },
     text_reply: {
-        color: colors['📺 Classic'].Accessory.Brown_text.value,
-        backgroundColor: colors['📺 Classic'].Accessory.Orange_bg.value,
+        color: 'var(--accessory-orange-3)',
+        backgroundColor: 'var(--accessory-orange-1)',
     },
     file_upload: {
-        color: colors['📺 Classic'].Accessory.Green_text.value,
-        backgroundColor: colors['📺 Classic'].Accessory.Green_bg.value,
+        color: 'var(--accessory-green-3)',
+        backgroundColor: 'var(--accessory-green-1)',
     },
     order_selection: {
-        color: colors['📺 Classic'].Accessory.Blue_text.value,
-        backgroundColor: colors['📺 Classic'].Accessory.Teal_bg.value,
+        color: 'var(--accessory-blue-3)',
+        backgroundColor: 'var(--accessory-teal-1)',
     },
     http_request: {
-        color: '#605708',
-        backgroundColor: colors['📺 Classic'].Accessory.Yellow_bg.value,
+        color: 'var(--accessory-yellow-3)',
+        backgroundColor: 'var(--accessory-yellow-1)',
     },
 }
 
