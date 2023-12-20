@@ -156,6 +156,12 @@ describe('usePerformanceByArticleMetrics', () => {
             })
         )
 
+        expect(mockUseGetHelpCenterArticleList).toHaveBeenCalledWith(
+            1,
+            {ids: [1], version_status: 'latest_draft'},
+            {enabled: true}
+        )
+
         expect(result.current).toEqual({
             total: 0,
             isLoading: false,
@@ -229,6 +235,12 @@ describe('usePerformanceByArticleMetrics', () => {
                 currentPage,
                 helpCenterId,
             })
+        )
+
+        expect(mockUseGetHelpCenterArticleList).toHaveBeenCalledWith(
+            1,
+            {ids: [1], version_status: 'latest_draft'},
+            {enabled: true}
         )
 
         expect(result.current).toEqual({

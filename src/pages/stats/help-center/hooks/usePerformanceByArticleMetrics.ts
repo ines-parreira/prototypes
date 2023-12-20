@@ -57,8 +57,6 @@ export const usePerformanceByArticleMetrics = ({
         helpCenterId,
         {
             version_status: 'latest_draft',
-            page: currentPage,
-            per_page: itemPerPage,
             ids: articleIds,
         },
         {
