@@ -800,10 +800,12 @@ describe('widgets infobar utils', () => {
             )
         })
 
-        it('should return an age string label because passed type is `date`', () => {
-            // FIXME: this test will fail every added year
+        it('should return an age string label because passed type is `age`', () => {
+            const timestamp = 1513269240000
+            const age = moment().diff(moment(timestamp), 'years')
+
             expect(utils.stringifyRawData(1513269240000, 'age')).toBe(
-                '6 (2017-12-14)'
+                `${age} (2017-12-14)`
             )
         })
 
