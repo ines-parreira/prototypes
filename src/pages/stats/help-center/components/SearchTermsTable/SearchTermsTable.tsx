@@ -28,7 +28,7 @@ const columns = [
         type: TableCellType.Number,
         name: 'Article clicked',
         tooltip: {
-            title: '# of unique articles that were selected from the results returned',
+            title: 'Total # of articles clicked from the results returned',
         },
     },
     {
