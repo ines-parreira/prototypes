@@ -33,14 +33,10 @@ const Badge = ({className, children, style, type, ...props}: Props) => {
             className={classnames(css.badge, className)}
             style={{
                 ...(!!type
-                    ? {backgroundColor: `var(--background-${type})`}
-                    : {}),
-                ...(type === 'light' ||
-                type === 'blue' ||
-                type === 'light-success' ||
-                type === 'light-warning' ||
-                type === 'light-error'
-                    ? {color: `var(--text-${type})`}
+                    ? {
+                          backgroundColor: `var(--background-${type})`,
+                          color: `var(--text-${type}, var(--neutral-grey-0))`,
+                      }
                     : {}),
                 ...style,
             }}

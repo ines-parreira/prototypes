@@ -1,6 +1,9 @@
+import React from 'react'
+
 require('@storybook/addon-console')
 
 require('assets/css/main.less')
+require('./style.less')
 
 import {
     BarElement,
@@ -73,3 +76,53 @@ Chart.register(
     Filler,
     ArcElement
 )
+
+export const preview = {
+    parameters,
+    globalTypes: {
+        theme: {
+            name: 'Theme',
+            description: 'Global theme for components',
+            defaultValue: 'light',
+            toolbar: {
+                icon: 'circlehollow',
+                items: [
+                    {value: 'light', icon: 'circlehollow', title: 'Light'},
+                    {value: 'dark', icon: 'circle', title: 'Dark'},
+                ],
+                showName: true,
+            },
+        },
+    },
+}
+
+const ThemeBlock = ({background, children}) => (
+    <div
+        style={{
+            height: '100%',
+            overflow: 'auto',
+            padding: '1rem',
+            background,
+            color: 'var(--neutral-grey-6)',
+        }}
+    >
+        {children}
+    </div>
+)
+
+const withTheme = (StoryFn, context) => {
+    const theme = context.parameters.theme ?? context.globals.theme
+    const background = theme === 'dark' ? '#333' : '#fff'
+
+    return (
+        <div className={theme} style={{height: '100%'}}>
+            <ThemeBlock background={background}>
+                <StoryFn />
+            </ThemeBlock>
+        </div>
+    )
+}
+
+export const decorators = [withTheme]
+
+export default preview

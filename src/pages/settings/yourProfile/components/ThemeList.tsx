@@ -1,8 +1,7 @@
 import React from 'react'
 
 import _get from 'lodash/get'
-import {Themes} from 'theme/types'
-import {Theme, useSavedTheme} from 'theme'
+import {Theme, Themes, useSavedTheme} from 'theme'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/yourProfile/components/ThemeList.less'

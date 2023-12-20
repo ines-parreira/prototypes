@@ -1,10 +1,11 @@
 import React from 'react'
 import classnames from 'classnames'
-
 import _noop from 'lodash/noop'
-import {AutoReplyReturnSettings} from 'state/rules/types'
+
 import Button from 'pages/common/components/button/Button'
 import RichField from 'pages/common/forms/RichField/RichField'
+import {AutoReplyReturnSettings} from 'state/rules/types'
+import {Theme} from 'theme'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 
@@ -19,7 +20,7 @@ export const AutoReplyReturnDemo = ({settings}: Props) => (
             <div className={css.circle} />
             <div className={css.circle} />
         </div>
-        <div className={css.demoContent}>
+        <div className={classnames(Theme.Light, css.demoContent)}>
             <div className={css.textdata}>
                 <div>
                     <div className={css.previewLegend}>

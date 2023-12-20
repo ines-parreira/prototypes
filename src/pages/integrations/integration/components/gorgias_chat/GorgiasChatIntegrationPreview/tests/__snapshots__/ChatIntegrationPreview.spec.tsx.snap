@@ -2,7 +2,7 @@
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display auto responder 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -264,7 +264,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display display the offsets when editing axis x 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -466,7 +466,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display display the offsets when editing axis y 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -672,7 +672,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display optional email capture 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -1002,7 +1002,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display required email capture 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -1274,7 +1274,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -1527,7 +1527,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -1791,7 +1791,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -2044,7 +2044,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the sliders when editing the position 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -2297,7 +2297,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-day 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -2514,7 +2514,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-hours 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -2731,7 +2731,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-minutes 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -2948,7 +2948,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-shortly 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div
@@ -3165,7 +3165,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should not display button if hideButton provided 1`] = `
 <div
-  class="wrapper preview previewWithBackground"
+  class="light wrapper preview previewWithBackground"
   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
   <div

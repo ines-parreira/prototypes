@@ -16,7 +16,7 @@ import {
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as utils from 'utils'
-import {Theme, ThemeValue} from 'theme'
+import {Theme} from 'theme'
 
 import {Navbar} from '../Navbar'
 
@@ -47,8 +47,8 @@ describe('<Navbar />', () => {
         flags: {
             [FeatureFlagKey.AutomateRebranding]: false,
         },
-        savedTheme: 'modern' as Theme,
-        theme: 'modern' as ThemeValue,
+        savedTheme: 'modern' as 'modern' | Theme,
+        theme: Theme.Modern as Theme.Dark | Theme.Light | Theme.Modern,
         setTheme: jest.fn(),
     }
 

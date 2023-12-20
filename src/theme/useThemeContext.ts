@@ -3,12 +3,12 @@ import {useEffect, useMemo} from 'react'
 import {usePersistedState} from 'common/hooks'
 import {tryLocalStorage} from 'services/common/utils'
 
-import {Theme, ThemeValue} from './types'
+import {Theme} from './types'
 
 export default function useThemeContext() {
     const [savedTheme, setSavedTheme] = usePersistedState<Theme | 'modern'>(
         'theme',
-        'modern light'
+        Theme.Modern
     )
     const prefersDarkTheme = window.matchMedia(
         '(prefers-color-scheme: dark)'
@@ -19,20 +19,20 @@ export default function useThemeContext() {
     useEffect(() => {
         if (savedTheme === 'modern') {
             tryLocalStorage(() => {
-                localStorage.setItem('theme', JSON.stringify('modern light'))
-                setSavedTheme('modern light')
+                localStorage.setItem('theme', JSON.stringify(Theme.Modern))
+                setSavedTheme(Theme.Modern)
             })
         }
     }, [savedTheme, setSavedTheme])
 
-    const theme: ThemeValue = useMemo(
+    const theme = useMemo(
         () =>
-            savedTheme === 'system'
+            savedTheme === Theme.System
                 ? prefersDarkTheme
-                    ? 'dark'
-                    : 'light'
+                    ? Theme.Dark
+                    : Theme.Light
                 : savedTheme === 'modern'
-                ? 'modern light'
+                ? Theme.Modern
                 : savedTheme,
         [prefersDarkTheme, savedTheme]
     )

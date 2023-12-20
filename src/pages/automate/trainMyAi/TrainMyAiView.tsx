@@ -1,6 +1,8 @@
 import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
+
+import {Theme} from 'theme'
 import Button from 'pages/common/components/button/Button'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -10,6 +12,7 @@ import {SegmentEvent} from 'common/segment'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
 import {useGetHelpCenter} from 'models/helpCenter/queries'
+
 import {TRAIN_MY_AI} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
@@ -321,7 +324,7 @@ const TrainMyAiView = () => {
                     </div>
                     <div
                         ref={rightColRef}
-                        className={classNames(css.rightCol, {
+                        className={classNames(Theme.Light, css.rightCol, {
                             [css.empty]: !selectedRecommendationData,
                         })}
                     >

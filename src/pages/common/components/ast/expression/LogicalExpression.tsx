@@ -61,7 +61,6 @@ export default class LogicalExpression extends React.Component<Props> {
                     <Button
                         className="LogicalOperator btn-frozen mr-1"
                         type="button"
-                        color="warning"
                     >
                         {operator === '&&' ? 'AND' : 'OR'}
                     </Button>

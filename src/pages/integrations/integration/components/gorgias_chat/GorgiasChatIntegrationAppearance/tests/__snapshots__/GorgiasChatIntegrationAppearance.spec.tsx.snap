@@ -879,7 +879,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -2271,7 +2271,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -3634,7 +3634,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -4997,7 +4997,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -6360,7 +6360,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -7723,7 +7723,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -8974,7 +8974,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -10300,7 +10300,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -11772,7 +11772,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -13051,7 +13051,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
@@ -14414,7 +14414,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="wrapper preview previewWithBackground"
+                  class="light wrapper preview previewWithBackground"
                   style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div

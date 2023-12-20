@@ -79,7 +79,7 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
     class="container"
   >
     <span
-      class="tag badge badge-secondary"
+      class="tag badge badge badge-secondary"
     >
       <span
         class="tagText"
@@ -203,7 +203,7 @@ exports[`<IntentsSentimentsSelect /> should render component with selected item 
     class="container"
   >
     <span
-      class="tag badge badge-secondary"
+      class="tag badge badge badge-secondary"
     >
       <span
         class="tagText"

@@ -1,21 +1,18 @@
 import classnames from 'classnames'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
-
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
-
 import {
     GorgiasChatLauncherType,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
-
 import {addLinkToDownloadFonts} from 'pages/settings/common/FontSelectField/FontSelectField'
+import {Theme} from 'theme'
 import {assetsUrl} from 'utils'
 
 import css from './CustomizedChatLauncher.less'
@@ -68,7 +65,7 @@ const CustomizedChatLauncher: React.FC<Props> = ({
 
     return (
         <div
-            className={classnames(css.wrapper, className, {
+            className={classnames(Theme.Light, css.wrapper, className, {
                 [css.buttonOnTop]: isButtonOnTop,
             })}
             style={{

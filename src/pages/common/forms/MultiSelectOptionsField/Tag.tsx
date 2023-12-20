@@ -26,7 +26,7 @@ export default function Tag({
 
     return (
         <Badge
-            className={classnames(css.tag, {
+            className={classnames(css.tag, css.badge, {
                 [css.compact]: isCompact,
             })}
         >

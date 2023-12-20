@@ -12,7 +12,7 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
         class="container compact"
       >
         <span
-          class="tag compact badge badge-secondary"
+          class="tag badge compact badge badge-secondary"
         >
           <span
             class="tagText"
@@ -26,7 +26,7 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
           </i>
         </span>
         <span
-          class="tag compact badge badge-secondary"
+          class="tag badge compact badge badge-secondary"
         >
           <span
             class="tagText"

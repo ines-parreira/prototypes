@@ -213,7 +213,7 @@ exports[`<OrderFooterComponent/> render() should render with tags 1`] = `
               class="container"
             >
               <span
-                class="tag badge badge-secondary"
+                class="tag badge badge badge-secondary"
               >
                 <span
                   class="tagText"
@@ -227,7 +227,7 @@ exports[`<OrderFooterComponent/> render() should render with tags 1`] = `
                 </i>
               </span>
               <span
-                class="tag badge badge-secondary"
+                class="tag badge badge badge-secondary"
               >
                 <span
                   class="tagText"
@@ -241,7 +241,7 @@ exports[`<OrderFooterComponent/> render() should render with tags 1`] = `
                 </i>
               </span>
               <span
-                class="tag badge badge-secondary"
+                class="tag badge badge badge-secondary"
               >
                 <span
                   class="tagText"

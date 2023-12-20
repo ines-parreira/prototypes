@@ -1,25 +1,27 @@
 :local .tag {
-    display: inline-flex !important;
-    max-width: 100%;
-    align-items: center;
-    color: #0275d8 !important;
-    background-color: #eff1ff !important;
-    margin: 0.25em;
-    margin-left: 0 !important;
-    .closeIcon {
-        cursor: pointer;
-    }
-    .tagText {
+    &.badge {
+        display: inline-flex !important;
         max-width: 100%;
-        display: inline-block;
-        vertical-align: middle;
-        line-height: 1.2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    &.compact {
-        font-size: 11px;
-        padding-left: 6px;
+        align-items: center;
+        color: var(--main-primary-4);
+        background-color: var(--main-primary-0);
+        margin: 0.25em;
+        margin-left: 0 !important;
+        .closeIcon {
+            cursor: pointer;
+        }
+        .tagText {
+            max-width: 100%;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        &.compact {
+            font-size: 11px;
+            padding-left: 6px;
+        }
     }
 }

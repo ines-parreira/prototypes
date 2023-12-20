@@ -3,13 +3,13 @@ import _get from 'lodash/get'
 import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
 
-import {Themes} from 'theme/types'
+import {Theme, Themes} from 'theme/types'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 
 describe('ThemeList', () => {
     it('should render all themes', () => {
         const {getByText} = render(
-            <ThemeList savedTheme={'dark'} onChangeTheme={jest.fn()} />
+            <ThemeList savedTheme={Theme.Dark} onChangeTheme={jest.fn()} />
         )
 
         Object.values(Themes).forEach((theme) => {
@@ -24,7 +24,10 @@ describe('ThemeList', () => {
         const onChangeThemeSpy = jest.fn()
 
         render(
-            <ThemeList savedTheme={'dark'} onChangeTheme={onChangeThemeSpy} />
+            <ThemeList
+                savedTheme={Theme.Dark}
+                onChangeTheme={onChangeThemeSpy}
+            />
         )
 
         expect(screen.getAllByRole('radio').length).toBe(4)

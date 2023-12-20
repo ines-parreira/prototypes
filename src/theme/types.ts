@@ -1,21 +1,32 @@
-export const Themes = {
-    system: {
+export enum Theme {
+    System = 'system',
+    Dark = 'dark',
+    Light = 'light',
+    Modern = 'modern light',
+}
+
+export type ThemeValue = {
+    label: string
+    settingsLabel?: string
+    icon: string
+}
+
+export const Themes: {[key in Theme]: ThemeValue} = {
+    [Theme.System]: {
         label: 'Use system setting',
         settingsLabel: 'System',
         icon: 'computer',
     },
-    dark: {
+    [Theme.Dark]: {
         label: 'Dark',
         icon: 'dark_mode',
     },
-    light: {
+    [Theme.Light]: {
         label: 'Light',
         icon: 'brightness_high',
     },
-    ['modern light']: {
+    [Theme.Modern]: {
         label: 'Default',
         icon: 'brightness_6',
     },
 }
-export type Theme = keyof typeof Themes
-export type ThemeValue = Exclude<Theme, 'system'>
