@@ -99,13 +99,14 @@ export const messagesSentMetricPerTicketDrillDownQueryFactory = (
         dimensions: [
             TicketDimension.TicketId,
             TicketMessagesDimension.MessagesCount,
+            TicketDimension.CreatedDatetime,
             ...baseQuery.dimensions,
         ],
         filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {
-                  order: [[TicketMessagesDimension.MessagesCount, sorting]],
+                  order: [[TicketDimension.CreatedDatetime, sorting]],
               }
             : {}),
     }

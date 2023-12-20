@@ -203,6 +203,7 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             dimensions: [
                 TicketDimension.TicketId,
                 TicketMessagesDimension.MessagesCount,
+                TicketDimension.CreatedDatetime,
                 ...messagesSentQueryFactory(statsFilters, timezone).dimensions,
             ],
             filters: [
@@ -229,6 +230,7 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             dimensions: [
                 TicketDimension.TicketId,
                 TicketMessagesDimension.MessagesCount,
+                TicketDimension.CreatedDatetime,
                 ...messagesSentMetricPerAgentQueryFactory(filters, timezone)
                     .dimensions,
             ],
@@ -238,7 +240,7 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
-            order: [[TicketMessagesDimension.MessagesCount, sorting]],
+            order: [[TicketDimension.CreatedDatetime, sorting]],
         })
     })
 })
