@@ -29,11 +29,22 @@ import {AgentAvatar} from './AgentAvatar'
 import css from './DrillDownTable.less'
 
 const tooltipHints = {
-    metric: 'The metric values displayed in this column reflect the state of the ticket during the selected timeframe.',
+    metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
     assignee:
-        'Data in this column reflects the current ticket state. It might be different from the value that has been associated with this ticket during the selected timeframe.',
-    contactReason:
-        'Data in this column reflects the current ticket state. It might be different from the value that has been associated with this ticket during the selected timeframe.',
+        'The current assignee is displayed in this column. It may be different from who the assignee was at the end of the selected timeframe.',
+    contactReason: (
+        <span>
+            The current value of the Contact reason is displayed. It may be
+            different from the Contact reason at the end of the selected period.{' '}
+            <a
+                href="https://docs.gorgias.com/en-US/managed-ticket-fields-273001"
+                target="_blank"
+                rel="noreferrer"
+            >
+                Learn more about Contact reason.
+            </a>
+        </span>
+    ),
 }
 
 export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
