@@ -7,10 +7,13 @@ import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterLi
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import configureStore from 'store/configureStore.prod'
+import {SegmentEvent, logEvent} from 'common/segment'
 import HelpCenterStats from '../HelpCenterStats'
 import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
 import {InitialRootState} from '../../../../../types'
 import {HELP_CENTER_STATS_TEST_IDS} from './constants'
+
+jest.mock('common/segment')
 
 jest.mock('../../hooks/useHelpCenterTrend', () => ({
     useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
@@ -47,6 +50,7 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 
 const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
+const mockedLogEvent = jest.mocked(logEvent)
 
 const helpCenters = getHelpCentersResponseFixture.data
 
@@ -81,6 +85,10 @@ describe('<HelpCenterStats />', () => {
     it('should render page with title and sections', () => {
         renderComponent()
 
+        expect(mockedLogEvent.mock.calls[0][0]).toEqual(
+            SegmentEvent.HelpCenterArticleRowClicked
+        )
+        expect(mockedLogEvent).toHaveBeenCalledTimes(1)
         expect(screen.getByText('Help Center')).toBeInTheDocument()
         expect(screen.getByText('Overview')).toBeInTheDocument()
         expect(screen.getByText('Performance')).toBeInTheDocument()

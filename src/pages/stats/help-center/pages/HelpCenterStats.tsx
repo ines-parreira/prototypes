@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import moment from 'moment'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
+import {getCurrentUser, getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import StatsPage from 'pages/stats/StatsPage'
 import DashboardSection from 'pages/stats/DashboardSection'
@@ -16,6 +16,9 @@ import {isNotEmptyArray} from 'utils'
 import {StatsFilters} from 'models/stat/types'
 
 import {getSortByName} from 'utils/getSortByName'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
@@ -163,6 +166,16 @@ const HelpCenterStatsComponent = ({
 }
 
 const HelpCenterStats = () => {
+    const currentUser = useAppSelector(getCurrentUser)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.HelpCenterArticleRowClicked, {
+            user_id: currentUser.get('id'),
+            account_domain: currentAccount.get('domain'),
+        })
+    })
+
     const {helpCenters, isLoading} = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
     })

@@ -203,6 +203,7 @@ export enum SegmentEvent {
     ChatPreferencesUpdated = 'chat-preferences-updated',
     SelfServiceActivatedViaBanner = 'self-service-activated-via-banner',
     PrintTicketClicked = 'print-ticket-clicked',
+    HelpCenterStatisticsPageViewed = 'help-center/statistics/page-viewed',
     HelpCenterArticleRowClicked = 'help-center/articles-view/article-row-clicked',
     HelpCenterContactFormCopyLink = 'help-center/contact-form/copy-link',
     HelpCenterContactFormCopyCode = 'help-center/contact-form/copy-code',
