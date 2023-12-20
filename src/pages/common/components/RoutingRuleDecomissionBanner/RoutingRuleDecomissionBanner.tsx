@@ -27,10 +27,9 @@ export default function RoutingRuleDecomissionBanner() {
         <BannerNotification
             message={
                 <>
-                    As of <strong>January 10, 2024</strong>, routing rules will
-                    no longer be in use. Admins need to review and update their
-                    Voice settings prior to the implementation of this
-                    modification. Find additional information here.
+                    We’re introducing a new setting to easily route Voice calls.
+                    By <strong>January 10, 2024</strong>, please confirm your
+                    settings.
                 </>
             }
             actionHTML={

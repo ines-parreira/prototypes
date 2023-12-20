@@ -31,7 +31,7 @@ describe('RoutingRuleDecomissionBanner', () => {
             </Provider>
         )
         expect(
-            screen.getByText(/routing rules will no longer be in use/i)
+            screen.getByText(/a new setting to easily route Voice calls/i)
         ).toBeVisible()
     })
 
@@ -54,7 +54,7 @@ describe('RoutingRuleDecomissionBanner', () => {
             </Provider>
         )
         expect(
-            screen.queryByText(/routing rules will no longer be in use/i)
+            screen.queryByText(/a new setting to easily route Voice calls/i)
         ).toBeNull()
     })
 
@@ -79,7 +79,7 @@ describe('RoutingRuleDecomissionBanner', () => {
         )
 
         expect(
-            screen.getByText(/routing rules will no longer be in use/i)
+            screen.getByText(/a new setting to easily route Voice calls/i)
         ).toBeVisible()
         const closeIcon = screen.getByRole('img', {
             name: /close\-icon/i,
@@ -105,7 +105,7 @@ describe('RoutingRuleDecomissionBanner', () => {
             </Provider>
         )
         expect(
-            screen.queryByText(/routing rules will no longer be in use/i)
+            screen.queryByText(/a new setting to easily route Voice calls/i)
         ).toBeNull()
     })
 
@@ -130,7 +130,7 @@ describe('RoutingRuleDecomissionBanner', () => {
         )
 
         expect(
-            screen.queryByText(/routing rules will no longer be in use/i)
+            screen.queryByText(/a new setting to easily route Voice calls/i)
         ).toBeNull()
     })
 })
