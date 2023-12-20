@@ -4,30 +4,40 @@ import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
 import {Components, Paths} from 'rest_api/help_center_api/client.generated'
 
 const traverseTree = (
-    tree: Components.Schemas.CategoryTreeDto,
-    map: Map<number, string>
+    node: Components.Schemas.CategoryTreeDto,
+    map: Map<number, string>,
+    locale: Paths.GetCategoryTree.Parameters.Locale
 ) => {
-    tree.articles?.forEach((article) =>
+    node.articles = node.articles?.filter((article) =>
+        article.available_locales.includes(locale)
+    )
+    node.articles?.forEach((article) =>
         map.set(article.id, article.translation_versions.current?.title ?? '')
     )
-    tree.children.forEach((child) => traverseTree(child, map))
+    node.children = node.children?.filter((child) =>
+        child.available_locales.includes(locale)
+    )
+    node.children.forEach((child) => traverseTree(child, map, locale))
 }
 
-const createArticleTitleMap = (
-    tree: Maybe<Components.Schemas.CategoryTreeDto>
+const filterTreeByLocale = (
+    locale: Paths.GetCategoryTree.Parameters.Locale,
+    data: Maybe<Components.Schemas.CategoryTreeDto>
 ) => {
     const map = new Map<number, string>()
     map.set(-1, 'No relevant articles')
-    if (!tree) return map
-    traverseTree(tree, map)
-    return map
+    if (!data) return {map}
+
+    const tree = {...data}
+    traverseTree(tree, map, locale)
+    return {map, data: tree}
 }
 
 const useHelpCenterArticleTree = (
     helpCenterId: Maybe<number>,
     locale: Paths.GetCategoryTree.Parameters.Locale = 'en-US'
 ) => {
-    const {data, isFetching} = useGetHelpCenterCategoryTree(
+    const response = useGetHelpCenterCategoryTree(
         helpCenterId!,
         HELP_CENTER_ROOT_CATEGORY_ID,
         {
@@ -42,15 +52,16 @@ const useHelpCenterArticleTree = (
             refetchOnWindowFocus: false,
         }
     )
+    const {data, map} = useMemo(
+        () => filterTreeByLocale(locale, response.data),
 
-    return useMemo(
-        () => ({
-            data,
-            map: createArticleTitleMap(data),
-            isLoading: isFetching,
-        }),
-        [data, isFetching]
+        [response.data, locale]
     )
+    return {
+        data,
+        map,
+        isLoading: response.isFetching,
+    }
 }
 
 export default useHelpCenterArticleTree

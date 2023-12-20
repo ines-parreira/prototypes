@@ -8,6 +8,8 @@ import {
     getHelpCenterArticle,
 } from './resources'
 
+const STALE_TIME = 10 * 60 * 1000
+
 export const helpCenterStatsKeys = {
     all: (helpCenterId: number) =>
         ['help-center', helpCenterId, 'stats'] as const,
@@ -78,6 +80,7 @@ export const useGetHelpCenterCategoryTree = (
                 },
                 queryParams
             ),
+        staleTime: STALE_TIME,
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
     })
@@ -106,6 +109,7 @@ export const useGetHelpCenterArticle = (
                     locale: locale!,
                 }
             ),
+        staleTime: STALE_TIME,
         ...overrides,
         enabled:
             !!client &&
@@ -131,6 +135,7 @@ export const useGetHelpCenter = (
                 {help_center_id: helpCenterId},
                 queryParameters
             ),
+        staleTime: STALE_TIME,
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
     })

@@ -7,7 +7,10 @@ import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
-import {Components} from '../../../../rest_api/help_center_api/client.generated'
+import {
+    Components,
+    Paths,
+} from '../../../../rest_api/help_center_api/client.generated'
 import Button from '../../../common/components/button/Button'
 import DropdownSearch from '../../../common/components/dropdown/DropdownSearch'
 import DropdownSection from '../../../common/components/dropdown/DropdownSection'
@@ -20,6 +23,7 @@ type Props = {
     helpCenterId: number
     onSelect: (id: number) => void
     onChange: (id: number) => void
+    locale?: Paths.GetCategoryTree.Parameters.Locale
 }
 
 const ArticleRow = ({
@@ -75,14 +79,14 @@ const CategoryRow = ({
     )
 }
 
-const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
+const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const searchRef = useRef<HTMLInputElement>(null)
     const [value, setValue] = useState<number>()
     const [search, setSearch] = useState<string>('')
 
-    const {data, map} = useHelpCenterArticleTree(helpCenterId)
+    const {data, map} = useHelpCenterArticleTree(helpCenterId, locale)
     const [isOpen, setIsOpen] = useState(false)
     const [path, setPath] = useState<string>('')
     const allArticles = Array.from(map.entries())
@@ -189,9 +193,7 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange}: Props) => {
                                     {!!articles?.length &&
                                         isAtRootLevel &&
                                         !search && (
-                                            <DropdownSection
-                                                title={'Uncategorized articles'}
-                                            >
+                                            <DropdownSection title="Uncategorized articles">
                                                 {articles.map((article) => (
                                                     <ArticleRow
                                                         key={article.id}

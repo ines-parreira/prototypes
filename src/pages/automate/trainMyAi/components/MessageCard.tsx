@@ -1,5 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
+import {Paths} from '../../../../rest_api/help_center_api/client.generated'
+import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
 import css from './MessageCard.less'
 
 type Props = {
@@ -45,6 +47,28 @@ const MessageCard = ({
             <div className={css.message}>{message}</div>
             <div className={css.articleTitle}>{articleTitle}</div>
         </button>
+    )
+}
+
+export const StatefulMessageCard = ({
+    helpCenterId,
+    locale,
+    articleId,
+    ...props
+}: Omit<Props, 'articleTitle'> & {
+    helpCenterId: number
+    articleId: number
+    locale: Paths.GetCategoryTree.Parameters.Locale
+}) => {
+    const {map, isLoading} = useHelpCenterArticleTree(helpCenterId, locale)
+
+    return (
+        <MessageCard
+            articleTitle={
+                isLoading ? '' : map.get(articleId) || 'Deleted article'
+            }
+            {...props}
+        />
     )
 }
 

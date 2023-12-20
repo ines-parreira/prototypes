@@ -165,7 +165,6 @@ describe('<TrainMyAiView />', () => {
         ])
 
         useHelpCenterArticleTreeMock.mockReturnValue({
-            data: null,
             map: new Map([[1, 'value']]),
             isLoading: true,
         } as ReturnType<typeof useHelpCenterArticleTreeMock>)

@@ -86,6 +86,7 @@ export default function PreviewHeader({
                                     helpCenterId={recommendations.helpCenterId}
                                     onSelect={onSelectArticle}
                                     onChange={onChange}
+                                    locale={recommendations.locale}
                                 />
                             ) : hasFeedback || articleDeleted ? (
                                 <div className={css.edit}>

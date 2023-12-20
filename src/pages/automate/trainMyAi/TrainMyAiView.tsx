@@ -2,7 +2,6 @@ import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 
-import {Theme} from 'theme'
 import Button from 'pages/common/components/button/Button'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -20,14 +19,13 @@ import useSelfServiceChatChannels from '../common/hooks/useSelfServiceChatChanne
 import {useHelpCenterPublishedArticlesCount} from '../common/hooks/useHelpCenterPublishedArticlesCount'
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import RecommendationDivisor from './components/RecommendationDivisor'
-import MessageCard from './components/MessageCard'
+import {StatefulMessageCard as MessageCard} from './components/MessageCard'
 import Header from './components/Header'
 import ArticleRecommendationDisabled from './components/ArticleRecommendationDisabled'
 import RecommendationPagination from './components/RecommendationPagination'
 import PreviewSection from './components/PreviewSection'
 import css from './TrainMyAiView.less'
 import {RecommendationDisabled} from './components/TrainMyAiAlerts'
-import useHelpCenterArticleTree from './hooks/useHelpCenterArticleTree'
 
 const TrainMyAiView = () => {
     const leftColRef = useRef<HTMLDivElement>(null)
@@ -96,9 +94,6 @@ const TrainMyAiView = () => {
         shopType,
         helpCenterId,
     })
-
-    const {map: helpCenterArticleTreeMap} =
-        useHelpCenterArticleTree(helpCenterId)
 
     const isLoading =
         !selfServiceConfiguration ||
@@ -261,7 +256,8 @@ const TrainMyAiView = () => {
                             )}
 
                         <div className={css.content}>
-                            {isInitialLoadingArticleRecommndations ? (
+                            {isInitialLoadingArticleRecommndations ||
+                            typeof helpCenterId !== 'number' ? (
                                 <Loader />
                             ) : (
                                 articleRecommendationsData?.data &&
@@ -272,16 +268,18 @@ const TrainMyAiView = () => {
                                             message,
                                             articleIdFeedback,
                                             articleId,
+                                            locale,
                                         },
                                         index
                                     ) => {
-                                        const title =
-                                            helpCenterArticleTreeMap.get(
-                                                articleIdFeedback || articleId
-                                            ) ?? 'Deleted article'
                                         return (
                                             <MessageCard
-                                                articleTitle={title}
+                                                articleId={
+                                                    articleIdFeedback ||
+                                                    articleId
+                                                }
+                                                helpCenterId={helpCenterId}
+                                                locale={locale}
                                                 isSelected={
                                                     selectedRecommendationIndex ===
                                                     index
@@ -315,7 +313,7 @@ const TrainMyAiView = () => {
                                             setSelectedRecommendationIndex(null)
                                             leftColRef.current?.scrollTo({
                                                 top: 0,
-                                                behavior: 'auto',
+                                                behavior: 'smooth',
                                             })
                                         }}
                                     />
@@ -324,7 +322,7 @@ const TrainMyAiView = () => {
                     </div>
                     <div
                         ref={rightColRef}
-                        className={classNames(Theme.Light, css.rightCol, {
+                        className={classNames(css.rightCol, {
                             [css.empty]: !selectedRecommendationData,
                         })}
                     >
@@ -390,7 +388,7 @@ const TrainMyAiView = () => {
                                                             {
                                                                 top: 0,
                                                                 behavior:
-                                                                    'auto',
+                                                                    'smooth',
                                                             }
                                                         )
                                                     }}
