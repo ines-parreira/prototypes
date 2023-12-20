@@ -3,13 +3,12 @@ import {Map, List} from 'immutable'
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Table} from 'reactstrap'
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
-import {DEPRECATED_getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors'
-import {getTimezone} from '../../../../../../state/currentUser/selectors'
-import Legend, {Label} from '../../Legend/Legend'
-import {RootState} from '../../../../../../state/types'
+import {DEPRECATED_getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {getTimezone} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+import Legend, {Label} from 'pages/stats/common/components/Legend/Legend'
 
 import css from './PerHourPerWeekTableStat.less'
 
@@ -32,12 +31,12 @@ type Limits = {
 }
 
 const colors = {
-    rangeOneColor: colorTokens['📺 Classic'].Main.Variations.Primary_0.value,
-    rangeTwoColor: '#D2E2FD',
-    rangeThreeColor: colorTokens['📺 Classic'].Main.Variations.Primary_1.value,
-    rangeFourColor: '#77A9FA',
-    red: colorTokens['📺 Classic'].Feedback.Variations.Error_2.value,
-    white: colorTokens['📺 Classic'].Neutral.Grey_0.value,
+    rangeOneColor: 'var(--analytics-heatmap-0)',
+    rangeTwoColor: 'var(--analytics-heatmap-2)',
+    rangeThreeColor: 'var(--analytics-heatmap-4)',
+    rangeFourColor: 'var(--analytics-heatmap-6)',
+    red: 'var(--feedback-error-2)',
+    white: 'var(--neutral-grey-0)',
 }
 
 const getDataIntervals = (lines: List<any>): Limits => {

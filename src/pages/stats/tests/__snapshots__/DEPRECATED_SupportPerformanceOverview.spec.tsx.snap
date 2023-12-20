@@ -1188,16 +1188,12 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
               </thead>
               <tbody>
                 <tr>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <span>
                       00:00
                     </span>
                   </td>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <div
                       class="redTransparentStripes"
                     />
@@ -1205,44 +1201,32 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       0
                     </span>
                   </td>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <span>
                       2
                     </span>
                   </td>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <span>
                       0
                     </span>
                   </td>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <span>
                       0
                     </span>
                   </td>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <span>
                       0
                     </span>
                   </td>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <span>
                       0
                     </span>
                   </td>
-                  <td
-                    style="background-color: rgb(255, 255, 255);"
-                  >
+                  <td>
                     <span>
                       0
                     </span>

@@ -104,16 +104,12 @@ exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`
     </thead>
     <tbody>
       <tr>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             00:00
           </span>
         </td>
-        <td
-          style="background-color: rgb(246, 249, 255);"
-        >
+        <td>
           <div
             class="redTransparentStripes"
           />
@@ -121,60 +117,44 @@ exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(246, 249, 255);"
-        >
+        <td>
           <span>
             1
           </span>
         </td>
-        <td
-          style="background-color: rgb(210, 226, 253);"
-        >
+        <td>
           <span>
             2
           </span>
         </td>
-        <td
-          style="background-color: rgb(210, 226, 253);"
-        >
+        <td>
           <span>
             3
           </span>
         </td>
-        <td
-          style="background-color: rgb(210, 226, 253);"
-        >
+        <td>
           <span>
             3
           </span>
         </td>
-        <td
-          style="background-color: rgb(210, 226, 253);"
-        >
+        <td>
           <span>
             2
           </span>
         </td>
-        <td
-          style="background-color: rgb(246, 249, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
       </tr>
       <tr>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             01:00
           </span>
         </td>
-        <td
-          style="background-color: rgb(246, 249, 255);"
-        >
+        <td>
           <div
             class="redTransparentStripes"
           />
@@ -182,44 +162,32 @@ exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(155, 192, 252);"
-        >
+        <td>
           <span>
             4
           </span>
         </td>
-        <td
-          style="background-color: rgb(155, 192, 252);"
-        >
+        <td>
           <span>
             4
           </span>
         </td>
-        <td
-          style="background-color: rgb(119, 169, 250);"
-        >
+        <td>
           <span>
             7
           </span>
         </td>
-        <td
-          style="background-color: rgb(210, 226, 253);"
-        >
+        <td>
           <span>
             3
           </span>
         </td>
-        <td
-          style="background-color: rgb(210, 226, 253);"
-        >
+        <td>
           <span>
             3
           </span>
         </td>
-        <td
-          style="background-color: rgb(210, 226, 253);"
-        >
+        <td>
           <span>
             2
           </span>
@@ -313,16 +281,12 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
     </thead>
     <tbody>
       <tr>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             00:00
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <div
             class="redTransparentStripes"
           />
@@ -330,60 +294,44 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
       </tr>
       <tr>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             01:00
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <div
             class="redTransparentStripes"
           />
@@ -391,44 +339,32 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
         </td>
-        <td
-          style="background-color: rgb(255, 255, 255);"
-        >
+        <td>
           <span>
             0
           </span>
@@ -441,16 +377,12 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
 
 exports[`PerHourPerWeekTableStat TableCells Should render with a different timezone between business hours and the current user 1`] = `
 <tr>
-  <td
-    style="background-color: rgb(255, 255, 255);"
-  >
+  <td>
     <span>
       00:00
     </span>
   </td>
-  <td
-    style="background-color: rgb(246, 249, 255);"
-  >
+  <td>
     <div
       class="redTransparentStripes"
     />
@@ -458,9 +390,7 @@ exports[`PerHourPerWeekTableStat TableCells Should render with a different timez
       0
     </span>
   </td>
-  <td
-    style="background-color: rgb(246, 249, 255);"
-  >
+  <td>
     <div
       class="redTransparentStripes"
     />
@@ -468,9 +398,7 @@ exports[`PerHourPerWeekTableStat TableCells Should render with a different timez
       1
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <div
       class="redTransparentStripes"
     />
@@ -478,9 +406,7 @@ exports[`PerHourPerWeekTableStat TableCells Should render with a different timez
       2
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <div
       class="redTransparentStripes"
     />
@@ -488,9 +414,7 @@ exports[`PerHourPerWeekTableStat TableCells Should render with a different timez
       3
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <div
       class="redTransparentStripes"
     />
@@ -498,16 +422,12 @@ exports[`PerHourPerWeekTableStat TableCells Should render with a different timez
       3
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <span>
       2
     </span>
   </td>
-  <td
-    style="background-color: rgb(246, 249, 255);"
-  >
+  <td>
     <span>
       0
     </span>
@@ -517,16 +437,12 @@ exports[`PerHourPerWeekTableStat TableCells Should render with a different timez
 
 exports[`PerHourPerWeekTableStat TableCells Should render with the same timezone for the business hours and the current user 1`] = `
 <tr>
-  <td
-    style="background-color: rgb(255, 255, 255);"
-  >
+  <td>
     <span>
       00:00
     </span>
   </td>
-  <td
-    style="background-color: rgb(246, 249, 255);"
-  >
+  <td>
     <div
       class="redTransparentStripes"
     />
@@ -534,44 +450,32 @@ exports[`PerHourPerWeekTableStat TableCells Should render with the same timezone
       0
     </span>
   </td>
-  <td
-    style="background-color: rgb(246, 249, 255);"
-  >
+  <td>
     <span>
       1
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <span>
       2
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <span>
       3
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <span>
       3
     </span>
   </td>
-  <td
-    style="background-color: rgb(210, 226, 253);"
-  >
+  <td>
     <span>
       2
     </span>
   </td>
-  <td
-    style="background-color: rgb(246, 249, 255);"
-  >
+  <td>
     <span>
       0
     </span>

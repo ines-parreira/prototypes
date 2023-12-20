@@ -32,57 +32,37 @@
         "value": "#f58d86"
       }
     },
-    "heatmap": [
-      {
-        "heatmap-0": {
-          "value": "#ffffff"
-        }
+    "heatmap": {
+      "heatmap-0": {
+        "value": "#ffffff"
       },
-      {
-        "heatmap-1": {
-          "value": "#edf4fe"
-        }
+      "heatmap-1": {
+        "value": "#edf4fe"
       },
-      {
-        "heatmap-2": {
-          "value": "#dbe8fe"
-        }
+      "heatmap-2": {
+        "value": "#dbe8fe"
       },
-      {
-        "heatmap-3": {
-          "value": "#c9ddfd"
-        }
+      "heatmap-3": {
+        "value": "#c9ddfd"
       },
-      {
-        "heatmap-4": {
-          "value": "#b7d1fd"
-        }
+      "heatmap-4": {
+        "value": "#b7d1fd"
       },
-      {
-        "heatmap-5": {
-          "value": "#92bbfb"
-        }
+      "heatmap-5": {
+        "value": "#92bbfb"
       },
-      {
-        "heatmap-6": {
-          "value": "#6ea4fa"
-        }
+      "heatmap-6": {
+        "value": "#6ea4fa"
       },
-      {
-        "heatmap-7": {
-          "value": "#4a8df9"
-        }
+      "heatmap-7": {
+        "value": "#4a8df9"
       },
-      {
-        "heatmap-8": {
-          "value": "#3b71c7"
-        }
+      "heatmap-8": {
+        "value": "#3b71c7"
       },
-      {
-        "heatmap-9": {
-          "value": "#2c5595"
-        }
+      "heatmap-9": {
+        "value": "#2c5595"
       }
-    ]
+    }
   }
 }

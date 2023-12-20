@@ -1,13 +1,13 @@
 import {TicketChannel} from 'business/types/ticket'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {
-    SankeyDiagram,
     OneDimensionalChart,
     OneDimensionalUnionChart,
+    SankeyDiagram,
     Stat,
+    StatsFilters,
     StatType,
     TwoDimensionalChart,
-    StatsFilters,
 } from 'models/stat/types'
 import {
     ARTICLE_RECOMMENDATION,
@@ -2246,3 +2246,79 @@ export const selfServiceTopReportedIssuesNoData: Stat<TwoDimensionalChart> = {
         },
     },
 }
+
+export const statPerHourPerWeekData = {
+    axes: {
+        x: [
+            {name: 'Hour', type: 'string'},
+            {name: 'Monday', type: 'number', value: 1},
+            {name: 'Tuesday', type: 'number', value: 2},
+            {name: 'Wednesday', type: 'number', value: 3},
+            {name: 'Thursday', type: 'number', value: 4},
+            {name: 'Friday', type: 'number', value: 5},
+            {name: 'Saturday', type: 'number', value: 6},
+            {name: 'Sunday', type: 'number', value: 7},
+        ],
+    },
+    lines: [
+        [
+            {type: 'string', value: '00:00'},
+            {type: 'number', value: 0},
+            {type: 'number', value: 1},
+            {type: 'number', value: 2},
+            {type: 'number', value: 3},
+            {type: 'number', value: 3},
+            {type: 'number', value: 2},
+            {type: 'number', value: 0},
+        ],
+        [
+            {type: 'string', value: '01:00'},
+            {type: 'number', value: 0},
+            {type: 'number', value: 4},
+            {type: 'number', value: 4},
+            {type: 'number', value: 7},
+            {type: 'number', value: 3},
+            {type: 'number', value: 3},
+            {type: 'number', value: 2},
+        ],
+    ],
+}
+
+export const statPerHourPerWeekZeroCountsData = {
+    axes: {
+        x: [
+            {name: 'Hour', type: 'string'},
+            {name: 'Monday', type: 'number', value: 1},
+            {name: 'Tuesday', type: 'number', value: 2},
+            {name: 'Wednesday', type: 'number', value: 3},
+            {name: 'Thursday', type: 'number', value: 4},
+            {name: 'Friday', type: 'number', value: 5},
+            {name: 'Saturday', type: 'number', value: 6},
+            {name: 'Sunday', type: 'number', value: 7},
+        ],
+    },
+    lines: [
+        [
+            {type: 'string', value: '00:00'},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+        ],
+        [
+            {type: 'string', value: '01:00'},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+            {type: 'number', value: 0},
+        ],
+    ],
+}
+
+export const statPerHourPerWeekEmptyData = {axes: {}, lines: []}
