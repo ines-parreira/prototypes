@@ -1,26 +1,36 @@
 import React from 'react'
-import {useOneTouchTicketsMetric} from 'hooks/reporting/metrics'
+import {
+    useClosedTicketsMetric,
+    useOneTouchTicketsMetric,
+} from 'hooks/reporting/metrics'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
+
+export const calculatePercentage = (x: number, y: number) => (x / y) * 100
 
 export const OneTouchTicketsCellSummary = () => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const agents = useAppSelector(getSortedAgents)
     const {data, isFetching} = useOneTouchTicketsMetric(
         cleanStatsFilters,
         userTimezone
     )
+    const closedTickets = useClosedTicketsMetric(
+        cleanStatsFilters,
+        userTimezone
+    )
 
-    const metricValue = data?.value ? data.value / agents.length : data?.value
+    const metricValue =
+        data?.value && closedTickets?.data?.value
+            ? calculatePercentage(data.value, closedTickets.data.value)
+            : null
 
     return (
         <>
-            {isFetching ? (
+            {isFetching || closedTickets.isFetching ? (
                 <Skeleton inline />
             ) : (
                 formatMetricValue(

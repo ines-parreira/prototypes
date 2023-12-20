@@ -8,18 +8,19 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {useOneTouchTicketsMetric} from 'hooks/reporting/metrics'
-import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
+import {
+    useOneTouchTicketsMetric,
+    useClosedTicketsMetric,
+} from 'hooks/reporting/metrics'
+import {
+    OneTouchTicketsCellSummary,
+    calculatePercentage,
+} from 'pages/stats/OneTouchTicketsCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    initialState as agentPerformanceInitialState,
-    getSortedAgents,
-} from 'state/ui/stats/agentPerformanceSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
-import {agents} from 'fixtures/agents'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -28,22 +29,21 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 jest.mock('hooks/reporting/metrics')
-jest.mock('state/ui/stats/agentPerformanceSlice')
-const getSortedAgentsMock = assumeMock(getSortedAgents)
 jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
 const useOneTouchTicketsMetricMock = assumeMock(useOneTouchTicketsMetric)
+const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<PercentageOfClosedTicketsCellSummary>', () => {
     const allTicketsCount = 100
+    const allClosedTicketsCount = 500
 
     const defaultState = {
         stats: initialState,
         ui: {
-            agentPerformance: agentPerformanceInitialState,
             stats: uiStatsInitialState,
         },
     } as RootState
@@ -57,7 +57,17 @@ describe('<PercentageOfClosedTicketsCellSummary>', () => {
     useOneTouchTicketsMetricMock.mockReturnValue(
         useOneTouchTicketsMetricMockReturnValue
     )
-    getSortedAgentsMock.mockReturnValue(agents)
+
+    const useClosedTicketsMetricMockReturnValue = {
+        data: {value: allClosedTicketsCount},
+        isFetching: false,
+        isError: false,
+    }
+
+    useClosedTicketsMetricMock.mockReturnValue(
+        useClosedTicketsMetricMockReturnValue
+    )
+
     getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
         userTimezone: 'someTimezone',
         cleanStatsFilters: {
@@ -79,12 +89,27 @@ describe('<PercentageOfClosedTicketsCellSummary>', () => {
         expect(
             screen.getByText(
                 formatMetricValue(
-                    allTicketsCount / agents.length,
+                    calculatePercentage(allTicketsCount, allClosedTicketsCount),
                     'percent',
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )
         ).toBeInTheDocument()
+    })
+
+    it('should render placeholder on missing one of the value', () => {
+        useOneTouchTicketsMetricMock.mockReturnValue({
+            ...useOneTouchTicketsMetricMockReturnValue,
+            data: {value: null},
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <OneTouchTicketsCellSummary />
+            </Provider>
+        )
+
+        expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
     })
 
     it('should render skeleton when fetching', () => {
