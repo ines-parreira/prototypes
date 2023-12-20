@@ -95,7 +95,7 @@ exports[`customers actions delete customer 1`] = `
 ]
 `;
 
-exports[`customers actions fetch customer 1`] = `
+exports[`customers actions fetch customer fetches customer 1`] = `
 [
   {
     "type": "FETCH_CUSTOMER_START",

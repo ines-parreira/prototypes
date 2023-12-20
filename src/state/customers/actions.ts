@@ -13,11 +13,13 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import type {StoreDispatch, RootState} from 'state/types'
 import {onApiError} from 'state/utils'
+import {isCurrentlyOnCustomerPage} from 'utils'
+import history from 'pages/history'
 
 import * as types from './constants'
 import {mergeChannels} from './helpers'
 
-export function fetchCustomer(customerId: string) {
+export function fetchCustomer(customerId: string | number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.FETCH_CUSTOMER_START,
@@ -28,6 +30,15 @@ export function fetchCustomer(customerId: string) {
             .then((json) => json?.data)
             .then(
                 (resp) => {
+                    if (isCurrentlyOnCustomerPage(customerId)) {
+                        const wasRedirected =
+                            resp?.id && Number(customerId) !== resp?.id
+
+                        if (wasRedirected) {
+                            history.push(`/app/customer/${resp?.id}`)
+                        }
+                    }
+
                     return dispatch({
                         type: types.FETCH_CUSTOMER_SUCCESS,
                         resp,

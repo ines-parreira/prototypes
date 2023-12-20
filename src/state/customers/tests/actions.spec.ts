@@ -6,14 +6,15 @@ import {fromJS} from 'immutable'
 import client from 'models/api/resources'
 import {Customer, CustomerDraft} from 'models/customer/types'
 import {StoreDispatch} from 'state/types'
-
+import history from 'pages/history'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('pages/history')
+jest.mock('state/notifications/actions', () => {
     return {
         notify: jest.fn((args: unknown) => () => ({payload: args})),
     }
@@ -36,12 +37,36 @@ describe('customers actions', () => {
         mockServer = new MockAdapter(client)
     })
 
-    it('fetch customer', () => {
-        mockServer.onGet('/api/customers/2/').reply(200, {data: {id: 2}})
+    describe('fetch customer', () => {
+        it('fetches customer', () => {
+            mockServer.onGet('/api/customers/2/').reply(200, {data: {id: 2}})
 
-        return store
-            .dispatch(actions.fetchCustomer('2'))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+            return store
+                .dispatch(actions.fetchCustomer('2'))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        describe('should correctly handle redirects for merged customers', () => {
+            beforeEach(() => {
+                mockServer.onGet(new RegExp('/api/customers/\\d+')).reply(200, {
+                    id: 2,
+                })
+            })
+
+            it('should redirect to the merged customer if the current URL is of the old (merged) customer', () => {
+                window.location.pathname = '/app/customer/1'
+                return store.dispatch(actions.fetchCustomer(1)).finally(() => {
+                    expect(history.push).toHaveBeenCalledWith('/app/customer/2')
+                })
+            })
+
+            it('should NOT redirect if the current URL is NOT of the merged customer', () => {
+                window.location.pathname = '/app/customer/1'
+                return store.dispatch(actions.fetchCustomer(99)).finally(() => {
+                    expect(history.push).not.toHaveBeenCalled()
+                })
+            })
+        })
     })
 
     it('create customer', () => {

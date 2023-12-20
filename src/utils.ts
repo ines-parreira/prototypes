@@ -750,6 +750,13 @@ export const isCurrentlyOnChatCampaignDetailsPage = (): boolean => {
     return regex.test(window.location.pathname)
 }
 
+export const isCurrentlyOnCustomerPage = (customerId: string | number) => {
+    return (
+        window.location.pathname === `/app/customer/${customerId}` ||
+        window.location.pathname.startsWith(`/app/customer/${customerId}/`)
+    )
+}
+
 /**
  * return plural object name of a given view type
  */

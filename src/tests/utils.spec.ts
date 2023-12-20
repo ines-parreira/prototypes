@@ -284,6 +284,35 @@ describe('global utils', () => {
         })
     })
 
+    describe('isCurrentlyOnCustomerPage', () => {
+        it("should return true when the current location is the customer's URL", () => {
+            window.location.pathname = '/app/customer/1'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(true)
+            window.location.pathname = '/app/customer/1/'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(true)
+            window.location.pathname = '/app/customer/1/sub-page'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(true)
+        })
+
+        it('should return false when the customer ID does not match the URL', () => {
+            window.location.pathname = '/app/customer/11'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(false)
+            window.location.pathname = '/app/customer/100/'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(false)
+        })
+
+        it('should return false when the current location is anything else', () => {
+            window.location.pathname = '/app'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(false)
+            window.location.pathname = '/app/customers/'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(false)
+            window.location.pathname = '/app/customer/11'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(false)
+            window.location.pathname = '/app/tickets'
+            expect(utils.isCurrentlyOnCustomerPage(1)).toBe(false)
+        })
+    })
+
     describe('isGorgiasSupportAddress', () => {
         it('should find our base gorgias address', () => {
             const gorgiasSupportAddresses = [
