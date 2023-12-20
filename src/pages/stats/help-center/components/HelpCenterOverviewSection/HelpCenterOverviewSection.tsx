@@ -3,7 +3,7 @@ import {StatsFilters} from 'models/stat/types'
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import TipsToggle from 'pages/stats/TipsToggle'
+// import TipsToggle from 'pages/stats/TipsToggle'
 import {useHelpCenterTrend} from '../../hooks/useHelpCenterTrend'
 import OverviewCard from '../OverviewCard/OverviewCard'
 
@@ -26,20 +26,24 @@ const HelpCenterOverviewSection = ({
         timezone,
         metric: HelpCenterTrackingEventMeasures.SearchRequestedCount,
     })
-    const [isTipVisible, setIsTipsVisible] = useState(true)
+    // FIXME: revert it to true as soon as the documentation article links are ready
+    const [isTipVisible] = useState(false)
 
-    const onTipsToggleClick = () => {
-        setIsTipsVisible(!isTipVisible)
-    }
+    // FIXME: uncomment it as soon as the documentation article links are ready
+    // const onTipsToggleClick = () => {
+    //     setIsTipsVisible(!isTipVisible)
+    // }
 
     return (
         <DashboardSection
             title="Overview"
             titleExtra={
-                <TipsToggle
-                    isVisible={isTipVisible}
-                    onClick={onTipsToggleClick}
-                />
+                null
+                // FIXME: uncomment it as soon as the documentation article links are ready
+                // <TipsToggle
+                //     isVisible={isTipVisible}
+                //     onClick={onTipsToggleClick}
+                // />
             }
         >
             <DashboardGridCell size={6}>

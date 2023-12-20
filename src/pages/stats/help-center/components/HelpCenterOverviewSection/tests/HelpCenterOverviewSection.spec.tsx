@@ -38,7 +38,8 @@ describe('<HelpCenterOverviewSection />', () => {
         expect(screen.getByText('Overview')).toBeInTheDocument()
     })
 
-    it('should hide tips', () => {
+    // FIXME: remove the `skip` as soon as the documentation article links are ready
+    it.skip('should hide tips', () => {
         renderComponent()
 
         expect(screen.getByTestId('article-tip')).toBeInTheDocument()
