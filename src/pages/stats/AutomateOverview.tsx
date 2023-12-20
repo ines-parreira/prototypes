@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import moment, {Moment} from 'moment'
 import {Scale, TooltipItem} from 'chart.js'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -53,6 +54,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useSearch from 'hooks/useSearch'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {mergeStatsFilters} from 'state/stats/actions'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
@@ -93,7 +95,8 @@ const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 export function AutomateOverview() {
     const [noActivityAlert, setNoActivityAlert] = useState(true)
     const [hide72HourAlert, set72HoursAlert] = useState(false)
-
+    const isAutomateOverviewChannelsFilter: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
         true
@@ -376,16 +379,18 @@ export function AutomateOverview() {
                 title={PAGE_TITLE_AUTOMATE_PAYWALL}
                 filters={
                     <>
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                            channelsFilter={[
-                                TicketChannel.Chat,
-                                TicketChannel.HelpCenter,
-                                TicketChannel.ContactForm,
-                                TicketChannel.Email,
-                            ]}
-                            variant="ghost"
-                        />
+                        {isAutomateOverviewChannelsFilter && (
+                            <ChannelsStatsFilter
+                                value={pageStatsFilters.channels}
+                                channelsFilter={[
+                                    TicketChannel.Chat,
+                                    TicketChannel.HelpCenter,
+                                    TicketChannel.ContactForm,
+                                    TicketChannel.Email,
+                                ]}
+                                variant="ghost"
+                            />
+                        )}
                         <PeriodStatsFilter
                             initialSettings={{
                                 maxSpan: 365,

@@ -210,6 +210,9 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
+        }))
         useFirstResponseTimeWithAutomationTrendMock.mockReturnValue(
             firstResponseTimeWithAutomationTrend
         )
