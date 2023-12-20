@@ -19,6 +19,7 @@ describe('voice call utils', () => {
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Failed)).toBe(true)
             expect(isFinalVoiceCallStatus(VoiceCallStatus.NoAnswer)).toBe(true)
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Ending)).toBe(true)
+            expect(isFinalVoiceCallStatus(VoiceCallStatus.Missed)).toBe(true)
         })
 
         it('should return false for non-final voice call statuses', () => {

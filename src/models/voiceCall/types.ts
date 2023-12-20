@@ -17,6 +17,7 @@ export enum VoiceCallStatus {
     Completed = 'completed',
     Failed = 'failed',
     NoAnswer = 'no-answer',
+    Missed = 'missed',
 }
 
 export type VoiceCall = {

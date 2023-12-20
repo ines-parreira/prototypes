@@ -11,6 +11,7 @@ export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
         VoiceCallStatus.Failed,
         VoiceCallStatus.NoAnswer,
         VoiceCallStatus.Ending,
+        VoiceCallStatus.Missed,
     ].includes(status)
 }
 

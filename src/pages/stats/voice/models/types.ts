@@ -30,3 +30,6 @@ export type VoiceCallSummary = {
     phoneNumberDestination: string
     phoneNumberSource: string
 }
+
+export const isInboundVoiceCallSummary = (call: VoiceCallSummary) =>
+    call.direction === 'inbound'
