@@ -49,6 +49,12 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {AGENT_ROLE} from 'config/user'
 import {UserRole} from 'config/types/user'
 import {Themes} from 'theme/types'
+import {
+    ActivityEvents,
+    clearActivityTrackerSession,
+    logActivityEvent,
+    unregisterActivityTrackerHooks,
+} from 'services/activityTracker'
 import Avatar from './Avatar/Avatar'
 import DropdownBody from './dropdown/DropdownBody'
 import DropdownHeader from './dropdown/DropdownHeader'
@@ -716,6 +722,11 @@ export class Navbar extends Component<Props, State> {
                                                     link: 'log-out',
                                                 }
                                             )
+                                            logActivityEvent(
+                                                ActivityEvents.UserClosedApp
+                                            )
+                                            void unregisterActivityTrackerHooks()
+                                            void clearActivityTrackerSession()
                                             window.location.href = `/logout?csrf-token=${window.CSRF_TOKEN}`
                                         }}
                                     >

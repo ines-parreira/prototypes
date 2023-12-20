@@ -94,6 +94,7 @@ import history from 'pages/history'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
 import {setLoading} from 'state/ui/selfServiceConfigurations/actions'
+import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
 /**
  * Events that can be received from server via socket
@@ -616,6 +617,11 @@ const receivedEvents: ReceivedEvent[] = [
                 phone_ticket_id: phoneTicketId,
                 original_path: originalPath,
             } = event
+
+            logActivityEvent(ActivityEvents.UserStartedPhoneCall, {
+                entityId: phoneTicketId,
+                entityType: 'ticket',
+            })
 
             if (window.location.pathname === originalPath) {
                 history.push(`/app/ticket/${phoneTicketId}`)

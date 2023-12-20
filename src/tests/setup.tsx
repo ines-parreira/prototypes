@@ -15,6 +15,8 @@ import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 import {envVars} from 'utils/environment'
 
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
 import history from '../pages/history'
 import {mockQueryClient} from './reactQueryTestingUtils'
 
@@ -308,9 +310,8 @@ window.location = JSON.parse(windowLocation)
 window.location.reload = jest.fn()
 
 window.GORGIAS_STATE = {
-    currentAccount: {
-        domain: 'acme',
-    },
+    currentAccount: account,
+    currentUser: user,
     integrations: {
         authentication: {
             email: {

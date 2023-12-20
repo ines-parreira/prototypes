@@ -20,6 +20,8 @@ jest.mock(
         } as Record<string, unknown>)
 )
 
+jest.mock('services/activityTracker')
+
 window.print = jest.fn()
 
 const mockStore = configureMockStore([thunk])

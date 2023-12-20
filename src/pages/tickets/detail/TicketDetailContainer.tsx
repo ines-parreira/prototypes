@@ -56,6 +56,7 @@ import {updateCursor} from 'state/tickets/actions'
 import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
 import LocalForageManager from 'services/localForageManager/localForageManager'
+import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
@@ -75,6 +76,7 @@ import {useListVoiceCalls} from 'models/voiceCall/queries'
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
+import {useTicketActivityTracking} from './hooks/useTicketActivityTracking'
 
 export type SubmitArgs = {
     status?: TicketStatus
@@ -133,7 +135,25 @@ export const TicketDetailContainer = ({
     }>()
     const {sender, source, receiver} = location.state ?? {}
 
-    useDraftMessages(ticketIdParam === 'new')
+    const {temporaryId} = useDraftMessages(ticketIdParam === 'new')
+
+    useEffect(() => {
+        if (temporaryId) {
+            logActivityEvent(ActivityEvents.UserStartedDraftingTicket, {
+                temporaryId: temporaryId,
+                entityType: 'ticket-draft',
+            })
+        }
+
+        return () => {
+            if (temporaryId) {
+                logActivityEvent(ActivityEvents.UserStoppedDraftingTicket, {
+                    temporaryId: temporaryId,
+                    entityType: 'ticket-draft',
+                })
+            }
+        }
+    }, [temporaryId])
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -142,6 +162,9 @@ export const TicketDetailContainer = ({
     const [isTicketHidden, setIsTicketHidden] = useState(false)
 
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
+
+    useTicketActivityTracking(ticketId)
+
     const recipients = useMemo(
         () => (newMessageSource.get('to') || fromJS([])) as List<any>,
         [newMessageSource]
@@ -240,7 +263,8 @@ export const TicketDetailContainer = ({
             status,
             ticket.getIn(['state', 'appliedMacro', 'actions']),
             currentUser,
-            resetMessage
+            resetMessage,
+            temporaryId
         )
     }
 

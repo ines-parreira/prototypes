@@ -78,6 +78,7 @@ import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {mapNormalizedToArray} from 'models/ticket/mappers'
 import {isNewChannel} from 'services/channels'
+import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 import {
     MessageContext,
     selectionAfter,
@@ -1359,7 +1360,8 @@ export function submitTicket(
     status: Maybe<string>,
     macroActions: Maybe<MacroActions>,
     currentUser: CurrentUser,
-    resetMessage = true
+    resetMessage = true,
+    temporaryTicketId: string | null = null
 ) {
     return async (
         dispatch: StoreDispatch,
@@ -1407,6 +1409,12 @@ export function submitTicket(
             const data = response?.data
 
             onMessageSent(dispatch)
+
+            logActivityEvent(ActivityEvents.UserCreatedTicket, {
+                entityId: data.id,
+                entityType: 'ticket',
+                temporaryId: temporaryTicketId,
+            })
 
             history.push(`/app/ticket/${data.id}`)
 

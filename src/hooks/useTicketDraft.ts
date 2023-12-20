@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {RawDraftContentState, SelectionState, convertFromRaw} from 'draft-js'
+import {v4 as uuidv4} from 'uuid'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -51,6 +52,7 @@ export type TicketDraft = {
         contentState: RawDraftContentState
     } | null
     tags: Ticket['tags']
+    temporaryId: string
 }
 
 export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
@@ -86,6 +88,7 @@ export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
 }
 
 export default function useTicketDraft(isTicketNew = false) {
+    const isPreviousTicketNew = usePrevious(isTicketNew)
     const localForageRef = useRef<LocalForage>()
     if (!localForageRef.current) {
         localForageRef.current = LocalForageManager.getTable(DRAFT_TICKET_STORE)
@@ -176,6 +179,8 @@ export default function useTicketDraft(isTicketNew = false) {
         sourceType,
     ])
 
+    const temporaryId = useRef<string | null>(null)
+
     const reduxState = useMemo(
         () => ({
             appliedMacro: (appliedMacro?.toJS() as Macro) || null,
@@ -190,6 +195,7 @@ export default function useTicketDraft(isTicketNew = false) {
             subject,
             ticket,
             tags: tags.toJS() as Ticket['tags'],
+            temporaryId: temporaryId.current,
         }),
         [
             appliedMacro,
@@ -245,9 +251,27 @@ export default function useTicketDraft(isTicketNew = false) {
         async function fetchTicketDraft() {
             const draft = (await localForage.getItem('new')) as TicketDraft
             setTicketDraft(draft)
+            if (
+                draft &&
+                draft.temporaryId &&
+                !isTicketDraftEmpty(draft) &&
+                isTicketNew
+            ) {
+                temporaryId.current = draft.temporaryId
+            } else if (isTicketNew) {
+                temporaryId.current = uuidv4()
+            }
         }
         void fetchTicketDraft()
     })
+
+    useEffect(() => {
+        if (!isTicketNew) {
+            temporaryId.current = null
+        } else if (isPreviousTicketNew === false && isTicketNew) {
+            temporaryId.current = uuidv4()
+        }
+    }, [isPreviousTicketNew, isTicketNew])
 
     const shouldSaveDraft = useMemo(
         () =>
@@ -326,4 +350,8 @@ export default function useTicketDraft(isTicketNew = false) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isStoredTicketDraftEmpty])
+
+    return {
+        temporaryId: temporaryId.current,
+    }
 }

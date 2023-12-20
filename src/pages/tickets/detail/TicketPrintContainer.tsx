@@ -11,6 +11,7 @@ import useTitle from 'hooks/useTitle'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
+import {useTicketActivityTracking} from './hooks/useTicketActivityTracking'
 import css from './TicketPrintContainer.less'
 
 const TicketPrintContainer = () => {
@@ -18,6 +19,8 @@ const TicketPrintContainer = () => {
     const ticket = useAppSelector((state) => state.ticket)
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const dispatch = useAppDispatch()
+
+    useTicketActivityTracking(Number(ticketIdParam))
 
     useEffectOnce(() => {
         void dispatch(

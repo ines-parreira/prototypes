@@ -40,6 +40,9 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketChannel} from 'business/types/ticket'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import * as customFieldsUtils from 'utils/customFields'
+import * as activityTracker from 'services/activityTracker'
+import {ActivityEvents} from 'services/activityTracker'
+import * as useTicketDraft from 'hooks/useTicketDraft'
 import TicketView from '../components/TicketView'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 
@@ -111,6 +114,7 @@ jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('services/activityTracker')
 
 jest.spyOn(customFieldsUtils, 'mergeFieldsStateWithMacroValues')
 const spiedMergeFieldsStateWithMacroValues = assumeMock(
@@ -1478,6 +1482,47 @@ describe('TicketDetailContainer component', () => {
             )
 
             expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('ticket activity logging', () => {
+        it('should log agent activity when new ticket page is opened and closed', () => {
+            const logActivityEventSpy = jest.spyOn(
+                activityTracker,
+                'logActivityEvent'
+            )
+            const useTicketDraftSpy = jest.spyOn(useTicketDraft, 'default')
+            useTicketDraftSpy.mockReturnValue({
+                temporaryId: '123',
+            })
+            const {unmount} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/new',
+                }
+            )
+
+            expect(logActivityEventSpy).toHaveBeenCalledWith(
+                ActivityEvents.UserStartedDraftingTicket,
+                {
+                    entityType: 'ticket-draft',
+                    temporaryId: '123',
+                }
+            )
+
+            unmount()
+            expect(logActivityEventSpy).toHaveBeenCalledWith(
+                ActivityEvents.UserStoppedDraftingTicket,
+                {
+                    entityType: 'ticket-draft',
+                    temporaryId: '123',
+                }
+            )
         })
     })
 })

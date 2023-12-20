@@ -15,6 +15,7 @@ import usePollingManager from '../hooks/usePollingManager'
 import useSharedLogic from '../hooks/useSharedLogic'
 import useStatusPageManager from '../hooks/useStatusPageManager'
 import useUsageBanner from '../hooks/useUsageBanner'
+import useActivityTracker from '../hooks/useActivityTracker'
 
 type Props = {
     children: ReactNode
@@ -29,6 +30,7 @@ export default function App({children}: Props) {
     useUsageBanner()
 
     useSharedLogic()
+    useActivityTracker()
 
     return (
         <AppNode className={theme}>

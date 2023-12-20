@@ -62,6 +62,8 @@ import {
     setOpenStatusAction,
     setSubjectAction,
 } from 'fixtures/macro'
+import * as activityTracker from 'services/activityTracker'
+import {ActivityEvents} from 'services/activityTracker'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 
 import {getReplyAreaStateSnapshot} from './testUtils'
@@ -108,6 +110,8 @@ jest.mock('services/socketManager/socketManager', () => {
         send: jest.fn(),
     }
 })
+
+jest.mock('services/activityTracker')
 
 describe('actions', () => {
     let mockServer: MockAdapter
@@ -2083,6 +2087,41 @@ describe('actions', () => {
                     }
                 ).custom_fields
             ).toEqual([customFields[1]])
+        })
+
+        it('should log an activity event when submitting a ticket', async () => {
+            store = mockStore({
+                ticket: fromJS({
+                    ...ticketInitialState.toJS(),
+                }),
+                newMessage: initialState,
+            })
+
+            mockServer.onPost('/api/tickets/').reply(200, {id: 1})
+            const logActivityEventSpy = jest.spyOn(
+                activityTracker,
+                'logActivityEvent'
+            )
+
+            await store.dispatch(
+                actions.submitTicket(
+                    ticketInitialState,
+                    TicketStatus.Open,
+                    undefined,
+                    fromJS({}),
+                    true,
+                    '123'
+                )
+            )
+
+            expect(logActivityEventSpy).toHaveBeenCalledWith(
+                ActivityEvents.UserCreatedTicket,
+                {
+                    entityType: 'ticket',
+                    entityId: 1,
+                    temporaryId: '123',
+                }
+            )
         })
 
         it('should catch error and dispatch NEW_MESSAGE_SUBMIT_TICKET_ERROR action', async () => {

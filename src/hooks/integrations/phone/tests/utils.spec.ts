@@ -30,14 +30,18 @@ import {
     handleDeviceEvents,
     handleCallEvents,
     handleAcceptedCallEvent,
+    logCallEnd,
 } from 'hooks/integrations/phone/utils'
 
 import * as utils from 'hooks/integrations/phone/utils'
 import * as api from 'hooks/integrations/phone/api'
 import * as LDUtils from 'utils/launchDarkly'
+import * as activityTracker from 'services/activityTracker'
+import {ActivityEvents} from 'services/activityTracker'
 
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')
+jest.mock('services/activityTracker')
 
 const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
 
@@ -388,6 +392,7 @@ describe('handleCallEvents', () => {
             .mockReturnValue()
         const cancelCall = jest.spyOn(api, 'cancelCall')
         const disconnectCall = jest.spyOn(api, 'disconnectCall')
+        const logCallEndSpy = jest.spyOn(utils, 'logCallEnd').mockReturnValue()
 
         const callContext = {
             call_sid: undefined,
@@ -442,8 +447,10 @@ describe('handleCallEvents', () => {
             expect(cancelCall).toHaveBeenCalledWith(call)
         })
 
-        it('should handle "disconnect" event', () => {
+        it('should handle "disconnect" event and log event', () => {
             call.emit('disconnect')
+
+            expect(logCallEndSpy).toHaveBeenCalledWith(call)
 
             expect(sendSocketEvent).toHaveBeenCalledWith({
                 type: TwilioSocketEventType.CallDisconnected,
@@ -540,14 +547,24 @@ describe('handleAcceptedCallEvent', () => {
         expect(cancelCall).toHaveBeenCalled()
     })
 
-    it('should handle accept call and trigger appropriate API calls', () => {
+    it('should handle accept call and trigger appropriate API and tracking calls', () => {
+        const logEventSpy = jest.spyOn(activityTracker, 'logActivityEvent')
+
         const call = {
             status: () => Call.State.Open,
+            customParameters: new Map([['ticket_id', '123456']]),
         } as unknown as Call
 
         handleAcceptedCallEvent(call, dispatch)
 
         expect(acceptCall).toHaveBeenCalledWith(call)
+        expect(logEventSpy).toHaveBeenCalledWith(
+            ActivityEvents.UserStartedPhoneCall,
+            {
+                entityType: 'ticket',
+                entityId: 123456,
+            }
+        )
     })
 })
 
@@ -604,5 +621,27 @@ describe('getCallSid', () => {
         } as unknown as Call
 
         expect(getCallSid(call)).toEqual('CA123')
+    })
+})
+
+describe('logEndCall', () => {
+    it('should log the call end', () => {
+        // reset original logCallEnd implementation
+        const logCallEndSpy = jest.spyOn(utils, 'logCallEnd')
+        logCallEndSpy.mockRestore()
+
+        const logEventSpy = jest.spyOn(activityTracker, 'logActivityEvent')
+        const call = {
+            customParameters: new Map([['ticket_id', '123456']]),
+        } as unknown as Call
+
+        logCallEnd(call)
+        expect(logEventSpy).toHaveBeenCalledWith(
+            ActivityEvents.UserFinishedPhoneCall,
+            {
+                entityType: 'ticket',
+                entityId: 123456,
+            }
+        )
     })
 })

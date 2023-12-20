@@ -60,6 +60,8 @@ import {
 import * as voiceCallTypes from 'models/voiceCall/types'
 import {appQueryClient} from 'api/queryClient'
 import {voiceCallsKeys} from 'models/voiceCall/queries'
+import * as activityTracker from 'services/activityTracker'
+import {ActivityEvents} from 'services/activityTracker'
 
 import {
     ecommerceStoreFixture,
@@ -80,6 +82,7 @@ jest.mock('state/views/actions')
 jest.mock('state/entities/viewsCount/actions')
 jest.mock('state/ticket/actions')
 jest.mock('state/currentUser/actions')
+jest.mock('services/activityTracker')
 
 jest.mock('common/store', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
@@ -707,6 +710,27 @@ describe('receivedEvents', () => {
             handler?.onReceive(data)
 
             expect(spy.mock.calls).toEqual([])
+        })
+
+        it('should log activity event', () => {
+            const originalTicketId = 123
+            const originalPath = `/app/ticket/${originalTicketId}`
+            window.location.pathname = originalPath
+
+            const spy = jest.spyOn(activityTracker, 'logActivityEvent')
+            const data: OutboundPhoneCallInitiated = {
+                event: {
+                    type: SocketEventType.OutboundPhoneCallInitiated,
+                    phone_ticket_id: 456,
+                    original_path: originalPath,
+                },
+            }
+            handler?.onReceive(data)
+
+            expect(spy).toHaveBeenCalledWith(
+                ActivityEvents.UserStartedPhoneCall,
+                {entityId: 456, entityType: 'ticket'}
+            )
         })
     })
 

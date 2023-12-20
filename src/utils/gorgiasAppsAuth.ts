@@ -14,40 +14,55 @@ function isValidAccessToken(token: string | null): boolean {
 // This function should not be imported to the production code, it is exported just for tests
 // Use default export instead
 export const buildGorgiasAppsAuthInterceptor = () => {
-    let accessToken: string | null
-    let authPendingRequest: Promise<AxiosResponse> | null
-
-    const renewAccessToken = async () => {
-        // Prevent multiple /auth calls if parallel requests are made
-        if (authPendingRequest) {
-            await authPendingRequest
-            return
-        }
-
-        authPendingRequest = gorgiasApiClient.post('/gorgias-apps/auth')
-
-        const {
-            data: {token},
-        } = await authPendingRequest
-        accessToken = token
-        authPendingRequest = null
-    }
+    const authService = new GorgiasAppAuthService()
 
     const gorgiasAppsAuthInterceptor = async (config: AxiosRequestConfig) => {
-        if (!isValidAccessToken(accessToken)) {
-            await renewAccessToken()
-        }
+        const accessTokenHeaders = await authService.getAccessTokenHeaders()
 
         return {
             ...config,
             headers: {
                 ...config.headers,
-                authorization: `Bearer ${accessToken || ''}`,
+                ...accessTokenHeaders,
             },
         }
     }
 
     return gorgiasAppsAuthInterceptor
+}
+
+export class GorgiasAppAuthService {
+    accessToken: string | null = null
+    authPendingRequest: Promise<AxiosResponse> | null = null
+
+    private setAccessToken(token: string) {
+        this.accessToken = token
+    }
+
+    private async renewAccessToken() {
+        // Prevent multiple /auth calls if parallel requests are made
+        if (this.authPendingRequest) {
+            await this.authPendingRequest
+            return
+        }
+
+        this.authPendingRequest = gorgiasApiClient.post('/gorgias-apps/auth')
+
+        const {
+            data: {token},
+        } = await this.authPendingRequest
+        this.setAccessToken(token)
+        this.authPendingRequest = null
+    }
+
+    public async getAccessTokenHeaders() {
+        if (!isValidAccessToken(this.accessToken)) {
+            await this.renewAccessToken()
+        }
+        return {
+            authorization: this.accessToken ? `Bearer ${this.accessToken}` : '',
+        }
+    }
 }
 
 // This axios interceptor is adding JWT token to headers

@@ -35,6 +35,7 @@ import {
     disconnectCall,
     getToken,
 } from 'hooks/integrations/phone/api'
+import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
 import {useConnectionParameters} from '../../../pages/common/components/PhoneIntegrationBar/hooks'
 import * as utils from './utils'
@@ -228,6 +229,8 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
     })
 
     call.on('disconnect', () => {
+        utils.logCallEnd(call)
+
         utils.sendTwilioSocketEvent({
             type: TwilioSocketEventType.CallDisconnected,
             data: gatherCallContext(call),
@@ -288,6 +291,17 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
     })
 }
 
+export function logCallEnd(call: Call) {
+    const ticketId =
+        call.customParameters.get('ticket_id') ||
+        call.customParameters.get('original_ticket_id')
+
+    logActivityEvent(ActivityEvents.UserFinishedPhoneCall, {
+        entityId: Number(ticketId),
+        entityType: 'ticket',
+    })
+}
+
 export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
     if (call.direction === Call.CallDirection.Outgoing) {
         return
@@ -304,6 +318,13 @@ export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
         void cancelCall()
     } else {
         void acceptCall(call)
+        const ticketId = parseInt(
+            call.customParameters.get('ticket_id') as string
+        )
+        logActivityEvent(ActivityEvents.UserStartedPhoneCall, {
+            entityId: ticketId,
+            entityType: 'ticket',
+        })
     }
 }
 

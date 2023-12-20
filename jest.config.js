@@ -88,6 +88,7 @@ module.exports = {
         '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
             '<rootDir>/tests/__mocks__/fileMock.ts',
         '\\.(css|less)$': 'identity-obj-proxy',
+        uuid: 'uuid',
     },
 
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -182,7 +183,7 @@ module.exports = {
     },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-    transformIgnorePatterns: ['/node_modules/(?!jsonpath-plus)'],
+    transformIgnorePatterns: ['/node_modules/(?!jsonpath-plus|@gorgias)'],
 
     // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
     // unmockedModulePathPatterns: undefined,

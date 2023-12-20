@@ -1,7 +1,7 @@
 import {createDragDropManager} from 'dnd-core'
 import {LDClient} from 'launchdarkly-js-client-sdk'
 import {LDProvider} from 'launchdarkly-react-client-sdk'
-import React, {useState} from 'react'
+import React, {useLayoutEffect, useState} from 'react'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 import {DndProvider} from 'react-dnd'
@@ -17,6 +17,7 @@ import {RootState} from 'state/types'
 import {getLDClient, LDContext} from 'utils/launchDarkly'
 import {envVars, NodeEnv} from 'utils/environment'
 import useEffectOnce from 'hooks/useEffectOnce'
+import activityTracker from 'services/activityTracker'
 
 import history from './history'
 import Routes from './routes'
@@ -40,6 +41,20 @@ const Root = ({store}: Props) => {
         void LDClient.waitUntilGoalsReady().then(() => {
             setLDClient(LDClient)
         })
+    })
+
+    useLayoutEffect(() => {
+        const unlisten = history.listen((location) => {
+            const {pathname} = location
+            activityTracker.createUserContext({
+                accountId: window.GORGIAS_STATE.currentAccount.id,
+                userId: window.GORGIAS_STATE.currentUser.id,
+                clientId: window.CLIENT_ID,
+                path: pathname,
+            })
+        })
+
+        return unlisten
     })
 
     return (
