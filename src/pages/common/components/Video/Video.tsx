@@ -1,7 +1,4 @@
-import React from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useToggle} from 'react-use'
+import React, {useState} from 'react'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -26,7 +23,9 @@ export default function Video({
     youtubePreviewIndex = '0',
     legend,
 }: Props) {
-    const [isOpen, toggleIsOpen] = useToggle(false)
+    const [isOpen, setIsOpen] = useState(false)
+
+    const toggleIsOpen = () => setIsOpen((prev) => !prev)
 
     if (!videoURL && !youtubeId) {
         return null
