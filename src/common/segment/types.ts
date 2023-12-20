@@ -257,6 +257,9 @@ export enum SegmentEvent {
     SidebarViewsChanged = 'sidebar-views-changed',
     AutoMergeSettingsUpdated = 'auto-merge-settings-updated',
     UserSettingsUpdated = 'user-settings-updated',
+    ContactFormRedirectToFlows = 'contact-form/redirect-to-flows',
+    ContactFormRedirectToContactFormPreferences = 'contact-form/redirect-to-contact-form-preferences',
+    ContactFormRedirectToAutomate = 'contact-form/redirect-to-automate',
 }
 
 export type SegmentEventToSend = {

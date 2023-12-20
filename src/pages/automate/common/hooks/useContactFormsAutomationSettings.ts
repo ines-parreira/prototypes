@@ -14,7 +14,10 @@ import {
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {ContactFormAutomationSettings} from 'models/contactForm/types'
 
-const useContactFormsAutomationSettings = (contactFormId: number) => {
+const useContactFormsAutomationSettings = (
+    contactFormId: number,
+    silentFail?: boolean
+) => {
     const dispatch = useAppDispatch()
     const {
         isReady,
@@ -52,12 +55,17 @@ const useContactFormsAutomationSettings = (contactFormId: number) => {
                 )
             }
         } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch',
-                    status: NotificationStatus.Error,
-                })
-            )
+            // We allow the silent fail for the case where we call this hook
+            // from the Customization tab. There we don't know beforehand if
+            // the contact form is connected to a shop or not.
+            if (!silentFail) {
+                void dispatch(
+                    notify({
+                        message: 'Failed to fetch',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
         }
     }, [isReady])
 

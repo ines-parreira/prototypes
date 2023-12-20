@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import LD from 'launchdarkly-react-client-sdk'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {
@@ -32,6 +33,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
+jest.mock('pages/automate/common/hooks/useContactFormsAutomationSettings')
 
 const queryClient = mockQueryClient()
 
@@ -86,6 +88,18 @@ describe('<ContactFormSettingsView />', () => {
         jest.mocked(useSupportedLocales).mockReturnValue(
             getLocalesResponseFixture
         )
+        jest.mocked(useContactFormsAutomationSettings).mockReturnValue({
+            automationSettings: {
+                order_management: {
+                    enabled: true,
+                },
+                workflows: [],
+            },
+            isFetchPending: false,
+            isUpdatePending: false,
+            handleContactFormAutomationSettingsFetch: jest.fn(),
+            handleContactFormAutomationSettingsUpdate: jest.fn(),
+        })
         jest.spyOn(LD, 'useFlags').mockReturnValue({
             [FeatureFlagKey.NewBillingInterface]: true,
         })

@@ -1,0 +1,65 @@
+import React from 'react'
+import {useHistory} from 'react-router-dom'
+
+import {assetsUrl} from 'utils'
+import Button from 'pages/common/components/button/Button'
+import {logEvent} from 'common/segment'
+
+import {getBannerDetails} from './utils'
+import css from './FlowsBanner.less'
+
+export type FlowsBannerProps = {
+    isSubscribedToAutomation: boolean
+    contactFormId: number
+    shopName: string | null
+}
+
+const FlowsBanner = ({
+    isSubscribedToAutomation,
+    contactFormId,
+    shopName,
+}: FlowsBannerProps): JSX.Element => {
+    const {title, description, button, track} = getBannerDetails(
+        isSubscribedToAutomation,
+        contactFormId,
+        shopName
+    )
+    const history = useHistory()
+
+    const onClick = () => {
+        logEvent(track)
+        history.push(button.link)
+    }
+
+    return (
+        <div className={css.container}>
+            <div className={css.content}>
+                <div className={css.text}>
+                    <div className={css.title}>{title}</div>
+                    {!!description && (
+                        <div className={css.description}>{description}</div>
+                    )}
+                </div>
+                <Button
+                    intent="primary"
+                    onClick={onClick}
+                    className={css.button}
+                >
+                    {button.icon && (
+                        <i className="material-icons">{button.icon}</i>
+                    )}
+                    <div>{button.text}</div>
+                </Button>
+            </div>
+            <div>
+                <img
+                    src={assetsUrl(`/img/contact-form/flows-banner.png`)}
+                    alt="Flows Banner"
+                    className={css.image}
+                />
+            </div>
+        </div>
+    )
+}
+
+export default FlowsBanner
