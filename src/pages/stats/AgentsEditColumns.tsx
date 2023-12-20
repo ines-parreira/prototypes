@@ -15,6 +15,7 @@ import css from './AgentsEditColumns.less'
 export const TOGGLE_LABEL = 'Edit Columns'
 export const SAVE_TOOLTIP =
     'Clicking "Save" will update the table for all users.'
+export const SAVE_BUTTON_TEXT = 'Save'
 
 const dragToPosition = (
     columnsList: TableViewColumn[],
@@ -46,6 +47,12 @@ export const AgentsEditColumns = () => {
 
     const toggle = () => setDropdownOpen((prevState) => !prevState)
 
+    const closeDropdown = () => {
+        setColumnsVisibility(currentView.metrics)
+        setHasChanges(false)
+        setDropdownOpen(false)
+    }
+
     const handleChangeVisibility =
         (columnId: TableColumn) => (visibility: boolean) => {
             setColumnsVisibility((prevValue) =>
@@ -66,6 +73,7 @@ export const AgentsEditColumns = () => {
         setColumnsVisibility((prevState) =>
             dragToPosition(prevState, item, from)
         )
+        setHasChanges(true)
         return from
     }
 
@@ -85,16 +93,11 @@ export const AgentsEditColumns = () => {
         })
 
         setHasChanges(false)
-        toggle()
-    }
-
-    const closeDropdown = () => {
-        setColumnsVisibility(currentView.metrics)
-        toggle()
+        closeDropdown()
     }
 
     return (
-        <Dropdown isOpen={dropdownOpen} toggle={closeDropdown}>
+        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
             <DropdownToggle
                 tag="span"
                 className={classNames(css.dropdownToggle, {
@@ -133,7 +136,7 @@ export const AgentsEditColumns = () => {
                             isDisabled={!hasChanges}
                             onClick={handleSave}
                         >
-                            Save
+                            {SAVE_BUTTON_TEXT}
                         </Button>
                     </div>
                 </div>

@@ -7,7 +7,11 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {AgentsEditColumns, TOGGLE_LABEL} from 'pages/stats/AgentsEditColumns'
+import {
+    AgentsEditColumns,
+    SAVE_BUTTON_TEXT,
+    TOGGLE_LABEL,
+} from 'pages/stats/AgentsEditColumns'
 import {
     agentPerformanceTableActiveView,
     TableLabels,
@@ -79,7 +83,7 @@ describe('<AgentsEditColumns>', () => {
         )
 
         const element = screen.getByText(columnTitle)
-        const save = screen.getByText('Save')
+        const save = screen.getByText(SAVE_BUTTON_TEXT)
 
         fireEvent.click(element)
         fireEvent.click(save)
@@ -157,5 +161,6 @@ describe('<AgentsEditColumns>', () => {
         expect(allItems[2]).toHaveTextContent(
             new RegExp(firstOrderableItemLabel)
         )
+        expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()
     })
 })
