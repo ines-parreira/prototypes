@@ -170,7 +170,7 @@ const HelpCenterStats = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     useEffectOnce(() => {
-        logEvent(SegmentEvent.HelpCenterArticleRowClicked, {
+        logEvent(SegmentEvent.HelpCenterStatisticsPageViewed, {
             user_id: currentUser.get('id'),
             account_domain: currentAccount.get('domain'),
         })

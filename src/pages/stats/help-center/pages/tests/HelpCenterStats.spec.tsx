@@ -86,7 +86,7 @@ describe('<HelpCenterStats />', () => {
         renderComponent()
 
         expect(mockedLogEvent.mock.calls[0][0]).toEqual(
-            SegmentEvent.HelpCenterArticleRowClicked
+            SegmentEvent.HelpCenterStatisticsPageViewed
         )
         expect(mockedLogEvent).toHaveBeenCalledTimes(1)
         expect(screen.getByText('Help Center')).toBeInTheDocument()
