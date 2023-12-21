@@ -1,9 +1,6 @@
 import React, {useState} from 'react'
 
 import moment from 'moment'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useList} from 'react-use'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -59,7 +56,9 @@ const CancelAAOModal = ({
     const subject = `Remove Automation - ${domain}`
 
     const [isOpenModalWithReasons, setIsOpenModalWithReasons] = useState(false)
-    const [reasons, {reset, updateAt}] = useList(CANCEL_AUTOMATION_REASONS)
+
+    const [reasons, setReasons] = useState(CANCEL_AUTOMATION_REASONS)
+
     const [message, setMessage] = useState('')
     const AAOUsage = currentUsage.automation
     const automatedInteractions = AAOUsage?.data.num_tickets ?? 0
@@ -68,14 +67,18 @@ const CancelAAOModal = ({
     ).format(DATE_FORMAT)
 
     const updateReasons = (index: number) => {
-        updateAt(index, {
-            ...reasons[index],
-            value: !reasons[index].value,
+        setReasons((prevReasons) => {
+            const newReasons = prevReasons.slice()
+            newReasons[index] = {
+                ...prevReasons[index],
+                value: !prevReasons[index].value,
+            }
+            return newReasons
         })
     }
 
     const resetReasons = () => {
-        reset()
+        setReasons(CANCEL_AUTOMATION_REASONS)
     }
 
     const handleOpenSecondModal = () => {

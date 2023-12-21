@@ -7,9 +7,6 @@ import React, {
     useRef,
     useState,
 } from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useList} from 'react-use'
 import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
 import {Map} from 'immutable'
 
@@ -76,15 +73,9 @@ export default function TeamCreationModal({
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
     const [isMemberSelectOpen, setIsMemberSelectOpen] = useState(false)
-    const [
-        memberIds,
-        {
-            clear: clearMemberIds,
-            filter: filterMemberIds,
-            push: pushMemberIds,
-            set: setMemberIds,
-        },
-    ] = useList<number>([])
+
+    const [memberIds, setMemberIds] = useState<number[]>([])
+
     const previousIsOpen = usePrevious(isOpen)
     const [team, setTeam] = useState<Team | null>()
 
@@ -115,8 +106,8 @@ export default function TeamCreationModal({
         setName('')
         setEmoji(undefined)
         setDescription('')
-        clearMemberIds()
-    }, [clearMemberIds])
+        setMemberIds([])
+    }, [])
 
     useEffect(() => {
         if (previousIsOpen != null && previousIsOpen && !isOpen) {
@@ -127,12 +118,14 @@ export default function TeamCreationModal({
     const handleMemberChange = useCallback(
         (nextValue: number) => {
             if (memberIds.includes(nextValue)) {
-                filterMemberIds((value) => value !== nextValue)
+                setMemberIds((prev) =>
+                    prev.filter((value) => value !== nextValue)
+                )
             } else {
-                pushMemberIds(nextValue)
+                setMemberIds((prev) => [...prev, nextValue])
             }
         },
-        [filterMemberIds, memberIds, pushMemberIds]
+        [memberIds]
     )
 
     const [{loading: isSubmitting}, submitTeam] = useAsyncFn(

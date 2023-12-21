@@ -1,9 +1,6 @@
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useList} from 'react-use'
 
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -92,15 +89,11 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
     const valueFloatingRef = useRef<HTMLDivElement>(null)
     const valueTargetRef = useRef<HTMLDivElement>(null)
     const [isValueSelectOpen, setIsValueSelectOpen] = useState(false)
-    const [
-        value,
-        {
-            clear: clearValue,
-            filter: filterValue,
-            push: pushValue,
-            set: setValue,
-        },
-    ] = useList<number | string>([TicketChannel.Email])
+
+    const [value, setValue] = useState<(number | string)[]>([
+        TicketChannel.Email,
+    ])
+
     const hasSearch = useMemo(
         () => ['ticket.tags.name', 'ticket.language'].includes(keyRule),
         [keyRule]
@@ -188,8 +181,8 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
         }
 
         valueTargetRef.current?.focus()
-        clearValue()
-    }, [clearValue, keyRule, previousKeyRule])
+        setValue([])
+    }, [keyRule, previousKeyRule])
 
     const [{loading: isSubmitting}, submitRule] = useAsyncFn(async () => {
         const nextRuleCode = makeRuleCode(
@@ -250,12 +243,12 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
     const handleValueChange = useCallback(
         (nextValue: number) => {
             if (value.includes(nextValue)) {
-                filterValue((value) => value !== nextValue)
+                setValue((prev) => prev.filter((value) => value !== nextValue))
             } else {
-                pushValue(nextValue)
+                setValue((prev) => [...prev, nextValue])
             }
         },
-        [filterValue, pushValue, value]
+        [value]
     )
 
     return (
