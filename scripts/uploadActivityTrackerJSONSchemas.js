@@ -296,7 +296,7 @@ const main = async () => {
             const {apicurioURl, apicurioRuleUrl} = buildUrls(
                 username,
                 password,
-                cluster
+                clusterChoice
             )
             readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
         }
