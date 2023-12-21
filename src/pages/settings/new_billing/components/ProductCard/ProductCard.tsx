@@ -23,6 +23,7 @@ import {isAAOLegacyPrice, isTrialPrice} from 'models/billing/utils'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
+import {useIsConvertAutoUpgradeEnabled} from '../../hooks/useIsConvertAutoUpgradeEnabled'
 import css from './ProductCard.less'
 
 export type ProductCardProps = {
@@ -31,6 +32,7 @@ export type ProductCardProps = {
     usage?: CurrentUsagePerProduct | null
     banner?: BillingBanner
     isDisabled: boolean
+    autoUpgradeEnabled?: boolean
 }
 
 const ProductCard = ({
@@ -39,10 +41,12 @@ const ProductCard = ({
     usage,
     banner,
     isDisabled,
+    autoUpgradeEnabled = false,
 }: ProductCardProps) => {
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const history = useHistory()
+    const isConvertAutoUpgradeEnabled = useIsConvertAutoUpgradeEnabled()
 
     const {className, canduOverageStatus} = useMemo(() => {
         if (
@@ -256,7 +260,24 @@ const ProductCard = ({
                 <div>{isActive ? updateContainer : subscribeContainer}</div>
                 <div>
                     {isActive && counter}
-                    {isActive && extraCost}
+
+                    {isConvertAutoUpgradeEnabled &&
+                    product &&
+                    type === ProductType.Convert ? (
+                        <div className={css.autoUpgradeLabel}>
+                            Auto-upgrade
+                            {autoUpgradeEnabled ? ' enabled ' : ' disabled '}
+                            <a
+                                href="https://docs.gorgias.com/en-US/convert-pricing-348387"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn more
+                            </a>
+                        </div>
+                    ) : (
+                        <>{isActive && extraCost}</>
+                    )}
                 </div>
             </div>
         </div>

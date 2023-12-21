@@ -11,9 +11,13 @@ import {
 } from 'models/billing/types'
 import {getProductLabel, isTrialPrice} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
-import {PRODUCT_INFO} from '../../constants'
+import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
 
+import warningIcon from '../../../../../assets/img/icons/warning.svg'
+import Tooltip from '../../../../common/components/Tooltip'
+import {getNextTier} from '../../utils/getNextTier'
+import {useIsConvertAutoUpgradeEnabled} from '../../hooks/useIsConvertAutoUpgradeEnabled'
 import css from './SummaryItem.less'
 
 export type SummaryItemProps = {
@@ -39,6 +43,8 @@ const SummaryItem = ({
     isFrequencyChanged = false,
 }: SummaryItemProps) => {
     const selectedPlan = selectedPlans[type]
+
+    const isConvertAutoUpgradeEnabled = useIsConvertAutoUpgradeEnabled()
 
     const {price, currency, name, tickets} = useMemo(() => {
         const priceObject = prices.find(
@@ -130,6 +136,36 @@ const SummaryItem = ({
                         <span>{formatAmount(price, currency)}</span>/{interval}
                     </>
                 )}
+                {isConvertAutoUpgradeEnabled &&
+                    selectedPlan.isSelected &&
+                    type === ProductType.Convert &&
+                    selectedPlan.plan?.price_id !== ENTERPRISE_PRICE_ID &&
+                    getNextTier(prices, selectedPlan.plan) && (
+                        <div>
+                            {selectedPlan.autoUpgrade ? (
+                                <>Auto-upgrade enabled</>
+                            ) : (
+                                <>
+                                    <img
+                                        src={warningIcon}
+                                        alt="warning icon"
+                                        id={`summary-auto-upgrade-disabled-${type}`}
+                                        className={`material-icons ${css.autoUpgradeWarningIcon} mr-1`}
+                                    />
+                                    <Tooltip
+                                        target={`summary-auto-upgrade-disabled-${type}`}
+                                        placement="bottom-end"
+                                    >
+                                        Without auto-upgrade, campaigns will
+                                        stop being displayed if you reach 100%
+                                        of your allowance before the end of the
+                                        billing period.
+                                    </Tooltip>
+                                    Auto-upgrade disabled
+                                </>
+                            )}
+                        </div>
+                    )}
             </div>
         </div>
     )

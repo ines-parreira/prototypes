@@ -767,6 +767,7 @@ export const convertPrice0: ConvertPrice = {
     price_id: 'price_1NdBfmI9qXomtXqSFfC7T2xX',
     product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 1,
+    tier: 0,
 }
 
 export const convertPrice1: ConvertPrice = {
@@ -779,6 +780,7 @@ export const convertPrice1: ConvertPrice = {
     price_id: 'price_1NdBiMI9qXomtXqSX8MxFkYW',
     product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
+    tier: 1,
 }
 
 export const convertPrice2: ConvertPrice = {
@@ -791,6 +793,7 @@ export const convertPrice2: ConvertPrice = {
     price_id: 'price_1NdXfXI9qXomtXqS0CDMe7Yy',
     product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
+    tier: 2,
 }
 
 export const convertPrice3: ConvertPrice = {
@@ -803,6 +806,7 @@ export const convertPrice3: ConvertPrice = {
     price_id: 'price_1NmZrmH2GG3UYmlxBGfOOSLS',
     product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
+    tier: 3,
 }
 
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'

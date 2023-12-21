@@ -1,6 +1,7 @@
 import {useCallback, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import moment from 'moment'
+import {useQueryClient} from '@tanstack/react-query'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getAutomationProduct,
@@ -53,6 +54,8 @@ import {
     setConvertNotification,
 } from '../views/BillingProcessView/utils'
 import {getDefaultConvertPriceIndex} from '../utils/getDefaultConvertPriceIndex'
+import useGetConvertStatus from '../../revenue/hooks/useGetConvertStatus'
+import {useRevenueAddonApi} from '../../revenue/hooks/useRevenueAddonApi'
 
 export type BillingPlansProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
@@ -69,6 +72,7 @@ export const useBillingPlans = ({
 }: BillingPlansProps) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const domain: string = currentAccount.get('domain')
     const currentUser = useAppSelector(getCurrentUser)
@@ -155,6 +159,12 @@ export const useBillingPlans = ({
         helpdeskProduct?.name
     )
 
+    const {client: convertClient} = useRevenueAddonApi()
+    const convertStatus = useGetConvertStatus()
+    const convertAutoUpgrade = useMemo(() => {
+        return (convertStatus && convertStatus.auto_upgrade_enabled) ?? false
+    }, [convertStatus])
+
     // Selected plans
     const [selectedPlans, setSelectedPlans] = useState<SelectedPlans>({
         [ProductType.Helpdesk]: {
@@ -181,8 +191,16 @@ export const useBillingPlans = ({
             plan: convertProduct || convertPrices?.[convertInitialIndex],
             isSelected:
                 !!convertProduct || selectedProduct === ProductType.Convert,
+            autoUpgrade: convertAutoUpgrade,
         },
     })
+
+    const autoUpgradeChanged = useMemo(() => {
+        return (
+            convertAutoUpgrade !==
+            selectedPlans[ProductType.Convert].autoUpgrade
+        )
+    }, [convertAutoUpgrade, selectedPlans])
 
     // Total amount for existing products
     const totalProductAmount = useMemo(() => {
@@ -296,6 +314,34 @@ export const useBillingPlans = ({
         () => interval !== selectedPlans[ProductType.Helpdesk].plan?.interval,
         [interval, selectedPlans]
     )
+
+    const handleAutoUpgradeChange = useCallback(async () => {
+        if (!autoUpgradeChanged) return
+
+        if (
+            convertAutoUpgrade !==
+            selectedPlans[ProductType.Convert].autoUpgrade
+        ) {
+            await convertClient?.update_auto_upgrade_flag(
+                {},
+                {
+                    enabled: Boolean(
+                        selectedPlans[ProductType.Convert].autoUpgrade
+                    ),
+                }
+            )
+
+            await queryClient.invalidateQueries({
+                queryKey: ['convert', 'status'],
+            })
+        }
+    }, [
+        autoUpgradeChanged,
+        convertAutoUpgrade,
+        convertClient,
+        queryClient,
+        selectedPlans,
+    ])
 
     const handleSMSAndVoicePlansChange = useCallback(async () => {
         const plansToBeHandledManually: ProductType[] = []
@@ -535,9 +581,14 @@ export const useBillingPlans = ({
     const updateSubscription = useCallback(() => {
         return Promise.all([
             handleStripePlansChange(),
+            handleAutoUpgradeChange(),
             handleSMSAndVoicePlansChange(),
         ])
-    }, [handleStripePlansChange, handleSMSAndVoicePlansChange])
+    }, [
+        handleStripePlansChange,
+        handleAutoUpgradeChange,
+        handleSMSAndVoicePlansChange,
+    ])
 
     const startSubscription = useCallback(async () => {
         if (!isFreeTrial && !isSubscriptionCanceled) return
@@ -621,5 +672,7 @@ export const useBillingPlans = ({
         isEnterpriseHelpdeskPlanSelected,
         isSubscriptionCanceled,
         isSubscriptionUpdating,
+        convertAutoUpgrade,
+        autoUpgradeChanged,
     }
 }

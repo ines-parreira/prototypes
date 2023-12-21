@@ -10,7 +10,6 @@ declare namespace Components {
     namespace Schemas {
         /**
          * BundleOnboardingStatus
-         * An enumeration.
          */
         export type BundleOnboardingStatus = 'installed' | 'not_installed'
         /**
@@ -39,7 +38,7 @@ declare namespace Components {
             /**
              * Hostname
              */
-            hostname: string // ^(((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.){1,}([a-z]{2,})$
+            hostname: string
         }
         /**
          * CustomDomainSchema
@@ -93,7 +92,7 @@ declare namespace Components {
             /**
              * Customer Id
              */
-            customer_id?: number
+            customer_id?: number | null
             /**
              * Account Id
              */
@@ -144,7 +143,7 @@ declare namespace Components {
             /**
              * Script Tag Id
              */
-            script_tag_id?: string
+            script_tag_id?: string | null
             status: StatusEnum
             method: MethodEnum
             /**
@@ -158,7 +157,7 @@ declare namespace Components {
             /**
              * Deactivated Datetime
              */
-            deactivated_datetime?: string // date-time
+            deactivated_datetime?: string /* date-time */ | null
             /**
              * Bundle Url
              */
@@ -184,12 +183,10 @@ declare namespace Components {
         }
         /**
          * MethodEnum
-         * An enumeration.
          */
         export type MethodEnum = 'one_click' | 'manual'
         /**
          * RuleOperator
-         * An enumeration.
          */
         export type RuleOperator =
             | 'eq'
@@ -200,6 +197,7 @@ declare namespace Components {
             | 'lte'
             | 'in'
             | 'notIn'
+            | 'contains'
             | 'containsAll'
             | 'containsAny'
             | 'notContains'
@@ -216,7 +214,6 @@ declare namespace Components {
         }
         /**
          * RuleType
-         * An enumeration.
          */
         export type RuleType =
             | 'orders_count'
@@ -226,12 +223,10 @@ declare namespace Components {
             | 'country_code'
         /**
          * StatusEnum
-         * An enumeration.
          */
         export type StatusEnum = 'draft' | 'installed' | 'uninstalled'
         /**
          * SubscriptionStatus
-         * An enumeration.
          */
         export type SubscriptionStatus = 'active' | 'inactive' | 'trial'
         /**
@@ -250,16 +245,35 @@ declare namespace Components {
             /**
              * Usage
              */
-            usage?: number
+            usage?: number | null
             /**
              * Limit
              */
-            limit?: number
+            limit?: number | null
+            /**
+             * Auto Upgrade Enabled
+             */
+            auto_upgrade_enabled?: boolean
+            /**
+             * Last Auto Upgrade At
+             */
+            last_auto_upgrade_at?: string /* date-time */ | null
+            /**
+             * Last Warning 90 At
+             */
+            last_warning_90_at?: string /* date-time */ | null
+            /**
+             * Last Warning 100 At
+             */
+            last_warning_100_at?: string /* date-time */ | null
+            /**
+             * Last Block At
+             */
+            last_block_at?: string /* date-time */ | null
             bundle_status: BundleOnboardingStatus
         }
         /**
          * SubscriptionUsageStatus
-         * An enumeration.
          */
         export type SubscriptionUsageStatus = 'ok' | 'limit-reached'
         /**
@@ -278,15 +292,15 @@ declare namespace Components {
             /**
              * Client Ip
              */
-            client_ip?: string
+            client_ip?: string | null
             /**
              * Client Agent
              */
-            client_agent?: string
+            client_agent?: string | null
             /**
              * Client Referrer
              */
-            client_referrer?: string
+            client_referrer?: string | null
             /**
              * Created Datetime
              */
@@ -316,7 +330,7 @@ declare namespace Components {
             /**
              * Channel
              */
-            channel?: string
+            channel?: string | null
             /**
              * Url
              */
@@ -325,6 +339,10 @@ declare namespace Components {
              * Meta
              */
             meta?: any
+            /**
+             * Alias
+             */
+            alias: string
         }
         /**
          * URLSchema
@@ -357,12 +375,12 @@ declare namespace Components {
             /**
              * Short Url
              */
-            short_url?: string
+            short_url?: string | null
             /**
              * Channel
              */
-            channel?: string
-            custom_domain?: CustomDomainSchema
+            channel?: string | null
+            custom_domain?: CustomDomainSchema | null
         }
         /**
          * URLWithClicksSchema
@@ -395,16 +413,25 @@ declare namespace Components {
             /**
              * Short Url
              */
-            short_url?: string
+            short_url?: string | null
             /**
              * Channel
              */
-            channel?: string
-            custom_domain?: CustomDomainSchema
+            channel?: string | null
+            custom_domain?: CustomDomainSchema | null
             /**
              * Clicks
              */
             clicks: URLClickSchema[]
+        }
+        /**
+         * UpdateAutoUpgradeSchema
+         */
+        export interface UpdateAutoUpgradeSchema {
+            /**
+             * Enabled
+             */
+            enabled: boolean
         }
         /**
          * ValidationError
@@ -511,29 +538,14 @@ declare namespace Paths {
             /**
              * Shop Integration Id
              */
-            export type ShopIntegrationId = number
+            export type ShopIntegrationId = number | null
         }
         export interface QueryParameters {
-            shop_integration_id: Parameters.ShopIntegrationId
+            shop_integration_id?: Parameters.ShopIntegrationId
         }
         namespace Responses {
             export type $200 =
                 Components.Schemas.SubscriptionUsageAndBundleStatusSchema
-            export type $422 = Components.Schemas.HTTPValidationError
-        }
-    }
-    namespace GetSubscriptionStatusByAccountId {
-        namespace Parameters {
-            /**
-             * Account Id
-             */
-            export type AccountId = number
-        }
-        export interface PathParameters {
-            account_id: Parameters.AccountId
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.SubscriptionStatusSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -638,7 +650,7 @@ declare namespace Paths {
             /**
              * Referrer
              */
-            export type Referrer = string
+            export type Referrer = string | null
             /**
              * User-Agent
              */
@@ -692,6 +704,13 @@ declare namespace Paths {
         export type RequestBody = Components.Schemas.URLCreateBulkSchema
         namespace Responses {
             export type $201 = Components.Schemas.URLBulkSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace UpdateAutoUpgradeFlag {
+        export type RequestBody = Components.Schemas.UpdateAutoUpgradeSchema
+        namespace Responses {
+            export type $200 = Components.Schemas.UpdateAutoUpgradeSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -991,7 +1010,21 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig
-    ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
+    ): OperationResponse<
+        | Paths.GetStatusAndUsage.Responses.$200
+        | Paths.GetStatusAndUsage.Responses.$422
+    >
+    /**
+     * update_auto_upgrade_flag - Update Auto Upgrade Flag
+     */
+    'update_auto_upgrade_flag'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.UpdateAutoUpgradeFlag.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.UpdateAutoUpgradeFlag.Responses.$200
+        | Paths.UpdateAutoUpgradeFlag.Responses.$422
+    >
     /**
      * get_subscription_statuses - Get Subscription Statuses
      */
@@ -1000,17 +1033,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
-    /**
-     * get_subscription_status_by_account_id - Get Subscription Status By Account Id
-     */
-    'get_subscription_status_by_account_id'(
-        parameters?: Parameters<Paths.GetSubscriptionStatusByAccountId.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetSubscriptionStatusByAccountId.Responses.$200
-        | Paths.GetSubscriptionStatusByAccountId.Responses.$422
-    >
 }
 
 export interface PathsDictionary {
@@ -1337,6 +1359,19 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
     }
+    ['/billing/subscriptions/auto-upgrade']: {
+        /**
+         * update_auto_upgrade_flag - Update Auto Upgrade Flag
+         */
+        'put'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.UpdateAutoUpgradeFlag.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.UpdateAutoUpgradeFlag.Responses.$200
+            | Paths.UpdateAutoUpgradeFlag.Responses.$422
+        >
+    }
     ['/billing/subscriptions/account-status/all']: {
         /**
          * get_subscription_statuses - Get Subscription Statuses
@@ -1346,19 +1381,6 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
-    }
-    ['/billing/subscriptions/account-status/{account_id}']: {
-        /**
-         * get_subscription_status_by_account_id - Get Subscription Status By Account Id
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetSubscriptionStatusByAccountId.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetSubscriptionStatusByAccountId.Responses.$200
-            | Paths.GetSubscriptionStatusByAccountId.Responses.$422
-        >
     }
 }
 

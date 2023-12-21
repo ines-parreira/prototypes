@@ -1108,6 +1108,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "type": "convert",
         "prices": Immutable.List [
           Immutable.Map {
+            "tier": 0,
             "interval": "month",
             "num_quota_tickets": 0,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1119,6 +1120,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "convert-00-monthly-usd-5",
           },
           Immutable.Map {
+            "tier": 1,
             "interval": "month",
             "num_quota_tickets": 10000,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1130,6 +1132,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "convert-01-monthly-usd-5",
           },
           Immutable.Map {
+            "tier": 2,
             "interval": "month",
             "num_quota_tickets": 30000,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1141,6 +1144,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "convert-02-monthly-usd-5",
           },
           Immutable.Map {
+            "tier": 3,
             "interval": "month",
             "num_quota_tickets": 50000,
             "product_id": "prod_Mwy3exdalDFouZ",

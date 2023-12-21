@@ -23,7 +23,7 @@ export type SummaryFooterProps = {
     anyProductChanged: boolean
     anyNewProductSelected: boolean
     anyDowngradedPlanSelected: boolean
-    updateSubscription?: () => Promise<void | [void, void]>
+    updateSubscription?: () => Promise<void | [void, void, void]>
     startSubscription?: () => Promise<void | [void, void]>
     periodEnd: string
     hideSubscribeButton?: boolean
@@ -37,6 +37,7 @@ export type SummaryFooterProps = {
     shopifyBillingStatus?: ShopifyBillingStatus
     isSubscriptionUpdating?: boolean
     setUpdateProcessStarted?: (isStarted: boolean) => void
+    autoUpgradeChanged?: boolean
 }
 
 const SummaryFooter = ({
@@ -60,6 +61,7 @@ const SummaryFooter = ({
     shopifyBillingStatus,
     isSubscriptionUpdating = false,
     setUpdateProcessStarted,
+    autoUpgradeChanged = false,
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
@@ -141,7 +143,7 @@ const SummaryFooter = ({
                     !isPaymentEnabled,
             })}
         >
-            {anyProductChanged && (
+            {(anyProductChanged || autoUpgradeChanged) && (
                 <>
                     {legalText}
                     {((!isTrialing && !isCurrentSubscriptionCanceled) ||
@@ -219,7 +221,7 @@ const SummaryFooter = ({
                                       isPaymentMethodFooter)
                                 : !isPaymentEnabled ||
                                   (!isTermsChecked && anyNewProductSelected) ||
-                                  !anyProductChanged
+                                  !(anyProductChanged || autoUpgradeChanged)
                         }
                         className={css.button}
                         id="update-subscription"

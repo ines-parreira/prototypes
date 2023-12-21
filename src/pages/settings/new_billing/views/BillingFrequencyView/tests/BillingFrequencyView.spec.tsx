@@ -3,6 +3,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
@@ -10,8 +11,10 @@ import {
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import BillingFrequencyView from '../BillingFrequencyView'
 
+const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
@@ -59,15 +62,17 @@ const store = mockedStore({
 describe('UsageAndPlansView', () => {
     it('should render', () => {
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <BillingFrequencyView
-                    isTrialing={false}
-                    isCurrentSubscriptionCanceled={false}
-                    periodEnd="2021-01-01"
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <BillingFrequencyView
+                        isTrialing={false}
+                        isCurrentSubscriptionCanceled={false}
+                        periodEnd="2021-01-01"
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(container).toMatchSnapshot()

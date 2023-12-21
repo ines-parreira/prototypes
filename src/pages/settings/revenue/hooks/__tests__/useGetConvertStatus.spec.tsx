@@ -24,6 +24,7 @@ jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => {
                 get_status_and_usage: () => {
                     return {
                         data: apiResponse,
+                        status: 200,
                     }
                 },
             },

@@ -1,6 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import {Components} from 'rest_api/revenue_addon_api/client.generated'
 import {useRevenueAddonApi} from './useRevenueAddonApi'
 
 export enum BundleOnboardingStatus {
@@ -30,7 +31,9 @@ export const getConvertStatusAndUsage = async (
         }
     )
 
-    return res.data
+    if (res.status !== 200) return null
+
+    return res.data as Components.Schemas.SubscriptionUsageAndBundleStatusSchema
 }
 
 const useGetConvertStatus = (

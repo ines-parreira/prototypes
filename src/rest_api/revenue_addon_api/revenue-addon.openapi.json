@@ -94,10 +94,10 @@
                 "operationId": "get_config_by_revenue_id",
                 "parameters": [
                     {
-                        "required": true,
-                        "schema": {"type": "string", "title": "Revenue Id"},
                         "name": "revenue_id",
-                        "in": "path"
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Revenue Id"}
                     }
                 ],
                 "responses": {
@@ -289,12 +289,13 @@
                 "tags": ["installations"],
                 "summary": "Retrieve",
                 "operationId": "get_bundle_installation",
+                "security": [{"HTTPBearer": []}],
                 "parameters": [
                     {
-                        "required": true,
-                        "schema": {"type": "string", "title": "Id"},
                         "name": "id",
-                        "in": "path"
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Id"}
                     }
                 ],
                 "responses": {
@@ -318,30 +319,30 @@
                             }
                         }
                     }
-                },
-                "security": [{"HTTPBearer": []}]
+                }
             },
             "patch": {
                 "tags": ["installations"],
                 "summary": "Update",
                 "operationId": "update_bundle_installation",
+                "security": [{"HTTPBearer": []}],
                 "parameters": [
                     {
-                        "required": true,
-                        "schema": {"type": "string", "title": "Id"},
                         "name": "id",
-                        "in": "path"
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Id"}
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/InstallationUpdateConfigSchema"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "responses": {
                     "200": {
@@ -364,8 +365,7 @@
                             }
                         }
                     }
-                },
-                "security": [{"HTTPBearer": []}]
+                }
             }
         },
         "/click-tracking/health-check": {
@@ -577,26 +577,29 @@
                 "operationId": "redirect_r__alias__get",
                 "parameters": [
                     {
-                        "required": true,
-                        "schema": {"type": "string", "title": "Alias"},
                         "name": "alias",
-                        "in": "path"
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Alias"}
                     },
                     {
-                        "required": false,
-                        "schema": {"type": "string", "title": "Referrer"},
                         "name": "referrer",
-                        "in": "header"
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Referrer"
+                        }
                     },
                     {
+                        "name": "user-agent",
+                        "in": "header",
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "title": "User-Agent",
-                            "default": ""
-                        },
-                        "name": "user-agent",
-                        "in": "header"
+                            "default": "",
+                            "title": "User-Agent"
+                        }
                     }
                 ],
                 "responses": {
@@ -834,15 +837,16 @@
                 "tags": ["subscriptions"],
                 "summary": "Get Status And Usage",
                 "operationId": "get_status_and_usage",
+                "security": [{"HTTPBearer": []}],
                 "parameters": [
                     {
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "title": "Shop Integration Id"
-                        },
                         "name": "shop_integration_id",
-                        "in": "query"
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "integer"}, {"type": "null"}],
+                            "title": "Shop Integration Id"
+                        }
                     }
                 ],
                 "responses": {
@@ -852,6 +856,45 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/SubscriptionUsageAndBundleStatusSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/billing/subscriptions/auto-upgrade": {
+            "put": {
+                "tags": ["subscriptions"],
+                "summary": "Update Auto Upgrade Flag",
+                "operationId": "update_auto_upgrade_flag",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAutoUpgradeSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateAutoUpgradeSchema"
                                 }
                             }
                         }
@@ -891,44 +934,6 @@
                 },
                 "security": [{"APIKeyHeader": []}]
             }
-        },
-        "/billing/subscriptions/account-status/{account_id}": {
-            "get": {
-                "tags": ["subscriptions"],
-                "summary": "Get Subscription Status By Account Id",
-                "operationId": "get_subscription_status_by_account_id",
-                "parameters": [
-                    {
-                        "required": true,
-                        "schema": {"type": "integer", "title": "Account Id"},
-                        "name": "account_id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SubscriptionStatusSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [{"APIKeyHeader": []}]
-            }
         }
     },
     "components": {
@@ -936,8 +941,7 @@
             "BundleOnboardingStatus": {
                 "type": "string",
                 "enum": ["installed", "not_installed"],
-                "title": "BundleOnboardingStatus",
-                "description": "An enumeration."
+                "title": "BundleOnboardingStatus"
             },
             "CampaignSchema": {
                 "properties": {
@@ -964,11 +968,7 @@
             },
             "CustomDomainOperationSchema": {
                 "properties": {
-                    "hostname": {
-                        "type": "string",
-                        "pattern": "^(((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\\.){1,}([a-z]{2,})$",
-                        "title": "Hostname"
-                    }
+                    "hostname": {"type": "string", "title": "Hostname"}
                 },
                 "type": "object",
                 "required": ["hostname"],
@@ -1012,7 +1012,10 @@
             "EvaluationRequestSchema": {
                 "properties": {
                     "guest_id": {"type": "string", "title": "Guest Id"},
-                    "customer_id": {"type": "integer", "title": "Customer Id"},
+                    "customer_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Customer Id"
+                    },
                     "account_id": {"type": "integer", "title": "Account Id"},
                     "revenue_addon_id": {
                         "type": "string",
@@ -1071,7 +1074,7 @@
                         "title": "Shop Integration Id"
                     },
                     "script_tag_id": {
-                        "type": "string",
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
                         "title": "Script Tag Id"
                     },
                     "status": {"$ref": "#/components/schemas/StatusEnum"},
@@ -1083,11 +1086,17 @@
                         "title": "Created Datetime"
                     },
                     "deactivated_datetime": {
-                        "type": "string",
-                        "format": "date-time",
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
                         "title": "Deactivated Datetime"
                     },
-                    "bundle_url": {"type": "string", "title": "Bundle Url"}
+                    "bundle_url": {
+                        "type": "string",
+                        "title": "Bundle Url",
+                        "default": "https://bundle-nicolae.ngrok.io/loader.js"
+                    }
                 },
                 "type": "object",
                 "required": [
@@ -1116,8 +1125,7 @@
             "MethodEnum": {
                 "type": "string",
                 "enum": ["one_click", "manual"],
-                "title": "MethodEnum",
-                "description": "An enumeration."
+                "title": "MethodEnum"
             },
             "RuleOperator": {
                 "type": "string",
@@ -1130,12 +1138,12 @@
                     "lte",
                     "in",
                     "notIn",
+                    "contains",
                     "containsAll",
                     "containsAny",
                     "notContains"
                 ],
-                "title": "RuleOperator",
-                "description": "An enumeration."
+                "title": "RuleOperator"
             },
             "RuleSchema": {
                 "properties": {
@@ -1156,20 +1164,17 @@
                     "customer_tags",
                     "country_code"
                 ],
-                "title": "RuleType",
-                "description": "An enumeration."
+                "title": "RuleType"
             },
             "StatusEnum": {
                 "type": "string",
                 "enum": ["draft", "installed", "uninstalled"],
-                "title": "StatusEnum",
-                "description": "An enumeration."
+                "title": "StatusEnum"
             },
             "SubscriptionStatus": {
                 "type": "string",
                 "enum": ["active", "inactive", "trial"],
-                "title": "SubscriptionStatus",
-                "description": "An enumeration."
+                "title": "SubscriptionStatus"
             },
             "SubscriptionStatusSchema": {
                 "properties": {
@@ -1192,8 +1197,47 @@
                     "usage_status": {
                         "$ref": "#/components/schemas/SubscriptionUsageStatus"
                     },
-                    "usage": {"type": "integer", "title": "Usage"},
-                    "limit": {"type": "integer", "title": "Limit"},
+                    "usage": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Usage"
+                    },
+                    "limit": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Limit"
+                    },
+                    "auto_upgrade_enabled": {
+                        "type": "boolean",
+                        "title": "Auto Upgrade Enabled",
+                        "default": false
+                    },
+                    "last_auto_upgrade_at": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Last Auto Upgrade At"
+                    },
+                    "last_warning_90_at": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Last Warning 90 At"
+                    },
+                    "last_warning_100_at": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Last Warning 100 At"
+                    },
+                    "last_block_at": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Last Block At"
+                    },
                     "bundle_status": {
                         "$ref": "#/components/schemas/BundleOnboardingStatus"
                     }
@@ -1205,8 +1249,7 @@
             "SubscriptionUsageStatus": {
                 "type": "string",
                 "enum": ["ok", "limit-reached"],
-                "title": "SubscriptionUsageStatus",
-                "description": "An enumeration."
+                "title": "SubscriptionUsageStatus"
             },
             "URLBulkSchema": {
                 "properties": {
@@ -1222,10 +1265,16 @@
             },
             "URLClickSchema": {
                 "properties": {
-                    "client_ip": {"type": "string", "title": "Client Ip"},
-                    "client_agent": {"type": "string", "title": "Client Agent"},
+                    "client_ip": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Client Ip"
+                    },
+                    "client_agent": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Client Agent"
+                    },
                     "client_referrer": {
-                        "type": "string",
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
                         "title": "Client Referrer"
                     },
                     "created_datetime": {
@@ -1261,18 +1310,21 @@
                         "default": false
                     },
                     "account_id": {"type": "integer", "title": "Account Id"},
-                    "channel": {"type": "string", "title": "Channel"},
+                    "channel": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Channel"
+                    },
                     "url": {
                         "type": "string",
-                        "maxLength": 65536,
                         "minLength": 1,
                         "format": "uri",
                         "title": "Url"
                     },
-                    "meta": {"type": "object", "title": "Meta"}
+                    "meta": {"type": "object", "title": "Meta"},
+                    "alias": {"type": "string", "title": "Alias"}
                 },
                 "type": "object",
-                "required": ["account_id", "url"],
+                "required": ["account_id", "url", "alias"],
                 "title": "URLCreateSchema"
             },
             "URLSchema": {
@@ -1281,7 +1333,6 @@
                     "account_id": {"type": "integer", "title": "Account Id"},
                     "url": {
                         "type": "string",
-                        "maxLength": 65536,
                         "minLength": 1,
                         "format": "uri",
                         "title": "Url"
@@ -1296,10 +1347,19 @@
                         "title": "Is Shortened"
                     },
                     "alias": {"type": "string", "title": "Alias"},
-                    "short_url": {"type": "string", "title": "Short Url"},
-                    "channel": {"type": "string", "title": "Channel"},
+                    "short_url": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Short Url"
+                    },
+                    "channel": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Channel"
+                    },
                     "custom_domain": {
-                        "$ref": "#/components/schemas/CustomDomainSchema"
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/CustomDomainSchema"},
+                            {"type": "null"}
+                        ]
                     }
                 },
                 "type": "object",
@@ -1319,7 +1379,6 @@
                     "account_id": {"type": "integer", "title": "Account Id"},
                     "url": {
                         "type": "string",
-                        "maxLength": 65536,
                         "minLength": 1,
                         "format": "uri",
                         "title": "Url"
@@ -1334,10 +1393,19 @@
                         "title": "Is Shortened"
                     },
                     "alias": {"type": "string", "title": "Alias"},
-                    "short_url": {"type": "string", "title": "Short Url"},
-                    "channel": {"type": "string", "title": "Channel"},
+                    "short_url": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Short Url"
+                    },
+                    "channel": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Channel"
+                    },
                     "custom_domain": {
-                        "$ref": "#/components/schemas/CustomDomainSchema"
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/CustomDomainSchema"},
+                            {"type": "null"}
+                        ]
                     },
                     "clicks": {
                         "items": {
@@ -1358,6 +1426,14 @@
                     "clicks"
                 ],
                 "title": "URLWithClicksSchema"
+            },
+            "UpdateAutoUpgradeSchema": {
+                "properties": {
+                    "enabled": {"type": "boolean", "title": "Enabled"}
+                },
+                "type": "object",
+                "required": ["enabled"],
+                "title": "UpdateAutoUpgradeSchema"
             },
             "ValidationError": {
                 "properties": {

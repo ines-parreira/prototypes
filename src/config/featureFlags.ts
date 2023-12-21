@@ -36,6 +36,7 @@ export enum FeatureFlagKey {
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContactFormOrderManagement = 'contact-form-order-management',
     ConvertBilling = 'revenue-billing',
+    ConvertAutoUpgrade = 'convert-auto-upgrade',
     ConvertCampaignBundleWarning = 'convert-campaign-bundle-warning',
     ConvertCampaignCapping = 'convert-campaign-capping',
     CustomerTimelineButton = 'customer-timeline-button',

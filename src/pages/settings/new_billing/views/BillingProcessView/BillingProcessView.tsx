@@ -55,22 +55,27 @@ export type SelectedPlans = {
     [ProductType.Helpdesk]: {
         plan?: HelpdeskPrice
         isSelected: boolean
+        autoUpgrade?: false
     }
     [ProductType.Automation]: {
         plan?: AutomationPrice
         isSelected: boolean
+        autoUpgrade?: false
     }
     [ProductType.Voice]: {
         plan?: SMSOrVoicePrice
         isSelected: boolean
+        autoUpgrade?: false
     }
     [ProductType.SMS]: {
         plan?: SMSOrVoicePrice
         isSelected: boolean
+        autoUpgrade?: false
     }
     [ProductType.Convert]: {
         plan?: ConvertPrice
         isSelected: boolean
+        autoUpgrade?: boolean
     }
 }
 
@@ -123,6 +128,7 @@ const BillingProcessView = ({
         updateSubscription,
         startSubscription,
         isSubscriptionUpdating,
+        autoUpgradeChanged,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
@@ -373,6 +379,7 @@ const BillingProcessView = ({
                             shouldPayWithShopify={shouldPayWithShopify}
                             isSubscriptionUpdating={isSubscriptionUpdating}
                             setUpdateProcessStarted={setUpdateProcessStarted}
+                            autoUpgradeChanged={autoUpgradeChanged}
                         />
                     </Card>
                 )}

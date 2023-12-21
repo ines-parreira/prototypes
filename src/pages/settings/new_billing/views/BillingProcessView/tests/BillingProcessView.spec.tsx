@@ -4,6 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
 import LD from 'launchdarkly-react-client-sdk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
@@ -13,8 +14,10 @@ import {
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import BillingProcessView from '../BillingProcessView'
 
+const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
@@ -73,18 +76,20 @@ describe('UsageAndPlansView', () => {
         }))
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <BillingProcessView
-                    currentUsage={currentProductsUsage}
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                    setDefaultMessage={jest.fn()}
-                    setIsModalOpen={jest.fn()}
-                    periodEnd="2021-01-01"
-                    isTrialing={false}
-                    isCurrentSubscriptionCanceled={false}
-                />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <BillingProcessView
+                        currentUsage={currentProductsUsage}
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                        setDefaultMessage={jest.fn()}
+                        setIsModalOpen={jest.fn()}
+                        periodEnd="2021-01-01"
+                        isTrialing={false}
+                        isCurrentSubscriptionCanceled={false}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(container).toMatchSnapshot()

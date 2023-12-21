@@ -1,7 +1,8 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {PlanInterval, ProductType} from 'models/billing/types'
-import {basicMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {basicMonthlyHelpdeskPrice, convertPrice1} from 'fixtures/productPrices'
+import * as isRevenueBillingHook from 'pages/settings/new_billing/hooks/useIsConvertAutoUpgradeEnabled'
 import ProductPlanSelection, {
     ProductPlanSelectionProps,
 } from '../ProductPlanSelection'
@@ -98,5 +99,29 @@ describe('ProductPlanSelection', () => {
         const addProductButton = getByText('Add Product')
         fireEvent.click(addProductButton)
         expect(mockSetSelectedPlans).toHaveBeenCalled()
+    })
+
+    it('displays the auto-upgrade toggle', () => {
+        jest.spyOn(
+            isRevenueBillingHook,
+            'useIsConvertAutoUpgradeEnabled'
+        ).mockImplementation(() => true)
+
+        const {getByText} = render(
+            <ProductPlanSelection
+                {...props}
+                product={convertPrice1}
+                selectedPlans={{
+                    ...selectedPlans,
+                    [ProductType.Convert]: {
+                        isSelected: true,
+                        autoUpgrade: true,
+                        plan: convertPrice1,
+                    },
+                }}
+                type={ProductType.Convert}
+            />
+        )
+        expect(getByText('Click allowance auto-upgrade')).toBeInTheDocument()
     })
 })

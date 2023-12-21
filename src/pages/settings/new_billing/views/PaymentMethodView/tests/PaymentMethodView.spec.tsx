@@ -3,6 +3,7 @@ import {render, fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {createStripeCardToken} from 'utils/stripe'
 import {account} from 'fixtures/account'
@@ -16,9 +17,12 @@ import {
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
 import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from 'pages/settings/new_billing/constants'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import PaymentMethodView from '../PaymentMethodView'
 
 const mockedDispatch = jest.fn()
+
+const queryClient = mockQueryClient()
 
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
@@ -147,12 +151,14 @@ describe('PaymentMethodView', () => {
 
     it('renders the component', () => {
         const {getByText} = renderWithRouter(
-            <Provider store={store}>
-                <PaymentMethodView
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <PaymentMethodView
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(getByText('Payment Method')).toBeInTheDocument()
@@ -172,12 +178,14 @@ describe('PaymentMethodView', () => {
         }))
 
         const {getByTestId, getByText} = render(
-            <Provider store={store}>
-                <PaymentMethodView
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <PaymentMethodView
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         // Fill form fields
@@ -220,12 +228,14 @@ describe('PaymentMethodView', () => {
         const {getByText, getByTestId} = screen
 
         renderWithRouter(
-            <Provider store={storeWithTrialingSubscription}>
-                <PaymentMethodView
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={storeWithTrialingSubscription}>
+                    <PaymentMethodView
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(getByText('Summary')).toBeInTheDocument()
@@ -246,12 +256,14 @@ describe('PaymentMethodView', () => {
         const {getByText, getByTestId} = screen
 
         renderWithRouter(
-            <Provider store={storeWithCanceledSubscription}>
-                <PaymentMethodView
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={storeWithCanceledSubscription}>
+                    <PaymentMethodView
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(getByText('Summary')).toBeInTheDocument()

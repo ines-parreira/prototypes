@@ -31,6 +31,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {isAAOLegacyPrice} from 'models/billing/utils'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
@@ -73,6 +74,7 @@ const UsageAndPlansView = ({
     const convertProduct = useAppSelector(getCurrentConvertProduct)
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
     const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
+    const convertStatus = useGetConvertStatus()
 
     const isIntervalMonthly = interval === INTERVAL.Month
     const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
@@ -310,6 +312,9 @@ const UsageAndPlansView = ({
                         usage={currentUsage?.convert}
                         banner={convertBanner}
                         isDisabled={false}
+                        autoUpgradeEnabled={Boolean(
+                            convertStatus && convertStatus.auto_upgrade_enabled
+                        )}
                     />
                 )}
             </div>

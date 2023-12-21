@@ -9,7 +9,7 @@ type PendingChangesModalProps = {
     show?: boolean
     onDiscard?: () => void
     onContinueEditing?: () => void
-    onSave: () => Promise<void> | Promise<[void, void]>
+    onSave: () => Promise<void> | Promise<[void, void, void]>
     title?: string
     saveText?: string
     isSaving?: boolean

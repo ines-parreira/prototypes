@@ -494,6 +494,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "num_quota_tickets": 10000,
     "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "tier": 1,
   },
   "helpdesk": {
     "addons": [
@@ -2294,6 +2295,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 0,
     "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "tier": 0,
   },
   {
     "amount": 90,
@@ -2316,6 +2318,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 10000,
     "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "tier": 1,
   },
   {
     "amount": 175,
@@ -2338,6 +2341,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 30000,
     "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "tier": 2,
   },
   {
     "amount": 570,
@@ -2349,6 +2353,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 50000,
     "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSLS",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "tier": 3,
   },
   {
     "amount": 1750,
@@ -4412,6 +4417,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 0,
         "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "tier": 0,
       },
       {
         "amount": 100,
@@ -4423,6 +4429,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 10000,
         "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "tier": 1,
       },
       {
         "amount": 285,
@@ -4434,6 +4441,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 30000,
         "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "tier": 2,
       },
       {
         "amount": 570,
@@ -4445,6 +4453,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 50000,
         "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSLS",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "tier": 3,
       },
     ],
     "type": "convert",
