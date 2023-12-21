@@ -1,8 +1,5 @@
 import React, {useState, useCallback, useMemo} from 'react'
 import {sortBy, reverse} from 'lodash'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useDeepCompareEffect} from 'react-use'
 import {Container} from 'reactstrap'
 
 import {OrderDirection} from 'models/api/types'
@@ -44,13 +41,19 @@ export default function PhoneIntegrationsList({
     type,
 }: Props): JSX.Element | null {
     const config = getIntegrationConfig(type)
-    const integrations = useAppSelector(
-        getIntegrationsByType<
-            PhoneIntegration | SmsIntegration | WhatsAppIntegration
-        >(type)
+
+    const getIntegrations = useMemo(
+        () =>
+            getIntegrationsByType<
+                PhoneIntegration | SmsIntegration | WhatsAppIntegration
+            >(type),
+        [type]
     )
 
+    const integrations = useAppSelector(getIntegrations)
+
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
+
     const rows: Row[] = useMemo(
         () =>
             integrations.reduce(
@@ -80,15 +83,14 @@ export default function PhoneIntegrationsList({
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
         OrderDirection.Desc
     )
-    const [sortedRows, setSortedRows] = useState<Row[]>(rows)
 
-    useDeepCompareEffect(() => {
-        setSortedRows(
+    const sortedRows = useMemo(
+        () =>
             orderDirection === OrderDirection.Asc
                 ? sortBy(rows, orderBy)
-                : reverse(sortBy(rows, orderBy))
-        )
-    }, [orderBy, orderDirection, setSortedRows, rows])
+                : reverse(sortBy(rows, orderBy)),
+        [rows, orderBy, orderDirection]
+    )
 
     const setSortOptions = useCallback(
         (column: string) => {
