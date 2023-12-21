@@ -26,7 +26,7 @@ import settingsCss from 'pages/settings/settings.less'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useSavedTheme, useSetTheme, withTheme} from 'theme'
+import {Theme, useSavedTheme, useSetTheme, withTheme} from 'theme'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
@@ -131,6 +131,13 @@ export class YourProfileView extends Component<Props, State> {
             event.preventDefault()
         }
         this.isDirty = false
+
+        if (this.initialTheme !== this.props.savedTheme) {
+            logEvent(SegmentEvent.ThemeUpdate, {
+                theme: this.props.savedTheme,
+            })
+        }
+
         this.initialTheme = this.props.savedTheme
 
         const normalizedValues = _pick(
@@ -188,6 +195,11 @@ export class YourProfileView extends Component<Props, State> {
         return this.props.updateCurrentUser({
             meta: this.state.meta,
         })
+    }
+
+    onChangeTheme = (theme: Theme) => {
+        this.isDirty = true
+        this.props.setTheme(theme)
     }
 
     async componentDidMount() {
@@ -463,14 +475,9 @@ export class YourProfileView extends Component<Props, State> {
                                                 savedTheme={
                                                     this.props.savedTheme
                                                 }
-                                                onChangeTheme={(
-                                                    theme: ReturnType<
-                                                        typeof useSavedTheme
-                                                    >
-                                                ) => {
-                                                    this.isDirty = true
-                                                    this.props.setTheme(theme)
-                                                }}
+                                                onChangeTheme={
+                                                    this.onChangeTheme
+                                                }
                                             />
                                         </div>
                                     </>

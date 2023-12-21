@@ -11,7 +11,7 @@ export type ThemeValue = {
     icon: string
 }
 
-export const Themes: {[key in Theme]: ThemeValue} = {
+export const Themes: Record<Theme, ThemeValue> = {
     [Theme.System]: {
         label: 'Use system setting',
         settingsLabel: 'System',
@@ -30,3 +30,5 @@ export const Themes: {[key in Theme]: ThemeValue} = {
         icon: 'brightness_6',
     },
 }
+
+export type AcceptedThemes = Exclude<Theme, Theme.System>

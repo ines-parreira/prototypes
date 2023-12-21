@@ -344,6 +344,9 @@ export class Navbar extends Component<Props, State> {
 
     updateTheme = (name: string) => {
         this.props.setTheme(name as Theme)
+        logEvent(SegmentEvent.ThemeUpdate, {
+            theme: name,
+        })
     }
 
     render() {

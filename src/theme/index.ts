@@ -1,6 +1,6 @@
 export {default as ThemeProvider} from './Provider'
 export {Theme, Themes} from './types'
-export type {ThemeValue} from './types'
+export type {ThemeValue, AcceptedThemes} from './types'
 export {default as useSetTheme} from './useSetTheme'
 export {default as useTheme} from './useTheme'
 export {default as withTheme} from './withTheme'

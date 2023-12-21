@@ -3,8 +3,8 @@ import _get from 'lodash/get'
 import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
 
-import {Theme, Themes} from 'theme/types'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
+import {Theme, Themes} from 'theme/types'
 
 describe('ThemeList', () => {
     it('should render all themes', () => {
