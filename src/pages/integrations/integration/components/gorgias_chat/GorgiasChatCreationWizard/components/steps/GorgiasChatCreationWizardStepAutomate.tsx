@@ -64,7 +64,7 @@ type SubmitForm = {
 
 const draftQuickResponse: QuickResponsePolicy = {
     id: '',
-    title: "What's your shipping policy?",
+    title: 'What is your shipping policy?',
     deactivated_datetime: new Date().toISOString(),
     response_message_content: {
         html: '',
