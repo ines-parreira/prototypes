@@ -38,13 +38,15 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
         }
 
     return (
-        <section className={css.container}>
+        <section className={settingsCss.mb40}>
             <div className={css.heading}>
-                <h3>Search Engine Optimization (SEO)</h3>
-                <p>
-                    Allow you to add tracking links and other scripts to your
-                    Help Center page.
-                </p>
+                <div>
+                    <h3>Search Engine Optimization (SEO)</h3>
+                    <p>
+                        Allow you to add tracking links and other scripts to
+                        your Help Center page.
+                    </p>
+                </div>
             </div>
 
             <InputField
@@ -72,7 +74,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                     seoMeta.description ||
                     `Home page of the ${helpCenter.name} Help Center`
                 }
-                help="This is a preview of how your article is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
+                help="This is a preview of how your Help Center is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
             />
         </section>
     )

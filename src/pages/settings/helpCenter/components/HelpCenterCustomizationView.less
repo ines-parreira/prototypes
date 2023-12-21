@@ -1,20 +1,16 @@
-@import '~@gorgias/design-tokens/dist/css/layout';
-
 :local {
     .wrapper {
+        section:first-child {
+            margin-bottom: 24px;
+        }
         section {
-            margin-bottom: @layout-spacing-xl;
             h5 {
                 font-size: 14px;
                 font-weight: 600;
                 line-height: 20px;
-                margin-bottom: @layout-spacing-s;
-            }
-            .toggleSection {
-                margin-bottom: @layout-spacing-l;
             }
             .toggle {
-                margin-bottom: @layout-spacing-s;
+                margin-bottom: 24px;
                 .toggleLabel {
                     display: flex;
                     align-items: center;
@@ -27,20 +23,24 @@
                 }
             }
             .heading {
-                margin-bottom: @layout-spacing-m;
+                margin-bottom: 24px;
+
+                .headingInner {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
                 h3 {
-                    margin-bottom: @layout-spacing-xxs;
+                    margin-bottom: 4px;
                     font-weight: 600;
                 }
+
                 p {
                     margin-bottom: 0;
                 }
             }
             :global .form-group + p {
                 margin-bottom: 24px;
-            }
-            .subsection {
-                margin-bottom: @layout-spacing-l;
             }
         }
     }

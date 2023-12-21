@@ -205,20 +205,37 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
       <div
         class="contentWrapper"
       >
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="heading"
           >
-            <h3>
+            <div>
+              <div
+                class="headingInner"
+              >
+                <h3>
+                  Customization
+                </h3>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="mb40"
+        >
+          <div
+            class="heading"
+          >
+            <h4>
               Header settings
-            </h3>
+            </h4>
             <p>
               Change navigation elements at the top of the help center.
             </p>
           </div>
-          <div
-            class="toggleSection"
-          >
+          <div>
             <div
               class="toggle"
             >
@@ -271,21 +288,25 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 >
                   add
                 </i>
-                Add Link
+                Add Nav Item
               </button>
             </span>
           </div>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="heading"
           >
-            <h3>
-              Footer settings
-            </h3>
-            <p>
-              Change navigation elements at the bottom of the help center.
-            </p>
+            <div>
+              <h4>
+                Footer settings
+              </h4>
+              <p>
+                Change navigation elements at the bottom of the help center.
+              </p>
+            </div>
           </div>
           <div>
             <div
@@ -324,7 +345,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </div>
           </div>
           <div
-            class="toggleSection"
+            class="mb24"
           >
             <div
               class="toggle"
@@ -348,160 +369,151 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 />
                 Powered by Gorgias
               </label>
-              <div
-                class="caption caption"
-              >
-                Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
-              </div>
             </div>
+          </div>
+          <h5>
+            Navigation Links
+          </h5>
+          <div>
+            <span
+              id="help-footer"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper add-link fill secondary medium"
+                type="button"
+              >
+                <i
+                  class="material-icons"
+                >
+                  add
+                </i>
+                Add Nav Item
+              </button>
+            </span>
           </div>
           <div
-            class="subsection"
+            class="social-list"
           >
-            <h5>
-              Navigation Links
-            </h5>
-            <div>
-              <span
-                id="help-footer"
-              >
-                <button
-                  aria-disabled="false"
-                  class="wrapper add-link fill secondary medium"
-                  type="button"
-                >
-                  <i
-                    class="material-icons"
-                  >
-                    add
-                  </i>
-                  Add Link
-                </button>
-              </span>
-            </div>
-          </div>
-          <div>
             <h5>
               Social network links
             </h5>
             <div
-              class="social-list"
+              class="social-item"
+              data-testid="Facebook-nav"
             >
               <div
-                class="social-item"
-                data-testid="Facebook-nav"
+                class="label"
               >
                 <div
-                  class="label"
+                  class="logo-wrapper"
                 >
                   <div
-                    class="logo-wrapper"
-                  >
-                    <div
-                      class="logo"
-                      style="mask-image: url(test-file-stub);"
-                    />
-                  </div>
-                  <span
-                    data-testid="Facebook-label"
-                  >
-                    Facebook
-                  </span>
+                    class="logo"
+                    style="mask-image: url(test-file-stub);"
+                  />
                 </div>
-                <div>
-                  <div
-                    class="formGroup form-group"
-                  >
-                    <input
-                      aria-invalid="false"
-                      class="social-input form-control"
-                      placeholder="Facebook page link"
-                      type="text"
-                      value=""
-                    />
-                  </div>
+                <span
+                  data-testid="Facebook-label"
+                >
+                  Facebook
+                </span>
+              </div>
+              <div>
+                <div
+                  class="formGroup form-group"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="social-input form-control"
+                    placeholder="Facebook page link"
+                    type="text"
+                    value=""
+                  />
                 </div>
               </div>
+            </div>
+            <div
+              class="social-item"
+              data-testid="Twitter-nav"
+            >
               <div
-                class="social-item"
-                data-testid="Twitter-nav"
+                class="label"
               >
                 <div
-                  class="label"
+                  class="logo-wrapper"
                 >
                   <div
-                    class="logo-wrapper"
-                  >
-                    <div
-                      class="logo"
-                      style="mask-image: url(test-file-stub);"
-                    />
-                  </div>
-                  <span
-                    data-testid="Twitter-label"
-                  >
-                    Twitter
-                  </span>
+                    class="logo"
+                    style="mask-image: url(test-file-stub);"
+                  />
                 </div>
-                <div>
-                  <div
-                    class="formGroup form-group"
-                  >
-                    <input
-                      aria-invalid="false"
-                      class="social-input form-control"
-                      placeholder="Twitter page link"
-                      type="text"
-                      value=""
-                    />
-                  </div>
+                <span
+                  data-testid="Twitter-label"
+                >
+                  Twitter
+                </span>
+              </div>
+              <div>
+                <div
+                  class="formGroup form-group"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="social-input form-control"
+                    placeholder="Twitter page link"
+                    type="text"
+                    value=""
+                  />
                 </div>
               </div>
+            </div>
+            <div
+              class="social-item"
+              data-testid="Instagram-nav"
+            >
               <div
-                class="social-item"
-                data-testid="Instagram-nav"
+                class="label"
               >
                 <div
-                  class="label"
+                  class="logo-wrapper"
                 >
                   <div
-                    class="logo-wrapper"
-                  >
-                    <div
-                      class="logo"
-                      style="mask-image: url(test-file-stub);"
-                    />
-                  </div>
-                  <span
-                    data-testid="Instagram-label"
-                  >
-                    Instagram
-                  </span>
+                    class="logo"
+                    style="mask-image: url(test-file-stub);"
+                  />
                 </div>
-                <div>
-                  <div
-                    class="formGroup form-group"
-                  >
-                    <input
-                      aria-invalid="false"
-                      class="social-input form-control"
-                      placeholder="Instagram page link"
-                      type="text"
-                      value=""
-                    />
-                  </div>
+                <span
+                  data-testid="Instagram-label"
+                >
+                  Instagram
+                </span>
+              </div>
+              <div>
+                <div
+                  class="formGroup form-group"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="social-input form-control"
+                    placeholder="Instagram page link"
+                    type="text"
+                    value=""
+                  />
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="heading"
           >
-            <h3>
+            <h4>
               Extra HTML
-            </h3>
+            </h4>
             <p>
               Add extra HTML in the
                

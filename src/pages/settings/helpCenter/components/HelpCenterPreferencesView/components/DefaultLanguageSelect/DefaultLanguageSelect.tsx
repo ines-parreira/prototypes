@@ -1,9 +1,6 @@
 import React from 'react'
 import {Col, Row} from 'reactstrap'
 
-import Caption from 'pages/common/forms/Caption/Caption'
-import Label from 'pages/common/forms/Label/Label'
-
 import {validLocaleCode} from '../../../../../../../models/helpCenter/utils'
 
 import type {Value} from '../../../../../../common/forms/SelectField/types'
@@ -22,24 +19,21 @@ export const DefaultLanguageSelect: React.FC = () => {
     }
 
     return (
-        <div>
-            <Label className={css.label} isRequired>
-                Default language
-            </Label>
+        <div className={css.container}>
+            <h4>Default language</h4>
+            <p>
+                Choose a default language. This will be the default setting when
+                the selected language isn't available or cannot be detected.
+            </p>
             <Row>
                 <Col>
                     <LanguageSelect
                         value={preferences.defaultLanguage}
                         onChange={onChangeLanguage}
                         className={css.select}
-                        fullWidth
                     />
                 </Col>
             </Row>
-            <Caption>
-                Used when selected language isn't available or cannot be
-                detected
-            </Caption>
         </div>
     )
 }
