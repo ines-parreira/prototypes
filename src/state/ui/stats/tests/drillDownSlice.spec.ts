@@ -33,11 +33,6 @@ const store = mockStore({
 } as RootState)
 
 describe('drillDownSlice', () => {
-    const dateRange = {
-        start_datetime: '1970-01-01T00:00:00+00:00',
-        end_datetime: '1970-01-01T00:00:00+00:00',
-    }
-
     describe('reducers', () => {
         it('should show the agent customer satisfaction metric', () => {
             const newState = drillDownSlice.reducer(
@@ -45,7 +40,6 @@ describe('drillDownSlice', () => {
                 setMetricData({
                     metricName: TableColumn.CustomerSatisfaction,
                     perAgentId: 1,
-                    dateRange,
                 })
             )
 
@@ -61,7 +55,6 @@ describe('drillDownSlice', () => {
                 setMetricData({
                     metricName: TableColumn.ClosedTickets,
                     perAgentId: 1,
-                    dateRange,
                 })
             )
 

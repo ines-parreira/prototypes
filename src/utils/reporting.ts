@@ -170,7 +170,11 @@ export const statsFiltersToReportingFilters = (
 
 export const periodToReportingGranularity = (
     period: StatsFilters['period']
-): ReportingGranularity => {
+):
+    | ReportingGranularity.Hour
+    | ReportingGranularity.Day
+    | ReportingGranularity.Week
+    | ReportingGranularity.Month => {
     const start = moment(period.start_datetime)
     const end = moment(period.end_datetime)
     const diff = moment.duration(end.diff(start) + 1)

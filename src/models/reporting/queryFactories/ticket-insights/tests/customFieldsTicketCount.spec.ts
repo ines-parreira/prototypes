@@ -134,7 +134,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 statsFilters,
                 timezone,
                 customFieldId,
-                null
+                null,
+                statsFilters.period
             )
 
             expect(query).toEqual({
@@ -167,7 +168,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 statsFilters,
                 timezone,
                 customFieldId,
-                customFieldsValueStrings
+                customFieldsValueStrings,
+                statsFilters.period
             )
 
             expect(query).toEqual({

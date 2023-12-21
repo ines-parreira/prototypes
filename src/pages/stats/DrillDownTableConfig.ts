@@ -99,6 +99,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                     timezone,
                     String(metricName.customFieldId),
                     metricName.customFieldValue,
+                    metricName.dateRange || statsFilters.period,
                     sorting
                 )
     }

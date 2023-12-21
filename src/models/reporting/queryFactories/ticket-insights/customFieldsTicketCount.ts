@@ -67,6 +67,7 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     timezone: string,
     customFieldId: string,
     customFieldsValueStrings: string[] | null,
+    customFieldPeriod: StatsFilters['period'],
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customFieldsTicketCountQueryFactory(
@@ -80,7 +81,19 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
         ...baseQuery,
         measures: [],
         filters: [
-            ...baseQuery.filters,
+            ...baseQuery.filters.filter(
+                (filter) =>
+                    filter.member !==
+                    TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime
+            ),
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: [
+                    formatReportingQueryDate(customFieldPeriod.start_datetime),
+                    formatReportingQueryDate(customFieldPeriod.end_datetime),
+                ],
+            },
             ...(customFieldsValueStrings !== null
                 ? [
                       {

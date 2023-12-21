@@ -339,7 +339,6 @@ export default function SupportPerformanceOverview() {
                                         title: CUSTOMER_SATISFACTION_LABEL,
                                         metricName:
                                             OverviewMetric.CustomerSatisfaction,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -404,7 +403,6 @@ export default function SupportPerformanceOverview() {
                                         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
                                         metricName:
                                             OverviewMetric.MedianFirstResponseTime,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -461,7 +459,6 @@ export default function SupportPerformanceOverview() {
                                         title: MEDIAN_RESOLUTION_TIME_LABEL,
                                         metricName:
                                             OverviewMetric.MedianResolutionTime,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -514,7 +511,6 @@ export default function SupportPerformanceOverview() {
                                         title: MESSAGES_PER_TICKET_LABEL,
                                         metricName:
                                             OverviewMetric.MessagesPerTicket,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -556,7 +552,6 @@ export default function SupportPerformanceOverview() {
                                     metricData={{
                                         title: OPEN_TICKETS_LABEL,
                                         metricName: OverviewMetric.OpenTickets,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -600,7 +595,6 @@ export default function SupportPerformanceOverview() {
                                         title: TICKETS_CLOSED_LABEL,
                                         metricName:
                                             OverviewMetric.TicketsClosed,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -644,7 +638,6 @@ export default function SupportPerformanceOverview() {
                                         title: TICKETS_CREATED_LABEL,
                                         metricName:
                                             OverviewMetric.TicketsCreated,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -688,7 +681,6 @@ export default function SupportPerformanceOverview() {
                                         title: TICKETS_REPLIED_LABEL,
                                         metricName:
                                             OverviewMetric.TicketsReplied,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -731,7 +723,6 @@ export default function SupportPerformanceOverview() {
                                     metricData={{
                                         title: MESSAGES_SENT_LABEL,
                                         metricName: OverviewMetric.MessagesSent,
-                                        dateRange: statsFilters.period,
                                     }}
                                 >
                                     {formatMetricValue(

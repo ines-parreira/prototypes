@@ -1,10 +1,10 @@
 import {ChartArea, TooltipItem} from 'chart.js'
 import moment from 'moment'
-
-import {toRGBA} from 'utils'
+import {ReportingGranularity} from 'models/reporting/types'
 import {formatPercentage} from 'pages/common/utils/numbers'
 import {getFormat} from 'pages/stats/common/utils'
-import {ReportingGranularity} from 'models/reporting/types'
+
+import {toRGBA} from 'utils'
 import {
     MONTH_AND_YEAR_SHORT,
     SHORT_DATE_FORMAT_US,
@@ -12,6 +12,7 @@ import {
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
 } from 'utils/date'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 export const NUMBER_TICK_FORMATTER = new Intl.NumberFormat('en-US', {
     notation: 'compact',
@@ -90,24 +91,35 @@ export const formatDates = (
     }
 
     if (granularity === ReportingGranularity.Week) {
-        return `${date
+        return `${date.format(format)} - ${date
             .clone()
-            .subtract(6, 'days')
-            .format(format)} - ${date.format(format)}`
+            .add(6, 'days')
+            .format(format)}`
     }
 
     return date.format(format)
 }
 
-export const getPeriodEndDateTime = (
-    startDateTime: string,
-    granularity: ReportingGranularity
+export const getUtcPeriodFromDateAndGranularity = (
+    dateTime: string,
+    granularity:
+        | ReportingGranularity.Hour
+        | ReportingGranularity.Day
+        | ReportingGranularity.Week
+        | ReportingGranularity.Month
 ) => {
-    const startDate = moment(startDateTime)
+    let startDate = moment.utc(dateTime).startOf('day').toISOString()
+    let endDate = moment.utc(dateTime).endOf('day').toISOString()
 
     if (granularity === ReportingGranularity.Week) {
-        return moment(startDate).clone().subtract(6, 'days').toISOString()
+        endDate = moment.utc(dateTime).add(6, 'days').toISOString()
+    } else if (granularity === ReportingGranularity.Month) {
+        startDate = moment.utc(dateTime).startOf('month').toISOString()
+        endDate = moment.utc(dateTime).endOf('month').toISOString()
     }
 
-    return moment(startDate).clone().subtract(1, granularity).toISOString()
+    return {
+        start_datetime: formatReportingQueryDate(startDate),
+        end_datetime: formatReportingQueryDate(endDate),
+    }
 }

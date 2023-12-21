@@ -17,10 +17,6 @@ import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
 
 type CommonMetrics = {
     title?: string
-    dateRange?: {
-        end_datetime: string
-        start_datetime: string
-    }
 }
 
 type PerformanceOverviewMetrics = {
@@ -55,6 +51,10 @@ export type TicketFieldsMetrics = {
     metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
     customFieldId: number | null
     customFieldValue: string[] | null
+    dateRange?: {
+        end_datetime: string
+        start_datetime: string
+    }
 } & CommonMetrics
 
 export type DrillDownMetric =

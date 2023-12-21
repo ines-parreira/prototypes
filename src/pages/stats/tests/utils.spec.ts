@@ -9,13 +9,14 @@ import {
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
 } from 'utils/date'
 import {ReportingGranularity} from 'models/reporting/types'
+import {formatReportingQueryDate} from 'utils/reporting'
 import {
     getGradient,
     renderTickLabelAsNumber,
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
     formatDates,
-    getPeriodEndDateTime,
+    getUtcPeriodFromDateAndGranularity,
 } from '../utils'
 
 describe('getGradient', () => {
@@ -130,22 +131,18 @@ describe('formatDates', () => {
         {
             locale: 'en-US',
             granularity: ReportingGranularity.Week,
-            formatted: `${date
+            formatted: `${date.format(SHORT_DATE_FORMAT_US)} - ${date
                 .clone()
-                .subtract(6, 'days')
-                .format(SHORT_DATE_FORMAT_US)} - ${date.format(
-                SHORT_DATE_FORMAT_US
-            )}`,
+                .add(6, 'days')
+                .format(SHORT_DATE_FORMAT_US)}`,
         },
         {
             locale: 'world',
             granularity: ReportingGranularity.Week,
-            formatted: `${date
+            formatted: `${date.format(SHORT_DATE_FORMAT_WORLD)} - ${date
                 .clone()
-                .subtract(6, 'days')
-                .format(SHORT_DATE_FORMAT_WORLD)} - ${date.format(
-                SHORT_DATE_FORMAT_WORLD
-            )}`,
+                .add(6, 'days')
+                .format(SHORT_DATE_FORMAT_WORLD)}`,
         },
         {
             locale: 'en-US',
@@ -170,36 +167,72 @@ describe('formatDates', () => {
 })
 
 describe('getPeriodEndDateTime', () => {
-    const startDateTime = moment().toISOString()
+    const startDateTime = '2023-12-19T00:00:00.000'
 
-    it.each([
+    const testCases: {
+        period: {
+            start_datetime: string
+            end_datetime: string
+        }
+        granularity:
+            | ReportingGranularity.Hour
+            | ReportingGranularity.Day
+            | ReportingGranularity.Week
+            | ReportingGranularity.Month
+    }[] = [
         {
             granularity: ReportingGranularity.Day,
-            endDateTime: moment(startDateTime)
-                .clone()
-                .subtract(1, 'day')
-                .toISOString(),
+            period: {
+                start_datetime: formatReportingQueryDate(
+                    moment.utc(startDateTime).toISOString()
+                ),
+                end_datetime: formatReportingQueryDate(
+                    moment
+                        .utc(startDateTime)
+                        .endOf(ReportingGranularity.Day)
+                        .toISOString()
+                ),
+            },
+        },
+        {
+            granularity: ReportingGranularity.Day,
+            period: {
+                start_datetime: startDateTime,
+                end_datetime: '2023-12-19T23:59:59.999',
+            },
         },
         {
             granularity: ReportingGranularity.Week,
-            endDateTime: moment(startDateTime)
-                .clone()
-                .subtract(6, 'days')
-                .toISOString(),
+            period: {
+                start_datetime: startDateTime,
+                end_datetime: formatReportingQueryDate(
+                    moment
+                        .utc(startDateTime)
+                        .clone()
+                        .add(6, 'days')
+                        .toISOString()
+                ),
+            },
         },
         {
             granularity: ReportingGranularity.Month,
-            endDateTime: moment(startDateTime)
-                .clone()
-                .subtract(1, 'month')
-                .toISOString(),
+            period: {
+                start_datetime: formatReportingQueryDate(
+                    moment(startDateTime).startOf('month').toISOString()
+                ),
+                end_datetime: formatReportingQueryDate(
+                    moment(startDateTime).endOf('month').toISOString()
+                ),
+            },
         },
-    ])(
+    ]
+
+    it.each(testCases)(
         'should return end date time based on granularity ($granularity) and start date time',
-        ({endDateTime, granularity}) => {
-            expect(getPeriodEndDateTime(startDateTime, granularity)).toEqual(
-                endDateTime
-            )
+        ({period, granularity}) => {
+            expect(
+                getUtcPeriodFromDateAndGranularity(startDateTime, granularity)
+            ).toEqual(period)
         }
     )
 })

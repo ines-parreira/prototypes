@@ -21,7 +21,7 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {formatDates, getPeriodEndDateTime} from './utils'
+import {formatDates, getUtcPeriodFromDateAndGranularity} from './utils'
 
 const EXPAND_COLUMN_WIDTH = 24
 const DEFAULT_MARGIN = 8
@@ -168,13 +168,10 @@ export const CustomFieldsTicketCountDataRowContent = ({
                                 TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
                             customFieldId: selectedCustomField?.id || null,
                             customFieldValue: initialCustomFieldValue,
-                            dateRange: {
-                                start_datetime: data.dateTime,
-                                end_datetime: getPeriodEndDateTime(
-                                    data.dateTime,
-                                    granularity
-                                ),
-                            },
+                            dateRange: getUtcPeriodFromDateAndGranularity(
+                                data.dateTime,
+                                granularity
+                            ),
                         }}
                     >
                         {formatAccordingToValueMode(valueMode)(data)}
