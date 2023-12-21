@@ -11,6 +11,15 @@ stages:
   - docs
   - force deploy
 
+.node_modules-cache: &node_modules-cache
+  key:
+    files:
+      - yarn.lock
+      - "patches/*"
+  paths:
+    - node_modules
+  policy: pull
+
 default:
   image: node:16
   tags:
@@ -25,14 +34,6 @@ variables:
   BUILD_DIR: "build"
   ASSETS_DIR: "src/assets"
   WEBAPP_PATH: "web-app"
-
-.yarn cache:
-  cache:
-    key:
-      files:
-        - yarn.lock
-    paths: # Paths are relative to the project directory ($CI_PROJECT_DIR) and can’t directly link outside it.
-      - .yarn-cache/
 
 .staging_env:
   variables:
@@ -68,27 +69,35 @@ variables:
       ./codecov -t ${CODECOV_TOKEN}
 
 Install dependencies:
-  extends: .yarn cache
   stage: bootstrap
   script:
-    - apt-get update && apt-get install -y zip
+    - |
+      if [[ -d node_modules ]]; then
+        exit 10
+      fi
     # Update npm config to enable yarn to access private GitHub packages.
     - npm set @gorgias:registry https://npm.pkg.github.com/
     - npm set //npm.pkg.github.com/:_authToken $GITHUB_READ_PACKAGES_TOKEN
-    - yarn install --frozen-lockfile --cache-folder ${CI_PROJECT_DIR}/.yarn-cache
-  artifacts:
-    paths:
-      - node_modules/
+    - yarn install --frozen-lockfile
+  cache:
+    - <<: *node_modules-cache
+      policy: pull-push
+  allow_failure:
+    exit_codes: 10 # do not install if cache exists
 
 Lint:
   stage: test
   script:
     - yarn lint
+  cache:
+    - <<: *node_modules-cache
 
 Typecheck:
   stage: test
   script:
     - yarn types
+  cache:
+    - <<: *node_modules-cache
 
 Jest:
   extends:
@@ -97,7 +106,7 @@ Jest:
   variables:
     NODE_OPTIONS: "--max-old-space-size=3584"
     COVERAGE_DIR: ${CI_PROJECT_DIR}/coverage/
-    CACHE_FALLBACK_KEY: ${CI_JOB_NAME}-${CI_DEFAULT_BRANCH}-protected
+    CACHE_FALLBACK_KEY: ${CI_JOB_NAME}-${CI_DEFAULT_BRANCH}-non_protected
   artifacts:
     paths:
       - coverage/
@@ -105,9 +114,11 @@ Jest:
   script:
     - yarn test:ci:cover --shard "$CI_NODE_INDEX/$CI_NODE_TOTAL"
   cache:
-    key: '$CI_JOB_NAME-$CI_COMMIT_REF_SLUG'
-    paths:
-      - src/.cache/jest
+    - <<: *node_modules-cache
+    - key: '$CI_JOB_NAME-$CI_COMMIT_REF_SLUG'
+      paths:
+        - src/.cache/jest
+      unprotect: true
 
 .build:
   stage: build
@@ -116,6 +127,8 @@ Jest:
   artifacts:
     paths:
       - build/
+  cache:
+    - <<: *node_modules-cache
 
 Build preview:
   extends: .build
@@ -216,7 +229,10 @@ Publish Chromatic:
   needs: [Install dependencies]
   allow_failure: true
   script:
+    - apt-get update && apt-get install -y zip
     - yarn chromatic --zip --project-token=${CHROMATIC_PROJECT_TOKEN}
+  cache:
+    - <<: *node_modules-cache
 
 Force deploy production:
   extends: .deploy production
