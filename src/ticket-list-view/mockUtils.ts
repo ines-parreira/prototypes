@@ -5,9 +5,9 @@
  */
 import {ApiListResponseCursorPagination} from 'models/api/types'
 
-import type {TicketPartial} from './types'
+import {ApiTicketPartial} from './types'
 
-export type Response = ApiListResponseCursorPagination<TicketPartial[]>
+export type Response = ApiListResponseCursorPagination<ApiTicketPartial[]>
 
 type Listener = (response: Response) => void
 
@@ -41,7 +41,7 @@ function randomId() {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-function generateTicket(): TicketPartial {
+function generateTicket(): ApiTicketPartial {
     return {
         id: randomId(),
         updated_datetime: new Date().toString(),
@@ -52,19 +52,19 @@ export class MockedTickets {
     private intervalId: ReturnType<typeof setInterval> | undefined
     private listener: Listener | null = null
     private pageCount = 0
-    private tickets: TicketPartial[] = []
+    private tickets: ApiTicketPartial[] = []
 
     async getPage() {
         await wait(100)
 
-        const tickets: TicketPartial[] = []
+        const tickets: ApiTicketPartial[] = []
         for (let i = 0; i < 25; i++) {
             tickets.push(generateTicket())
         }
 
         this.tickets = [...this.tickets, ...tickets]
 
-        const response: ApiListResponseCursorPagination<TicketPartial[]> = {
+        const response: ApiListResponseCursorPagination<ApiTicketPartial[]> = {
             data: tickets,
             meta: {
                 next_cursor: this.pageCount >= 3 ? null : 'random-cursor',
@@ -106,7 +106,7 @@ export class MockedTickets {
     private notify() {
         if (!this.listener) return
 
-        const response: ApiListResponseCursorPagination<TicketPartial[]> = {
+        const response: ApiListResponseCursorPagination<ApiTicketPartial[]> = {
             data: this.tickets,
             meta: {
                 next_cursor: this.pageCount >= 3 ? null : 'random-cursor',

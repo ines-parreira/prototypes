@@ -24,6 +24,7 @@ const TicketMock = Ticket as jest.Mock
 
 describe('<TicketListView />', () => {
     let loadMore: jest.Mock
+    let setElement: jest.Mock
 
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue({
@@ -33,24 +34,43 @@ describe('<TicketListView />', () => {
             ({
                 data,
                 itemContent,
+                scrollerRef,
             }: {
                 data: TicketPartial[]
                 itemContent: (
                     index: number,
                     ticket: TicketPartial
                 ) => ReactElement
-            }) => data.map((t) => itemContent(0, t))
+                scrollerRef: (ref: HTMLElement | Window | null) => void
+            }) => {
+                return (
+                    <div ref={scrollerRef}>
+                        {data.map((t) => itemContent(0, t))}
+                    </div>
+                )
+            }
         )
         TicketMock.mockImplementation(({ticket}: {ticket: TicketPartial}) => {
             return <p>{ticket.id}</p>
         })
         loadMore = jest.fn()
-        useTicketsMock.mockReturnValue({loadMore, tickets: [ticket]})
+        setElement = jest.fn()
+        useTicketsMock.mockReturnValue({
+            loadMore,
+            setElement,
+            staleTickets: {},
+            tickets: [ticket],
+        })
     })
 
     it('should display a list of tickets', () => {
         const {getByText} = render(<TicketListView viewId={123} />)
         expect(getByText(ticket.id)).toBeInTheDocument()
+    })
+
+    it('should register the scrolling element', () => {
+        render(<TicketListView viewId={123} />)
+        expect(setElement).toHaveBeenCalledWith(expect.any(HTMLElement))
     })
 
     it('should call loadMore when the end of the list is reached', () => {

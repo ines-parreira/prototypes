@@ -3,6 +3,7 @@ import {CursorMeta} from 'models/api/types'
 import {MockedTickets, Response} from './mockUtils'
 
 import type {TicketPartial} from './types'
+import transformApiTicketPartial from './utils/transformApiTicketPartial'
 
 export type Listener = (
     tickets: TicketPartial[],
@@ -57,7 +58,10 @@ export default class TicketUpdatesManager {
 
         const response = await this.mockedTickets.getPage()
         this.nextCursor = response.meta.next_cursor
-        this.tickets = [...this.tickets, ...response.data]
+        this.tickets = [
+            ...this.tickets,
+            ...response.data.map(transformApiTicketPartial),
+        ]
         this.listener(this.tickets, this.nextCursor)
 
         this.loading = false
@@ -68,7 +72,7 @@ export default class TicketUpdatesManager {
         if (!this.listener) return
 
         this.nextCursor = response.meta.next_cursor
-        this.tickets = response.data
+        this.tickets = response.data.map(transformApiTicketPartial)
 
         this.listener(this.tickets, this.nextCursor)
     }

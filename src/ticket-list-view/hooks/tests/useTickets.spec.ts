@@ -11,7 +11,12 @@ describe('useTickets', () => {
     let partials: TicketPartial[] = []
 
     beforeEach(() => {
-        partials = [{id: 123, updated_datetime: '28-11-2023T13:36:57'}]
+        partials = [
+            {
+                id: 123,
+                updated_datetime: new Date('28-11-2023T13:36:57').getTime(),
+            },
+        ]
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,
             loading: false,
@@ -26,6 +31,8 @@ describe('useTickets', () => {
             hasMore: false,
             loading: false,
             loadMore: expect.any(Function),
+            setElement: expect.any(Function),
+            staleTickets: {123: true},
             tickets: partials,
         })
     })

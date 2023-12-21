@@ -17,13 +17,26 @@ type Props = {
 
 export default function TicketListView({viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
-    const {loadMore, tickets} = useTickets(viewId)
+    const {loadMore, setElement, staleTickets, tickets} = useTickets(viewId)
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketPartial) => (
-            <Ticket key={ticket.id} stale ticket={ticket} />
+            <Ticket
+                key={ticket.id}
+                stale={!!staleTickets[ticket.id]}
+                ticket={ticket}
+            />
         ),
-        []
+        [staleTickets]
+    )
+
+    const setScrollerRef = useCallback(
+        (ref: HTMLElement | Window | null) => {
+            if (!ref || ref === window) return
+
+            setElement(ref as HTMLElement)
+        },
+        [setElement]
     )
 
     return (
@@ -39,6 +52,7 @@ export default function TicketListView({viewId}: Props) {
                     endReached={loadMore}
                     fixedItemHeight={TICKET_HEIGHT}
                     itemContent={getItemContent}
+                    scrollerRef={setScrollerRef}
                 />
             </div>
         </div>
