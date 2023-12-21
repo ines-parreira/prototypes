@@ -3,7 +3,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {MacroActionName} from 'models/macroAction/types'
@@ -71,7 +70,6 @@ import {
 } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import Loader from 'pages/common/components/Loader/Loader'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useListVoiceCalls} from 'models/voiceCall/queries'
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
@@ -116,12 +114,11 @@ export const TicketDetailContainer = ({
     const {customer: customerId} = useSearch<{customer?: string}>()
     const ticketIdParamRef = useRef(ticketIdParam)
     const {setRecentItem} = useRecentItems<PickedTicket>(RecentItems.Tickets)
-    const useNewVoiceCallUI = useFlags()[FeatureFlagKey.NewVoiceCallUI]
     const {data: voiceCallsData, isLoading: isVoiceCallsDataLoading} =
         useListVoiceCalls(
             {ticket_id: ticket.get('id')},
             {
-                enabled: !!useNewVoiceCallUI && !!ticket.get('id'),
+                enabled: !!ticket.get('id'),
                 refetchOnWindowFocus: false,
             }
         )
@@ -183,7 +180,6 @@ export const TicketDetailContainer = ({
     useTitle(isLoading ? undefined : title)
 
     const isLoadingPhoneTicketData =
-        useNewVoiceCallUI &&
         ticket.get('channel') === TicketChannel.Phone &&
         !voiceCallsData &&
         isVoiceCallsDataLoading

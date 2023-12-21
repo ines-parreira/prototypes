@@ -8,7 +8,6 @@ import {MacroActionName} from 'models/macroAction/types'
 import {ACTION_TEMPLATES} from 'config'
 import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
 import {assumeMock} from 'utils/testing'
-import * as LDUtils from 'utils/launchDarkly'
 
 import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
 import * as phoneEvents from 'constants/event'
@@ -31,8 +30,6 @@ jest.mock(
             getQueryData: jest.fn(() => jest.fn()),
         } as Record<string, unknown>)
 )
-
-const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
 
 const mockShouldMessagesBeGrouped = assumeMock(shouldMessagesBeGrouped)
 
@@ -267,47 +264,7 @@ describe('ticket selectors', () => {
         )
     })
 
-    it('getDisplayableEvents - NewVoiceCallUI FF disabled', () => {
-        state.ticket = state.ticket.set(
-            'events',
-            fromJS([
-                {
-                    type: phoneEvents.INCOMING_PHONE_CALL,
-                },
-                {
-                    type: phoneEvents.OUTGOING_PHONE_CALL,
-                },
-                {
-                    type: phoneEvents.PHONE_CALL_FORWARDED_TO_GORGIAS_NUMBER,
-                },
-                {
-                    type: phoneEvents.PHONE_CALL_TRANSFERRED_TO_AGENT,
-                },
-                {
-                    type: phoneEvents.COMPLETED_PHONE_CALL,
-                },
-                {
-                    type: phoneEvents.CALL_RECORDING,
-                },
-                {
-                    type: phoneEvents.VOICEMAIL_RECORDING,
-                },
-                {
-                    type: 'some-custom-event',
-                },
-            ])
-        )
-
-        expect(selectors.getDisplayableEvents(state)).toEqualImmutable(
-            state.ticket.get('events')
-        )
-
-        expect(
-            selectors.getDisplayableEvents({} as RootState)
-        ).toEqualImmutable(fromJS([]))
-    })
-
-    it('getDisplayableEvents - NewVoiceCallUI FF enabled', () => {
+    it('getDisplayableEvents', () => {
         state.ticket = state.ticket.set(
             'events',
             fromJS([
@@ -349,9 +306,6 @@ describe('ticket selectors', () => {
             },
         ])
 
-        getLDClientSpy.mockReturnValueOnce({
-            variation: jest.fn(() => true),
-        } as any)
         expect(selectors.getDisplayableEvents(state)).toEqualImmutable(expected)
 
         expect(

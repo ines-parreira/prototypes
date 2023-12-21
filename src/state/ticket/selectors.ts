@@ -22,8 +22,6 @@ import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
 import {getQueryData} from 'state/queries/selectors'
 import {LEGACY_PHONE_EVENTS} from 'constants/event'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
@@ -166,15 +164,6 @@ export const getEvents = createImmutableSelector(
 export const getDisplayableEvents = createImmutableSelector(
     getEvents,
     (events) => {
-        const launchDarklyClient = getLDClient()
-        const isNewCallUIEnabled = launchDarklyClient?.variation(
-            FeatureFlagKey.NewVoiceCallUI
-        )
-
-        if (!isNewCallUIEnabled) {
-            return events
-        }
-
         return events.filter(
             (event: Map<any, any>) =>
                 !LEGACY_PHONE_EVENTS.includes(event.get('type'))

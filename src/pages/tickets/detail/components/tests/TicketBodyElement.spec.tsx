@@ -5,7 +5,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {INCOMING_PHONE_CALL} from 'constants/event'
 import {message as defaultMessage} from 'models/ticket/tests/mocks'
 import {TicketElement} from 'models/ticket/types'
@@ -16,7 +15,6 @@ import {
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import {RootState} from 'state/types'
 import {reportError} from 'utils/errors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import * as voiceCallTypes from 'models/voiceCall/types'
 
 jest.mock('utils/errors')
@@ -80,11 +78,6 @@ describe('TicketBodyElement', () => {
 
     beforeEach(() => {
         ;(reportError as jest.Mock).mockImplementation(_noop)
-        jest.resetAllMocks()
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.NewVoiceCallUI]: false,
-        })
     })
 
     it('should display messages', () => {
@@ -258,10 +251,7 @@ describe('TicketBodyElement', () => {
         expect(getByText('Event')).toBeInTheDocument()
     })
 
-    it('should display new voice call UI when FF is enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.NewVoiceCallUI]: true,
-        })
+    it('should display voice calls', () => {
         isVoiceCallSpy.mockReturnValue(true)
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
@@ -275,27 +265,7 @@ describe('TicketBodyElement', () => {
         expect(getByText('Voice call')).toBeInTheDocument()
     })
 
-    it('should not display new voice call UI when FF is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.NewVoiceCallUI]: false,
-        })
-        isVoiceCallSpy.mockReturnValue(true)
-        const {queryByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketBodyElement
-                    {...defaultProps}
-                    element={{} as TicketElement}
-                />
-            </Provider>
-        )
-
-        expect(queryByText('Voice call')).not.toBeInTheDocument()
-    })
-
     it('should not display new voice call UI when element is not a voice call', () => {
-        mockFlags({
-            [FeatureFlagKey.NewVoiceCallUI]: true,
-        })
         isVoiceCallSpy.mockReturnValue(false)
         const {queryByText} = render(
             <Provider store={mockStore(defaultState)}>

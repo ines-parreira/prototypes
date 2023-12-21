@@ -64,7 +64,6 @@ export enum FeatureFlagKey {
     NewBillingInterface = 'new-billing-interface',
     NewPhoneErrorHandling = 'new-phone-error-handling',
     NewThemes = 'new-themes',
-    NewVoiceCallUI = 'new-voice-call-ui',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
