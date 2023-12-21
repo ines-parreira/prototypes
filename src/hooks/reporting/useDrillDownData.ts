@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {User} from 'config/types/user'
 import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
 import {MergedRecord} from 'hooks/reporting/withEnrichment'
@@ -19,10 +19,11 @@ export interface TicketDetails {
     id: number | string
     subject: string | null
     description: string | null
-    channel: TicketMessageSourceType | null
+    channel: TicketChannel | null
     isRead: boolean
     created: string | null
     contactReason: string | null
+    status: TicketStatus
 }
 
 export interface DrillDownRowData {
@@ -71,6 +72,7 @@ export const formatDrillDownRowData = (
         isRead: !(row[EnrichmentFields.IsUnread] ?? true),
         created: row[EnrichmentFields.CreatedDatetime] || null,
         contactReason: row[EnrichmentFields.ContactReason] || null,
+        status: row[EnrichmentFields.Status] || null,
     },
     metricValue: row[metricField],
     assignee: row[EnrichmentFields.AssigneeId]

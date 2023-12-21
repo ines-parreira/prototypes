@@ -18,7 +18,7 @@ import {
     DrillDownMetric,
     getDrillDownMetricColumn,
 } from 'state/ui/stats/drillDownSlice'
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketChannel, TicketStatus} from 'business/types/ticket'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -44,12 +44,13 @@ describe('<DrillDownTable />', () => {
     const exampleRow = {
         ticket: {
             id: 1,
-            channel: TicketMessageSourceType.Chat,
+            channel: TicketChannel.Chat,
             description: 'description',
             isRead: true,
             subject: ticketSubject,
             created: '22/12/2023',
             contactReason: 'reason',
+            status: TicketStatus.Closed,
         },
         assignee: {
             id: 1,
@@ -68,6 +69,7 @@ describe('<DrillDownTable />', () => {
                 subject: null,
                 created: null,
                 contactReason: null,
+                status: TicketStatus.Closed,
             },
             assignee: {
                 id: 1,
