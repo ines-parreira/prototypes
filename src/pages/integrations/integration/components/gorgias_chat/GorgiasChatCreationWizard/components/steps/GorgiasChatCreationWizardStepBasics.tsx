@@ -503,7 +503,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             <div className={css.inputGroup}>
                                 <div className={css.defaultLanguageGroup}>
                                     <DesignSystemLabel
-                                        className={css.label}
+                                        className={classNames(
+                                            css.label,
+                                            css.languageLabel
+                                        )}
                                         label="Default language"
                                         required
                                     />

@@ -145,7 +145,9 @@ export default function Card({
             >
                 <div className={css.flexContainer}>
                     {isLoading ? (
-                        <Skeleton className={css.icon} />
+                        <Skeleton
+                            className={classnames(css.icon, css.loader)}
+                        />
                     ) : (
                         item?.image && (
                             <img
@@ -170,13 +172,20 @@ export default function Card({
 
                 <h3 className={css.title}>
                     {isLoading ? (
-                        <Skeleton containerTestId={LOADING_TEST_ID} />
+                        <Skeleton
+                            className={css.loader}
+                            containerTestId={LOADING_TEST_ID}
+                        />
                     ) : (
                         item?.title
                     )}
                 </h3>
                 <p className={css.description}>
-                    {isLoading ? <Skeleton count={3} /> : item?.description}
+                    {isLoading ? (
+                        <Skeleton className={css.loader} count={3} />
+                    ) : (
+                        item?.description
+                    )}
                 </p>
             </LinkOrDiv>
         </li>

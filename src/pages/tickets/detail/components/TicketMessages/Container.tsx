@@ -4,7 +4,6 @@ import classNamesBind from 'classnames/bind'
 import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
 
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
 import {scrollToReactNode} from 'pages/common/utils/keyboard'
@@ -68,9 +67,7 @@ export default class Container extends Component<Props> {
             (isMessageHidden && isMessageDuplicated)
 
         if (shouldRenderAvatar) {
-            let badgeColor = undefined,
-                badgeBorderColor,
-                timeReadableValue,
+            let timeReadableValue,
                 lastSeenOnChat = null,
                 tooltipText
 
@@ -79,9 +76,6 @@ export default class Container extends Component<Props> {
                 !customer.isEmpty() &&
                 containsLastCustomerMessage
             ) {
-                badgeBorderColor =
-                    colorTokens['📺 Classic'].Neutral.Grey_0.value
-
                 const memoizedCustomerIntegrationsData = _memoize(
                     (customer: Map<any, any>): Map<any, any> =>
                         customer.get('integrations') as Map<any, any>
@@ -112,11 +106,6 @@ export default class Container extends Component<Props> {
                         timezone
                     )
 
-                    badgeColor =
-                        timeReadableValue === 'now'
-                            ? colorTokens['📺 Classic'].Feedback.Success.value
-                            : colorTokens['📺 Classic'].Neutral.Grey_4.value
-
                     tooltipText =
                         timeReadableValue === 'now'
                             ? `Active ${timeReadableValue}`
@@ -131,8 +120,12 @@ export default class Container extends Component<Props> {
                         name={sender.get('name')}
                         url={sender.getIn(['meta', 'profile_picture_url'])}
                         size={36}
-                        badgeColor={badgeColor}
-                        badgeBorderColor={badgeBorderColor}
+                        badgeColor={
+                            timeReadableValue === 'now'
+                                ? 'var(--feedback-success)'
+                                : 'var(--neutral-grey-4)'
+                        }
+                        badgeBorderColor="var(--neutral-grey-0)"
                         withTooltip={!!timeReadableValue}
                         tooltipText={tooltipText}
                     />

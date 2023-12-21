@@ -8,6 +8,8 @@ exports[`Container should render container 1`] = `
     className="avatar"
   >
     <Avatar
+      badgeBorderColor="var(--neutral-grey-0)"
+      badgeColor="var(--neutral-grey-4)"
       email="john.doe@example.com"
       name="John Doe"
       shape="square"
@@ -123,6 +125,8 @@ exports[`Container should render container with an avatar because the hidden mes
     className="avatar"
   >
     <Avatar
+      badgeBorderColor="var(--neutral-grey-0)"
+      badgeColor="var(--neutral-grey-4)"
       email="john.doe@example.com"
       name="John Doe"
       shape="square"

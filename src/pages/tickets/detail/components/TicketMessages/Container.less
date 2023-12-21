@@ -18,20 +18,25 @@
     }
 
     &.internal {
-        background: var(--accessory-orange-1);
+        background: hsla(
+            var(--accessory-orange-1-h),
+            var(--accessory-orange-1-s),
+            var(--accessory-orange-1-l),
+            0.6
+        );
         box-shadow: inset 5px 0 0 0 var(--accessory-orange-2);
 
         &:hover {
-            background: hsl(
+            background: hsla(
                 var(--accessory-orange-1-h),
                 var(--accessory-orange-1-s),
-                calc(var(--accessory-orange-1-l) - 2%)
+                var(--accessory-orange-1-l),
+                0.85
             );
         }
 
         :global {
-            .text-faded,
-            .gorgias-mention {
+            .text-faded {
                 color: hsl(
                     var(--neutral-grey-4-h),
                     var(--neutral-grey-4-s),
@@ -155,5 +160,5 @@
 /* Mentioned agent's name text
  */
 .gorgias-mention {
-    color: var(--neutral-grey-4);
+    color: var(--neutral-grey-5);
 }

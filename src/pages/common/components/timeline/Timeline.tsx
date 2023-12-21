@@ -55,8 +55,7 @@ export default class Timeline extends Component<Props> {
                                         displayHistoryOnNextPage
                                     }
                                     isCurrent={
-                                        currentTicketId === obj.get('id') ||
-                                        !currentTicketId
+                                        currentTicketId === obj.get('id')
                                     }
                                     key={obj.get('id')}
                                     ticket={obj}

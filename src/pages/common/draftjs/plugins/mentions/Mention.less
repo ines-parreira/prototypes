@@ -11,7 +11,7 @@
 
         &:hover,
         &:focus {
-            background: var(--ultraLightBlue);
+            background: var(--neutral-grey-3);
 
             /* reset for :focus */
             outline: 0;
@@ -22,7 +22,7 @@
         display: flex;
         flex-direction: column;
         position: absolute;
-        z-index: 1;
+        z-index: 3;
         margin-top: 1.75em;
         padding: 9px 4px;
         min-width: 220px;
@@ -53,12 +53,12 @@
         font-weight: 500;
 
         &:active {
-            background-color: #cce7ff;
+            background-color: var(--neutral-grey-0);
         }
     }
 
     .mentionSuggestionsEntryFocused {
-        background-color: var(--ultraLightBlue);
+        background-color: var(--neutral-grey-2);
     }
 
     .mentionSuggestionsEntryText {

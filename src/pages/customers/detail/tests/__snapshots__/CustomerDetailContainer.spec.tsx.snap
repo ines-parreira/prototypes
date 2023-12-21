@@ -39,7 +39,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
       class="component"
     >
       <a
-        class="component current card"
+        class="component card"
         href="/app/ticket/152"
       >
         <div
