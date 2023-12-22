@@ -160,6 +160,7 @@ import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketIn
 import AutomateStatsPaywall from './stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from './automate/trainMyAi/TrainMyAiViewContainer'
 import AutomateRoute from './automate/common/components/AutomateRoute'
+import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrationApi'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1272,39 +1273,45 @@ export function ContactFormSettingsRoutes() {
 export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
-            <SupportedLocalesProvider>
-                <Switch>
-                    <Route
-                        path={[`${path}/`, `${path}/about`, `${path}/manage`]}
-                        exact
-                        render={() => (
-                            <App
-                                content={HelpCenterStartView}
-                                navbar={SettingsNavbar}
-                            />
-                        )}
-                    />
-                    <Route
-                        path={`${path}/new`}
-                        exact
-                        render={() => (
-                            <App
-                                content={HelpCenterNewView}
-                                navbar={SettingsNavbar}
-                            />
-                        )}
-                    />
-                    <Route
-                        path={`${path}/:helpCenterId`}
-                        render={() => (
-                            <App
-                                content={CurrentHelpCenter}
-                                navbar={SettingsNavbar}
-                            />
-                        )}
-                    />
-                </Switch>
-            </SupportedLocalesProvider>
+            <MigrationApiClientProvider>
+                <SupportedLocalesProvider>
+                    <Switch>
+                        <Route
+                            path={[
+                                `${path}/`,
+                                `${path}/about`,
+                                `${path}/manage`,
+                            ]}
+                            exact
+                            render={() => (
+                                <App
+                                    content={HelpCenterStartView}
+                                    navbar={SettingsNavbar}
+                                />
+                            )}
+                        />
+                        <Route
+                            path={`${path}/new`}
+                            exact
+                            render={() => (
+                                <App
+                                    content={HelpCenterNewView}
+                                    navbar={SettingsNavbar}
+                                />
+                            )}
+                        />
+                        <Route
+                            path={`${path}/:helpCenterId`}
+                            render={() => (
+                                <App
+                                    content={CurrentHelpCenter}
+                                    navbar={SettingsNavbar}
+                                />
+                            )}
+                        />
+                    </Switch>
+                </SupportedLocalesProvider>
+            </MigrationApiClientProvider>
         </HelpCenterApiClientProvider>
     )
 }
