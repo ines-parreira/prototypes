@@ -1,3 +1,5 @@
+@import (reference) '~css/typography';
+
 :local {
     .outer {
         position: relative;
@@ -6,23 +8,75 @@
 
     .inner {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
         position: absolute;
         top: 0;
         left: 16px;
         right: 16px;
         height: 72px;
-        background: rgba(0, 255, 0, 0.1);
+        padding: 16px 12px;
         font-size: 18px;
+        color: var(--neutral-grey-5);
+
+        &:hover {
+            color: var(--neutral-grey-5);
+        }
     }
 
-    .stale {
-        background: rgba(255, 0, 0, 0.1);
+    .icon {
+        flex-shrink: 0;
+        margin-right: 8px;
     }
 
-    .date {
-        font-size: 12px;
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
+        width: 0;
+    }
+
+    .wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .subject {
+        .body-regular();
+
+        overflow: hidden;
+        color: var(--neutral-grey-6);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .counter {
+        flex-shrink: 0;
+        width: 8px;
+        height: 8px;
+        margin: auto 0 auto 16px;
+        border-radius: 50%;
+        background-color: var(--feedback-error);
+    }
+
+    .body {
+        .caption-regular();
+    }
+
+    .excerpt {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        flex-grow: 1;
+    }
+
+    .time {
+        flex-shrink: 0;
+        margin-left: 8px;
+    }
+
+    .unread {
+        .subject {
+            font-weight: 600;
+        }
     }
 }

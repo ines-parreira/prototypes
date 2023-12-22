@@ -4,8 +4,7 @@
  * backend is hooked up, this file can be deleted.
  */
 import {ApiListResponseCursorPagination} from 'models/api/types'
-
-import {ApiTicketPartial} from './types'
+import {TicketPartial as ApiTicketPartial} from 'models/ticket/types'
 
 export type Response = ApiListResponseCursorPagination<ApiTicketPartial[]>
 

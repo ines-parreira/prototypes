@@ -1,3 +1,5 @@
+import {stringify} from 'qs'
+
 import client from 'models/api/resources'
 import {
     ApiPaginationParams,
@@ -5,6 +7,19 @@ import {
 } from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
 import {Ticket, TicketSearchOptions} from 'models/ticket/types'
+
+export const fetchTicketsByTicketIds = async (ticketIds: number[]) => {
+    const res = await client.get<ApiListResponseCursorPagination<Ticket[]>>(
+        '/api/tickets',
+        {
+            params: {ticket_ids: ticketIds},
+            paramsSerializer: (params) =>
+                stringify(params, {arrayFormat: 'repeat'}),
+        }
+    )
+
+    return res
+}
 
 export const fetchTicketsByRuleId = async (
     ruleId: number,

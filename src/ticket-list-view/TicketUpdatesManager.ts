@@ -1,6 +1,7 @@
+import {appQueryClient} from 'api/queryClient'
 import {CursorMeta} from 'models/api/types'
-
-import {MockedTickets, Response} from './mockUtils'
+import {viewItemsDefinitionKeys} from 'models/view/queries'
+import {getViewTicketUpdates} from 'models/view/resources'
 
 import type {TicketPartial} from './types'
 import transformApiTicketPartial from './utils/transformApiTicketPartial'
@@ -11,11 +12,9 @@ export type Listener = (
 ) => void
 export type Unsubscribe = () => void
 
-const POLLING_INTERVAL = 2000
+const PAGE_LIMIT = 25
 
 export default class TicketUpdatesManager {
-    private mockedTickets: MockedTickets | null = null
-
     private initialLoaded = false
     private listener: Listener | null = null
     private loading = false
@@ -33,20 +32,16 @@ export default class TicketUpdatesManager {
 
     subscribe(listener: Listener): Unsubscribe {
         this.listener = listener
-        this.mockedTickets = new MockedTickets()
 
         void this.start()
 
         return () => {
-            this.mockedTickets?.stopPolling()
-            this.mockedTickets = null
             this.listener = null
         }
     }
 
     private async getPage() {
         if (
-            !this.mockedTickets ||
             !this.listener ||
             this.loading ||
             (this.initialLoaded && !this.nextCursor)
@@ -56,32 +51,26 @@ export default class TicketUpdatesManager {
 
         this.loading = true
 
-        const response = await this.mockedTickets.getPage()
-        this.nextCursor = response.meta.next_cursor
-        this.tickets = [
-            ...this.tickets,
-            ...response.data.map(transformApiTicketPartial),
-        ]
+        const response = await appQueryClient.fetchQuery({
+            queryFn: () =>
+                getViewTicketUpdates(this.viewId, {
+                    cursor: this.nextCursor,
+                    limit: PAGE_LIMIT,
+                    order_by: 'created_datetime:asc',
+                }),
+            queryKey: viewItemsDefinitionKeys.updates(this.viewId),
+        })
+
+        const {data, meta} = response.data
+        this.nextCursor = meta.next_cursor
+        this.tickets = [...this.tickets, ...data.map(transformApiTicketPartial)]
         this.listener(this.tickets, this.nextCursor)
 
-        this.loading = false
         this.initialLoaded = true
-    }
-
-    private receiveUpdates = (response: Response) => {
-        if (!this.listener) return
-
-        this.nextCursor = response.meta.next_cursor
-        this.tickets = response.data.map(transformApiTicketPartial)
-
-        this.listener(this.tickets, this.nextCursor)
+        this.loading = false
     }
 
     private async start() {
-        if (!this.mockedTickets) return
-
         await this.getPage()
-
-        this.mockedTickets.startPolling(this.receiveUpdates, POLLING_INTERVAL)
     }
 }

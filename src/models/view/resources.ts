@@ -5,9 +5,10 @@ import client from 'models/api/resources'
 import {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
+    CursorMeta,
     OldCursorMeta,
 } from 'models/api/types'
-import {Ticket} from 'models/ticket/types'
+import {Ticket, TicketPartial} from 'models/ticket/types'
 import {getLDClient} from 'utils/launchDarkly'
 
 import {ListParams, View, ViewDraft} from './types'
@@ -41,6 +42,21 @@ export const getViewItems = async ({url, viewId, ...params}: ListParams) => {
             ? {...params, headers: {'x-gorgias-search-engine': 'ES'}}
             : {params}
     )
+}
+
+export type ViewTicketUpdatesParams = {
+    cursor?: string | null
+    limit?: number
+    order_by?: string
+}
+
+export function getViewTicketUpdates(
+    viewId: number,
+    params?: ViewTicketUpdatesParams
+) {
+    return client.get<
+        ApiListResponseCursorPagination<TicketPartial[], CursorMeta>
+    >(`/api/views/${viewId}/tickets/updates`, {params})
 }
 
 export const createView = async (viewDraft: ViewDraft) => {

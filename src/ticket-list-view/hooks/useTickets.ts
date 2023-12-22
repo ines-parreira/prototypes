@@ -39,9 +39,8 @@ export default function useTickets(viewId: number) {
         [staleTickets, visiblePartials]
     )
 
-    useTicketData(visibleStaleTicketIds, markUpdated)
-
-    const tickets = partials
+    const data = useTicketData(visibleStaleTicketIds, markUpdated)
+    const tickets = partials.map((partial) => data[partial.id] || partial)
 
     return {
         hasMore,

@@ -68,6 +68,8 @@ export type Ticket = {
     reply_options?: TicketReplyOptions
 }
 
+export type TicketPartial = Pick<Ticket, 'id' | 'updated_datetime'>
+
 export type TicketReplyOptions = Record<string, TicketReplyOption>
 export type TicketReplyOption = {
     answerable: boolean

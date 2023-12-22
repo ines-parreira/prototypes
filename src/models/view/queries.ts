@@ -21,6 +21,13 @@ export const viewItemsDefinitionKeys = {
     ],
     details: () => [...viewItemsDefinitionKeys.all(), 'detail'] as const,
     detail: (id: number) => [...viewItemsDefinitionKeys.details(), id] as const,
+    updates: (viewId: number) =>
+        [
+            ...viewItemsDefinitionKeys.all(),
+            viewId,
+            'tickets',
+            'updates',
+        ] as const,
 }
 
 export const useGetViewItems = <

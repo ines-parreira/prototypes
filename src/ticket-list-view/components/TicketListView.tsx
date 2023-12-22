@@ -6,7 +6,7 @@ import {getViewPlainJS} from 'state/views/selectors'
 
 import {TICKET_HEIGHT} from '../constants'
 import useTickets from '../hooks/useTickets'
-import {TicketPartial} from '../types'
+import {TicketSummary} from '../types'
 
 import Ticket from './Ticket'
 import css from './TicketListView.less'
@@ -20,14 +20,15 @@ export default function TicketListView({viewId}: Props) {
     const {loadMore, setElement, staleTickets, tickets} = useTickets(viewId)
 
     const getItemContent = useCallback(
-        (_index: number, ticket: TicketPartial) => (
+        (_index: number, ticket: TicketSummary) => (
             <Ticket
                 key={ticket.id}
                 stale={!!staleTickets[ticket.id]}
                 ticket={ticket}
+                viewId={viewId}
             />
         ),
-        [staleTickets]
+        [staleTickets, viewId]
     )
 
     const setScrollerRef = useCallback(
