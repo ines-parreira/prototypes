@@ -33,8 +33,8 @@ export class LineStatContainer extends Component<Props> {
             config.get('options') as (legend: Map<any, any>) => ChartOptions
         )(legend)
         const formattedBusinessRanges = businessRanges?.map((range) => [
-            range[0].add(30, 'minutes').startOf('hour'),
-            range[1].add(30, 'minutes').startOf('hour'),
+            moment(range[0]).clone().add(30, 'minutes').startOf('hour'),
+            moment(range[1]).clone().add(30, 'minutes').startOf('hour'),
         ])
         return (
             config.get('hasBusinessHoursHighlight') && businessRanges
