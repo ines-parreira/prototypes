@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -12,12 +12,6 @@ import {RootState, StoreDispatch} from '../../../../../../state/types'
 import MissingBillingInformationRow from '../MissingBillingInformationRow'
 
 jest.spyOn(billingActions, 'updateContact')
-
-jest.mock('react-use', () => {
-    const module: Record<string, unknown> = jest.requireActual('react-use')
-
-    return {...module, useAsync: () => ({loading: false})}
-})
 
 describe('<MissingBillingInformationRow />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -45,13 +39,15 @@ describe('<MissingBillingInformationRow />', () => {
         }) as Map<any, any>,
     }
 
-    it('should render a row when conditions are met', () => {
+    it('should render a row when conditions are met', async () => {
         const store = mockStore(initialState)
-        const {container} = render(
+        const {container, getByText} = render(
             <Provider store={store}>
                 <MissingBillingInformationRow />
             </Provider>
         )
+
+        await waitFor(() => getByText('Update Now'))
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -108,7 +104,7 @@ describe('<MissingBillingInformationRow />', () => {
         expect(container.firstChild).toBe(null)
     })
 
-    it('should open the modal when clicking on update button', () => {
+    it('should open the modal when clicking on update button', async () => {
         const store = mockStore(initialState)
         const {getByText} = render(
             <Provider store={store}>
@@ -116,11 +112,11 @@ describe('<MissingBillingInformationRow />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update Now'))
+        fireEvent.click(await waitFor(() => getByText('Update Now')))
         expect(getByText('Missing information - Billing address')).toBeTruthy()
     })
 
-    it('should submit the billing information when submiting the modal form', () => {
+    it('should submit the billing information when submiting the modal form', async () => {
         const store = mockStore(initialState)
         const {getByText, getByPlaceholderText} = render(
             <Provider store={store}>
@@ -128,7 +124,7 @@ describe('<MissingBillingInformationRow />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update Now'))
+        fireEvent.click(await waitFor(() => getByText('Update Now')))
         fireEvent.change(getByPlaceholderText('New York'), {
             target: {value: 'Paris'},
         })

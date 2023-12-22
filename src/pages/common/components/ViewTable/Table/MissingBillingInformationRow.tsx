@@ -1,8 +1,5 @@
 import React, {FormEvent, useEffect, useMemo, useState} from 'react'
 import {Modal, ModalHeader, Form, ModalBody, ModalFooter} from 'reactstrap'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsync} from 'react-use'
 import {fromJS} from 'immutable'
 import {AnyAction} from 'redux'
 
@@ -55,11 +52,17 @@ export default function MissingBillingInformationRow() {
     )
     const appNode = useAppNode()
 
-    const {loading: isFetching} = useAsync(async () => {
-        if (!contact && isAdmin) {
-            await dispatch(fetchContact())
-        }
-    }, [])
+    const [{loading: isFetching}, startFetchingContact] = useAsyncFn(
+        async () => {
+            if (!contact && isAdmin) {
+                await dispatch(fetchContact())
+            }
+        },
+        [],
+        {loading: true}
+    )
+
+    useEffect(() => void startFetchingContact(), [startFetchingContact])
 
     useEffect(() => {
         if (contact) {

@@ -1,12 +1,9 @@
 import classnames from 'classnames'
-import React, {ReactNode, useMemo} from 'react'
+import React, {ReactNode, useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useAsync} from 'react-use'
 import {fetchRule} from 'models/rule/resources'
 import Spinner from 'pages/common/components/Spinner'
 import {ruleFetched} from 'state/entities/rules/actions'
@@ -18,6 +15,7 @@ import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {IntegrationType} from 'models/integration/constants'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {
     Meta as MetaType,
     ReplyTicketMessage,
@@ -68,16 +66,23 @@ export default function Meta(props: Props) {
     const recipes = useRuleRecipes()
     const {rulesUrl} = useIsAutomateRebranding()
 
-    const {loading: isFetchingRule, value: rule} = useAsync(async () => {
-        if (props.via === 'rule' && props.ruleId) {
-            if (rules[props.ruleId]) {
-                return rules[props.ruleId]
-            }
-            const rule = await fetchRule(parseInt(props.ruleId))
-            dispatch(ruleFetched(rule))
-            return rule
-        }
-    })
+    const [{loading: isFetchingRule, value: rule}, startFetchingRule] =
+        useAsyncFn(
+            async () => {
+                if (props.via === 'rule' && props.ruleId) {
+                    if (rules[props.ruleId]) {
+                        return rules[props.ruleId]
+                    }
+                    const rule = await fetchRule(parseInt(props.ruleId))
+                    dispatch(ruleFetched(rule))
+                    return rule
+                }
+            },
+            [],
+            {loading: true}
+        )
+
+    useEffect(() => void startFetchingRule(), [startFetchingRule])
 
     if (
         source &&
