@@ -21,25 +21,18 @@ type Props = {
 
 export default class AutoResponder extends Component<Props> {
     _getMessage = () => {
-        const {
-            autoResponderReply,
-            language,
-            isEmailCaptureEnabled = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
-        } = this.props
+        const {autoResponderReply, language} = this.props
         const widgetTranslatedTexts =
             GORGIAS_CHAT_WIDGET_TEXTS[
                 language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
             ]
-        const emailCaptureBaseText = isEmailCaptureEnabled
-            ? widgetTranslatedTexts.emailCaptureTriggerTextBase
-            : widgetTranslatedTexts.thanksForReachingOut
 
         return autoResponderReply === GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
             ? widgetTranslatedTexts['waitTimeMediumReply'].replace(
                   '{waitTime}',
                   '5'
               )
-            : `${emailCaptureBaseText} ${
+            : `${
                   autoResponderReply === CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES
                       ? widgetTranslatedTexts.emailCaptureTriggerTypicalReplyMinutes
                       : widgetTranslatedTexts.emailCaptureTriggerTypicalReplyHours

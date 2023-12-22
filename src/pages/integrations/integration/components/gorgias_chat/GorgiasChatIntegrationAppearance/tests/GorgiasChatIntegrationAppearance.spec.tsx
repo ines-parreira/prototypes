@@ -427,7 +427,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "main_font_family": "Inter",
                       "avatar_team_picture_url": undefined,
                       "introduction_text": "How can we help?",
-                      "offline_introduction_text": "We'll be back tomorrow",
+                      "offline_introduction_text": "We will be back soon",
                       "avatar": Immutable.Map {
                         "image_type": "agent-picture",
                         "name_type": "agent-first-name",
@@ -583,7 +583,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "main_font_family": "Inter",
                       "avatar_team_picture_url": undefined,
                       "introduction_text": "How can we help?",
-                      "offline_introduction_text": "We'll be back tomorrow",
+                      "offline_introduction_text": "We will be back soon",
                       "avatar": Immutable.Map {
                         "image_type": "agent-picture",
                         "name_type": "agent-first-name",

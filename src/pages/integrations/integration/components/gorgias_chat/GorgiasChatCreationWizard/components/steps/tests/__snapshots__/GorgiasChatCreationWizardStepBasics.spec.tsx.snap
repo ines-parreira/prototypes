@@ -10,7 +10,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> should include languages when c
         "conversation_color": "#115cb5",
         "main_color": "#115cb5",
         "introduction_text": "How can we help?",
-        "offline_introduction_text": "We'll be back tomorrow",
+        "offline_introduction_text": "We will be back soon",
         "avatar_type": "team-members",
         "position": Immutable.Map {
           "alignment": "bottom-right",
@@ -94,7 +94,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> should include languages when u
       },
       "decoration": Immutable.Map {
         "introduction_text": "How can we help?",
-        "offline_introduction_text": "We'll be back tomorrow",
+        "offline_introduction_text": "We will be back soon",
       },
     },
     undefined,
@@ -136,7 +136,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
       },
       "decoration": Immutable.Map {
         "introduction_text": "How can we help?",
-        "offline_introduction_text": "We'll be back tomorrow",
+        "offline_introduction_text": "We will be back soon",
       },
     },
     undefined,
@@ -158,7 +158,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form with default value
         "conversation_color": "#115cb5",
         "main_color": "#115cb5",
         "introduction_text": "How can we help?",
-        "offline_introduction_text": "We'll be back tomorrow",
+        "offline_introduction_text": "We will be back soon",
         "avatar_type": "team-members",
         "position": Immutable.Map {
           "alignment": "bottom-right",

@@ -364,7 +364,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -1093,11 +1093,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -1106,7 +1106,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -1482,7 +1482,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -2485,11 +2485,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -2498,7 +2498,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -2874,7 +2874,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -3848,11 +3848,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -3861,7 +3861,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -4237,7 +4237,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -5211,11 +5211,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -5224,7 +5224,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -5600,7 +5600,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -6574,11 +6574,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -6587,7 +6587,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -6963,7 +6963,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -7937,11 +7937,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -7950,7 +7950,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -8459,7 +8459,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -9188,11 +9188,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -9201,7 +9201,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -9577,7 +9577,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -10514,11 +10514,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -10527,7 +10527,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -10907,7 +10907,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -11960,11 +11960,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -11973,7 +11973,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -12536,7 +12536,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -13265,11 +13265,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -13278,7 +13278,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -13654,7 +13654,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       id="id-input-42"
                       maxlength="50"
                       type="text"
-                      value="We'll be back tomorrow"
+                      value="We will be back soon"
                     />
                   </div>
                 </div>
@@ -14628,11 +14628,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Get notified by email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Get notified by email
+                                      Email
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -14641,7 +14641,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Get notified by email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""

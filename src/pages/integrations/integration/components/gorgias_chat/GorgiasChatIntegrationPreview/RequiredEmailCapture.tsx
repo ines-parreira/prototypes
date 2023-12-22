@@ -31,9 +31,7 @@ export default class RequiredEmailCapture extends React.Component<Props> {
             <div className={css.requiredEmailCaptureContent}>
                 <BotMessages
                     chatTitle={name}
-                    messages={[
-                        translatedTexts.requiredEmailCaptureWelcomeMessage,
-                    ]}
+                    messages={[translatedTexts.requireEmailCaptureIntro]}
                     language={language}
                 >
                     <div className={css.optionalEmailCapture}>

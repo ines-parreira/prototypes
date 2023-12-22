@@ -186,7 +186,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="bubble firstMessageOfAppMaker"
             >
-              Leave us your email and we'll get back to you. We typically reply in a few hours.
+              Thanks for reaching out! We will be with you in a few hours.
             </div>
             <div
               class="optionalEmailCapture"
@@ -198,11 +198,11 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                   class="css-r0ijy4"
                 >
                   <label
-                    aria-label="Get notified by email"
+                    aria-label="Email"
                     class="css-zs6vvb"
                     for="email-capture-intput"
                   >
-                    Get notified by email
+                    Email
                   </label>
                   <div
                     class="css-t0lbh8"
@@ -211,7 +211,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                       aria-invalid="false"
                       class="css-1jkukg3"
                       id="email-capture-intput"
-                      label="Get notified by email"
+                      label="Email"
                       name="email-capture-intput"
                       placeholder="your@email.com"
                       readonly=""
@@ -868,11 +868,11 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                   class="css-r0ijy4"
                 >
                   <label
-                    aria-label="Get notified by email"
+                    aria-label="Email"
                     class="css-zs6vvb"
                     for="email-capture-intput"
                   >
-                    Get notified by email
+                    Email
                   </label>
                   <div
                     class="css-t0lbh8"
@@ -881,7 +881,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                       aria-invalid="false"
                       class="css-1jkukg3"
                       id="email-capture-intput"
-                      label="Get notified by email"
+                      label="Email"
                       name="email-capture-intput"
                       placeholder="your@email.com"
                       readonly=""
@@ -1189,7 +1189,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
               <div
                 class="bubble firstMessageOfAppMaker"
               >
-                Hi, hope you're doing well! Leave us your email so we can get back to you.
+                Welcome! Please enter your email to connect with our team.
               </div>
               <div
                 class="optionalEmailCapture"

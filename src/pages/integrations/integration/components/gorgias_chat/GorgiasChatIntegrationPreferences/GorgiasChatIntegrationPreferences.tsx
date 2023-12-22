@@ -913,11 +913,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 css.dynamicDescription
                             )}
                         >
-                            If the wait time is long, customers can choose to
-                            wait in the chat or leave a message through{' '}
-                            {renameContactFormEnabled
-                                ? 'offline capture'
-                                : 'contact form'}
+                            Customers can only send live chat messages when an
+                            agent is available in Gorgias
                         </p>
                     </div>
                 ),
