@@ -2,9 +2,6 @@ import React, {useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import {TicketChannel} from 'business/types/ticket'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -21,6 +18,7 @@ import useSearch from 'hooks/useSearch'
 import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import useWorkflowChannelSupport, {

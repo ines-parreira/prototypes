@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 
+import useAsyncFn from 'hooks/useAsyncFn'
 import {IntegrationType} from 'models/integration/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 

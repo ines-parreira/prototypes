@@ -1,9 +1,6 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Label from 'pages/common/forms/Label/Label'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
@@ -15,6 +12,7 @@ import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/u
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'

@@ -2,15 +2,13 @@ import React from 'react'
 import {Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useEffectOnce} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert from 'pages/common/components/Alert/Alert'
 import Video from 'pages/common/components/Video/Video'
+import useEffectOnce from 'hooks/useEffectOnce'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'

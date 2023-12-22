@@ -11,9 +11,6 @@ const useLocalStorageSpy = jest.spyOn(
     useLocalStorageImports,
     'default'
 ) as jest.Mock
-jest.mock('react-use', () => ({
-    useLocalStorage: jest.fn(),
-}))
 
 const DT_BEFORE_CUTOFF = moment(CUTOFF_DATETIME).subtract(1, 'day')
 const DT_AFTER_CUTOFF = moment(CUTOFF_DATETIME).add(1, 'day')

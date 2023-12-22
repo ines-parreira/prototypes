@@ -1,9 +1,8 @@
 import {useEffect, useState} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useAsyncFn} from 'react-use'
 
 import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import useAsyncFn from 'hooks/useAsyncFn'
 
 // TO DO: Merge with src/pages/integrations/integration/components/gorgias_chat/hooks/useSelfServiceConfiguration.ts
 
