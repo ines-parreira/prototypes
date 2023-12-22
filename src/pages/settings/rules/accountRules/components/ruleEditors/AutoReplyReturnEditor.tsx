@@ -1,7 +1,4 @@
-import React, {useEffect, useState} from 'react'
-// [PLTOF-48] Please avoid importing more hooks from 'react-use', prefer using your own implementation of the hook rather than depending on external library
-// eslint-disable-next-line no-restricted-imports
-import {useStateValidator} from 'react-use'
+import React, {useEffect, useMemo, useState} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import isURL from 'validator/lib/isURL'
@@ -28,30 +25,24 @@ export const AutoReplyReturnEditor = ({
         value: typeof settings[Key]
     ) => setSettingsFields((prev) => ({...prev, [key]: value}))
 
-    const [[hasInvalidField, fieldsErrorMessage]] = useStateValidator<
-        [boolean, {[key in keyof typeof settingsFields]: string}],
-        typeof settingsFields
-    >(settingsFields, (state) => {
-        const errorMessage: {[key in keyof typeof settingsFields]: string} = {}
+    const returnPortalUrlError = useMemo(() => {
         if (
-            !state.return_portal_url ||
-            !isURL(state.return_portal_url, {require_protocol: false})
+            !settingsFields.return_portal_url ||
+            !isURL(settingsFields.return_portal_url, {require_protocol: false})
         ) {
-            errorMessage.return_portal_url = 'Enter a valid URL.'
+            return 'Enter a valid URL.'
         } else if (
-            !isURL(state.return_portal_url, {
+            !isURL(settingsFields.return_portal_url, {
                 require_valid_protocol: true,
                 require_protocol: true,
                 protocols: ['http', 'https'],
             })
         ) {
-            errorMessage.return_portal_url =
-                'Enter a valid URL. Missing "https://" or "http://" protocol (e.g. "https://gorgias.com" instead of "gorgias.com")'
+            return 'Enter a valid URL. Missing "https://" or "http://" protocol (e.g. "https://gorgias.com" instead of "gorgias.com")'
         }
+    }, [settingsFields])
 
-        return [Object.keys(errorMessage).length > 0, errorMessage]
-    })
-
+    const hasInvalidField = !!returnPortalUrlError
     useEffect(() => {
         onChange()?.({...settings, ...settingsFields}, hasInvalidField)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,7 +62,7 @@ export const AutoReplyReturnEditor = ({
                         label="Return portal URL"
                         type="url"
                         caption="Enter the URL for your return portal."
-                        error={fieldsErrorMessage?.return_portal_url}
+                        error={returnPortalUrlError}
                         value={settingsFields.return_portal_url ?? ''}
                         onChange={(return_portal_url) =>
                             setSettingsField(
