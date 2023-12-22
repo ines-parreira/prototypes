@@ -675,8 +675,6 @@ export const IntegrationDetail = ({
                 <EmailIntegrationList
                     integrations={integrationsProp}
                     loading={loading}
-                    gmailRedirectUri={getRedirectUri(IntegrationType.Gmail)}
-                    outlookRedirectUri={getRedirectUri(IntegrationType.Outlook)}
                 />
             )
     }

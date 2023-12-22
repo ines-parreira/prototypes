@@ -142,16 +142,124 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="smallest align-middle text-right p-0"
           >
             <div>
-              <span
-                id="integration-tooltip-1"
-              >
+              <div>
                 <i
-                  class="material-icons align-middle orange md-2"
+                  class="material-icons mr-2 orange"
                 >
                   warning
                 </i>
-              </span>
+                Pending domain verification
+              </div>
             </div>
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <a
+              to="/app/settings/channels/email/1"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      class="container-fluid"
+      data-candu-id="integration-list-bottom"
+    />
+  </div>
+</div>
+`;
+
+exports[`<EmailIntegrationList/> render() should render the page with a warning when a Outlook integration has sending disabled 1`] = `
+<div>
+  <div
+    class="w-100"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Email
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <button
+          aria-disabled="false"
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Add email address
+        </button>
+      </div>
+    </div>
+    <div
+      class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-list-top"
+    >
+      <div
+        class="mb-3"
+      >
+        <span>
+          Connect your support email addresses and respond to your customers from Gorgias.
+        </span>
+      </div>
+    </div>
+    <table
+      class="table-integrations mt-3 table table-hover"
+    >
+      <tbody>
+        <tr>
+          <td
+            class="smallest align-middle"
+          >
+            <img
+              alt="outlook logo"
+              src="test-file-stub"
+              width="22"
+            />
+          </td>
+          <td
+            class="link-full-td"
+          >
+            <a
+              data-testid="integration-link"
+              to="/app/settings/channels/email/1"
+            >
+              <div>
+                <b
+                  class="mr-2"
+                >
+                  My Outlook Integration 1
+                </b>
+                <span
+                  class="text-faded"
+                >
+                  email@Outlook.com
+                </span>
+              </div>
+            </a>
+          </td>
+          <td
+            class="smallest align-middle text-right p-0"
+          >
+            <div />
           </td>
           <td
             class="smallest align-middle"
@@ -261,15 +369,14 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="smallest align-middle text-right p-0"
           >
             <div>
-              <span
-                id="integration-tooltip-1"
-              >
+              <div>
                 <i
-                  class="material-icons align-middle orange md-2"
+                  class="material-icons mr-2 orange"
                 >
                   warning
                 </i>
-              </span>
+                Pending domain verification
+              </div>
             </div>
           </td>
           <td

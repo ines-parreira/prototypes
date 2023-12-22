@@ -16,6 +16,9 @@ import {getIntegrationsByTypes} from 'state/integrations/helpers'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchIntegrations} from 'state/integrations/actions'
+import Tooltip from 'pages/common/components/Tooltip'
+import {makeGetRedirectUri} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import IntegrationList from '../IntegrationList'
 import {fetchEmailDomains} from './resources'
 import {
@@ -24,19 +27,17 @@ import {
     isOutboundVerifiedSendgrid,
     isSendgridEmailIntegration,
 } from './helpers'
-import WarningWithTooltip from './WarningWithTooltip'
 
 import css from './EmailIntegrationList.less'
 
 type Props = {
     integrations: List<Map<any, any>>
     loading: Map<any, any>
-    gmailRedirectUri: string
-    outlookRedirectUri: string
 }
 
 export default function EmailIntegrationList(props: Props): JSX.Element {
-    const {integrations, loading, gmailRedirectUri, outlookRedirectUri} = props
+    const {integrations, loading} = props
+    const getRedirectUri = useAppSelector(makeGetRedirectUri)
 
     const [isLoadingDomains, setIsLoadingDomains] = useState(false)
     const [emailDomains, setEmailDomains] = useState<EmailDomain[]>([])
@@ -86,8 +87,12 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
 
-        const isGmail = integration.get('type') === IntegrationType.Gmail
-        const isOutlook = integration.get('type') === IntegrationType.Outlook
+        const integrationType:
+            | IntegrationType.Gmail
+            | IntegrationType.Outlook
+            | IntegrationType.Email = integration.get('type')
+        const isGmail = integrationType === IntegrationType.Gmail
+        const isOutlook = integrationType === IntegrationType.Outlook
         const enableGmailSending = integration.getIn(
             ['meta', 'enable_gmail_sending'],
             true
@@ -121,29 +126,43 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const editLink = `/app/settings/channels/email/${integrationId}${getTabURL()}`
 
-        let imgComponent = (
-            <i
-                className={classnames(
-                    css.icon,
-                    'material-icons',
-                    'align-bottom'
-                )}
-            >
-                email
-            </i>
-        )
-
-        if (isGmail) {
-            imgComponent = <img alt="gmail logo" src={gmailImg} width="22" />
-        } else if (isOutlook) {
-            imgComponent = (
-                <img alt="outlook logo" src={outlookImg} width="22" />
-            )
+        const getUri = (type: IntegrationType) => {
+            const uri = new URL(getRedirectUri(type), window.location.origin)
+            uri.search = new URLSearchParams({
+                integration_id: integrationId,
+            }).toString()
+            return uri.toString()
         }
+        const adapters = {
+            [IntegrationType.Gmail]: {
+                uri: getUri(IntegrationType.Gmail),
+                image: <img alt="gmail logo" src={gmailImg} width="22" />,
+            },
+            [IntegrationType.Outlook]: {
+                uri: getUri(IntegrationType.Outlook),
+                image: <img alt="outlook logo" src={outlookImg} width="22" />,
+            },
+            [IntegrationType.Email]: {
+                uri: undefined,
+                image: (
+                    <i
+                        className={classnames(
+                            css.icon,
+                            'material-icons',
+                            'align-bottom'
+                        )}
+                    >
+                        email
+                    </i>
+                ),
+            },
+        }
+
+        const adapter = adapters[integrationType]
 
         return (
             <tr key={integrationId}>
-                <td className="smallest align-middle">{imgComponent}</td>
+                <td className="smallest align-middle">{adapter.image}</td>
                 <td className="link-full-td">
                     <Link to={editLink} data-testid="integration-link">
                         <div>
@@ -154,37 +173,28 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                 </td>
                 <td className="smallest align-middle text-right p-0">
                     <div>
-                        {!active && isGmail && (
-                            <Button
-                                type="submit"
-                                color="success"
-                                className={classnames({
-                                    'btn-loading': isRowSubmitting,
-                                })}
-                                onClick={(e) => {
-                                    const uri = `${gmailRedirectUri}?integration_id=${integrationId}`
-                                    e.preventDefault()
-                                    window.open(uri)
-                                }}
-                            >
-                                Reactivate
-                            </Button>
-                        )}
-                        {!active && isOutlook && (
-                            <Button
-                                type="submit"
-                                color="primary"
-                                onClick={(e) => {
-                                    const uri = `${outlookRedirectUri}?integration_id=${integrationId}`
-                                    e.preventDefault()
-                                    window.open(uri)
-                                }}
-                                className={classnames({
-                                    'btn-loading': isRowSubmitting,
-                                })}
-                            >
-                                Reactivate
-                            </Button>
+                        {!active && (isGmail || isOutlook) && (
+                            <>
+                                <Button
+                                    id={toolTipId}
+                                    type="submit"
+                                    color="ghost"
+                                    fillStyle="ghost"
+                                    className={classnames({
+                                        'btn-loading': isRowSubmitting,
+                                    })}
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        window.open(adapter.uri)
+                                    }}
+                                >
+                                    Reconnect
+                                </Button>
+                                <Tooltip placement="top-end" target={toolTipId}>
+                                    Login credentials required to reconnect
+                                    email
+                                </Tooltip>
+                            </>
                         )}
                         {!isGmail && !isOutlook && !isVerified && (
                             <div>
@@ -193,20 +203,34 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                                         'material-icons mr-2 red'
                                     )}
                                 >
-                                    close
+                                    cancel
                                 </i>
                                 Not verified
                             </div>
                         )}
                         {shouldDisplayDomainVerificationWarning && (
-                            <WarningWithTooltip id={toolTipId}>
+                            <div>
+                                <i
+                                    className={classnames(
+                                        'material-icons mr-2 orange'
+                                    )}
+                                >
+                                    warning
+                                </i>
                                 Pending domain verification
-                            </WarningWithTooltip>
+                            </div>
                         )}
                         {shouldDisplayOutboundVerificationWarning && (
-                            <WarningWithTooltip id={`${toolTipId}-outbound`}>
+                            <div>
+                                <i
+                                    className={classnames(
+                                        'material-icons mr-2 orange'
+                                    )}
+                                >
+                                    warning
+                                </i>
                                 Pending outbound verification
-                            </WarningWithTooltip>
+                            </div>
                         )}
                     </div>
                 </td>

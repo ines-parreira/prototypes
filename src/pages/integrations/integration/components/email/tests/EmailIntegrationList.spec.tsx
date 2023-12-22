@@ -38,6 +38,18 @@ describe('<EmailIntegrationList/>', () => {
         }
     }
 
+    function getOutlookIntegration(id: number, sendingEnabled: boolean) {
+        return {
+            id,
+            type: IntegrationType.Outlook,
+            name: `My Outlook Integration ${id}`,
+            meta: {
+                address: 'email@Outlook.com',
+                enable_gmail_sending: sendingEnabled,
+            },
+        }
+    }
+
     const store = mockStore({} as any)
     const commonProps = {
         integrations: fromJS([getEmailIntegration(1)]),
@@ -134,6 +146,28 @@ describe('<EmailIntegrationList/>', () => {
                     <EmailIntegrationList
                         {...commonProps}
                         integrations={fromJS([getGmailIntegration(1, false)])}
+                    />
+                </Provider>,
+
+                {
+                    wrapper: ({children}) => (
+                        <MemoryRouter>{children}</MemoryRouter>
+                    ),
+                }
+            )
+            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should render the page with a warning when a Outlook integration has sending disabled', async () => {
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+
+            const {container} = render(
+                <Provider store={store}>
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([getOutlookIntegration(1, false)])}
                     />
                 </Provider>,
 
