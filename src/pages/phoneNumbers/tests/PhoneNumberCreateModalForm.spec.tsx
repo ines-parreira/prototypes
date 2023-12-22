@@ -6,9 +6,11 @@ import {RootState, StoreDispatch} from 'state/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import * as apiCalls from 'models/phoneNumber/resources'
 import {capabilities as capabilitiesFixtures} from 'fixtures/phoneNumber'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import PhoneNumberCreateModalForm from '../PhoneNumberCreateModalForm'
 
+const QueryClientProvider = mockQueryClientProvider()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({})
 
@@ -25,11 +27,13 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         it('should not render when isOpen is false', () => {
             const {baseElement} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateModalForm
-                        onCreate={onCreate}
-                        onClose={onClose}
-                        isOpen={false}
-                    />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateModalForm
+                            onCreate={onCreate}
+                            onClose={onClose}
+                            isOpen={false}
+                        />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -39,11 +43,13 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         it('should render when isOpen is true', () => {
             const {baseElement} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateModalForm
-                        onCreate={onCreate}
-                        onClose={onClose}
-                        isOpen
-                    />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateModalForm
+                            onCreate={onCreate}
+                            onClose={onClose}
+                            isOpen
+                        />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -53,11 +59,13 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         it('should render no steps when no address validation is required', () => {
             const {baseElement, getByText, queryByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateModalForm
-                        onCreate={onCreate}
-                        onClose={onClose}
-                        isOpen
-                    />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateModalForm
+                            onCreate={onCreate}
+                            onClose={onClose}
+                            isOpen
+                        />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -70,11 +78,13 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         it('should render a second with for address validation for certain countries', () => {
             const {baseElement, getByText, queryByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateModalForm
-                        onCreate={onCreate}
-                        onClose={onClose}
-                        isOpen
-                    />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateModalForm
+                            onCreate={onCreate}
+                            onClose={onClose}
+                            isOpen
+                        />
+                    </QueryClientProvider>
                 </Provider>
             )
 

@@ -10,10 +10,12 @@ import {fetchPhoneCapabilities} from 'models/phoneNumber/resources'
 import {assumeMock} from 'utils/testing'
 import * as apiCalls from 'models/phoneNumber/resources'
 import * as notificationActions from 'state/notifications/actions'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 
+const QueryClientProvider = mockQueryClientProvider()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const store = mockStore({
     entities: {
@@ -43,7 +45,9 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should render', () => {
             const {container} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateForm />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateForm />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -53,7 +57,9 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should render when a country and a state are selected', () => {
             const {container, getByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateForm />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateForm />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -67,7 +73,9 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should render when type "Toll-free" is selected', () => {
             const {container, getByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateForm />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateForm />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -80,7 +88,9 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should render address validation form for Australia or United Kingdom', () => {
             const {container, getByText, queryByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateForm />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateForm />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -102,7 +112,9 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should pass the address if a phone of a country with address verification is created', async () => {
             const {getByText, getByRole, findByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateForm />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateForm />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -173,7 +185,9 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should call createPhoneNumber with the correct payload after switching from country with address verification', async () => {
             const {getByText, getByRole, findByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateForm />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateForm />
+                    </QueryClientProvider>
                 </Provider>
             )
 
@@ -229,7 +243,9 @@ describe('<PhoneNumberCreateForm/>', () => {
 
             const {getByText, getByRole, findByText} = render(
                 <Provider store={store}>
-                    <PhoneNumberCreateForm />
+                    <QueryClientProvider>
+                        <PhoneNumberCreateForm />
+                    </QueryClientProvider>
                 </Provider>
             )
 

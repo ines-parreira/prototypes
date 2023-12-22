@@ -1,10 +1,9 @@
+import {usePhoneNumberCapabilitiesMap} from 'models/phoneNumber/queries'
 import {
     PhoneCountry,
     PhoneType,
     PhoneCapabilities,
 } from 'models/phoneNumber/types'
-
-import {usePhoneCapabilitiesLimitationsMap} from 'hooks/integrations/phone/usePhoneCapabilitiesLimitationsMap'
 
 export function usePhoneNumberCapabilities({
     country,
@@ -13,8 +12,10 @@ export function usePhoneNumberCapabilities({
     country: PhoneCountry
     type: PhoneType
 }): Maybe<PhoneCapabilities> {
-    const capabilities = usePhoneCapabilitiesLimitationsMap()
-    const countryCapabilities = capabilities[country]
+    const query = usePhoneNumberCapabilitiesMap()
+    const capabilities = query.data
+
+    const countryCapabilities = capabilities?.[country]
 
     if (!countryCapabilities) {
         return null
