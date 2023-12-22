@@ -1,0 +1,80 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .table {
+        box-sizing: border-box;
+        margin-bottom: @layout-spacing-xs;
+
+        tr {
+            height: 64px;
+            background: var(--neutral-grey-0);
+            &:hover {
+                background: var(--neutral-grey-1);
+            }
+
+            td {
+                &.withShadow {
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: -1px;
+                        width: 30px;
+                        box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
+
+                        transform: translateX(100%);
+                        pointer-events: none;
+                    }
+                }
+
+                &:first-child {
+                    position: sticky;
+                    left: 0;
+                    z-index: 2;
+                    background: inherit;
+                }
+            }
+        }
+    }
+
+    .pagination {
+        position: sticky;
+        left: 0;
+    }
+
+    .activityCell {
+        min-width: 445px;
+        width: 35%;
+    }
+
+    .integrationCell {
+        width: 15%;
+        min-width: 200px;
+    }
+
+    .dateCell {
+        width: 10%;
+        min-width: 200px;
+    }
+
+    .smallCell {
+        width: 10%;
+        min-width: 100px;
+    }
+
+    .ticketCell {
+        width: 10%;
+        min-width: 120px;
+    }
+
+    .noData {
+        margin-bottom: @layout-spacing-l;
+    }
+}

@@ -31,12 +31,14 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
             {isFinalVoiceCallStatus(voiceCall.status) ? 'called' : 'calling'}
 
             {voiceCall.agentId && (
-                <VoiceCallAgentLabel
-                    agentId={voiceCall.agentId}
-                    phoneNumber={
-                        voiceCall.phoneNumberDestination ?? UNKNOWN_AGENT
-                    }
-                />
+                <div className={css.agent}>
+                    <VoiceCallAgentLabel
+                        agentId={voiceCall.agentId}
+                        phoneNumber={
+                            voiceCall.phoneNumberDestination ?? UNKNOWN_AGENT
+                        }
+                    />
+                </div>
             )}
         </div>
     )
@@ -50,14 +52,19 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
             <i className={classNames('material-icons', css.phoneIcon)}>
                 call_made
             </i>
-            {voiceCall.agentId ? (
-                <VoiceCallAgentLabel
-                    agentId={voiceCall.agentId}
-                    phoneNumber={unknownAgent}
-                />
-            ) : (
-                <AgentLabel className={css.agentLabel} name={unknownAgent} />
-            )}
+            <span className={css.agent}>
+                {voiceCall.agentId ? (
+                    <VoiceCallAgentLabel
+                        agentId={voiceCall.agentId}
+                        phoneNumber={unknownAgent}
+                    />
+                ) : (
+                    <AgentLabel
+                        className={css.agentLabel}
+                        name={unknownAgent}
+                    />
+                )}
+            </span>
             {isFinalVoiceCallStatus(voiceCall.status) ? 'called' : 'calling'}
             {voiceCall.customerId ? (
                 <VoiceCallCustomerLabel

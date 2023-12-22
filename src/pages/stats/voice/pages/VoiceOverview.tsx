@@ -4,6 +4,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import StatsPage from 'pages/stats/StatsPage'
 import {
+    CALL_ACTIVITY_TITLE,
+    CALL_LIST_TITLE,
     CALL_VOLUME_METRICS_TITLE,
     INBOUND_CALLS_METRIC_HINT,
     INBOUND_CALLS_METRIC_TITLE,
@@ -25,8 +27,11 @@ import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {getStandardPhoneIntegrations} from 'state/integrations/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
-import VoiceCallVolumeMetric from '../components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
-import PeriodStatsFilter from '../../PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import ChartCard from 'pages/stats/ChartCard'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
+import {VoiceCallTable} from 'pages/stats/voice/components/VoiceCallTable/VoiceCallTable'
 
 function VoiceOverview() {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
@@ -96,6 +101,17 @@ function VoiceOverview() {
                     />
                 </DashboardGridCell>
             </DashboardSection>
+            <DashboardSection title={CALL_ACTIVITY_TITLE}>
+                <DashboardGridCell>
+                    <ChartCard title={CALL_LIST_TITLE} noPadding>
+                        <VoiceCallTable
+                            statsFilters={cleanStatsFilters}
+                            userTimezone={userTimezone}
+                        />
+                    </ChartCard>
+                </DashboardGridCell>
+            </DashboardSection>
+            <AnalyticsFooter />
         </StatsPage>
     )
 }

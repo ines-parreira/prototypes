@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {render, fireEvent} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {
+    CALL_LIST_TITLE,
     CALL_VOLUME_METRICS_TITLE,
     INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_TITLE,
@@ -73,17 +74,28 @@ describe('VoiceOverview', () => {
     it('should render page title', () => {
         const {queryByText} = renderVoiceOverview()
 
+        // header elements
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
         expect(queryByText('Voice add-on features')).toBeNull()
 
+        // filters
         expect(queryByText('All integrations')).toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
 
+        // metric cards
         expect(queryByText(CALL_VOLUME_METRICS_TITLE)).toBeInTheDocument()
         expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(OUTBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(INBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(MISSED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+
+        // list of calls section
+        expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
+
+        // footer
+        expect(
+            queryByText('Analytics are using UTC timezone')
+        ).toBeInTheDocument()
     })
 
     it('should render paywall page', () => {
