@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react'
+import {useMemo, useState} from 'react'
 
 import useDebouncedValue from 'hooks/useDebouncedValue'
 
@@ -6,11 +6,12 @@ import {TICKET_HEIGHT} from '../constants'
 import useElementSize from './useElementSize'
 import useScrollOffset from './useScrollOffset'
 import useStaleTickets from './useStaleTickets'
+import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
 
 export default function useTickets(viewId: number) {
     const {hasMore, loading, loadMore, partials} = useTicketPartials(viewId)
-    const {staleTickets} = useStaleTickets(partials)
+    const {markUpdated, staleTickets} = useStaleTickets(partials)
 
     const [element, setElement] = useState<HTMLElement | null>(null)
     const [, height] = useElementSize(element)
@@ -38,10 +39,7 @@ export default function useTickets(viewId: number) {
         [staleTickets, visiblePartials]
     )
 
-    useEffect(() => {
-        // eslint-disable-next-line no-console
-        console.log('visibleStaleTicketIds', visibleStaleTicketIds)
-    }, [visibleStaleTicketIds])
+    useTicketData(visibleStaleTicketIds, markUpdated)
 
     const tickets = partials
 

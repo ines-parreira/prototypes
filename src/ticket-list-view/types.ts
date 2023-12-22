@@ -6,3 +6,8 @@ export type TicketPartial = {
     id: number
     updated_datetime: number
 }
+
+export type TicketSummary = Pick<
+    Ticket,
+    'id' | 'channel' | 'excerpt' | 'subject' | 'updated_datetime'
+>
