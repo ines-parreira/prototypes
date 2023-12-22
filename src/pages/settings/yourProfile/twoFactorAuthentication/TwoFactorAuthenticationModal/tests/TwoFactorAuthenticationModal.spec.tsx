@@ -80,7 +80,7 @@ const validateInput = async (baseElement: HTMLElement) => {
 
 const fillVerificationCode = () => {
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
-        'Enter 6-digit verification code from app'
+        'Enter 6-digit verification code from app or recovery code'
     )
     fireEvent.change(inputField, {target: {value: '123456'}})
 }
@@ -107,7 +107,7 @@ const handleInputValidationFailed = async (baseElement: HTMLElement) => {
     )
 
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
-        'Enter 6-digit verification code from app'
+        'Enter 6-digit verification code from app or recovery code'
     )
     fireEvent.change(inputField, {target: {value: '123457'}})
 

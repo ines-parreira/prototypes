@@ -27,8 +27,8 @@ export default function ValidateVerificationCodeStep({
                 Verify your code
             </div>
             <div className={classnames(css.textSection, settingsCss.mb16)}>
-                Enter the 6-digit verification code generated from your
-                authenticator app.
+                Enter a verification code from your authenticator app or a
+                recovery code
             </div>
             <InputField
                 // keeping this as text because if the type is "number"
@@ -36,7 +36,7 @@ export default function ValidateVerificationCodeStep({
                 // and the code becomes invalid
                 type="text"
                 name="verificationCode"
-                placeholder="Enter 6-digit verification code from app"
+                placeholder="Enter 6-digit verification code from app or recovery code"
                 onChange={(value) => {
                     setVerificationCode(value)
                     setErrorText('')

@@ -114,13 +114,13 @@ export default function TwoFactorAuthenticationDisableModal({
             {!user && (
                 <>
                     <p className="mb-2 mt-3">
-                        Enter the 6-digit verification code generated from your
-                        authenticator app.
+                        Enter a verification code from your authenticator app or
+                        a recovery code.
                     </p>
                     <InputField
                         type="text"
                         name="verificationCode"
-                        placeholder="Enter 6-digit verification code from app"
+                        placeholder="Enter 6-digit verification code from app or recovery code"
                         onChange={setVerificationCode}
                         className="mb-0"
                     />

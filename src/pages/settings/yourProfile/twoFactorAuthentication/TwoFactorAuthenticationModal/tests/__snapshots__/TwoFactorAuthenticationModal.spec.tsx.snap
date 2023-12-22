@@ -348,7 +348,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -358,7 +358,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     class="input"
                     id="input-text-9"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />
@@ -472,7 +472,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -482,7 +482,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     class="input"
                     id="input-text-9"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />
@@ -611,7 +611,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -621,7 +621,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     class="input"
                     id="input-text-5"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />
@@ -735,7 +735,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -745,7 +745,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     class="input"
                     id="input-text-5"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />
@@ -1437,7 +1437,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -1447,7 +1447,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                     class="input"
                     id="input-text-1"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />
@@ -1704,7 +1704,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -1714,7 +1714,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                     class="input"
                     id="input-text-30"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />
@@ -1820,7 +1820,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -1830,7 +1830,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                     class="input"
                     id="input-text-34"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />
@@ -1917,7 +1917,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <div
                 class="textSection mb16"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
                 <div
@@ -1927,7 +1927,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                     class="input"
                     id="input-text-34"
                     name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                     value=""
                   />

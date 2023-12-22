@@ -44,7 +44,7 @@ describe('<ValidateVerificationCodeStep />', () => {
             )
 
             const inputField = getByPlaceholderText(
-                'Enter 6-digit verification code from app'
+                'Enter 6-digit verification code from app or recovery code'
             ) as HTMLInputElement
 
             fireEvent.change(inputField, {target: {value: '123456'}})

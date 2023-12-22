@@ -57,7 +57,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               <p
                 class="mb-2 mt-3"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code.
               </p>
               <div
                 class="InputField mb-0 form-group"
@@ -69,7 +69,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
                   <input
                     class="field form-control"
                     id="id-verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                   />
                 </div>
@@ -273,7 +273,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
               <p
                 class="mb-2 mt-3"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code.
               </p>
               <div
                 class="InputField mb-0 form-group"
@@ -285,7 +285,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
                   <input
                     class="field form-control"
                     id="id-verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                   />
                 </div>
@@ -501,7 +501,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
               <p
                 class="mb-2 mt-3"
               >
-                Enter the 6-digit verification code generated from your authenticator app.
+                Enter a verification code from your authenticator app or a recovery code.
               </p>
               <div
                 class="InputField mb-0 form-group"
@@ -513,7 +513,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                   <input
                     class="field form-control"
                     id="id-verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
                   />
                 </div>
