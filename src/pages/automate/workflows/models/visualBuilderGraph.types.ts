@@ -147,7 +147,7 @@ export type VisualBuilderEdge = Edge<{
 
 export type VisualBuilderGraph = {
     name: string
-    available_languages?: LanguageCode[]
+    available_languages: LanguageCode[]
     nodes: VisualBuilderNode[]
     edges: VisualBuilderEdge[]
     wfConfigurationOriginal: WorkflowConfiguration

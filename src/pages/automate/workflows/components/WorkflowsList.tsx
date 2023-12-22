@@ -2,22 +2,27 @@ import React from 'react'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {LanguageCode} from '../models/workflowConfiguration.types'
-
-import css from './WorkflowsList.less'
-import WorkflowsRow from './WorkflowsRow'
+import {
+    LanguageCode,
+    WorkflowConfigurationShallow,
+} from '../models/workflowConfiguration.types'
+import WorkflowRow from './WorkflowRow'
 
 export type Workflow = {
     workflow_id: string
     name: string
     available_languages: LanguageCode[]
+    updated_datetime: string
 }
 
 type Props = {
     storeIntegrationId: number
-    storeWorkflows: Workflow[]
+    workflows: WorkflowConfigurationShallow[]
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (
@@ -29,7 +34,7 @@ type Props = {
 }
 
 const WorkflowsList = ({
-    storeWorkflows: entrypoints,
+    workflows,
     storeIntegrationId,
     onDelete,
     onDuplicate,
@@ -40,13 +45,19 @@ const WorkflowsList = ({
     const storeIntegrations = useStoreIntegrations()
 
     return (
-        <TableWrapper className={css.container}>
+        <TableWrapper>
+            <TableHead>
+                <HeaderCellProperty title="Flow" />
+                <HeaderCellProperty title="Languages" />
+                <HeaderCellProperty title="Last updated" />
+                <HeaderCell />
+            </TableHead>
             <TableBody>
-                {entrypoints.map((entrypoint) => (
-                    <WorkflowsRow
+                {workflows.map((workflow) => (
+                    <WorkflowRow
                         storeIntegrationId={storeIntegrationId}
-                        key={entrypoint.workflow_id}
-                        entrypoint={entrypoint}
+                        key={workflow.id}
+                        workflow={workflow}
                         goToEditWorkflowPage={goToEditWorkflowPage}
                         onDuplicate={onDuplicate}
                         onDelete={onDelete}

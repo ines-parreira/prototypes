@@ -37,7 +37,7 @@ export function TranslationsPreviewProvider({
         useWorkflowEditorContext()
     const previewLanguageList = useMemo(
         () =>
-            (visualBuilderGraph.available_languages ?? []).filter(
+            visualBuilderGraph.available_languages.filter(
                 (l) => l !== currentLanguage
             ),
         [visualBuilderGraph.available_languages, currentLanguage]

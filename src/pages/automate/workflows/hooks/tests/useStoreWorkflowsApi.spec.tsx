@@ -4,6 +4,8 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {waitFor} from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
+
 import {RootState, StoreDispatch} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
@@ -73,6 +75,7 @@ const useWorkflowApiMock = useWorkflowApi as jest.MockedFn<
 describe('useStoreWorkflowsApi', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        jest.spyOn(LD, 'useFlags').mockReturnValue({})
         useSelfServiceConfigurationUpdateMockSetter({})
         ;(
             getSelfServiceConfigurations as jest.MockedFn<

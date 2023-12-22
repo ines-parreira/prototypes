@@ -1,6 +1,6 @@
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import useWorkflowApi from '../../useWorkflowApi'
-import {mockWorkflowConfiguration} from './utils'
+import {mockWorkflowConfigurationShallow} from './utils'
 
 export const mockSelfServiceConfigurationUpdate: ReturnType<
     typeof useSelfServiceConfigurationUpdate
@@ -14,9 +14,9 @@ export const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
     isUpdatePending: false,
     fetchWorkflowConfigurations: () => {
         return Promise.resolve([
-            mockWorkflowConfiguration('a'),
-            mockWorkflowConfiguration('b'),
-            mockWorkflowConfiguration('c'),
+            mockWorkflowConfigurationShallow('a'),
+            mockWorkflowConfigurationShallow('b'),
+            mockWorkflowConfigurationShallow('c'),
         ])
     },
     duplicateWorkflowConfiguration: jest.fn().mockResolvedValue({id: 4}),

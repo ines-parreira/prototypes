@@ -2,13 +2,14 @@ import React from 'react'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouterAndDnD} from 'utils/testing'
-
 import {IntegrationType} from 'models/integration/constants'
 import {StoreIntegration} from 'models/integration/types'
-import WorkflowsRow, {getLink} from '../WorkflowsRow'
-import {Workflow} from '../WorkflowsList'
+
+import {WorkflowConfigurationShallow} from '../../models/workflowConfiguration.types'
+import WorkflowRow, {getLink} from '../WorkflowRow'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -35,17 +36,19 @@ describe('<WorkflowsRow />', () => {
     ] as unknown as StoreIntegration[]
     const comp = (
         <Provider store={mockStore()}>
-            <WorkflowsRow
+            <WorkflowRow
                 goToEditWorkflowPage={jest.fn()}
                 onDuplicate={duplicateFunction}
                 onDelete={jest.fn()}
                 notifyMerchant={notifyMerchant}
-                entrypoint={
+                workflow={
                     {
-                        workflow_id: 'Workflow 1',
+                        id: 'Workflow 1',
                         name: 'Workflow 1',
                         available_languages: ['en-US'],
-                    } as Workflow
+                        updated_datetime: '2023-12-22T09:57:21.303Z',
+                        is_draft: false,
+                    } as WorkflowConfigurationShallow
                 }
                 isUpdatePending={false}
                 storeIntegrations={sortedIntegrations}

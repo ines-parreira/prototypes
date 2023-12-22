@@ -1,7 +1,19 @@
 @import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
     .name {
         .body-semibold();
+    }
+
+    .badge {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        margin-left: @layout-spacing-m;
+
+        & > i {
+            font-size: 12px;
+        }
     }
 }

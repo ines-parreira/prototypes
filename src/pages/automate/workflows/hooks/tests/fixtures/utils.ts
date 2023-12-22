@@ -1,6 +1,7 @@
 import {IntegrationType} from 'models/integration/constants'
 import {
     WorkflowConfiguration,
+    WorkflowConfigurationShallow,
     WorkflowStepMessages,
     WorkflowTransition,
 } from 'pages/automate/workflows/models/workflowConfiguration.types'
@@ -16,6 +17,19 @@ export function mockWorkflowConfiguration(uid: string): WorkflowConfiguration {
         steps: [] as WorkflowStepMessages[],
         transitions: [] as WorkflowTransition[],
         available_languages: [],
+    }
+}
+
+export function mockWorkflowConfigurationShallow(
+    uid: string
+): WorkflowConfigurationShallow {
+    const date = new Date()
+
+    return {
+        ...mockWorkflowConfiguration(uid),
+        created_datetime: date.toISOString(),
+        updated_datetime: date.toISOString(),
+        deleted_datetime: null,
     }
 }
 

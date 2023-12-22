@@ -10,19 +10,24 @@ import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/u
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {formatDatetime} from 'utils'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
 import {
     LanguageCode,
     supportedLanguages,
+    WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'
-import {Workflow} from './WorkflowsList'
-import css from './WorkflowsRow.less'
 import DeleteWorkflowAction from './DeleteWorkflowAction'
+
+import css from './WorkflowsRow.less'
 
 type Props = {
     storeIntegrationId: number
-    entrypoint: Workflow
+    workflow: WorkflowConfigurationShallow
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (
         workflowId: string,
@@ -55,9 +60,9 @@ export const getLink = (
     storeIntegration.name
 }</a>`
 
-const WorkflowsRow = ({
+const WorkflowRow = ({
     storeIntegrationId,
-    entrypoint,
+    workflow,
     onDelete,
     onDuplicate,
     goToEditWorkflowPage,
@@ -68,6 +73,10 @@ const WorkflowsRow = ({
     const [isOpen, setIsOpen] = useState(false)
     const anchorEl = useRef<HTMLButtonElement>(null)
     const dropdownRef = useRef<HTMLDivElement>(null)
+
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate
+    )
 
     const currentFirstSorted = useMemo(() => {
         return [...storeIntegrations].sort(
@@ -95,37 +104,40 @@ const WorkflowsRow = ({
     const isDropdownVisible = storeIntegrations.length > 1
 
     return (
-        <TableBodyRow key={entrypoint.workflow_id}>
-            <BodyCell
-                className={css.name}
-                onClick={() => {
-                    goToEditWorkflowPage(entrypoint.workflow_id)
-                }}
-            >
-                {entrypoint.name}
+        <TableBodyRow
+            onClick={() => {
+                goToEditWorkflowPage(workflow.id)
+            }}
+        >
+            <BodyCell className={css.name}>
+                {workflow.name}
+                {workflow.is_draft && (
+                    <Badge type={ColorType.Black} className={css.badge}>
+                        <i className="material-icons">edit</i>
+                        draft
+                    </Badge>
+                )}
+            </BodyCell>
+            <BodyCell size="smallest">
+                <LanguageList
+                    id={`workflow-${workflow.id}-language-list`}
+                    defaultLanguage={
+                        getLanguageList(workflow.available_languages)[0]
+                    }
+                    languageList={getLanguageList(
+                        workflow.available_languages
+                    ).reverse()}
+                />
+            </BodyCell>
+            <BodyCell size="smallest">
+                {formatDatetime(workflow.updated_datetime, datetimeFormat)}
             </BodyCell>
             <BodyCell
                 size="smallest"
-                onClick={() => {
-                    goToEditWorkflowPage(entrypoint.workflow_id)
+                onClick={(event) => {
+                    event.stopPropagation()
                 }}
             >
-                <LanguageList
-                    id={`workflow-${entrypoint.workflow_id}-language-list`}
-                    defaultLanguage={
-                        getLanguageList(
-                            entrypoint.available_languages
-                        )[0] as any
-                    }
-                    languageList={
-                        getLanguageList(
-                            entrypoint.available_languages
-                        ).reverse() as any
-                    }
-                />
-            </BodyCell>
-
-            <BodyCell size="smallest">
                 <IconButton
                     className="mr-1"
                     fillStyle="ghost"
@@ -135,9 +147,7 @@ const WorkflowsRow = ({
                     onClick={() =>
                         isDropdownVisible
                             ? handleToggle()
-                            : handleDuplicateCurrentStore(
-                                  entrypoint.workflow_id
-                              )
+                            : handleDuplicateCurrentStore(workflow.id)
                     }
                     title="Duplicate flow"
                 >
@@ -170,7 +180,7 @@ const WorkflowsRow = ({
                                         onClick={async (value) => {
                                             setIsOpen(false)
                                             await onDuplicate(
-                                                entrypoint.workflow_id,
+                                                workflow.id,
                                                 value
                                             )
                                             notifyMerchant(
@@ -188,7 +198,7 @@ const WorkflowsRow = ({
                 )}
                 <DeleteWorkflowAction
                     onDelete={() => {
-                        void onDelete(entrypoint.workflow_id)
+                        void onDelete(workflow.id)
                     }}
                     isUpdatePending={isUpdatePending}
                 />
@@ -197,4 +207,4 @@ const WorkflowsRow = ({
     )
 }
 
-export default WorkflowsRow
+export default WorkflowRow

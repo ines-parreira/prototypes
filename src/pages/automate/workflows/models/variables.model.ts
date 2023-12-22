@@ -243,7 +243,7 @@ export function checkGraphVariablesValidity(
         lang: LanguageCode
     ) => VisualBuilderGraph
 ): GraphVariablesValidationResult {
-    if (!g.available_languages?.length) return null
+    if (!g.available_languages.length) return null
 
     let validationResult: GraphVariablesValidationResult = null
 

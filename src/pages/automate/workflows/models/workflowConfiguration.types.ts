@@ -138,7 +138,7 @@ export type WorkflowConfiguration = {
     }
     steps: WorkflowStep[]
     transitions: WorkflowTransition[]
-    available_languages?: LanguageCode[]
+    available_languages: LanguageCode[]
 }
 
 export type WorkflowConfigurationShallow = Omit<
@@ -148,6 +148,9 @@ export type WorkflowConfigurationShallow = Omit<
     steps: Array<{
         kind: WorkflowStep['kind']
     }>
+    created_datetime: string
+    updated_datetime: string
+    deleted_datetime: string | null
 }
 
 export enum WorkflowTemplateLabelType {

@@ -100,6 +100,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 genTransition('messages2', 'workflowCall1'),
                 genTransition('messages3', 'workflowCall2'),
             ],
+            available_languages: ['en-US'],
         }
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(

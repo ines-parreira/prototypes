@@ -208,6 +208,7 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             target: 'end3',
         },
     ],
+    available_languages: ['en-US'],
     wfConfigurationOriginal: {
         id: '1',
         account_id: 1,
@@ -223,5 +224,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             },
         ],
         transitions: [],
+        available_languages: ['en-US'],
     },
 }

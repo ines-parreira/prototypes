@@ -26,7 +26,9 @@ apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor as any)
 type WorkflowApi = {
     isFetchPending: boolean
     isUpdatePending: boolean
-    fetchWorkflowConfigurations: () => Promise<WorkflowConfigurationShallow[]>
+    fetchWorkflowConfigurations: (
+        includeDrafts?: boolean
+    ) => Promise<WorkflowConfigurationShallow[]>
     fetchWorkflowEntrypoints: (
         ids: WorkflowConfiguration['id'][],
         channelLanguage: string
@@ -69,10 +71,12 @@ type WorkflowApi = {
 export default function useWorkflowApi(): WorkflowApi {
     const [isFetchPending, setIsFetchPending] = useState(false)
     const [isUpdatePending, setIsUpdatePending] = useState(false)
-    const fetchWorkflowConfigurations = useCallback(() => {
+    const fetchWorkflowConfigurations = useCallback((includeDrafts = false) => {
         setIsFetchPending(true)
         return apiClient
-            .get<WorkflowConfigurationShallow[]>('/configurations')
+            .get<WorkflowConfigurationShallow[]>('/configurations', {
+                params: includeDrafts ? {is_draft: [0, 1]} : {},
+            })
             .then((res) => {
                 setIsFetchPending(false)
                 return res.data

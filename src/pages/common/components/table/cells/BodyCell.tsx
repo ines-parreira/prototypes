@@ -1,4 +1,4 @@
-import React, {HTMLProps, ReactNode} from 'react'
+import React, {HTMLProps, MouseEvent, ReactNode} from 'react'
 import classNames from 'classnames'
 
 import css from './BodyCell.less'
@@ -13,7 +13,7 @@ export type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
     justifyContent?: 'left' | 'right' | 'center'
     size?: 'normal' | 'small' | 'smallest'
     width?: number | string
-    onClick?: () => void
+    onClick?: (event: MouseEvent<HTMLTableDataCellElement>) => void
 }
 
 const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(

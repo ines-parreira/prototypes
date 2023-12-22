@@ -203,7 +203,7 @@ export default function useWorkflowTranslations(
                 nextGraph = {
                     ...nextGraph,
                     available_languages: [
-                        ...(nextGraph.available_languages ?? []),
+                        ...nextGraph.available_languages,
                         nextLanguage,
                     ],
                 }

@@ -1,17 +1,11 @@
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {
-    LanguageCode,
-    WorkflowConfigurationShallow,
-} from '../models/workflowConfiguration.types'
+
+import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
 
 export type UseWorkflowsEntrypointsReturnType = {
-    workflows: Array<{
-        workflow_id: string
-        name: string
-        available_languages: LanguageCode[]
-    }>
+    workflows: WorkflowConfigurationShallow[]
     storeIntegrationId?: number
     isFetchPending: boolean
 }
@@ -41,12 +35,7 @@ export default function useStoreWorkflows({
     const workflows =
         selfServiceConfiguration?.workflows_entrypoints
             ?.filter((e) => configurationsMap[e.workflow_id])
-            .map((e) => ({
-                ...e,
-                name: configurationsMap[e.workflow_id]?.name ?? '',
-                available_languages:
-                    configurationsMap[e.workflow_id]?.available_languages ?? [],
-            })) ?? []
+            .map((e) => configurationsMap[e.workflow_id]) ?? []
 
     return {
         workflows,

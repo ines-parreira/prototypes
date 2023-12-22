@@ -284,7 +284,7 @@ function WorkflowEditorViewWrapped({
                             <WorkflowLanguageSelect
                                 available={
                                     workflowEditorContext.visualBuilderGraph
-                                        .available_languages || ['en-US']
+                                        .available_languages
                                 }
                                 selected={workflowEditorContext.currentLanguage}
                                 onSelect={(lang) => {

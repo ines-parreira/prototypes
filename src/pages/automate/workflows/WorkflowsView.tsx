@@ -153,7 +153,7 @@ export default function WorkflowsView({
                     <WorkflowsList
                         storeIntegrationId={storeIntegrationId}
                         notifyMerchant={notifyMerchant}
-                        storeWorkflows={workflows}
+                        workflows={workflows}
                         onDelete={(workflowId) =>
                             removeWorkflowFromStore(
                                 workflowId,
