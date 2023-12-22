@@ -127,4 +127,29 @@ describe('Panels', () => {
         expect(resizeStartHandler1).not.toHaveBeenCalled()
         expect(resizeStartHandler2).toHaveBeenCalledWith(expect.any(Object))
     })
+
+    it('should call the onResize handler when the panel widths change', () => {
+        const onResize = jest.fn()
+        usePanelsMock.mockReturnValue({
+            panelWidths: [200, 400],
+            resizeStartHandlers: [resizeStartHandler1, resizeStartHandler2],
+        })
+
+        const {getAllByText} = render(
+            <Panels config={config} onResize={onResize}>
+                <Panel>
+                    <p>Navigation</p>
+                </Panel>
+                <Panel>
+                    <p>Panel one</p>
+                </Panel>
+            </Panels>
+        )
+
+        const handles = getAllByText('Handle')
+        const handle = handles[0]
+        fireEvent.mouseDown(handle)
+
+        expect(onResize).toHaveBeenCalledWith([200, 400])
+    })
 })

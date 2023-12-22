@@ -1,5 +1,13 @@
-import React, {Children, cloneElement, Fragment, ReactElement} from 'react'
+import React, {
+    Children,
+    cloneElement,
+    Fragment,
+    ReactElement,
+    useEffect,
+} from 'react'
+import _isEqual from 'lodash/isEqual'
 
+import usePrevious from 'hooks/usePrevious'
 import {usePanels} from '../hooks'
 import type {Config} from '../types'
 
@@ -9,10 +17,18 @@ import css from './Panels.less'
 type Props = {
     children: ReactElement | ReactElement[]
     config: Config
+    onResize?: (widths: number[]) => void
 }
 
-export default function Panels({children, config}: Props) {
+export default function Panels({children, config, onResize}: Props) {
     const {panelWidths, resizeStartHandlers} = usePanels(config)
+    const previousPanelWidths = usePrevious(panelWidths)
+
+    useEffect(() => {
+        if (!_isEqual(panelWidths, previousPanelWidths)) {
+            onResize?.(panelWidths)
+        }
+    }, [panelWidths, previousPanelWidths, onResize])
 
     return (
         <div className={css.panels}>
