@@ -2,7 +2,6 @@ import React, {useEffect, useMemo} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Tooltip from 'pages/common/components/Tooltip'
 import {
     getCurrentSubscription,
@@ -30,7 +29,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {isAAOLegacyPrice} from 'models/billing/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
@@ -66,7 +64,6 @@ const UsageAndPlansView = ({
 }: UsageAndPlansViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const flags = useFlags()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
@@ -112,8 +109,6 @@ const UsageAndPlansView = ({
 
     const hasCreditCard = useAppSelector(getHasCreditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
-
-    const isConvertProductActive = Boolean(flags[FeatureFlagKey.ConvertBilling])
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -305,18 +300,16 @@ const UsageAndPlansView = ({
                     banner={smsBanner}
                     isDisabled={false}
                 />
-                {isConvertProductActive && (
-                    <ProductCard
-                        type={ProductType.Convert}
-                        product={convertProduct}
-                        usage={currentUsage?.convert}
-                        banner={convertBanner}
-                        isDisabled={false}
-                        autoUpgradeEnabled={Boolean(
-                            convertStatus && convertStatus.auto_upgrade_enabled
-                        )}
-                    />
-                )}
+                <ProductCard
+                    type={ProductType.Convert}
+                    product={convertProduct}
+                    usage={currentUsage?.convert}
+                    banner={convertBanner}
+                    isDisabled={false}
+                    autoUpgradeEnabled={Boolean(
+                        convertStatus && convertStatus.auto_upgrade_enabled
+                    )}
+                />
             </div>
             <div className={css.unsubscribe}>
                 If you have any questions regarding your subscription, please{' '}

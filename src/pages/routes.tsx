@@ -627,10 +627,12 @@ export function StatsRoutes() {
                     exact
                     path={`${path}/revenue`}
                     render={() => (
-                        <App
-                            content={SupportPerformanceRevenue}
-                            navbar={StatsNavbarContainer}
-                        />
+                        <RevenueAddonApiClientProvider>
+                            <App
+                                content={SupportPerformanceRevenue}
+                                navbar={StatsNavbarContainer}
+                            />
+                        </RevenueAddonApiClientProvider>
                     )}
                 />
                 <Route exact path={`${path}/revenue/campaigns`}>
@@ -640,10 +642,12 @@ export function StatsRoutes() {
                     exact
                     path={`${path}/convert/campaigns`}
                     render={() => (
-                        <App
-                            content={RevenueCampaignsStats}
-                            navbar={StatsNavbarContainer}
-                        />
+                        <RevenueAddonApiClientProvider>
+                            <App
+                                content={RevenueCampaignsStats}
+                                navbar={StatsNavbarContainer}
+                            />
+                        </RevenueAddonApiClientProvider>
                     )}
                 />
                 <Route

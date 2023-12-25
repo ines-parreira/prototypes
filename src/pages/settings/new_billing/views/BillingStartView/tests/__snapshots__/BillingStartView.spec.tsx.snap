@@ -14,6 +14,31 @@ exports[`BillingStartView should render a BillingStartView component and load th
         Billing
       </h1>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        href="/app/settings/billing"
+      >
+        Usage & Plans
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        href="/app/settings/billing/payment"
+      >
+        Payment Information
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        href="/app/settings/billing/payment-history"
+      >
+        Payment History
+      </a>
+    </nav>
     <div
       class="mainContainer container-fluid"
     >
@@ -26,7 +51,16 @@ exports[`BillingStartView should render a BillingStartView component and load th
           <div
             class="generalInfoItem"
           >
-            You don't have any active subscription. Please first select some plans.
+            Your free trial started on
+             
+            <span>
+              August 23, 2017
+            </span>
+             and will expire on
+             
+            <span>
+              September 6, 2017
+            </span>
           </div>
           <div
             class="generalInfoItem"
@@ -255,6 +289,89 @@ exports[`BillingStartView should render a BillingStartView component and load th
                 </div>
               </div>
               <div />
+            </div>
+          </div>
+          <div
+            class="container"
+          >
+            <div
+              class="header"
+            >
+              <div
+                class="title"
+              >
+                <i
+                  class="material-icons activeIcon"
+                >
+                  paid
+                </i>
+                <div>
+                  Convert
+                </div>
+                <span
+                  class="badge success"
+                >
+                  Active
+                </span>
+              </div>
+              <div>
+                <b>
+                  $1
+                </b>
+                /
+              </div>
+            </div>
+            <div
+              class="body"
+            >
+              <div
+                data-candu-id="billing-convert-description-info"
+              />
+            </div>
+            <div
+              class="footer"
+            >
+              <div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill primary medium"
+                  id="productCardButton_convert"
+                  type="button"
+                >
+                  Update Plan
+                </button>
+              </div>
+              <div>
+                <div
+                  class="counter"
+                >
+                  <div
+                    class=""
+                  >
+                    0
+                     
+                    of 
+                    10,000
+                     
+                    clicks
+                     used
+                  </div>
+                  <i
+                    class="material-icons"
+                    id="info_convert"
+                  >
+                    info_outlined
+                  </i>
+                </div>
+                <div
+                  class="extraCost"
+                >
+                  $
+                  0.00
+                   
+                  extra cost
+                </div>
+              </div>
             </div>
           </div>
         </div>

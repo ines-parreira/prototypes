@@ -15,7 +15,6 @@ import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {user} from 'fixtures/users'
 import {assumeMock} from 'utils/testing'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
-import * as isConvertCampaignCappingEnabledHook from 'pages/settings/revenue/hooks/useIsConvertCampaignCappingEnabled'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
 import {createTrigger} from '../../../utils/createTrigger'
@@ -26,6 +25,10 @@ import {CampaignTriggerKey} from '../../../types/enums/CampaignTriggerKey.enum'
 import {ChatCampaign} from '../../../types/Campaign'
 
 import {CampaignsList} from '../CampaignsList'
+import {
+    convertStatusLimitReached,
+    convertStatusNotInstalled,
+} from '../../../../../../../../../fixtures/convert'
 
 jest.mock('hooks/useSearch')
 jest.mock('../../../hooks/useCampaignListOptions')
@@ -302,13 +305,7 @@ describe('<CampaignsList />', () => {
         const messageText = 'Ensure proper campaign functionality'
 
         it('should render setup infobar', () => {
-            useGetConvertStatusMock.mockReturnValue({
-                status: 'active',
-                usage_status: 'ok',
-                usage: 0,
-                limit: 50,
-                bundle_status: 'not_installed',
-            })
+            useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
             const {queryByText} = render(
                 <Provider store={store}>
                     <CampaignsList
@@ -332,17 +329,7 @@ describe('<CampaignsList />', () => {
         const messageText = "You've reached the limit for your Convert plan"
 
         it('should render limit reached banner', () => {
-            jest.spyOn(
-                isConvertCampaignCappingEnabledHook,
-                'useIsConvertCampaignCappingEnabled'
-            ).mockImplementation(() => true)
-            useGetConvertStatusMock.mockReturnValue({
-                status: 'active',
-                usage_status: 'limit-reached',
-                usage: 51,
-                limit: 50,
-                bundle_status: 'installed',
-            })
+            useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
             const {queryByText} = render(
                 <Provider store={store}>
                     <CampaignsList

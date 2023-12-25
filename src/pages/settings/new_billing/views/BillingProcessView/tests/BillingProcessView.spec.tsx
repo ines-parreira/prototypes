@@ -3,7 +3,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
-import LD from 'launchdarkly-react-client-sdk'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {
@@ -13,7 +12,6 @@ import {
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import BillingProcessView from '../BillingProcessView'
 
@@ -71,10 +69,6 @@ const store = mockedStore({
 
 describe('UsageAndPlansView', () => {
     it('should render', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ConvertBilling]: true,
-        }))
-
         const {container} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>

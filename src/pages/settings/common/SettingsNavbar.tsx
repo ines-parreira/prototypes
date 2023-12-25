@@ -19,7 +19,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Navbar from 'pages/common/components/Navbar'
 
-import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
 import useGetConvertLinks from 'pages/settings/revenue/hooks/useGetConvertLinks'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
@@ -238,7 +237,6 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
-    const isConvertBillingEnabled = useIsRevenueBillingEnabled()
     const isConvertSubscriber = useIsConvertSubscriber()
     const convertLinks = useGetConvertLinks()
 
@@ -253,10 +251,7 @@ const SettingsNavbar = () => {
                         ),
                     },
                 ]
-            } else if (
-                (isConvertSubscriber || isConvertBillingEnabled) &&
-                category.name === 'Convert'
-            ) {
+            } else if (isConvertSubscriber && category.name === 'Convert') {
                 return [
                     {
                         ...category,
@@ -267,12 +262,7 @@ const SettingsNavbar = () => {
 
             return [category]
         })
-    }, [
-        convertLinks,
-        isConvertSubscriber,
-        isConvertBillingEnabled,
-        isDecoupleContactFormEnabled,
-    ])
+    }, [convertLinks, isConvertSubscriber, isDecoupleContactFormEnabled])
 
     return (
         <Navbar activeContent="settings">

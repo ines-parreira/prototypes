@@ -1,7 +1,0 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
-
-export function useIsRevenueBillingEnabled(): boolean {
-    const flags = useFlags()
-    return Boolean(flags[FeatureFlagKey.ConvertBilling])
-}

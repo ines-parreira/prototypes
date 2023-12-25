@@ -9,6 +9,7 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import StatsPage from 'pages/stats/StatsPage'
 
+import ConvertLimitBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import {CampaignStatsFilters} from '../../providers/CampaignStatsFilters'
 
 import {RevenueFilters} from '../../containers/RevenueFilters'
@@ -18,6 +19,7 @@ const CampaignsStats = () => {
     return (
         <CampaignStatsFilters>
             <StatsPage title="Campaigns" filters={<RevenueFilters />}>
+                <ConvertLimitBanner classes={'mt-4 ml-4 mr-4'} />
                 <RevenueStatsContent />
             </StatsPage>
         </CampaignStatsFilters>

@@ -1238,6 +1238,31 @@
                         ],
                         "title": "Last Block At"
                     },
+                    "estimated_usage_percentage": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Estimated Usage Percentage"
+                    },
+                    "estimated_reach_date": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Estimated Reach Date"
+                    },
+                    "cycle_start": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Cycle Start"
+                    },
+                    "cycle_end": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Cycle End"
+                    },
                     "bundle_status": {
                         "$ref": "#/components/schemas/BundleOnboardingStatus"
                     }

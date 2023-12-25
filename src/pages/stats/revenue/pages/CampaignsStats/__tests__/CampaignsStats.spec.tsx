@@ -3,9 +3,11 @@ import {Provider} from 'react-redux'
 import {render} from '@testing-library/react'
 import {MemoryRouter, Route} from 'react-router-dom'
 import {RootState} from 'state/types'
-import {mockStore} from 'utils/testing'
+import {assumeMock, mockStore} from 'utils/testing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {getStateWithPrice} from 'utils/paywallTesting'
+import {convertStatusOk} from 'fixtures/convert'
+import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import ConvertCampaignsStats from '../CampaignsStats'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
@@ -23,6 +25,10 @@ jest.mock('../../../containers/RevenueFilters', () => ({
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
+
+jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+
+const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
 describe('CampaignsStats', () => {
     const renderWithStore = (state: Partial<RootState>, props = {}) =>
@@ -43,6 +49,8 @@ describe('CampaignsStats', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
+
+        useGetConvertStatusMock.mockReturnValue(convertStatusOk)
     })
 
     it('should render the paywall with modal for Convert non-subscriber', () => {

@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import Tooltip from 'pages/common/components/Tooltip'
 import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal'
-import {useIsRevenueBillingEnabled} from '../../hooks/useIsRevenueBillingEnabled'
 import css from './AdvancedTriggersTooltip.less'
 
 type Props = {
@@ -14,7 +13,6 @@ export const AdvancedTriggersTooltip = ({
     isConvertSubscriber = false,
 }: Props) => {
     const [isConvertModalOpened, setIsConvertModalOpened] = useState(false)
-    const isRevenueBillingEnabled = useIsRevenueBillingEnabled()
 
     const openModal = () => {
         setIsConvertModalOpened(true)
@@ -24,7 +22,7 @@ export const AdvancedTriggersTooltip = ({
         setIsConvertModalOpened(false)
     }
 
-    if (isConvertSubscriber === false && isRevenueBillingEnabled) {
+    if (isConvertSubscriber === false) {
         return (
             <>
                 <span

@@ -12,6 +12,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import useSearch from 'hooks/useSearch'
 import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/constants'
 
+import {renderWithRouter} from 'utils/testing'
 import GorgiasChatIntegrationCampaigns, {
     GorgiasChatIntegrationCampaignsComponent,
 } from '../GorgiasChatIntegrationCampaigns'
@@ -170,13 +171,13 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
             ).toBeNull()
         })
 
-        it('should not display infobox to non-betatester', () => {
+        it('should not display infobox to non Convert subscribers', () => {
             jest.spyOn(
                 isConvertSubscriberHook,
                 'useIsConvertSubscriber'
             ).mockImplementation(() => false)
 
-            const {queryByText} = render(
+            const {queryByText} = renderWithRouter(
                 <Provider store={store}>
                     <GorgiasChatIntegrationCampaignsComponent
                         {...minProps}

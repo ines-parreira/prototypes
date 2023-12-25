@@ -9,7 +9,6 @@ import {RootState} from 'state/types'
 import {UserRole} from 'config/types/user'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import * as isRevenueBillingHook from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
 import {AdvancedTriggersTooltip} from '../AdvancedTriggersTooltip'
 
 const defaultState: Partial<RootState> = {
@@ -22,11 +21,6 @@ const defaultState: Partial<RootState> = {
 
 describe('<AdvancedTriggersTooltip />', () => {
     it('should render and open popup on click', async () => {
-        jest.spyOn(
-            isRevenueBillingHook,
-            'useIsRevenueBillingEnabled'
-        ).mockImplementation(() => true)
-
         const {getByText} = renderWithRouter(
             <Provider store={mockStore(defaultState as any)}>
                 <AdvancedTriggersTooltip isConvertSubscriber={false} />
@@ -53,24 +47,6 @@ describe('<AdvancedTriggersTooltip />', () => {
     })
 
     it('should not render when is a convert subscriber', () => {
-        jest.spyOn(
-            isRevenueBillingHook,
-            'useIsRevenueBillingEnabled'
-        ).mockImplementation(() => true)
-
-        const {queryByText} = render(
-            <AdvancedTriggersTooltip isConvertSubscriber={true} />
-        )
-
-        expect(queryByText(/info/i)).not.toBeInTheDocument()
-    })
-
-    it('should not render when is the billing flag is not true', () => {
-        jest.spyOn(
-            isRevenueBillingHook,
-            'useIsRevenueBillingEnabled'
-        ).mockImplementation(() => false)
-
         const {queryByText} = render(
             <AdvancedTriggersTooltip isConvertSubscriber={true} />
         )

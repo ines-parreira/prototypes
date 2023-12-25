@@ -270,6 +270,22 @@ declare namespace Components {
              * Last Block At
              */
             last_block_at?: string /* date-time */ | null
+            /**
+             * Estimated Usage Percentage
+             */
+            estimated_usage_percentage?: number | null
+            /**
+             * Estimated Reach Date
+             */
+            estimated_reach_date?: string /* date-time */ | null
+            /**
+             * Cycle Start
+             */
+            cycle_start?: string /* date-time */ | null
+            /**
+             * Cycle End
+             */
+            cycle_end?: string /* date-time */ | null
             bundle_status: BundleOnboardingStatus
         }
         /**
@@ -1357,7 +1373,10 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig
-        ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
+        ): OperationResponse<
+            | Paths.GetStatusAndUsage.Responses.$200
+            | Paths.GetStatusAndUsage.Responses.$422
+        >
     }
     ['/billing/subscriptions/auto-upgrade']: {
         /**

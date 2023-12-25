@@ -5,12 +5,17 @@ import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import {fromJS} from 'immutable'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as isConvertCampaignCappingEnabledHook from 'pages/settings/revenue/hooks/useIsConvertCampaignCappingEnabled'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
-import {Components} from 'rest_api/revenue_addon_api/client.generated'
 import {assumeMock} from 'utils/testing'
+import {
+    convertStatusLimitReached,
+    convertStatusLimitReachedNotInstalled,
+    convertStatusOk,
+    convertStatusOkWarning,
+    convertStatusOkWarningUpgrade,
+} from 'fixtures/convert'
 import {ConvertLimitBanner} from '../ConvertLimitBanner'
 
 const defaultState = {
@@ -22,68 +27,45 @@ jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
-const isLimitReached: ReturnType<typeof useGetConvertStatus> = {
-    status: 'active',
-    usage_status: 'limit-reached',
-    usage: 51,
-    limit: 50,
-    bundle_status: 'installed',
-} as Components.Schemas.SubscriptionUsageAndBundleStatusSchema
+const blockedButtonText = 'Upgrade'
+const blockedMessageText = "You've reached the limit for your Convert plan"
 
-const isLimitReachedNoBundle: ReturnType<typeof useGetConvertStatus> = {
-    status: 'active',
-    usage_status: 'limit-reached',
-    usage: 51,
-    limit: 50,
-    bundle_status: 'not_installed',
-} as Components.Schemas.SubscriptionUsageAndBundleStatusSchema
+const warningAutoUpgradeButtonText = 'Learn more'
+const warningAutoUpgradeMessageText = 'You will be auto-upgraded'
 
-const isLimitOk: ReturnType<typeof useGetConvertStatus> = {
-    status: 'active',
-    usage_status: 'ok',
-    usage: 0,
-    limit: 50,
-    bundle_status: 'installed',
-} as Components.Schemas.SubscriptionUsageAndBundleStatusSchema
-
-const buttonText = 'Upgrade'
-const messageText = "You've reached the limit for your Convert plan"
+const warningButtonText = 'Activate auto-upgrade'
+const warningMessageText = 'your campaigns won’t be displayed'
 
 describe('ConvertLimitBanner', () => {
+    beforeEach(() => {
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => true)
+    })
+
     afterEach(() => {
         jest.resetAllMocks()
     })
 
-    it('should render correctly', () => {
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-        jest.spyOn(
-            isConvertCampaignCappingEnabledHook,
-            'useIsConvertCampaignCappingEnabled'
-        ).mockImplementation(() => true)
-        useGetConvertStatusMock.mockReturnValue(isLimitReached)
+    it('should render correctly limit reached', () => {
+        useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
 
         const {queryByText} = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>
         )
-        expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
-        expect(queryByText(buttonText)).toBeInTheDocument()
+        expect(
+            queryByText(blockedMessageText, {exact: false})
+        ).toBeInTheDocument()
+        expect(queryByText(blockedButtonText)).toBeInTheDocument()
     })
 
     it('should not render because the bundle is not installed even the usage is limit-reached', () => {
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-        jest.spyOn(
-            isConvertCampaignCappingEnabledHook,
-            'useIsConvertCampaignCappingEnabled'
-        ).mockImplementation(() => true)
-        useGetConvertStatusMock.mockReturnValue(isLimitReachedNoBundle)
+        useGetConvertStatusMock.mockReturnValue(
+            convertStatusLimitReachedNotInstalled
+        )
 
         const {queryByText} = render(
             <Provider store={store}>
@@ -91,20 +73,14 @@ describe('ConvertLimitBanner', () => {
             </Provider>
         )
 
-        expect(queryByText(messageText, {exact: false})).not.toBeInTheDocument()
-        expect(queryByText(buttonText)).not.toBeInTheDocument()
+        expect(
+            queryByText(blockedMessageText, {exact: false})
+        ).not.toBeInTheDocument()
+        expect(queryByText(blockedButtonText)).not.toBeInTheDocument()
     })
 
     it('should not render because usage is ok', () => {
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-        jest.spyOn(
-            isConvertCampaignCappingEnabledHook,
-            'useIsConvertCampaignCappingEnabled'
-        ).mockImplementation(() => true)
-        useGetConvertStatusMock.mockReturnValue(isLimitOk)
+        useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
         const {queryByText} = render(
             <Provider store={store}>
@@ -112,20 +88,15 @@ describe('ConvertLimitBanner', () => {
             </Provider>
         )
 
-        expect(queryByText(messageText, {exact: false})).not.toBeInTheDocument()
-        expect(queryByText(buttonText)).not.toBeInTheDocument()
+        expect(queryByText(blockedButtonText)).not.toBeInTheDocument()
+        expect(queryByText(warningButtonText)).not.toBeInTheDocument()
+        expect(
+            queryByText(warningAutoUpgradeButtonText)
+        ).not.toBeInTheDocument()
     })
 
-    it('should not render because flag is off', () => {
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-        jest.spyOn(
-            isConvertCampaignCappingEnabledHook,
-            'useIsConvertCampaignCappingEnabled'
-        ).mockImplementation(() => false)
-        useGetConvertStatusMock.mockReturnValue(isLimitOk)
+    it('should render warning', () => {
+        useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
 
         const {queryByText} = render(
             <Provider store={store}>
@@ -133,7 +104,39 @@ describe('ConvertLimitBanner', () => {
             </Provider>
         )
 
-        expect(queryByText(messageText, {exact: false})).not.toBeInTheDocument()
-        expect(queryByText(buttonText)).not.toBeInTheDocument()
+        expect(
+            queryByText(warningMessageText, {exact: false})
+        ).toBeInTheDocument()
+        expect(queryByText(warningButtonText)).toBeInTheDocument()
+    })
+
+    it('should render warning', () => {
+        useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
+
+        const {queryByText} = render(
+            <Provider store={store}>
+                <ConvertLimitBanner />
+            </Provider>
+        )
+
+        expect(
+            queryByText(warningMessageText, {exact: false})
+        ).toBeInTheDocument()
+        expect(queryByText(warningButtonText)).toBeInTheDocument()
+    })
+
+    it('should render warning for upgrade', () => {
+        useGetConvertStatusMock.mockReturnValue(convertStatusOkWarningUpgrade)
+
+        const {queryByText} = render(
+            <Provider store={store}>
+                <ConvertLimitBanner />
+            </Provider>
+        )
+
+        expect(
+            queryByText(warningAutoUpgradeMessageText, {exact: false})
+        ).toBeInTheDocument()
+        expect(queryByText(warningAutoUpgradeButtonText)).toBeInTheDocument()
     })
 })

@@ -7,7 +7,6 @@ import {Container} from 'reactstrap'
 import Segmented from 'pages/common/components/Segmented'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
 import ConvertSetupBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/ConvertSetupBanner/ConvertSetupBanner'
 import {QuickFilters} from '../QuickFilters'
 
@@ -48,7 +47,6 @@ export const CampaignsList = ({
     onUpdateCampaign,
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
-    const isRevenueBillingEnabled = useIsRevenueBillingEnabled()
     const {getParams, onChangeParams} = useCampaignListOptions()
 
     const {page, search, state, filters} = getParams()
@@ -199,9 +197,7 @@ export const CampaignsList = ({
                     ])}
                 />
 
-                {!isConvertSubscriber && isRevenueBillingEnabled && (
-                    <CampaignInfobarPaywall />
-                )}
+                {!isConvertSubscriber && <CampaignInfobarPaywall />}
 
                 <CampaignChatHiddenWarning integration={integration} />
 

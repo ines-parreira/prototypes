@@ -29,6 +29,8 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {StatsFilters} from 'models/stat/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {convertStatusOk} from 'fixtures/convert'
+import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import TagsStatsFilter from '../TagsStatsFilter'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
 import {IntegrationType} from '../../../models/integration/constants'
@@ -54,6 +56,10 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
     <div>ChannelsStatsFilter</div>
 ))
+
+jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+
+const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = assumeMock(useStatResource)
@@ -231,6 +237,8 @@ describe('SupportPerformanceRevenue', () => {
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
         mathRandomSpy = jest.spyOn(Math, 'random').mockImplementation(() => 42)
+
+        useGetConvertStatusMock.mockReturnValue(convertStatusOk)
     })
 
     afterEach(() => {

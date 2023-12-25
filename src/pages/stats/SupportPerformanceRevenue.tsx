@@ -24,6 +24,7 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import ConvertLimitBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
@@ -133,6 +134,7 @@ helping customers through the purchasing journey."
                             config={statsConfig.get(REVENUE_OVERVIEW)}
                         />
                     </KeyMetricStatWrapper>
+                    <ConvertLimitBanner classes={'ml-4 mr-4'} />
                     <StatWrapper
                         stat={revenuePerDay}
                         isFetchingStat={isFetchingRevenuePerDay}

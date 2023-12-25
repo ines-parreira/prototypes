@@ -11,7 +11,6 @@ import NavbarLink, {
 } from 'pages/common/components/navbar/NavbarLink'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
-import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 
@@ -26,7 +25,6 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
 
     const isConvertSubscriber = useIsConvertSubscriber()
-    const isConvertBillingEnabled = useIsRevenueBillingEnabled()
 
     return (
         <>
@@ -227,7 +225,7 @@ export default function StatsNavbarView() {
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />
             </NavbarBlock>
-            {(isConvertBillingEnabled || isConvertSubscriber) && (
+            {isConvertSubscriber && (
                 <NavbarBlock icon="attach_money" title="Convert">
                     <div className={cssNavbar.menu}>
                         <ConvertStatsNavbar

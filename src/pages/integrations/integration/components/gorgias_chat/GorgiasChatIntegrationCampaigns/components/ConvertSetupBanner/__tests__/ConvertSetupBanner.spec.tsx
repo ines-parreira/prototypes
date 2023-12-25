@@ -11,7 +11,7 @@ import {user} from 'fixtures/users'
 import {AGENT_ROLE} from 'config/user'
 import {assumeMock} from 'utils/testing'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
-import {Components} from 'rest_api/revenue_addon_api/client.generated'
+import {convertStatusNotInstalled, convertStatusOk} from 'fixtures/convert'
 import {ConvertSetupBanner} from '../ConvertSetupBanner'
 
 const defaultState = {
@@ -26,22 +26,6 @@ const unsubscribedMessageText = 'Install Convert on your store before January 1'
 jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
-const isInstalled: ReturnType<typeof useGetConvertStatus> = {
-    status: 'active',
-    usage_status: 'ok',
-    usage: 0,
-    limit: 50,
-    bundle_status: 'installed',
-} as Components.Schemas.SubscriptionUsageAndBundleStatusSchema
-
-const isNotInstalled: ReturnType<typeof useGetConvertStatus> = {
-    status: 'active',
-    usage_status: 'ok',
-    usage: 0,
-    limit: 50,
-    bundle_status: 'not_installed',
-} as Components.Schemas.SubscriptionUsageAndBundleStatusSchema
-
 describe('ConvertSetupBanner', () => {
     afterEach(() => {
         jest.resetAllMocks()
@@ -53,7 +37,7 @@ describe('ConvertSetupBanner', () => {
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
 
-        useGetConvertStatusMock.mockReturnValue(isNotInstalled)
+        useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
 
         const {queryByText} = render(
             <Provider store={store}>
@@ -77,7 +61,7 @@ describe('ConvertSetupBanner', () => {
             'useIsConvertCampaignBundleWarningEnabled'
         ).mockImplementation(() => true)
 
-        useGetConvertStatusMock.mockReturnValue(isNotInstalled)
+        useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
 
         const {queryByText} = render(
             <Provider store={store}>
@@ -101,7 +85,7 @@ describe('ConvertSetupBanner', () => {
             'useIsConvertCampaignBundleWarningEnabled'
         ).mockImplementation(() => false)
 
-        useGetConvertStatusMock.mockReturnValue(isNotInstalled)
+        useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
 
         const {queryByText} = render(
             <Provider store={store}>
@@ -119,7 +103,7 @@ describe('ConvertSetupBanner', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
-        useGetConvertStatusMock.mockReturnValue(isInstalled)
+        useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
         const {queryByText} = render(
             <Provider store={store}>
@@ -139,7 +123,7 @@ describe('ConvertSetupBanner', () => {
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
 
-        useGetConvertStatusMock.mockReturnValue(isNotInstalled)
+        useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
 
         const agentStore = createStore((state) => state as RootState, {
             currentUser: fromJS({

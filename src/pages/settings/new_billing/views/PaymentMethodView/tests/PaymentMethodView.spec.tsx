@@ -142,6 +142,9 @@ describe('PaymentMethodView', () => {
             sms: {
                 isSelected: false,
             },
+            convert: {
+                isSelected: false,
+            },
         }
         window.sessionStorage.setItem(
             SELECTED_PRODUCTS_SESSION_STORAGE_KEY,

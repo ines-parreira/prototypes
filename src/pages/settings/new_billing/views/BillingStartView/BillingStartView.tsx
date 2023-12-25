@@ -35,6 +35,9 @@ import {
 } from 'state/billing/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import {AlertType} from 'pages/common/components/Alert/Alert'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {formatDatetime} from 'utils'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -59,7 +62,6 @@ import useGetConvertStatus, {
     BundleOnboardingStatus,
     UsageStatus,
 } from '../../../revenue/hooks/useGetConvertStatus'
-import {useIsConvertCampaignCappingEnabled} from '../../../revenue/hooks/useIsConvertCampaignCappingEnabled'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
@@ -78,7 +80,9 @@ const BillingStartView = () => {
     const isPaymentShopify = payment === 'shopify'
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
-    const isConvertCampaignCappingEnabled = useIsConvertCampaignCappingEnabled()
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.LongDateWithYear
+    )
 
     const convertStatus = useGetConvertStatus()
 
@@ -294,8 +298,7 @@ const BillingStartView = () => {
                     })
                 )
             } else if (
-                convertStatus.usage_status === UsageStatus.LIMIT_REACHED &&
-                isConvertCampaignCappingEnabled
+                convertStatus.usage_status === UsageStatus.LIMIT_REACHED
             ) {
                 setConvertBanner({
                     description:
@@ -304,6 +307,32 @@ const BillingStartView = () => {
                         'them back to your website.',
                     type: AlertType.Error,
                 })
+            } else if (
+                convertStatus.usage_status === UsageStatus.OK &&
+                convertStatus.last_warning_100_at &&
+                convertStatus.cycle_start &&
+                convertStatus.cycle_end &&
+                moment.utc(convertStatus.cycle_start) <=
+                    moment.utc(convertStatus.last_warning_100_at) &&
+                moment.utc(convertStatus.last_warning_100_at) <=
+                    moment.utc(convertStatus.cycle_end) &&
+                convertStatus.estimated_reach_date
+            ) {
+                const estimatedDate = formatDatetime(
+                    convertStatus.estimated_reach_date,
+                    datetimeFormat
+                ).toString()
+                if (convertStatus.auto_upgrade_enabled) {
+                    setConvertBanner({
+                        description: `You are likely to reach your allowance before ${estimatedDate}, and you will be auto-upgraded.`,
+                        type: AlertType.Warning,
+                    })
+                } else {
+                    setConvertBanner({
+                        description: `You are likely to reach your allowance before ${estimatedDate}, and campaigns will stop being displayed.`,
+                        type: AlertType.Warning,
+                    })
+                }
             }
         }
         // trigger useEffect only when convertProduct is changed or status was fetched
