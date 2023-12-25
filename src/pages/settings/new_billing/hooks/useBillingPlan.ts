@@ -196,9 +196,10 @@ export const useBillingPlans = ({
     })
 
     const autoUpgradeChanged = useMemo(() => {
+        const convertToggle = selectedPlans[ProductType.Convert].autoUpgrade
         return (
-            convertAutoUpgrade !==
-            selectedPlans[ProductType.Convert].autoUpgrade
+            typeof convertToggle === 'boolean' &&
+            convertAutoUpgrade !== convertToggle
         )
     }, [convertAutoUpgrade, selectedPlans])
 
