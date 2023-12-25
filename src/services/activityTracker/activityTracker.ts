@@ -21,7 +21,8 @@ const activityTrackerInstance = BrowserEventTracker.initialize({
     cloudEventsConfig: {
         source: `gorgias/helpdesk/web`,
         dataschemaGroupId: 'helpdesk.ui',
-        partitionkey: `{account_id: ${window.GORGIAS_STATE.currentAccount.id}, user_id: ${window.GORGIAS_STATE.currentUser.id}}`,
+        // optional chaining fixes a Storybook issue with the TicketNavbar component
+        partitionkey: `{account_id: ${window.GORGIAS_STATE?.currentAccount?.id}, user_id: ${window.GORGIAS_STATE?.currentUser?.id}}`,
         reverseDNSName: 'com.gorgias.helpdesk.ui',
     },
     getApiHeaders: async () => {
@@ -30,8 +31,8 @@ const activityTrackerInstance = BrowserEventTracker.initialize({
 })
 
 activityTrackerInstance.createUserContext({
-    accountId: window.GORGIAS_STATE.currentAccount.id,
-    userId: window.GORGIAS_STATE.currentUser.id,
+    accountId: window.GORGIAS_STATE?.currentAccount?.id,
+    userId: window.GORGIAS_STATE?.currentUser?.id,
     clientId: window.CLIENT_ID,
     path: window.location.pathname,
 })
