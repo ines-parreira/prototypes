@@ -20,6 +20,14 @@ export enum VoiceCallStatus {
     Missed = 'missed',
 }
 
+export enum VoiceCallDisplayStatus {
+    Answered = 'Answered',
+    InProgress = 'In progress',
+    Ringing = 'Ringing',
+    Missed = 'Missed',
+    Failed = 'Failed',
+}
+
 export type VoiceCall = {
     id: number
     integration_id: number
@@ -115,3 +123,52 @@ export const isOutboundVoiceCall = (
     input: unknown
 ): input is OutboundVoiceCall =>
     isVoiceCall(input) && typeof input.initiated_by_agent_id === 'number'
+
+export const getDisplayOutboundVoiceCallStatus = (status: VoiceCallStatus) => {
+    switch (status) {
+        case VoiceCallStatus.Ringing:
+        case VoiceCallStatus.InProgress:
+        case VoiceCallStatus.Queued:
+        case VoiceCallStatus.Initiated:
+            return VoiceCallDisplayStatus.Ringing
+        case VoiceCallStatus.Failed:
+            return VoiceCallDisplayStatus.Failed
+        case VoiceCallStatus.Canceled:
+        case VoiceCallStatus.Busy:
+        case VoiceCallStatus.NoAnswer:
+        case VoiceCallStatus.Missed:
+            return VoiceCallDisplayStatus.Missed
+        case VoiceCallStatus.Answered:
+        case VoiceCallStatus.Connected:
+            return VoiceCallDisplayStatus.InProgress
+        case VoiceCallStatus.Completed:
+            return VoiceCallDisplayStatus.Answered
+        default:
+            return null
+    }
+}
+
+export const getDisplayInboundVoiceCallStatus = (status: VoiceCallStatus) => {
+    switch (status) {
+        case VoiceCallStatus.Ringing:
+        case VoiceCallStatus.Initiated:
+        case VoiceCallStatus.Queued:
+        case VoiceCallStatus.InProgress:
+            return VoiceCallDisplayStatus.Ringing
+        case VoiceCallStatus.Failed:
+        case VoiceCallStatus.NoAnswer:
+            return VoiceCallDisplayStatus.Failed
+        case VoiceCallStatus.Canceled:
+        case VoiceCallStatus.Busy:
+        case VoiceCallStatus.Missed:
+        case VoiceCallStatus.Ending:
+            return VoiceCallDisplayStatus.Missed
+        case VoiceCallStatus.Answered:
+        case VoiceCallStatus.Connected:
+            return VoiceCallDisplayStatus.InProgress
+        case VoiceCallStatus.Completed:
+            return VoiceCallDisplayStatus.Answered
+        default:
+            return null
+    }
+}

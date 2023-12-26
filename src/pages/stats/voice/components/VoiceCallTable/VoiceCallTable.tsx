@@ -11,6 +11,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import Pagination from 'pages/common/components/Pagination'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'
+import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {getFormattedDurationEndedCall} from 'models/voiceCall/utils'
 import {StatsFilters} from 'models/stat/types'
@@ -156,7 +157,10 @@ export const VoiceCallTable = ({
                                       />
                                   </BodyCell>
                                   <BodyCell className={css.smallCell}>
-                                      {item.status}
+                                      <VoiceCallStatusLabel
+                                          voiceCallStatus={item.status}
+                                          direction={item.direction}
+                                      />
                                   </BodyCell>
                                   <BodyCell
                                       className={css.smallCell}

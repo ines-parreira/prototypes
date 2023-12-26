@@ -163,7 +163,7 @@ describe('VoiceCallTable', () => {
         expect(getByText('VoiceCallCustomerLabel 1')).toBeInTheDocument()
         expect(getByText('VoiceCallAgentLabel 1')).toBeInTheDocument()
         expect(getByText('VoiceIntegrationBasicLabel 1')).toBeInTheDocument()
-        expect(getByText('completed')).toBeInTheDocument()
+        expect(getByText('Answered')).toBeInTheDocument()
         expect(getByText('1m 40s')).toBeInTheDocument()
         expect(getByText('View ticket')).toBeInTheDocument()
 
@@ -171,7 +171,7 @@ describe('VoiceCallTable', () => {
         expect(getByText('VoiceCallCustomerLabel 2')).toBeInTheDocument()
         expect(getByText('VoiceCallAgentLabel 2')).toBeInTheDocument()
         expect(getByText('VoiceIntegrationBasicLabel 2')).toBeInTheDocument()
-        expect(getByText('missed')).toBeInTheDocument()
+        expect(getByText('Missed')).toBeInTheDocument()
         expect(getByText('1m 41s')).toBeInTheDocument()
         expect(getByText('-')).toBeInTheDocument()
     })

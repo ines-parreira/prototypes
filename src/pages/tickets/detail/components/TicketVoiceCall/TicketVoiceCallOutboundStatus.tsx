@@ -1,5 +1,9 @@
 import React from 'react'
-import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+import {
+    getDisplayOutboundVoiceCallStatus,
+    VoiceCall,
+    VoiceCallDisplayStatus,
+} from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
 import css from './TicketVoiceCallContainer.less'
@@ -9,9 +13,8 @@ type Props = {
 }
 
 export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
-    switch (voiceCall.status) {
-        case VoiceCallStatus.Ringing:
-        case VoiceCallStatus.InProgress:
+    switch (getDisplayOutboundVoiceCallStatus(voiceCall.status)) {
+        case VoiceCallDisplayStatus.Ringing:
             return (
                 <div className={css.statusWrapper}>
                     <div>Waiting for</div>
@@ -22,7 +25,7 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                     ...
                 </div>
             )
-        case VoiceCallStatus.Failed:
+        case VoiceCallDisplayStatus.Failed:
             return (
                 <div className={css.errorStatus}>
                     <strong>Failed: </strong>Our provider's carriers could not
@@ -30,9 +33,7 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                     is no longer in service or inputting a number incorrectly.
                 </div>
             )
-        case VoiceCallStatus.Canceled:
-        case VoiceCallStatus.NoAnswer:
-        case VoiceCallStatus.Busy:
+        case VoiceCallDisplayStatus.Missed:
             return (
                 <div className={css.statusWrapper}>
                     <div className={css.errorStatus}>Call missed by</div>
@@ -42,9 +43,8 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                     />
                 </div>
             )
-        case VoiceCallStatus.Answered:
-        case VoiceCallStatus.Connected:
-        case VoiceCallStatus.Completed:
+        case VoiceCallDisplayStatus.InProgress:
+        case VoiceCallDisplayStatus.Answered:
             return (
                 <div className={css.statusWrapper}>
                     <div>Answered by</div>

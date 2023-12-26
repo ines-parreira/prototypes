@@ -1,7 +1,11 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+import {
+    getDisplayInboundVoiceCallStatus,
+    VoiceCall,
+    VoiceCallDisplayStatus,
+} from 'models/voiceCall/types'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 import CollapsibleDetails from './CollapsibleDetails'
@@ -31,17 +35,13 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
         </CollapsibleDetails>
     )
 
-    switch (voiceCall.status) {
-        case VoiceCallStatus.Ringing:
-        case VoiceCallStatus.Initiated:
-        case VoiceCallStatus.Queued:
-        case VoiceCallStatus.InProgress:
+    switch (getDisplayInboundVoiceCallStatus(voiceCall.status)) {
+        case VoiceCallDisplayStatus.Ringing:
             return <>Ringing</>
-        case VoiceCallStatus.Failed:
-        case VoiceCallStatus.NoAnswer:
+        case VoiceCallDisplayStatus.Failed:
             return <div className={css.errorStatus}>Failed</div>
-        case VoiceCallStatus.Completed:
-        case VoiceCallStatus.Ending:
+        case VoiceCallDisplayStatus.Missed:
+        case VoiceCallDisplayStatus.Answered:
             if (!voiceCall.last_answered_by_agent_id) {
                 return (
                     <CollapsibleDetails
@@ -69,8 +69,7 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
                 )
             }
             return answeredByAgentId
-        case VoiceCallStatus.Answered:
-        case VoiceCallStatus.Connected:
+        case VoiceCallDisplayStatus.InProgress:
             return answeredByAgentId
         default:
             return null
