@@ -94,6 +94,7 @@ export default function PreviewHeader({
                                         <>
                                             <div>{articleTitle}</div>
                                             <i
+                                                title="Change recommendation"
                                                 onClick={() =>
                                                     setShowDropdown(true)
                                                 }
