@@ -19,7 +19,11 @@ import {
 import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {isAAOLegacyPrice, isTrialPrice} from 'models/billing/utils'
+import {
+    isAAOLegacyPrice,
+    isEnterprisePrice,
+    isTrialPrice,
+} from 'models/billing/utils'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
@@ -198,7 +202,10 @@ const ProductCard = ({
     }, [product, type, usage, className])
 
     const extraCost = useMemo(() => {
-        if (product && isAAOLegacyPrice(product, type)) {
+        if (
+            product &&
+            (isAAOLegacyPrice(product, type) || type === ProductType.Convert)
+        ) {
             return null
         }
 
@@ -263,7 +270,8 @@ const ProductCard = ({
 
                     {isConvertAutoUpgradeEnabled &&
                     product &&
-                    type === ProductType.Convert ? (
+                    type === ProductType.Convert &&
+                    !isEnterprisePrice(product, type) ? (
                         <div className={css.autoUpgradeLabel}>
                             Auto-upgrade
                             {autoUpgradeEnabled ? ' enabled ' : ' disabled '}

@@ -65,6 +65,10 @@ export function isAAOLegacyPrice(
     return price.num_quota_tickets === null && type === ProductType.Automation
 }
 
+export function isEnterprisePrice(price: ConvertPrice, type: ProductType) {
+    return type === ProductType.Convert && price?.custom
+}
+
 export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }

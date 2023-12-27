@@ -103,6 +103,7 @@ export type SMSOrVoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
 
 export type ConvertPrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
     num_quota_tickets: number | null
+    custom?: boolean
     tier?: number
 }
 

@@ -1,11 +1,22 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {basicMonthlyHelpdeskPrice, convertPrice1} from 'fixtures/productPrices'
 import * as isRevenueBillingHook from 'pages/settings/new_billing/hooks/useIsConvertAutoUpgradeEnabled'
+import {billingState} from 'fixtures/billing'
 import ProductPlanSelection, {
     ProductPlanSelectionProps,
 } from '../ProductPlanSelection'
+
+const mockStore = configureMockStore()
+const store = mockStore({
+    billing: fromJS(billingState),
+})
+
+jest.mock('react-router')
 
 describe('ProductPlanSelection', () => {
     const mockSetSelectedPlans = jest.fn()
@@ -108,19 +119,21 @@ describe('ProductPlanSelection', () => {
         ).mockImplementation(() => true)
 
         const {getByText} = render(
-            <ProductPlanSelection
-                {...props}
-                product={convertPrice1}
-                selectedPlans={{
-                    ...selectedPlans,
-                    [ProductType.Convert]: {
-                        isSelected: true,
-                        autoUpgrade: true,
-                        plan: convertPrice1,
-                    },
-                }}
-                type={ProductType.Convert}
-            />
+            <Provider store={store}>
+                <ProductPlanSelection
+                    {...props}
+                    product={convertPrice1}
+                    selectedPlans={{
+                        ...selectedPlans,
+                        [ProductType.Convert]: {
+                            isSelected: true,
+                            autoUpgrade: true,
+                            plan: convertPrice1,
+                        },
+                    }}
+                    type={ProductType.Convert}
+                />
+            </Provider>
         )
         expect(getByText('Click allowance auto-upgrade')).toBeInTheDocument()
     })

@@ -31,6 +31,7 @@ import {StatsFilters} from 'models/stat/types'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import {billingState} from 'fixtures/billing'
 import TagsStatsFilter from '../TagsStatsFilter'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
 import {IntegrationType} from '../../../models/integration/constants'
@@ -229,6 +230,7 @@ describe('SupportPerformanceRevenue', () => {
         teams: fromJS({
             all: teams,
         }),
+        billing: fromJS(billingState),
     } as RootState
 
     beforeEach(() => {

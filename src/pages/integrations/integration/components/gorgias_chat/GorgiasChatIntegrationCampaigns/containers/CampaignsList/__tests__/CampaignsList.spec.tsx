@@ -15,6 +15,7 @@ import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {user} from 'fixtures/users'
 import {assumeMock} from 'utils/testing'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import {billingState} from 'fixtures/billing'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
 import {createTrigger} from '../../../utils/createTrigger'
@@ -75,6 +76,7 @@ describe('<CampaignsList />', () => {
         store = mockStore({
             currentUser: fromJS(user),
             entities: entitiesInitialState,
+            billing: fromJS(billingState),
         })
         ;(useSearch as jest.Mock).mockImplementation(() => {
             return {

@@ -38,13 +38,15 @@ import {AlertType} from 'pages/common/components/Alert/Alert'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
+import {ProductType} from 'models/billing/types'
+import {isEnterprisePrice} from 'models/billing/utils'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
-    BILLING_PAYMENTS_HISTORY_PATH,
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
     BILLING_PAYMENT_PATH,
+    BILLING_PAYMENTS_HISTORY_PATH,
     BILLING_PROCESS_PATH,
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -272,7 +274,18 @@ const BillingStartView = () => {
     }, [currentUsage, dispatch, isCurrentHelpdeskLegacy, periodEnd])
 
     useEffect(() => {
-        if (convertProduct && !convertBanner && convertStatus) {
+        if (convertProduct && convertStatus) {
+            let enterpriseCta = <></>
+            if (isEnterprisePrice(convertProduct, ProductType.Convert)) {
+                enterpriseCta = (
+                    <b>
+                        <a href="mailto:billing@gorgias.com" rel="noreferrer">
+                            Contact us to upgrade
+                        </a>
+                    </b>
+                )
+            }
+
             if (
                 convertStatus.bundle_status ===
                 BundleOnboardingStatus.NOT_INSTALLED
@@ -301,10 +314,14 @@ const BillingStartView = () => {
                 convertStatus.usage_status === UsageStatus.LIMIT_REACHED
             ) {
                 setConvertBanner({
-                    description:
-                        "You've reached the limit for your Convert. As a result, your campaigns are \n" +
-                        "currently on hold. But there's a solution - upgrade now to bring \n" +
-                        'them back to your website.',
+                    description: (
+                        <>
+                            You've reached the limit for your Convert. As a
+                            result, your campaigns are currently on hold.
+                            Upgrade now to bring them back to your website.{' '}
+                            {enterpriseCta}
+                        </>
+                    ),
                     type: AlertType.Error,
                 })
             } else if (
@@ -324,15 +341,30 @@ const BillingStartView = () => {
                 ).toString()
                 if (convertStatus.auto_upgrade_enabled) {
                     setConvertBanner({
-                        description: `You are likely to reach your allowance before ${estimatedDate}, and you will be auto-upgraded.`,
+                        description: (
+                            <>
+                                You are likely to reach your allowance on{' '}
+                                {estimatedDate}, and you will be auto-upgraded.{' '}
+                                {enterpriseCta}
+                            </>
+                        ),
                         type: AlertType.Warning,
                     })
                 } else {
                     setConvertBanner({
-                        description: `You are likely to reach your allowance before ${estimatedDate}, and campaigns will stop being displayed.`,
+                        description: (
+                            <>
+                                You are likely to reach your allowance on{' '}
+                                {estimatedDate}, and campaigns will stop being
+                                displayed. {enterpriseCta}
+                            </>
+                        ),
                         type: AlertType.Warning,
                     })
                 }
+            } else {
+                // hide banner
+                setConvertBanner(undefined)
             }
         }
         // trigger useEffect only when convertProduct is changed or status was fetched

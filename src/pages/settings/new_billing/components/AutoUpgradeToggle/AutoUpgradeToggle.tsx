@@ -1,5 +1,6 @@
-import React, {useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 
+import {useLocation} from 'react-router-dom'
 import {Price, ProductType} from 'models/billing/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
@@ -8,6 +9,7 @@ import warningIcon from 'assets/img/icons/warning.svg'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import Modal from 'pages/common/components/modal/Modal'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {getNextTier} from '../../utils/getNextTier'
@@ -29,6 +31,8 @@ const AutoUpgradeToggle = ({
 }: AutoUpgradeToggleProps) => {
     const selectedPlan = selectedPlans[type]
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const isConvertSubscriber = useIsConvertSubscriber()
+    const location = useLocation()
 
     const autoUpgradeValue = Boolean(selectedPlan.autoUpgrade)
 
@@ -62,14 +66,27 @@ const AutoUpgradeToggle = ({
         }))
     }
 
+    useEffect(() => {
+        // Auto-select auto-upgrade on subscribe to Convert or arriving from CTA link
+        if (!isConvertSubscriber || location.hash === '#auto-upgrade') {
+            handleAutoUpgradePlan(true)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isConvertSubscriber])
+
     return (
         <>
-            <div className={`mt-3 pt-3 ${css.container}`}>
+            <div
+                className={`mt-3 pt-3 ${css.container} ${
+                    isEnterprisePlan ? '' : css.flex
+                }`}
+            >
                 <ToggleInput
                     isToggled={autoUpgradeValue}
                     onClick={handleAutoUpgradePlan}
                     aria-label={`Enable auto-upgrade`}
                     isDisabled={isEnterprisePlan}
+                    className="mr-4"
                     caption={
                         isEnterprisePlan ? (
                             <>

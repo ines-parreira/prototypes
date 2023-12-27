@@ -10,6 +10,10 @@ import useGetConvertStatus, {
 import {formatDatetime} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import {isEnterprisePrice} from 'models/billing/utils'
+import {ProductType} from 'models/billing/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentConvertProduct} from 'state/billing/selectors'
 
 type Props = {
     classes?: string
@@ -20,6 +24,7 @@ export const ConvertLimitBanner = ({
     classes,
     shopIntegrationId,
 }: Props): JSX.Element => {
+    const convertProduct = useAppSelector(getCurrentConvertProduct)
     const status = useGetConvertStatus(false, shopIntegrationId)
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.LongDateWithYear
@@ -88,16 +93,16 @@ export const ConvertLimitBanner = ({
             message = (
                 <>
                     According to your current usage of campaign clicks, you will
-                    reach 100% of your click allowance before on{' '}
-                    {estimatedReachDate}. You will be auto-upgraded when you
-                    will reach 100% of your click.
+                    reach 100% of your click allowance on {estimatedReachDate}.
+                    You will be auto-upgraded when you will reach 100% of your
+                    click.
                 </>
             )
         } else {
             cta = (
                 <Link
                     className="mr-3"
-                    to={`/app/settings/billing/process/convert`}
+                    to={`/app/settings/billing/process/convert#auto-upgrade`}
                 >
                     Activate auto-upgrade
                 </Link>
@@ -113,6 +118,19 @@ export const ConvertLimitBanner = ({
         }
     } else {
         return <></>
+    }
+
+    if (
+        convertProduct &&
+        isEnterprisePrice(convertProduct, ProductType.Convert)
+    ) {
+        cta = (
+            <b>
+                <a href="mailto:billing@gorgias.com" rel="noreferrer">
+                    Contact us to upgrade
+                </a>
+            </b>
+        )
     }
 
     return (

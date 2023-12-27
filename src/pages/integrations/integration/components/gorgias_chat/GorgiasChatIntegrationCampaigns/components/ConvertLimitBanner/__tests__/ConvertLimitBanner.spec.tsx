@@ -7,6 +7,7 @@ import {fromJS} from 'immutable'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
+import {billingState} from 'fixtures/billing'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {assumeMock} from 'utils/testing'
 import {
@@ -20,6 +21,7 @@ import {ConvertLimitBanner} from '../ConvertLimitBanner'
 
 const defaultState = {
     currentUser: fromJS(user),
+    billing: fromJS(billingState),
 } as RootState
 const store = createStore((state) => state as RootState, defaultState)
 
