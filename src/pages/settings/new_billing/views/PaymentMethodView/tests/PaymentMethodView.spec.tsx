@@ -9,9 +9,9 @@ import {createStripeCardToken} from 'utils/stripe'
 import {account} from 'fixtures/account'
 
 import {
-    AUTOMATE_PRODUCT_ID,
+    AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
-    basicMonthlyAutomatePrice,
+    basicMonthlyAutomationPrice,
     basicMonthlyHelpdeskPrice,
     products,
 } from 'fixtures/productPrices'
@@ -221,8 +221,8 @@ describe('PaymentMethodView', () => {
                     products: {
                         [HELPDESK_PRODUCT_ID]:
                             basicMonthlyHelpdeskPrice.price_id,
-                        [AUTOMATE_PRODUCT_ID]:
-                            basicMonthlyAutomatePrice.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPrice.price_id,
                     },
                     status: 'trialing',
                 },

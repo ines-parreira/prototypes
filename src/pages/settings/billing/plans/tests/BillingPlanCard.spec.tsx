@@ -12,10 +12,10 @@ import {billingState} from 'fixtures/billing'
 import {
     advancedMonthlyHelpdeskPrice,
     basicMonthlyHelpdeskPrice,
-    customAutomatePrice,
+    customAutomationPrice,
     customHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
-    legacyBasicAutomatePrice,
+    legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
     products,
     proMonthlyHelpdeskPrice,
@@ -31,7 +31,10 @@ jest.mock('lodash/uniqueId', () => () => '42')
 describe('<BillingPlanCard />', () => {
     const productPrices = _cloneDeep(products)
     productPrices[0].prices.push(legacyBasicHelpdeskPrice, customHelpdeskPrice)
-    productPrices[1].prices.push(legacyBasicAutomatePrice, customAutomatePrice)
+    productPrices[1].prices.push(
+        legacyBasicAutomationPrice,
+        customAutomationPrice
+    )
 
     const defaultState: Partial<RootState> = {
         billing: fromJS({

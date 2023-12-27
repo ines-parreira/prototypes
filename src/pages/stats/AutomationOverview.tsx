@@ -7,9 +7,9 @@ import {
     getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
 import {
-    AUTOMATE_FLOW,
-    AUTOMATE_OVERVIEW,
-    AUTOMATE_PER_CHANNEL,
+    AUTOMATION_FLOW,
+    AUTOMATION_OVERVIEW,
+    AUTOMATION_PER_CHANNEL,
     stats as statsConfig,
 } from 'config/stats'
 import {
@@ -31,7 +31,7 @@ import StatWrapper from './StatWrapper'
 import SankeyStat from './common/components/charts/SankeyStat'
 import {BarStat} from './common/components/charts/BarStat'
 
-const AUTOMATE_OVERVIEW_STAT_NAME = 'automation-overview'
+const AUTOMATION_OVERVIEW_STAT_NAME = 'automation-overview'
 
 export default function AutomationOverview() {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
@@ -51,8 +51,8 @@ export default function AutomationOverview() {
 
     const [automationOverview, isFetchingAutomationOverview] =
         useStatResource<OneDimensionalChart>({
-            statName: AUTOMATE_OVERVIEW_STAT_NAME,
-            resourceName: AUTOMATE_OVERVIEW,
+            statName: AUTOMATION_OVERVIEW_STAT_NAME,
+            resourceName: AUTOMATION_OVERVIEW,
             statsFilters: pageStatsFilters,
         })
 
@@ -62,15 +62,15 @@ export default function AutomationOverview() {
 
     const [automationFlow, isFetchingAutomationFlow] =
         useStatResource<SankeyDiagram>({
-            statName: AUTOMATE_OVERVIEW_STAT_NAME,
-            resourceName: AUTOMATE_FLOW,
+            statName: AUTOMATION_OVERVIEW_STAT_NAME,
+            resourceName: AUTOMATION_FLOW,
             statsFilters: pageStatsFilters,
         })
 
     const [automationPerChannel, isFetchingAutomationPerChannel] =
         useStatResource<TwoDimensionalChart>({
-            statName: AUTOMATE_OVERVIEW_STAT_NAME,
-            resourceName: AUTOMATE_PER_CHANNEL,
+            statName: AUTOMATION_OVERVIEW_STAT_NAME,
+            resourceName: AUTOMATION_PER_CHANNEL,
             statsFilters: pageStatsFilters,
         })
 
@@ -108,13 +108,13 @@ export default function AutomationOverview() {
                             ])}
                             meta={immutableAutomationOverview.get('meta')}
                             loading={isFetchingAutomationOverview}
-                            config={statsConfig.get(AUTOMATE_OVERVIEW)}
+                            config={statsConfig.get(AUTOMATION_OVERVIEW)}
                         />
                     </KeyMetricStatWrapper>
                     <StatWrapper
                         stat={automationFlow}
                         isFetchingStat={isFetchingAutomationFlow}
-                        resourceName={AUTOMATE_FLOW}
+                        resourceName={AUTOMATION_FLOW}
                         statsFilters={pageStatsFilters}
                         helpText="Visualize at a glance where your customer interactions come from, if they are automated and if so, from which channel."
                         isDownloadable
@@ -123,14 +123,14 @@ export default function AutomationOverview() {
                             <SankeyStat
                                 data={stat.getIn(['data', 'data'])}
                                 legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(AUTOMATE_FLOW)}
+                                config={statsConfig.get(AUTOMATION_FLOW)}
                             />
                         )}
                     </StatWrapper>
                     <StatWrapper
                         stat={automationPerChannel}
                         isFetchingStat={isFetchingAutomationPerChannel}
-                        resourceName={AUTOMATE_PER_CHANNEL}
+                        resourceName={AUTOMATION_PER_CHANNEL}
                         statsFilters={pageStatsFilters}
                         helpText="Number of customer interactions automated by channels"
                         isDownloadable
@@ -139,7 +139,7 @@ export default function AutomationOverview() {
                             <BarStat
                                 data={stat.getIn(['data', 'data'])}
                                 legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(AUTOMATE_PER_CHANNEL)}
+                                config={statsConfig.get(AUTOMATION_PER_CHANNEL)}
                             />
                         )}
                     </StatWrapper>

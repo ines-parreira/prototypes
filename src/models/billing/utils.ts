@@ -2,7 +2,7 @@ import _minBy from 'lodash/minBy'
 
 import {ColorType} from 'pages/common/components/Badge/Badge'
 import {
-    AutomatePrice,
+    AutomationPrice,
     ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
@@ -29,14 +29,14 @@ export const getFullPrice = (discounted_amount: number, discount: number) => {
 }
 
 export function isHelpdeskPrice(
-    price: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
 ): price is HelpdeskPrice {
     return 'public' in price
 }
 
-export function isAutomatePrice(
-    price: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
-): price is AutomatePrice {
+export function isAutomationPrice(
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+): price is AutomationPrice {
     return 'automation_addon_discount' in price
 }
 
@@ -47,7 +47,7 @@ export function isStarterTierPrice(
 }
 
 export function isTrialPrice(
-    price: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice,
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice,
     type: ProductType
 ) {
     return (
@@ -59,7 +59,7 @@ export function isTrialPrice(
 }
 
 export function isAAOLegacyPrice(
-    price: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice,
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice,
     type: ProductType
 ) {
     return price.num_quota_tickets === null && type === ProductType.Automation
@@ -70,7 +70,12 @@ export function getFormattedAmount(amountInCents: number) {
 }
 
 export const getCheapestPrice = (
-    prices?: (HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice)[],
+    prices?: (
+        | HelpdeskPrice
+        | AutomationPrice
+        | SMSOrVoicePrice
+        | ConvertPrice
+    )[],
     interval?: PlanInterval
 ) =>
     !!prices

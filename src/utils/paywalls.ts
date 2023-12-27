@@ -3,7 +3,7 @@ import {
     AccountFeatureMetadata,
 } from '../state/currentAccount/types'
 import {
-    AutomatePrice,
+    AutomationPrice,
     HelpdeskPrice,
     PlanInterval,
 } from '../models/billing/types'
@@ -41,7 +41,7 @@ export const convertLegacyPlanNameToPublicPlanName = (
 
 export const getCheapestPriceNameForFeature = (
     featureName: AccountFeature,
-    prices: (HelpdeskPrice | AutomatePrice)[]
+    prices: (HelpdeskPrice | AutomationPrice)[]
 ) => {
     return prices
         .filter((price) => price.interval === PlanInterval.Month)

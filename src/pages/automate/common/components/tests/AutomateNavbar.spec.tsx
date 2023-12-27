@@ -10,7 +10,7 @@ import {DndProvider} from 'react-dnd'
 import {user} from 'fixtures/users'
 import {
     account,
-    automateSubscriptionProductPrices,
+    automationSubscriptionProductPrices,
     legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
 import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
@@ -19,7 +19,7 @@ import {billingState} from 'fixtures/billing'
 import {getLDClient} from 'utils/launchDarkly'
 import {integrationsState} from 'fixtures/integrations'
 import {
-    legacyBasicAutomatePrice,
+    legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
 } from 'fixtures/productPrices'
 import {ThemeProvider} from 'theme'
@@ -91,7 +91,7 @@ describe('<AutomateNavbar />', () => {
                             ...account,
                             current_subscription: {
                                 ...account.current_subscription,
-                                products: automateSubscriptionProductPrices,
+                                products: automationSubscriptionProductPrices,
                             },
                         }),
                         currentUser: fromJS({
@@ -169,7 +169,7 @@ describe('<AutomateNavbar />', () => {
                                     ...billingState.products[1],
                                     prices: [
                                         ...billingState.products[1].prices,
-                                        legacyBasicAutomatePrice,
+                                        legacyBasicAutomationPrice,
                                     ],
                                 },
                             ],
@@ -197,7 +197,7 @@ describe('<AutomateNavbar />', () => {
                             ...account,
                             current_subscription: {
                                 ...account.current_subscription,
-                                products: automateSubscriptionProductPrices,
+                                products: automationSubscriptionProductPrices,
                             },
                         }),
                         currentUser: fromJS({
@@ -267,7 +267,7 @@ describe('<AutomateNavbar />', () => {
                                     ...billingState.products[1],
                                     prices: [
                                         ...billingState.products[1].prices,
-                                        legacyBasicAutomatePrice,
+                                        legacyBasicAutomationPrice,
                                     ],
                                 },
                             ],
@@ -295,7 +295,7 @@ describe('<AutomateNavbar />', () => {
                             ...account,
                             current_subscription: {
                                 ...account.current_subscription,
-                                products: automateSubscriptionProductPrices,
+                                products: automationSubscriptionProductPrices,
                             },
                         }),
                     })}

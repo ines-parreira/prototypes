@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 
 import classNames from 'classnames'
 import {
-    AutomatePrice,
+    AutomationPrice,
     ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
@@ -23,8 +23,13 @@ import css from './SummaryItem.less'
 export type SummaryItemProps = {
     type: ProductType
     interval?: PlanInterval
-    product?: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
-    prices?: (HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice)[]
+    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    prices?: (
+        | HelpdeskPrice
+        | AutomationPrice
+        | SMSOrVoicePrice
+        | ConvertPrice
+    )[]
     selectedPlans: SelectedPlans
     isFrequencyChanged?: boolean
 }

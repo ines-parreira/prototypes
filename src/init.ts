@@ -33,7 +33,7 @@ import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
 import {
-    getCurrentAutomateProduct,
+    getCurrentAutomationProduct,
     getCurrentHelpdeskProduct,
 } from 'state/billing/selectors'
 import {RootState} from 'state/types'
@@ -142,15 +142,15 @@ export function initApp() {
     const currentHelpdeskProduct = hasBillingInitialized
         ? getCurrentHelpdeskProduct(state)
         : undefined
-    const currentAutomateProduct = hasBillingInitialized
-        ? getCurrentAutomateProduct(state)
+    const currentAutomationProduct = hasBillingInitialized
+        ? getCurrentAutomationProduct(state)
         : undefined
 
     initLaunchDarkly(
         state.currentUser.toJS(),
         state.currentAccount.toJS(),
         currentHelpdeskProduct?.price_id,
-        currentAutomateProduct?.price_id
+        currentAutomationProduct?.price_id
     )
 
     Chart.register(

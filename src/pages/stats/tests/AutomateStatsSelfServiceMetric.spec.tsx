@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _cloneDeep from 'lodash/cloneDeep'
 
-import {AUTOMATE_OVERVIEW, stats as statsConfig} from 'config/stats'
+import {AUTOMATION_OVERVIEW, stats as statsConfig} from 'config/stats'
 import {AutomateStatsSelfServiceMetric} from 'pages/stats/AutomateStatsSelfServiceMetric'
 import {RootState, StoreDispatch} from 'state/types'
 import {
@@ -16,13 +16,13 @@ import {
 import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
-    legacyBasicAutomatePrice,
+    legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
     products,
     starterHelpdeskPrice,
 } from 'fixtures/productPrices'
 import {
-    automateSubscriptionProductPrices,
+    automationSubscriptionProductPrices,
     legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
@@ -40,7 +40,7 @@ describe('<AutomateStatsSelfServiceMetric />', () => {
         },
     ])
     const metricConfig = (
-        statsConfig.get(AUTOMATE_OVERVIEW).get('metrics') as List<any>
+        statsConfig.get(AUTOMATION_OVERVIEW).get('metrics') as List<any>
     ).get(2)
 
     const minProps: ComponentProps<typeof AutomateStatsSelfServiceMetric> = {
@@ -57,7 +57,7 @@ describe('<AutomateStatsSelfServiceMetric />', () => {
 
     const productsWithLegacy = _cloneDeep(products)
     productsWithLegacy[0].prices.push(legacyBasicHelpdeskPrice)
-    productsWithLegacy[1].prices.push(legacyBasicAutomatePrice)
+    productsWithLegacy[1].prices.push(legacyBasicAutomationPrice)
 
     const defaultState = {
         billing: fromJS({...billingState, products: productsWithStarterPrice}),
@@ -123,7 +123,7 @@ describe('<AutomateStatsSelfServiceMetric />', () => {
                 ...defaultState,
                 currentAccount: fromJS({
                     current_subscription: {
-                        products: automateSubscriptionProductPrices,
+                        products: automationSubscriptionProductPrices,
                     },
                 }),
             },
@@ -133,7 +133,7 @@ describe('<AutomateStatsSelfServiceMetric />', () => {
             {
                 currentAccount: fromJS({
                     current_subscription: {
-                        products: automateSubscriptionProductPrices,
+                        products: automationSubscriptionProductPrices,
                     },
                 }),
                 entities: {

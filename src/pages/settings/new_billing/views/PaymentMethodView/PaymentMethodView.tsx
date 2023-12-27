@@ -57,8 +57,8 @@ const PaymentMethodView = ({
     const {
         helpdeskProduct,
         helpdeskPrices,
-        automateProduct,
-        automatePrices,
+        automationProduct,
+        automationPrices,
         smsProduct,
         smsPrices,
         convertProduct,
@@ -238,8 +238,8 @@ const PaymentMethodView = ({
                             <SummaryItem
                                 type={ProductType.Automation}
                                 interval={interval}
-                                product={automateProduct}
-                                prices={automatePrices}
+                                product={automationProduct}
+                                prices={automationPrices}
                                 selectedPlans={selectedPlans}
                             />
                             <SummaryItem

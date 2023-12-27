@@ -9,8 +9,8 @@ import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
-    getAutomatePricesMap,
-    getCurrentAutomateProduct,
+    getAutomationPricesMap,
+    getCurrentAutomationProduct,
 } from 'state/billing/selectors'
 import {getFormattedAmount, getFullPrice} from 'models/billing/utils'
 
@@ -34,31 +34,31 @@ const HelpCenterChangePlanModal = ({
     onClose,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const currentAutomatePrice = useAppSelector(getCurrentAutomateProduct)
-    const [isModalAutomateChecked, setModalIsAutomateChecked] = useState(
-        !!currentAutomatePrice
+    const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
+    const [isModalAutomationChecked, setModalIsAutomationChecked] = useState(
+        !!currentAutomationPrice
     )
-    const pricesMap = useAppSelector(getAutomatePricesMap)
-    const automatePrice = useMemo(
+    const pricesMap = useAppSelector(getAutomationPricesMap)
+    const automationPrice = useMemo(
         () => helpdeskPrice.addons && pricesMap[helpdeskPrice.addons[0]],
         [helpdeskPrice.addons, pricesMap]
     )
     const addOnAmount = useMemo(
         () =>
-            automatePrice?.amount != null
-                ? Math.abs(getFormattedAmount(automatePrice.amount))
+            automationPrice?.amount != null
+                ? Math.abs(getFormattedAmount(automationPrice.amount))
                 : '?',
-        [automatePrice?.amount]
+        [automationPrice?.amount]
     )
-    const addOnDiscount = automatePrice?.automation_addon_discount
+    const addOnDiscount = automationPrice?.automation_addon_discount
     const features = useMemo(
         () =>
             getPlanCardFeaturesForPrices(
-                isModalAutomateChecked && automatePrice
-                    ? [helpdeskPrice, automatePrice]
+                isModalAutomationChecked && automationPrice
+                    ? [helpdeskPrice, automationPrice]
                     : [helpdeskPrice]
             ),
-        [automatePrice, helpdeskPrice, isModalAutomateChecked]
+        [automationPrice, helpdeskPrice, isModalAutomationChecked]
     )
     const activeIntegrations = useAppSelector(getActiveIntegrations)
 
@@ -118,14 +118,14 @@ const HelpCenterChangePlanModal = ({
                                 addOnAmount={addOnAmount}
                                 currency={helpdeskPrice.currency}
                                 editable={
-                                    !!automatePrice || addOnAmount != null
+                                    !!automationPrice || addOnAmount != null
                                 }
                                 fullAddOnAmount={fullAddOnAmount}
                                 interval={helpdeskPrice.interval}
-                                isAutomateChecked={isModalAutomateChecked}
-                                onAutomateChange={() =>
-                                    setModalIsAutomateChecked(
-                                        !isModalAutomateChecked
+                                isAutomationChecked={isModalAutomationChecked}
+                                onAutomationChange={() =>
+                                    setModalIsAutomationChecked(
+                                        !isModalAutomationChecked
                                     )
                                 }
                             />
@@ -136,7 +136,7 @@ const HelpCenterChangePlanModal = ({
                                 )}
                                 currency={helpdeskPrice.currency}
                                 interval={helpdeskPrice.interval}
-                                isAutomationChecked={isModalAutomateChecked}
+                                isAutomationChecked={isModalAutomationChecked}
                             />
                         </>
                     }
@@ -144,8 +144,8 @@ const HelpCenterChangePlanModal = ({
             )}
             onConfirm={() => {
                 void handleSubscriptionUpdate(
-                    isModalAutomateChecked && automatePrice
-                        ? [helpdeskPrice.price_id, automatePrice.price_id]
+                    isModalAutomationChecked && automationPrice
+                        ? [helpdeskPrice.price_id, automationPrice.price_id]
                         : [helpdeskPrice.price_id]
                 )
                 onClose()

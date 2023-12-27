@@ -1,5 +1,5 @@
 import {
-    AutomatePrice,
+    AutomationPrice,
     ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
@@ -13,8 +13,16 @@ import {
 import {PRODUCT_INFO} from '../../constants'
 
 export type setNotificationProps = {
-    oldProduct?: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
-    newProduct?: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
+    oldProduct?:
+        | HelpdeskPrice
+        | AutomationPrice
+        | SMSOrVoicePrice
+        | ConvertPrice
+    newProduct?:
+        | HelpdeskPrice
+        | AutomationPrice
+        | SMSOrVoicePrice
+        | ConvertPrice
     periodEnd: string
     interval?: PlanInterval
     onClick: () => void

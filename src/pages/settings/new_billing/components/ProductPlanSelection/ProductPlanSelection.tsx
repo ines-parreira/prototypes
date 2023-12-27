@@ -2,7 +2,7 @@ import React, {useCallback, useMemo, useState} from 'react'
 import classNames from 'classnames'
 
 import {
-    AutomatePrice,
+    AutomationPrice,
     ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
@@ -28,8 +28,13 @@ import css from './ProductPlanSelection.less'
 export type ProductPlanSelectionProps = {
     type: ProductType
     interval?: PlanInterval
-    product?: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
-    prices?: (HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice)[]
+    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    prices?: (
+        | HelpdeskPrice
+        | AutomationPrice
+        | SMSOrVoicePrice
+        | ConvertPrice
+    )[]
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     isTrialing?: boolean
@@ -86,7 +91,7 @@ const ProductPlanSelection = ({
         (
             price:
                 | HelpdeskPrice
-                | AutomatePrice
+                | AutomationPrice
                 | SMSOrVoicePrice
                 | ConvertPrice
         ) => {

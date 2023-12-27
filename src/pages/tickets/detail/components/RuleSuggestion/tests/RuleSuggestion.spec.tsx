@@ -8,7 +8,7 @@ import {fromJS} from 'immutable'
 import {emailTicket} from 'state/ticket/tests/fixtures'
 import {billingState} from 'fixtures/billing'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {account, automateSubscriptionProductPrices} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {sendTicketMessage} from 'state/newMessage/actions'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
@@ -39,7 +39,7 @@ const store = {
         current_subscription: {
             ...account.current_subscription,
             status: 'active',
-            products: automateSubscriptionProductPrices,
+            products: automationSubscriptionProductPrices,
         },
     }),
     billing: fromJS({...billingState}),

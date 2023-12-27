@@ -10,7 +10,7 @@ import {
     isHelpdeskPrice,
 } from 'models/billing/utils'
 import {
-    AutomatePrice,
+    AutomationPrice,
     ConvertPrice,
     HelpdeskPrice,
     Product,
@@ -57,9 +57,9 @@ export const getHelpdeskProduct = createSelector(getProducts, (products) => {
     )!
 })
 
-export const getAutomateProduct = createSelector(getProducts, (products) => {
+export const getAutomationProduct = createSelector(getProducts, (products) => {
     return products.find(
-        (product): product is Product<AutomatePrice> =>
+        (product): product is Product<AutomationPrice> =>
             product.type === ProductType.Automation
     )!
 })
@@ -88,14 +88,14 @@ export const getConvertProduct = createSelector(getProducts, (products) => {
 export const getCurrentProducts = createSelector(
     getCurrentSubscription as (state: RootState) => CurrentAccountState,
     getHelpdeskProduct,
-    getAutomateProduct,
+    getAutomationProduct,
     getVoiceProduct,
     getSMSProduct,
     getConvertProduct,
     (
         currentSubscription,
         helpdeskProduct,
-        automateProduct,
+        automationProduct,
         voiceProduct,
         smsProduct,
         convertProduct
@@ -106,7 +106,7 @@ export const getCurrentProducts = createSelector(
 
         const currentProducts: {
             [ProductType.Helpdesk]: HelpdeskPrice
-            [ProductType.Automation]?: AutomatePrice
+            [ProductType.Automation]?: AutomationPrice
             [ProductType.Voice]?: SMSOrVoicePrice
             [ProductType.SMS]?: SMSOrVoicePrice
             [ProductType.Convert]?: ConvertPrice
@@ -123,8 +123,8 @@ export const getCurrentProducts = createSelector(
                     }
                 }
 
-                if (automateProduct.id === productId) {
-                    const autPrice = automateProduct.prices.find(
+                if (automationProduct.id === productId) {
+                    const autPrice = automationProduct.prices.find(
                         (price) => price.price_id === priceId
                     )
 
@@ -173,7 +173,7 @@ export const getCurrentHelpdeskProduct = createSelector(
     (currentProducts) => currentProducts?.helpdesk
 )
 
-export const getCurrentAutomateProduct = createSelector(
+export const getCurrentAutomationProduct = createSelector(
     getCurrentProducts,
     (currentProducts) => currentProducts?.automation
 )
@@ -273,7 +273,7 @@ export const getPrices = createSelector(getProducts, (products) =>
     products
         .reduce<
             Array<
-                HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
+                HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
             >
         >((acc, product) => acc.concat(product.prices), [])
         .sort((a, b) => a.amount - b.amount)
@@ -283,15 +283,16 @@ export const getHelpdeskPrices = createSelector(getHelpdeskProduct, (product) =>
     product.prices.sort((a, b) => a.amount - b.amount)
 )
 
-export const getAutomatePrices = createSelector(getAutomateProduct, (product) =>
-    product.prices.sort((a, b) => a.amount - b.amount)
+export const getAutomationPrices = createSelector(
+    getAutomationProduct,
+    (product) => product.prices.sort((a, b) => a.amount - b.amount)
 )
 
 export const getPricesMap = createSelector(getProducts, (products) =>
     products.reduce<
         Record<
             string,
-            HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
+            HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
         >
     >((acc, product) => {
         product.prices.map((price) => {
@@ -301,17 +302,17 @@ export const getPricesMap = createSelector(getProducts, (products) =>
     }, {})
 )
 
-export const getAutomatePricesMap = createSelector(
-    getAutomateProduct,
+export const getAutomationPricesMap = createSelector(
+    getAutomationProduct,
     (product) =>
-        product.prices.reduce<Record<string, AutomatePrice>>((acc, price) => {
+        product.prices.reduce<Record<string, AutomationPrice>>((acc, price) => {
             acc[price.price_id] = price
             return acc
         }, {})
 )
 
 export const getHasAutomate = createSelector(
-    getCurrentAutomateProduct,
+    getCurrentAutomationProduct,
     (price) => !!price
 )
 
@@ -334,10 +335,10 @@ export const getHasLegacyAutomateFeatures = createSelector(
 export const getCurrentHelpdeskAutomateAmount = createSelector(
     getPricesMap,
     getCurrentHelpdeskProduct,
-    getCurrentAutomateProduct,
-    (prices, helpdesk, automate) => {
-        if (automate) {
-            return getFormattedAmount(automate.amount)
+    getCurrentAutomationProduct,
+    (prices, helpdesk, automation) => {
+        if (automation) {
+            return getFormattedAmount(automation.amount)
         }
         const addonId = helpdesk?.addons?.[0]
 
@@ -348,8 +349,8 @@ export const getCurrentHelpdeskAutomateAmount = createSelector(
     }
 )
 
-export const getCurrentAutomateFullAmount = createSelector(
-    getCurrentAutomateProduct,
+export const getCurrentAutomationFullAmount = createSelector(
+    getCurrentAutomationProduct,
     (price) =>
         price?.amount && price?.automation_addon_discount
             ? getFormattedAmount(
@@ -439,14 +440,14 @@ export const getCheapestConvertPrice = createSelector(
 
 export const getCheapestProductPrices = createSelector(
     getHelpdeskPrices,
-    getAutomatePrices,
+    getAutomationPrices,
     getVoiceProduct,
     getSMSProduct,
     getConvertProduct,
     getCurrentHelpdeskInterval,
     (
         helpDeskPrices,
-        automatePrices,
+        automationPrices,
         voiceProduct,
         smsProduct,
         convertProduct,
@@ -454,7 +455,7 @@ export const getCheapestProductPrices = createSelector(
     ) => {
         return {
             helpdesk: getCheapestPrice(helpDeskPrices, interval),
-            automation: getCheapestPrice(automatePrices, interval),
+            automation: getCheapestPrice(automationPrices, interval),
             voice: getCheapestPrice(voiceProduct?.prices, interval),
             sms: getCheapestPrice(smsProduct?.prices, interval),
             convert: getCheapestPrice(convertProduct?.prices, interval),

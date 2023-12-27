@@ -15,7 +15,7 @@ import {
     legacyBasicHelpdeskPrice,
     products,
 } from 'fixtures/productPrices'
-import {automateSubscriptionProductPrices} from 'fixtures/account'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
 import HelpCenterChangePlanModal from '../HelpCenterChangePlanModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -104,7 +104,7 @@ describe('HelpCenterChangePlanModal', () => {
             billing: fromJS(billingState),
             currentAccount: fromJS({
                 current_subscription: {
-                    products: automateSubscriptionProductPrices,
+                    products: automationSubscriptionProductPrices,
                 },
             }),
         }

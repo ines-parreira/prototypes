@@ -41,12 +41,12 @@ const BillingFrequencyView = ({
 
     const {
         helpdeskProduct,
-        automateProduct,
+        automationProduct,
         voiceProduct,
         smsProduct,
         convertProduct,
         helpdeskPrices,
-        automatePrices,
+        automationPrices,
         voicePrices,
         smsPrices,
         convertPrices,
@@ -89,9 +89,9 @@ const BillingFrequencyView = ({
                 [ProductType.Automation]: {
                     ...prev[ProductType.Automation],
                     plan: getPriceForInterval({
-                        prices: automatePrices,
+                        prices: automationPrices,
                         interval,
-                        currentPrice: automateProduct,
+                        currentPrice: automationProduct,
                     }),
                 },
                 [ProductType.Voice]: {
@@ -121,8 +121,8 @@ const BillingFrequencyView = ({
             }))
         },
         [
-            automatePrices,
-            automateProduct,
+            automationPrices,
+            automationProduct,
             helpdeskPrices,
             helpdeskProduct,
             setSelectedInterval,
@@ -194,8 +194,8 @@ const BillingFrequencyView = ({
                         <SummaryItem
                             type={ProductType.Automation}
                             interval={selectedInterval}
-                            product={automateProduct}
-                            prices={automatePrices}
+                            product={automationProduct}
+                            prices={automationPrices}
                             selectedPlans={selectedPlans}
                             isFrequencyChanged={true}
                         />

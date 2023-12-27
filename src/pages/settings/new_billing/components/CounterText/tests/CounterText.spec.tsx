@@ -1,9 +1,9 @@
 import {render, waitFor} from '@testing-library/react'
 import React from 'react'
 import {
-    basicMonthlyAutomatePrice,
+    basicMonthlyAutomationPrice,
     convertPrice0,
-    legacyBasicAutomatePrice,
+    legacyBasicAutomationPrice,
 } from 'fixtures/productPrices'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText/CounterText'
@@ -27,7 +27,7 @@ describe('CounterText', () => {
         const interval = PlanInterval.Month
 
         const props = {
-            price: legacyBasicAutomatePrice,
+            price: legacyBasicAutomationPrice,
             type: ProductType.Automation,
             interval: interval,
         }
@@ -43,7 +43,7 @@ describe('CounterText', () => {
         const interval = PlanInterval.Year
 
         const props = {
-            price: basicMonthlyAutomatePrice,
+            price: basicMonthlyAutomationPrice,
             type: type,
             interval: interval,
         }

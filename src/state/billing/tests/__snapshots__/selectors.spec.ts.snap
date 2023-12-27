@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing selectors getAutomatePrices should return the automation prices 1`] = `
+exports[`billing selectors getAutomationPrices should return the automation prices 1`] = `
 [
   {
     "amount": 3000,
@@ -221,7 +221,7 @@ exports[`billing selectors getAutomatePrices should return the automation prices
 ]
 `;
 
-exports[`billing selectors getAutomateProduct should return the automate product 1`] = `
+exports[`billing selectors getAutomationProduct should return the automation product 1`] = `
 {
   "id": "prod_LsHD5xmSqoFBBs",
   "prices": [

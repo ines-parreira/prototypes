@@ -1,7 +1,7 @@
 import {AccountFeature} from 'state/currentAccount/types'
 import {
-    AutomatePrice,
-    AutomatePriceFeatures,
+    AutomationPrice,
+    AutomationPriceFeatures,
     ConvertPrice,
     HelpdeskPrice,
     HelpdeskPriceFeatures,
@@ -53,7 +53,7 @@ export const basicHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
-export const automatePriceFeatures: AutomatePriceFeatures = {
+export const automationPriceFeatures: AutomationPriceFeatures = {
     [AccountFeature.AutomationManagedRules]: {enabled: true},
     [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
     [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
@@ -62,7 +62,7 @@ export const automatePriceFeatures: AutomatePriceFeatures = {
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
 }
 
-export const legacyAutomatePriceFeatures: AutomatePriceFeatures = {
+export const legacyAutomationPriceFeatures: AutomationPriceFeatures = {
     [AccountFeature.AutomationManagedRules]: {enabled: false},
     [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
     [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
@@ -421,7 +421,7 @@ export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const basicMonthlyAutomatePrice: AutomatePrice = {
+export const basicMonthlyAutomationPrice: AutomationPrice = {
     amount: 3000,
     extra_ticket_cost: 0.2,
     num_quota_tickets: 30,
@@ -429,7 +429,7 @@ export const basicMonthlyAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'basic-automation-full-price-monthly-usd-4',
     internal_id: 'aut-addon-basic-full-price-monthly-usd-4',
@@ -439,7 +439,7 @@ export const basicMonthlyAutomatePrice: AutomatePrice = {
     price_id: 'price_1LJBjXI9qXomtXqSSX34F3we',
 }
 
-export const basicYearlyAutomatePrice: AutomatePrice = {
+export const basicYearlyAutomationPrice: AutomationPrice = {
     amount: 30000,
     extra_ticket_cost: 0.2,
     num_quota_tickets: 360,
@@ -447,7 +447,7 @@ export const basicYearlyAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBjYI9qXomtXqSLEjOrpmV',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Year,
     legacy_id: 'basic-automation-full-price-yearly-usd-4',
     internal_id: 'aut-addon-basic-full-price-yearly-usd-4',
@@ -457,7 +457,7 @@ export const basicYearlyAutomatePrice: AutomatePrice = {
     price_id: 'price_1LJBjZI9qXomtXqSPNgkEZpl',
 }
 
-export const proMonthlyAutomatePrice: AutomatePrice = {
+export const proMonthlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
     num_quota_tickets: 190,
     amount: 18000,
@@ -465,7 +465,7 @@ export const proMonthlyAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBjaI9qXomtXqSvYfzmmEU',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'pro-automation-full-price-monthly-usd-4',
     internal_id: 'aut-addon-pro-full-price-monthly-usd-4',
@@ -475,7 +475,7 @@ export const proMonthlyAutomatePrice: AutomatePrice = {
     price_id: 'price_1LJBjbI9qXomtXqS2sfi1J7P',
 }
 
-export const proYearlyAutomatePrice: AutomatePrice = {
+export const proYearlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
     num_quota_tickets: 2280,
     amount: 180000,
@@ -483,7 +483,7 @@ export const proYearlyAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBjbI9qXomtXqShB9YLy7V',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Year,
     legacy_id: 'pro-automation-full-price-yearly-usd-4',
     internal_id: 'aut-addon-pro-full-price-yearly-usd-4',
@@ -493,7 +493,7 @@ export const proYearlyAutomatePrice: AutomatePrice = {
     price_id: 'price_1LJBjdI9qXomtXqSlp9sh6iQ',
 }
 
-export const advancedMonthlyAutomatePrice: AutomatePrice = {
+export const advancedMonthlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
     num_quota_tickets: 530,
     amount: 45000,
@@ -501,7 +501,7 @@ export const advancedMonthlyAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBjdI9qXomtXqS8RzPPA7K',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'advanced-automation-full-price-monthly-usd-4',
     internal_id: 'aut-addon-advanced-full-price-monthly-usd-4',
@@ -511,7 +511,7 @@ export const advancedMonthlyAutomatePrice: AutomatePrice = {
     price_id: 'price_1LJBjeI9qXomtXqSXRjmhPsL',
 }
 
-export const advancedYearlyAutomatePrice: AutomatePrice = {
+export const advancedYearlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
     num_quota_tickets: 6360,
     amount: 450000,
@@ -519,7 +519,7 @@ export const advancedYearlyAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBjfI9qXomtXqSeKJ5lJjD',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Year,
     legacy_id: 'advanced-automation-full-price-yearly-usd-4',
     internal_id: 'aut-addon-advanced-full-price-yearly-usd-4',
@@ -535,7 +535,7 @@ export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
     extra_ticket_cost: 0.06,
     currency: 'usd',
     features: basicHelpdeskPriceFeatures,
-    legacy_automation_addon_features: legacyAutomatePriceFeatures,
+    legacy_automation_addon_features: legacyAutomationPriceFeatures,
     num_quota_tickets: 600,
     integrations: 7,
     interval: PlanInterval.Month,
@@ -564,7 +564,7 @@ export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const legacyBasicAutomatePrice: AutomatePrice = {
+export const legacyBasicAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0,
     num_quota_tickets: null,
     amount: 1500,
@@ -572,7 +572,7 @@ export const legacyBasicAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBlXI9qXomtXqSddDEgsDA',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'basic-automation-usd-1',
     internal_id: 'basic-automation-usd-1',
@@ -616,7 +616,7 @@ export const customHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const customAutomatePrice: AutomatePrice = {
+export const customAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.16,
     num_quota_tickets: null,
     amount: 80000,
@@ -624,7 +624,7 @@ export const customAutomatePrice: AutomatePrice = {
     automation_addon_included: true,
     base_price_id: 'price_1LJBjhI9qXomtXqSAUwsyU2z',
     currency: 'usd',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'custom-automation-full-price-monthly-usd-4-1',
     internal_id: 'aut-addon-custom-full-price-monthly-usd-4-1',
@@ -633,7 +633,7 @@ export const customAutomatePrice: AutomatePrice = {
     price_id: 'price_1LJBjiI9qXomtXqSvQBcRw5V',
 }
 
-export const basicDiscountedAutomatePrice: AutomatePrice = {
+export const basicDiscountedAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.1,
     num_quota_tickets: null,
     amount: 1500,
@@ -648,7 +648,7 @@ export const basicDiscountedAutomatePrice: AutomatePrice = {
     order: 2,
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjWI9qXomtXqSTxkBsRWM',
-    features: automatePriceFeatures,
+    features: automationPriceFeatures,
 }
 
 export const starterHelpdeskPrice: HelpdeskPrice = {
@@ -810,7 +810,7 @@ export const convertPrice3: ConvertPrice = {
 }
 
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'
-export const AUTOMATE_PRODUCT_ID = 'prod_LsHD5xmSqoFBBs'
+export const AUTOMATION_PRODUCT_ID = 'prod_LsHD5xmSqoFBBs'
 export const VOICE_PRODUCT_ID = 'prod_MT6fyh00TCFRGZ'
 export const SMS_PRODUCT_ID = 'prod_MT8Fzk7vmcT73m'
 export const CONVERT_PRODUCT_ID = 'prod_Mwy3exdalDFouZ'
@@ -828,16 +828,16 @@ export const helpdeskProduct: Product<HelpdeskPrice> = {
     ],
 }
 
-export const automateProduct: Product<AutomatePrice> = {
-    id: AUTOMATE_PRODUCT_ID,
+export const automationProduct: Product<AutomationPrice> = {
+    id: AUTOMATION_PRODUCT_ID,
     type: ProductType.Automation,
     prices: [
-        basicMonthlyAutomatePrice,
-        basicYearlyAutomatePrice,
-        proMonthlyAutomatePrice,
-        proYearlyAutomatePrice,
-        advancedMonthlyAutomatePrice,
-        advancedYearlyAutomatePrice,
+        basicMonthlyAutomationPrice,
+        basicYearlyAutomationPrice,
+        proMonthlyAutomationPrice,
+        proYearlyAutomationPrice,
+        advancedMonthlyAutomationPrice,
+        advancedYearlyAutomationPrice,
     ],
 }
 
@@ -860,10 +860,10 @@ export const convertProduct: Product<ConvertPrice> = {
 }
 
 export const products: Product<
-    HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
+    HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
 >[] = [
     helpdeskProduct,
-    automateProduct,
+    automationProduct,
     smsProduct,
     voiceProduct,
     convertProduct,

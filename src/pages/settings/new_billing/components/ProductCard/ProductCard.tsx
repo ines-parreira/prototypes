@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import {useHistory} from 'react-router-dom'
 import {
-    AutomatePrice,
+    AutomationPrice,
     ConvertPrice,
     HelpdeskPrice,
     ProductType,
@@ -28,7 +28,7 @@ import css from './ProductCard.less'
 
 export type ProductCardProps = {
     type: ProductType
-    product?: HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
+    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
     usage?: CurrentUsagePerProduct | null
     banner?: BillingBanner
     isDisabled: boolean

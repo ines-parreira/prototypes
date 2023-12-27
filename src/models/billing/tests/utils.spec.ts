@@ -1,12 +1,12 @@
 import {
     basicMonthlyHelpdeskPrice,
-    basicMonthlyAutomatePrice,
+    basicMonthlyAutomationPrice,
     smsProduct,
     starterHelpdeskPrice,
     basicYearlyHelpdeskPrice,
     convertPrice0,
     voicePrice0,
-    legacyBasicAutomatePrice,
+    legacyBasicAutomationPrice,
 } from 'fixtures/productPrices'
 
 import {
@@ -14,7 +14,7 @@ import {
     getFormattedAmount,
     getFullPrice,
     getProductLabel,
-    isAutomatePrice,
+    isAutomationPrice,
     isHelpdeskPrice,
     isStarterTierPrice,
 } from '../utils'
@@ -41,7 +41,7 @@ describe('getFullPrice', () => {
 describe('isHelpdeskPrice', () => {
     it.each([
         [basicMonthlyHelpdeskPrice, true],
-        [basicMonthlyAutomatePrice, false],
+        [basicMonthlyAutomationPrice, false],
     ])(
         'should validate if the price is of helpdesk price',
         (price, expectedResult) => {
@@ -53,11 +53,11 @@ describe('isHelpdeskPrice', () => {
 describe('isAutomationPrice', () => {
     it.each([
         [basicMonthlyHelpdeskPrice, false],
-        [basicMonthlyAutomatePrice, true],
+        [basicMonthlyAutomationPrice, true],
     ])(
         'should validate if the price is of automation price',
         (price, expectedResult) => {
-            expect(isAutomatePrice(price)).toBe(expectedResult)
+            expect(isAutomationPrice(price)).toBe(expectedResult)
         }
     )
 })
@@ -93,7 +93,7 @@ describe('getProductLabel', () => {
     it.each([
         [basicMonthlyHelpdeskPrice, ProductType.Helpdesk, undefined],
         [voicePrice0, ProductType.Voice, 'Trial'],
-        [legacyBasicAutomatePrice, ProductType.Automation, 'Legacy'],
+        [legacyBasicAutomationPrice, ProductType.Automation, 'Legacy'],
         [convertPrice0, ProductType.Convert, 'Pay as you go'],
     ])(
         'should return the product label for the given price and type',
