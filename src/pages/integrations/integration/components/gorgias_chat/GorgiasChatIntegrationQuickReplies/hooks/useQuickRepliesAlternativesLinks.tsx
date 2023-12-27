@@ -4,10 +4,10 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
-import {getCurrentAutomationProduct} from 'state/billing/selectors'
+import {getCurrentAutomateProduct} from 'state/billing/selectors'
 
 const useQuickRepliesAlternativesLinks = (integration: Map<any, any>) => {
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
+    const automateProduct = useAppSelector(getCurrentAutomateProduct)
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
@@ -34,7 +34,7 @@ const useQuickRepliesAlternativesLinks = (integration: Map<any, any>) => {
           }/installation`
 
     return {
-        showAlternatives: !!automationProduct,
+        showAlternatives: !!automateProduct,
         quickResponsesLink,
         flowsLink,
         installationTabLink,

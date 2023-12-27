@@ -4,7 +4,7 @@ import {dismissNotification} from 'reapop'
 
 import classNames from 'classnames'
 import {
-    AutomationPrice,
+    AutomatePrice,
     ConvertPrice,
     HelpdeskPrice,
     ProductType,
@@ -56,7 +56,7 @@ export type SelectedPlans = {
         autoUpgrade?: false
     }
     [ProductType.Automation]: {
-        plan?: AutomationPrice
+        plan?: AutomatePrice
         isSelected: boolean
         autoUpgrade?: false
     }
@@ -102,9 +102,9 @@ const BillingProcessView = ({
         setSelectedPlans,
         helpdeskProduct,
         helpdeskPrices,
-        automationProduct,
-        automationPrices,
-        automationInitialIndex,
+        automateProduct,
+        automatePrices,
+        automateInitialIndex,
         smsProduct,
         smsPrices,
         smsInitialIndex,
@@ -237,11 +237,11 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Automation}
                             interval={interval}
-                            product={automationProduct}
-                            prices={automationPrices}
+                            product={automateProduct}
+                            prices={automatePrices}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
-                            initialIndex={automationInitialIndex}
+                            initialIndex={automateInitialIndex}
                             periodEnd={periodEnd}
                             currentUsage={currentUsage}
                         />
@@ -312,8 +312,8 @@ const BillingProcessView = ({
                             <SummaryItem
                                 type={ProductType.Automation}
                                 interval={interval}
-                                product={automationProduct}
-                                prices={automationPrices}
+                                product={automateProduct}
+                                prices={automatePrices}
                                 selectedPlans={selectedPlans}
                             />
                             <SummaryItem

@@ -11,7 +11,7 @@ import {
 } from 'state/currentAccount/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    getCurrentAutomationProduct,
+    getCurrentAutomateProduct,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
     getCurrentConvertProduct,
@@ -69,7 +69,7 @@ const UsageAndPlansView = ({
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
     const convertProduct = useAppSelector(getCurrentConvertProduct)
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
+    const automateProduct = useAppSelector(getCurrentAutomateProduct)
     const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
     const convertStatus = useGetConvertStatus()
 
@@ -78,8 +78,8 @@ const UsageAndPlansView = ({
     const isSubscribedToVoiceOrSMS = !!voiceProduct || !!smsProduct
 
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const isAAOLegacy = !!automationProduct
-        ? isAAOLegacyPrice(automationProduct, ProductType.Automation)
+    const isAAOLegacy = !!automateProduct
+        ? isAAOLegacyPrice(automateProduct, ProductType.Automation)
         : false
     const trialingStart = moment(
         currentSubscription.get('trial_start_datetime')
@@ -119,7 +119,7 @@ const UsageAndPlansView = ({
                     .format(DATE_FORMAT)
 
                 const otherPlans = [
-                    !!automationProduct &&
+                    !!automateProduct &&
                         PRODUCT_INFO[ProductType.Automation].title,
                     !!voiceProduct && PRODUCT_INFO[ProductType.Voice].title,
                     !!smsProduct && PRODUCT_INFO[ProductType.SMS].title,
@@ -162,7 +162,7 @@ const UsageAndPlansView = ({
             }
         }
     }, [
-        automationProduct,
+        automateProduct,
         dispatch,
         hasCreditCard,
         shouldPayWithShopify,
@@ -282,7 +282,7 @@ const UsageAndPlansView = ({
                 />
                 <ProductCard
                     type={ProductType.Automation}
-                    product={automationProduct}
+                    product={automateProduct}
                     usage={currentUsage?.automation}
                     isDisabled={false}
                 />

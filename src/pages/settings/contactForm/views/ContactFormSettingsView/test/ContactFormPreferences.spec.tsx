@@ -20,8 +20,8 @@ import {billingState} from '../../../../../../fixtures/billing'
 import {useSupportedLocales} from '../../../../helpCenter/providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../../../helpCenter/fixtures/getLocalesResponse.fixtures'
 import {
-    AUTOMATION_PRODUCT_ID,
-    basicMonthlyAutomationPrice,
+    AUTOMATE_PRODUCT_ID,
+    basicMonthlyAutomatePrice,
 } from '../../../../../../fixtures/productPrices'
 import {ContactForm} from '../../../../../../models/contactForm/types'
 
@@ -39,7 +39,7 @@ const defaultState: Partial<RootState> = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPrice.price_id,
+                [AUTOMATE_PRODUCT_ID]: basicMonthlyAutomatePrice.price_id,
             },
         },
     }),

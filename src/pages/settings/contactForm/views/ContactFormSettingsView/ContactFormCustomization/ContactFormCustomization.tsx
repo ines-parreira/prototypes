@@ -19,7 +19,7 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import FlowsBanner from 'pages/settings/contactForm/components/FlowsBanner'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAutomationProduct} from 'state/billing/selectors'
+import {getCurrentAutomateProduct} from 'state/billing/selectors'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
 
 const initUpdateDto = (
@@ -42,7 +42,7 @@ const ContactFormCustomization = (): JSX.Element => {
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
         Pick<UpdateContactFormDto, 'subject_lines'>
     >(() => initUpdateDto(contactForm.subject_lines))
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
+    const automationProduct = useAppSelector(getCurrentAutomateProduct)
 
     const {automationSettings, isFetchPending} =
         useContactFormsAutomationSettings(contactForm.id, true)

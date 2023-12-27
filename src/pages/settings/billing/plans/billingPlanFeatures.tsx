@@ -4,12 +4,12 @@ import React from 'react'
 import magentoIcon from 'assets/img/integrations/magento2-mono.svg'
 
 import {
-    AutomationPrice,
-    AutomationPriceFeatures,
+    AutomatePrice,
+    AutomatePriceFeatures,
     HelpdeskPrice,
     HelpdeskPriceFeatures,
 } from 'models/billing/types'
-import {isHelpdeskPrice, isAutomationPrice} from 'models/billing/utils'
+import {isHelpdeskPrice, isAutomatePrice} from 'models/billing/utils'
 import {isFeatureEnabled} from '../../../../utils/account'
 import {
     AccountFeature,
@@ -169,7 +169,7 @@ export const getEnterprisePlanCardFeatures = (): PlanCardFeature[] => {
 }
 
 export const getPlanCardFeaturesForPrices = (
-    prices: (HelpdeskPrice | AutomationPrice)[],
+    prices: (HelpdeskPrice | AutomatePrice)[],
     enableHardCodedFeatures = false
 ): PlanCardFeature[] => {
     const helpdeskPrice = prices.find((price) => isHelpdeskPrice(price)) as
@@ -184,17 +184,17 @@ export const getPlanCardFeaturesForPrices = (
         return getEnterprisePlanCardFeatures()
     }
 
-    const automationPrice = prices.find((price) => isAutomationPrice(price)) as
-        | AutomationPrice
+    const automatePrice = prices.find((price) => isAutomatePrice(price)) as
+        | AutomatePrice
         | undefined
 
-    const extraTicketCost = automationPrice
-        ? helpdeskPrice.extra_ticket_cost + automationPrice.extra_ticket_cost
+    const extraTicketCost = automatePrice
+        ? helpdeskPrice.extra_ticket_cost + automatePrice.extra_ticket_cost
         : helpdeskPrice.extra_ticket_cost
 
     const planFeatures = prices.reduce(
         (
-            acc: Partial<HelpdeskPriceFeatures & AutomationPriceFeatures>,
+            acc: Partial<HelpdeskPriceFeatures & AutomatePriceFeatures>,
             price
         ) => {
             return {...acc, ...price.features}

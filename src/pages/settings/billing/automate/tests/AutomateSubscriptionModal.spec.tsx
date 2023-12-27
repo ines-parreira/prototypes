@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import LD from 'launchdarkly-react-client-sdk'
 
 import {UserRole} from 'config/types/user'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
+import {account, automateSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -92,7 +92,7 @@ describe('<AutomateSubscriptionModal />', () => {
                         ...account,
                         current_subscription: {
                             ...account.current_subscription,
-                            products: automationSubscriptionProductPrices,
+                            products: automateSubscriptionProductPrices,
                         },
                     }),
                 })}

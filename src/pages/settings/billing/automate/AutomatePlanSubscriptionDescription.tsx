@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
-import {AutomationPrice, PlanInterval} from 'models/billing/types'
+import {AutomatePrice, PlanInterval} from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
@@ -21,13 +21,13 @@ import SummaryPaymentSection from 'pages/settings/new_billing/components/Summary
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
 import css from './AutomatePlanSubscriptionDescription.less'
 
-export type AutomationPlanSubscriptionDescriptionProps = {
-    automationPrices: AutomationPrice[]
+export type AutomatePlanSubscriptionDescriptionProps = {
+    automationPrices: AutomatePrice[]
     isTrialing: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
-    selectedPrice: AutomationPrice
-    setSelectedPrice: React.Dispatch<React.SetStateAction<AutomationPrice>>
+    selectedPrice: AutomatePrice
+    setSelectedPrice: React.Dispatch<React.SetStateAction<AutomatePrice>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -39,7 +39,7 @@ const AutomatePlanSubscriptionDescription = ({
     selectedPrice,
     setSelectedPrice,
     setIsSubscriptionEnabled,
-}: AutomationPlanSubscriptionDescriptionProps) => {
+}: AutomatePlanSubscriptionDescriptionProps) => {
     const dispatch = useAppDispatch()
     const ref = useRef(null)
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)

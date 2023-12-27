@@ -7,7 +7,7 @@ import {
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
 import {
-    getAutomationPrices,
+    getAutomatePrices,
     getHelpdeskPrices,
     getIsCurrentHelpdeskLegacy,
     getIsCurrentHelpdeskCustom,
@@ -26,13 +26,13 @@ const FeaturePaywall = ({
     feature,
     paywallConfigs = defaultPaywallConfigs,
 }: Props) => {
-    const automationPrices = useAppSelector(getAutomationPrices)
+    const automatePrices = useAppSelector(getAutomatePrices)
     const helpdeskPrices = useAppSelector(getHelpdeskPrices)
     const isProductLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const isProductCustom = useAppSelector(getIsCurrentHelpdeskCustom)
     const helpdeskName = useAppSelector(getCurrentHelpdeskName)
 
-    const prices = [...automationPrices, ...helpdeskPrices]
+    const prices = [...automatePrices, ...helpdeskPrices]
 
     const shouldKeepPrice =
         isProductCustom ||

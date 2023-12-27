@@ -3,7 +3,7 @@ import {
     basicMonthlyHelpdeskPrice,
     customHelpdeskPrice,
     legacyBasicHelpdeskPrice,
-    proMonthlyAutomationPrice,
+    proMonthlyAutomatePrice,
     proMonthlyHelpdeskPrice,
     starterHelpdeskPrice,
 } from 'fixtures/productPrices'
@@ -19,7 +19,7 @@ describe('billingPlanFeatures', () => {
             expect(
                 getPlanCardFeaturesForPrices([
                     proMonthlyHelpdeskPrice,
-                    proMonthlyAutomationPrice,
+                    proMonthlyAutomatePrice,
                 ])
             ).toMatchSnapshot()
         })
@@ -27,7 +27,7 @@ describe('billingPlanFeatures', () => {
         it('should return the features for prices with hardcoded features', () => {
             expect(
                 getPlanCardFeaturesForPrices(
-                    [proMonthlyHelpdeskPrice, proMonthlyAutomationPrice],
+                    [proMonthlyHelpdeskPrice, proMonthlyAutomatePrice],
                     true
                 )
             ).toMatchSnapshot()

@@ -12,13 +12,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentDomain, isTrialing} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    getCurrentAutomationProduct,
+    getCurrentAutomateProduct,
     getCurrentHelpdeskProduct,
 } from 'state/billing/selectors'
 import {
-    AUTOMATION_FEATURES,
+    AUTOMATE_FEATURES,
     BILLING_SUPPORT_EMAIL,
-    CANCEL_AUTOMATION_REASONS,
+    CANCEL_AUTOMATE_REASONS,
     DATE_FORMAT,
     ZAPIER_REMOVE_AAO_HOOK,
 } from '../../constants'
@@ -50,14 +50,14 @@ const CancelAAOModal = ({
     const currentUser = useAppSelector(getCurrentUser)
     const isTrialingSubscription = useAppSelector(isTrialing)
     const helpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
-    const automationPlan = useAppSelector(getCurrentAutomationProduct)
+    const automatePlan = useAppSelector(getCurrentAutomateProduct)
 
     const from: string = currentUser.get('email')
     const subject = `Remove Automation - ${domain}`
 
     const [isOpenModalWithReasons, setIsOpenModalWithReasons] = useState(false)
 
-    const [reasons, setReasons] = useState(CANCEL_AUTOMATION_REASONS)
+    const [reasons, setReasons] = useState(CANCEL_AUTOMATE_REASONS)
 
     const [message, setMessage] = useState('')
     const AAOUsage = currentUsage.automation
@@ -78,7 +78,7 @@ const CancelAAOModal = ({
     }
 
     const resetReasons = () => {
-        setReasons(CANCEL_AUTOMATION_REASONS)
+        setReasons(CANCEL_AUTOMATE_REASONS)
     }
 
     const handleOpenSecondModal = () => {
@@ -105,7 +105,7 @@ const CancelAAOModal = ({
             account: domain,
             freeTrial: isTrialingSubscription,
             helpdeskPlan: helpdeskPlan?.name ?? '',
-            automationPlan: automationPlan?.name ?? '',
+            automationPlan: automatePlan?.name ?? '',
         })
         setIsOpenModalWithReasons(false)
     }
@@ -130,7 +130,7 @@ const CancelAAOModal = ({
                         You'll lose access to automation and AI features like:
                     </div>
                     <div className={css.features}>
-                        {AUTOMATION_FEATURES.map((feature) => (
+                        {AUTOMATE_FEATURES.map((feature) => (
                             <div className={css.feature} key={feature.title}>
                                 <div className={css.icon}>
                                     {feature.icon ? (

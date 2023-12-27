@@ -7,13 +7,13 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {
-    AUTOMATION_PRODUCT_ID,
+    AUTOMATE_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
-    legacyBasicAutomationPrice,
+    legacyBasicAutomatePrice,
     legacyBasicHelpdeskPrice,
 } from 'fixtures/productPrices'
 import {RootState, StoreDispatch} from 'state/types'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
+import {account, automateSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 
@@ -118,7 +118,7 @@ describe('<ChangePlanModal />', () => {
                         ...account,
                         current_subscription: {
                             ...account.current_subscription,
-                            products: automationSubscriptionProductPrices,
+                            products: automateSubscriptionProductPrices,
                         },
                     }),
                 })}
@@ -171,15 +171,15 @@ describe('<ChangePlanModal />', () => {
                         )
                         ?.mergeIn(
                             ['products', 1, 'prices'],
-                            fromJS([legacyBasicAutomationPrice])
+                            fromJS([legacyBasicAutomatePrice])
                         ),
                     currentAccount: defaultState.billing?.setIn(
                         ['current_subscription', 'products'],
                         fromJS({
                             [HELPDESK_PRODUCT_ID]:
                                 legacyBasicHelpdeskPrice.price_id,
-                            [AUTOMATION_PRODUCT_ID]:
-                                legacyBasicAutomationPrice.price_id,
+                            [AUTOMATE_PRODUCT_ID]:
+                                legacyBasicAutomatePrice.price_id,
                         })
                     ),
                 })}

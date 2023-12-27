@@ -22,8 +22,8 @@ type Props = {
     currency?: string
     fullAddOnAmount?: number
     interval?: PlanInterval
-    isAutomationChecked?: boolean
-    onAutomationChange?: () => void
+    isAutomateChecked?: boolean
+    onAutomateChange?: () => void
     editable?: boolean
     isIntervalAbbreviated?: boolean
 }
@@ -33,8 +33,8 @@ const AutomateAmount = ({
     currency,
     fullAddOnAmount,
     interval,
-    isAutomationChecked,
-    onAutomationChange,
+    isAutomateChecked,
+    onAutomateChange,
     editable = true,
     isIntervalAbbreviated = false,
 }: Props) => {
@@ -48,9 +48,9 @@ const AutomateAmount = ({
                         <CheckBox
                             className={css.checkbox}
                             name={checkboxId}
-                            isChecked={isAutomationChecked}
-                            {...(!!onAutomationChange
-                                ? {onChange: onAutomationChange}
+                            isChecked={isAutomateChecked}
+                            {...(!!onAutomateChange
+                                ? {onChange: onAutomateChange}
                                 : {readOnly: true})}
                         >
                             <AutomationLabel id={checkboxId} />
@@ -66,7 +66,7 @@ const AutomateAmount = ({
                                 amount={addOnAmount}
                                 fullAmount={fullAddOnAmount}
                                 className={classnames(css.amount, {
-                                    [css.amountDisabled]: !isAutomationChecked,
+                                    [css.amountDisabled]: !isAutomateChecked,
                                 })}
                                 currency={currency}
                                 interval={interval}

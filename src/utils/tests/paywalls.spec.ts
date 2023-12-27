@@ -1,11 +1,11 @@
-import {automationProduct, helpdeskProduct} from 'fixtures/productPrices'
+import {automateProduct, helpdeskProduct} from 'fixtures/productPrices'
 import {AccountFeature} from '../../state/currentAccount/types'
 import {
     getCheapestPriceNameForFeature,
     convertLegacyPlanNameToPublicPlanName,
 } from '../paywalls'
 
-const publicPrices = [...helpdeskProduct.prices, ...automationProduct.prices]
+const publicPrices = [...helpdeskProduct.prices, ...automateProduct.prices]
 
 describe('convertLegacyPlanNameToPublicPlanName()', () => {
     const planNames = [

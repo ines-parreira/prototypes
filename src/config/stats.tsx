@@ -68,9 +68,9 @@ export const USERS_STATUSES = 'users-statuses'
 export const OPEN_TICKETS_ASSIGNMENT_STATUSES =
     'open-tickets-assignment-statuses'
 export const SUPPORT_VOLUME_PER_HOUR = 'support-volume-per-hour'
-export const AUTOMATION_OVERVIEW = 'automation-overview'
-export const AUTOMATION_FLOW = 'automation-flow'
-export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
+export const AUTOMATE_OVERVIEW = 'automate-overview'
+export const AUTOMATE_FLOW = 'automate-flow'
+export const AUTOMATE_PER_CHANNEL = 'automate-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
 export const SELF_SERVICE_OVERVIEW_V2 = 'self-service-overview-v2'
 export const AUTOMATE_PERFORMANCE_BY_FEATURE = 'automate-performance-by-feature'
@@ -1304,9 +1304,9 @@ export const stats = toImmutable<
             },
         }),
     },
-    [AUTOMATION_OVERVIEW]: {
+    [AUTOMATE_OVERVIEW]: {
         style: 'key-metrics',
-        api_resource_name: AUTOMATION_OVERVIEW,
+        api_resource_name: AUTOMATE_OVERVIEW,
         metrics: [
             {
                 label: 'Overall automation rate',
@@ -1330,7 +1330,7 @@ export const stats = toImmutable<
             },
         ],
     },
-    [AUTOMATION_FLOW]: {
+    [AUTOMATE_FLOW]: {
         helpText:
             'Vizualize at a glance where your customer interactions come from, if they are automated and if so, from which channel.',
         style: 'sankey',
@@ -1374,7 +1374,7 @@ export const stats = toImmutable<
             },
         }),
     },
-    [AUTOMATION_PER_CHANNEL]: {
+    [AUTOMATE_PER_CHANNEL]: {
         helpText: 'Number of customer interactions automated by channels',
         style: 'bar',
         downloadable: true,

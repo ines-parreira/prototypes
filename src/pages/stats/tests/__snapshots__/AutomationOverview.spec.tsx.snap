@@ -271,7 +271,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
-                id="tooltip-automation-flow"
+                id="tooltip-automate-flow"
               >
                 info_outline
               </i>
@@ -310,7 +310,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
-                id="tooltip-automation-per-channel"
+                id="tooltip-automate-per-channel"
               >
                 info_outline
               </i>

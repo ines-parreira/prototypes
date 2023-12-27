@@ -9,7 +9,7 @@ import {ProductType} from 'models/billing/types'
 import {
     HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPrice,
-    basicYearlyAutomationPrice,
+    basicYearlyAutomatePrice,
     products,
 } from 'fixtures/productPrices'
 import ProductCard from '../ProductCard'
@@ -48,7 +48,7 @@ describe('ProductCard', () => {
             <Provider store={store}>
                 <ProductCard
                     type={ProductType.Automation}
-                    product={basicYearlyAutomationPrice}
+                    product={basicYearlyAutomatePrice}
                     isDisabled={false}
                 />
             </Provider>

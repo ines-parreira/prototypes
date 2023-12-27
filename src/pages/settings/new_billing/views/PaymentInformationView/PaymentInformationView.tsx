@@ -10,7 +10,7 @@ import {
     getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
 import {
-    AutomationPrice,
+    AutomatePrice,
     HelpdeskPrice,
     PlanInterval,
     ProductType,
@@ -32,7 +32,7 @@ import css from './PaymentInformationView.less'
 type PaymentInformationViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     helpdeskProduct?: HelpdeskPrice
-    automationProduct?: AutomationPrice
+    automateProduct?: AutomatePrice
     voiceProduct?: SMSOrVoicePrice
     smsProduct?: SMSOrVoicePrice
     isCurrentSubscriptionCanceled: boolean
@@ -41,7 +41,7 @@ type PaymentInformationViewProps = {
 const PaymentInformationView = ({
     contactBilling,
     helpdeskProduct,
-    automationProduct,
+    automateProduct,
     voiceProduct,
     smsProduct,
     isCurrentSubscriptionCanceled,
@@ -52,8 +52,8 @@ const PaymentInformationView = ({
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
     const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
     const isAAOLegacy =
-        !!automationProduct &&
-        isAAOLegacyPrice(automationProduct, ProductType.Automation)
+        !!automateProduct &&
+        isAAOLegacyPrice(automateProduct, ProductType.Automation)
     const isSubscribedToVoiceOrSms = !!voiceProduct || !!smsProduct
 
     const contact = useAppSelector(getContact)?.toJS() as BillingContact

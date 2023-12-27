@@ -1,11 +1,11 @@
 import {
-    basicMonthlyAutomationPrice,
+    basicMonthlyAutomatePrice,
     basicMonthlyHelpdeskPrice,
-    AUTOMATION_PRODUCT_ID,
+    AUTOMATE_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPrice,
-    legacyBasicAutomationPrice,
-    basicDiscountedAutomationPrice,
+    legacyBasicAutomatePrice,
+    basicDiscountedAutomatePrice,
 } from 'fixtures/productPrices'
 import {
     Account,
@@ -85,19 +85,19 @@ export const account: Account = {
     },
 }
 
-export const automationSubscriptionProductPrices = {
+export const automateSubscriptionProductPrices = {
     [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPrice.price_id,
+    [AUTOMATE_PRODUCT_ID]: basicMonthlyAutomatePrice.price_id,
 }
 
 export const discountedAutomateProductPrices = {
     [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-    [AUTOMATION_PRODUCT_ID]: basicDiscountedAutomationPrice.price_id,
+    [AUTOMATE_PRODUCT_ID]: basicDiscountedAutomatePrice.price_id,
 }
 
 export const legacyWithAutomateProductPrices = {
     [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPrice.price_id,
-    [AUTOMATION_PRODUCT_ID]: legacyBasicAutomationPrice.price_id,
+    [AUTOMATE_PRODUCT_ID]: legacyBasicAutomatePrice.price_id,
 }
 
 export const legacyWithoutAutomateProductPrices = {

@@ -9,7 +9,7 @@ import {UserRole} from 'config/types/user'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    getAutomationProduct,
+    getAutomateProduct,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
     getHasAutomate,
@@ -36,7 +36,7 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
-import {AutomationPrice, Price, ProductType} from 'models/billing/types'
+import {AutomatePrice, Price, ProductType} from 'models/billing/types'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -159,9 +159,7 @@ const AutomateSubscriptionModal = ({
         helpdeskPrice && void handleSubscriptionUpdate([helpdeskPrice.price_id])
     }
 
-    const automationPrices = useAppSelector(
-        getAutomationProduct
-    )?.prices.filter(
+    const automatePrices = useAppSelector(getAutomateProduct)?.prices.filter(
         (price) => price.num_quota_tickets && price.interval === interval
     )
     const helpdeskOptionIndex = Math.max(
@@ -171,7 +169,7 @@ const AutomateSubscriptionModal = ({
 
     const aaoPreselectedOption = Math.min(5, helpdeskOptionIndex)
     const [selectedPrice, setSelectedPrice] = useState<Price | undefined>(
-        automationPrices?.[aaoPreselectedOption]
+        automatePrices?.[aaoPreselectedOption]
     )
 
     const [isSubscriptionEnabled, setIsSubscriptionEnabled] = useState(false)
@@ -224,7 +222,7 @@ const AutomateSubscriptionModal = ({
                     {isAutomateRebranding ? (
                         <PlanSubscriptionDescription
                             productType={ProductType.Automation}
-                            prices={automationPrices}
+                            prices={automatePrices}
                             isTrialing={isTrialingSubscription}
                             isEnterprisePlan={isEnterprisePlan}
                             interval={interval}
@@ -236,9 +234,9 @@ const AutomateSubscriptionModal = ({
                         <AutomatePlanSubscriptionDescription
                             isTrialing={isTrialingSubscription}
                             isEnterprisePlan={isEnterprisePlan}
-                            automationPrices={automationPrices}
+                            automationPrices={automatePrices}
                             interval={interval}
-                            selectedPrice={selectedPrice as AutomationPrice}
+                            selectedPrice={selectedPrice as AutomatePrice}
                             setSelectedPrice={setSelectedPrice as any}
                             setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                         />

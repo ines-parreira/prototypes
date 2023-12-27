@@ -24,7 +24,7 @@ export enum ProductType {
 
 export type Price =
     | HelpdeskPrice
-    | AutomationPrice
+    | AutomatePrice
     | SMSOrVoicePrice
     | ConvertPrice
 
@@ -32,7 +32,7 @@ export type Product<T = Price> = {
     id: string
     type: T extends HelpdeskPrice
         ? ProductType.Helpdesk
-        : T extends AutomationPrice
+        : T extends AutomatePrice
         ? ProductType.Automation
         : T extends SMSOrVoicePrice
         ? ProductType.Voice | ProductType.SMS
@@ -66,7 +66,7 @@ export type HelpdeskPrice = BasePrice & {
     integrations: number
     is_legacy: boolean
     features: HelpdeskPriceFeatures
-    legacy_automation_addon_features?: AutomationPriceFeatures
+    legacy_automation_addon_features?: AutomatePriceFeatures
     limits: {
         messages: PlanLimits
         tickets: PlanLimits
@@ -79,7 +79,7 @@ export type HelpdeskPrice = BasePrice & {
     trial_period_days: number
 }
 
-export type AutomationPriceFeatures = Record<
+export type AutomatePriceFeatures = Record<
     | AccountFeature.AutomationTrackOrderFlow
     | AccountFeature.AutomationReportIssueFlow
     | AccountFeature.AutomationCancellationsFlow
@@ -89,11 +89,11 @@ export type AutomationPriceFeatures = Record<
     AccountFeatureMetadata
 >
 
-export type AutomationPrice = BasePrice & {
+export type AutomatePrice = BasePrice & {
     automation_addon_discount: number
     automation_addon_included?: boolean
     base_price_id: string
-    features: AutomationPriceFeatures
+    features: AutomatePriceFeatures
     num_quota_tickets: number | null
 }
 

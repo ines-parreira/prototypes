@@ -14,7 +14,7 @@ import {
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    getCurrentAutomationProduct,
+    getCurrentAutomateProduct,
     getCurrentConvertProduct,
     getCurrentHelpdeskProduct,
     getCurrentProductsUsage,
@@ -71,7 +71,7 @@ const BillingStartView = () => {
     const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isTrialingSubscription = useAppSelector(isTrialing)
     const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
+    const automateProduct = useAppSelector(getCurrentAutomateProduct)
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
     const convertProduct = useAppSelector(getCurrentConvertProduct)
@@ -387,7 +387,7 @@ const BillingStartView = () => {
                             <PaymentInformationView
                                 contactBilling={contactBilling}
                                 helpdeskProduct={helpdeskProduct}
-                                automationProduct={automationProduct}
+                                automateProduct={automateProduct}
                                 voiceProduct={voiceProduct}
                                 smsProduct={smsProduct}
                                 isCurrentSubscriptionCanceled={

@@ -5,18 +5,18 @@ import moment from 'moment'
 
 import * as billingFixtures from 'fixtures/billing'
 import {
-    AUTOMATION_PRODUCT_ID,
+    AUTOMATE_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
     SMS_PRODUCT_ID,
     VOICE_PRODUCT_ID,
-    automationProduct,
-    basicDiscountedAutomationPrice,
-    basicMonthlyAutomationPrice,
+    automateProduct,
+    basicDiscountedAutomatePrice,
+    basicMonthlyAutomatePrice,
     basicMonthlyHelpdeskPrice,
     basicYearlyHelpdeskPrice,
     customHelpdeskPrice,
     helpdeskProduct,
-    legacyBasicAutomationPrice,
+    legacyBasicAutomatePrice,
     legacyBasicHelpdeskPrice,
     products,
     smsPrice1,
@@ -25,7 +25,7 @@ import {
     CONVERT_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {
-    automationSubscriptionProductPrices,
+    automateSubscriptionProductPrices,
     legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -138,8 +138,8 @@ describe('billing selectors', () => {
                             ],
                         },
                         {
-                            ...automationProduct,
-                            prices: [basicMonthlyAutomationPrice],
+                            ...automateProduct,
+                            prices: [basicMonthlyAutomatePrice],
                         },
                     ],
                 }),
@@ -181,7 +181,7 @@ describe('billing selectors', () => {
         it('should return the full amount of Automate', () => {
             const productsWithDiscountedAutomationPrice = _cloneDeep(products)
             productsWithDiscountedAutomationPrice[1].prices.push(
-                basicDiscountedAutomationPrice
+                basicDiscountedAutomatePrice
             )
 
             state = {
@@ -191,8 +191,8 @@ describe('billing selectors', () => {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
                                 basicMonthlyHelpdeskPrice.price_id,
-                            [AUTOMATION_PRODUCT_ID]:
-                                basicDiscountedAutomationPrice.price_id,
+                            [AUTOMATE_PRODUCT_ID]:
+                                basicDiscountedAutomatePrice.price_id,
                         },
                     },
                 }),
@@ -202,7 +202,7 @@ describe('billing selectors', () => {
                 }),
             }
             expect(
-                selectors.getCurrentAutomationFullAmount(state)
+                selectors.getCurrentAutomateFullAmount(state)
             ).toMatchSnapshot()
         })
 
@@ -219,7 +219,7 @@ describe('billing selectors', () => {
                 }),
             }
             expect(
-                selectors.getCurrentAutomationFullAmount(state)
+                selectors.getCurrentAutomateFullAmount(state)
             ).toMatchSnapshot()
         })
     })
@@ -231,7 +231,7 @@ describe('billing selectors', () => {
                     ...state,
                     currentAccount: fromJS({
                         current_subscription: {
-                            products: automationSubscriptionProductPrices,
+                            products: automateSubscriptionProductPrices,
                         },
                     }),
                 })
@@ -247,7 +247,7 @@ describe('billing selectors', () => {
         const automateLaunchDate = '2021-10-04T00:00:00Z'
         const productsWithLegacy = _cloneDeep(products)
         productsWithLegacy[0].prices.push(legacyBasicHelpdeskPrice)
-        productsWithLegacy[1].prices.push(legacyBasicAutomationPrice)
+        productsWithLegacy[1].prices.push(legacyBasicAutomatePrice)
 
         it('should return true when the account was created before the add-on launch date and has legacy features', () => {
             expect(
@@ -424,9 +424,9 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getAutomationProduct', () => {
-        it('should return the automation product', () => {
-            expect(selectors.getAutomationProduct(state)).toMatchSnapshot()
+    describe('getAutomateProduct', () => {
+        it('should return the automate product', () => {
+            expect(selectors.getAutomateProduct(state)).toMatchSnapshot()
         })
     })
 
@@ -438,21 +438,21 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getCurrentAutomationProduct', () => {
-        it('should return the current automation product', () => {
+    describe('getCurrentAutomateProduct', () => {
+        it('should return the current automate product', () => {
             expect(
-                selectors.getCurrentAutomationProduct({
+                selectors.getCurrentAutomateProduct({
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         [
                             'current_subscription',
                             'products',
-                            AUTOMATION_PRODUCT_ID,
+                            AUTOMATE_PRODUCT_ID,
                         ],
-                        basicMonthlyAutomationPrice.price_id
+                        basicMonthlyAutomatePrice.price_id
                     ),
                 })
-            ).toEqual(basicMonthlyAutomationPrice)
+            ).toEqual(basicMonthlyAutomatePrice)
         })
     })
 
@@ -519,9 +519,9 @@ describe('billing selectors', () => {
                         [
                             'current_subscription',
                             'products',
-                            AUTOMATION_PRODUCT_ID,
+                            AUTOMATE_PRODUCT_ID,
                         ],
-                        basicMonthlyAutomationPrice.price_id
+                        basicMonthlyAutomatePrice.price_id
                     ),
                 })
             ).toBe(90)
@@ -623,9 +623,9 @@ describe('billing selectors', () => {
                         [
                             'current_subscription',
                             'products',
-                            AUTOMATION_PRODUCT_ID,
+                            AUTOMATE_PRODUCT_ID,
                         ],
-                        basicMonthlyAutomationPrice.price_id
+                        basicMonthlyAutomatePrice.price_id
                     ),
                 })
             ).toMatchSnapshot()
@@ -637,8 +637,8 @@ describe('billing selectors', () => {
             const currentProducts = selectors.getCurrentProducts({
                 ...state,
                 currentAccount: state.currentAccount.setIn(
-                    ['current_subscription', 'products', AUTOMATION_PRODUCT_ID],
-                    basicMonthlyAutomationPrice.price_id
+                    ['current_subscription', 'products', AUTOMATE_PRODUCT_ID],
+                    basicMonthlyAutomatePrice.price_id
                 ),
             })
 
@@ -686,9 +686,9 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getAutomationPrices', () => {
+    describe('getAutomatePrices', () => {
         it('should return the automation prices', () => {
-            expect(selectors.getAutomationPrices(state)).toMatchSnapshot()
+            expect(selectors.getAutomatePrices(state)).toMatchSnapshot()
         })
     })
 
@@ -699,7 +699,7 @@ describe('billing selectors', () => {
             expect(cheapestProductPrices.voice).toEqual(voicePrice1)
             expect(cheapestProductPrices.sms).toEqual(smsPrice1)
             expect(cheapestProductPrices.automation).toEqual(
-                basicMonthlyAutomationPrice
+                basicMonthlyAutomatePrice
             )
             expect(cheapestProductPrices.helpdesk).toEqual(
                 basicMonthlyHelpdeskPrice

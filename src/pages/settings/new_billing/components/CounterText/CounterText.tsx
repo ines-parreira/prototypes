@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {isAAOLegacyPrice, isTrialPrice} from 'models/billing/utils'
 import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
 import {
-    AutomationPrice,
+    AutomatePrice,
     ConvertPrice,
     HelpdeskPrice,
     ProductType,
@@ -12,7 +12,7 @@ import {
 export type CounterTextProps = {
     price:
         | HelpdeskPrice
-        | AutomationPrice
+        | AutomatePrice
         | SMSOrVoicePrice
         | ConvertPrice
         | undefined

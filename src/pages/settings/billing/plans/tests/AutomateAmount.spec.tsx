@@ -10,8 +10,8 @@ import AutomateAmount from '../AutomateAmount'
 describe('<AutomateAmount />', () => {
     const minProps: ComponentProps<typeof AutomateAmount> = {
         addOnAmount: 'Amount',
-        isAutomationChecked: false,
-        onAutomationChange: jest.fn(),
+        isAutomateChecked: false,
+        onAutomateChange: jest.fn(),
     }
 
     beforeEach(() => {
@@ -73,7 +73,7 @@ describe('<AutomateAmount />', () => {
 
         fireEvent.click(getByLabelText(/Automate/))
 
-        expect(minProps.onAutomationChange).toHaveBeenCalled()
+        expect(minProps.onAutomateChange).toHaveBeenCalled()
     })
 
     it('should render not editable variant', () => {

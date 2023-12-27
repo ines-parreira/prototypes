@@ -13,13 +13,13 @@ import {
     automationPerChannel,
 } from 'fixtures/stats'
 import {renderWithRouter} from 'utils/testing'
-import {AUTOMATION_FLOW, AUTOMATION_OVERVIEW} from 'config/stats'
+import {AUTOMATE_FLOW, AUTOMATE_OVERVIEW} from 'config/stats'
 import {integrationsState} from 'fixtures/integrations'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import {billingState} from 'fixtures/billing'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
+import {account, automateSubscriptionProductPrices} from 'fixtures/account'
 import useStatResource from 'hooks/reporting/useStatResource'
 import AutomationOverview from '../AutomationOverview'
 
@@ -67,7 +67,7 @@ describe('AutomationOverview', () => {
             ...account,
             current_subscription: {
                 ...account.current_subscription,
-                products: automationSubscriptionProductPrices,
+                products: automateSubscriptionProductPrices,
             },
         }),
     } as RootState
@@ -78,9 +78,9 @@ describe('AutomationOverview', () => {
 
     it('should render the filters and stats when stats filters are defined', () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === AUTOMATION_OVERVIEW) {
+            if (resourceName === AUTOMATE_OVERVIEW) {
                 return [automationOverview, false, _noop]
-            } else if (resourceName === AUTOMATION_FLOW) {
+            } else if (resourceName === AUTOMATE_FLOW) {
                 return [automationFlow, false, _noop]
             }
             return [automationPerChannel, false, _noop]

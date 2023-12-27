@@ -12,11 +12,11 @@ import ArrowForward from 'assets/img/icons/arrow-forward.svg'
 import {getFormattedAmount} from 'models/billing/utils'
 import {
     getCurrentHelpdeskAutomateAmount,
-    getCurrentAutomationFullAmount,
+    getCurrentAutomateFullAmount,
     getHasAutomate,
     getCurrentHelpdeskProduct,
-    getCurrentAutomationProduct,
-    getAutomationPricesMap,
+    getCurrentAutomateProduct,
+    getAutomatePricesMap,
     getCurrentHelpdeskAddons,
 } from 'state/billing/selectors'
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
@@ -63,8 +63,8 @@ export const ChangePlanModal = ({
     renderComparedPlan,
 }: Props) => {
     const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
-    const automationPrices = useAppSelector(getAutomationPricesMap)
+    const currentAutomatePrice = useAppSelector(getCurrentAutomateProduct)
+    const automatePrices = useAppSelector(getAutomatePricesMap)
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentHelpdeskAddons = useAppSelector(getCurrentHelpdeskAddons)
     const features = useMemo(
@@ -78,16 +78,14 @@ export const ChangePlanModal = ({
     const currentHelpdeskAutomateAmount = useAppSelector(
         getCurrentHelpdeskAutomateAmount
     )
-    const currentAutomationFullAmount = useAppSelector(
-        getCurrentAutomationFullAmount
+    const currentAutomateFullAmount = useAppSelector(
+        getCurrentAutomateFullAmount
     )
     const isEditable = useMemo(
         () =>
-            currentAutomationPrice != null ||
-            currentHelpdeskAddons?.some(
-                (priceId) => !!automationPrices[priceId]
-            ),
-        [currentAutomationPrice, currentHelpdeskAddons, automationPrices]
+            currentAutomatePrice != null ||
+            currentHelpdeskAddons?.some((priceId) => !!automatePrices[priceId]),
+        [currentAutomatePrice, currentHelpdeskAddons, automatePrices]
     )
     const appNode = useAppNode()
 
@@ -154,9 +152,9 @@ export const ChangePlanModal = ({
                                                         currentHelpdeskPrice.interval
                                                     }
                                                     fullAddOnAmount={
-                                                        currentAutomationFullAmount
+                                                        currentAutomateFullAmount
                                                     }
-                                                    isAutomationChecked={
+                                                    isAutomateChecked={
                                                         hasAutomate
                                                     }
                                                 />

@@ -102,7 +102,7 @@ export const TICKET_SUBJECTS = {
 
 export const BILLING_SUPPORT_EMAIL = 'billing@gorgias.com'
 
-export const AUTOMATION_FEATURES = [
+export const AUTOMATE_FEATURES = [
     {
         title: FLOWS,
         iconUrl: flowsIcon,
@@ -135,7 +135,7 @@ export const AUTOMATION_FEATURES = [
     },
 ]
 
-export const CANCEL_AUTOMATION_REASONS: Reason[] = [
+export const CANCEL_AUTOMATE_REASONS: Reason[] = [
     {value: false, label: `It's not automating enough`},
     {value: false, label: `It's missing features`},
     {value: false, label: `It's too expensive`},

@@ -9,13 +9,13 @@ import {
     Category as CategoryType,
     isCategory,
 } from 'models/integration/types/app'
-import {AutomationPrice, HelpdeskPrice} from 'models/billing/types'
+import {AutomatePrice, HelpdeskPrice} from 'models/billing/types'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {IntegrationListItem} from 'state/integrations/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
-    getAutomationPrices,
+    getAutomatePrices,
     getHelpdeskPrices,
     getCurrentProductsFeatures,
 } from 'state/billing/selectors'
@@ -56,7 +56,7 @@ export function addRequiredPlanToIntegrations(
     integrationsListItems: IntegrationListItem[],
     integrations: Integration[],
     features: Partial<Record<AccountFeature, AccountFeatureMetadata>>,
-    prices: (HelpdeskPrice | AutomationPrice)[]
+    prices: (HelpdeskPrice | AutomatePrice)[]
 ) {
     return integrationsListItems.map((integration) => {
         const requiredFeature = integration.requiredFeature
@@ -82,10 +82,10 @@ export default function All() {
     const integrations = useAppSelector(getIntegrations)
     const integrationsList = useAppSelector(getIntegrationsList)
     const features = useAppSelector(getCurrentProductsFeatures)
-    const automationPrices = useAppSelector(getAutomationPrices)
+    const automatePrices = useAppSelector(getAutomatePrices)
     const helpdeskPrices = useAppSelector(getHelpdeskPrices)
 
-    const prices = [...automationPrices, ...helpdeskPrices]
+    const prices = [...automatePrices, ...helpdeskPrices]
 
     const search =
         useSearch<{[SEARCH_URL_PARAM]: string; [CATEGORY_URL_PARAM]: string}>()

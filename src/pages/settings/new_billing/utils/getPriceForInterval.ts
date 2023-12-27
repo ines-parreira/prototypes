@@ -1,5 +1,5 @@
 import {
-    AutomationPrice,
+    AutomatePrice,
     ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
@@ -7,7 +7,7 @@ import {
 } from 'models/billing/types'
 
 export type PriceForIntervalProps<
-    T extends HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    T extends HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
 > = {
     prices: T[]
     currentPrice?: T
@@ -15,7 +15,7 @@ export type PriceForIntervalProps<
 }
 
 export const getPriceForInterval = <
-    T extends HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    T extends HelpdeskPrice | AutomatePrice | SMSOrVoicePrice | ConvertPrice
 >({
     prices,
     currentPrice,

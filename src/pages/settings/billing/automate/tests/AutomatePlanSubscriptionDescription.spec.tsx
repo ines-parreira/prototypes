@@ -5,10 +5,10 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import {RootState, StoreDispatch} from 'state/types'
-import {automationProduct} from 'fixtures/productPrices'
+import {automateProduct} from 'fixtures/productPrices'
 import {billingState} from 'fixtures/billing'
 import AutomatePlanSubscriptionDescription, {
-    AutomationPlanSubscriptionDescriptionProps,
+    AutomatePlanSubscriptionDescriptionProps,
 } from '../AutomatePlanSubscriptionDescription'
 
 const mockedDispatch = jest.fn()
@@ -20,17 +20,17 @@ const defaultState: Partial<RootState> = {
     billing: fromJS(billingState),
 }
 
-describe('AutomationPlanSubscriptionDescription', () => {
-    const mockAutomationPrices = automationProduct.prices
+describe('AutomatePlanSubscriptionDescription', () => {
+    const mockAutomatePrices = automateProduct.prices
 
     const mockSetSelectedPrice = jest.fn()
     const mockSetIsSubscriptionEnabled = jest.fn()
 
-    const defaultProps: AutomationPlanSubscriptionDescriptionProps = {
-        automationPrices: mockAutomationPrices,
+    const defaultProps: AutomatePlanSubscriptionDescriptionProps = {
+        automationPrices: mockAutomatePrices,
         isTrialing: false,
         isEnterprisePlan: false,
-        selectedPrice: mockAutomationPrices[0],
+        selectedPrice: mockAutomatePrices[0],
         setSelectedPrice: mockSetSelectedPrice,
         setIsSubscriptionEnabled: mockSetIsSubscriptionEnabled,
     }
@@ -58,9 +58,7 @@ describe('AutomationPlanSubscriptionDescription', () => {
 
         userEvent.click(proOption)
 
-        expect(mockSetSelectedPrice).toHaveBeenCalledWith(
-            mockAutomationPrices[2]
-        )
+        expect(mockSetSelectedPrice).toHaveBeenCalledWith(mockAutomatePrices[2])
     })
 
     it('displays the plan price correctly', () => {

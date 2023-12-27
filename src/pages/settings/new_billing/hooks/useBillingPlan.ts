@@ -4,8 +4,8 @@ import moment from 'moment'
 import {useQueryClient} from '@tanstack/react-query'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    getAutomationProduct,
-    getCurrentAutomationProduct,
+    getAutomateProduct,
+    getCurrentAutomateProduct,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
     getCurrentSMSProduct,
@@ -110,26 +110,26 @@ export const useBillingPlans = ({
         [helpdeskPriceIds, helpdeskProduct]
     )
 
-    // Automation
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
-    const automationPrices = useAppSelector(
-        getAutomationProduct
-    )?.prices.filter((price) => {
-        const isCurrentPriceLegacy =
-            automationProduct && !automationProduct.num_quota_tickets
-        return (
-            price &&
-            (filterByInterval ? price.interval === interval : true) &&
-            (isCurrentPriceLegacy ? true : !!price.num_quota_tickets)
-        )
-    })
-    const automationHasLegacyPrice = useMemo(
-        () => automationPrices?.some((price) => !price.num_quota_tickets),
-        [automationPrices]
+    // Automate
+    const automateProduct = useAppSelector(getCurrentAutomateProduct)
+    const automatePrices = useAppSelector(getAutomateProduct)?.prices.filter(
+        (price) => {
+            const isCurrentPriceLegacy =
+                automateProduct && !automateProduct.num_quota_tickets
+            return (
+                price &&
+                (filterByInterval ? price.interval === interval : true) &&
+                (isCurrentPriceLegacy ? true : !!price.num_quota_tickets)
+            )
+        }
     )
-    const automationInitialIndex = Math.min(
+    const automateHasLegacyPrice = useMemo(
+        () => automatePrices?.some((price) => !price.num_quota_tickets),
+        [automatePrices]
+    )
+    const automateInitialIndex = Math.min(
         5,
-        helpdeskCurrentPriceIdIndex - (automationHasLegacyPrice ? 0 : 1)
+        helpdeskCurrentPriceIdIndex - (automateHasLegacyPrice ? 0 : 1)
     )
 
     // Voice
@@ -173,11 +173,9 @@ export const useBillingPlans = ({
                 !!helpdeskProduct || selectedProduct === ProductType.Helpdesk,
         },
         [ProductType.Automation]: {
-            plan:
-                automationProduct || automationPrices?.[automationInitialIndex],
+            plan: automateProduct || automatePrices?.[automateInitialIndex],
             isSelected:
-                !!automationProduct ||
-                selectedProduct === ProductType.Automation,
+                !!automateProduct || selectedProduct === ProductType.Automation,
         },
         [ProductType.Voice]: {
             plan: voiceProduct || voicePrices?.[voiceInitialIndex],
@@ -207,21 +205,21 @@ export const useBillingPlans = ({
     const totalProductAmount = useMemo(() => {
         return (
             (helpdeskProduct?.amount ?? 0) +
-            (automationProduct?.amount ?? 0) +
+            (automateProduct?.amount ?? 0) +
             (voiceProduct?.amount ?? 0) +
             (smsProduct?.amount ?? 0)
         )
-    }, [helpdeskProduct, automationProduct, voiceProduct, smsProduct])
+    }, [helpdeskProduct, automateProduct, voiceProduct, smsProduct])
 
     const anyProductChanged = useMemo(
         () =>
             (helpdeskProduct?.price_id !==
                 selectedPlans[ProductType.Helpdesk].plan?.price_id &&
                 selectedPlans[ProductType.Helpdesk].isSelected) ||
-            (automationProduct?.price_id !==
+            (automateProduct?.price_id !==
                 selectedPlans[ProductType.Automation].plan?.price_id &&
                 selectedPlans[ProductType.Automation].isSelected) ||
-            (!!automationProduct?.price_id &&
+            (!!automateProduct?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected) ||
             (voiceProduct?.price_id !==
                 selectedPlans[ProductType.Voice].plan?.price_id &&
@@ -246,7 +244,7 @@ export const useBillingPlans = ({
                 !selectedPlans[ProductType.Convert].isSelected),
         [
             helpdeskProduct,
-            automationProduct,
+            automateProduct,
             voiceProduct,
             smsProduct,
             convertProduct,
@@ -259,8 +257,8 @@ export const useBillingPlans = ({
             (helpdeskProduct &&
                 helpdeskProduct.amount >
                     (selectedPlans[ProductType.Helpdesk].plan?.amount || 0)) ||
-            (automationProduct &&
-                automationProduct.amount >
+            (automateProduct &&
+                automateProduct.amount >
                     (selectedPlans[ProductType.Automation].plan?.amount ||
                         0)) ||
             (voiceProduct &&
@@ -275,7 +273,7 @@ export const useBillingPlans = ({
         [
             selectedPlans,
             helpdeskProduct,
-            automationProduct,
+            automateProduct,
             voiceProduct,
             smsProduct,
             convertProduct,
@@ -287,14 +285,14 @@ export const useBillingPlans = ({
             (selectedPlans[ProductType.Helpdesk].isSelected &&
                 !helpdeskProduct) ||
             (selectedPlans[ProductType.Automation].isSelected &&
-                !automationProduct) ||
+                !automateProduct) ||
             (selectedPlans[ProductType.Voice].isSelected && !voiceProduct) ||
             (selectedPlans[ProductType.SMS].isSelected && !smsProduct) ||
             (selectedPlans[ProductType.Convert].isSelected && !convertProduct),
         [
             selectedPlans,
             helpdeskProduct,
-            automationProduct,
+            automateProduct,
             voiceProduct,
             smsProduct,
             convertProduct,
@@ -432,8 +430,8 @@ export const useBillingPlans = ({
 
         const isNewAutomationProduct =
             selectedPlans[ProductType.Automation].plan?.price_id !==
-                automationProduct?.price_id ||
-            (automationProduct?.price_id &&
+                automateProduct?.price_id ||
+            (automateProduct?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected)
 
         const isNewConvertProduct =
@@ -482,7 +480,7 @@ export const useBillingPlans = ({
         if (selectedPlans[ProductType.Automation].isSelected) {
             if (isNewAutomationProduct && !isIntervalChanged) {
                 const notification = setAutomationNotification({
-                    oldProduct: automationProduct,
+                    oldProduct: automateProduct,
                     newProduct: selectedPlans[ProductType.Automation].plan,
                     periodEnd,
                     onClick: () => {
@@ -537,7 +535,7 @@ export const useBillingPlans = ({
             // Automation has been removed while in free trial
             if (
                 notifications.length === 0 &&
-                !!automationProduct &&
+                !!automateProduct &&
                 selectedPlans[ProductType.Automation].isSelected === false
             ) {
                 notifications.push({
@@ -567,7 +565,7 @@ export const useBillingPlans = ({
     }, [
         selectedPlans,
         helpdeskProduct,
-        automationProduct,
+        automateProduct,
         convertProduct,
         isIntervalChanged,
         periodEnd,
@@ -655,9 +653,9 @@ export const useBillingPlans = ({
         totalProductAmount,
         helpdeskProduct,
         helpdeskPrices,
-        automationProduct,
-        automationPrices,
-        automationInitialIndex,
+        automateProduct,
+        automatePrices,
+        automateInitialIndex,
         voiceProduct,
         voicePrices,
         voiceInitialIndex,

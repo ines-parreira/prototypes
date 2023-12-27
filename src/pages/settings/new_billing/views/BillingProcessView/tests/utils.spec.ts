@@ -1,5 +1,5 @@
 import {
-    basicMonthlyAutomationPrice,
+    basicMonthlyAutomatePrice,
     basicMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
 import {PlanInterval} from 'models/billing/types'
@@ -60,7 +60,7 @@ describe('setAutomationNotification', () => {
 
     it('renders new Automation subscription message', () => {
         const oldProduct = undefined
-        const newProduct = basicMonthlyAutomationPrice
+        const newProduct = basicMonthlyAutomatePrice
 
         const periodEnd = '2023-06-30'
         const interval = PlanInterval.Month
@@ -81,9 +81,9 @@ describe('setAutomationNotification', () => {
     })
 
     it('renders upgrade message when new product amount is greater', () => {
-        const oldProduct = basicMonthlyAutomationPrice // amount is 3000
+        const oldProduct = basicMonthlyAutomatePrice // amount is 3000
         const newProduct = {
-            ...basicMonthlyAutomationPrice,
+            ...basicMonthlyAutomatePrice,
             amount: 20000,
             num_quota_tickets: 350,
             name: 'New Automation Plan',
@@ -107,9 +107,9 @@ describe('setAutomationNotification', () => {
     })
 
     it('renders downgrade message when new product amount is less', () => {
-        const oldProduct = basicMonthlyAutomationPrice // amount is 3000
+        const oldProduct = basicMonthlyAutomatePrice // amount is 3000
         const newProduct = {
-            ...basicMonthlyAutomationPrice,
+            ...basicMonthlyAutomatePrice,
             amount: 1000,
             num_quota_tickets: 350,
             name: 'New Automation Plan',
