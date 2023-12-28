@@ -78,7 +78,6 @@ import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {RootState} from '../../../../../../state/types'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
-import {ChatIntegrationPreviewProvider} from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewProvider'
 import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
 import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
 import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
@@ -147,7 +146,7 @@ type State = {
     linkedEmailIntegration: number | null
     offlineModeEnabledDatetime: Date | null
     liveChatAvailability: string
-    avatar: GorgiasChatAvatarSettings | undefined
+    avatar: GorgiasChatAvatarSettings
     controlTicketVolume: boolean
     translations: Translations | undefined
     texts: TextsMultiLanguage
@@ -185,7 +184,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         offlineModeEnabledDatetime: null,
         liveChatAvailability:
             GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
-        avatar: undefined,
+        avatar: {
+            imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
+            nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+        },
         controlTicketVolume: false,
         translations: undefined,
         texts: multiLanguageInitialTextsEmptyData,
@@ -857,23 +859,26 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     ['decoration', 'background_color_style'],
                     GorgiasChatBackgroundColorStyle.Gradient
                 )}
+                displayBotLabel={integration.getIn(
+                    ['decoration', 'display_bot_label'],
+                    true
+                )}
+                avatar={avatar}
             >
                 <ChatIntegrationPreviewContent>
-                    <ChatIntegrationPreviewProvider value={{avatar}}>
-                        {previewIsWidgetConversation(preview) && (
-                            <ConversationTimestamp />
-                        )}
-                        {showCustomerInitialMessages && (
-                            <CustomerInitialMessages
-                                conversationColor={conversationColor}
-                                messages={[
-                                    widgetTranslatedTexts.previewCustomerInitialMessage,
-                                ]}
-                                hideConversationTimestamp
-                            />
-                        )}
-                        {previewChildren}
-                    </ChatIntegrationPreviewProvider>
+                    {previewIsWidgetConversation(preview) && (
+                        <ConversationTimestamp />
+                    )}
+                    {showCustomerInitialMessages && (
+                        <CustomerInitialMessages
+                            conversationColor={conversationColor}
+                            messages={[
+                                widgetTranslatedTexts.previewCustomerInitialMessage,
+                            ]}
+                            hideConversationTimestamp
+                        />
+                    )}
+                    {previewChildren}
                 </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         )

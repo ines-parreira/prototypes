@@ -119,6 +119,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
         mockFlags({
             [FeatureFlagKey.ChatEnableTranslationEdit]: true,
+            [FeatureFlagKey.ChatControlBotLabelVisibility]: true,
         })
     })
 
@@ -433,6 +434,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "name_type": "agent-first-name",
                       },
                       "main_color": "#115cb5",
+                      "display_bot_label": true,
                     },
                     "meta": Immutable.Map {
                       "language": "en-US",
@@ -589,6 +591,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "name_type": "agent-first-name",
                       },
                       "main_color": "#115cb5",
+                      "display_bot_label": true,
                     },
                     "meta": Immutable.Map {
                       "shop_name": "myStore1",

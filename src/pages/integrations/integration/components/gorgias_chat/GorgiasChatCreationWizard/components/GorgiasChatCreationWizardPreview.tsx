@@ -120,6 +120,11 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         )
 
+    const displayBotLabel: boolean = integration.getIn(
+        ['decoration', 'display_bot_label'],
+        true
+    )
+
     const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
     const previewContent = useMemo(() => {
@@ -219,6 +224,8 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 }
                 autoResponderReply={GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC}
                 renderPoweredBy={renderPoweredBy}
+                displayBotLabel={displayBotLabel}
+                avatar={avatar}
             >
                 {previewContent}
             </ChatIntegrationPreview>

@@ -19,6 +19,10 @@ import {
 } from 'config/integrations/gorgias_chat'
 import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
 import {RootState, StoreDispatch} from 'state/types'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+} from 'models/integration/types'
 
 import AutoResponder from '../AutoResponder'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'
@@ -75,6 +79,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
             language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
             position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
             introductionText: 'intro',
+            displayBotLabel: true,
+            avatar: {
+                imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
+                nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+            },
         }
 
         const messageContentMinProps: ComponentProps<typeof MessageContent> = {

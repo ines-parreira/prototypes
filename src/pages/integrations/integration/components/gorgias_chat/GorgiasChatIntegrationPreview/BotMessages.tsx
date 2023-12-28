@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import classnames from 'classnames'
 
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
@@ -8,10 +8,11 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
-import {useChatIntegrationPreviewContext} from './ChatIntegrationPreviewContext'
 import ChatTitle from './ChatTitle'
 
 import previewCss from './ChatIntegrationPreview.less'
+
+import {ChatIntegrationPreviewContext} from '.'
 
 type Props = {
     className?: string
@@ -27,8 +28,9 @@ const BotMessages: React.FC<Props> = ({
     messages,
     language,
 }) => {
-    const chatIntegrationPreviewContext = useChatIntegrationPreviewContext()
-    const companyLogoUrl = chatIntegrationPreviewContext?.avatar?.companyLogoUrl
+    const {displayBotLabel, avatar} = useContext(ChatIntegrationPreviewContext)
+
+    const companyLogoUrl = avatar?.companyLogoUrl
 
     const widgetTranslatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
@@ -47,7 +49,7 @@ const BotMessages: React.FC<Props> = ({
                         name={chatTitle!}
                     />
                 </div>
-                <ChatTitle isBot title={chatTitle} />
+                <ChatTitle isBot={displayBotLabel} title={chatTitle} />
             </div>
             <div className={previewCss.messages}>
                 {messages?.map((message, index) => (

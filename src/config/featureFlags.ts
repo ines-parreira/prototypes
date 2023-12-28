@@ -13,6 +13,7 @@ export enum FeatureFlagKey {
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     ChatBackgroundColorStyle = 'chat-background-color-style',
     ChatCreationWizard = 'chat-creation-wizard',
+    ChatControlBotLabelVisibility = 'chat-control-bot-label-visibility',
     ChatCreationWizardAutomateStep = 'chat-creation-wizard-automate-step',
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatHeaderPictureStyle = 'chat-header-picture-style',

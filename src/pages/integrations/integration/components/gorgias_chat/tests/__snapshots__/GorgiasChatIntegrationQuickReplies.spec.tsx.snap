@@ -158,7 +158,15 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
+              avatar={
+                {
+                  "companyLogoUrl": undefined,
+                  "imageType": "agent-picture",
+                  "nameType": "agent-first-name",
+                }
+              }
               backgroundColorStyle="gradient"
+              displayBotLabel={true}
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
@@ -595,7 +603,15 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                           className="preview"
                         >
                           <ChatIntegrationPreview
+                            avatar={
+                              {
+                                "companyLogoUrl": undefined,
+                                "imageType": "agent-picture",
+                                "nameType": "agent-first-name",
+                              }
+                            }
                             backgroundColorStyle="gradient"
+                            displayBotLabel={true}
                             introductionText="this is an intro"
                             isOnline={true}
                             mainColor="#123456"
@@ -1294,7 +1310,15 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
+              avatar={
+                {
+                  "companyLogoUrl": undefined,
+                  "imageType": "agent-picture",
+                  "nameType": "agent-first-name",
+                }
+              }
               backgroundColorStyle="gradient"
+              displayBotLabel={true}
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
@@ -1739,7 +1763,15 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                           className="preview"
                         >
                           <ChatIntegrationPreview
+                            avatar={
+                              {
+                                "companyLogoUrl": undefined,
+                                "imageType": "agent-picture",
+                                "nameType": "agent-first-name",
+                              }
+                            }
                             backgroundColorStyle="gradient"
+                            displayBotLabel={true}
                             introductionText="this is an intro"
                             isOnline={true}
                             mainColor="#123456"

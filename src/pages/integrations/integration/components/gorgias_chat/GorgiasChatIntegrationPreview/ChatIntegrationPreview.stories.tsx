@@ -4,6 +4,10 @@ import {fromJS} from 'immutable'
 import {user} from 'fixtures/users'
 
 import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+} from 'models/integration/types'
+import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
@@ -47,6 +51,11 @@ const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
     introductionText: 'How can we help?',
     autoResponderEnabled: true,
     autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+    displayBotLabel: true,
+    avatar: {
+        imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
+        nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+    },
 }
 
 export const Default = Template.bind({})

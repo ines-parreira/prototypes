@@ -4,13 +4,23 @@ import styled from '@emotion/styled'
 import classnames from 'classnames'
 import {List} from 'immutable'
 import moment from 'moment'
-import React, {ReactNode} from 'react'
+import React, {createContext, ReactNode} from 'react'
 import ConversationHeader, {
     ConversationHeaderVariant,
 } from 'gorgias-design-system/Header/ConversationHeader'
 import WidgetHeader from 'gorgias-design-system/Header/WidgetHeader'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
 import useAppSelector from 'hooks/useAppSelector'
+
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
+    GorgiasChatBackgroundColorStyle,
+    GorgiasChatLauncherType,
+    GorgiasChatPosition,
+    GorgiasChatPositionAlignmentEnum,
+} from 'models/integration/types'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
@@ -27,12 +37,6 @@ import {
     isAutoresponderReply,
     LanguageItem,
 } from '../../../../../../config/integrations/gorgias_chat'
-import {
-    GorgiasChatBackgroundColorStyle,
-    GorgiasChatLauncherType,
-    GorgiasChatPosition,
-    GorgiasChatPositionAlignmentEnum,
-} from '../../../../../../models/integration/types'
 
 import css from './ChatIntegrationPreview.less'
 import {
@@ -43,6 +47,21 @@ import CustomizedChatLauncher from './CustomizedChatLauncher'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 import {AddIcon, PlaneIcon} from './icon-utils'
 import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
+
+type ChatIntegrationPreviewContextState = {
+    displayBotLabel: boolean
+    avatar: GorgiasChatAvatarSettings
+}
+
+export const ChatIntegrationPreviewContext =
+    createContext<ChatIntegrationPreviewContextState>({
+        displayBotLabel: true,
+        avatar: {
+            companyLogoUrl: undefined,
+            imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
+            nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+        },
+    })
 
 export type ChatTheme = {
     mainColor: string
@@ -79,6 +98,8 @@ type Props = {
     backgroundColorStyle?: GorgiasChatBackgroundColorStyle
     headerPictureUrl?: string
     privacyPolicyDisclaimerText?: string
+    avatar: GorgiasChatAvatarSettings
+    displayBotLabel: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -114,6 +135,8 @@ const ChatIntegrationPreview = (props: Props) => {
         isWidgetConversation = true,
         backgroundColorStyle = GorgiasChatBackgroundColorStyle.Gradient,
         headerPictureUrl,
+        displayBotLabel,
+        avatar,
     } = props
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
@@ -239,108 +262,117 @@ const ChatIntegrationPreview = (props: Props) => {
         background-image: url(${noise});
     `
 
+    const context: ChatIntegrationPreviewContextState = {
+        displayBotLabel,
+        avatar,
+    }
+
     const theme: ChatTheme = {
         mainColor,
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <CustomizedChatLauncher
-                className={classnames(
-                    css.preview,
-                    showBackground && css.previewWithBackground
-                )}
-                mainFontFamily={mainFontFamily}
-                launcher={launcher}
-                position={position}
-                mainColor={isOnline ? mainColor : offlineColor}
-                hideButton={hideButton}
-                editedPositionAxis={editedPositionAxis}
-                isClosed={!isOpen || !!editedPositionAxis}
-            >
-                <div
-                    className={css.dialog}
-                    style={{
-                        backgroundColor: isOnline ? mainColor : offlineColor,
-                    }}
+        <ChatIntegrationPreviewContext.Provider value={context}>
+            <ThemeProvider theme={theme}>
+                <CustomizedChatLauncher
+                    className={classnames(
+                        css.preview,
+                        showBackground && css.previewWithBackground
+                    )}
+                    mainFontFamily={mainFontFamily}
+                    launcher={launcher}
+                    position={position}
+                    mainColor={isOnline ? mainColor : offlineColor}
+                    hideButton={hideButton}
+                    editedPositionAxis={editedPositionAxis}
+                    isClosed={!isOpen || !!editedPositionAxis}
                 >
-                    {backgroundColorStyle ===
-                        GorgiasChatBackgroundColorStyle.Gradient && (
-                        <Gradient
-                            color={isOnline ? mainColor : offlineColor}
-                        ></Gradient>
-                    )}
-                    <NoiseEffect></NoiseEffect>
-                    <div className={css.noise}></div>
-                    {isWidgetConversation && (
-                        <ConversationHeader
-                            role="region"
-                            aria-label="Live chat window header"
-                            variant={variant as ConversationHeaderVariant}
-                            title={name}
-                            message={ConversationHeaderMessage()}
-                            leadIcon={ConversationHeaderBackButton()}
-                            style={{zIndex: 2}}
-                        />
-                    )}
-
-                    {!isWidgetConversation && (
-                        <WidgetHeader
-                            role="region"
-                            aria-label="Live chat window header"
-                            headerPictureUrl={headerPictureUrl}
-                            variant={variant as ConversationHeaderVariant}
-                            title={name}
-                            message={
-                                isOnline
-                                    ? introductionText
-                                    : offlineIntroductionText
-                            }
-                        />
-                    )}
-
                     <div
-                        className={classnames(
-                            isWidgetConversation &&
-                                css.conversationContentWrapper,
-                            !isWidgetConversation && css.contentWrapper
-                        )}
+                        className={css.dialog}
+                        style={{
+                            backgroundColor: isOnline
+                                ? mainColor
+                                : offlineColor,
+                        }}
                     >
-                        {children}
+                        {backgroundColorStyle ===
+                            GorgiasChatBackgroundColorStyle.Gradient && (
+                            <Gradient
+                                color={isOnline ? mainColor : offlineColor}
+                            ></Gradient>
+                        )}
+                        <NoiseEffect></NoiseEffect>
+                        <div className={css.noise}></div>
+                        {isWidgetConversation && (
+                            <ConversationHeader
+                                role="region"
+                                aria-label="Live chat window header"
+                                variant={variant as ConversationHeaderVariant}
+                                title={name}
+                                message={ConversationHeaderMessage()}
+                                leadIcon={ConversationHeaderBackButton()}
+                                style={{zIndex: 2}}
+                            />
+                        )}
 
-                        {renderPrivacyPolicyDisclaimer && (
-                            <PrivacyPolicyDisclaimer
-                                mainColor={mainColor}
-                                privacyPolicyDisclaimerText={
-                                    privacyPolicyDisclaimerText
+                        {!isWidgetConversation && (
+                            <WidgetHeader
+                                role="region"
+                                aria-label="Live chat window header"
+                                headerPictureUrl={headerPictureUrl}
+                                variant={variant as ConversationHeaderVariant}
+                                title={name}
+                                message={
+                                    isOnline
+                                        ? introductionText
+                                        : offlineIntroductionText
                                 }
-                                variant="collapsed"
                             />
                         )}
 
-                        {renderPoweredBy && (
-                            <GorgiasChatPoweredBy
-                                translatedTexts={translatedTexts}
-                            />
-                        )}
+                        <div
+                            className={classnames(
+                                isWidgetConversation &&
+                                    css.conversationContentWrapper,
+                                !isWidgetConversation && css.contentWrapper
+                            )}
+                        >
+                            {children}
 
-                        {renderFooter && (
-                            <ChatMessageInput
-                                aria-label={'Gorgias message input'}
-                                placeholder={nonbreak(
-                                    translatedTexts.inputPlaceholder
-                                )}
-                                leadIcon={<AddIcon />}
-                                leadIconAriaLabel="Add attachment"
-                                trailIcon={<PlaneIcon />}
-                                trailIconAriaLabel="Send message"
-                                readOnly
-                            />
-                        )}
+                            {renderPrivacyPolicyDisclaimer && (
+                                <PrivacyPolicyDisclaimer
+                                    mainColor={mainColor}
+                                    privacyPolicyDisclaimerText={
+                                        privacyPolicyDisclaimerText
+                                    }
+                                    variant="collapsed"
+                                />
+                            )}
+
+                            {renderPoweredBy && (
+                                <GorgiasChatPoweredBy
+                                    translatedTexts={translatedTexts}
+                                />
+                            )}
+
+                            {renderFooter && (
+                                <ChatMessageInput
+                                    aria-label={'Gorgias message input'}
+                                    placeholder={nonbreak(
+                                        translatedTexts.inputPlaceholder
+                                    )}
+                                    leadIcon={<AddIcon />}
+                                    leadIconAriaLabel="Add attachment"
+                                    trailIcon={<PlaneIcon />}
+                                    trailIconAriaLabel="Send message"
+                                    readOnly
+                                />
+                            )}
+                        </div>
                     </div>
-                </div>
-            </CustomizedChatLauncher>
-        </ThemeProvider>
+                </CustomizedChatLauncher>
+            </ThemeProvider>
+        </ChatIntegrationPreviewContext.Provider>
     )
 }
 export default ChatIntegrationPreview

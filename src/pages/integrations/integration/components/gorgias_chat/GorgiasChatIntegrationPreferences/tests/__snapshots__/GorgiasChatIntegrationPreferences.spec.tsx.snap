@@ -4,7 +4,10 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
 {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
-  "avatar": undefined,
+  "avatar": {
+    "imageType": "agent-picture",
+    "nameType": "agent-first-name",
+  },
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -106,7 +109,10 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
 {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
-  "avatar": undefined,
+  "avatar": {
+    "imageType": "agent-picture",
+    "nameType": "agent-first-name",
+  },
   "controlTicketVolume": true,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -208,7 +214,10 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
 {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
-  "avatar": undefined,
+  "avatar": {
+    "imageType": "agent-picture",
+    "nameType": "agent-first-name",
+  },
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -310,7 +319,10 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
 {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
-  "avatar": undefined,
+  "avatar": {
+    "imageType": "agent-picture",
+    "nameType": "agent-first-name",
+  },
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": true,
   "emailCaptureEnabled": true,
@@ -412,7 +424,10 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
 {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
-  "avatar": undefined,
+  "avatar": {
+    "imageType": "agent-picture",
+    "nameType": "agent-first-name",
+  },
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -514,7 +529,10 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
 {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
-  "avatar": undefined,
+  "avatar": {
+    "imageType": "agent-picture",
+    "nameType": "agent-first-name",
+  },
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -985,7 +1003,15 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         <ChatIntegrationPreview
           autoResponderEnabled={false}
           autoResponderReply="reply-dynamic"
+          avatar={
+            {
+              "companyLogoUrl": undefined,
+              "imageType": "agent-picture",
+              "nameType": "agent-first-name",
+            }
+          }
           backgroundColorStyle="gradient"
+          displayBotLabel={true}
           isOnline={true}
           language="en-US"
           mainColor="#789c5d"
@@ -1003,33 +1029,21 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           renderPrivacyPolicyDisclaimer={false}
         >
           <ChatIntegrationPreviewContent>
-            <ChatIntegrationPreviewProvider
-              value={
-                {
-                  "avatar": {
-                    "companyLogoUrl": undefined,
-                    "imageType": "agent-picture",
-                    "nameType": "agent-first-name",
-                  },
-                }
+            <CustomerInitialMessages
+              conversationColor="#08d123"
+              hideConversationTimestamp={true}
+              messages={
+                [
+                  "Hi, could you give me an update on my order status?",
+                ]
               }
-            >
-              <CustomerInitialMessages
-                conversationColor="#08d123"
-                hideConversationTimestamp={true}
-                messages={
-                  [
-                    "Hi, could you give me an update on my order status?",
-                  ]
-                }
-              />
-              <AutoResponder
-                autoResponderReply="reply-dynamic"
-                isEmailCaptureEnabled={true}
-                language="en-US"
-                mainColor="#789c5d"
-              />
-            </ChatIntegrationPreviewProvider>
+            />
+            <AutoResponder
+              autoResponderReply="reply-dynamic"
+              isEmailCaptureEnabled={true}
+              language="en-US"
+              mainColor="#789c5d"
+            />
           </ChatIntegrationPreviewContent>
         </ChatIntegrationPreview>
       }
@@ -1513,7 +1527,15 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         <ChatIntegrationPreview
           autoResponderEnabled={false}
           autoResponderReply="reply-dynamic"
+          avatar={
+            {
+              "companyLogoUrl": undefined,
+              "imageType": "agent-picture",
+              "nameType": "agent-first-name",
+            }
+          }
           backgroundColorStyle="gradient"
+          displayBotLabel={true}
           isOnline={true}
           language="en-US"
           mainColor="#789c5d"
@@ -1531,33 +1553,21 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           renderPrivacyPolicyDisclaimer={false}
         >
           <ChatIntegrationPreviewContent>
-            <ChatIntegrationPreviewProvider
-              value={
-                {
-                  "avatar": {
-                    "companyLogoUrl": undefined,
-                    "imageType": "agent-picture",
-                    "nameType": "agent-first-name",
-                  },
-                }
+            <CustomerInitialMessages
+              conversationColor="#08d123"
+              hideConversationTimestamp={true}
+              messages={
+                [
+                  "Hi, could you give me an update on my order status?",
+                ]
               }
-            >
-              <CustomerInitialMessages
-                conversationColor="#08d123"
-                hideConversationTimestamp={true}
-                messages={
-                  [
-                    "Hi, could you give me an update on my order status?",
-                  ]
-                }
-              />
-              <AutoResponder
-                autoResponderReply="reply-dynamic"
-                isEmailCaptureEnabled={true}
-                language="en-US"
-                mainColor="#789c5d"
-              />
-            </ChatIntegrationPreviewProvider>
+            />
+            <AutoResponder
+              autoResponderReply="reply-dynamic"
+              isEmailCaptureEnabled={true}
+              language="en-US"
+              mainColor="#789c5d"
+            />
           </ChatIntegrationPreviewContent>
         </ChatIntegrationPreview>
       }

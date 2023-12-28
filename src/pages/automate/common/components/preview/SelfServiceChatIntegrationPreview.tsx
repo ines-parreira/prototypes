@@ -1,7 +1,12 @@
-import React, {memo} from 'react'
+import React, {memo, useMemo} from 'react'
 import {Route, useHistory, useLocation} from 'react-router-dom'
 
-import {GorgiasChatIntegration} from 'models/integration/types'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
+} from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -37,6 +42,19 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
     const isInitialEntry = history.length === 1
 
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
+
+    const avatar: GorgiasChatAvatarSettings = useMemo(
+        () => ({
+            companyLogoUrl: decoration.avatar?.company_logo_url,
+            imageType:
+                decoration.avatar?.image_type ??
+                GorgiasChatAvatarImageType.AGENT_PICTURE,
+            nameType:
+                decoration.avatar?.name_type ??
+                GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+        }),
+        [decoration.avatar]
+    )
 
     return (
         <ChatIntegrationPreview
@@ -78,6 +96,8 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 decoration.header_picture_url ||
                 decoration.header_picture_url_offline
             }
+            displayBotLabel={decoration.display_bot_label ?? true}
+            avatar={avatar}
         >
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>

@@ -22,7 +22,11 @@ import GorgiasChatIntegrationHeader from 'pages/integrations/integration/compone
 import {IntegrationType} from 'models/integration/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {GorgiasChatBackgroundColorStyle} from 'models/integration/types'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatBackgroundColorStyle,
+} from 'models/integration/types'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
@@ -187,6 +191,25 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                     ['decoration', 'background_color_style'],
                     GorgiasChatBackgroundColorStyle.Gradient
                 )}
+                displayBotLabel={integration.getIn(
+                    ['decoration', 'display_bot_label'],
+                    true
+                )}
+                avatar={{
+                    imageType: integration.getIn(
+                        ['decoration', 'avatar', 'image_type'],
+                        GorgiasChatAvatarImageType.AGENT_PICTURE
+                    ),
+                    nameType: integration.getIn(
+                        ['decoration', 'avatar', 'name_type'],
+                        GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                    ),
+                    companyLogoUrl: integration.getIn([
+                        'decoration',
+                        'avatar',
+                        'company_logo_url',
+                    ]),
+                }}
             >
                 <ChatIntegrationPreviewContent>
                     <div className={chatCss.content} />

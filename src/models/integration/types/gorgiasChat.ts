@@ -23,6 +23,7 @@ export type GorgiasChatIntegration = IntegrationBase & {
         background_color_style?: GorgiasChatBackgroundColorStyle
         header_picture_url?: string
         header_picture_url_offline?: string
+        display_bot_label?: boolean
     }
 }
 

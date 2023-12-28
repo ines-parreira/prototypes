@@ -74,12 +74,12 @@ import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AutoResponderMessages'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import {ChatIntegrationPreviewProvider} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreviewProvider'
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
 import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OfflineMessages'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
@@ -132,6 +132,7 @@ export const defaultContent = {
     backgroundColorStyle: GorgiasChatBackgroundColorStyle.Gradient,
     headerPictureUrl: undefined,
     headerPictureUrlOffline: undefined,
+    displayBotLabel: true,
 }
 
 const avatarNameTypeOptions = [
@@ -202,6 +203,7 @@ type State = {
     backgroundColorStyle: GorgiasChatBackgroundColorStyle
     headerPictureUrl?: string
     headerPictureUrlOffline?: string
+    displayBotLabel: boolean
 }
 
 type SubmitForm = {
@@ -254,6 +256,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatHeaderPictureStyle]
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const isControlBotLabelEnabled =
+        useFlags()[FeatureFlagKey.ChatControlBotLabelVisibility]
 
     const storeIntegrations = storeIntegrationsProp as List<Map<any, any>>
 
@@ -463,6 +467,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         'decoration',
                         'header_picture_url_offline',
                     ]),
+                    displayBotLabel: integration.getIn(
+                        ['decoration', 'display_bot_label'],
+                        true
+                    ),
                 },
                 defaultContent
             )
@@ -568,6 +576,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         if (state.headerPictureUrlOffline) {
             form.decoration.header_picture_url_offline =
                 state.headerPictureUrlOffline
+        }
+
+        if (isControlBotLabelEnabled) {
+            form.decoration.display_bot_label = state.displayBotLabel
         }
 
         let actionToUse = actions.createGorgiasChatIntegration
@@ -680,6 +692,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         backgroundColorStyle,
         headerPictureUrl,
         headerPictureUrlOffline,
+        displayBotLabel,
     } = state
 
     const isSubmitting = _isSubmitting()
@@ -761,57 +774,51 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         ? headerPictureUrl || headerPictureUrlOffline
                         : headerPictureUrlOffline || headerPictureUrl
                 }
+                displayBotLabel={displayBotLabel}
+                avatar={avatar}
             >
                 <ChatIntegrationPreviewContent
                     style={
                         preview === PREVIEW_HOME_PAGE ? {padding: '0 20px'} : {}
                     }
                 >
-                    <ChatIntegrationPreviewProvider
-                        value={{
-                            avatar,
-                        }}
-                    >
-                        {preview === PREVIEW_HOME_PAGE ? (
-                            <ChatHomePreview
+                    {preview === PREVIEW_HOME_PAGE ? (
+                        <ChatHomePreview
+                            mainColor={mainColor}
+                            avatar={avatar}
+                            title={name}
+                            renderConversation
+                            selfServiceConfiguration={selfServiceConfiguration}
+                            language={language}
+                            variant={
+                                selfServiceConfigurationEnabled
+                                    ? 'collapsed'
+                                    : 'expanded'
+                            }
+                        />
+                    ) : isOnline ? (
+                        <AutoResponderMessages
+                            mainColor={mainColor}
+                            currentUser={currentUser}
+                            conversationColor={conversationColor}
+                            chatTitle={name}
+                            avatar={state.avatar}
+                            language={language}
+                            autoResponderReply={
+                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
+                            }
+                            isEmailCaptureEnabled={emailCaptureEnabled}
+                        />
+                    ) : (
+                        <>
+                            <ConversationTimestamp />
+                            <OfflineMessages
                                 mainColor={mainColor}
-                                avatar={avatar}
-                                title={name}
-                                renderConversation
-                                selfServiceConfiguration={
-                                    selfServiceConfiguration
-                                }
-                                language={language}
-                                variant={
-                                    selfServiceConfigurationEnabled
-                                        ? 'collapsed'
-                                        : 'expanded'
-                                }
-                            />
-                        ) : isOnline ? (
-                            <AutoResponderMessages
-                                mainColor={mainColor}
-                                currentUser={currentUser}
-                                conversationColor={conversationColor}
                                 chatTitle={name}
-                                avatar={state.avatar}
                                 language={language}
-                                autoResponderReply={
-                                    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
-                                }
-                                isEmailCaptureEnabled={emailCaptureEnabled}
                             />
-                        ) : (
-                            <>
-                                <ConversationTimestamp />
-                                <OfflineMessages
-                                    mainColor={mainColor}
-                                    chatTitle={name}
-                                    language={language}
-                                />
-                            </>
-                        )}
-                    </ChatIntegrationPreviewProvider>
+                        </>
+                    )}
                 </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         </div>
@@ -1363,6 +1370,27 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     </div>
                                 </div>
                             </>
+                        )}
+
+                        {isControlBotLabelEnabled && (
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Chatbot</h2>
+                                <ToggleInput
+                                    isToggled={displayBotLabel}
+                                    name="show-bot-toggle"
+                                    onClick={(value) =>
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            displayBotLabel: value,
+                                        }))
+                                    }
+                                >
+                                    <b>
+                                        Display ”Bot” next to chat title for
+                                        automated messages
+                                    </b>
+                                </ToggleInput>
+                            </div>
                         )}
 
                         <div className={css.formSection}>

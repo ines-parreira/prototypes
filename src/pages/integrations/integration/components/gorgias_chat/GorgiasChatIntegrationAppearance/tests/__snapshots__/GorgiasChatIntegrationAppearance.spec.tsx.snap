@@ -656,6 +656,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <h2
                   class="title"
                 >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -2018,6 +2050,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       </div>
                     </div>
                   </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
                 </div>
               </div>
               <div
@@ -3418,6 +3482,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <h2
                   class="title"
                 >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -4773,6 +4869,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       </div>
                     </div>
                   </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
                 </div>
               </div>
               <div
@@ -6144,6 +6272,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <h2
                   class="title"
                 >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -7507,6 +7667,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <h2
                   class="title"
                 >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -8743,6 +8935,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
                 </div>
               </div>
               <div
@@ -12828,6 +13052,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <h2
                   class="title"
                 >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -14190,6 +14446,38 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       </div>
                     </div>
                   </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Chatbot
+                </h2>
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show-bot-toggle"
+                    role="switch"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show-bot-toggle"
+                      name="show-bot-toggle"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <b>
+                      Display ”Bot” next to chat title for automated messages
+                    </b>
+                  </label>
                 </div>
               </div>
               <div

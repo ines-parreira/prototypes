@@ -1,10 +1,14 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import BotMessages from '../BotMessages'
-import {useChatIntegrationPreviewContext} from '../ChatIntegrationPreviewContext'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+} from 'models/integration/types'
 
-jest.mock('../ChatIntegrationPreviewContext')
+import BotMessages from '../BotMessages'
+
+import {ChatIntegrationPreviewContext} from '../ChatIntegrationPreview'
 
 describe('<BotMessages />', () => {
     const minProps: React.ComponentProps<typeof BotMessages> = {
@@ -14,32 +18,45 @@ describe('<BotMessages />', () => {
     }
 
     it('should display bot icon', () => {
-        ;(useChatIntegrationPreviewContext as jest.Mock).mockReturnValue({})
-
         const {
             container: {firstChild},
         } = render(
-            <BotMessages {...minProps}>
-                <div>test</div>
-            </BotMessages>
+            <ChatIntegrationPreviewContext.Provider
+                value={{
+                    displayBotLabel: true,
+                    avatar: {
+                        imageType: GorgiasChatAvatarImageType.AGENT_INITIALS,
+                        nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                    },
+                }}
+            >
+                <BotMessages {...minProps}>
+                    <div>test</div>
+                </BotMessages>
+            </ChatIntegrationPreviewContext.Provider>
         )
 
         expect(firstChild).toMatchSnapshot()
     })
 
     it('should display company logo', () => {
-        ;(useChatIntegrationPreviewContext as jest.Mock).mockReturnValue({
-            avatar: {
-                companyLogoUrl: 'company-logo-url.jpg',
-            },
-        })
-
         const {
             container: {firstChild},
         } = render(
-            <BotMessages {...minProps}>
-                <div>test</div>
-            </BotMessages>
+            <ChatIntegrationPreviewContext.Provider
+                value={{
+                    displayBotLabel: true,
+                    avatar: {
+                        imageType: GorgiasChatAvatarImageType.AGENT_INITIALS,
+                        nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                        companyLogoUrl: 'company-logo-url.jpg',
+                    },
+                }}
+            >
+                <BotMessages {...minProps}>
+                    <div>test</div>
+                </BotMessages>
+            </ChatIntegrationPreviewContext.Provider>
         )
 
         expect(firstChild).toMatchSnapshot()
