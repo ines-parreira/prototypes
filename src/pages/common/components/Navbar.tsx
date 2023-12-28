@@ -360,7 +360,6 @@ export class Navbar extends Component<Props, State> {
             navbarContentRef,
             flags,
             splitTicketViewToggle,
-            theme,
             savedTheme,
         } = this.props
         const {isResizing, navbarWidth} = this.state
@@ -554,7 +553,10 @@ export class Navbar extends Component<Props, State> {
                                                     Theme:
                                                 </span>
                                                 <span className={css.value}>
-                                                    {Themes[theme].label}
+                                                    {Themes[savedTheme]
+                                                        .settingsLabel ??
+                                                        Themes[savedTheme]
+                                                            .label}
                                                 </span>
                                             </DropdownItemLabel>
                                         </div>

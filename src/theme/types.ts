@@ -26,7 +26,7 @@ export const Themes: Record<Theme, ThemeValue> = {
         icon: 'brightness_high',
     },
     [Theme.Modern]: {
-        label: 'Default',
+        label: 'Classic',
         icon: 'brightness_6',
     },
 }

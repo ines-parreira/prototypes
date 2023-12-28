@@ -38,7 +38,7 @@ export default function useThemeContext() {
     )
 
     return {
-        savedTheme,
+        savedTheme: savedTheme as Theme,
         theme,
         setTheme: setSavedTheme,
     } as const

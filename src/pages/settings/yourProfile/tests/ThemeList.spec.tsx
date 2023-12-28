@@ -53,9 +53,9 @@ describe('ThemeList', () => {
         expect(onChangeThemeSpy).toHaveBeenCalledTimes(3)
         expect(onChangeThemeSpy).toHaveBeenCalledWith('light')
 
-        // Default
+        // Classic
         const classicTheme = screen.getAllByRole('radio')[3]
-        expect(classicTheme).toHaveTextContent('Default')
+        expect(classicTheme).toHaveTextContent('Classic')
         userEvent.click(classicTheme)
         expect(onChangeThemeSpy).toHaveBeenCalledTimes(4)
         expect(onChangeThemeSpy).toHaveBeenCalledWith('modern light')

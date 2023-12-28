@@ -50,6 +50,7 @@ describe('useThemeContext', () => {
 
         const {result} = renderHook(() => useThemeContext())
 
+        expect(result.current.savedTheme).toEqual('system')
         expect(result.current.theme).toEqual('light')
     })
 

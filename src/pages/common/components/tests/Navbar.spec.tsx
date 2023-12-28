@@ -48,7 +48,7 @@ describe('<Navbar />', () => {
             [FeatureFlagKey.AutomateRebranding]: false,
         },
         savedTheme: Theme.Modern,
-        theme: 'modern light' as AcceptedThemes,
+        theme: Theme.Modern as AcceptedThemes,
         setTheme: jest.fn(),
     }
 
