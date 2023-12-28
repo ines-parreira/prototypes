@@ -170,11 +170,10 @@ export const isDirty = createSelector(
     (state) => (state.get('dirty') as boolean) || false
 )
 
-export const isActiveViewTrashView = createSelector(
-    getActiveView,
-    (state) =>
-        (state.get('category') as string)?.startsWith(ViewCategory.System) &&
-        (state.get('name') as string).toLocaleLowerCase() === 'trash'
+export const isActiveViewTrashView = createSelector(getActiveView, (state) =>
+    (state.get('filters') as string).includes(
+        'isNotEmpty(ticket.trashed_datetime)'
+    )
 )
 
 export const isEditMode = createSelector(

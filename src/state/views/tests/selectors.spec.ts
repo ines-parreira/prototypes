@@ -35,34 +35,20 @@ describe('selectors', () => {
                 views: initialState.set(
                     'active',
                     fromJS({
-                        category: ViewCategory.System,
-                        name: 'Trash',
+                        filters: 'isNotEmpty(ticket.trashed_datetime)',
                     })
                 ),
             } as RootState
             expect(selectors.isActiveViewTrashView(state)).toBe(true)
         })
-
-        it('should not be the trash view (wrong category)', () => {
+        it('should not be the trash view', () => {
             const state = {
                 views: initialState.set(
                     'active',
                     fromJS({
-                        category: '',
-                        name: 'Trash',
-                    })
-                ),
-            } as RootState
-            expect(selectors.isActiveViewTrashView(state)).toBe(false)
-        })
-
-        it('should not be the trash view (wrong name)', () => {
-            const state = {
-                views: initialState.set(
-                    'active',
-                    fromJS({
+                        filters: 'eq(ticket.spam, true)',
                         category: ViewCategory.System,
-                        name: 'Spam',
+                        name: 'Trash',
                     })
                 ),
             } as RootState
