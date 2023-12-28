@@ -1,5 +1,7 @@
 import React from 'react'
-import {Container} from 'reactstrap'
+
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import useCallbackRef from 'hooks/useCallbackRef'
 
 import PageHeader from '../common/components/PageHeader'
 
@@ -9,10 +11,14 @@ type Props = {
 }
 
 export const CanduContent = ({title, containerId}: Props) => {
+    const [ref, setRef] = useCallbackRef()
+
+    useInjectStyleToCandu(ref)
+
     return (
         <div className="full-width">
             <PageHeader title={title} />
-            <Container fluid id={containerId} />
+            <div id={containerId} ref={setRef} style={{padding: '0 20px'}} />
         </div>
     )
 }

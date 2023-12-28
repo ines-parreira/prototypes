@@ -1,7 +1,8 @@
-import React, {ComponentProps, ReactNode} from 'react'
+import React, {ComponentProps, ReactNode, useRef} from 'react'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
 
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
@@ -18,9 +19,16 @@ export default function StatsPage({
     filters,
     ...headerTitleProps
 }: Props) {
+    const ref = useRef(null)
+    useInjectStyleToCandu(ref.current)
+
     return (
         <div className={classNames('full-width', css.wrapper)}>
-            <div className={css.header} data-candu-id="stat-header-container">
+            <div
+                ref={ref}
+                className={css.header}
+                data-candu-id="stat-header-container"
+            >
                 <PageHeader
                     title={<HeaderTitle {...headerTitleProps} />}
                     className="mb-0"

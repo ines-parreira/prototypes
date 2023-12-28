@@ -7,6 +7,7 @@ import '@formatjs/intl-pluralrules/polyfill'
 import '@formatjs/intl-pluralrules/locale-data/en'
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
+import 'construct-style-sheets-polyfill'
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 Array.prototype.includes = Array.prototype.includes || includes

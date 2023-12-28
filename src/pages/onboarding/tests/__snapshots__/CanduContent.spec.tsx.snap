@@ -14,8 +14,8 @@ exports[`<CanduContent /> should display an empty container 1`] = `
     </h1>
   </div>
   <div
-    class="container-fluid"
     id="candu-content"
+    style="padding: 0px 20px;"
   />
 </div>
 `;

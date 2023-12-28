@@ -16,7 +16,9 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/types'
 import useDebounce from 'hooks/useDebounce'
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 
+import useCallbackRef from 'hooks/useCallbackRef'
 import css from './TicketFields.less'
 
 type TicketFieldsTab = 'active' | 'archived'
@@ -26,6 +28,11 @@ export default function TicketFields() {
     const {activeTab} = useParams<{activeTab: TicketFieldsTab | string}>()
     const [activeCursor, setActiveCursor] = useState<Maybe<string>>(null)
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
+    const [listingNode, setListingNode] = useCallbackRef()
+    const [landingNode, setLandingNode] = useCallbackRef()
+
+    useInjectStyleToCandu(listingNode)
+    useInjectStyleToCandu(landingNode)
 
     const [search, setSearch] = useState('')
     const [debouncedSearch, setDebouncedSearch] = useState('')
@@ -108,7 +115,10 @@ export default function TicketFields() {
                 </PageHeader>
                 {shouldDisplayListingPage && (
                     <>
-                        <div data-candu-id="ticket-fields-listing-educational-material"></div>
+                        <div
+                            ref={setListingNode}
+                            data-candu-id="ticket-fields-listing-educational-material"
+                        />
                         <SecondaryNavbar>
                             <NavLink
                                 to="/app/settings/ticket-fields/active"
@@ -140,7 +150,10 @@ export default function TicketFields() {
                                 Create custom fields to track and report common
                                 ticket categories.
                             </p>
-                            <div data-candu-id="ticket-fields-landing-educational-material"></div>
+                            <div
+                                ref={setLandingNode}
+                                data-candu-id="ticket-fields-landing-educational-material"
+                            />
                             {createFieldButton}
                         </div>
                     ) : (

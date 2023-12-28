@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 import classnames from 'classnames'
 
 import navBarCss from 'assets/css/navbar.less'
-import useHasCanduContent from 'hooks/useHasCanduContent'
+import useHasCanduContent from 'hooks/candu/useHasCanduContent'
 
 import css from './HomePageLink.less'
 

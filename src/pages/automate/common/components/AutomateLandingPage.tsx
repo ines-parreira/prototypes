@@ -1,10 +1,11 @@
 import React, {useMemo, useState} from 'react'
-
 import {useHistory} from 'react-router-dom'
-
 import classNames from 'classnames'
 import moment from 'moment'
+
+import useCallbackRef from 'hooks/useCallbackRef'
 import useAppSelector from 'hooks/useAppSelector'
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 
 import {
     useAutomatedInteractionsTrend,
@@ -34,6 +35,9 @@ const DEFAULT_TIMEZONE = 'UTC'
 const MIN_AUTOMATED_INTERACTIONS = 20
 
 const AutomateLandingPage = () => {
+    const [checkListNode, setCheckListNode] = useCallbackRef()
+    useInjectStyleToCandu(checkListNode)
+
     const filterDates = useMemo(() => {
         const nowLess28DaysDatetime = moment()
             .subtract(28, 'days')
@@ -173,7 +177,10 @@ const AutomateLandingPage = () => {
                         )}
                 </>
             </DashboardSection>
-            <section data-candu-id="automate-landing-page-checklist" />
+            <section
+                data-candu-id="automate-landing-page-checklist"
+                ref={setCheckListNode}
+            />
         </StatsPage>
     )
 }

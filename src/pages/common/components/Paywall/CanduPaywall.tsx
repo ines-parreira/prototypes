@@ -1,6 +1,6 @@
 import React, {ComponentProps, ComponentType, ReactNode} from 'react'
 
-import useHasCanduContent from 'hooks/useHasCanduContent'
+import useHasCanduContent from 'hooks/candu/useHasCanduContent'
 
 import PageHeader from '../PageHeader'
 
