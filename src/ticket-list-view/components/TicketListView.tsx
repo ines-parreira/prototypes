@@ -1,5 +1,16 @@
-import React, {useCallback} from 'react'
-import {Virtuoso} from 'react-virtuoso'
+import React, {
+    Children,
+    cloneElement,
+    ComponentProps,
+    forwardRef,
+    Fragment,
+    ReactElement,
+    ReactNode,
+    useCallback,
+    useMemo,
+} from 'react'
+import {CSSTransition, TransitionGroup} from 'react-transition-group'
+import {Components, Virtuoso} from 'react-virtuoso'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getViewPlainJS} from 'state/views/selectors'
@@ -17,18 +28,13 @@ type Props = {
 
 export default function TicketListView({viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
-    const {loadMore, setElement, staleTickets, tickets} = useTickets(viewId)
+    const {loadMore, setElement, tickets} = useTickets(viewId)
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketSummary) => (
-            <Ticket
-                key={ticket.id}
-                stale={!!staleTickets[ticket.id]}
-                ticket={ticket}
-                viewId={viewId}
-            />
+            <Ticket ticket={ticket} viewId={viewId} />
         ),
-        [staleTickets, viewId]
+        [viewId]
     )
 
     const setScrollerRef = useCallback(
@@ -38,6 +44,32 @@ export default function TicketListView({viewId}: Props) {
             setElement(ref as HTMLElement)
         },
         [setElement]
+    )
+
+    const virtuosoComponents: Components = useMemo(
+        () => ({
+            Item: ({
+                children,
+                ...props
+            }: {children?: ReactNode} & Partial<
+                ComponentProps<typeof CSSTransition>
+            > &
+                ComponentProps<NonNullable<Components['Item']>>) => (
+                <Fragment>
+                    {Children.map(children, (child) =>
+                        cloneElement(child as ReactElement, props)
+                    )}
+                </Fragment>
+            ),
+            List: forwardRef<HTMLDivElement>(({children, ...props}, ref) => (
+                <div ref={ref} {...props}>
+                    <TransitionGroup component={Fragment}>
+                        {children as Array<ReactElement>}
+                    </TransitionGroup>
+                </div>
+            )),
+        }),
+        []
     )
 
     return (
@@ -53,7 +85,9 @@ export default function TicketListView({viewId}: Props) {
                     endReached={loadMore}
                     fixedItemHeight={TICKET_HEIGHT}
                     itemContent={getItemContent}
+                    computeItemKey={(_index, ticket) => ticket.id}
                     scrollerRef={setScrollerRef}
+                    components={virtuosoComponents}
                 />
             </div>
         </div>
