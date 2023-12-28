@@ -12,7 +12,6 @@ import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
 import PhoneIntegrationBar from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar'
-import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
@@ -59,7 +58,7 @@ const App = ({
 
     return (
         <div id="app-root" className={css.app}>
-            <Spotlight>{Navbar && <Navbar />}</Spotlight>
+            {Navbar && <Navbar />}
 
             <div
                 className={classnames(

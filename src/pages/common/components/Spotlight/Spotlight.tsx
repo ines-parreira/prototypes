@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from 'react'
+import React, {useContext, useEffect} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {SpotlightContext} from 'providers/ui/SpotlightContext'
@@ -6,12 +6,8 @@ import shortcutManager from 'services/shortcutManager/shortcutManager'
 
 import SpotlightModal from './SpotlightModal'
 
-type Props = {
-    children: ReactNode
-}
-
-const Spotlight = ({children}: Props) => {
-    const [isOpen, setIsOpen] = useState(false)
+const Spotlight = () => {
+    const {isOpen, setIsOpen} = useContext(SpotlightContext)
 
     useEffect(() => {
         shortcutManager.bind('SpotlightModal', {
@@ -29,15 +25,12 @@ const Spotlight = ({children}: Props) => {
     }, [setIsOpen])
 
     return (
-        <SpotlightContext.Provider value={{isOpen, setIsOpen}}>
-            <SpotlightModal
-                isOpen={isOpen}
-                onCloseModal={() => {
-                    setIsOpen(false)
-                }}
-            />
-            {children}
-        </SpotlightContext.Provider>
+        <SpotlightModal
+            isOpen={isOpen}
+            onCloseModal={() => {
+                setIsOpen(false)
+            }}
+        />
     )
 }
 
