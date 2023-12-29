@@ -9,6 +9,7 @@ import {TicketStatus} from 'business/types/ticket'
 import TicketIcon from 'pages/common/components/TicketIcon'
 
 import {TicketPartial, TicketSummary} from '../types'
+import TicketSkeleton from './TicketSkeleton'
 import css from './Ticket.less'
 
 type InjectedProps = ComponentProps<typeof CSSTransition> &
@@ -59,7 +60,7 @@ export default function Ticket({
                     to={`/app/views/${viewId}/${ticket.id}`}
                 >
                     {!('channel' in ticket) ? (
-                        <p>skeleton</p>
+                        <TicketSkeleton />
                     ) : (
                         <>
                             <TicketIcon
