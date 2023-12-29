@@ -19,7 +19,8 @@ export const getSubdomainValidationError = (
         return 'Subdomain is invalid or contains forbidden keywords'
 
     // If subdomain is not available
-    if (!isAvailable) return 'This Help Center subdomain is not available'
+    if (!isAvailable)
+        return 'This subdomain is already in use. Please use another one.'
 
     return null
 }
