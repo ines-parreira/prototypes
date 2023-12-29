@@ -26,6 +26,7 @@ describe('useTickets', () => {
             hasMore: false,
             loading: false,
             loadMore: jest.fn(),
+            setLatest: jest.fn(),
             partials,
         })
     })

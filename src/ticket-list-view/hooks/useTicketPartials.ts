@@ -35,7 +35,13 @@ export default function useTicketPartials(viewId: number) {
     }, [client, cursor])
 
     return useMemo(
-        () => ({hasMore: !!cursor, loading, loadMore, partials}),
-        [cursor, loading, loadMore, partials]
+        () => ({
+            hasMore: !!cursor,
+            loading,
+            loadMore,
+            partials,
+            setLatest: client.setLatest,
+        }),
+        [client, cursor, loading, loadMore, partials]
     )
 }

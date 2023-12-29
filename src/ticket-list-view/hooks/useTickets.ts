@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 
 import useDebouncedValue from 'hooks/useDebouncedValue'
 
@@ -10,7 +10,8 @@ import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
 
 export default function useTickets(viewId: number) {
-    const {hasMore, loading, loadMore, partials} = useTicketPartials(viewId)
+    const {hasMore, loading, loadMore, partials, setLatest} =
+        useTicketPartials(viewId)
     const {markUpdated, staleTickets} = useStaleTickets(partials)
 
     const [element, setElement] = useState<HTMLElement | null>(null)
@@ -41,6 +42,20 @@ export default function useTickets(viewId: number) {
 
     const data = useTicketData(visibleStaleTicketIds, markUpdated)
     const tickets = partials.map((partial) => data[partial.id] || partial)
+
+    const latestTimestamp = useMemo(() => {
+        const lastVisiblePartial = visiblePartials[visiblePartials.length - 1]
+        if (!lastVisiblePartial) return 0
+
+        const lastId = lastVisiblePartial.id
+        return data[lastId]?.created_datetime
+            ? new Date(data[lastId].created_datetime).getTime()
+            : 0
+    }, [data, visiblePartials])
+
+    useEffect(() => {
+        setLatest(endIndex, latestTimestamp)
+    }, [endIndex, latestTimestamp, setLatest])
 
     return {
         hasMore,

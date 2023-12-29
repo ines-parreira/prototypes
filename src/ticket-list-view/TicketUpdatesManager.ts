@@ -13,9 +13,12 @@ export type Listener = (
 export type Unsubscribe = () => void
 
 const PAGE_LIMIT = 25
+const POLLING_INTERVAL = 5000
 
 export default class TicketUpdatesManager {
     private initialLoaded = false
+    private latestIndex = 0
+    private latestTimestamp = 0
     private listener: Listener | null = null
     private loading = false
     private nextCursor: CursorMeta['next_cursor'] = null
@@ -28,6 +31,11 @@ export default class TicketUpdatesManager {
 
     async loadMore() {
         await this.getPage()
+    }
+
+    setLatest = (index: number, timestamp: number) => {
+        this.latestIndex = index
+        this.latestTimestamp = Math.ceil(timestamp / 1000)
     }
 
     subscribe(listener: Listener): Unsubscribe {
@@ -70,7 +78,37 @@ export default class TicketUpdatesManager {
         this.loading = false
     }
 
+    private poll = async () => {
+        if (!this.listener) return
+
+        const response = await appQueryClient.fetchQuery({
+            queryFn: () =>
+                getViewTicketUpdates(this.viewId, {
+                    order_by: 'created_datetime:asc',
+                    up_to_timestamp: this.latestTimestamp,
+                }),
+            queryKey: viewItemsDefinitionKeys.updates(this.viewId),
+        })
+
+        const {data} = response.data
+        const newTickets = [...this.tickets]
+        newTickets.splice(
+            0,
+            this.latestIndex,
+            ...data.map(transformApiTicketPartial)
+        )
+
+        this.tickets = newTickets
+        this.listener(this.tickets, this.nextCursor)
+    }
+
     private async start() {
         await this.getPage()
+
+        const next = () => {
+            void this.poll()
+            setTimeout(next, POLLING_INTERVAL)
+        }
+        setTimeout(next, POLLING_INTERVAL)
     }
 }
