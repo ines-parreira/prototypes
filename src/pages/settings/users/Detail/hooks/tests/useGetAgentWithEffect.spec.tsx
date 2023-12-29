@@ -23,12 +23,6 @@ describe('useGetAgentWithEffects', () => {
         fn()
     ) as unknown as StoreDispatch
 
-    beforeEach(() => {
-        useGetAgentMock.mockClear()
-        setAgentState.mockClear()
-        set2FA.mockClear()
-    })
-
     const params = {
         agentId,
         isEdit,

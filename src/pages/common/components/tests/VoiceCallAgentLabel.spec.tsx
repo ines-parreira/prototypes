@@ -30,9 +30,10 @@ describe('VoiceCallAgentLabel', () => {
         expect(screen.getByText('AgentLabel 1234567890')).toBeInTheDocument()
     })
 
-    it('should render agent name when agent name exists', () => {
+    it('should render agent name when agent name exists and error is null', () => {
         useAgentDetailsSpy.mockReturnValue({
             data: {name: 'Agent Name'},
+            error: null,
         } as any)
         renderComponent({agentId: 1, phoneNumber: '1234567890'})
 
