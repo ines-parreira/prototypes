@@ -179,6 +179,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   "offsetY": 0,
                 }
               }
+              useMainColorOutsideBusinessHours={false}
             >
               <ChatIntegrationPreviewContent>
                 <div
@@ -624,6 +625,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 "offsetY": 0,
                               }
                             }
+                            useMainColorOutsideBusinessHours={false}
                           >
                             <ThemeProvider
                               theme={
@@ -1331,6 +1333,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   "offsetY": 0,
                 }
               }
+              useMainColorOutsideBusinessHours={false}
             >
               <ChatIntegrationPreviewContent>
                 <div
@@ -1784,6 +1787,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 "offsetY": 0,
                               }
                             }
+                            useMainColorOutsideBusinessHours={false}
                           >
                             <ThemeProvider
                               theme={

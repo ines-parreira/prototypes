@@ -125,6 +125,11 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
         true
     )
 
+    const useMainColorOutsideBusinessHours: boolean = integration.getIn(
+        ['decoration', 'use_main_color_outside_business_hours'],
+        false
+    )
+
     const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
     const previewContent = useMemo(() => {
@@ -224,8 +229,11 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 }
                 autoResponderReply={GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC}
                 renderPoweredBy={renderPoweredBy}
-                displayBotLabel={displayBotLabel}
                 avatar={avatar}
+                displayBotLabel={displayBotLabel}
+                useMainColorOutsideBusinessHours={
+                    useMainColorOutsideBusinessHours
+                }
             >
                 {previewContent}
             </ChatIntegrationPreview>

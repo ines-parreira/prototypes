@@ -51,11 +51,12 @@ const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
     introductionText: 'How can we help?',
     autoResponderEnabled: true,
     autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-    displayBotLabel: true,
     avatar: {
         imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
         nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
     },
+    displayBotLabel: true,
+    useMainColorOutsideBusinessHours: false,
 }
 
 export const Default = Template.bind({})

@@ -24,6 +24,7 @@ export type GorgiasChatIntegration = IntegrationBase & {
         header_picture_url?: string
         header_picture_url_offline?: string
         display_bot_label?: boolean
+        use_main_color_outside_business_hours?: boolean
     }
 }
 

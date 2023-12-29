@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import {List} from 'immutable'
 import moment from 'moment'
 import React, {createContext, ReactNode} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import ConversationHeader, {
     ConversationHeaderVariant,
 } from 'gorgias-design-system/Header/ConversationHeader'
@@ -21,6 +22,8 @@ import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
@@ -100,6 +103,7 @@ type Props = {
     privacyPolicyDisclaimerText?: string
     avatar: GorgiasChatAvatarSettings
     displayBotLabel: boolean
+    useMainColorOutsideBusinessHours: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -137,7 +141,13 @@ const ChatIntegrationPreview = (props: Props) => {
         headerPictureUrl,
         displayBotLabel,
         avatar,
+        useMainColorOutsideBusinessHours,
     } = props
+
+    const isControlBotLabelEnabled =
+        useFlags()[FeatureFlagKey.ChatControlBotLabelVisibility]
+    const isControlUseMainColorOutsideBusinessHoursEnabled =
+        useFlags()[FeatureFlagKey.ChatControlOutsideBusinessHoursColor]
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
 
@@ -175,11 +185,16 @@ const ChatIntegrationPreview = (props: Props) => {
         }[autoResponderReply]
     }
 
-    const contrastColor = getTextColorBasedOnBackground(
-        isOnline ? mainColor : offlineColor
-    )
+    const currentColor =
+        (isControlUseMainColorOutsideBusinessHoursEnabled &&
+            useMainColorOutsideBusinessHours) ||
+        isOnline
+            ? mainColor
+            : offlineColor
 
-    const variant = getThemeBasedOnContrast(isOnline ? mainColor : offlineColor)
+    const contrastColor = getTextColorBasedOnBackground(currentColor)
+
+    const variant = getThemeBasedOnContrast(currentColor)
 
     const ClockIcon = (
         <i className="material-icons" style={{color: contrastColor}}>
@@ -263,7 +278,7 @@ const ChatIntegrationPreview = (props: Props) => {
     `
 
     const context: ChatIntegrationPreviewContextState = {
-        displayBotLabel,
+        displayBotLabel: isControlBotLabelEnabled ? displayBotLabel : true,
         avatar,
     }
 
@@ -282,7 +297,7 @@ const ChatIntegrationPreview = (props: Props) => {
                     mainFontFamily={mainFontFamily}
                     launcher={launcher}
                     position={position}
-                    mainColor={isOnline ? mainColor : offlineColor}
+                    mainColor={currentColor}
                     hideButton={hideButton}
                     editedPositionAxis={editedPositionAxis}
                     isClosed={!isOpen || !!editedPositionAxis}
@@ -290,16 +305,12 @@ const ChatIntegrationPreview = (props: Props) => {
                     <div
                         className={css.dialog}
                         style={{
-                            backgroundColor: isOnline
-                                ? mainColor
-                                : offlineColor,
+                            backgroundColor: currentColor,
                         }}
                     >
                         {backgroundColorStyle ===
                             GorgiasChatBackgroundColorStyle.Gradient && (
-                            <Gradient
-                                color={isOnline ? mainColor : offlineColor}
-                            ></Gradient>
+                            <Gradient color={currentColor}></Gradient>
                         )}
                         <NoiseEffect></NoiseEffect>
                         <div className={css.noise}></div>

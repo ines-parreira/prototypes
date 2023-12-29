@@ -96,8 +96,11 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 decoration.header_picture_url ||
                 decoration.header_picture_url_offline
             }
-            displayBotLabel={decoration.display_bot_label ?? true}
             avatar={avatar}
+            displayBotLabel={decoration.display_bot_label ?? true}
+            useMainColorOutsideBusinessHours={
+                decoration.use_main_color_outside_business_hours ?? false
+            }
         >
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>

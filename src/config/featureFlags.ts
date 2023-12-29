@@ -14,6 +14,7 @@ export enum FeatureFlagKey {
     ChatBackgroundColorStyle = 'chat-background-color-style',
     ChatCreationWizard = 'chat-creation-wizard',
     ChatControlBotLabelVisibility = 'chat-control-bot-label-visibility',
+    ChatControlOutsideBusinessHoursColor = 'chat-control-outside-business-hours-color',
     ChatCreationWizardAutomateStep = 'chat-creation-wizard-automate-step',
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatHeaderPictureStyle = 'chat-header-picture-style',

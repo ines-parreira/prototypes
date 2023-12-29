@@ -859,11 +859,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     ['decoration', 'background_color_style'],
                     GorgiasChatBackgroundColorStyle.Gradient
                 )}
+                avatar={avatar}
                 displayBotLabel={integration.getIn(
                     ['decoration', 'display_bot_label'],
                     true
                 )}
-                avatar={avatar}
+                useMainColorOutsideBusinessHours={integration.getIn(
+                    ['decoration', 'use_main_color_outside_business_hours'],
+                    false
+                )}
             >
                 <ChatIntegrationPreviewContent>
                     {previewIsWidgetConversation(preview) && (

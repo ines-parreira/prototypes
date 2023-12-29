@@ -70,6 +70,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import ColorField from 'pages/common/forms/ColorField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
@@ -133,6 +134,7 @@ export const defaultContent = {
     headerPictureUrl: undefined,
     headerPictureUrlOffline: undefined,
     displayBotLabel: true,
+    useMainColorOutsideBusinessHours: false,
 }
 
 const avatarNameTypeOptions = [
@@ -204,6 +206,7 @@ type State = {
     headerPictureUrl?: string
     headerPictureUrlOffline?: string
     displayBotLabel: boolean
+    useMainColorOutsideBusinessHours: boolean
 }
 
 type SubmitForm = {
@@ -258,6 +261,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
     const isControlBotLabelEnabled =
         useFlags()[FeatureFlagKey.ChatControlBotLabelVisibility]
+    const isControlUseMainColorOutsideBusinessHoursEnabled =
+        useFlags()[FeatureFlagKey.ChatControlOutsideBusinessHoursColor]
 
     const storeIntegrations = storeIntegrationsProp as List<Map<any, any>>
 
@@ -471,6 +476,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         ['decoration', 'display_bot_label'],
                         true
                     ),
+                    useMainColorOutsideBusinessHours: integration.getIn(
+                        ['decoration', 'use_main_color_outside_business_hours'],
+                        false
+                    ),
                 },
                 defaultContent
             )
@@ -580,6 +589,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
         if (isControlBotLabelEnabled) {
             form.decoration.display_bot_label = state.displayBotLabel
+        }
+
+        if (isControlUseMainColorOutsideBusinessHoursEnabled) {
+            form.decoration.use_main_color_outside_business_hours =
+                state.useMainColorOutsideBusinessHours
         }
 
         let actionToUse = actions.createGorgiasChatIntegration
@@ -693,6 +707,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         headerPictureUrl,
         headerPictureUrlOffline,
         displayBotLabel,
+        useMainColorOutsideBusinessHours,
     } = state
 
     const isSubmitting = _isSubmitting()
@@ -774,8 +789,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         ? headerPictureUrl || headerPictureUrlOffline
                         : headerPictureUrlOffline || headerPictureUrl
                 }
-                displayBotLabel={displayBotLabel}
                 avatar={avatar}
+                displayBotLabel={displayBotLabel}
+                useMainColorOutsideBusinessHours={
+                    useMainColorOutsideBusinessHours
+                }
             >
                 <ChatIntegrationPreviewContent
                     style={
@@ -1118,6 +1136,45 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     label="Conversation color"
                                 />
                             </div>
+                            {isControlUseMainColorOutsideBusinessHoursEnabled && (
+                                <CheckBox
+                                    className={
+                                        css.mainColorOutsideBusinessHoursCheckbox
+                                    }
+                                    isChecked={useMainColorOutsideBusinessHours}
+                                    onChange={(value) =>
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            useMainColorOutsideBusinessHours:
+                                                value,
+                                        }))
+                                    }
+                                >
+                                    <b>
+                                        Keep main color when outside business
+                                        hours
+                                    </b>{' '}
+                                    <span id="use-main-color-outside-business-hours-tooltip">
+                                        <i
+                                            className={classNames(
+                                                'material-icons-outlined',
+                                                css.tooltipIcon
+                                            )}
+                                        >
+                                            info
+                                        </i>
+                                        <Tooltip
+                                            style={{
+                                                textAlign: 'left',
+                                            }}
+                                            target="use-main-color-outside-business-hours-tooltip"
+                                        >
+                                            When unselected, the Chat will turn
+                                            gray when outside business hours.
+                                        </Tooltip>
+                                    </span>
+                                </CheckBox>
+                            )}
                         </div>
 
                         {chatBackgroundColorStyleEnabled && (

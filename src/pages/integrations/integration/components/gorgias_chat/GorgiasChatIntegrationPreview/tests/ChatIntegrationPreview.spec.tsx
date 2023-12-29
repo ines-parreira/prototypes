@@ -79,11 +79,12 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
             language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
             position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
             introductionText: 'intro',
-            displayBotLabel: true,
             avatar: {
                 imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
                 nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
             },
+            displayBotLabel: true,
+            useMainColorOutsideBusinessHours: false,
         }
 
         const messageContentMinProps: ComponentProps<typeof MessageContent> = {

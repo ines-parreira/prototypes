@@ -191,10 +191,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                     ['decoration', 'background_color_style'],
                     GorgiasChatBackgroundColorStyle.Gradient
                 )}
-                displayBotLabel={integration.getIn(
-                    ['decoration', 'display_bot_label'],
-                    true
-                )}
                 avatar={{
                     imageType: integration.getIn(
                         ['decoration', 'avatar', 'image_type'],
@@ -210,6 +206,14 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         'company_logo_url',
                     ]),
                 }}
+                displayBotLabel={integration.getIn(
+                    ['decoration', 'display_bot_label'],
+                    true
+                )}
+                useMainColorOutsideBusinessHours={integration.getIn(
+                    ['decoration', 'use_main_color_outside_business_hours'],
+                    false
+                )}
             >
                 <ChatIntegrationPreviewContent>
                     <div className={chatCss.content} />

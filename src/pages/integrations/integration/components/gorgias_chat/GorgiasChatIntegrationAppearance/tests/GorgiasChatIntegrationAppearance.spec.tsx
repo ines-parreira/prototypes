@@ -120,6 +120,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
         mockFlags({
             [FeatureFlagKey.ChatEnableTranslationEdit]: true,
             [FeatureFlagKey.ChatControlBotLabelVisibility]: true,
+            [FeatureFlagKey.ChatControlOutsideBusinessHoursColor]: true,
         })
     })
 
@@ -428,6 +429,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "main_font_family": "Inter",
                       "avatar_team_picture_url": undefined,
                       "introduction_text": "How can we help?",
+                      "use_main_color_outside_business_hours": false,
                       "offline_introduction_text": "We will be back soon",
                       "avatar": Immutable.Map {
                         "image_type": "agent-picture",
@@ -585,6 +587,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "main_font_family": "Inter",
                       "avatar_team_picture_url": undefined,
                       "introduction_text": "How can we help?",
+                      "use_main_color_outside_business_hours": false,
                       "offline_introduction_text": "We will be back soon",
                       "avatar": Immutable.Map {
                         "image_type": "agent-picture",
