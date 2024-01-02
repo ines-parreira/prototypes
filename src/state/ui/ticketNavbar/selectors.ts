@@ -7,7 +7,6 @@ import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
 import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
-import {getMatchingSystemView} from 'state/views/utils'
 import {TicketNavbarElementType} from './types'
 
 const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
@@ -34,30 +33,14 @@ const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
 
             const sectionIds = Object.keys(sections)
             const viewElements = viewsData
-                .filter((view) => {
-                    const isTicketView = view.type === ViewType.TicketList
-                    if (!isTicketView) {
-                        return false
-                    }
-                    if (viewVisibility === ViewVisibility.Private) {
-                        return view.visibility === ViewVisibility.Private
-                    }
-
-                    // try to find the possibly duplicate legacy system views (Trash and Spam)
-                    // to display them in the "Shared views"
-                    const matchingSystemView = getMatchingSystemView(
-                        viewsData,
-                        view
-                    )
-                    if (matchingSystemView && matchingSystemView.id > view.id) {
-                        return true
-                    }
-
-                    return (
-                        view.visibility !== ViewVisibility.Private &&
-                        !view.category?.startsWith(ViewCategory.System)
-                    )
-                })
+                .filter(
+                    (view) =>
+                        view.type === ViewType.TicketList &&
+                        view.category !== ViewCategory.System &&
+                        (viewVisibility === ViewVisibility.Private
+                            ? view.visibility === ViewVisibility.Private
+                            : view.visibility !== ViewVisibility.Private)
+                )
                 .map((view) => ({
                     data: view,
                     type: TicketNavbarElementType.View,

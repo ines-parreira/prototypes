@@ -139,7 +139,7 @@ export class HeaderContainer extends React.Component<Props, State> {
         const category = activeView.get('category') as ViewCategory | null
         const slug = activeView.get('slug') as keyof typeof systemViewIcons
         const shouldDisplaySystemIcon =
-            category?.startsWith(ViewCategory.System) && !!systemViewIcons[slug]
+            category === ViewCategory.System && !!systemViewIcons[slug]
 
         return (
             <div className={css.component}>

@@ -21,7 +21,7 @@ type OwnProps = {
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export function ViewSharingButtonContainer({currentUser, view}: Props) {
-    const isSystem = Object.values(ViewCategory).includes(view.get('category'))
+    const isSystem = ViewCategory.System === view.get('category')
     const label = _capitalize(view.get('visibility'))
     const [isOpen, setOpen] = useState(false)
     const isAllowed = hasRole(currentUser, AGENT_ROLE)

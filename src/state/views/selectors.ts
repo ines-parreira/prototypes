@@ -33,7 +33,7 @@ import {
 } from 'state/ui/ticketNavbar/selectors'
 import {tryLocalStorage} from 'services/common/utils'
 
-import {getMatchingSystemView, sortViews} from './utils'
+import {sortViews} from './utils'
 import {ViewsState} from './types'
 import {SYSTEM_VIEWS} from './constants'
 
@@ -83,22 +83,9 @@ export const getSystemTicketNavbarElementsByCategory = (
                         if (
                             !(
                                 systemViewsNames.includes(viewName) &&
-                                (
-                                    view?.get('category') as string | null
-                                )?.startsWith(ViewCategory.System)
+                                (view?.get('category') as string | null) ===
+                                    ViewCategory.System
                             )
-                        ) {
-                            return false
-                        }
-                        const matchingSystemView = getMatchingSystemView(
-                            views.toJS(),
-                            view?.toJS()
-                        )
-                        // try to find the possibly duplicate legacy system views (Trash and Spam)
-                        // to not display them in the bottom section of navbar
-                        if (
-                            matchingSystemView &&
-                            matchingSystemView.id > (view?.get('id') as number)
                         ) {
                             return false
                         }

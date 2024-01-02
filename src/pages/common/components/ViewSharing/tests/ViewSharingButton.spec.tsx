@@ -31,36 +31,36 @@ const minProps = {
 describe('<ViewSharingButton/>', () => {
     describe('render()', () => {
         it('should render as public', () => {
-            const {container} = render(
+            const {getByText} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({visibility: ViewVisibility.Public})}
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('Public')).toBeInTheDocument()
         })
 
         it('should render as shared', () => {
-            const {container} = render(
+            const {getByText} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({visibility: ViewVisibility.Shared})}
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('Shared')).toBeInTheDocument()
         })
 
         it('should render as private', () => {
-            const {container} = render(
+            const {getByText} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({visibility: ViewVisibility.Private})}
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('Private')).toBeInTheDocument()
         })
 
         it('should render as disabled because this is a system view', () => {
@@ -74,7 +74,11 @@ describe('<ViewSharingButton/>', () => {
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(
+                (container.firstChild as HTMLElement).classList.contains(
+                    'isDisabled'
+                )
+            ).toBeTruthy()
         })
 
         it('should render as disabled because user is not allowed', () => {
@@ -90,7 +94,11 @@ describe('<ViewSharingButton/>', () => {
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(
+                (container.firstChild as HTMLElement).classList.contains(
+                    'isDisabled'
+                )
+            ).toBeTruthy()
         })
     })
 })

@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {UserSettingType} from 'config/types/user'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
-import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
+import {ViewType, ViewVisibility} from 'models/view/types'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 
@@ -143,33 +143,6 @@ describe('selectors', () => {
                     ...state,
                     entities: {...state.entities, sections: {}},
                 })
-            ).toMatchSnapshot()
-        })
-
-        it('should display legacy system view in Shared views category', () => {
-            expect(
-                getPublicTicketNavbarElements({
-                    ...state,
-                    entities: {
-                        sections: {},
-                        views: {
-                            '1212': {
-                                id: 1212,
-                                type: ViewType.TicketList,
-                                visibility: ViewVisibility.Shared,
-                                category: ViewCategory.System,
-                                name: 'Trash',
-                            } as View,
-                            '12': {
-                                id: 12,
-                                type: ViewType.TicketList,
-                                visibility: ViewVisibility.Shared,
-                                category: ViewCategory.System,
-                                name: 'Trash',
-                            } as View,
-                        },
-                    },
-                } as unknown as RootState)
             ).toMatchSnapshot()
         })
     })

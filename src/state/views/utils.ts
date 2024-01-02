@@ -11,12 +11,7 @@ import {Syntax} from 'esprima'
 import {fromAST} from 'common/utils'
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import {UserRole} from '../../config/types/user'
-import {
-    View,
-    ViewCategory,
-    ViewType,
-    ViewVisibility,
-} from '../../models/view/types'
+import {ViewType, ViewVisibility} from '../../models/view/types'
 import {tryLocalStorage} from '../../services/common/utils'
 import {
     getAST,
@@ -535,25 +530,4 @@ export function getViewFilters(node: BaseNode = {} as BaseNode) {
     }, [] as ViewFilter[])
 
     return args
-}
-
-// remove once migrating legacy system views is done https://linear.app/gorgias/issue/HDKXP-115/make-old-trash-and-spam-views-non-system
-// try to find the possibly duplicate legacy system views (Trash and Spam)
-export const getMatchingSystemView = (views: View[], view: View) => {
-    if (
-        !(
-            ['Trash', 'Spam'].includes(view.name) &&
-            view.category?.startsWith(ViewCategory.System)
-        )
-    ) {
-        return null
-    }
-    return (
-        views.find(
-            (v) =>
-                v.category?.startsWith(ViewCategory.System) &&
-                v.name === view.name &&
-                v.id !== view.id
-        ) ?? null
-    )
 }

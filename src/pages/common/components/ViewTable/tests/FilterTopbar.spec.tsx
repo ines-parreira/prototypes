@@ -30,7 +30,7 @@ import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
 import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
 
-import {View} from 'models/view/types'
+import {View, ViewCategory} from 'models/view/types'
 import {FilterTopbar} from '../FilterTopbar'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
@@ -668,5 +668,27 @@ describe('<FilterTopbar />', () => {
                 type: 'views-export-button',
             })
         )
+    })
+
+    it('should not render save button when view is system', () => {
+        const {queryByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    views: fromJS({
+                        active: fromJS({
+                            ...viewFixture,
+                            category: ViewCategory.System,
+                            editMode: true,
+                        }),
+                    }),
+                })}
+            >
+                <FilterTopbar {...minProps} />
+            </Provider>
+        )
+
+        expect(queryByText('Update view')).toBeNull()
+        expect(queryByText('This view cannot be saved')).toBeInTheDocument()
     })
 })

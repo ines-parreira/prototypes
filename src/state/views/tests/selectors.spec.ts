@@ -640,34 +640,6 @@ describe('selectors', () => {
                     {data: newViews[3], type: TicketNavbarElementType.View},
                 ])
             })
-
-            it('should exclude legacy system views', () => {
-                const state = {
-                    views: initialState.set(
-                        'items',
-                        fromJS([
-                            ...newViews,
-                            {
-                                id: 18,
-                                name: 'Trash',
-                                category: ViewCategory.System,
-                            },
-                        ])
-                    ),
-                } as RootState
-
-                expect(
-                    selectors.getSystemTicketNavbarElementsByCategory(
-                        'views_bottom',
-                        true
-                    )({
-                        ...state,
-                    })
-                ).toEqual([
-                    {data: newViews[1], type: TicketNavbarElementType.View},
-                    {data: newViews[3], type: TicketNavbarElementType.View},
-                ])
-            })
         })
     })
 
