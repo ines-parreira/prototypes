@@ -13,7 +13,7 @@ import {
 import {isImmutable, toImmutable} from 'common/utils'
 import {PHONE_EVENTS} from 'constants/event'
 import {MacroActionName} from 'models/macroAction/types'
-import {TicketEvent, TicketMessage} from 'models/ticket/types'
+import {TicketMessage} from 'models/ticket/types'
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {tryLocalStorage} from 'services/common/utils'
 import * as responseUtils from 'state/newMessage/responseUtils'
@@ -176,22 +176,24 @@ export function getLastSameSourceTypeMessage(
 export function getSourceTypeOfResponse(
     messages: List<any> | any[],
     via: TicketVia,
-    events: List<any> | any[]
+    ticketId: string | number
 ) {
     const immutableMessages: List<any> = isImmutable(messages)
         ? (messages as List<any>)
         : toImmutable(messages)
-    const jsEvents = (
-        isImmutable(events) ? (events as List<any>).toJS() : events
-    ) as TicketEvent[]
-    const ticketId = immutableMessages.getIn([0, 'ticket_id'])
     if (ticketId) {
-        const cachedSourceType = responseUtils.getSourceTypeCache(ticketId)
+        const cachedSourceType = responseUtils.getSourceTypeCache(
+            typeof ticketId === 'string' ? ticketId : ticketId.toString()
+        )
         if (cachedSourceType) {
             return cachedSourceType
         }
     }
-    return responseSourceType(immutableMessages.toJS(), via, jsEvents)
+    return responseSourceType(
+        immutableMessages.toJS(),
+        via,
+        typeof ticketId === 'string' ? parseInt(ticketId) : ticketId
+    )
 }
 
 export function isSupportAddress(

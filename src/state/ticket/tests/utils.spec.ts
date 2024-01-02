@@ -254,9 +254,8 @@ describe('ticket utils', () => {
         it('should return message source type "internal-note" for Twilio ticket that has no message', () => {
             const messages: unknown[] = []
             const via = TicketVia.Twilio
-            const events: unknown[] = []
 
-            expect(getSourceTypeOfResponse(messages, via, events)).toEqual(
+            expect(getSourceTypeOfResponse(messages, via, 1)).toEqual(
                 TicketMessageSourceType.InternalNote
             )
         })
@@ -266,9 +265,8 @@ describe('ticket utils', () => {
                 {source: {type: TicketMessageSourceType.InternalNote}},
             ]
             const via = TicketVia.Twilio
-            const events: unknown[] = []
 
-            expect(getSourceTypeOfResponse(messages, via, events)).toEqual(
+            expect(getSourceTypeOfResponse(messages, via, 1)).toEqual(
                 TicketMessageSourceType.InternalNote
             )
         })

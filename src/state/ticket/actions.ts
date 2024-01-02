@@ -898,7 +898,7 @@ export const fetchTicket =
                     const sourceTypeOfResponse = getSourceTypeOfResponse(
                         response.messages,
                         response.via,
-                        response.events
+                        ticketId
                     )
 
                     if (
@@ -1073,7 +1073,7 @@ export const _goToNextOrPrevTicket = (
                         const sourceTypeOfResponse = getSourceTypeOfResponse(
                             ticket.messages,
                             ticket.via,
-                            ticket.events
+                            ticket.id as unknown as string
                         )
 
                         if (

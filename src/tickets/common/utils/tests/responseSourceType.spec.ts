@@ -1,12 +1,19 @@
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {EventType} from 'models/event/types'
-import {TicketEvent, TicketMessage} from 'models/ticket/types'
+import {TicketMessage} from 'models/ticket/types'
 import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
+import {appQueryClient} from 'api/queryClient'
 
+import {voiceCallsKeys} from 'models/voiceCall/queries'
+import * as voiceCallUtils from 'models/voiceCall/types'
 import responseSourceType from '../responseSourceType'
 
+const isVoiceCallSpy = jest.spyOn(voiceCallUtils, 'isVoiceCall')
+
 describe('responseSourceType()', () => {
+    afterEach(async () => {
+        await appQueryClient.resetQueries()
+    })
+
     it.each([
         {} as TicketMessage,
         {
@@ -16,11 +23,10 @@ describe('responseSourceType()', () => {
         'should return message source type "internal-note" for Twilio ticket for certain types of messages',
         (lastMessage: TicketMessage) => {
             const messages: TicketMessage[] = [lastMessage]
-            const events: TicketEvent[] = []
 
             const via = TicketVia.Twilio
 
-            expect(responseSourceType(messages, via, events)).toEqual(
+            expect(responseSourceType(messages, via, 1)).toEqual(
                 TicketMessageSourceType.InternalNote
             )
         }
@@ -29,129 +35,106 @@ describe('responseSourceType()', () => {
     it('should return message source type "internal-note" for Twilio ticket with no messages', () => {
         const via = TicketVia.Twilio
         const messages: TicketMessage[] = []
-        const events: TicketEvent[] = []
 
-        expect(responseSourceType(messages, via, events)).toEqual(
+        expect(responseSourceType(messages, via, 1)).toEqual(
             TicketMessageSourceType.InternalNote
         )
     })
 
-    it('should return message source type "internal-note" for Twilio ticket with no events', () => {
+    it('should return message source type "internal-note" for Twilio ticket with no voice calls', () => {
         const message = {
             source: {type: TicketMessageSourceType.Twilio},
         } as TicketMessage
         const messages: TicketMessage[] = [message]
-        const events: TicketEvent[] = []
 
         const via = TicketVia.Twilio
 
-        expect(responseSourceType(messages, via, events)).toEqual(
+        expect(responseSourceType(messages, via, 1)).toEqual(
             TicketMessageSourceType.InternalNote
         )
     })
 
-    it('should return message source type "internal-note" for Twilio ticket with non-phone event', () => {
+    it('should return message source type "phone" for Twilio ticket with last item missed phone call', () => {
         const message = {
             source: {type: TicketMessageSourceType.Twilio},
+            created_datetime: '2022-06-21T16:47:00',
         } as TicketMessage
         const messages: TicketMessage[] = [message]
-        const event = {
-            type: EventType.TicketMerged,
-        } as TicketEvent
-        const events: TicketEvent[] = [event]
+        const voiceCall = {
+            created_datetime: '2022-06-22T18:42:00',
+            status: voiceCallUtils.VoiceCallStatus.Completed,
+            direction: 'inbound',
+        } as voiceCallUtils.VoiceCall
+
+        isVoiceCallSpy.mockReturnValue(true)
+        appQueryClient.setQueryData(voiceCallsKeys.list({ticket_id: 1}), {
+            data: [voiceCall],
+        })
 
         const via = TicketVia.Twilio
 
-        expect(responseSourceType(messages, via, events)).toEqual(
-            TicketMessageSourceType.InternalNote
+        expect(responseSourceType(messages, via, 1)).toEqual(
+            TicketMessageSourceType.Phone
         )
     })
 
-    it.each([
-        PhoneIntegrationEvent.MissedPhoneCall,
-        PhoneIntegrationEvent.VoicemailRecording,
-    ])(
-        'should return message source type "phone" for Twilio ticket with last event missed phone call or voicemail recording',
-        (eventType: PhoneIntegrationEvent) => {
-            const message = {
-                source: {type: TicketMessageSourceType.Twilio},
-                created_datetime: '2022-06-21T16:47:00',
-            } as TicketMessage
-            const messages: TicketMessage[] = [message]
-            const event = {
-                type: eventType,
-                created_datetime: '2022-06-22T18:42:00',
-            } as TicketEvent
-            const events: TicketEvent[] = [event]
+    it('should return message source type "phone" for Twilio ticket with last item missed phone call and a more recent internal message', () => {
+        const message = {
+            source: {type: TicketMessageSourceType.InternalNote},
+            created_datetime: '2022-06-21T16:47:00',
+        } as TicketMessage
+        const messages: TicketMessage[] = [message]
+        const voiceCall = {
+            created_datetime: '2022-06-20T13:23:00',
+            status: voiceCallUtils.VoiceCallStatus.Completed,
+            direction: 'inbound',
+        } as voiceCallUtils.VoiceCall
 
-            const via = TicketVia.Twilio
+        isVoiceCallSpy.mockReturnValue(true)
+        appQueryClient.setQueryData(voiceCallsKeys.list({ticket_id: 1}), {
+            data: [voiceCall],
+        })
 
-            expect(responseSourceType(messages, via, events)).toEqual(
-                TicketMessageSourceType.Phone
-            )
-        }
-    )
+        const via = TicketVia.Twilio
 
-    it.each([
-        PhoneIntegrationEvent.MissedPhoneCall,
-        PhoneIntegrationEvent.VoicemailRecording,
-    ])(
-        'should return message source type "phone" for Twilio ticket with last event missed phone call or voicemail recording and a more recent internal message',
-        (eventType: PhoneIntegrationEvent) => {
-            const message = {
-                source: {type: TicketMessageSourceType.InternalNote},
-                created_datetime: '2022-06-21T16:47:00',
-            } as TicketMessage
-            const messages: TicketMessage[] = [message]
-            const event = {
-                type: eventType,
-                created_datetime: '2022-06-20T13:23:00',
-            } as TicketEvent
-            const events: TicketEvent[] = [event]
+        expect(responseSourceType(messages, via, 1)).toEqual(
+            TicketMessageSourceType.Phone
+        )
+    })
 
-            const via = TicketVia.Twilio
+    it('should return appropriate message source type for Twilio ticket with last item missed phone call and a more recent message', () => {
+        const message = {
+            source: {type: TicketMessageSourceType.Email},
+            created_datetime: '2022-06-21T16:47:00',
+        } as TicketMessage
+        const messages: TicketMessage[] = [message]
+        const voiceCall = {
+            created_datetime: '2022-06-20T13:23:00',
+            status: voiceCallUtils.VoiceCallStatus.Completed,
+            direction: 'inbound',
+        } as voiceCallUtils.VoiceCall
 
-            expect(responseSourceType(messages, via, events)).toEqual(
-                TicketMessageSourceType.Phone
-            )
-        }
-    )
+        isVoiceCallSpy.mockReturnValue(true)
+        appQueryClient.setQueryData(voiceCallsKeys.list({ticket_id: 1}), {
+            data: [voiceCall],
+        })
 
-    it.each([
-        PhoneIntegrationEvent.MissedPhoneCall,
-        PhoneIntegrationEvent.VoicemailRecording,
-    ])(
-        'should return appropriate message source type for Twilio ticket with last event missed phone call or voicemail recording and a more recent message',
-        (eventType: PhoneIntegrationEvent) => {
-            const message = {
-                source: {type: TicketMessageSourceType.Email},
-                created_datetime: '2022-06-21T16:47:00',
-            } as TicketMessage
-            const messages: TicketMessage[] = [message]
-            const event = {
-                type: eventType,
-                created_datetime: '2022-06-20T13:23:00',
-            } as TicketEvent
-            const events: TicketEvent[] = [event]
+        const via = TicketVia.Twilio
 
-            const via = TicketVia.Twilio
-
-            expect(responseSourceType(messages, via, events)).toEqual(
-                TicketMessageSourceType.Email
-            )
-        }
-    )
+        expect(responseSourceType(messages, via, 1)).toEqual(
+            TicketMessageSourceType.Email
+        )
+    })
 
     it('should return SMS channel if the last message is an SMS on a Twilio ticket', () => {
         const message = {
             source: {type: TicketMessageSourceType.Sms},
         } as TicketMessage
         const messages: TicketMessage[] = [message]
-        const events: TicketEvent[] = []
 
         const via = TicketVia.Twilio
 
-        expect(responseSourceType(messages, via, events)).toEqual(
+        expect(responseSourceType(messages, via, 1)).toEqual(
             TicketMessageSourceType.Sms
         )
     })
@@ -162,9 +145,8 @@ describe('responseSourceType()', () => {
         } as TicketMessage
         const messages: TicketMessage[] = [message]
         const via = TicketVia.Helpdesk
-        const events: TicketEvent[] = []
 
-        expect(responseSourceType(messages, via, events)).toEqual(
+        expect(responseSourceType(messages, via, 1)).toEqual(
             TicketMessageSourceType.Sms
         )
     })
@@ -172,9 +154,8 @@ describe('responseSourceType()', () => {
     it('should return default message source type for email ticket that has no message', () => {
         const messages: TicketMessage[] = []
         const via = TicketVia.Email
-        const events: TicketEvent[] = []
 
-        expect(responseSourceType(messages, via, events)).toEqual(
+        expect(responseSourceType(messages, via, 1)).toEqual(
             DEFAULT_SOURCE_TYPE
         )
     })
@@ -185,9 +166,8 @@ describe('responseSourceType()', () => {
         } as TicketMessage
         const messages: TicketMessage[] = [message]
         const via = TicketVia.Email
-        const events: TicketEvent[] = []
 
-        expect(responseSourceType(messages, via, events)).toEqual(
+        expect(responseSourceType(messages, via, 1)).toEqual(
             DEFAULT_SOURCE_TYPE
         )
     })
@@ -203,9 +183,8 @@ describe('responseSourceType()', () => {
             } as TicketMessage
             const messages: TicketMessage[] = [message]
             const via = TicketVia.Facebook
-            const events: TicketEvent[] = []
 
-            expect(responseSourceType(messages, via, events)).toEqual(
+            expect(responseSourceType(messages, via, 1)).toEqual(
                 TicketMessageSourceType.FacebookMentionComment
             )
         }
@@ -223,9 +202,8 @@ describe('responseSourceType()', () => {
             } as TicketMessage
             const messages: TicketMessage[] = [message]
             const via = TicketVia.Twitter
-            const events: TicketEvent[] = []
 
-            expect(responseSourceType(messages, via, events)).toEqual(
+            expect(responseSourceType(messages, via, 1)).toEqual(
                 TicketMessageSourceType.TwitterTweet
             )
         }

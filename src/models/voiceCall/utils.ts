@@ -112,3 +112,13 @@ export const processEvents = (
 
     return result
 }
+
+export const isMissedInboundVoiceCall = (voiceCall: VoiceCall) => {
+    return (
+        voiceCall.direction === 'inbound' &&
+        [VoiceCallStatus.Completed, VoiceCallStatus.Ending].includes(
+            voiceCall.status
+        ) &&
+        !voiceCall.last_answered_by_agent_id
+    )
+}

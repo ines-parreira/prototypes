@@ -1,9 +1,11 @@
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {TicketEvent, TicketMessage} from 'models/ticket/types'
+import {TicketMessage} from 'models/ticket/types'
 import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
-import {getLastEvent, isLastItemInTicketAnEvent} from 'utils'
+import {isLastItemInTicketAVoiceCall} from 'utils'
 
+import {appQueryClient} from 'api/queryClient'
+import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
+import {isMissedInboundVoiceCall} from 'models/voiceCall/utils'
 import isAnswerableType from './isAnswerableType'
 import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'
 
@@ -13,18 +15,22 @@ import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'
 export default function responseSourceType(
     messages: Array<TicketMessage>,
     via: TicketVia,
-    events: Array<TicketEvent>
+    ticketId: number
 ): TicketMessageSourceType {
     const lastMessage = lastNonSystemTypeMessage(messages)
-    const lastEvent = getLastEvent(events)
+    const voiceCallsData = appQueryClient.getQueryData<UseListVoiceCalls>(
+        voiceCallsKeys.list({
+            ticket_id: ticketId,
+        })
+    )?.data
+    const lastVoiceCall = voiceCallsData?.[0]
 
-    if (lastEvent && isLastItemInTicketAnEvent(lastMessage, lastEvent)) {
-        if (
-            lastEvent.type === PhoneIntegrationEvent.MissedPhoneCall ||
-            lastEvent.type === PhoneIntegrationEvent.VoicemailRecording
-        ) {
-            return TicketMessageSourceType.Phone
-        }
+    if (
+        lastVoiceCall &&
+        isLastItemInTicketAVoiceCall(lastMessage, lastVoiceCall) &&
+        isMissedInboundVoiceCall(lastVoiceCall)
+    ) {
+        return TicketMessageSourceType.Phone
     }
 
     // some messages don't have sources - failed imports, api, etc..

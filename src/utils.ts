@@ -35,6 +35,7 @@ import URLSafeBase64 from 'urlsafe-base64'
 
 import {fromAST, isImmutable, isPrivateAsset} from 'common/utils'
 import {TicketEvent} from 'models/ticket/types'
+import {VoiceCall} from 'models/voiceCall/types'
 import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
@@ -240,17 +241,17 @@ export function getLastEvent(events: Array<TicketEvent>): Maybe<TicketEvent> {
     )[0]
 }
 
-export function isLastItemInTicketAnEvent(
+export function isLastItemInTicketAVoiceCall(
     lastMessage: Maybe<Map<any, any>>,
-    lastEvent: Maybe<TicketEvent>
+    lastVoiceCall: Maybe<VoiceCall>
 ): boolean {
-    if (!lastEvent) {
+    if (!lastVoiceCall) {
         return false
     }
     if (!lastMessage) {
         return true
     }
-    return lastEvent.created_datetime > lastMessage.get('created_datetime')
+    return lastVoiceCall.created_datetime > lastMessage.get('created_datetime')
 }
 
 export function resolvePropertyName(name = ''): string {

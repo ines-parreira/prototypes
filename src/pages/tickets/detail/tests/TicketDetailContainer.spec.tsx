@@ -35,12 +35,13 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import {triggerTicketFieldsErrors} from 'state/ticket/actions'
-import {TicketChannel} from 'business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import * as customFieldsUtils from 'utils/customFields'
 import * as activityTracker from 'services/activityTracker'
 import {ActivityEvents} from 'services/activityTracker'
 import * as useTicketDraft from 'hooks/useTicketDraft'
+import * as ticketUtils from 'state/ticket/utils'
 import TicketView from '../components/TicketView'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 
@@ -161,6 +162,7 @@ describe('TicketDetailContainer component', () => {
         ticket: newTicket,
         updateCursor: jest.fn(),
         currentUser: fromJS({}),
+        prepare: jest.fn(),
     } as unknown as ComponentProps<typeof TicketDetailContainer>
     const preparedData = {
         messageId: 1,
@@ -1420,10 +1422,15 @@ describe('TicketDetailContainer component', () => {
             expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
         })
 
-        it('should not show loading spinner when voice calls are loaded and ticket channel is Voice', () => {
+        it('should not show loading spinner and prepare message when voice calls are loaded and ticket channel is Voice', () => {
             voiceCallsSpy.mockImplementation((() => ({
                 isLoading: false,
+                data: {data: [{}]},
             })) as jest.MockedFn<any>)
+            jest.spyOn(
+                ticketUtils,
+                'getSourceTypeOfResponse'
+            ).mockReturnValueOnce(TicketMessageSourceType.Phone)
             const {queryByText} = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
@@ -1441,6 +1448,9 @@ describe('TicketDetailContainer component', () => {
             )
 
             expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
+            expect(minProps.prepare).toHaveBeenCalledWith(
+                TicketMessageSourceType.Phone
+            )
         })
     })
 

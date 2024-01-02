@@ -5,6 +5,7 @@ import {
     getFormattedDurationOngoingCall,
     getFormattedDurationEndedCall,
     processEvents,
+    isMissedInboundVoiceCall,
 } from '../utils'
 import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from '../types'
 
@@ -155,6 +156,52 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([{text: 'Missed by', userId: 1}])
+        })
+        describe('isMissedInboundVoiceCall', () => {
+            it('should return true for missed inbound calls', () => {
+                expect(
+                    isMissedInboundVoiceCall({
+                        direction: 'inbound',
+                        status: VoiceCallStatus.Completed,
+                    } as VoiceCall)
+                ).toBe(true)
+                expect(
+                    isMissedInboundVoiceCall({
+                        direction: 'inbound',
+                        status: VoiceCallStatus.Ending,
+                    } as VoiceCall)
+                ).toBe(true)
+            })
+
+            it.each([
+                VoiceCallStatus.Ringing,
+                VoiceCallStatus.Queued,
+                VoiceCallStatus.Answered,
+                VoiceCallStatus.Connected,
+                VoiceCallStatus.InProgress,
+            ])(
+                'should return false for inbound calls with status %s',
+                (status) => {
+                    expect(
+                        isMissedInboundVoiceCall({
+                            direction: 'inbound',
+                            status,
+                        } as VoiceCall)
+                    ).toBe(false)
+                }
+            )
+
+            it.each([VoiceCallStatus.Completed, VoiceCallStatus.Ending])(
+                'should return false for outbound calls with status %s',
+                (status) => {
+                    expect(
+                        isMissedInboundVoiceCall({
+                            direction: 'outbound',
+                            status,
+                        } as VoiceCall)
+                    ).toBe(false)
+                }
+            )
         })
     })
 })

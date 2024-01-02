@@ -71,6 +71,7 @@ import {
 import Loader from 'pages/common/components/Loader/Loader'
 
 import {useListVoiceCalls} from 'models/voiceCall/queries'
+import {getSourceTypeOfResponse} from 'state/ticket/utils'
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
@@ -113,6 +114,7 @@ export const TicketDetailContainer = ({
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const {customer: customerId} = useSearch<{customer?: string}>()
     const ticketIdParamRef = useRef(ticketIdParam)
+    const hasSelectedDefaultChannel = useRef(false)
     const {setRecentItem} = useRecentItems<PickedTicket>(RecentItems.Tickets)
     const {data: voiceCallsData, isLoading: isVoiceCallsDataLoading} =
         useListVoiceCalls(
@@ -179,10 +181,36 @@ export const TicketDetailContainer = ({
     const title = ticket.get('id') ? ticket.get('subject') : 'New ticket'
     useTitle(isLoading ? undefined : title)
 
-    const isLoadingPhoneTicketData =
-        ticket.get('channel') === TicketChannel.Phone &&
-        !voiceCallsData &&
-        isVoiceCallsDataLoading
+    const isLoadingPhoneTicketData = useMemo(
+        () =>
+            ticket.get('channel') === TicketChannel.Phone &&
+            !voiceCallsData &&
+            isVoiceCallsDataLoading,
+        [ticket, voiceCallsData, isVoiceCallsDataLoading]
+    )
+
+    useEffect(() => {
+        if (
+            !isVoiceCallsDataLoading &&
+            !isLoadingPhoneTicketData &&
+            !!voiceCallsData?.data?.length &&
+            !hasSelectedDefaultChannel.current
+        ) {
+            const sourceType = getSourceTypeOfResponse(
+                ticket.get('messages'),
+                ticket.get('via'),
+                ticket.get('id')
+            )
+            prepare(sourceType)
+            hasSelectedDefaultChannel.current = true
+        }
+    }, [
+        isVoiceCallsDataLoading,
+        isLoadingPhoneTicketData,
+        ticket,
+        prepare,
+        voiceCallsData,
+    ])
 
     const {checkTicketFieldErrors} = useTicketFieldsCheck(ticketId)
 
