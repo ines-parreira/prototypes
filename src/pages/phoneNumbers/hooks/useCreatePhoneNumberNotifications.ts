@@ -9,7 +9,7 @@ export default function useCreatePhoneNumberNotifications() {
     const dispatch = useAppDispatch()
 
     const showCreatePhoneNumberErrorNotification = ({error}: {error: any}) => {
-        const upgradePlanPath = '/app/settings/billing'
+        const upgradePlanPath = '/app/settings/billing/process/helpdesk'
 
         const {response} = error as AxiosError<{
             error: {msg: string; data: {use_custom: string | null}}
@@ -20,16 +20,7 @@ export default function useCreatePhoneNumberNotifications() {
                 notify({
                     message: `
                         <div>
-                            If you're on a Trial or Starter plan, upgrade your
-                            account
-                            <a href='${upgradePlanPath}'>here</a>. If
-                            you have a Basic+ plan, select an Add-on plan to use
-                            the integration
-                            <a
-                                href='https://gorgias.typeform.com/to/gH7HYEHu?utm_source=in_product&utm_campaign=phone_vetting#email=xxxxx&domain=xxxxx&plan=xxxxx'
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >here</a>.
+                            Upgrade your account or subscribe to the Add-on to use the integration <a href='${upgradePlanPath}'>here</a>.
                         </div>
                     `,
                     allowHTML: true,
