@@ -6,15 +6,18 @@ exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
 >
   <button
     aria-disabled="true"
-    class="wrapper container disabled fill primary medium isDisabled"
+    class="wrapper container button fill primary medium isDisabled"
     href="#"
     type="submit"
   >
-    <img
-      alt="private message icon"
-      class="messengerIcon"
-      src="test-file-stub"
-    />
+    <div
+      class="logoWrapper"
+    >
+      <div
+        class="logo messengerIcon disabled"
+        style="mask-image: url(test-file-stub);"
+      />
+    </div>
     Message
   </button>
 </div>
@@ -26,15 +29,18 @@ exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
 >
   <button
     aria-disabled="true"
-    class="wrapper container disabled fill primary medium isDisabled"
+    class="wrapper container button fill primary medium isDisabled"
     href="#"
     type="submit"
   >
-    <img
-      alt="private message icon"
-      class="messengerIcon"
-      src="test-file-stub"
-    />
+    <div
+      class="logoWrapper"
+    >
+      <div
+        class="logo messengerIcon disabled"
+        style="mask-image: url(test-file-stub);"
+      />
+    </div>
     Message
   </button>
 </div>
@@ -46,15 +52,18 @@ exports[`<PrivateReplyButton/> render should render the button 1`] = `
 >
   <button
     aria-disabled="false"
-    class="wrapper container fill primary medium"
+    class="wrapper container button fill primary medium"
     href="#"
     type="submit"
   >
-    <img
-      alt="private message icon"
-      class="messengerIcon"
-      src="test-file-stub"
-    />
+    <div
+      class="logoWrapper"
+    >
+      <div
+        class="logo messengerIcon"
+        style="mask-image: url(test-file-stub);"
+      />
+    </div>
     Message
   </button>
 </div>

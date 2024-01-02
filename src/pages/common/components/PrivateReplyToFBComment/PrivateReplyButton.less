@@ -1,24 +1,41 @@
 :local {
-    .container {
+    .container.button {
         font-size: 13px;
         font-weight: normal;
         color: var(--neutral-grey-6);
-        background-color: var(--neutral-grey-2) !important;
-        border-color: var(--neutral-grey-3) !important;
+        background-color: var(--neutral-grey-2);
+        border-color: var(--neutral-grey-3);
         line-height: 24px;
 
-        .messengerIcon {
+        .logoWrapper {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .logo {
             margin-right: 5px;
+            display: block;
+            mask-size: contain;
+            background-color: var(--main-primary-3);
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+            mask-position: center;
+            -webkit-mask-position: center;
+
+            &.disabled {
+                opacity: 0.2;
+            }
+        }
+
+        .messengerIcon {
             width: 12px;
             height: 12px;
         }
 
-        &.disabled img {
-            opacity: 0.2;
-        }
-
         .instagramDirectMessageIcon {
-            margin-right: 5px;
             width: 18px;
             height: 18px;
         }

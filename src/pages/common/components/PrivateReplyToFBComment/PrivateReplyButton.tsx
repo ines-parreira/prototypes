@@ -68,22 +68,28 @@ export default function PrivateReplyButton({
             <div id={`private-reply-button-${ticketMessageId}`}>
                 <Component
                     type="submit"
-                    className={classnames(css.container, className, {
-                        [css.disabled]: isDisabled,
-                    })}
+                    className={classnames(css.container, css.button, className)}
                     onClick={onClick}
                     isDisabled={isDisabled}
                     href="#"
                 >
-                    <img
-                        className={
-                            isFacebookComment
-                                ? css.messengerIcon
-                                : css.instagramDirectMessageIcon
-                        }
-                        src={icon}
-                        alt="private message icon"
-                    />
+                    <div className={css.logoWrapper}>
+                        <div
+                            className={classnames(
+                                css.logo,
+                                isFacebookComment
+                                    ? css.messengerIcon
+                                    : css.instagramDirectMessageIcon,
+                                {
+                                    [css.disabled]: isDisabled,
+                                }
+                            )}
+                            style={{
+                                WebkitMaskImage: `url(${icon})`,
+                                maskImage: `url(${icon})`,
+                            }}
+                        />
+                    </div>
                     {buttonText}
                 </Component>
             </div>
