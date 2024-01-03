@@ -7,11 +7,10 @@ import {
 } from '../models/workflowConfiguration.types'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
-export const ADD_CUSTOMER_TO_KLAVIYO_LIST: WorkflowTemplate = {
-    slug: 'add-customer-to-klaviyo-list',
-    name: 'Add customer to Klaviyo list',
-    description:
-        "Capture a customer or prospect's email address and add them to your Klaviyo list.",
+export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
+    slug: 'add-email-to-klaviyo-list',
+    name: 'Add email to Klaviyo list',
+    description: 'Requires HTTP request set up and Klaviyo account.',
     label: WorkflowTemplateLabelType.ThirdPartyActions,
     getConfiguration: (
         id: string,
@@ -19,7 +18,7 @@ export const ADD_CUSTOMER_TO_KLAVIYO_LIST: WorkflowTemplate = {
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
-            name: 'Add customer to Klaviyo list',
+            name: 'Add email to Klaviyo list',
             account_id: accountId,
             entrypoint: {
                 label: 'Keep me informed about updates and promotions',
@@ -49,9 +48,13 @@ export const ADD_CUSTOMER_TO_KLAVIYO_LIST: WorkflowTemplate = {
             url: 'https://a.klaviyo.com/api/profiles',
             method: 'POST',
             headers: {
-                authorization: 'Klaviyo-API-Key your-private-api-key',
+                authorization: '',
                 revision: '2023-10-15',
                 'content-type': 'application/json',
+                'gorgias-message':
+                    'To enable this flow, insert your Klaviyo credentials next to the "authorization" header per documentation: https://developers.klaviyo.com/en/reference/create_profile',
+                'gorgias-message-2':
+                    'Before enabling flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
   "data": {

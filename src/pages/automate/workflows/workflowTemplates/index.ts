@@ -6,8 +6,8 @@ import {RETURN_AND_EXCHANGE_POLICY} from './returnAndExchangePolicy'
 import {WARRANTY_POLICY} from './warrantyPolicy'
 import {SUBSCRIPTION_MANAGEMENT} from './subscriptionManagement'
 import {SHIPPING_POLICY} from './shippingPolicy'
-import {ADD_CUSTOMER_TO_KLAVIYO_LIST} from './addCustomerToKlaviyoList'
-import {PROVIDE_LOYALTY_LION_POINT_BALANCE} from './provideLoyaltyLionPpointBalance'
+import {ADD_EMAIL_TO_KLAVIYO_LIST} from './addEmailToKlaviyoList'
+import {SHOW_LOYALTY_LION_POINT_BALANCE} from './showLoyaltyLionPointBalance'
 import {MANAGE_RECHARGE_SUBSCRIPTION} from './manageRechargeSubscription'
 
 export const WORKFLOW_TEMPLATES: Record<
@@ -20,9 +20,8 @@ export const WORKFLOW_TEMPLATES: Record<
     [WARRANTY_POLICY.slug]: WARRANTY_POLICY,
     [SHIPPING_POLICY.slug]: SHIPPING_POLICY,
     [SUBSCRIPTION_MANAGEMENT.slug]: SUBSCRIPTION_MANAGEMENT,
-    [ADD_CUSTOMER_TO_KLAVIYO_LIST.slug]: ADD_CUSTOMER_TO_KLAVIYO_LIST,
-    [PROVIDE_LOYALTY_LION_POINT_BALANCE.slug]:
-        PROVIDE_LOYALTY_LION_POINT_BALANCE,
+    [ADD_EMAIL_TO_KLAVIYO_LIST.slug]: ADD_EMAIL_TO_KLAVIYO_LIST,
+    [SHOW_LOYALTY_LION_POINT_BALANCE.slug]: SHOW_LOYALTY_LION_POINT_BALANCE,
     [MANAGE_RECHARGE_SUBSCRIPTION.slug]: MANAGE_RECHARGE_SUBSCRIPTION,
 }
 export const WORKFLOW_TEMPLATES_LIST = Object.values(WORKFLOW_TEMPLATES)

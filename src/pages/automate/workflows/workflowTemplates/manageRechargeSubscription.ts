@@ -14,8 +14,7 @@ import {
 export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
     slug: 'manage-recharge-subscription',
     name: 'Manage Recharge Subscription',
-    description:
-        'Help customers update and cancel their subscription with Recharge.',
+    description: 'Requires HTTP request set up and Recharge account.',
     label: WorkflowTemplateLabelType.ThirdPartyActions,
     getConfiguration: (
         id: string,
@@ -61,7 +60,11 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             method: 'GET',
             headers: {
                 'x-recharge-version': '2021-11',
-                'x-recharge-access-token': '[your_api_token]',
+                'x-recharge-access-token': '',
+                'gorgias-message':
+                    'To enable this flow, make sure to add your API token next to the "x-recharge-access-token" header per documentation: https://developer.rechargepayments.com/2021-11/authentication',
+                'gorgias-message-2':
+                    'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             variables: [
                 {
@@ -80,7 +83,11 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             method: 'GET',
             headers: {
                 'x-recharge-version': '2021-11',
-                'x-recharge-access-token': '[your_api_token]',
+                'x-recharge-access-token': '',
+                'gorgias-message':
+                    'To enable this flow, make sure to add your API token next to the "x-recharge-access-token" header per documentation: https://developer.rechargepayments.com/2021-11/authentication',
+                'gorgias-message-2':
+                    'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             variables: [
                 {
@@ -121,8 +128,12 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             method: 'PUT',
             headers: {
                 'x-recharge-version': '2021-11',
-                'x-recharge-access-token': '[your_api_token]',
+                'x-recharge-access-token': '',
                 'content-type': 'application/json',
+                'gorgias-message':
+                    'To enable this flow, make sure to add your API token next to the "x-recharge-access-token" header per documentation: https://developer.rechargepayments.com/2021-11/authentication',
+                'gorgias-message-2':
+                    'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
   "email": "{{steps_state.${newEmailAddressTextInputStepId}.content.text}}"
@@ -199,8 +210,12 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             method: 'PUT',
             headers: {
                 'x-recharge-version': '2021-11',
-                'x-recharge-access-token': '[your_api_token]',
+                'x-recharge-access-token': '',
                 'content-type': 'application/json',
+                'gorgias-message':
+                    'To enable this flow, make sure to add your API token next to the "x-recharge-access-token" header per documentation: https://developer.rechargepayments.com/2021-11/authentication',
+                'gorgias-message-2':
+                    'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
           "address1": "{{steps_state.${address1TextInputStepId}.content.text}}",
@@ -254,8 +269,12 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             method: 'POST',
             headers: {
                 'x-recharge-version': '2021-11',
-                'x-recharge-access-token': '[your_api_token]',
+                'x-recharge-access-token': '',
                 'content-type': 'application/json',
+                'gorgias-message':
+                    'To enable this flow, make sure to add your API token next to the "x-recharge-access-token" header per documentation: https://developer.rechargepayments.com/2021-11/authentication',
+                'gorgias-message-2':
+                    'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
           "cancellation_reason": "{{steps_state.${cancellationReasonTextInputStepId}.content.text}}",

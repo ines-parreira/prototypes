@@ -11,11 +11,10 @@ import {
     WAS_THIS_HELPFUL_WORKFLOW_ID,
 } from '../constants'
 
-export const PROVIDE_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
-    slug: 'provide-loyalty-lion-point-balance',
-    name: 'Provide Loyalty Lion point balance',
-    description:
-        'Give customers their Loyalty Lion point balance, points spent and rewards claimed.',
+export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
+    slug: 'show-loyalty-lion-point-balance',
+    name: 'Show LoyaltyLion points balance',
+    description: 'Requires HTTP request set up and LoyaltyLion account.',
     label: WorkflowTemplateLabelType.ThirdPartyActions,
     getConfiguration: (
         id: string,
@@ -24,7 +23,7 @@ export const PROVIDE_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
-            name: 'Provide Loyalty Lion point balance',
+            name: 'Show LoyaltyLion points balance',
             account_id: accountId,
             entrypoint: {
                 label: 'How many loyalty points do I have?',
@@ -62,7 +61,12 @@ export const PROVIDE_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
             url: 'https://api.loyaltylion.com/v2/customers?email={{customer.email}}',
             method: 'GET',
             headers: {
+                blank: '',
                 authorization: 'Basic [your base64-encoded credentials]',
+                'gorgias-message':
+                    'To enable this flow, make sure to follow all steps mentioned above',
+                'gorgias-message-2':
+                    'Before enabling this flow, make sure to delete all "gorgias-message" headers',
                 'setup-instructions-1':
                     'Get your <token>:<secret> value as mentioned on https://developers.loyaltylion.com/api/authentication/token-secret/',
                 'setup-instructions-2':
