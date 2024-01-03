@@ -19,8 +19,8 @@ const workflowLabelStyles: Record<
         backgroundColor: 'var(--accessory-blue-1)',
     },
     [WorkflowTemplateLabelType.Policies]: {
-        color: 'var(--accessory-yellow-3)',
-        backgroundColor: 'var(--accessory-yellow-1)',
+        color: 'var(--accessory-orange-3)',
+        backgroundColor: 'var(--accessory-orange-1)',
     },
     [WorkflowTemplateLabelType.SubscriptionManagement]: {
         color: 'var(--accessory-magenta-3)',
