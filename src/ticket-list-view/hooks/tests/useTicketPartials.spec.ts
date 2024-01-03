@@ -22,18 +22,22 @@ describe('useTicketPartials', () => {
     })
 
     it('should should subscribe to ticket updates on mount', () => {
-        renderHook(() => useTicketPartials(123))
+        renderHook(() => useTicketPartials(123, 'created_datetime:asc'))
         expect(subscribe).toHaveBeenCalledWith(expect.any(Function))
     })
 
     it('should unsubscribe from ticket updates on unmount', () => {
-        const {unmount} = renderHook(() => useTicketPartials(123))
+        const {unmount} = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc')
+        )
         unmount()
         expect(unsubscribe).toHaveBeenCalledWith()
     })
 
     it('should not call loadMore on the client if no cursor is available', () => {
-        const {result} = renderHook(() => useTicketPartials(123))
+        const {result} = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc')
+        )
         expect(result.current.loadMore).toEqual(expect.any(Function))
 
         result.current.loadMore()
@@ -41,7 +45,9 @@ describe('useTicketPartials', () => {
     })
 
     it('should call loadMore on the client if a cursor is available', () => {
-        const {result} = renderHook(() => useTicketPartials(123))
+        const {result} = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc')
+        )
 
         const [[listener]] = subscribe.mock.calls as [
             [

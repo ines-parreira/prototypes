@@ -32,7 +32,9 @@ describe('useTickets', () => {
     })
 
     it('should return tickets', () => {
-        const {result} = renderHook(() => useTickets(123))
+        const {result} = renderHook(() =>
+            useTickets(123, 'created_datetime:asc')
+        )
         expect(result.current).toEqual({
             hasMore: false,
             loading: false,

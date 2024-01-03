@@ -16,9 +16,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getViewPlainJS} from 'state/views/selectors'
 
 import {TICKET_HEIGHT} from '../constants'
+import useSortOrder from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
 import {TicketSummary} from '../types'
 
+import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import css from './TicketListView.less'
 
@@ -28,7 +30,8 @@ type Props = {
 
 export default function TicketListView({viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
-    const {loadMore, setElement, tickets} = useTickets(viewId)
+    const [sortOrder, setSortOrder] = useSortOrder()
+    const {loadMore, setElement, tickets} = useTickets(viewId, sortOrder)
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketSummary) => (
@@ -76,6 +79,7 @@ export default function TicketListView({viewId}: Props) {
         <div className={css.wrapper}>
             <div className={css.titleWrapper}>
                 <div className={css.title}>{view?.name}</div>
+                <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
             </div>
             <div className={css.list}>
                 <Virtuoso

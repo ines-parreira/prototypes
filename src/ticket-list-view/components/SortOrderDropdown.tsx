@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -7,18 +7,22 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
+import {sortOrderOptions, SortOrder} from '../hooks/useSortOrder'
 import css from './TicketListView.less'
 
-const sortingOptions = [
-    {value: 'oldest', label: 'Oldest'},
-    {value: 'newest', label: 'Newest'},
-]
+type Props = {
+    onChange: (sortOrder: SortOrder) => void
+    value: SortOrder
+}
 
-export default function SortingDropdown() {
+export default function SortingDropdown({onChange, value}: Props) {
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
     const [isOpen, setIsOpen] = useState(false)
-    const [sortingValue, setSortingValue] = useState(sortingOptions[0])
+    const selectedOption = useMemo(
+        () => sortOrderOptions.find((opt) => opt.value === value),
+        [value]
+    )
 
     return (
         <SelectInputBox
@@ -26,7 +30,7 @@ export default function SortingDropdown() {
             className={css.sortingSelect}
             floating={floatingRef}
             onToggle={setIsOpen}
-            label={sortingValue?.label}
+            label={selectedOption?.label}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (
@@ -36,14 +40,14 @@ export default function SortingDropdown() {
                         className={css.dropdown}
                         isOpen={isOpen}
                         onToggle={() => context!.onBlur()}
-                        value={sortingValue.value}
+                        value={value}
                         placement="bottom-end"
                     >
                         <DropdownBody>
-                            {sortingOptions.map((option) => (
+                            {sortOrderOptions.map((option) => (
                                 <DropdownItem
                                     key={option.value}
-                                    onClick={() => setSortingValue(option)}
+                                    onClick={onChange}
                                     option={option}
                                     shouldCloseOnSelect
                                 />

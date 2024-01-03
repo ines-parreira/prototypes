@@ -3,6 +3,7 @@ import {CursorMeta} from 'models/api/types'
 import {viewItemsDefinitionKeys} from 'models/view/queries'
 import {getViewTicketUpdates} from 'models/view/resources'
 
+import {SortOrder} from './hooks/useSortOrder'
 import type {TicketPartial} from './types'
 import transformApiTicketPartial from './utils/transformApiTicketPartial'
 
@@ -22,11 +23,13 @@ export default class TicketUpdatesManager {
     private listener: Listener | null = null
     private loading = false
     private nextCursor: CursorMeta['next_cursor'] = null
+    private sortOrder: SortOrder
     private tickets: TicketPartial[] = []
     private viewId: number
 
-    constructor(viewId: number) {
+    constructor(viewId: number, sortOrder: SortOrder) {
         this.viewId = viewId
+        this.sortOrder = sortOrder
     }
 
     async loadMore() {
@@ -64,7 +67,7 @@ export default class TicketUpdatesManager {
                 getViewTicketUpdates(this.viewId, {
                     cursor: this.nextCursor,
                     limit: PAGE_LIMIT,
-                    order_by: 'created_datetime:asc',
+                    order_by: this.sortOrder,
                 }),
             queryKey: viewItemsDefinitionKeys.updates(this.viewId),
         })
@@ -84,7 +87,7 @@ export default class TicketUpdatesManager {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
                 getViewTicketUpdates(this.viewId, {
-                    order_by: 'created_datetime:asc',
+                    order_by: this.sortOrder,
                     up_to_timestamp: this.latestTimestamp,
                 }),
             queryKey: viewItemsDefinitionKeys.updates(this.viewId),

@@ -5,13 +5,16 @@ import useDebouncedValue from 'hooks/useDebouncedValue'
 import {TICKET_HEIGHT} from '../constants'
 import useElementSize from './useElementSize'
 import useScrollOffset from './useScrollOffset'
+import {SortOrder} from './useSortOrder'
 import useStaleTickets from './useStaleTickets'
 import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
 
-export default function useTickets(viewId: number) {
-    const {hasMore, loading, loadMore, partials, setLatest} =
-        useTicketPartials(viewId)
+export default function useTickets(viewId: number, sortOrder: SortOrder) {
+    const {hasMore, loading, loadMore, partials, setLatest} = useTicketPartials(
+        viewId,
+        sortOrder
+    )
     const {markUpdated, staleTickets} = useStaleTickets(partials)
 
     const [element, setElement] = useState<HTMLElement | null>(null)
