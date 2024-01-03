@@ -1,13 +1,10 @@
 :local {
-    @bgColor: #e8f0fb;
-    @textColor: #b0b4cc;
-
     .btn-more {
         width: 26px;
         height: 12px;
         border-radius: 1px;
-        background-color: @bgColor;
-        color: @textColor;
+        background-color: var(--accessory-blue-1);
+        color: var(--neutral-grey-4);
         border: 0;
 
         margin-top: 5px;
@@ -19,7 +16,11 @@
         cursor: pointer;
 
         &:hover {
-            background-color: darken(@bgColor, 3%);
+            background-color: hsl(
+                var(--accessory-blue-1-h),
+                var(--accessory-blue-1-s),
+                calc(var(--accessory-blue-1-l) - 3%)
+            );
         }
     }
 }
