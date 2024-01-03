@@ -62,10 +62,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               className="flex"
               id="tags-1"
             >
-              <TagLabel
-                className={null}
-                style={{}}
-              >
+              <TagLabel>
                 refund
               </TagLabel>
               <Component
@@ -75,7 +72,6 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               </Component>
               <TagLabel
                 className="text-info"
-                style={{}}
               >
                 +
                 1
@@ -187,10 +183,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               className="flex"
               id="tags-2"
             >
-              <TagLabel
-                className={null}
-                style={{}}
-              >
+              <TagLabel>
                 rejectedTag
               </TagLabel>
             </div>

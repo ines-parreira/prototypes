@@ -151,7 +151,6 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                     >
                       <span
                         class="badge-tag tagLabel badge badge-secondary"
-                        style="color: rgb(128, 136, 214);"
                       >
                         <span>
                           auto-close
@@ -341,7 +340,6 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                     >
                       <span
                         class="badge-tag tagLabel badge badge-secondary"
-                        style="color: rgb(128, 136, 214);"
                       >
                         <span>
                           auto-close

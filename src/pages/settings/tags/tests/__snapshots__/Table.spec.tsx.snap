@@ -133,7 +133,6 @@ exports[`ManageTags Table component should display the same number of rows as th
         >
           <span
             class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
           >
             billing
           </span>
@@ -211,7 +210,6 @@ exports[`ManageTags Table component should display the same number of rows as th
         >
           <span
             class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
           >
             refund
           </span>
@@ -289,7 +287,6 @@ exports[`ManageTags Table component should display the same number of rows as th
         >
           <span
             class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
           >
             refund accepted
           </span>
@@ -367,7 +364,6 @@ exports[`ManageTags Table component should display the same number of rows as th
         >
           <span
             class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
           >
             rejected
           </span>

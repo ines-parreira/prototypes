@@ -1,14 +1,12 @@
 import React from 'react'
 import {List, Map} from 'immutable'
-import {Badge} from 'reactstrap'
 
-import {DEFAULT_TAG_COLOR} from 'config'
-import {MacroAction} from 'models/macroAction/types'
-import {getTags} from 'state/tags/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import {MacroAction} from 'models/macroAction/types'
+import {TagLabel} from 'pages/common/utils/labels'
+import {getTags} from 'state/tags/selectors'
 
 import {BaseActionPreview} from './BaseActionPreview'
-import css from './TagActionPreview.less'
 
 type Props = {
     action: MacroAction
@@ -27,14 +25,10 @@ export const TagActionPreview = ({action}: Props) => {
             (tagObject: Map<any, any>) => tagObject.get('name') === tag
         )
 
-        const color = tagObject
-            ? tagObject.getIn(['decoration', 'color'], DEFAULT_TAG_COLOR)
-            : DEFAULT_TAG_COLOR
-
         return (
-            <Badge key={tag} className={css.tag} style={{color}}>
+            <TagLabel key={tag} decoration={tagObject.get('decoration')}>
                 {tag}
-            </Badge>
+            </TagLabel>
         )
     })
 

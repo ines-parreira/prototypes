@@ -106,7 +106,6 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
-          style="color: rgb(128, 136, 214);"
         >
           <span>
             refund
@@ -218,7 +217,6 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
-          style="color: rgb(128, 136, 214);"
         >
           <span>
             refund
@@ -380,7 +378,6 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
-          style="color: rgb(128, 136, 214);"
         >
           <span>
             refund
@@ -542,7 +539,6 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
-          style="color: rgb(128, 136, 214);"
         >
           <span>
             refund

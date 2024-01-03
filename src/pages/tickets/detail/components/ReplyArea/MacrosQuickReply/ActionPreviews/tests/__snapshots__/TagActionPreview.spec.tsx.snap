@@ -13,19 +13,17 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
     class="propsRowWrapper"
   >
     <span
-      class="tag badge badge-secondary"
-      style="color: rgb(128, 136, 214);"
+      class="badge-tag badge badge-secondary"
     >
       refund
     </span>
     <span
-      class="tag badge badge-secondary"
-      style="color: rgb(128, 136, 214);"
+      class="badge-tag badge badge-secondary"
     >
       billing
     </span>
     <span
-      class="tag badge badge-secondary"
+      class="badge-tag badge badge-secondary"
       style="color: rgb(222, 222, 222);"
     >
       refund accepted

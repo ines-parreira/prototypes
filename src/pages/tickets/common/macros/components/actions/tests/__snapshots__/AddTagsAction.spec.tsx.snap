@@ -6,7 +6,6 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
 >
   <span
     class="badge-tag tagLabel badge badge-secondary"
-    style="color: rgb(128, 136, 214);"
   >
     <span>
       tag1
@@ -19,7 +18,6 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
   </span>
   <span
     class="badge-tag tagLabel badge badge-secondary"
-    style="color: rgb(128, 136, 214);"
   >
     <span>
       tag2

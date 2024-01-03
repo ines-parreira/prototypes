@@ -30,6 +30,8 @@ import {formatDatetime, humanizeString} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationChannel} from 'state/integrations/selectors'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import {Theme, useTheme} from 'theme'
+import {getTextColorBasedOnBackground} from 'utils/colors'
 
 import css from './labels.less'
 
@@ -196,34 +198,34 @@ CustomerLabel.displayName = 'CustomerLabel'
 /**
  * TAG
  */
-type TagLabelParamType = {
+type TagLabelProps = {
     className?: string
-    style: CSSProperties
     decoration?: Map<any, any>
     children?: ReactNode
 }
-export const TagLabel = ({
-    className,
-    decoration,
-    children,
-}: TagLabelParamType) => {
+export const TagLabel = ({className, decoration, children}: TagLabelProps) => {
     const color =
         ((decoration || fromJS({})) as Map<any, any>).get('color') ||
         DEFAULT_TAG_COLOR
 
+    const theme = useTheme()
+    const textColor = getTextColorBasedOnBackground(color)
+
     return (
         <ReactstrapBadge
             className={classnames('badge-tag', className)}
-            style={{color}}
+            style={
+                theme === Theme.Dark
+                    ? {
+                          backgroundColor: color,
+                          color: textColor,
+                      }
+                    : {color}
+            }
         >
             {children}
         </ReactstrapBadge>
     )
-}
-
-TagLabel.defaultProps = {
-    className: null,
-    style: {},
 }
 
 TagLabel.displayName = 'TagLabel'

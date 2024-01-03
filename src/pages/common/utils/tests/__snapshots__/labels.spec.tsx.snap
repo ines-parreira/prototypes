@@ -253,7 +253,6 @@ exports[`components utils: labels RenderLabel distribution status label 1`] = `
 exports[`components utils: labels RenderLabel distribution tags label 1`] = `
 <span
   class="badge-tag badge badge-secondary"
-  style="color: rgb(128, 136, 214);"
 >
   help
 </span>
