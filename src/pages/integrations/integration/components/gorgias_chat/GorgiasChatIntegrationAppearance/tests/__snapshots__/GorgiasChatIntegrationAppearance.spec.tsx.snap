@@ -466,18 +466,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -1681,18 +1686,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -3133,18 +3143,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -4556,18 +4571,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -5979,18 +5999,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -7402,18 +7427,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -8921,18 +8951,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -13058,18 +13093,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>
@@ -14273,18 +14313,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       name="checkbox-42"
                       type="checkbox"
                     />
-                    <b>
-                      Keep main color when outside business hours
-                    </b>
-                     
                     <span
-                      id="use-main-color-outside-business-hours-tooltip"
+                      class="mainColorOutsideBusinessHoursCheckboxLabel"
                     >
-                      <i
-                        class="material-icons-outlined tooltipIcon"
+                      <b>
+                        Keep main color when outside business hours
+                      </b>
+                       
+                      <span
+                        class="mainColorOutsideBusinessHoursTooltipIcon"
+                        id="use-main-color-outside-business-hours-tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </span>
                   </label>
                 </div>

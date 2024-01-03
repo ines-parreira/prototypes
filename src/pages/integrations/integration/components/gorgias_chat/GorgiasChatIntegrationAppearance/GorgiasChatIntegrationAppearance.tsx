@@ -1150,28 +1150,40 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         }))
                                     }
                                 >
-                                    <b>
-                                        Keep main color when outside business
-                                        hours
-                                    </b>{' '}
-                                    <span id="use-main-color-outside-business-hours-tooltip">
-                                        <i
-                                            className={classNames(
-                                                'material-icons-outlined',
-                                                css.tooltipIcon
-                                            )}
+                                    <span
+                                        className={
+                                            css.mainColorOutsideBusinessHoursCheckboxLabel
+                                        }
+                                    >
+                                        <b>
+                                            Keep main color when outside
+                                            business hours
+                                        </b>{' '}
+                                        <span
+                                            id="use-main-color-outside-business-hours-tooltip"
+                                            className={
+                                                css.mainColorOutsideBusinessHoursTooltipIcon
+                                            }
                                         >
-                                            info
-                                        </i>
-                                        <Tooltip
-                                            style={{
-                                                textAlign: 'left',
-                                            }}
-                                            target="use-main-color-outside-business-hours-tooltip"
-                                        >
-                                            When unselected, the Chat will turn
-                                            gray when outside business hours.
-                                        </Tooltip>
+                                            <i
+                                                className={classNames(
+                                                    'material-icons-outlined',
+                                                    css.tooltipIcon
+                                                )}
+                                            >
+                                                info
+                                            </i>
+                                            <Tooltip
+                                                style={{
+                                                    textAlign: 'left',
+                                                }}
+                                                target="use-main-color-outside-business-hours-tooltip"
+                                            >
+                                                When unselected, the Chat will
+                                                turn gray when outside business
+                                                hours.
+                                            </Tooltip>
+                                        </span>
                                     </span>
                                 </CheckBox>
                             )}
