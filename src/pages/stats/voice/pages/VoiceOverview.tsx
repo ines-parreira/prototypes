@@ -1,5 +1,5 @@
 import React from 'react'
-
+import moment from 'moment/moment'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import StatsPage from 'pages/stats/StatsPage'
@@ -24,7 +24,7 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import {AccountFeature} from 'state/currentAccount/types'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {getStandardPhoneIntegrations} from 'state/integrations/selectors'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
@@ -38,7 +38,7 @@ function VoiceOverview() {
         getCleanStatsFiltersWithTimezone
     )
 
-    const phoneIntegrations = useAppSelector(getStandardPhoneIntegrations)
+    const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     useCleanStatsFilters(pageStatsFilters)
 
@@ -54,7 +54,10 @@ function VoiceOverview() {
                     />
                     <PeriodStatsFilter
                         initialSettings={{
-                            minDate: new Date(MIN_DATE_FOR_VOICE_STATS),
+                            minDate: moment(
+                                MIN_DATE_FOR_VOICE_STATS,
+                                'YYYY-MM-DD'
+                            ).toDate(),
                             maxSpan: 365,
                         }}
                         value={pageStatsFilters.period}

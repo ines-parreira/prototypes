@@ -1,7 +1,7 @@
 export const VOICE_OVERVIEW_PAGE_TITLE = 'Voice Overview'
 export const VOICE_LEARN_MORE_URL = 'https://www.gorgias.com/product/voice'
 
-export const MIN_DATE_FOR_VOICE_STATS = '2023-11-16'
+export const MIN_DATE_FOR_VOICE_STATS = '2023-11-20'
 export const CALL_LIST_PAGE_SIZE = 10
 
 // Call metrics constants
