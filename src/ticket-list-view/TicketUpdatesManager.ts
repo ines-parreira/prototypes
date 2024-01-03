@@ -77,12 +77,18 @@ export default class TicketUpdatesManager {
         this.tickets = [...this.tickets, ...data.map(transformApiTicketPartial)]
         this.listener(this.tickets, this.nextCursor)
 
-        this.initialLoaded = true
         this.loading = false
+        if (this.tickets.length) {
+            this.initialLoaded = true
+        }
     }
 
     private poll = async () => {
         if (!this.listener) return
+
+        if (!this.tickets.length) {
+            return await this.getPage()
+        }
 
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
