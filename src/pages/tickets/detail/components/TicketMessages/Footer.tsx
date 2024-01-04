@@ -1,7 +1,7 @@
 import classNamesBind from 'classnames/bind'
 import React from 'react'
 
-import {TicketMessage} from '../../../../../models/ticket/types'
+import {TicketMessage} from 'models/ticket/types'
 
 import css from './Footer.less'
 import SourceDetailsFooter from './SourceDetailsFooter'

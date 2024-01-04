@@ -67,7 +67,9 @@ export default class Container extends Component<Props> {
             (isMessageHidden && isMessageDuplicated)
 
         if (shouldRenderAvatar) {
-            let timeReadableValue,
+            let badgeColor = undefined,
+                badgeBorderColor,
+                timeReadableValue,
                 lastSeenOnChat = null,
                 tooltipText
 
@@ -76,6 +78,8 @@ export default class Container extends Component<Props> {
                 !customer.isEmpty() &&
                 containsLastCustomerMessage
             ) {
+                badgeBorderColor = 'var(--neutral-grey-0)'
+
                 const memoizedCustomerIntegrationsData = _memoize(
                     (customer: Map<any, any>): Map<any, any> =>
                         customer.get('integrations') as Map<any, any>
@@ -106,6 +110,11 @@ export default class Container extends Component<Props> {
                         timezone
                     )
 
+                    badgeColor =
+                        timeReadableValue === 'now'
+                            ? 'var(--feedback-success)'
+                            : 'var(--neutral-grey-4)'
+
                     tooltipText =
                         timeReadableValue === 'now'
                             ? `Active ${timeReadableValue}`
@@ -120,12 +129,8 @@ export default class Container extends Component<Props> {
                         name={sender.get('name')}
                         url={sender.getIn(['meta', 'profile_picture_url'])}
                         size={36}
-                        badgeColor={
-                            timeReadableValue === 'now'
-                                ? 'var(--feedback-success)'
-                                : 'var(--neutral-grey-4)'
-                        }
-                        badgeBorderColor="var(--neutral-grey-0)"
+                        badgeColor={badgeColor}
+                        badgeBorderColor={badgeBorderColor}
                         withTooltip={!!timeReadableValue}
                         tooltipText={tooltipText}
                     />
