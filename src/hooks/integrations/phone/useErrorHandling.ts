@@ -1,6 +1,5 @@
 import {useEffect} from 'react'
 import {dismissNotification} from 'reapop'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,7 +10,6 @@ import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
 import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 enum PhoneBannerNotification {
     Error = 'phone-error-banner',
@@ -21,13 +19,8 @@ enum PhoneBannerNotification {
 export function useErrorHandling() {
     const dispatch = useAppDispatch()
     const {error, warning} = useAppSelector((state) => state.twilio)
-    const useNewErrorHandling = useFlags()[FeatureFlagKey.NewPhoneErrorHandling]
 
     useEffect(() => {
-        if (!useNewErrorHandling) {
-            return
-        }
-
         if (error && !isRecoverableError(error)) {
             void dispatch(
                 notify({
@@ -48,13 +41,9 @@ export function useErrorHandling() {
         } else {
             dispatch(dismissNotification(PhoneBannerNotification.Error))
         }
-    }, [dispatch, error, useNewErrorHandling])
+    }, [dispatch, error])
 
     useEffect(() => {
-        if (!useNewErrorHandling) {
-            return
-        }
-
         if (warning) {
             const message = DEFAULT_WARNING_MESSAGE
 
@@ -72,5 +61,5 @@ export function useErrorHandling() {
         } else {
             dispatch(dismissNotification(PhoneBannerNotification.Warning))
         }
-    }, [dispatch, warning, useNewErrorHandling])
+    }, [dispatch, warning])
 }

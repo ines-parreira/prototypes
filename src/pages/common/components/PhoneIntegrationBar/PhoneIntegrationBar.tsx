@@ -1,11 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
+import React, {useCallback} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
-import useTimeoutFn from 'hooks/useTimeoutFn'
 import {useDevice} from 'hooks/integrations/phone/useDevice'
-import {useDevice_DEPRECATED} from 'hooks/integrations/phone/useDevice_DEPRECATED'
 import useBeforeUnload from 'hooks/useBeforeUnload'
 
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
@@ -13,25 +8,7 @@ import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
 import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
 
 export default function PhoneIntegrationBar(): JSX.Element | null {
-    const useNewErrorHandlingFlag =
-        useFlags()[FeatureFlagKey.NewPhoneErrorHandling]
-
-    const [useNewErrorHandling, setUseNewErrorHandling] = useState(
-        useNewErrorHandlingFlag
-    )
-
-    useEffect(() => {
-        setUseNewErrorHandling(useNewErrorHandlingFlag)
-    }, [useNewErrorHandlingFlag])
-
-    useTimeoutFn(() => {
-        if (useNewErrorHandling === undefined) {
-            setUseNewErrorHandling(false)
-        }
-    }, 5 * 1000)
-
-    useDevice(useNewErrorHandling)
-    useDevice_DEPRECATED(useNewErrorHandling)
+    useDevice()
 
     const {call, isDialing, isRinging} = useAppSelector((state) => state.twilio)
 

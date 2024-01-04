@@ -2,7 +2,6 @@ import React, {useCallback} from 'react'
 import {DropdownItem} from 'reactstrap'
 import classnames from 'classnames'
 import parsePhoneNumber from 'libphonenumber-js'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {NewPhoneNumber} from 'models/phoneNumber/types'
 import {PhoneIntegration} from 'models/integration/types'
@@ -10,9 +9,7 @@ import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
-import {useOutboundCall_DEPRECATED} from 'hooks/integrations/phone/useOutboundCall_DEPRECATED'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     address: string
@@ -31,13 +28,7 @@ const PhoneIntegrationsDropdownList = ({
     const ticketId = useAppSelector(DEPRECATED_getTicket).get('id')
     const agentId = useAppSelector(getCurrentUser).get('id')
 
-    const outboundCall = useOutboundCall()
-    const outboundCall_DEPRECATED = useOutboundCall_DEPRECATED()
-
-    const useNewErrorHandling = useFlags()[FeatureFlagKey.NewPhoneErrorHandling]
-    const makeOutboundCall = useNewErrorHandling
-        ? outboundCall
-        : outboundCall_DEPRECATED
+    const makeOutboundCall = useOutboundCall()
 
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
     const isDisabled = !device || !!call || !toAddress

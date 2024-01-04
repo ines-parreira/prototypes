@@ -5,9 +5,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {Device} from '@twilio/voice-sdk'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-
-import {FeatureFlagKey} from 'config/featureFlags'
+import {resetLDMocks} from 'jest-launchdarkly-mock'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {mockDevice} from 'tests/twilioMocks'
@@ -62,9 +60,6 @@ describe('<PhoneTicketSubmitButtons/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.NewPhoneErrorHandling]: false,
-        })
     })
 
     it('should render', () => {

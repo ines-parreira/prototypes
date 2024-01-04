@@ -1,15 +1,11 @@
 import React from 'react'
-import {waitFor} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
 import {Call, Device} from '@twilio/voice-sdk'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {mockIncomingCall, mockDevice, mockOutgoingCall} from 'tests/twilioMocks'
-import {SET_TWILIO_DEVICE} from 'state/twilio/constants'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState} from 'state/twilio/reducers'
 import client from 'models/api/resources'
@@ -20,7 +16,6 @@ jest.mock('@twilio/voice-sdk')
 
 describe('<PhoneIntegrationBar/>', () => {
     let store: MockStoreEnhanced
-    const fakeToken = 'fake-token'
     const mockedServer = new MockAdapter(client)
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -30,40 +25,6 @@ describe('<PhoneIntegrationBar/>', () => {
         window.location.protocol = 'https:'
         jest.resetAllMocks()
         mockedServer.reset()
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.NewPhoneErrorHandling]: false,
-        })
-    })
-
-    it('should fetch token, set device and not render anything because there is no call', async () => {
-        store = mockStore({
-            twilio: initialState,
-        })
-
-        mockedServer.onGet('/integrations/phone/token').reply(200, {
-            token: fakeToken,
-        })
-
-        const {container} = renderWithRouter(
-            <Provider store={store}>
-                <PhoneIntegrationBar />
-            </Provider>
-        )
-
-        await waitFor(() => {
-            expect(store.getActions()).toMatchObject([
-                {
-                    type: SET_TWILIO_DEVICE,
-                    payload: expect.any(Device),
-                },
-            ])
-        })
-
-        expect(container.firstChild).toBeNull()
-        expect(mockedServer.history).toMatchObject({
-            get: [{url: '/integrations/phone/token'}],
-        })
     })
 
     it('should render ringing call bar because there is an incoming call', async () => {

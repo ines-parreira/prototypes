@@ -12,7 +12,7 @@ import {
 } from 'hooks/integrations/phone/utils'
 import {isActive} from 'state/currentUser/selectors'
 
-export function useDevice(useNewErrorHandling: boolean | undefined) {
+export function useDevice() {
     useErrorHandling()
     const dispatch = useAppDispatch()
     const {device, isConnecting, reconnectAttempts, error} = useAppSelector(
@@ -21,10 +21,6 @@ export function useDevice(useNewErrorHandling: boolean | undefined) {
     const isAgentActive = useAppSelector(isActive)
 
     useEffect(() => {
-        if (useNewErrorHandling !== true) {
-            return
-        }
-
         if (error && !isRecoverableError(error)) {
             return
         }
@@ -58,6 +54,5 @@ export function useDevice(useNewErrorHandling: boolean | undefined) {
         isConnecting,
         isAgentActive,
         reconnectAttempts,
-        useNewErrorHandling,
     ])
 }

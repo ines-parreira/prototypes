@@ -1,18 +1,15 @@
 import React, {SyntheticEvent, useCallback, useEffect, useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import {getNewMessageSource} from 'state/newMessage/selectors'
 import {RootState} from 'state/types'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
-import {useOutboundCall_DEPRECATED} from 'hooks/integrations/phone/useOutboundCall_DEPRECATED'
 
 import css from './PhoneTicketSubmitButtons.less'
 
@@ -71,11 +68,7 @@ function useSubmit(source: Map<any, any>, ticketId: number, agentId: number) {
     const [integrationId, setIntegrationId] = useState<number>(0)
     const [isValid, setIsValid] = useState(false)
 
-    const outboundCall = useOutboundCall()
-    const outboundCall_DEPRECATED = useOutboundCall_DEPRECATED()
-
-    const useNewErrorHandling = useFlags()[FeatureFlagKey.NewPhoneErrorHandling]
-    const onCall = useNewErrorHandling ? outboundCall : outboundCall_DEPRECATED
+    const onCall = useOutboundCall()
 
     const onSubmit = useCallback(() => {
         onCall({
