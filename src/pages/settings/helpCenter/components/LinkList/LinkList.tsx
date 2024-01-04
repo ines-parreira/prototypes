@@ -60,7 +60,7 @@ export const LinkList = ({
                     onClick={onAddNew}
                 >
                     <i className="material-icons">add</i>
-                    Add Nav Item
+                    Add Link
                 </Button>
             </span>
             {isLimitExceeded && (
