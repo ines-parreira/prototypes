@@ -79,6 +79,8 @@ import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {mapNormalizedToArray} from 'models/ticket/mappers'
 import {isNewChannel} from 'services/channels'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
+import {isCustomFieldValueEmpty} from 'utils/customFields'
+
 import {
     MessageContext,
     selectionAfter,
@@ -1395,13 +1397,22 @@ export function submitTicket(
             //@ts-ignore
             ticketToSend.messages.push(dataToSend.newMessage)
 
+            // De-normalize custom fields values and make sure they only contain values
+            // that are not empty. Discard any other keys
+            const customFields =
+                ticketToSend.custom_fields &&
+                mapNormalizedToArray(ticketToSend.custom_fields)
+                    .filter(
+                        (customField) =>
+                            !isCustomFieldValueEmpty(customField.value)
+                    )
+                    .map(({id, value}) => ({id, value}))
+
             const response = await client.post<TicketResponse>(
                 '/api/tickets/',
                 {
                     ...ticketToSend,
-                    custom_fields:
-                        ticketToSend.custom_fields &&
-                        mapNormalizedToArray(ticketToSend.custom_fields),
+                    custom_fields: customFields,
                 }
             )
 

@@ -1,12 +1,5 @@
-type NormalizedDataStructure = {
-    [key in string | number]: {
-        id: string | number
-        [anyKey: string]: unknown
-    }
-}
-
-export const mapNormalizedToArray = <Input extends NormalizedDataStructure>(
-    normalizedDataStructure: Input
-) => {
+export const mapNormalizedToArray = <Subtype>(normalizedDataStructure: {
+    [key in string | number]: Subtype
+}): Subtype[] => {
     return Object.values(normalizedDataStructure)
 }

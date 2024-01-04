@@ -2056,6 +2056,14 @@ describe('actions', () => {
                 1: {
                     id: 1,
                     value: 'hello',
+                    hasError: true,
+                },
+                2: {
+                    id: 2,
+                    value: '',
+                },
+                3: {
+                    id: 3,
                 },
             }
 
@@ -2086,7 +2094,7 @@ describe('actions', () => {
                         custom_fields: unknown
                     }
                 ).custom_fields
-            ).toEqual([customFields[1]])
+            ).toEqual([{id: 1, value: 'hello'}])
         })
 
         it('should log an activity event when submitting a ticket', async () => {
