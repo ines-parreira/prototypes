@@ -1,6 +1,7 @@
 import React, {SyntheticEvent, useCallback} from 'react'
 import {Call} from '@twilio/voice-sdk'
 import {useHistory, useLocation} from 'react-router-dom'
+import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import {declineCall} from 'hooks/integrations/phone/api'
@@ -13,9 +14,13 @@ import css from './IncomingPhoneCall.less'
 
 type Props = {
     call: Call
+    className?: string
 }
 
-export default function IncomingPhoneCall({call}: Props): JSX.Element {
+export default function IncomingPhoneCall({
+    call,
+    className,
+}: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
     const {ticketId} = useConnectionParameters(call)
@@ -39,7 +44,7 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
     return (
         <div
             data-testid="incoming-phone-call"
-            className={css.container}
+            className={classNames(css.container, className)}
             onClick={openTicket}
         >
             <div className={css.inner}>
