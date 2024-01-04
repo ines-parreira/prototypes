@@ -1,1042 +1,232 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Event component should display correctly a failed event for a Recharge Charge action 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon danger"
-        title="Fail"
-      >
-        <i
-          className="material-icons"
-        >
-          close
-        </i>
-      </div>
-      <span
-        className="actionName"
-      >
-        Skip charge
-         
-        <a
-          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/orders"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          8
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Recharge
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
-  </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
-    >
-      <div
-        key="error"
-      >
-        <b
-          className="text-danger"
-        >
-          Error:
-        </b>
-         
-        the error is real
-      </div>
-      <div
-        key="payload"
-      >
-        <div>
-          <div
-            key="subscription_id"
-          >
-            <b>
-              Subscription id
-            </b>
-            :
-             
-            6
-          </div>
-          <div
-            key="charge_id"
-          >
-            <b>
-              Charge id
-            </b>
-            :
-             
-            8
-          </div>
-        </div>
-      </div>
-    </CardBody>
-  </Card>
-</div>
-`;
-
-exports[`Event component should display correctly a failed event for a Recharge Subscription action 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon danger"
-        title="Fail"
-      >
-        <i
-          className="material-icons"
-        >
-          close
-        </i>
-      </div>
-      <span
-        className="actionName"
-      >
-        Cancel subscription
-         
-        <a
-          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          6
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Recharge
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
-  </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
-    >
-      <div
-        key="error"
-      >
-        <b
-          className="text-danger"
-        >
-          Error:
-        </b>
-         
-        the error is real
-      </div>
-      <div
-        key="payload"
-      >
-        <div>
-          <div
-            key="subscription_id"
-          >
-            <b>
-              Subscription id
-            </b>
-            :
-             
-            6
-          </div>
-        </div>
-      </div>
-    </CardBody>
-  </Card>
-</div>
-`;
-
-exports[`Event component should display correctly a failed event for a Shopify Order action 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon danger"
-        title="Fail"
-      >
-        <i
-          className="material-icons"
-        >
-          close
-        </i>
-      </div>
-      <span
-        className="actionName"
-      >
-        Full refund order
-         
-        <a
-          href="https://my-store.myshopify.com/admin/orders/3"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          #1234
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Shopify
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
-  </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
-    >
-      <div
-        key="error"
-      >
-        <b
-          className="text-danger"
-        >
-          Error:
-        </b>
-         
-        the error is real
-      </div>
-      <div
-        key="payload"
-      >
-        <div>
-          <div
-            key="order_id"
-          >
-            <b>
-              Order id
-            </b>
-            :
-             
-            3
-          </div>
-        </div>
-      </div>
-    </CardBody>
-  </Card>
-</div>
-`;
-
-exports[`Event component should display correctly a successful event for a Recharge Charge action 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon success"
-        title="Success"
-      >
-        <i
-          className="material-icons"
-        >
-          check
-        </i>
-      </div>
-      <span
-        className="actionName"
-      >
-        Skip charge
-         
-        <a
-          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/orders"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          8
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Recharge
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
-  </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
-    >
-      <div
-        key="payload"
-      >
-        <div>
-          <div
-            key="subscription_id"
-          >
-            <b>
-              Subscription id
-            </b>
-            :
-             
-            6
-          </div>
-          <div
-            key="charge_id"
-          >
-            <b>
-              Charge id
-            </b>
-            :
-             
-            8
-          </div>
-        </div>
-      </div>
-    </CardBody>
-  </Card>
-</div>
-`;
-
 exports[`Event component should display correctly a successful event for a Recharge Subscription action 1`] = `
-<div
-  className="component"
->
+<div>
   <div
-    className="event"
+    class="component"
   >
     <div
-      className="content"
+      class="event"
     >
       <div
-        className="icon success"
-        title="Success"
+        class="content"
       >
-        <i
-          className="material-icons"
+        <div
+          class="icon success"
+          title="Success"
         >
-          check
-        </i>
-      </div>
-      <span
-        className="actionName"
-      >
-        Cancel subscription
-         
-        <a
-          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          6
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Recharge
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
-  </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
-    >
-      <div
-        key="payload"
-      >
-        <div>
-          <div
-            key="subscription_id"
+          <i
+            class="material-icons"
           >
-            <b>
-              Subscription id
-            </b>
-            :
-             
+            check
+          </i>
+        </div>
+        <span
+          class="actionName"
+        >
+          Cancel subscription
+           
+          <a
+            href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             6
-          </div>
+          </a>
+        </span>
+        <span
+          class="equalFiller"
+        >
+          on
+        </span>
+        <span
+          class="actionName"
+        >
+          foo
+        </span>
+        <span
+          class="equalFiller"
+        >
+          on
+        </span>
+        <span
+          class="actionName"
+        >
+          Recharge
+           
+          (
+          my-store
+          )
+        </span>
+        <span
+          class="filler"
+        >
+          by
+        </span>
+        <div
+          class="AgentLabel"
+        >
+          <span
+            class="material-icons md-2"
+            data-testid="accountCircle"
+          >
+            account_circle
+          </span>
+          <span
+            class="name"
+          >
+            Acme Support
+          </span>
         </div>
-      </div>
-    </CardBody>
-  </Card>
-</div>
-`;
-
-exports[`Event component should display correctly a successful event for a Shopify Order action 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon success"
-        title="Success"
-      >
-        <i
-          className="material-icons"
+        <button
+          aria-disabled="false"
+          class="wrapper wrapper ghost ghost secondary medium"
+          title="More details"
+          type="button"
         >
-          check
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            expand_more
+          </i>
+        </button>
       </div>
-      <span
-        className="actionName"
-      >
-        Full refund order
-         
-        <a
-          href="https://my-store.myshopify.com/admin/orders/3"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          #1234
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Shopify
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
+      <div>
+        MockedDatetimeLabel
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
-  </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
+    <div
+      class="details d-none card"
     >
       <div
-        key="payload"
+        class="card-body"
       >
         <div>
-          <div
-            key="order_id"
-          >
-            <b>
-              Order id
-            </b>
-            :
-             
-            3
+          <div>
+            <div>
+              <b>
+                Subscription id
+              </b>
+              :
+               
+              6
+            </div>
           </div>
         </div>
       </div>
-    </CardBody>
-  </Card>
-</div>
-`;
-
-exports[`Event component should display correctly a successful event for a Shopify Order action with custom payload 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon success"
-        title="Success"
-      >
-        <i
-          className="material-icons"
-        >
-          check
-        </i>
-      </div>
-      <span
-        className="actionName"
-      >
-        Cancel order
-         
-        <a
-          href="https://my-store.myshopify.com/admin/orders/3"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          #1234
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Shopify
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
   </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
-    >
-      <div
-        key="payload"
-      >
-        <div>
-          <div
-            key="order_id"
-          >
-            <b>
-              Order id
-            </b>
-            :
-             
-            3
-          </div>
-          <div
-            key="payload"
-          >
-            <b>
-              Payload
-            </b>
-            :
-             
-            <JSONPretty
-              className="d-inline-flex"
-              data={
-                {
-                  "foo": "bar",
-                }
-              }
-              json=""
-              silent={true}
-              space={2}
-              themeClassName="__json-pretty__"
-            />
-          </div>
-        </div>
-      </div>
-    </CardBody>
-  </Card>
 </div>
 `;
 
 exports[`Event component should display the correct label for an action 1`] = `
-<div
-  className="component"
->
+<div>
   <div
-    className="event"
+    class="component"
   >
     <div
-      className="content"
+      class="event"
     >
       <div
-        className="icon success"
-        title="Success"
+        class="content"
       >
-        <i
-          className="material-icons"
+        <div
+          class="icon success"
+          title="Success"
         >
-          check
-        </i>
+          <i
+            class="material-icons"
+          >
+            check
+          </i>
+        </div>
+        <span
+          class="actionName"
+        >
+          You should see me in snaps
+           
+        </span>
+        <span
+          class="equalFiller"
+        >
+          on
+        </span>
+        <span
+          class="actionName"
+        >
+          foo
+        </span>
+        <span
+          class="equalFiller"
+        >
+          on
+        </span>
+        <span
+          class="actionName"
+        >
+          Recharge
+           
+          (
+          my-store
+          )
+        </span>
+        <span
+          class="filler"
+        >
+          by
+        </span>
+        <div
+          class="AgentLabel"
+        >
+          <span
+            class="material-icons md-2"
+            data-testid="accountCircle"
+          >
+            account_circle
+          </span>
+          <span
+            class="name"
+          >
+            Acme Support
+          </span>
+        </div>
+        <button
+          aria-disabled="false"
+          class="wrapper wrapper ghost ghost secondary medium"
+          title="More details"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            expand_more
+          </i>
+        </button>
       </div>
-      <span
-        className="actionName"
-      >
-        You should see me in snaps
-         
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Recharge
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="Acme Support"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
+      <div>
+        MockedDatetimeLabel
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
-  </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
+    <div
+      class="details d-none card"
     >
       <div
-        key="payload"
+        class="card-body"
       >
         <div>
-          <div
-            key="subscription_id"
-          >
-            <b>
-              Subscription id
-            </b>
-            :
-             
-            6
+          <div>
+            <div>
+              <b>
+                Subscription id
+              </b>
+              :
+               
+              6
+            </div>
           </div>
         </div>
       </div>
-    </CardBody>
-  </Card>
-</div>
-`;
-
-exports[`Event component should fallback to email when user has no name 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon danger"
-        title="Fail"
-      >
-        <i
-          className="material-icons"
-        >
-          close
-        </i>
-      </div>
-      <span
-        className="actionName"
-      >
-        Full refund order
-         
-        <a
-          href="https://my-store.myshopify.com/admin/orders/3"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          #1234
-        </a>
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        foo
-      </span>
-      <span
-        className="equalFiller"
-      >
-        on
-      </span>
-      <span
-        className="actionName"
-      >
-        Shopify
-         
-        (
-        my-store
-        )
-      </span>
-      <span
-        className="filler"
-      >
-        by
-      </span>
-      <AgentLabel
-        name="support@acme.gorgias.io"
-      />
-      <ForwardRef(IconButton)
-        fillStyle="ghost"
-        intent="secondary"
-        onClick={[Function]}
-        title="More details"
-      >
-        expand_more
-      </ForwardRef(IconButton)>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2017-12-07T01:01:34.502206+00:00"
-    />
   </div>
-  <Card
-    className="details d-none"
-    tag="div"
-  >
-    <CardBody
-      tag="div"
-    >
-      <div
-        key="error"
-      >
-        <b
-          className="text-danger"
-        >
-          Error:
-        </b>
-         
-        the error is real
-      </div>
-      <div
-        key="payload"
-      >
-        <div>
-          <div
-            key="order_id"
-          >
-            <b>
-              Order id
-            </b>
-            :
-             
-            3
-          </div>
-        </div>
-      </div>
-    </CardBody>
-  </Card>
 </div>
 `;

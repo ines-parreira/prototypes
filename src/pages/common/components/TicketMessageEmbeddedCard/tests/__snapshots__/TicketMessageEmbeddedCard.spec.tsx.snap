@@ -1,55 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketMessageEmbeddedCard/> render should render the comment card with different text positions 1`] = `
-<Card
-  className="genericCard"
-  tag="div"
+exports[`<TicketMessageEmbeddedCard/> should render the comment card with different text positions 1`] = `
+<div
+  class="genericCard card"
 >
-  <CardBody
-    tag="div"
+  <div
+    class="card-body"
   >
-    <Row
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="row"
     >
-      <Col
-        className="verticalCenter"
-        md="7"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="verticalCenter col-md-7"
       >
         <div
-          className="mr-2"
-        >
-          <Avatar
-            email="some_email@foo.com"
-            name="some_sender_name"
-            shape="square"
-            size={36}
-            style={{}}
-          />
-        </div>
-        <div
-          className="verticalCenter"
+          class="mr-2"
         >
           <div
-            className="customerNameBody"
+            class="component square"
+            style="width: 36px; height: 36px;"
+          >
+            <div
+              class="initials"
+              style="width: 36px; height: 36px; font-size: 15px;"
+            >
+              <span
+                style="line-height: 38px;"
+              >
+                s
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="verticalCenter"
+        >
+          <div
+            class="customerNameBody"
           >
             some_sender_firstname
              
@@ -57,180 +44,88 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           </div>
           <div>
             <span
-              className="source"
+              class="source"
             >
-              <SourceIcon
-                className="uncolored"
-                type="facebook-comment"
+              <i
+                class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
               />
             </span>
           </div>
           <div>
-            <Meta
-              integrationId={1}
-              messageId="123"
-              source={
-                {
-                  "from": {
-                    "address": "some_from_address",
-                    "name": "some_from_name",
-                  },
-                  "to": [
-                    {
-                      "address": "some_from_address",
-                      "name": "some_from_name",
-                    },
-                  ],
-                  "type": "facebook-comment",
-                }
-              }
-              via=""
-            />
+            <div>
+              MockedTicketMessageMeta
+            </div>
           </div>
         </div>
-      </Col>
-      <Col
-        className="text-right justify-content-center align-self-center dateTimeText"
-        md="5"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      </div>
+      <div
+        class="text-right justify-content-center align-self-center dateTimeText col-md-5"
       >
-        <Connect(DatetimeLabelContainer)
-          dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
-        />
-      </Col>
-    </Row>
-    <Row
-      className="mt-2"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+        <div>
+          MockedDatetimeLabel
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-2 row"
     >
-      <Col
-        md="12"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="col-md-12"
       >
         <span
-          className="textBlock"
+          class="textBlock"
         >
           some comment
         </span>
-      </Col>
-    </Row>
-  </CardBody>
-</Card>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
-exports[`<TicketMessageEmbeddedCard/> render should render the comment card with different text positions 2`] = `
-<Card
-  className="genericCard"
-  tag="div"
+exports[`<TicketMessageEmbeddedCard/> should render the comment card with different text positions 2`] = `
+<div
+  class="genericCard card"
 >
-  <CardBody
-    tag="div"
+  <div
+    class="card-body"
   >
-    <Row
-      className="m-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="m-0 row"
     >
-      <Col
-        className="avatarContainer"
-        md="1"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="avatarContainer col-md-1"
       >
-        <Avatar
-          email="some_email@foo.com"
-          name="some_sender_name"
-          shape="square"
-          size={36}
-          style={{}}
-        />
-      </Col>
-      <Col
-        md="11"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="component square"
+          style="width: 36px; height: 36px;"
         >
-          <Col
-            md="7"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
+          >
+            <span
+              style="line-height: 38px;"
+            >
+              s
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-md-11"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-7"
           >
             <div
-              className="verticalCenter"
+              class="verticalCenter"
             >
               <div
-                className="customerNameBody"
+                class="customerNameBody"
               >
                 some_sender_firstname
                  
@@ -238,1063 +133,43 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
               </div>
               <div>
                 <span
-                  className="source"
+                  class="source"
                 >
-                  <SourceIcon
-                    className="uncolored"
-                    type="facebook-comment"
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
                   />
                 </span>
               </div>
               <div>
-                <Meta
-                  integrationId={1}
-                  messageId="123"
-                  source={
-                    {
-                      "from": {
-                        "address": "some_from_address",
-                        "name": "some_from_name",
-                      },
-                      "to": [
-                        {
-                          "address": "some_from_address",
-                          "name": "some_from_name",
-                        },
-                      ],
-                      "type": "facebook-comment",
-                    }
-                  }
-                  via=""
-                />
+                <div>
+                  MockedTicketMessageMeta
+                </div>
               </div>
             </div>
-          </Col>
-          <Col
-            className="text-right justify-content-center align-self-center dateTimeText pr-0"
-            md="5"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          </div>
+          <div
+            class="text-right justify-content-center align-self-center dateTimeText pr-0 col-md-5"
           >
-            <Connect(DatetimeLabelContainer)
-              dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
-            />
-          </Col>
-        </Row>
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+            <div>
+              MockedDatetimeLabel
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
         >
-          <Col
-            className="pr-0 mt-2"
-            md="12"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <div
+            class="pr-0 mt-2 col-md-12"
           >
             <span
-              className="textBlock"
+              class="textBlock"
             >
               some comment
             </span>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  </CardBody>
-</Card>
-`;
-
-exports[`<TicketMessageEmbeddedCard/> render should render the comment card with with or without attachments 1`] = `
-<Card
-  className="genericCard"
-  tag="div"
->
-  <CardBody
-    tag="div"
-  >
-    <Row
-      className="m-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        className="avatarContainer"
-        md="1"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Avatar
-          email="some_email@foo.com"
-          name="some_sender_name"
-          shape="square"
-          size={36}
-          style={{}}
-        />
-      </Col>
-      <Col
-        md="11"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            md="7"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <div
-              className="verticalCenter"
-            >
-              <div
-                className="customerNameBody"
-              >
-                some_sender_firstname
-                 
-                some_sender_lastname
-              </div>
-              <div>
-                <span
-                  className="source"
-                >
-                  <SourceIcon
-                    className="uncolored"
-                    type="facebook-comment"
-                  />
-                </span>
-              </div>
-              <div>
-                <Meta
-                  integrationId={1}
-                  messageId="123"
-                  source={
-                    {
-                      "from": {
-                        "address": "some_from_address",
-                        "name": "some_from_name",
-                      },
-                      "to": [
-                        {
-                          "address": "some_from_address",
-                          "name": "some_from_name",
-                        },
-                      ],
-                      "type": "facebook-comment",
-                    }
-                  }
-                  via=""
-                />
-              </div>
-            </div>
-          </Col>
-          <Col
-            className="text-right justify-content-center align-self-center dateTimeText pr-0"
-            md="5"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Connect(DatetimeLabelContainer)
-              dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
-            />
-          </Col>
-        </Row>
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            className="pr-0 mt-2"
-            md="12"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <span
-              className="textBlock"
-            >
-              some comment
-            </span>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-    <Row
-      className="mt-2"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        md="12"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <TicketAttachments
-          attachments={
-            Immutable.List [
-              Immutable.Map {
-                "content_type": "foo_content",
-                "name": "foo_name",
-                "size": 123,
-                "url": "foo_URL",
-                "type": "foo_type",
-              },
-            ]
-          }
-          removable={false}
-        />
-      </Col>
-    </Row>
-  </CardBody>
-</Card>
-`;
-
-exports[`<TicketMessageEmbeddedCard/> render should render the comment card with with or without attachments 2`] = `
-<Card
-  className="genericCard"
-  tag="div"
->
-  <CardBody
-    tag="div"
-  >
-    <Row
-      className="m-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        className="avatarContainer"
-        md="1"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Avatar
-          email="some_email@foo.com"
-          name="some_sender_name"
-          shape="square"
-          size={36}
-          style={{}}
-        />
-      </Col>
-      <Col
-        md="11"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            md="7"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <div
-              className="verticalCenter"
-            >
-              <div
-                className="customerNameBody"
-              >
-                some_sender_firstname
-                 
-                some_sender_lastname
-              </div>
-              <div>
-                <span
-                  className="source"
-                >
-                  <SourceIcon
-                    className="uncolored"
-                    type="facebook-comment"
-                  />
-                </span>
-              </div>
-              <div>
-                <Meta
-                  integrationId={1}
-                  messageId="123"
-                  source={
-                    {
-                      "from": {
-                        "address": "some_from_address",
-                        "name": "some_from_name",
-                      },
-                      "to": [
-                        {
-                          "address": "some_from_address",
-                          "name": "some_from_name",
-                        },
-                      ],
-                      "type": "facebook-comment",
-                    }
-                  }
-                  via=""
-                />
-              </div>
-            </div>
-          </Col>
-          <Col
-            className="text-right justify-content-center align-self-center dateTimeText pr-0"
-            md="5"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Connect(DatetimeLabelContainer)
-              dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
-            />
-          </Col>
-        </Row>
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            className="pr-0 mt-2"
-            md="12"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <span
-              className="textBlock"
-            >
-              some comment
-            </span>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-    <Row
-      className="mt-2"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        md="12"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <TicketAttachments
-          attachments={Immutable.List []}
-          removable={false}
-        />
-      </Col>
-    </Row>
-  </CardBody>
-</Card>
-`;
-
-exports[`<TicketMessageEmbeddedCard/> render should render the comment card with with or without attachments 3`] = `
-<Card
-  className="genericCard"
-  tag="div"
->
-  <CardBody
-    tag="div"
-  >
-    <Row
-      className="m-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        className="avatarContainer"
-        md="1"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Avatar
-          email="some_email@foo.com"
-          name="some_sender_name"
-          shape="square"
-          size={36}
-          style={{}}
-        />
-      </Col>
-      <Col
-        md="11"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            md="7"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <div
-              className="verticalCenter"
-            >
-              <div
-                className="customerNameBody"
-              >
-                some_sender_firstname
-                 
-                some_sender_lastname
-              </div>
-              <div>
-                <span
-                  className="source"
-                >
-                  <SourceIcon
-                    className="uncolored"
-                    type="facebook-comment"
-                  />
-                </span>
-              </div>
-              <div>
-                <Meta
-                  integrationId={1}
-                  messageId="123"
-                  source={
-                    {
-                      "from": {
-                        "address": "some_from_address",
-                        "name": "some_from_name",
-                      },
-                      "to": [
-                        {
-                          "address": "some_from_address",
-                          "name": "some_from_name",
-                        },
-                      ],
-                      "type": "facebook-comment",
-                    }
-                  }
-                  via=""
-                />
-              </div>
-            </div>
-          </Col>
-          <Col
-            className="text-right justify-content-center align-self-center dateTimeText pr-0"
-            md="5"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Connect(DatetimeLabelContainer)
-              dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
-            />
-          </Col>
-        </Row>
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            className="pr-0 mt-2"
-            md="12"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <span
-              className="textBlock"
-            >
-              some comment
-            </span>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  </CardBody>
-</Card>
-`;
-
-exports[`<TicketMessageEmbeddedCard/> render should render the comment card with with or without messageCreatedDatetime 1`] = `
-<Card
-  className="genericCard"
-  tag="div"
->
-  <CardBody
-    tag="div"
-  >
-    <Row
-      className="m-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        className="avatarContainer"
-        md="1"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Avatar
-          email="some_email@foo.com"
-          name="some_sender_name"
-          shape="square"
-          size={36}
-          style={{}}
-        />
-      </Col>
-      <Col
-        md="11"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            md="7"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <div
-              className="verticalCenter"
-            >
-              <div
-                className="customerNameBody"
-              >
-                some_sender_firstname
-                 
-                some_sender_lastname
-              </div>
-              <div>
-                <span
-                  className="source"
-                >
-                  <SourceIcon
-                    className="uncolored"
-                    type="facebook-comment"
-                  />
-                </span>
-              </div>
-              <div>
-                <Meta
-                  integrationId={1}
-                  messageId="123"
-                  source={
-                    {
-                      "from": {
-                        "address": "some_from_address",
-                        "name": "some_from_name",
-                      },
-                      "to": [
-                        {
-                          "address": "some_from_address",
-                          "name": "some_from_name",
-                        },
-                      ],
-                      "type": "facebook-comment",
-                    }
-                  }
-                  via=""
-                />
-              </div>
-            </div>
-          </Col>
-          <Col
-            className="text-right justify-content-center align-self-center dateTimeText pr-0"
-            md="5"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Connect(DatetimeLabelContainer)
-              dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
-            />
-          </Col>
-        </Row>
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            className="pr-0 mt-2"
-            md="12"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <span
-              className="textBlock"
-            >
-              some comment
-            </span>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  </CardBody>
-</Card>
-`;
-
-exports[`<TicketMessageEmbeddedCard/> render should render the comment card with with or without messageCreatedDatetime 2`] = `
-<Card
-  className="genericCard"
-  tag="div"
->
-  <CardBody
-    tag="div"
-  >
-    <Row
-      className="m-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        className="avatarContainer"
-        md="1"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Avatar
-          email="some_email@foo.com"
-          name="some_sender_name"
-          shape="square"
-          size={36}
-          style={{}}
-        />
-      </Col>
-      <Col
-        md="11"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            md="12"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <div
-              className="verticalCenter"
-            >
-              <div
-                className="customerNameBody"
-              >
-                some_sender_firstname
-                 
-                some_sender_lastname
-              </div>
-              <div>
-                <span
-                  className="source"
-                >
-                  <SourceIcon
-                    className="uncolored"
-                    type="facebook-comment"
-                  />
-                </span>
-              </div>
-              <div>
-                <Meta
-                  integrationId={1}
-                  messageId="123"
-                  source={
-                    {
-                      "from": {
-                        "address": "some_from_address",
-                        "name": "some_from_name",
-                      },
-                      "to": [
-                        {
-                          "address": "some_from_address",
-                          "name": "some_from_name",
-                        },
-                      ],
-                      "type": "facebook-comment",
-                    }
-                  }
-                  via=""
-                />
-              </div>
-            </div>
-          </Col>
-        </Row>
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <Col
-            className="pr-0 mt-2"
-            md="12"
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <span
-              className="textBlock"
-            >
-              some comment
-            </span>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  </CardBody>
-</Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

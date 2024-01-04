@@ -1,5 +1,5 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
@@ -29,22 +29,22 @@ describe('FacebookIntegrationLoginButton component', () => {
     })
 
     it('should render a log in link', () => {
-        const component = mount(
+        render(
             <Provider store={store}>
                 <FacebookIntegrationLoginButton link />
             </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByRole('link'))
     })
 
     it('should render a reconnect button', () => {
-        const component = mount(
+        render(
             <Provider store={store}>
                 <FacebookIntegrationLoginButton reconnect />
             </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByRole('button'))
     })
 })

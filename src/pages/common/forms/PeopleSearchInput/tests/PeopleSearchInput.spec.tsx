@@ -1,5 +1,5 @@
 import React from 'react'
-import {mount, render} from 'enzyme'
+import {fireEvent, render, screen} from '@testing-library/react'
 
 import PeopleSearchInput from '../PeopleSearchInput'
 
@@ -12,21 +12,21 @@ describe('<PeopleSearchInput/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = render(
+            const {container} = render(
                 <PeopleSearchInput value="foo" onChange={onChange} />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     describe('onChange()', () => {
         it('should call prop `onChange` with new value', () => {
-            const component = mount(
-                <PeopleSearchInput value="foo" onChange={onChange} />
-            )
+            render(<PeopleSearchInput value="foo" onChange={onChange} />)
 
-            component.find('input').simulate('change', {target: {value: 'bar'}})
+            fireEvent.change(screen.getByRole('textbox'), {
+                target: {value: 'bar'},
+            })
 
             expect(onChange).toHaveBeenCalledWith('bar')
         })

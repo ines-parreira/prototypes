@@ -1,12 +1,32 @@
-import {shallow} from 'enzyme'
-
 import React from 'react'
+import {render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
+import {TicketMessageSourceType} from 'business/types/ticket'
 
 import TicketMessageEmbeddedCard from '../TicketMessageEmbeddedCard'
 
-const defaultProps: any = {
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/Meta.tsx',
+    () => () => <div>MockedTicketMessageMeta</div>
+)
+
+jest.mock(
+    'pages/tickets/detail/components/ReplyArea/TicketAttachments.tsx',
+    () => () => <div>MockedTicketAttachments</div>
+)
+
+jest.mock('pages/common/utils/labels.tsx', () => {
+    const labels: Record<string, unknown> = jest.requireActual(
+        'pages/common/utils/labels.tsx'
+    )
+    return {
+        ...labels,
+        DatetimeLabel: () => <div>MockedDatetimeLabel</div>,
+    }
+})
+
+const defaultProps = {
     integrationId: 1,
     messageId: '123',
     messageText: 'some comment',
@@ -34,45 +54,56 @@ const defaultProps: any = {
 }
 
 describe('<TicketMessageEmbeddedCard/>', () => {
-    describe('render', () => {
-        it.each([true, false])(
-            'should render the comment card with different text positions',
-            (textBelowAvatar) => {
-                const localDefaultProps = {
-                    ...defaultProps,
-                    textBelowAvatar: textBelowAvatar,
-                }
-                const component = shallow(
-                    <TicketMessageEmbeddedCard {...localDefaultProps} />
-                ).dive()
-
-                expect(component).toMatchSnapshot()
+    it.each([true, false])(
+        'should render the comment card with different text positions',
+        (textBelowAvatar) => {
+            const localDefaultProps = {
+                ...defaultProps,
+                textBelowAvatar: textBelowAvatar,
             }
-        )
+            const {container} = render(
+                <TicketMessageEmbeddedCard {...localDefaultProps} />
+            )
 
-        it.each([true, false])(
-            'should render the comment card with with or without messageCreatedDatetime',
-            (hasMessageCreatedDatetime) => {
-                const localDefaultProps = {
-                    ...defaultProps,
-                }
+            expect(container.firstChild).toMatchSnapshot()
+        }
+    )
 
-                if (!hasMessageCreatedDatetime) {
-                    delete localDefaultProps.messageCreatedDatetime // eslint-disable-line
-                }
-
-                const component = shallow(
-                    <TicketMessageEmbeddedCard
-                        {...localDefaultProps}
-                        textBelowAvatar={false}
-                    />
-                ).dive()
-
-                expect(component).toMatchSnapshot()
+    it.each([true, false])(
+        'should render the comment card with or without messageCreatedDatetime',
+        (hasMessageCreatedDatetime) => {
+            const localDefaultProps = {
+                ...defaultProps,
+                messageCreatedDatetime: hasMessageCreatedDatetime
+                    ? defaultProps.messageCreatedDatetime
+                    : undefined,
             }
-        )
 
-        it.each([
+            if (!hasMessageCreatedDatetime) {
+                localDefaultProps.messageCreatedDatetime = undefined
+            }
+
+            render(
+                <TicketMessageEmbeddedCard
+                    {...localDefaultProps}
+                    textBelowAvatar={false}
+                />
+            )
+
+            const messageCreatedDatetimeElem = screen.queryAllByText(
+                'MockedDatetimeLabel'
+            )
+            if (hasMessageCreatedDatetime) {
+                return expect(
+                    messageCreatedDatetimeElem.length
+                ).toBeGreaterThanOrEqual(1)
+            }
+            expect(messageCreatedDatetimeElem.length).toBe(0)
+        }
+    )
+
+    it.each([
+        [
             [
                 {
                     content_type: 'foo_content',
@@ -82,24 +113,31 @@ describe('<TicketMessageEmbeddedCard/>', () => {
                     type: 'foo_type',
                 },
             ],
-            [],
-            undefined,
-        ])(
-            'should render the comment card with with or without attachments',
-            (attachments) => {
-                const localDefaultProps = {
-                    ...defaultProps,
-                    attachments: attachments,
-                }
-                const component = shallow(
-                    <TicketMessageEmbeddedCard
-                        {...localDefaultProps}
-                        textBelowAvatar={false}
-                    />
-                ).dive()
-
-                expect(component).toMatchSnapshot()
+            true,
+        ],
+        [[], true],
+        [undefined, false],
+    ])(
+        'should render the comment card with or without attachments',
+        (attachments, result) => {
+            const localDefaultProps = {
+                ...defaultProps,
+                attachments: fromJS(attachments),
             }
-        )
-    })
+
+            render(
+                <TicketMessageEmbeddedCard
+                    {...localDefaultProps}
+                    textBelowAvatar={false}
+                />
+            )
+            const attachmentsElem = screen.queryByText(
+                'MockedTicketAttachments'
+            )
+            if (result) {
+                return expect(attachmentsElem).toBeInTheDocument()
+            }
+            expect(attachmentsElem).toBeNull()
+        }
+    )
 })

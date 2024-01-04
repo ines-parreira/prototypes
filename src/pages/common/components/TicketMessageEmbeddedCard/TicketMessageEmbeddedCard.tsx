@@ -11,7 +11,7 @@ import Avatar from '../../components/Avatar/Avatar'
 
 import {Actor, Meta, Source} from '../../../../models/ticket/types'
 
-import {default as TicketMessageMeta} from '../../../tickets/detail/components/TicketMessages/Meta'
+import TicketMessageMeta from '../../../tickets/detail/components/TicketMessages/Meta'
 import {DatetimeLabel} from '../../utils/labels'
 
 import GenericCard from '../GenericCard/GenericCard'

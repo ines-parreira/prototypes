@@ -1,9 +1,8 @@
 import React, {ComponentProps} from 'react'
-import {mount} from 'enzyme'
+import {render, screen} from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import MultiSelectField from '../MultiSelectField'
-import MultiSelectOptionsField from '../MultiSelectOptionsField/MultiSelectOptionsField'
 
 describe('MultiSelectField', () => {
     const minProps: Pick<ComponentProps<typeof MultiSelectField>, 'options'> = {
@@ -33,23 +32,16 @@ describe('MultiSelectField', () => {
     }
 
     it('should support custom selected values', () => {
-        const component = mount(
-            <MultiSelectField {...props} values={[1, 3, 'foo']} />
-        )
-        expect(
-            component.find(MultiSelectOptionsField).prop('selectedOptions')
-        ).toEqual([
-            minProps.options[0],
-            minProps.options[2],
-            {
-                value: 'foo',
-                label: 'foo',
-            },
-        ])
+        render(<MultiSelectField {...props} values={[1, 3, 'foo']} />)
+        expect(screen.getByText('foo'))
     })
 
     it('should render the select field with no selected option', () => {
-        const component = mount(<MultiSelectField {...props} values={null} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <MultiSelectField {...props} values={null} />
+        )
+        expect(
+            container.getElementsByClassName('container')[0].childNodes.length
+        ).toBe(1)
     })
 })

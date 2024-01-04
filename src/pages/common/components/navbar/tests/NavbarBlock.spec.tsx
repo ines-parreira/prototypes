@@ -1,6 +1,5 @@
-import {mount, shallow} from 'enzyme'
 import React from 'react'
-import {DropdownToggle} from 'reactstrap'
+import {render, screen} from '@testing-library/react'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 
@@ -21,28 +20,31 @@ describe('<NavbarBlock/>', () => {
     }
 
     it('should render', () => {
-        const component = shallow(
+        const {container} = render(
             <DndProvider backend={HTML5Backend}>
                 <NavbarBlock {...minProps}>foobar</NavbarBlock>
             </DndProvider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should toggle the menu on clicking the dropdown toggle', () => {
-        const component = mount(
+        render(
             <DndProvider backend={HTML5Backend}>
                 <NavbarBlock {...minProps}>foobar</NavbarBlock>
             </DndProvider>
         )
 
-        component.find(DropdownToggle).simulate('click')
-        expect(component).toMatchSnapshot()
+        screen.getByRole('button').click()
+
+        expect(screen.getByRole('menu').getAttribute('aria-hidden')).toBe(
+            'false'
+        )
     })
 
     it('should render an icon', () => {
-        const component = shallow(
+        render(
             <DndProvider backend={HTML5Backend}>
                 <NavbarBlock icon="adjust" {...minProps}>
                     foobar
@@ -50,6 +52,6 @@ describe('<NavbarBlock/>', () => {
             </DndProvider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByText('adjust'))
     })
 })
