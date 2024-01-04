@@ -126,8 +126,9 @@ const ContactFormSettingsView = (): JSX.Element => {
     return (
         <div className="full-width">
             <PageHeader
+                className={css.pageHeader}
                 title={
-                    <Breadcrumb>
+                    <Breadcrumb className={css.breadcrumbContainer}>
                         <BreadcrumbItem>
                             <Link
                                 aria-label="base-path"
@@ -136,7 +137,10 @@ const ContactFormSettingsView = (): JSX.Element => {
                                 {CONTACT_FORM_PAGE_TITLE}
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>
+                        <BreadcrumbItem
+                            className={css.breadcrumbEllipsis}
+                            active
+                        >
                             {contactForm.name}
                         </BreadcrumbItem>
                     </Breadcrumb>

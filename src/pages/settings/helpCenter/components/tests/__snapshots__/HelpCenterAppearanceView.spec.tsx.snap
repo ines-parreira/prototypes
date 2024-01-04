@@ -7,11 +7,11 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
     style="position: relative;"
   >
     <div
-      class="page-header pageHeader"
+      class="page-header pageHeader pageHeader"
     >
       <nav
         aria-label="breadcrumb"
-        class=""
+        class="container"
       >
         <ol
           class="breadcrumb"
@@ -26,7 +26,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             </a>
           </li>
           <li
-            class="breadcrumb-item"
+            class="ellipsis breadcrumb-item"
           >
             ACME Help Center
           </li>
