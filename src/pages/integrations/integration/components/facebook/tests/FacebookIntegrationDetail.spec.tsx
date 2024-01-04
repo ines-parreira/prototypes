@@ -1,13 +1,12 @@
-import React, {ComponentProps, SyntheticEvent} from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
-import {shallow, mount} from 'enzyme'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {merge} from 'lodash'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {FACEBOOK_LANGUAGE_DEFAULT} from 'config/integrations/facebook'
 import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
 import {Language} from 'constants/languages'
 import {
@@ -25,7 +24,6 @@ import {
     ADVERTISE_ROLE,
     ANALYZE_ROLE,
     BUSINESS_MANAGEMENT,
-    FACEBOOK_USER_TYPES,
     INSTAGRAM_BASIC,
     INSTAGRAM_MANAGE_COMMENTS,
     INSTAGRAM_MANAGE_MESSAGES,
@@ -41,11 +39,6 @@ import {
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
 } from '../utils'
 
-type FacebookIntegrationDetailState = {
-    settings: FacebookIntegrationSettings
-    language: string
-    askDisableConfirmation: boolean
-}
 const minProps: ComponentProps<typeof FacebookIntegrationDetail> = {
     integration: fromJS({}),
     loading: fromJS({
@@ -118,6 +111,18 @@ const baseIntegration: FacebookIntegration = {
     meta: baseIntegrationMeta,
 }
 
+const checkBoxNameEquivalents = {
+    messenger_enabled: 'Messenger',
+    posts_enabled: 'Posts, comments and ad comments',
+    mentions_enabled: 'Mentions',
+    instagram_comments_enabled: 'Comments',
+    instagram_mentions_enabled: 'Mentions',
+    instagram_ads_enabled: 'Ads',
+    instagram_direct_message_enabled_alt: 'Direct messages',
+    instagram_direct_message_enabled: 'Direct messages icon',
+    recommendations_enabled: 'Recommendations',
+}
+
 describe('<FacebookIntegrationDetail/>', () => {
     let store: MockStoreEnhanced
 
@@ -130,496 +135,176 @@ describe('<FacebookIntegrationDetail/>', () => {
         Date.now = jest.fn(() => 42)
     })
 
-    describe('componentWillMount()', () => {
-        it('should not set anything in the state because no integration was passed', () => {
-            const component = shallow(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail {...minProps} />
-                </Provider>
-            )
-            expect(
-                component
-                    .find(FacebookIntegrationDetail)
-                    .dive()
-                    .state('settings')
-            ).toEqual(defaultFacebookIntegrationSettings)
-            expect(
-                component
-                    .find(FacebookIntegrationDetail)
-                    .dive()
-                    .state('language')
-            ).toEqual(FACEBOOK_LANGUAGE_DEFAULT)
-        })
-
-        it('should only set settings in the state because there is no language in the integration', () => {
-            const newSettings: Partial<FacebookIntegrationSettings> = merge(
-                defaultFacebookIntegrationSettings,
-                {
-                    posts_enabled: false,
-                    mentions_enabled: false,
+    it('should update the integration on form submit', () => {
+        const integration = merge(baseIntegration, {
+            meta: {
+                oauth: {
+                    scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                },
+                instagram: {
+                    id: '178941234975',
+                },
+                language: Language.Spanish,
+                name: 'My facebook page',
+                settings: {
+                    posts_enabled: true,
+                    mentions_enabled: true,
                     messenger_enabled: true,
-                    import_history_enabled: false,
-                    instagram_comments_enabled: true,
-                    instagram_ads_enabled: false,
-                    instagram_direct_message_enabled: false,
-                    instagram_mentions_enabled: undefined,
-                }
-            )
-
-            const component = shallow(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={merge(baseIntegration, {
-                            meta: {
-                                settings: newSettings,
-                            },
-                        })}
-                    />
-                </Provider>
-            )
-
-            expect(
-                component
-                    .find(FacebookIntegrationDetail)
-                    .dive()
-                    .state('settings')
-            ).toEqual(newSettings)
-            expect(
-                component
-                    .find(FacebookIntegrationDetail)
-                    .dive()
-                    .state('language')
-            ).toEqual(FACEBOOK_LANGUAGE_DEFAULT)
-        })
-
-        it('should only set language in the state because there is no settings in the integration', () => {
-            const component = shallow(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={merge(baseIntegration, {
-                            meta: {
-                                language: Language.Spanish,
-                            },
-                        })}
-                    />
-                </Provider>
-            )
-
-            expect(
-                component
-                    .find(FacebookIntegrationDetail)
-                    .dive()
-                    .state('language')
-            ).toEqual(Language.Spanish)
-        })
-
-        it('should set both language and settings in the integration', () => {
-            const newSettings: Partial<FacebookIntegrationSettings> = merge(
-                defaultFacebookIntegrationSettings,
-                {
-                    posts_enabled: false,
-                    mentions_enabled: false,
-                    messenger_enabled: true,
-                    import_history_enabled: false,
-                    instagram_comments_enabled: true,
-                    instagram_ads_enabled: false,
-                    instagram_direct_message_enabled: false,
-                    instagram_mentions_enabled: undefined,
-                    recommendations_enabled: undefined,
-                }
-            )
-
-            const component = shallow(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={merge(baseIntegration, {
-                            meta: {
-                                language: Language.Spanish,
-                                settings: newSettings,
-                            },
-                        })}
-                    />
-                </Provider>
-            )
-
-            expect(
-                component
-                    .find(FacebookIntegrationDetail)
-                    .dive()
-                    .state('settings')
-            ).toEqual(newSettings)
-            expect(
-                component
-                    .find(FacebookIntegrationDetail)
-                    .dive()
-                    .state('language')
-            ).toEqual(Language.Spanish)
-        })
-    })
-
-    describe('componentWillReceiveProps()', () => {
-        it('should not update the state because the new integration passed is empty', () => {
-            const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
-                    },
-                    instagram: {
-                        id: '178941234975',
-                    },
-                    language: Language.Spanish,
-                    name: 'My facebook page',
-                    settings: {
-                        posts_enabled: true,
-                        mentions_enabled: true,
-                        messenger_enabled: true,
-                        import_history_enabled: true,
-                        instagram_comments_enabled: false,
-                    },
+                    import_history_enabled: true,
+                    instagram_comments_enabled: false,
                 },
-            })
-
-            const component = shallow<FacebookIntegrationDetail>(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>
-            )
-            const prevState = component
-                .find(FacebookIntegrationDetail)
-                .dive()
-                .state()
-
-            const instance = component
-                .find(FacebookIntegrationDetail)
-                .dive()
-                .instance() as FacebookIntegrationDetail
-
-            instance.componentWillReceiveProps({
-                ...minProps,
-                integration: fromJS({}),
-            })
-
-            expect(instance.state).toEqual(prevState)
-        })
-
-        it('should update the state with the settings of the new integration object passed', () => {
-            const oldIntegration: Map<any, any> = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
-                    },
-                    instagram: {
-                        id: '178941234975',
-                    },
-                    language: Language.Spanish,
-                    name: 'My facebook page',
-                    settings: {
-                        import_history_enabled: true,
-                        instagram_ads_enabled: false,
-                        instagram_comments_enabled: false,
-                        instagram_direct_message_enabled: false,
-                        instagram_mentions_enabled: undefined,
-                        messenger_enabled: true,
-                        posts_enabled: true,
-                        mentions_enabled: true,
-                        recommendations_enabled: undefined,
-                    },
-                },
-            })
-
-            const newIntegration = oldIntegration
-                .setIn(
-                    ['meta', 'settings'],
-                    fromJS({
-                        import_history_enabled: false,
-                        instagram_ads_enabled: true,
-                        instagram_comments_enabled: true,
-                        instagram_direct_message_enabled: false,
-                        instagram_mentions_enabled: undefined,
-                        messenger_enabled: true,
-                        posts_enabled: false,
-                        mentions_enabled: false,
-                        recommendations_enabled: undefined,
-                    })
-                )
-                .setIn(['meta', 'language'], Language.Danish)
-
-            const component = shallow<FacebookIntegrationDetail>(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={oldIntegration.toJS()}
-                    />
-                </Provider>
-            )
-
-            const prevState = component
-                .find(FacebookIntegrationDetail)
-                .dive()
-                .state() as FacebookIntegrationDetailState
-
-            expect(prevState.settings).toEqual(
-                (
-                    oldIntegration.getIn(['meta', 'settings']) as Map<any, any>
-                ).toJS()
-            )
-            expect(prevState.language).toEqual(
-                oldIntegration.getIn(['meta', 'language'])
-            )
-
-            const instance = component
-                .find(FacebookIntegrationDetail)
-                .dive()
-                .instance() as FacebookIntegrationDetail
-
-            instance.componentWillReceiveProps({
-                ...minProps,
-                integration: newIntegration.toJS(),
-            })
-
-            const expectedState = (fromJS(prevState) as Map<any, any>)
-                .set('settings', newIntegration.getIn(['meta', 'settings']))
-                .set('language', newIntegration.getIn(['meta', 'language']))
-                .toJS() as FacebookIntegrationDetailState
-
-            expect(instance.state).toEqual(expectedState)
-        })
-    })
-
-    describe('_onSettingChange()', () => {
-        it('should update the `posts_enabled` setting in the state because its checkbox was toggled', () => {
-            const postsEnabled = true
-            const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
-                    },
-                    instagram: {
-                        id: '178941234975',
-                    },
-                    language: Language.Spanish,
-                    name: 'My facebook page',
-                    settings: {
-                        import_history_enabled: true,
-                        instagram_ads_enabled: false,
-                        instagram_comments_enabled: false,
-                        instagram_direct_message_enabled: false,
-                        instagram_mentions_enabled: undefined,
-                        messenger_enabled: true,
-                        posts_enabled: postsEnabled,
-                        mentions_enabled: true,
-                        recommendations_enabled: undefined,
-                    },
-                },
-            })
-
-            const component = shallow<FacebookIntegrationDetail>(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>
-            )
-
-            const prevState = component
-                .find(FacebookIntegrationDetail)
-                .dive()
-                .state() as FacebookIntegrationDetailState
-
-            expect(prevState.settings).toEqual(integration.meta.settings)
-            const instance = component
-                .find(FacebookIntegrationDetail)
-                .dive()
-                .instance() as FacebookIntegrationDetail
-
-            instance._onSettingChange(!postsEnabled, 'posts_enabled')
-
-            const expectedState = (fromJS(prevState) as Map<any, any>)
-                .setIn(['settings', 'posts_enabled'], !postsEnabled)
-                .toJS() as FacebookIntegrationDetailState
-
-            expect(instance.state).toEqual(expectedState)
-        })
-    })
-
-    describe('_handleSubmit', () => {
-        it('should update the integration on form submit', () => {
-            const newSettings: FacebookIntegrationDetailState['settings'] = {
-                posts_enabled: true,
-                mentions_enabled: false,
-                recommendations_enabled: false,
-                messenger_enabled: false,
-                import_history_enabled: true,
-                instagram_comments_enabled: true,
-                instagram_mentions_enabled: false,
-                instagram_ads_enabled: false,
-                instagram_direct_message_enabled: false,
-            }
-
-            const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
-                    },
-                    instagram: {
-                        id: '178941234975',
-                    },
-                    language: Language.Spanish,
-                    name: 'My facebook page',
-                    settings: {
-                        posts_enabled: true,
-                        mentions_enabled: true,
-                        messenger_enabled: true,
-                        import_history_enabled: true,
-                        instagram_comments_enabled: false,
-                    },
-                },
-            })
-
-            const component = shallow<FacebookIntegrationDetail>(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>
-            )
-            const instance: FacebookIntegrationDetail = component
-                .find(FacebookIntegrationDetail)
-                .dive()
-                .instance() as FacebookIntegrationDetail
-
-            instance.setState({
-                settings: newSettings,
-                language: Language.Danish,
-            })
-
-            instance._handleSubmit({
-                preventDefault: jest.fn(),
-            } as unknown as SyntheticEvent)
-
-            expect(minProps.updateOrCreateIntegration).toHaveBeenCalledTimes(1)
-            expect(minProps.updateOrCreateIntegration).toHaveBeenCalledWith(
-                fromJS(
-                    merge(integration, {
-                        meta: {
-                            language: Language.Danish,
-                            settings: newSettings,
-                        },
-                    })
-                )
-            )
-        })
-    })
-
-    describe('render()', () => {
-        it('should render a loading state because the integration is loading', () => {
-            const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-            })
-
-            const component = mount(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                        loading={fromJS({integration: integration.id})}
-                    />
-                </Provider>
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render a loading state because the passed integration is empty', () => {
-            const component = mount(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail {...minProps} />
-                </Provider>
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it.each([
-            ...FACEBOOK_USER_TYPES,
-            {
-                name: 'Custom/Unknown',
-                roles: [ADVERTISE_ROLE],
             },
-        ])(
-            'should render an integration with facebookUserTypes',
-            (facebookUserType) => {
-                const integration = merge(baseIntegration, {
-                    id: 1,
-                    type: FACEBOOK_INTEGRATION_TYPE,
-                    name: 'My facebook page',
-                    meta: {
-                        roles: facebookUserType.roles.join(','),
-                        oauth: {
-                            scope: [
-                                PAGES_MANAGE_ADS,
-                                PAGES_MANAGE_METADATA,
-                                PAGES_READ_ENGAGEMENT,
-                                PAGES_READ_USER_CONTENT,
-                                PAGES_MANAGE_POSTS,
-                                PAGES_MANAGE_ENGAGEMENT,
-                                BUSINESS_MANAGEMENT,
-                                PAGES_SHOW_LIST,
-                                PAGES_MESSAGING,
-                                INSTAGRAM_BASIC,
-                                INSTAGRAM_MANAGE_COMMENTS,
-                                ADS_READ,
-                                ADS_MANAGEMENT,
-                            ].join(','),
-                        },
-                        instagram: {
-                            id: '178941234975',
-                        },
-                        name: 'My facebook page',
-                    },
-                })
+        })
 
-                const component = shallow(
-                    <Provider store={store}>
-                        <FacebookIntegrationDetail
-                            {...minProps}
-                            integration={integration}
-                        />
-                    </Provider>
-                )
-
-                expect(
-                    component.find(FacebookIntegrationDetail).dive()
-                ).toMatchSnapshot()
-            }
+        render(
+            <Provider store={store}>
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />
+            </Provider>
         )
 
-        it('should render an integration with canModerate enabled', () => {
-            const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
+        fireEvent.change(screen.getByRole('combobox', {name: 'Language'}), {
+            target: {value: Language.Danish},
+        })
+
+        screen.getByRole('button', {name: 'Save changes'}).click()
+
+        expect(minProps.updateOrCreateIntegration).toHaveBeenCalledTimes(1)
+        expect(minProps.updateOrCreateIntegration).toHaveBeenCalledWith(
+            fromJS(
+                merge(integration, {
+                    meta: {
+                        language: Language.Danish,
+                    },
+                })
+            )
+        )
+    })
+
+    it('should render a loading state because the integration is loading', () => {
+        const integration = merge(baseIntegration, {
+            id: 1,
+            type: FACEBOOK_INTEGRATION_TYPE,
+        })
+
+        const {container} = render(
+            <Provider store={store}>
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                    loading={fromJS({integration: integration.id})}
+                />
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render nothing because the passed integration is empty', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <FacebookIntegrationDetail {...minProps} />
+            </Provider>
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should render an integration with canModerate enabled', () => {
+        const integration = merge(baseIntegration, {
+            meta: {
+                roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(','),
+                oauth: {
+                    scope: [
+                        PAGES_MANAGE_ADS,
+                        PAGES_MANAGE_METADATA,
+                        PAGES_READ_ENGAGEMENT,
+                        PAGES_READ_USER_CONTENT,
+                        PAGES_MANAGE_POSTS,
+                        PAGES_MANAGE_ENGAGEMENT,
+                        BUSINESS_MANAGEMENT,
+                        PAGES_SHOW_LIST,
+                        PAGES_MESSAGING,
+                        INSTAGRAM_BASIC,
+                        INSTAGRAM_MANAGE_COMMENTS,
+                        ADS_READ,
+                        ADS_MANAGEMENT,
+                    ].join(','),
+                },
+                instagram: {
+                    id: '178941234975',
+                },
                 name: 'My facebook page',
+            },
+        })
+
+        render(
+            <Provider store={store}>
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />
+            </Provider>
+        )
+
+        expect(
+            screen.queryByText(
+                /to be able to enable features for this integration you need/
+            )
+        ).toBeNull()
+    })
+
+    it('should render an integration with canModerate disabled because there is no MODERATE_ROLE', () => {
+        const integration = merge(baseIntegration, {
+            meta: {
+                roles: [ADVERTISE_ROLE, ANALYZE_ROLE].join(','),
+                oauth: {
+                    scope: [
+                        PAGES_MANAGE_ADS,
+                        PAGES_MANAGE_METADATA,
+                        PAGES_READ_ENGAGEMENT,
+                        PAGES_READ_USER_CONTENT,
+                        PAGES_MANAGE_POSTS,
+                        PAGES_MANAGE_ENGAGEMENT,
+                        BUSINESS_MANAGEMENT,
+                        PAGES_SHOW_LIST,
+                        PAGES_MESSAGING,
+                        INSTAGRAM_BASIC,
+                        INSTAGRAM_MANAGE_COMMENTS,
+                        ADS_READ,
+                        ADS_MANAGEMENT,
+                    ].join(','),
+                },
+                instagram: {
+                    id: '178941234975',
+                },
+                name: 'My facebook page',
+            },
+        })
+
+        render(
+            <Provider store={store}>
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />
+            </Provider>
+        )
+
+        expect(
+            screen.getByText(
+                /to be able to enable features for this integration you need/
+            )
+        )
+    })
+
+    it(
+        'should render an integration with instagram disabled because the scope of the integration does not ' +
+            'include instagram permissions',
+        () => {
+            const integration = merge(baseIntegration, {
                 meta: {
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
                         ','
@@ -635,8 +320,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                             BUSINESS_MANAGEMENT,
                             PAGES_SHOW_LIST,
                             PAGES_MESSAGING,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
                             ADS_READ,
                             ADS_MANAGEMENT,
                         ].join(','),
@@ -648,7 +331,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            const component = shallow(
+            render(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -658,338 +341,36 @@ describe('<FacebookIntegrationDetail/>', () => {
             )
 
             expect(
-                component.find(FacebookIntegrationDetail).dive()
-            ).toMatchSnapshot()
-        })
+                screen
+                    .getByRole('checkbox', {
+                        name: checkBoxNameEquivalents[
+                            'instagram_direct_message_enabled'
+                        ],
+                    })
+                    .getAttribute('disabled')
+            ).not.toBeNull()
+        }
+    )
 
-        it('should render an integration with canModerate disabled because there is no MODERATE_ROLE', () => {
+    it.each([
+        ['messenger_enabled', 0],
+        ['posts_enabled', 0],
+        ['mentions_enabled', 0],
+        ['instagram_comments_enabled', 0],
+        ['instagram_mentions_enabled', 1],
+        ['instagram_ads_enabled', 0],
+        ['recommendations_enabled', 0],
+    ])(
+        'should render an integration with meta settings enabled based on permissions',
+        (permission, position) => {
             const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE].join(','),
-                    oauth: {
-                        scope: [
-                            PAGES_MANAGE_ADS,
-                            PAGES_MANAGE_METADATA,
-                            PAGES_READ_ENGAGEMENT,
-                            PAGES_READ_USER_CONTENT,
-                            PAGES_MANAGE_POSTS,
-                            PAGES_MANAGE_ENGAGEMENT,
-                            BUSINESS_MANAGEMENT,
-                            PAGES_SHOW_LIST,
-                            PAGES_MESSAGING,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
-                            ADS_READ,
-                            ADS_MANAGEMENT,
-                        ].join(','),
-                    },
-                    instagram: {
-                        id: '178941234975',
-                    },
-                    name: 'My facebook page',
-                },
-            })
-
-            const component = shallow(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>
-            )
-
-            expect(
-                component.find(FacebookIntegrationDetail).dive()
-            ).toMatchSnapshot()
-        })
-
-        it.each([
-            // Messenger enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled'].join(
-                ','
-            ),
-            // Messenger disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled']
-                .slice(0, -1)
-                .join(','),
-            // Posts && History enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled'].join(','),
-            // Posts && History disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled']
-                .slice(0, -1)
-                .join(','),
-            // Mentions enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled'].join(
-                ','
-            ),
-            // Mentions disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled']
-                .slice(0, -1)
-                .join(','),
-            // Instagram comments enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'instagram_comments_enabled'
-            ].join(','),
-            // Instagram comments disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'instagram_comments_enabled'
-            ]
-                .slice(0, -1)
-                .join(','),
-            // Instagram mentions enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'instagram_mentions_enabled'
-            ].join(','),
-            // Instagram mentions disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'instagram_mentions_enabled'
-            ]
-                .slice(0, -1)
-                .join(','),
-            // Instagram ads enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'instagram_ads_enabled'
-            ].join(','),
-            // Instagram ads disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['instagram_ads_enabled']
-                .slice(0, -1)
-                .join(','),
-            // Instagram direct message enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'instagram_direct_message_enabled'
-            ].join(','),
-            // Instagram direct message disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'instagram_direct_message_enabled'
-            ]
-                .slice(0, -1)
-                .join(','),
-            // Facebook recommendations enabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING[
-                'recommendations_enabled'
-            ].join(','),
-            // Facebook recommendations disabled
-            PERMISSIONS_PER_INTEGRATION_META_SETTING['recommendations_enabled']
-                .slice(0, -1)
-                .join(','),
-        ])(
-            'should render an integration with meta settings enabled/disabled based on permissions',
-            (permissions) => {
-                const integration = merge(baseIntegration, {
-                    id: 1,
-                    type: FACEBOOK_INTEGRATION_TYPE,
-                    name: 'My facebook page',
-                    meta: {
-                        roles: [
-                            ADVERTISE_ROLE,
-                            ANALYZE_ROLE,
-                            MODERATE_ROLE,
-                        ].join(','),
-                        oauth: {
-                            scope: permissions,
-                        },
-                        instagram: {
-                            id: '178941234975',
-                        },
-                        name: 'My facebook page',
-                        settings: {
-                            instagram_ads_enabled: true,
-                        },
-                    },
-                })
-
-                const component = shallow(
-                    <Provider store={store}>
-                        <FacebookIntegrationDetail
-                            {...minProps}
-                            integration={integration}
-                        />
-                    </Provider>
-                )
-
-                expect(
-                    component.find(FacebookIntegrationDetail).dive()
-                ).toMatchSnapshot()
-            }
-        )
-
-        it(
-            'should render an integration with instagram disabled because the scope of the integration does not ' +
-                'include instagram permissions',
-            () => {
-                const integration = merge(baseIntegration, {
-                    id: 1,
-                    type: FACEBOOK_INTEGRATION_TYPE,
-                    name: 'My facebook page',
-                    meta: {
-                        roles: [
-                            ADVERTISE_ROLE,
-                            ANALYZE_ROLE,
-                            MODERATE_ROLE,
-                        ].join(','),
-                        oauth: {
-                            scope: [
-                                PAGES_MANAGE_ADS,
-                                PAGES_MANAGE_METADATA,
-                                PAGES_READ_ENGAGEMENT,
-                                PAGES_READ_USER_CONTENT,
-                                PAGES_MANAGE_POSTS,
-                                PAGES_MANAGE_ENGAGEMENT,
-                                BUSINESS_MANAGEMENT,
-                                PAGES_SHOW_LIST,
-                                PAGES_MESSAGING,
-                                ADS_READ,
-                                ADS_MANAGEMENT,
-                            ].join(','),
-                        },
-                        instagram: {
-                            id: '178941234975',
-                        },
-                        name: 'My facebook page',
-                    },
-                })
-
-                const component = shallow(
-                    <Provider store={store}>
-                        <FacebookIntegrationDetail
-                            {...minProps}
-                            integration={integration}
-                        />
-                    </Provider>
-                )
-
-                expect(
-                    component.find(FacebookIntegrationDetail).dive()
-                ).toMatchSnapshot()
-            }
-        )
-
-        it(
-            'should render an integration with instagram disabled because the page has no associated instagram' +
-                'account',
-            () => {
-                const integration = merge(baseIntegration, {
-                    id: 1,
-                    type: FACEBOOK_INTEGRATION_TYPE,
-                    name: 'My facebook page',
-                    meta: {
-                        roles: [
-                            ADVERTISE_ROLE,
-                            ANALYZE_ROLE,
-                            MODERATE_ROLE,
-                        ].join(','),
-                        oauth: {
-                            scope: [
-                                PAGES_MANAGE_ADS,
-                                PAGES_MANAGE_METADATA,
-                                PAGES_READ_ENGAGEMENT,
-                                PAGES_READ_USER_CONTENT,
-                                PAGES_MANAGE_POSTS,
-                                PAGES_MANAGE_ENGAGEMENT,
-                                BUSINESS_MANAGEMENT,
-                                PAGES_SHOW_LIST,
-                                PAGES_MESSAGING,
-                                INSTAGRAM_BASIC,
-                                INSTAGRAM_MANAGE_COMMENTS,
-                                ADS_READ,
-                                ADS_MANAGEMENT,
-                            ].join(','),
-                        },
-                        instagram: {
-                            id: null,
-                        },
-                        name: 'My facebook page',
-                    },
-                })
-
-                const component = shallow(
-                    <Provider store={store}>
-                        <FacebookIntegrationDetail
-                            {...minProps}
-                            integration={integration}
-                        />
-                    </Provider>
-                )
-
-                expect(
-                    component.find(FacebookIntegrationDetail).dive()
-                ).toMatchSnapshot()
-            }
-        )
-
-        it('should render an integration with instagram enabled', () => {
-            const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
                 meta: {
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
                         ','
                     ),
                     oauth: {
-                        scope: [
-                            PAGES_MANAGE_ADS,
-                            PAGES_MANAGE_METADATA,
-                            PAGES_READ_ENGAGEMENT,
-                            PAGES_READ_USER_CONTENT,
-                            PAGES_MANAGE_POSTS,
-                            PAGES_MANAGE_ENGAGEMENT,
-                            BUSINESS_MANAGEMENT,
-                            PAGES_SHOW_LIST,
-                            PAGES_MESSAGING,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
-                        ].join(','),
-                    },
-                    instagram: {
-                        id: '178941234975',
-                    },
-                    name: 'My facebook page',
-                },
-            })
-
-            const component = shallow(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>
-            )
-
-            expect(
-                component.find(FacebookIntegrationDetail).dive()
-            ).toMatchSnapshot()
-        })
-
-        it('should render an integration with instagram ads enabled', () => {
-            const integration = merge(baseIntegration, {
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
-                    ),
-                    oauth: {
-                        scope: [
-                            PAGES_MANAGE_ADS,
-                            PAGES_MANAGE_METADATA,
-                            PAGES_READ_ENGAGEMENT,
-                            PAGES_READ_USER_CONTENT,
-                            PAGES_MANAGE_POSTS,
-                            PAGES_MANAGE_ENGAGEMENT,
-                            BUSINESS_MANAGEMENT,
-                            PAGES_SHOW_LIST,
-                            PAGES_MESSAGING,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
-                            ADS_READ,
-                            ADS_MANAGEMENT,
+                        scope: PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                            permission as keyof typeof PERMISSIONS_PER_INTEGRATION_META_SETTING
                         ].join(','),
                     },
                     instagram: {
@@ -1002,7 +383,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            const component = shallow(
+            render(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -1012,67 +393,198 @@ describe('<FacebookIntegrationDetail/>', () => {
             )
 
             expect(
-                component.find(FacebookIntegrationDetail).dive()
-            ).toMatchSnapshot()
+                screen
+                    .getAllByRole('checkbox', {
+                        name: checkBoxNameEquivalents[
+                            permission as keyof typeof checkBoxNameEquivalents
+                        ],
+                    })
+                    [position].getAttribute('disabled')
+            ).toBeNull()
+        }
+    )
+
+    it.each([
+        ['messenger_enabled', 0],
+        ['posts_enabled', 0],
+        ['mentions_enabled', 0],
+        ['instagram_comments_enabled', 0],
+        ['instagram_mentions_enabled', 1],
+        ['instagram_ads_enabled', 0],
+        ['recommendations_enabled', 0],
+    ])(
+        'should render an integration with meta settings disabled based on permissions',
+        (permission, position) => {
+            const integration = merge(baseIntegration, {
+                meta: {
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
+                        ','
+                    ),
+                    oauth: {
+                        scope: PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                            permission as keyof typeof PERMISSIONS_PER_INTEGRATION_META_SETTING
+                        ]
+                            .slice(0, -1)
+                            .join(','),
+                    },
+                    instagram: {
+                        id: '178941234975',
+                    },
+                    name: 'My facebook page',
+                    settings: {
+                        instagram_ads_enabled: true,
+                    },
+                },
+            })
+
+            render(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
+            )
+
+            expect(
+                screen
+                    .getAllByRole('checkbox', {
+                        name: checkBoxNameEquivalents[
+                            permission as keyof typeof checkBoxNameEquivalents
+                        ],
+                    })
+                    [position].getAttribute('disabled')
+            ).not.toBeNull()
+
+            expect(screen.getByText(/some features are disabled/))
+        }
+    )
+
+    it(
+        'should render an integration with instagram disabled because the page has no associated instagram' +
+            'account',
+        () => {
+            const integration = merge(baseIntegration, {
+                meta: {
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
+                        ','
+                    ),
+                    oauth: {
+                        scope: [
+                            PAGES_MANAGE_ADS,
+                            PAGES_MANAGE_METADATA,
+                            PAGES_READ_ENGAGEMENT,
+                            PAGES_READ_USER_CONTENT,
+                            PAGES_MANAGE_POSTS,
+                            PAGES_MANAGE_ENGAGEMENT,
+                            BUSINESS_MANAGEMENT,
+                            PAGES_SHOW_LIST,
+                            PAGES_MESSAGING,
+                            INSTAGRAM_BASIC,
+                            INSTAGRAM_MANAGE_COMMENTS,
+                            ADS_READ,
+                            ADS_MANAGEMENT,
+                        ].join(','),
+                    },
+                    instagram: {
+                        id: null,
+                    },
+                    name: 'My facebook page',
+                },
+            })
+
+            render(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
+            )
+
+            expect(screen.getByText(/You cannot activate Instagram/))
+        }
+    )
+
+    it('should render an integration with instagram ads enabled', () => {
+        const integration = merge(baseIntegration, {
+            meta: {
+                roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(','),
+                oauth: {
+                    scope: [
+                        PAGES_MANAGE_ADS,
+                        PAGES_MANAGE_METADATA,
+                        PAGES_READ_ENGAGEMENT,
+                        PAGES_READ_USER_CONTENT,
+                        PAGES_MANAGE_POSTS,
+                        PAGES_MANAGE_ENGAGEMENT,
+                        BUSINESS_MANAGEMENT,
+                        PAGES_SHOW_LIST,
+                        PAGES_MESSAGING,
+                        INSTAGRAM_BASIC,
+                        INSTAGRAM_MANAGE_COMMENTS,
+                        ADS_READ,
+                        ADS_MANAGEMENT,
+                    ].join(','),
+                },
+                instagram: {
+                    id: '178941234975',
+                },
+                name: 'My facebook page',
+                settings: {
+                    instagram_ads_enabled: true,
+                },
+            },
         })
 
-        it(
-            'should render an integration with instagram enabled and loading buttons because the integration ' +
-                'is being submitted',
-            () => {
-                const integration = merge(baseIntegration, {
-                    id: 1,
-                    type: FACEBOOK_INTEGRATION_TYPE,
-                    name: 'My facebook page',
-                    meta: {
-                        name: 'My facebook page',
-                        roles: [
-                            ADVERTISE_ROLE,
-                            ANALYZE_ROLE,
-                            MODERATE_ROLE,
-                        ].join(','),
-                        oauth: {
-                            scope: [
-                                PAGES_MANAGE_ADS,
-                                PAGES_MANAGE_METADATA,
-                                PAGES_READ_ENGAGEMENT,
-                                PAGES_READ_USER_CONTENT,
-                                PAGES_MANAGE_POSTS,
-                                PAGES_MANAGE_ENGAGEMENT,
-                                BUSINESS_MANAGEMENT,
-                                PAGES_SHOW_LIST,
-                                PAGES_MESSAGING,
-                                INSTAGRAM_BASIC,
-                                INSTAGRAM_MANAGE_COMMENTS,
-                            ].join(','),
-                        },
-                        instagram: {
-                            id: '178941234975',
-                        },
-                    },
-                })
-
-                const component = shallow(
-                    <Provider store={store}>
-                        <FacebookIntegrationDetail
-                            {...minProps}
-                            loading={fromJS({
-                                updateIntegration: integration.id,
-                            })}
-                            integration={integration}
-                        />
-                    </Provider>
-                )
-
-                expect(
-                    component.find(FacebookIntegrationDetail).dive()
-                ).toMatchSnapshot()
-            }
+        render(
+            <Provider store={store}>
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />
+            </Provider>
         )
 
-        it('should render an integration without showing mentions cause the domain doesnt support it', () => {
-            const integration = baseIntegration
-            const component = shallow(
+        expect(
+            screen.getByRole('checkbox', {
+                name: checkBoxNameEquivalents.instagram_ads_enabled,
+            })
+        ).toBeChecked()
+    })
+
+    it(
+        'should render an integration with instagram enabled and loading buttons because the integration ' +
+            'is being submitted',
+        () => {
+            const integration = merge(baseIntegration, {
+                meta: {
+                    name: 'My facebook page',
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
+                        ','
+                    ),
+                    oauth: {
+                        scope: [
+                            PAGES_MANAGE_ADS,
+                            PAGES_MANAGE_METADATA,
+                            PAGES_READ_ENGAGEMENT,
+                            PAGES_READ_USER_CONTENT,
+                            PAGES_MANAGE_POSTS,
+                            PAGES_MANAGE_ENGAGEMENT,
+                            BUSINESS_MANAGEMENT,
+                            PAGES_SHOW_LIST,
+                            PAGES_MESSAGING,
+                            INSTAGRAM_BASIC,
+                            INSTAGRAM_MANAGE_COMMENTS,
+                        ].join(','),
+                    },
+                    instagram: {
+                        id: '178941234975',
+                    },
+                },
+            })
+
+            render(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -1080,103 +592,122 @@ describe('<FacebookIntegrationDetail/>', () => {
                             updateIntegration: integration.id,
                         })}
                         integration={integration}
-                        currentAccount={fromJS({domain: 'notacme'})}
                     />
                 </Provider>
             )
 
             expect(
-                component.find(FacebookIntegrationDetail).dive()
-            ).toMatchSnapshot()
-        })
+                screen
+                    .getByRole('button', {name: 'Save changes'})
+                    .getAttribute('aria-disabled')
+            ).toBe('true')
+        }
+    )
 
-        it.each([
-            [
-                'account eligible to IG DM and has the feature (Render an enabled IG DM setting)',
-                [true, true],
-            ],
-            [
-                "account eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button)",
-                [true, false],
-            ],
-            [
-                'account not eligible to IG DM and has the feature (Render a disabled IG DM setting with a warning)',
-                [false, true],
-            ],
-            [
-                "account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button)",
-                [false, false],
-            ],
-        ])(
-            'should render an integration for: %s',
-            (_, [isIGAccountEligible, priceHasInstagramDmFeature]) => {
-                const integration = merge(baseIntegration, {
-                    id: 1,
-                    type: FACEBOOK_INTEGRATION_TYPE,
-                    name: 'My facebook page',
-                    meta: {
-                        roles: [
-                            ADVERTISE_ROLE,
-                            ANALYZE_ROLE,
-                            MODERATE_ROLE,
+    it.each([
+        [
+            'account eligible to IG DM and has the feature (Render an enabled IG DM setting)',
+            [true, true],
+        ],
+        [
+            "account eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button)",
+            [true, false],
+        ],
+        [
+            'account not eligible to IG DM and has the feature (Render a disabled IG DM setting with a warning)',
+            [false, true],
+        ],
+        [
+            "account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button)",
+            [false, false],
+        ],
+    ])(
+        'should render an integration for: %s',
+        async (_, [isIGAccountEligible, priceHasInstagramDmFeature]) => {
+            const integration = merge(baseIntegration, {
+                meta: {
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
+                        ','
+                    ),
+                    oauth: {
+                        scope: [
+                            PAGES_MANAGE_ADS,
+                            PAGES_MANAGE_METADATA,
+                            PAGES_READ_ENGAGEMENT,
+                            PAGES_READ_USER_CONTENT,
+                            PAGES_MANAGE_POSTS,
+                            PAGES_MANAGE_ENGAGEMENT,
+                            BUSINESS_MANAGEMENT,
+                            PAGES_SHOW_LIST,
+                            PAGES_MESSAGING,
+                            INSTAGRAM_BASIC,
+                            INSTAGRAM_MANAGE_COMMENTS,
+                            INSTAGRAM_MANAGE_MESSAGES,
+                            ADS_READ,
+                            ADS_MANAGEMENT,
                         ].join(','),
-                        oauth: {
-                            scope: [
-                                PAGES_MANAGE_ADS,
-                                PAGES_MANAGE_METADATA,
-                                PAGES_READ_ENGAGEMENT,
-                                PAGES_READ_USER_CONTENT,
-                                PAGES_MANAGE_POSTS,
-                                PAGES_MANAGE_ENGAGEMENT,
-                                BUSINESS_MANAGEMENT,
-                                PAGES_SHOW_LIST,
-                                PAGES_MESSAGING,
-                                INSTAGRAM_BASIC,
-                                INSTAGRAM_MANAGE_COMMENTS,
-                                INSTAGRAM_MANAGE_MESSAGES,
-                                ADS_READ,
-                                ADS_MANAGEMENT,
-                            ].join(','),
-                        },
-                        instagram: {
-                            id: '178941234975',
-                            instagram_direct_message_allowed:
-                                isIGAccountEligible,
-                        },
-                        name: 'My facebook page',
                     },
-                })
-
-                const currentAccount: Map<any, any> = fromJS({
-                    domain: 'acme',
-                })
-
-                const currentHelpdeskProduct = {
-                    ...basicMonthlyHelpdeskPrice,
-                    features: {
-                        ...basicMonthlyHelpdeskPrice.features,
-                        [AccountFeature.InstagramDirectMessage]: {
-                            enabled: priceHasInstagramDmFeature,
-                        },
+                    instagram: {
+                        id: '178941234975',
+                        instagram_direct_message_allowed: isIGAccountEligible,
                     },
-                }
+                    name: 'My facebook page',
+                },
+            })
 
-                const component = shallow<FacebookIntegrationDetail>(
-                    <Provider store={store}>
-                        <FacebookIntegrationDetail
-                            {...minProps}
-                            integration={integration}
-                            currentAccount={currentAccount}
-                            currentHelpdeskProduct={currentHelpdeskProduct}
-                            hasInstagramDMFeature={priceHasInstagramDmFeature}
-                        />
-                    </Provider>
-                )
+            const currentAccount: Map<any, any> = fromJS({
+                domain: 'acme',
+            })
 
-                expect(
-                    component.find(FacebookIntegrationDetail).dive()
-                ).toMatchSnapshot()
+            const currentHelpdeskProduct = {
+                ...basicMonthlyHelpdeskPrice,
+                features: {
+                    ...basicMonthlyHelpdeskPrice.features,
+                    [AccountFeature.InstagramDirectMessage]: {
+                        enabled: priceHasInstagramDmFeature,
+                    },
+                },
             }
-        )
-    })
+
+            render(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                        currentAccount={currentAccount}
+                        currentHelpdeskProduct={currentHelpdeskProduct}
+                        hasInstagramDMFeature={priceHasInstagramDmFeature}
+                    />
+                </Provider>
+            )
+
+            if (isIGAccountEligible && priceHasInstagramDmFeature) {
+                await waitFor(() =>
+                    expect(
+                        screen
+                            .getByRole('checkbox', {
+                                name: checkBoxNameEquivalents.instagram_direct_message_enabled_alt,
+                            })
+                            .getAttribute('disabled')
+                    ).toBeNull()
+                )
+            } else if (!isIGAccountEligible && priceHasInstagramDmFeature) {
+                expect(
+                    screen
+                        .getByRole('checkbox', {
+                            name: checkBoxNameEquivalents.instagram_direct_message_enabled,
+                        })
+                        .getAttribute('disabled')
+                ).not.toBeNull()
+            } else {
+                expect(
+                    screen
+                        .getByRole('checkbox', {
+                            name: checkBoxNameEquivalents.instagram_direct_message_enabled_alt,
+                        })
+                        .getAttribute('disabled')
+                ).not.toBeNull()
+            }
+        }
+    )
 })

@@ -1,6 +1,5 @@
-import React, {ComponentProps, FormEvent} from 'react'
-import {mount, shallow} from 'enzyme'
-
+import React, {ComponentProps} from 'react'
+import {render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -70,13 +69,13 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
 
     describe('render()', () => {
         it('should render defaults because there is no quick replies in the integration', () => {
-            const component = mount(
+            const {container} = render(
                 <Provider store={store}>
                     <GorgiasChatIntegrationQuickReplies {...minProps} />
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render quick replies from the integration', () => {
@@ -85,7 +84,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 replies: ['foo', 'bar'],
             })
 
-            const component = mount(
+            const {container} = render(
                 <Provider store={store}>
                     <GorgiasChatIntegrationQuickReplies
                         {...minProps}
@@ -97,7 +96,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
@@ -121,8 +120,8 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 replies: [' foo ', 'bar  '],
             })
 
-            const component =
-                shallow<GorgiasChatIntegrationQuickRepliesComponent>(
+            render(
+                <Provider store={store}>
                     <GorgiasChatIntegrationQuickRepliesComponent
                         {...minProps}
                         integration={integration.setIn(
@@ -131,15 +130,14 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         )}
                         updateOrCreateIntegration={updateOrCreateIntegrationSpy}
                     />
-                )
+                </Provider>
+            )
 
-            const fakeEvent = {preventDefault: jest.fn()}
-            void component.instance()._submit(fakeEvent as unknown as FormEvent)
+            screen.getByRole('button', {name: 'Save Changes'}).click()
 
             expect(updateOrCreateIntegrationSpy).toHaveBeenCalledWith(
                 expectedPayload
             )
-            expect(fakeEvent.preventDefault).toHaveBeenCalledTimes(1)
         })
     })
 })

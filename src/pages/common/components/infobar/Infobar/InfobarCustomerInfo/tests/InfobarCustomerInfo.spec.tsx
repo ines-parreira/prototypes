@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {mount, shallow} from 'enzyme'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -25,6 +25,7 @@ jest.mock(
     'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
 )
 jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
+jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
 jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
     <div>InfobarWidgets</div>
 ))
@@ -58,27 +59,27 @@ describe('<InfobarCustomerInfo/>', () => {
     })
 
     it('should not render because there is no passed customer', () => {
-        const component = shallow(
+        const {container} = render(
             <Provider store={store}>
-                <InfobarCustomerInfo {...minProps} customer={undefined} />{' '}
+                <InfobarCustomerInfo {...minProps} customer={undefined} />
             </Provider>
         )
 
-        expect(component).toEqual({})
+        expect(container.firstChild).toBeNull()
     })
 
     it('should not render because the passed customer is empty', () => {
-        const component = shallow(
+        const {container} = render(
             <Provider store={store}>
-                <InfobarCustomerInfo {...minProps} customer={fromJS({})} />{' '}
+                <InfobarCustomerInfo {...minProps} customer={fromJS({})} />
             </Provider>
         )
 
-        expect(component).toEqual({})
+        expect(container.firstChild).toBeNull()
     })
 
     it(
-        'should render basic customer info and a "generate widgets" button because customer data are loaded, the user ' +
+        'should render a "generate widgets" button because customer data are loaded, the user ' +
             'is currently editing widgets, it is not currently dragging anything and widgets are currently empty',
         () => {
             const sources = fromJS({
@@ -103,7 +104,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 items: [],
             })
 
-            const component = shallow(
+            render(
                 <Provider store={store}>
                     <InfobarCustomerInfo
                         {...minProps}
@@ -114,7 +115,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(screen.getByText('Generate default widgets'))
         }
     )
 
@@ -144,7 +145,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 items: [],
             })
 
-            const component = shallow(
+            const {container} = render(
                 <Provider store={store}>
                     <InfobarCustomerInfo
                         {...minProps}
@@ -155,12 +156,12 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
     it(
-        'should render only basic customer info because customer data are loaded, the user is not editing widgets and ' +
+        'should not render empty widgets because the user is not editing widgets and ' +
             'current widgets are empty',
         () => {
             const sources = fromJS({
@@ -181,7 +182,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 items: [],
             })
 
-            const component = shallow(
+            render(
                 <Provider store={store}>
                     <InfobarCustomerInfo
                         {...minProps}
@@ -191,7 +192,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(screen.queryByText('InfobarWidgets')).toBeNull()
         }
     )
 
@@ -225,7 +226,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 ],
             })
 
-            const component = mount(
+            const {container} = render(
                 <Provider store={store}>
                     <InfobarCustomerInfo
                         {...minProps}
@@ -235,45 +236,9 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>
             )
 
-            expect(component.text()).toContain('Customer timeline')
+            expect(screen.getByText('Customer timeline'))
 
-            expect(component).toMatchSnapshot()
-        }
-    )
-
-    it(
-        'should render only basic customer info because there is no customer data and there is some data integrations ' +
-            'configured for the account',
-        () => {
-            const component = mount(
-                <Provider store={store}>
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={fromJS({})}
-                        widgets={fromJS({currentContext: 'ticket'})}
-                    />{' '}
-                </Provider>
-            )
-
-            expect(component).toMatchSnapshot()
-        }
-    )
-
-    it(
-        'should render basic customer info and the suggestion to add integrations because there is no customer data ' +
-            'and there is no data integrations configured for the account',
-        () => {
-            const component = mount(
-                <Provider store={store}>
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={fromJS({})}
-                        widgets={fromJS({currentContext: 'ticket'})}
-                    />{' '}
-                </Provider>
-            )
-
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -285,9 +250,9 @@ describe('<InfobarCustomerInfo/>', () => {
         SMILE_INTEGRATION_TYPE,
         BIGCOMMERCE_INTEGRATION_TYPE,
     ])(
-        'should pass `hasIntegrations=true` because there is an active integration of type %s',
+        'should not display `AddAppSuggestion` because there is an active integration of type %s',
         (integrationType) => {
-            const component = shallow(
+            render(
                 <Provider
                     store={mockStore({
                         integrations: fromJS({
@@ -303,12 +268,12 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(screen.queryByText('Add app')).toBeNull()
         }
     )
 
-    it('should pass `hasIntegrations=false` because there is no active data integration', () => {
-        const component = shallow(
+    it('should pass `AddAppSuggestion` because there is no active data integration', () => {
+        render(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
@@ -324,6 +289,6 @@ describe('<InfobarCustomerInfo/>', () => {
             </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByText('Add app'))
     })
 })

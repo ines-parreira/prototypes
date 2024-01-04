@@ -1,11 +1,11 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import {render, screen} from '@testing-library/react'
 
 import Loader from '../Loader'
 
 describe('Loader component', () => {
-    it('simple message', () => {
-        const component = renderer.create(<Loader message={'hello'} />).toJSON()
-        expect(component).toMatchSnapshot()
+    it('should render a simple message', () => {
+        render(<Loader message={'hello'} />)
+        expect(screen.getByText('hello'))
     })
 })

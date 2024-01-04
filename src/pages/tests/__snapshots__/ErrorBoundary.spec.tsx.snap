@@ -1,154 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ErrorBoundary/> should render an error message because an error occurred 1`] = `
-<ErrorBoundary>
-  <div
-    className="container"
+<div
+  class="container"
+>
+  <h1>
+    Oops
+     
+    <span
+      class="emoji-mart-emoji"
+    >
+      <span
+        style="width: 16px; height: 16px; display: inline-block; background-image: url(https://unpkg.com/emoji-datasource-apple@^3.0.0/img/apple/sheets/32.png); background-size: 4900%; background-position: 2.0833333333333335% 33.333333333333336%;"
+      />
+    </span>
+  </h1>
+  <h4>
+    An error occurred!
+  </h4>
+  <button
+    aria-disabled="false"
+    class="wrapper mr-2 mb-2 float-left fill primary medium"
+    type="button"
   >
-    <h1>
-      Oops
-       
-      <Emoji
-        backgroundImageFn={[Function]}
-        emoji="white_frowning_face"
-        forceSize={true}
-        native={false}
-        onClick={[Function]}
-        onLeave={[Function]}
-        onOver={[Function]}
-        set="apple"
-        sheetSize={32}
-        size={16}
-        skin={1}
-      >
-        <span
-          className="emoji-mart-emoji"
-          key="white_frowning_face"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
-        >
-          <span
-            style={
-              {
-                "backgroundImage": "url(https://unpkg.com/emoji-datasource-apple@^3.0.0/img/apple/sheets/32.png)",
-                "backgroundPosition": "2.0833333333333335% 33.333333333333336%",
-                "backgroundSize": "4900%",
-                "display": "inline-block",
-                "height": 16,
-                "width": 16,
-              }
-            }
-          />
-        </span>
-      </Emoji>
-    </h1>
-    <h4>
-      An error occurred!
-    </h4>
-    <ForwardRef(Button)
-      className="mr-2 mb-2 float-left"
-      onClick={[Function]}
+    Reload page
+  </button>
+  <button
+    aria-disabled="false"
+    class="wrapper mr-2 mb-2 fill secondary medium"
+    type="button"
+  >
+    Show details
+  </button>
+  <div
+    class="collapse"
+  >
+    <div
+      class="mb-2 card"
     >
-      <BaseButton
-        className="mr-2 mb-2 float-left"
+      <div
+        class="card-body"
       >
-        <button
-          aria-disabled={false}
-          className="wrapper mr-2 mb-2 float-left fill primary medium"
-          onClick={[Function]}
-          type="button"
-        >
-          Reload page
-        </button>
-      </BaseButton>
-    </ForwardRef(Button)>
-    <ForwardRef(Button)
-      className="mr-2 mb-2"
-      intent="secondary"
-      onClick={[Function]}
-    >
-      <BaseButton
-        className="mr-2 mb-2"
-        intent="secondary"
-      >
-        <button
-          aria-disabled={false}
-          className="wrapper mr-2 mb-2 fill secondary medium"
-          onClick={[Function]}
-          type="button"
-        >
-          Show details
-        </button>
-      </BaseButton>
-    </ForwardRef(Button)>
-    <Collapse
-      appear={false}
-      enter={true}
-      exit={true}
-      in={false}
-      isOpen={false}
-      mountOnEnter={false}
-      onEnter={[Function]}
-      onEntered={[Function]}
-      onEntering={[Function]}
-      onExit={[Function]}
-      onExited={[Function]}
-      onExiting={[Function]}
-      tag="div"
-      timeout={350}
-      unmountOnExit={false}
-    >
-      <Transition
-        appear={false}
-        enter={true}
-        exit={true}
-        in={false}
-        mountOnEnter={false}
-        onEnter={[Function]}
-        onEntered={[Function]}
-        onEntering={[Function]}
-        onExit={[Function]}
-        onExited={[Function]}
-        onExiting={[Function]}
-        timeout={350}
-        unmountOnExit={false}
-      >
-        <div
-          className="collapse"
-          style={{}}
-        >
-          <Card
-            className="mb-2"
-            tag="div"
-          >
-            <div
-              className="mb-2 card"
-            >
-              <CardBody
-                tag="div"
-              >
-                <div
-                  className="card-body"
-                >
-                  Error: Fake error
-                </div>
-              </CardBody>
-            </div>
-          </Card>
-        </div>
-      </Transition>
-    </Collapse>
+        Error: foo
+      </div>
+    </div>
   </div>
-</ErrorBoundary>
+</div>
 `;
 
 exports[`<ErrorBoundary/> should render children when there is no error 1`] = `
-<ErrorBoundary>
-  <Foo>
-    <div>
-      foo
-    </div>
-  </Foo>
-</ErrorBoundary>
+<div>
+  foo
+</div>
 `;

@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {mount} from 'enzyme'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
@@ -43,7 +43,7 @@ describe('FacebookIntegrationCustomerChat component', () => {
     }
 
     it('should show the warning banner if an integration already setup messenger on shopify', () => {
-        const component = mount(
+        render(
             <Provider store={minStore}>
                 <FacebookIntegrationCustomerChat
                     {...minProps}
@@ -60,6 +60,6 @@ describe('FacebookIntegrationCustomerChat component', () => {
             </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByText(/We are no longer supporting/))
     })
 })

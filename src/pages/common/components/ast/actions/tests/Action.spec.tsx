@@ -1,8 +1,10 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import React, {ComponentProps, ComponentType} from 'react'
 
 import Action from '../Action'
+
+jest.mock('../ActionSelect', () => () => <div>ActionSelect</div>)
 
 describe('Action', () => {
     describe('render()', () => {
@@ -19,9 +21,9 @@ describe('Action', () => {
                     ...minProps,
                     value: actionValue,
                 } as unknown as ComponentProps<typeof Action>
-                const component = shallow(<Action {...props} />)
+                const {container} = render(<Action {...props} />)
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
 
@@ -30,9 +32,9 @@ describe('Action', () => {
                 value: '',
             }) as unknown as ComponentProps<typeof Action>
 
-            const component = shallow(<Action {...props} />)
+            const {container} = render(<Action {...props} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a warning regarding team assignment', () => {
@@ -40,9 +42,9 @@ describe('Action', () => {
                 ...minProps,
                 value: 'setTeamAssignee',
             } as unknown as ComponentProps<typeof Action>
-            const component = shallow(<Action {...props} />)
+            const {container} = render(<Action {...props} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

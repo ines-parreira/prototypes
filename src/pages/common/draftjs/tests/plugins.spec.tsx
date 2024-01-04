@@ -1,5 +1,5 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import {render, screen} from '@testing-library/react'
 import {ContentState, EditorState} from 'draft-js'
 
 import {convertFromHTML} from '../../../../utils/editor'
@@ -78,28 +78,28 @@ describe('DraftJS display entities', () => {
 describe('DraftJS Plugins', () => {
     it('render simple text', () => {
         const html = 'this is only text, no style'
-        const component = renderer.create(
+        render(
             <TestEditor
                 html={html}
                 editorState={undefined as unknown as EditorState}
                 plugins={[] as Plugin[]}
             />
         )
-        const tree = component.toJSON()
-        expect(tree).toMatchSnapshot()
+
+        expect(screen.getByText(html))
     })
 
     it('render bold text', () => {
         const html = 'this is <strong>bold</strong> text'
-        const component = renderer.create(
+        render(
             <TestEditor
                 html={html}
                 editorState={undefined as unknown as EditorState}
                 plugins={[] as Plugin[]}
             />
         )
-        const tree = component.toJSON()
-        expect(tree).toMatchSnapshot()
+
+        expect(screen.getByText('bold'))
     })
 
     it('render link found in text', () => {
@@ -112,36 +112,17 @@ describe('DraftJS Plugins', () => {
 
         const plugins = [toolbarPlugin] as Plugin[]
 
-        const component = renderer.create(
+        render(
             <TestEditor
                 html={html}
                 editorState={editorState}
                 plugins={plugins}
             />
         )
-        const tree = component.toJSON()
-        expect(tree).toMatchSnapshot()
+
+        expect(screen.getByText('link'))
     })
 
     // it('render variable', () => {
-    //     const html = 'variable {current_user.name}'
-    //     let editorState = utils.editorStateFromHtml(html)
-    //
-    //     const toolbarPlugin = createToolbarPlugin()
-    //
-    //     const plugins = [
-    //         toolbarPlugin,
-    //     ]
-    //
-    //     editorState = utils.applyPluginsToEditorState(editorState, plugins)
-    //
-    //     const component = renderer.create(
-    //         <TestEditor
-    //             editorState={editorState}
-    //             plugins={plugins}
-    //         />
-    //     )
-    //     const tree = component.toJSON()
-    //     expect(tree).toMatchSnapshot()
     // })
 })

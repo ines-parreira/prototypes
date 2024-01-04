@@ -2,21 +2,25 @@
 
 exports[`BusinessHours component should render default values 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title="Business hours"
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Business hours
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <div
-      className="body-regular contentWrapper"
+      class="body-regular contentWrapper"
     >
       <div
-        className="mb32"
+        class="mb32"
       >
         <p>
           Let customers know when your team is online.
@@ -26,1301 +30,737 @@ exports[`BusinessHours component should render default values 1`] = `
         <p>
           The appearance of your
            
-          <Link
+          <a
             to="/app/settings/channels/gorgias_chat"
           >
             Chat integrations
-          </Link>
+          </a>
            
           will change when outside business hours.
         </p>
       </div>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
+      <form
+        class=""
       >
-        <Row
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="row"
         >
-          <Col
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <div
+            class="col"
           >
             <div
-              className="inputField mb32"
+              class="inputField mb32"
             >
-              <Label
-                className="control-label businessHoursLabelWrapper"
-                tag="label"
-                widths={
-                  [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <label
+                class="control-label businessHoursLabelWrapper"
               >
                 Business hours
-              </Label>
+              </label>
               <div
-                className="flex mb24"
-                key="0"
+                class="flex mb24"
               >
-                <BusinessHoursForm
-                  businessHour={
-                    Immutable.Map {
-                      "days": "1,2,3,4,5",
-                      "from_time": "09:00",
-                      "to_time": "17:00",
-                    }
-                  }
-                  onChange={[Function]}
-                />
                 <div
-                  className="deleteButton"
-                  onClick={[Function]}
+                  class="businessHoursInput"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 82px; opacity: 1;"
+                          >
+                            <i>
+                              Weekdays
+                            </i>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 82px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <button
+                          class="option option--focused dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Everyday
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Weekend
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Monday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Tuesday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Wednesday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Thursday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Friday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Saturday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Sunday
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    class="timeField form-control"
+                    name="fromTime"
+                    pattern="[0-9][0-9]:[0-9][0-9]"
+                    type="time"
+                    value="09:00"
+                  />
+                  <p>
+                    to
+                  </p>
+                  <input
+                    class="timeField form-control"
+                    name="toTime"
+                    pattern="[0-9][0-9]:[0-9][0-9]"
+                    type="time"
+                    value="17:00"
+                  />
+                </div>
+                <div
+                  class="deleteButton"
                 >
                   <i
-                    className="material-icons red"
+                    class="material-icons red"
                   >
                     clear
                   </i>
                 </div>
               </div>
-              <ForwardRef(Button)
-                intent="secondary"
-                onClick={[Function]}
+              <button
+                aria-disabled="false"
+                class="wrapper fill secondary medium"
+                type="button"
               >
-                <ButtonIconLabel
-                  icon="add"
+                <span
+                  class="wrapper"
                 >
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    add
+                  </i>
                   Add business hours
-                </ButtonIconLabel>
-              </ForwardRef(Button)>
+                </span>
+              </button>
             </div>
-            <InputField
-              className="inputField mb40"
-              label="Time zone"
-              name="timezone"
-              onChange={[Function]}
-              type="select"
-              value="UTC"
+            <div
+              class="InputField inputField mb40 form-group"
+              color=""
             >
-              <option
-                key="UTC"
-                value="UTC"
+              <label
+                class="control-label"
+                for="id-timezone"
               >
-                UTC
-              </option>
-              <option
-                key="US/Pacific"
-                value="US/Pacific"
+                Time zone
+              </label>
+              <div
+                class="select dropdown-toggle"
               >
-                US/Pacific
-              </option>
-              <option
-                key="Australia/AUR"
-                value="Australia/AUR"
-              >
-                Australia/AUR
-              </option>
-            </InputField>
-          </Col>
-        </Row>
-        <ForwardRef(Button)
-          isDisabled={false}
-          isLoading={false}
+                <select
+                  class="field form-control"
+                  id="id-timezone"
+                >
+                  <option
+                    value="UTC"
+                  >
+                    UTC
+                  </option>
+                  <option
+                    value="US/Pacific"
+                  >
+                    US/Pacific
+                  </option>
+                  <option
+                    value="Australia/AUR"
+                  >
+                    Australia/AUR
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          aria-disabled="false"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
-        </ForwardRef(Button)>
-      </Form>
+        </button>
+      </form>
     </div>
-  </Container>
+  </div>
 </div>
 `;
 
 exports[`BusinessHours component should render values from state 1`] = `
-<Provider
-  store={
-    {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
+<div
+  class="full-width"
 >
-  <Connect(BusinessHoursContainer)>
-    <BusinessHoursContainer
-      businessHoursSettings={
-        Immutable.Map {
-          "type": "business-hours",
-          "data": Immutable.Map {
-            "business_hours": Immutable.List [
-              Immutable.Map {
-                "days": "2",
-                "from_time": "10:00",
-                "to_time": "17:00",
-              },
-              Immutable.Map {
-                "days": "4",
-                "from_time": "11:00",
-                "to_time": "17:00",
-              },
-            ],
-            "timezone": "US/Pacific",
-          },
-        }
-      }
-      submitSetting={[Function]}
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Business hours
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="body-regular contentWrapper"
     >
       <div
-        className="full-width"
+        class="mb32"
       >
-        <PageHeader
-          title="Business hours"
-        >
-          <div
-            className="page-header pageHeader"
+        <p>
+          Let customers know when your team is online.
+          <br />
+          This way, you can set different auto-responders in the rules based on when your team is working.
+        </p>
+        <p>
+          The appearance of your
+           
+          <a
+            to="/app/settings/channels/gorgias_chat"
           >
-            <h1
-              className="d-flex align-items-center"
-            >
-              Business hours
-            </h1>
-          </div>
-        </PageHeader>
-        <Container
-          className="pageContainer"
-          fluid={true}
-          tag="div"
+            Chat integrations
+          </a>
+           
+          will change when outside business hours.
+        </p>
+      </div>
+      <form
+        class=""
+      >
+        <div
+          class="row"
         >
           <div
-            className="pageContainer container-fluid"
+            class="col"
           >
             <div
-              className="body-regular contentWrapper"
+              class="inputField mb32"
             >
+              <label
+                class="control-label businessHoursLabelWrapper"
+              >
+                Business hours
+              </label>
               <div
-                className="mb32"
+                class="flex mb24"
               >
-                <p>
-                  Let customers know when your team is online.
-                  <br />
-                  This way, you can set different auto-responders in the rules based on when your team is working.
-                </p>
-                <p>
-                  The appearance of your
-                   
-                  <Link
-                    to="/app/settings/channels/gorgias_chat"
-                  >
-                    <a
-                      to="/app/settings/channels/gorgias_chat"
-                    >
-                      Chat integrations
-                    </a>
-                  </Link>
-                   
-                  will change when outside business hours.
-                </p>
-              </div>
-              <Form
-                onSubmit={[Function]}
-                tag="form"
-              >
-                <form
-                  className=""
-                  onSubmit={[Function]}
+                <div
+                  class="businessHoursInput"
                 >
-                  <Row
-                    tag="div"
-                    widths={
-                      [
-                        "xs",
-                        "sm",
-                        "md",
-                        "lg",
-                        "xl",
-                      ]
-                    }
-                  >
+                  <div>
                     <div
-                      className="row"
+                      class="dropdown"
                     >
-                      <Col
-                        tag="div"
-                        widths={
-                          [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
                       >
                         <div
-                          className="col"
+                          class="select dropdown-toggle"
                         >
-                          <div
-                            className="inputField mb32"
+                          <span
+                            class="label"
+                            style="min-width: 82px; opacity: 1;"
                           >
-                            <Label
-                              className="control-label businessHoursLabelWrapper"
-                              tag="label"
-                              widths={
-                                [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <label
-                                className="control-label businessHoursLabelWrapper"
-                              >
-                                Business hours
-                              </label>
-                            </Label>
-                            <div
-                              className="flex mb24"
-                              key="0"
-                            >
-                              <BusinessHoursForm
-                                businessHour={
-                                  Immutable.Map {
-                                    "days": "2",
-                                    "from_time": "10:00",
-                                    "to_time": "17:00",
-                                  }
-                                }
-                                onChange={[Function]}
-                              >
-                                <div
-                                  className="businessHoursInput"
-                                >
-                                  <SelectField
-                                    allowCustomValue={false}
-                                    fixedWidth={true}
-                                    fullWidth={false}
-                                    id={null}
-                                    onChange={[Function]}
-                                    onSearchChange={[Function]}
-                                    options={
-                                      [
-                                        {
-                                          "label": <i>
-                                            Everyday
-                                          </i>,
-                                          "text": "Everyday",
-                                          "value": "1,2,3,4,5,6,7",
-                                        },
-                                        {
-                                          "label": <i>
-                                            Weekdays
-                                          </i>,
-                                          "text": "Weekdays",
-                                          "value": "1,2,3,4,5",
-                                        },
-                                        {
-                                          "label": <i>
-                                            Weekend
-                                          </i>,
-                                          "text": "Weekend",
-                                          "value": "6,7",
-                                        },
-                                        {
-                                          "label": "Monday",
-                                          "value": "1",
-                                        },
-                                        {
-                                          "label": "Tuesday",
-                                          "value": "2",
-                                        },
-                                        {
-                                          "label": "Wednesday",
-                                          "value": "3",
-                                        },
-                                        {
-                                          "label": "Thursday",
-                                          "value": "4",
-                                        },
-                                        {
-                                          "label": "Friday",
-                                          "value": "5",
-                                        },
-                                        {
-                                          "label": "Saturday",
-                                          "value": "6",
-                                        },
-                                        {
-                                          "label": "Sunday",
-                                          "value": "7",
-                                        },
-                                      ]
-                                    }
-                                    placeholder="Select an option"
-                                    required={false}
-                                    singular="option"
-                                    style={{}}
-                                    value="2"
-                                  >
-                                    <div
-                                      style={{}}
-                                    >
-                                      <UncontrolledDropdown
-                                        isOpen={false}
-                                        toggle={[Function]}
-                                      >
-                                        <Dropdown
-                                          a11y={true}
-                                          active={false}
-                                          addonType={false}
-                                          direction="down"
-                                          inNavbar={false}
-                                          isOpen={false}
-                                          nav={false}
-                                          setActiveFromChild={false}
-                                          toggle={[Function]}
-                                        >
-                                          <Manager>
-                                            <div
-                                              className="dropdown"
-                                              onKeyDown={[Function]}
-                                            >
-                                              <DropdownToggle
-                                                aria-haspopup={true}
-                                                color="secondary"
-                                                data-toggle="dropdown"
-                                                tag="div"
-                                              >
-                                                <Reference>
-                                                  <InnerReference
-                                                    setReferenceNode={[Function]}
-                                                  >
-                                                    <div
-                                                      aria-expanded={false}
-                                                      aria-haspopup={true}
-                                                      className=""
-                                                      data-toggle="dropdown"
-                                                      onClick={[Function]}
-                                                    >
-                                                      <div
-                                                        className="select dropdown-toggle"
-                                                        onClick={[Function]}
-                                                      >
-                                                        <span
-                                                          className="label"
-                                                          style={
-                                                            {
-                                                              "minWidth": 82,
-                                                              "opacity": 1,
-                                                            }
-                                                          }
-                                                        >
-                                                          Tuesday
-                                                        </span>
-                                                        <input
-                                                          autoComplete="chrome-off"
-                                                          className="input"
-                                                          id={null}
-                                                          onBlur={[Function]}
-                                                          onChange={[Function]}
-                                                          onFocus={[Function]}
-                                                          onKeyDown={[Function]}
-                                                          required={false}
-                                                          style={
-                                                            {
-                                                              "minWidth": 82,
-                                                            }
-                                                          }
-                                                          type="text"
-                                                          value=""
-                                                        />
-                                                        <i
-                                                          className="material-icons dropdownIcon"
-                                                        >
-                                                          arrow_drop_down
-                                                        </i>
-                                                      </div>
-                                                    </div>
-                                                  </InnerReference>
-                                                </Reference>
-                                              </DropdownToggle>
-                                              <DropdownMenu
-                                                className="options"
-                                                flip={true}
-                                                modifiers={
-                                                  {
-                                                    "preventOverflow": {
-                                                      "boundariesElement": "viewport",
-                                                    },
-                                                  }
-                                                }
-                                                tag="div"
-                                              >
-                                                <div
-                                                  aria-hidden={true}
-                                                  className="options dropdown-menu"
-                                                  role="menu"
-                                                  tabIndex="-1"
-                                                >
-                                                  <DropdownItem
-                                                    className="option option--focused"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option option--focused dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        <i>
-                                                          Everyday
-                                                        </i>
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        <i>
-                                                          Weekdays
-                                                        </i>
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        <i>
-                                                          Weekend
-                                                        </i>
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Monday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Wednesday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Thursday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Friday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Saturday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Sunday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                </div>
-                                              </DropdownMenu>
-                                            </div>
-                                          </Manager>
-                                        </Dropdown>
-                                      </UncontrolledDropdown>
-                                    </div>
-                                  </SelectField>
-                                  <Input
-                                    className="timeField"
-                                    name="fromTime"
-                                    onChange={[Function]}
-                                    pattern="[0-9][0-9]:[0-9][0-9]"
-                                    type="time"
-                                    value="10:00"
-                                  >
-                                    <input
-                                      className="timeField form-control"
-                                      name="fromTime"
-                                      onChange={[Function]}
-                                      pattern="[0-9][0-9]:[0-9][0-9]"
-                                      type="time"
-                                      value="10:00"
-                                    />
-                                  </Input>
-                                  <p>
-                                    to
-                                  </p>
-                                  <Input
-                                    className="timeField"
-                                    name="toTime"
-                                    onChange={[Function]}
-                                    pattern="[0-9][0-9]:[0-9][0-9]"
-                                    type="time"
-                                    value="17:00"
-                                  >
-                                    <input
-                                      className="timeField form-control"
-                                      name="toTime"
-                                      onChange={[Function]}
-                                      pattern="[0-9][0-9]:[0-9][0-9]"
-                                      type="time"
-                                      value="17:00"
-                                    />
-                                  </Input>
-                                </div>
-                              </BusinessHoursForm>
-                              <div
-                                className="deleteButton"
-                                onClick={[Function]}
-                              >
-                                <i
-                                  className="material-icons red"
-                                >
-                                  clear
-                                </i>
-                              </div>
-                            </div>
-                            <div
-                              className="flex mb24"
-                              key="1"
-                            >
-                              <BusinessHoursForm
-                                businessHour={
-                                  Immutable.Map {
-                                    "days": "4",
-                                    "from_time": "11:00",
-                                    "to_time": "17:00",
-                                  }
-                                }
-                                onChange={[Function]}
-                              >
-                                <div
-                                  className="businessHoursInput"
-                                >
-                                  <SelectField
-                                    allowCustomValue={false}
-                                    fixedWidth={true}
-                                    fullWidth={false}
-                                    id={null}
-                                    onChange={[Function]}
-                                    onSearchChange={[Function]}
-                                    options={
-                                      [
-                                        {
-                                          "label": <i>
-                                            Everyday
-                                          </i>,
-                                          "text": "Everyday",
-                                          "value": "1,2,3,4,5,6,7",
-                                        },
-                                        {
-                                          "label": <i>
-                                            Weekdays
-                                          </i>,
-                                          "text": "Weekdays",
-                                          "value": "1,2,3,4,5",
-                                        },
-                                        {
-                                          "label": <i>
-                                            Weekend
-                                          </i>,
-                                          "text": "Weekend",
-                                          "value": "6,7",
-                                        },
-                                        {
-                                          "label": "Monday",
-                                          "value": "1",
-                                        },
-                                        {
-                                          "label": "Tuesday",
-                                          "value": "2",
-                                        },
-                                        {
-                                          "label": "Wednesday",
-                                          "value": "3",
-                                        },
-                                        {
-                                          "label": "Thursday",
-                                          "value": "4",
-                                        },
-                                        {
-                                          "label": "Friday",
-                                          "value": "5",
-                                        },
-                                        {
-                                          "label": "Saturday",
-                                          "value": "6",
-                                        },
-                                        {
-                                          "label": "Sunday",
-                                          "value": "7",
-                                        },
-                                      ]
-                                    }
-                                    placeholder="Select an option"
-                                    required={false}
-                                    singular="option"
-                                    style={{}}
-                                    value="4"
-                                  >
-                                    <div
-                                      style={{}}
-                                    >
-                                      <UncontrolledDropdown
-                                        isOpen={false}
-                                        toggle={[Function]}
-                                      >
-                                        <Dropdown
-                                          a11y={true}
-                                          active={false}
-                                          addonType={false}
-                                          direction="down"
-                                          inNavbar={false}
-                                          isOpen={false}
-                                          nav={false}
-                                          setActiveFromChild={false}
-                                          toggle={[Function]}
-                                        >
-                                          <Manager>
-                                            <div
-                                              className="dropdown"
-                                              onKeyDown={[Function]}
-                                            >
-                                              <DropdownToggle
-                                                aria-haspopup={true}
-                                                color="secondary"
-                                                data-toggle="dropdown"
-                                                tag="div"
-                                              >
-                                                <Reference>
-                                                  <InnerReference
-                                                    setReferenceNode={[Function]}
-                                                  >
-                                                    <div
-                                                      aria-expanded={false}
-                                                      aria-haspopup={true}
-                                                      className=""
-                                                      data-toggle="dropdown"
-                                                      onClick={[Function]}
-                                                    >
-                                                      <div
-                                                        className="select dropdown-toggle"
-                                                        onClick={[Function]}
-                                                      >
-                                                        <span
-                                                          className="label"
-                                                          style={
-                                                            {
-                                                              "minWidth": 82,
-                                                              "opacity": 1,
-                                                            }
-                                                          }
-                                                        >
-                                                          Thursday
-                                                        </span>
-                                                        <input
-                                                          autoComplete="chrome-off"
-                                                          className="input"
-                                                          id={null}
-                                                          onBlur={[Function]}
-                                                          onChange={[Function]}
-                                                          onFocus={[Function]}
-                                                          onKeyDown={[Function]}
-                                                          required={false}
-                                                          style={
-                                                            {
-                                                              "minWidth": 82,
-                                                            }
-                                                          }
-                                                          type="text"
-                                                          value=""
-                                                        />
-                                                        <i
-                                                          className="material-icons dropdownIcon"
-                                                        >
-                                                          arrow_drop_down
-                                                        </i>
-                                                      </div>
-                                                    </div>
-                                                  </InnerReference>
-                                                </Reference>
-                                              </DropdownToggle>
-                                              <DropdownMenu
-                                                className="options"
-                                                flip={true}
-                                                modifiers={
-                                                  {
-                                                    "preventOverflow": {
-                                                      "boundariesElement": "viewport",
-                                                    },
-                                                  }
-                                                }
-                                                tag="div"
-                                              >
-                                                <div
-                                                  aria-hidden={true}
-                                                  className="options dropdown-menu"
-                                                  role="menu"
-                                                  tabIndex="-1"
-                                                >
-                                                  <DropdownItem
-                                                    className="option option--focused"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option option--focused dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        <i>
-                                                          Everyday
-                                                        </i>
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        <i>
-                                                          Weekdays
-                                                        </i>
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        <i>
-                                                          Weekend
-                                                        </i>
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Monday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Tuesday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Wednesday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Friday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Saturday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                  <DropdownItem
-                                                    className="option"
-                                                    onClick={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    tag="button"
-                                                    toggle={true}
-                                                    type="button"
-                                                  >
-                                                    <button
-                                                      className="option dropdown-item"
-                                                      onClick={[Function]}
-                                                      onMouseEnter={[Function]}
-                                                      role="menuitem"
-                                                      tabIndex="0"
-                                                      type="button"
-                                                    >
-                                                      <span>
-                                                        Sunday
-                                                      </span>
-                                                    </button>
-                                                  </DropdownItem>
-                                                </div>
-                                              </DropdownMenu>
-                                            </div>
-                                          </Manager>
-                                        </Dropdown>
-                                      </UncontrolledDropdown>
-                                    </div>
-                                  </SelectField>
-                                  <Input
-                                    className="timeField"
-                                    name="fromTime"
-                                    onChange={[Function]}
-                                    pattern="[0-9][0-9]:[0-9][0-9]"
-                                    type="time"
-                                    value="11:00"
-                                  >
-                                    <input
-                                      className="timeField form-control"
-                                      name="fromTime"
-                                      onChange={[Function]}
-                                      pattern="[0-9][0-9]:[0-9][0-9]"
-                                      type="time"
-                                      value="11:00"
-                                    />
-                                  </Input>
-                                  <p>
-                                    to
-                                  </p>
-                                  <Input
-                                    className="timeField"
-                                    name="toTime"
-                                    onChange={[Function]}
-                                    pattern="[0-9][0-9]:[0-9][0-9]"
-                                    type="time"
-                                    value="17:00"
-                                  >
-                                    <input
-                                      className="timeField form-control"
-                                      name="toTime"
-                                      onChange={[Function]}
-                                      pattern="[0-9][0-9]:[0-9][0-9]"
-                                      type="time"
-                                      value="17:00"
-                                    />
-                                  </Input>
-                                </div>
-                              </BusinessHoursForm>
-                              <div
-                                className="deleteButton"
-                                onClick={[Function]}
-                              >
-                                <i
-                                  className="material-icons red"
-                                >
-                                  clear
-                                </i>
-                              </div>
-                            </div>
-                            <ForwardRef(Button)
-                              intent="secondary"
-                              onClick={[Function]}
-                            >
-                              <BaseButton
-                                intent="secondary"
-                              >
-                                <button
-                                  aria-disabled={false}
-                                  className="wrapper fill secondary medium"
-                                  onClick={[Function]}
-                                  type="button"
-                                >
-                                  <ButtonIconLabel
-                                    icon="add"
-                                  >
-                                    <span
-                                      className="wrapper"
-                                    >
-                                      <Icon
-                                        className="icon isLeft"
-                                      >
-                                        <i
-                                          className="material-icons icon isLeft medium"
-                                        >
-                                          add
-                                        </i>
-                                      </Icon>
-                                      Add business hours
-                                    </span>
-                                  </ButtonIconLabel>
-                                </button>
-                              </BaseButton>
-                            </ForwardRef(Button)>
-                          </div>
-                          <InputField
-                            className="inputField mb40"
-                            label="Time zone"
-                            name="timezone"
-                            onChange={[Function]}
-                            type="select"
-                            value="US/Pacific"
+                            Tuesday
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 82px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
                           >
-                            <FormGroup
-                              className="InputField inputField mb40"
-                              color=""
-                              tag="div"
-                            >
-                              <div
-                                className="InputField inputField mb40 form-group"
-                                color=""
-                              >
-                                <Label
-                                  className="control-label"
-                                  htmlFor="id-timezone"
-                                  tag="label"
-                                  widths={
-                                    [
-                                      "xs",
-                                      "sm",
-                                      "md",
-                                      "lg",
-                                      "xl",
-                                    ]
-                                  }
-                                >
-                                  <label
-                                    className="control-label"
-                                    htmlFor="id-timezone"
-                                  >
-                                    Time zone
-                                  </label>
-                                </Label>
-                                <div
-                                  className="select dropdown-toggle"
-                                >
-                                  <Input
-                                    className="field"
-                                    id="id-timezone"
-                                    onChange={[Function]}
-                                    type="select"
-                                    value="US/Pacific"
-                                  >
-                                    <select
-                                      className="field form-control"
-                                      id="id-timezone"
-                                      onChange={[Function]}
-                                      value="US/Pacific"
-                                    >
-                                      <option
-                                        key="UTC"
-                                        value="UTC"
-                                      >
-                                        UTC
-                                      </option>
-                                      <option
-                                        key="US/Pacific"
-                                        value="US/Pacific"
-                                      >
-                                        US/Pacific
-                                      </option>
-                                      <option
-                                        key="Australia/AUR"
-                                        value="Australia/AUR"
-                                      >
-                                        Australia/AUR
-                                      </option>
-                                    </select>
-                                  </Input>
-                                </div>
-                              </div>
-                            </FormGroup>
-                          </InputField>
+                            arrow_drop_down
+                          </i>
                         </div>
-                      </Col>
-                    </div>
-                  </Row>
-                  <ForwardRef(Button)
-                    isDisabled={false}
-                    isLoading={false}
-                    type="submit"
-                  >
-                    <BaseButton
-                      isDisabled={false}
-                      isLoading={false}
-                    >
-                      <button
-                        aria-disabled={false}
-                        className="wrapper fill primary medium"
-                        type="submit"
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
                       >
-                        Save changes
-                      </button>
-                    </BaseButton>
-                  </ForwardRef(Button)>
-                </form>
-              </Form>
+                        
+                        <button
+                          class="option option--focused dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Everyday
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Weekdays
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Weekend
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Monday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Wednesday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Thursday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Friday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Saturday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Sunday
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    class="timeField form-control"
+                    name="fromTime"
+                    pattern="[0-9][0-9]:[0-9][0-9]"
+                    type="time"
+                    value="10:00"
+                  />
+                  <p>
+                    to
+                  </p>
+                  <input
+                    class="timeField form-control"
+                    name="toTime"
+                    pattern="[0-9][0-9]:[0-9][0-9]"
+                    type="time"
+                    value="17:00"
+                  />
+                </div>
+                <div
+                  class="deleteButton"
+                >
+                  <i
+                    class="material-icons red"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <div
+                class="flex mb24"
+              >
+                <div
+                  class="businessHoursInput"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 82px; opacity: 1;"
+                          >
+                            Thursday
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 82px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <button
+                          class="option option--focused dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Everyday
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Weekdays
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <i>
+                              Weekend
+                            </i>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Monday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Tuesday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Wednesday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Friday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Saturday
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            Sunday
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    class="timeField form-control"
+                    name="fromTime"
+                    pattern="[0-9][0-9]:[0-9][0-9]"
+                    type="time"
+                    value="11:00"
+                  />
+                  <p>
+                    to
+                  </p>
+                  <input
+                    class="timeField form-control"
+                    name="toTime"
+                    pattern="[0-9][0-9]:[0-9][0-9]"
+                    type="time"
+                    value="17:00"
+                  />
+                </div>
+                <div
+                  class="deleteButton"
+                >
+                  <i
+                    class="material-icons red"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <button
+                aria-disabled="false"
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                <span
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    add
+                  </i>
+                  Add business hours
+                </span>
+              </button>
+            </div>
+            <div
+              class="InputField inputField mb40 form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-timezone"
+              >
+                Time zone
+              </label>
+              <div
+                class="select dropdown-toggle"
+              >
+                <select
+                  class="field form-control"
+                  id="id-timezone"
+                >
+                  <option
+                    value="UTC"
+                  >
+                    UTC
+                  </option>
+                  <option
+                    value="US/Pacific"
+                  >
+                    US/Pacific
+                  </option>
+                  <option
+                    value="Australia/AUR"
+                  >
+                    Australia/AUR
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-        </Container>
-      </div>
-    </BusinessHoursContainer>
-  </Connect(BusinessHoursContainer)>
-</Provider>
+        </div>
+        <button
+          aria-disabled="false"
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Save changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 `;

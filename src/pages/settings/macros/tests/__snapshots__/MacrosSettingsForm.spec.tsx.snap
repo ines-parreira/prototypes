@@ -1,806 +1,162 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`] = `
-<MacrosSettingsFormContainer
-  agents={Immutable.Map {}}
-  macroCreated={[MockFunction]}
-  macroDeleted={[MockFunction]}
-  macroFetched={[MockFunction]}
-  macroUpdated={[MockFunction]}
-  macros={{}}
-  notify={[MockFunction]}
+<div
+  class="full-width"
 >
   <div
-    className="full-width"
+    class="page-header pageHeader"
   >
-    <PageHeader
-      title={
-        <Breadcrumb
-          aria-label="breadcrumb"
-          listTag="ol"
-          tag="nav"
-        >
-          <BreadcrumbItem
-            tag="li"
-          >
-            <Link
-              to="/app/automation/macros"
-            >
-              Macros
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem
-            active={true}
-            tag="li"
-          >
-            Edit
-          </BreadcrumbItem>
-        </Breadcrumb>
-      }
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <div
-        className="page-header pageHeader"
+      <ol
+        class="breadcrumb"
       >
-        <Breadcrumb
-          aria-label="breadcrumb"
-          listTag="ol"
-          tag="nav"
+        <li
+          class="breadcrumb-item"
         >
-          <nav
-            aria-label="breadcrumb"
-            className=""
+          <a
+            to="/app/automation/macros"
           >
-            <ol
-              className="breadcrumb"
-            >
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  <Link
-                    to="/app/automation/macros"
-                  >
-                    <a
-                      to="/app/automation/macros"
-                    >
-                      Macros
-                    </a>
-                  </Link>
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                <li
-                  aria-current="page"
-                  className="active breadcrumb-item"
-                >
-                  Edit
-                </li>
-              </BreadcrumbItem>
-            </ol>
-          </nav>
-        </Breadcrumb>
-      </div>
-    </PageHeader>
-    <Container
-      className="container pageContainer"
-      fluid={true}
-      tag="div"
-    >
-      <div
-        className="container pageContainer container-fluid"
-      >
-        <Loader
-          inline={false}
-          minHeight="500px"
-          size="40px"
+            Macros
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
-          <div
-            className="container"
-          >
-            <div
-              className="inner"
-              style={
-                {
-                  "minHeight": "500px",
-                }
-              }
-            >
-              <i
-                className="icon-custom icon-circle-o-notch md-spin"
-                style={
-                  {
-                    "fontSize": "40px",
-                  }
-                }
-              />
-            </div>
-          </div>
-        </Loader>
-      </div>
-    </Container>
+          Edit
+        </li>
+      </ol>
+    </nav>
   </div>
-</MacrosSettingsFormContainer>
-`;
-
-exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the macro 1`] = `
-<MacrosSettingsFormContainer
-  agents={Immutable.Map {}}
-  macroCreated={[MockFunction]}
-  macroDeleted={[MockFunction]}
-  macroFetched={[MockFunction]}
-  macroUpdated={[MockFunction]}
-  macros={{}}
-  notify={
-    [MockFunction] {
-      "calls": [
-        [
-          {
-            "message": "Failed to fetch macro",
-            "status": "error",
-          },
-        ],
-      ],
-      "results": [
-        {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  }
->
   <div
-    className="full-width"
+    class="container pageContainer container-fluid"
   >
-    <PageHeader
-      title={
-        <Breadcrumb
-          aria-label="breadcrumb"
-          listTag="ol"
-          tag="nav"
-        >
-          <BreadcrumbItem
-            tag="li"
-          >
-            <Link
-              to="/app/automation/macros"
-            >
-              Macros
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem
-            active={true}
-            tag="li"
-          >
-            Edit
-          </BreadcrumbItem>
-        </Breadcrumb>
-      }
+    <div
+      class="container"
     >
       <div
-        className="page-header pageHeader"
+        class="inner"
+        style="min-height: 500px;"
       >
-        <Breadcrumb
-          aria-label="breadcrumb"
-          listTag="ol"
-          tag="nav"
-        >
-          <nav
-            aria-label="breadcrumb"
-            className=""
-          >
-            <ol
-              className="breadcrumb"
-            >
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  <Link
-                    to="/app/automation/macros"
-                  >
-                    <a
-                      to="/app/automation/macros"
-                    >
-                      Macros
-                    </a>
-                  </Link>
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                <li
-                  aria-current="page"
-                  className="active breadcrumb-item"
-                >
-                  Edit
-                </li>
-              </BreadcrumbItem>
-            </ol>
-          </nav>
-        </Breadcrumb>
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
       </div>
-    </PageHeader>
-    <Container
-      className="container pageContainer"
-      fluid={true}
-      tag="div"
-    >
-      <div
-        className="container pageContainer container-fluid"
-      >
-        <Loader
-          inline={false}
-          minHeight="500px"
-          size="40px"
-        >
-          <div
-            className="container"
-          >
-            <div
-              className="inner"
-              style={
-                {
-                  "minHeight": "500px",
-                }
-              }
-            >
-              <i
-                className="icon-custom icon-circle-o-notch md-spin"
-                style={
-                  {
-                    "fontSize": "40px",
-                  }
-                }
-              />
-            </div>
-          </div>
-        </Loader>
-      </div>
-    </Container>
+    </div>
   </div>
-</MacrosSettingsFormContainer>
+</div>
 `;
 
-exports[`<MacrosSettingsForm/> should notify when failing to delete macro 1`] = `
-[
-  {
-    "allowHTML": true,
-    "message": "
-        <ul className="m-0">
-            <li>Rules: Rule1</li><li>Rules: Rule2</li>
-        </ul>
-    ",
-    "status": "error",
-    "title": "Cannot delete macro because it is used in the following places:",
-  },
-]
-`;
+exports[`<MacrosSettingsForm/> should notify when failing to delete macro 1`] = `undefined`;
 
 exports[`<MacrosSettingsForm/> should render a filled form when passed macro id 1`] = `
-<MacrosSettingsFormContainer
-  agents={Immutable.Map {}}
-  macroCreated={[MockFunction]}
-  macroDeleted={[MockFunction]}
-  macroFetched={
-    [MockFunction] {
-      "calls": [
-        [
-          {
-            "actions": [
-              {
-                "arguments": {
-                  "tags": "refund",
-                },
-                "name": "addTags",
-                "title": "Add Refund Tag",
-                "type": "user",
-              },
-              {
-                "arguments": {
-                  "tags": "refund accepted",
-                },
-                "name": "addTags",
-                "title": "Add Refund Accepted Tag",
-                "type": "user",
-              },
-              {
-                "arguments": {
-                  "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
-                  "body_text": "Hello {{ticket.customer.name}},
-
-Thanks for placing an order with our company.
-
-Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.
-
-If you have any questions, concerns or comments, please don’t hesitate to reach out.
-
-Have a great day and thanks for using our service!
-
-Sincerely,
-{{current_user.name}}",
-                },
-                "description": "Hello {{ticket.customer.name}},
-
-Thanks for placing an order with our company.
-
-Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.
-
-If you have any questions, concerns or comments, please don’t hesitate to reach out.
-
-Have a great day and thanks for using our service!
-
-Sincerely,
-{{current_user.name}}",
-                "name": "setResponseText",
-                "title": "Set Response Text",
-                "type": "user",
-              },
-              {
-                "arguments": {
-                  "headers": [
-                    {
-                      "editable": false,
-                      "key": "X_API_KEY",
-                      "value": "9298jjdhdjkh393jhajkhdjashuurh",
-                    },
-                    {
-                      "editable": false,
-                      "key": "content-type",
-                      "value": "application/json",
-                    },
-                  ],
-                  "method": "GET",
-                  "params": [
-                    {
-                      "editable": false,
-                      "key": "user_id",
-                      "value": "{ticket.customer.id}",
-                    },
-                  ],
-                  "url": "https://httpbin.org/post",
-                },
-                "description": "Refund the user's last month ",
-                "name": "http",
-                "title": "Refund Last Month",
-                "type": "user",
-              },
-            ],
-            "created_datetime": "2017-08-01T17:56:51.190187+00:00",
-            "id": 1,
-            "language": null,
-            "name": "Waive Fee",
-            "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
-            "usage": 1,
-          },
-        ],
-      ],
-      "results": [
-        {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  }
-  macroUpdated={[MockFunction]}
-  macros={
-    {
-      "1": {
-        "actions": [
-          {
-            "arguments": {
-              "tags": "refund",
-            },
-            "name": "addTags",
-            "title": "Add Refund Tag",
-            "type": "user",
-          },
-          {
-            "arguments": {
-              "tags": "refund accepted",
-            },
-            "name": "addTags",
-            "title": "Add Refund Accepted Tag",
-            "type": "user",
-          },
-          {
-            "arguments": {
-              "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
-              "body_text": "Hello {{ticket.customer.name}},
-
-Thanks for placing an order with our company.
-
-Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.
-
-If you have any questions, concerns or comments, please don’t hesitate to reach out.
-
-Have a great day and thanks for using our service!
-
-Sincerely,
-{{current_user.name}}",
-            },
-            "description": "Hello {{ticket.customer.name}},
-
-Thanks for placing an order with our company.
-
-Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.
-
-If you have any questions, concerns or comments, please don’t hesitate to reach out.
-
-Have a great day and thanks for using our service!
-
-Sincerely,
-{{current_user.name}}",
-            "name": "setResponseText",
-            "title": "Set Response Text",
-            "type": "user",
-          },
-          {
-            "arguments": {
-              "headers": [
-                {
-                  "editable": false,
-                  "key": "X_API_KEY",
-                  "value": "9298jjdhdjkh393jhajkhdjashuurh",
-                },
-                {
-                  "editable": false,
-                  "key": "content-type",
-                  "value": "application/json",
-                },
-              ],
-              "method": "GET",
-              "params": [
-                {
-                  "editable": false,
-                  "key": "user_id",
-                  "value": "{ticket.customer.id}",
-                },
-              ],
-              "url": "https://httpbin.org/post",
-            },
-            "description": "Refund the user's last month ",
-            "name": "http",
-            "title": "Refund Last Month",
-            "type": "user",
-          },
-        ],
-        "created_datetime": "2017-08-01T17:56:51.190187+00:00",
-        "id": 1,
-        "language": null,
-        "name": "Waive Fee",
-        "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
-        "usage": 1,
-      },
-    }
-  }
-  notify={[MockFunction]}
+<div
+  class="full-width"
 >
   <div
-    className="full-width"
+    class="page-header pageHeader"
   >
-    <PageHeader
-      title={
-        <Breadcrumb
-          aria-label="breadcrumb"
-          listTag="ol"
-          tag="nav"
-        >
-          <BreadcrumbItem
-            tag="li"
-          >
-            <Link
-              to="/app/automation/macros"
-            >
-              Macros
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem
-            active={true}
-            tag="li"
-          >
-            Edit: Waive Fee
-          </BreadcrumbItem>
-        </Breadcrumb>
-      }
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <div
-        className="page-header pageHeader"
+      <ol
+        class="breadcrumb"
       >
-        <Breadcrumb
-          aria-label="breadcrumb"
-          listTag="ol"
-          tag="nav"
+        <li
+          class="breadcrumb-item"
         >
-          <nav
-            aria-label="breadcrumb"
-            className=""
+          <a
+            to="/app/automation/macros"
           >
-            <ol
-              className="breadcrumb"
-            >
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  <Link
-                    to="/app/automation/macros"
-                  >
-                    <a
-                      to="/app/automation/macros"
-                    >
-                      Macros
-                    </a>
-                  </Link>
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                <li
-                  aria-current="page"
-                  className="active breadcrumb-item"
-                >
-                  Edit: Waive Fee
-                </li>
-              </BreadcrumbItem>
-            </ol>
-          </nav>
-        </Breadcrumb>
-      </div>
-    </PageHeader>
-    <Container
-      className="container pageContainer"
-      fluid={true}
-      tag="div"
-    >
-      <div
-        className="container pageContainer container-fluid"
-      >
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+            Macros
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
-          <form
-            className=""
-            onSubmit={[Function]}
-          >
-            <Component
-              actions={
-                Immutable.List [
-                  Immutable.Map {
-                    "type": "user",
-                    "execution": "front",
-                    "name": "setResponseText",
-                    "title": "Add response text",
-                    "arguments": Immutable.Map {
-                      "body_text": "",
-                      "body_html": "",
-                    },
-                  },
-                ]
-              }
-              agents={Immutable.Map {}}
-              currentMacro={
-                Immutable.Map {
-                  "name": "New macro",
-                  "actions": Immutable.List [
-                    Immutable.Map {
-                      "type": "user",
-                      "execution": "front",
-                      "name": "setResponseText",
-                      "title": "Add response text",
-                      "arguments": Immutable.Map {
-                        "body_text": "",
-                        "body_html": "",
-                      },
-                    },
-                  ],
-                  "language": "",
-                }
-              }
-              language=""
-              name="New macro"
-              setActions={[Function]}
-              setLanguage={[Function]}
-              setName={[Function]}
-            >
-              MacroEdit
-            </Component>
-            <FormGroup
-              className="mt-5"
-              tag="div"
-            >
-              <div
-                className="mt-5 form-group"
-              >
-                <ForwardRef(Button)
-                  className="mr-2"
-                  isDisabled={false}
-                  isLoading={false}
-                  type="submit"
-                >
-                  <BaseButton
-                    className="mr-2"
-                    isDisabled={false}
-                    isLoading={false}
-                  >
-                    <button
-                      aria-disabled={false}
-                      className="wrapper mr-2 fill primary medium"
-                      type="submit"
-                    >
-                      Update macro
-                    </button>
-                  </BaseButton>
-                </ForwardRef(Button)>
-                <ForwardRef(Button)
-                  intent="secondary"
-                  isDisabled={false}
-                  isLoading={false}
-                  onClick={[Function]}
-                >
-                  <BaseButton
-                    intent="secondary"
-                    isDisabled={false}
-                    isLoading={false}
-                  >
-                    <button
-                      aria-disabled={false}
-                      className="wrapper fill secondary medium"
-                      onClick={[Function]}
-                      type="button"
-                    >
-                      Duplicate macro
-                    </button>
-                  </BaseButton>
-                </ForwardRef(Button)>
-                <Component
-                  className="float-right"
-                  confirmationContent="You are about to delete this macro."
-                  intent="destructive"
-                  isDisabled={false}
-                  isLoading={false}
-                  onConfirm={[Function]}
-                >
-                  <div
-                    onClick={[Function]}
-                  >
-                    <ButtonIconLabel
-                      icon="delete"
-                    >
-                      <span
-                        className="wrapper"
-                      >
-                        <Icon
-                          className="icon isLeft"
-                        >
-                          <i
-                            className="material-icons icon isLeft medium"
-                          >
-                            delete
-                          </i>
-                        </Icon>
-                        Delete macro
-                      </span>
-                    </ButtonIconLabel>
-                  </div>
-                </Component>
-              </div>
-            </FormGroup>
-          </form>
-        </Form>
-      </div>
-    </Container>
+          Edit: Waive Fee
+        </li>
+      </ol>
+    </nav>
   </div>
-</MacrosSettingsFormContainer>
+  <div
+    class="container pageContainer container-fluid"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 500px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/automation/macros"
           >
             Macros
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
           Add macro
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="container pageContainer"
-    fluid={true}
-    tag="div"
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="container pageContainer container-fluid"
   >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
+    <form
+      class=""
     >
-      <Component
-        actions={
-          Immutable.List [
-            Immutable.Map {
-              "type": "user",
-              "execution": "front",
-              "name": "setResponseText",
-              "title": "Add response text",
-              "arguments": Immutable.Map {
-                "body_text": "",
-                "body_html": "",
-              },
-            },
-          ]
-        }
-        agents={Immutable.Map {}}
-        currentMacro={
-          Immutable.Map {
-            "name": "New macro",
-            "actions": Immutable.List [
-              Immutable.Map {
-                "type": "user",
-                "execution": "front",
-                "name": "setResponseText",
-                "title": "Add response text",
-                "arguments": Immutable.Map {
-                  "body_text": "",
-                  "body_html": "",
-                },
-              },
-            ],
-            "language": "",
-          }
-        }
-        language=""
-        name="New macro"
-        setActions={[Function]}
-        setLanguage={[Function]}
-        setName={[Function]}
-      />
-      <FormGroup
-        className="mt-5"
-        tag="div"
+      MacroEdit
+      <div
+        class="mt-5 form-group"
       >
-        <ForwardRef(Button)
-          className="mr-2"
-          isDisabled={false}
-          isLoading={false}
+        <button
+          aria-disabled="false"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Create macro
-        </ForwardRef(Button)>
-      </FormGroup>
-    </Form>
-  </Container>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

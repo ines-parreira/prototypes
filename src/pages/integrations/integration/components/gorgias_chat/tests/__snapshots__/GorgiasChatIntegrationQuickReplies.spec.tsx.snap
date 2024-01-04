@@ -1,2293 +1,886 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults because there is no quick replies in the integration 1`] = `
-<Provider
-  store={
-    {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
+<div
+  class="full-width"
 >
-  <Connect(GorgiasChatIntegrationQuickRepliesComponent)
-    currentUser={Immutable.Map {}}
-    integration={
-      Immutable.Map {
-        "id": 7,
-        "name": "my chat integration",
-        "meta": Immutable.Map {},
-        "decoration": Immutable.Map {
-          "introduction_text": "this is an intro",
-          "input_placeholder": "type something please",
-          "main_color": "#123456",
-        },
-      }
-    }
-    updateOrCreateIntegration={[MockFunction]}
+  <div
+    class="page-header pageHeader"
   >
-    <GorgiasChatIntegrationQuickRepliesComponent
-      integration={
-        Immutable.Map {
-          "id": 7,
-          "name": "my chat integration",
-          "meta": Immutable.Map {},
-          "decoration": Immutable.Map {
-            "introduction_text": "this is an intro",
-            "input_placeholder": "type something please",
-            "main_color": "#123456",
-          },
-        }
-      }
-      updateOrCreateIntegration={[Function]}
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/channels/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+      </ol>
+    </nav>
+    <div>
+      <div
+        data-testid="GorgiasChatIntegrationConnectedChannel"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="GorgiasChatIntegrationHeader"
+  />
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
     >
       <div
-        className="full-width"
+        class="col"
       >
-        <PageHeader
-          title={
-            <Breadcrumb
-              aria-label="breadcrumb"
-              listTag="ol"
-              tag="nav"
-            >
-              <BreadcrumbItem
-                tag="li"
-              >
-                <Link
-                  to="/app/settings/channels/gorgias_chat"
-                >
-                  Chat
-                </Link>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                tag="li"
-              >
-                my chat integration
-              </BreadcrumbItem>
-            </Breadcrumb>
-          }
+        <form
+          class=""
         >
           <div
-            className="page-header pageHeader"
+            class="mb-4"
           >
-            <Breadcrumb
-              aria-label="breadcrumb"
-              listTag="ol"
-              tag="nav"
+            <h4>
+              Quick replies
+            </h4>
+            <p
+              class="section"
             >
-              <nav
-                aria-label="breadcrumb"
-                className=""
+              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
+              <br />
+              <a
+                href="https://docs.gorgias.com/en-US/quick-replies-81794"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <ol
-                  className="breadcrumb"
+                Learn more
+              </a>
+               
+              about quick replies in our Help Center.
+            </p>
+            <div
+              class="d-flex align-items-center mb16"
+            >
+              <div>
+                <label
+                  aria-checked="false"
+                  aria-label="Enable quick replies"
+                  class="label label"
+                  for="toggle-button-1"
+                  role="switch"
                 >
-                  <BreadcrumbItem
-                    tag="li"
-                  >
-                    <li
-                      className="breadcrumb-item"
-                    >
-                      <Link
-                        to="/app/settings/channels/gorgias_chat"
-                      >
-                        <a
-                          to="/app/settings/channels/gorgias_chat"
-                        >
-                          Chat
-                        </a>
-                      </Link>
-                    </li>
-                  </BreadcrumbItem>
-                  <BreadcrumbItem
-                    tag="li"
-                  >
-                    <li
-                      className="breadcrumb-item"
-                    >
-                      my chat integration
-                    </li>
-                  </BreadcrumbItem>
-                </ol>
-              </nav>
-            </Breadcrumb>
-            <div>
-              <Component
-                integration={
-                  Immutable.Map {
-                    "id": 7,
-                    "name": "my chat integration",
-                    "meta": Immutable.Map {},
-                    "decoration": Immutable.Map {
-                      "introduction_text": "this is an intro",
-                      "input_placeholder": "type something please",
-                      "main_color": "#123456",
-                    },
-                  }
-                }
+                  <input
+                    aria-label="Enable quick replies"
+                    class="input"
+                    disabled=""
+                    id="toggle-button-1"
+                    name="toggle-button-1"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+              <div
+                class="ml-2"
               >
-                <div
-                  data-testid="GorgiasChatIntegrationConnectedChannel"
-                />
-              </Component>
+                <b>
+                  Enable quick replies
+                </b>
+              </div>
             </div>
           </div>
-        </PageHeader>
-        <Component
-          integration={
-            Immutable.Map {
-              "id": 7,
-              "name": "my chat integration",
-              "meta": Immutable.Map {},
-              "decoration": Immutable.Map {
-                "introduction_text": "this is an intro",
-                "input_placeholder": "type something please",
-                "main_color": "#123456",
-              },
-            }
-          }
-        >
           <div
-            data-testid="GorgiasChatIntegrationHeader"
-          />
-        </Component>
-        <GorgiasChatIntegrationPreviewContainer
-          preview={
-            <ChatIntegrationPreview
-              avatar={
-                {
-                  "companyLogoUrl": undefined,
-                  "imageType": "agent-picture",
-                  "nameType": "agent-first-name",
-                }
-              }
-              backgroundColorStyle="gradient"
-              displayBotLabel={true}
-              introductionText="this is an intro"
-              isOnline={true}
-              mainColor="#123456"
-              mainFontFamily="Inter"
-              name="my chat integration"
-              position={
-                {
-                  "alignment": "bottom-right",
-                  "offsetX": 0,
-                  "offsetY": 0,
-                }
-              }
-              useMainColorOutsideBusinessHours={false}
-            >
-              <ChatIntegrationPreviewContent>
-                <div
-                  className="content"
-                />
-                <QuickReplies
-                  mainColor="#123456"
-                  quickReplies={
-                    [
-                      "Get order status",
-                      "Apply promo code",
-                    ]
-                  }
-                />
-              </ChatIntegrationPreviewContent>
-            </ChatIntegrationPreview>
-          }
-        >
-          <Container
-            className="pageContainer"
-            fluid={true}
-            tag="div"
+            class="container"
           >
             <div
-              className="pageContainer container-fluid"
+              class="row row"
             >
-              <Row
-                tag="div"
-                widths={
-                  [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <div
+                class="flex-grow pr-0 col"
               >
                 <div
-                  className="row"
+                  class="wrapper isDisabled my-0"
                 >
-                  <Col
-                    tag="div"
-                    widths={
-                      [
-                        "xs",
-                        "sm",
-                        "md",
-                        "lg",
-                        "xl",
-                      ]
-                    }
+                  <input
+                    class="input"
+                    disabled=""
+                    id="input-text-2"
+                    maxlength="20"
+                    name="item-0"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="Get order status"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-muted"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+            <div
+              class="row row"
+            >
+              <div
+                class="flex-grow pr-0 col"
+              >
+                <div
+                  class="wrapper isDisabled my-0"
+                >
+                  <input
+                    class="input"
+                    disabled=""
+                    id="input-text-3"
+                    maxlength="20"
+                    name="item-1"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="Apply promo code"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-muted"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+            <button
+              class="d-flex align-items-center btn btn-secondary btn-sm disabled"
+              disabled=""
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                add
+              </i>
+              <span
+                class="ml-2"
+              >
+                Add Quick Reply
+              </span>
+            </button>
+          </div>
+          <div>
+            <button
+              aria-disabled="false"
+              class="wrapper fill primary medium"
+              type="submit"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      <div
+        class="col"
+      >
+        <div
+          class="stickyParent"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="light wrapper preview previewWithBackground"
+              style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
+            >
+              <div
+                class="buttonWrapper bottom-right"
+              >
+                <div
+                  class="axisLauncherWrapper"
+                >
+                  <button
+                    class="css-kv5pal"
+                    color="#123456"
                   >
                     <div
-                      className="col"
+                      class="css-m4oh12"
                     >
-                      <Form
-                        onSubmit={[Function]}
-                        tag="form"
+                      <svg
+                        aria-label="Bubble icon button"
+                        fill="none"
+                        height="28"
+                        role="img"
+                        viewBox="0 0 100 100"
+                        width="28"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <form
-                          className=""
-                          onSubmit={[Function]}
+                        <filter
+                          id="33c9df204aeec9aa096f1fd360bd4160"
                         >
-                          <div
-                            className="mb-4"
-                          >
-                            <h4>
-                              Quick replies
-                            </h4>
-                            <p
-                              className="section"
-                            >
-                              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
-                              <br />
-                              <a
-                                href="https://docs.gorgias.com/en-US/quick-replies-81794"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                              >
-                                Learn more
-                              </a>
-                               
-                              about quick replies in our Help Center.
-                            </p>
-                            <GorgiasChatIntegrationQuickRepliesSunsetAlert
-                              integration={
-                                Immutable.Map {
-                                  "id": 7,
-                                  "name": "my chat integration",
-                                  "meta": Immutable.Map {},
-                                  "decoration": Immutable.Map {
-                                    "introduction_text": "this is an intro",
-                                    "input_placeholder": "type something please",
-                                    "main_color": "#123456",
-                                  },
-                                }
-                              }
+                          <fegaussianblur
+                            in="SourceAlpha"
+                            stdDeviation="0,4"
+                          />
+                          <feoffset
+                            dx="0"
+                            dy="4"
+                            result="offsetblur"
+                          />
+                          <fecomponenttransfer>
+                            <fefunca
+                              slope="0.4"
+                              type="linear"
                             />
-                            <div
-                              className="d-flex align-items-center mb16"
-                            >
-                              <ToggleInput
-                                aria-label="Enable quick replies"
-                                isToggled={false}
-                                onClick={[Function]}
-                              >
-                                <div>
-                                  <Label
-                                    aria-checked={false}
-                                    aria-label="Enable quick replies"
-                                    className="label"
-                                    htmlFor="toggle-button-1"
-                                    isDisabled={false}
-                                    onClick={[Function]}
-                                    role="switch"
-                                  >
-                                    <label
-                                      aria-checked={false}
-                                      aria-label="Enable quick replies"
-                                      className="label label"
-                                      htmlFor="toggle-button-1"
-                                      onClick={[Function]}
-                                      role="switch"
-                                    >
-                                      <input
-                                        aria-label="Enable quick replies"
-                                        checked={false}
-                                        className="input"
-                                        disabled={true}
-                                        id="toggle-button-1"
-                                        name="toggle-button-1"
-                                        type="checkbox"
-                                      />
-                                      <div
-                                        className="slider"
-                                      />
-                                    </label>
-                                  </Label>
-                                </div>
-                              </ToggleInput>
-                              <div
-                                className="ml-2"
-                              >
-                                <b>
-                                  Enable quick replies
-                                </b>
-                              </div>
-                            </div>
-                          </div>
-                          <ListField
-                            addLabel="Add Quick Reply"
-                            className="container"
-                            disabled={true}
-                            items={
-                              Immutable.List [
-                                "Get order status",
-                                "Apply promo code",
-                              ]
-                            }
-                            maxItems={3}
-                            maxLength={20}
-                            onChange={[Function]}
-                          >
-                            <div
-                              className="container"
-                            >
-                              <Row
-                                className="row"
-                                key="0"
-                                tag="div"
-                                widths={
-                                  [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="row row"
-                                >
-                                  <Col
-                                    className="flex-grow pr-0"
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="flex-grow pr-0 col"
-                                    >
-                                      <ForwardRef(TextInput)
-                                        className="my-0"
-                                        isDisabled={true}
-                                        isRequired={true}
-                                        maxLength={20}
-                                        name="item-0"
-                                        onChange={[Function]}
-                                        placeholder="Type something (limited to 20 characters)"
-                                        size={300}
-                                        value="Get order status"
-                                      >
-                                        <div
-                                          className="wrapper isDisabled my-0"
-                                        >
-                                          <input
-                                            className="input"
-                                            disabled={true}
-                                            id="input-text-2"
-                                            maxLength={20}
-                                            name="item-0"
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            size={300}
-                                            type="text"
-                                            value="Get order status"
-                                          />
-                                        </div>
-                                      </ForwardRef(TextInput)>
-                                    </div>
-                                  </Col>
-                                  <Col
-                                    className="d-flex col-sm-auto delete"
-                                    onClick={[Function]}
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="d-flex col-sm-auto delete col"
-                                      onClick={[Function]}
-                                    >
-                                      <i
-                                        className="material-icons md-2 text-muted"
-                                      >
-                                        clear
-                                      </i>
-                                    </div>
-                                  </Col>
-                                </div>
-                              </Row>
-                              <Row
-                                className="row"
-                                key="1"
-                                tag="div"
-                                widths={
-                                  [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="row row"
-                                >
-                                  <Col
-                                    className="flex-grow pr-0"
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="flex-grow pr-0 col"
-                                    >
-                                      <ForwardRef(TextInput)
-                                        className="my-0"
-                                        isDisabled={true}
-                                        isRequired={true}
-                                        maxLength={20}
-                                        name="item-1"
-                                        onChange={[Function]}
-                                        placeholder="Type something (limited to 20 characters)"
-                                        size={300}
-                                        value="Apply promo code"
-                                      >
-                                        <div
-                                          className="wrapper isDisabled my-0"
-                                        >
-                                          <input
-                                            className="input"
-                                            disabled={true}
-                                            id="input-text-3"
-                                            maxLength={20}
-                                            name="item-1"
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            size={300}
-                                            type="text"
-                                            value="Apply promo code"
-                                          />
-                                        </div>
-                                      </ForwardRef(TextInput)>
-                                    </div>
-                                  </Col>
-                                  <Col
-                                    className="d-flex col-sm-auto delete"
-                                    onClick={[Function]}
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="d-flex col-sm-auto delete col"
-                                      onClick={[Function]}
-                                    >
-                                      <i
-                                        className="material-icons md-2 text-muted"
-                                      >
-                                        clear
-                                      </i>
-                                    </div>
-                                  </Col>
-                                </div>
-                              </Row>
-                              <Button
-                                className="d-flex align-items-center"
-                                color="secondary"
-                                disabled={true}
-                                onClick={[Function]}
-                                size="sm"
-                                tag="button"
-                              >
-                                <button
-                                  aria-label={null}
-                                  className="d-flex align-items-center btn btn-secondary btn-sm disabled"
-                                  disabled={true}
-                                  onClick={[Function]}
-                                  type="button"
-                                >
-                                  <i
-                                    className="material-icons md-2"
-                                  >
-                                    add
-                                  </i>
-                                  <span
-                                    className="ml-2"
-                                  >
-                                    Add Quick Reply
-                                  </span>
-                                </button>
-                              </Button>
-                            </div>
-                          </ListField>
-                          <div>
-                            <ForwardRef(Button)
-                              isDisabled={false}
-                              isLoading={false}
-                              type="submit"
-                            >
-                              <BaseButton
-                                isDisabled={false}
-                                isLoading={false}
-                              >
-                                <button
-                                  aria-disabled={false}
-                                  className="wrapper fill primary medium"
-                                  type="submit"
-                                >
-                                  Save Changes
-                                </button>
-                              </BaseButton>
-                            </ForwardRef(Button)>
-                          </div>
-                        </form>
-                      </Form>
+                          </fecomponenttransfer>
+                          <fecomposite
+                            in2="offsetblur"
+                            operator="in"
+                          />
+                          <femerge>
+                            <femergenode />
+                            <femergenode
+                              in="SourceGraphic"
+                            />
+                          </femerge>
+                        </filter>
+                        <path
+                          d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+                          fill="#fff"
+                          filter="#33c9df204aeec9aa096f1fd360bd4160"
+                        />
+                      </svg>
                     </div>
-                  </Col>
-                  <Col
-                    tag="div"
-                    widths={
-                      [
-                        "xs",
-                        "sm",
-                        "md",
-                        "lg",
-                        "xl",
-                      ]
-                    }
+                    <div
+                      class="css-199spez"
+                    >
+                      <svg
+                        fill="none"
+                        height="28"
+                        viewBox="0 0 28 28"
+                        width="28"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                    <span
+                      class="css-1oft1bb"
+                      color="#fff"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div
+                class=""
+              >
+                <div
+                  class="dialog"
+                  style="background-color: rgb(18, 52, 86);"
+                >
+                  <div
+                    class="css-cad7de"
+                    color="#123456"
+                  />
+                  <div
+                    class="css-1vo7hu9"
+                  />
+                  <div
+                    class="noise"
+                  />
+                  <div
+                    aria-label="Live chat window header"
+                    class="css-1v07zf4"
+                    role="region"
+                    style="z-index: 2;"
+                    title="my chat integration"
                   >
                     <div
-                      className="col"
+                      class="css-1ti7tcr"
                     >
                       <div
-                        className="stickyParent"
+                        class="css-1jtrw5v"
                       >
                         <div
-                          className="preview"
+                          class="css-qiet1b"
                         >
-                          <ChatIntegrationPreview
-                            avatar={
-                              {
-                                "companyLogoUrl": undefined,
-                                "imageType": "agent-picture",
-                                "nameType": "agent-first-name",
-                              }
-                            }
-                            backgroundColorStyle="gradient"
-                            displayBotLabel={true}
-                            introductionText="this is an intro"
-                            isOnline={true}
-                            mainColor="#123456"
-                            mainFontFamily="Inter"
-                            name="my chat integration"
-                            position={
-                              {
-                                "alignment": "bottom-right",
-                                "offsetX": 0,
-                                "offsetY": 0,
-                              }
-                            }
-                            useMainColorOutsideBusinessHours={false}
-                          >
-                            <ThemeProvider
-                              theme={
-                                {
-                                  "mainColor": "#123456",
-                                }
-                              }
-                            >
-                              <CustomizedChatLauncher
-                                className="preview previewWithBackground"
-                                isClosed={false}
-                                launcher={
-                                  {
-                                    "type": "icon",
-                                  }
-                                }
-                                mainColor="#123456"
-                                mainFontFamily="Inter"
-                                position={
-                                  {
-                                    "alignment": "bottom-right",
-                                    "offsetX": 0,
-                                    "offsetY": 0,
-                                  }
-                                }
-                              >
-                                <div
-                                  className="light wrapper preview previewWithBackground"
-                                  style={
-                                    {
-                                      "fontFamily": "Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif",
-                                    }
-                                  }
-                                >
-                                  <div
-                                    className="buttonWrapper bottom-right"
-                                  >
-                                    <div
-                                      className="axisLauncherWrapper"
-                                    >
-                                      <Launcher
-                                        fillColor="#123456"
-                                        hasLaunched={true}
-                                        shouldHideLabel={true}
-                                      >
-                                        <Styled(button)
-                                          color="#123456"
-                                          showIconOnly={true}
-                                        >
-                                          <button
-                                            className="css-kv5pal"
-                                            color="#123456"
-                                          >
-                                            <Styled(div)
-                                              hideIcon={true}
-                                              isLabelHidden={true}
-                                            >
-                                              <div
-                                                className="css-m4oh12"
-                                              >
-                                                <BubbleIcon
-                                                  color="#fff"
-                                                >
-                                                  <svg
-                                                    aria-label="Bubble icon button"
-                                                    fill="none"
-                                                    height="28"
-                                                    role="img"
-                                                    viewBox="0 0 100 100"
-                                                    width="28"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <filter
-                                                      id="33c9df204aeec9aa096f1fd360bd4160"
-                                                    >
-                                                      <feGaussianBlur
-                                                        in="SourceAlpha"
-                                                        stdDeviation="0,4"
-                                                      />
-                                                      <feOffset
-                                                        dx="0"
-                                                        dy="4"
-                                                        result="offsetblur"
-                                                      />
-                                                      <feComponentTransfer>
-                                                        <feFuncA
-                                                          slope="0.4"
-                                                          type="linear"
-                                                        />
-                                                      </feComponentTransfer>
-                                                      <feComposite
-                                                        in2="offsetblur"
-                                                        operator="in"
-                                                      />
-                                                      <feMerge>
-                                                        <feMergeNode />
-                                                        <feMergeNode
-                                                          in="SourceGraphic"
-                                                        />
-                                                      </feMerge>
-                                                    </filter>
-                                                    <path
-                                                      d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
-                                                      fill="#fff"
-                                                      filter="#33c9df204aeec9aa096f1fd360bd4160"
-                                                    />
-                                                  </svg>
-                                                </BubbleIcon>
-                                              </div>
-                                            </Styled(div)>
-                                            <Styled(div)
-                                              hideIcon={false}
-                                              isCloseIcon={true}
-                                              isLabelHidden={true}
-                                            >
-                                              <div
-                                                className="css-199spez"
-                                              >
-                                                <CloseIcon
-                                                  color="#fff"
-                                                >
-                                                  <svg
-                                                    fill="none"
-                                                    height="28"
-                                                    viewBox="0 0 28 28"
-                                                    width="28"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
-                                                      fill="#fff"
-                                                    />
-                                                  </svg>
-                                                </CloseIcon>
-                                              </div>
-                                            </Styled(div)>
-                                            <Styled(span)
-                                              color="#fff"
-                                              showIconOnly={true}
-                                            >
-                                              <span
-                                                className="css-1oft1bb"
-                                                color="#fff"
-                                              />
-                                            </Styled(span)>
-                                          </button>
-                                        </Styled(button)>
-                                      </Launcher>
-                                    </div>
-                                  </div>
-                                  <div
-                                    className=""
-                                  >
-                                    <div
-                                      className="dialog"
-                                      style={
-                                        {
-                                          "backgroundColor": "#123456",
-                                        }
-                                      }
-                                    >
-                                      <Styled(div)
-                                        color="#123456"
-                                      >
-                                        <div
-                                          className="css-cad7de"
-                                          color="#123456"
-                                        />
-                                      </Styled(div)>
-                                      <Styled(div)>
-                                        <div
-                                          className="css-1vo7hu9"
-                                        />
-                                      </Styled(div)>
-                                      <div
-                                        className="noise"
-                                      />
-                                      <ConversationHeader
-                                        aria-label="Live chat window header"
-                                        leadIcon={null}
-                                        role="region"
-                                        style={
-                                          {
-                                            "zIndex": 2,
-                                          }
-                                        }
-                                        title="my chat integration"
-                                        variant="light"
-                                      >
-                                        <Styled(div)
-                                          aria-label="Live chat window header"
-                                          leadIcon={null}
-                                          role="region"
-                                          style={
-                                            {
-                                              "zIndex": 2,
-                                            }
-                                          }
-                                          title="my chat integration"
-                                          variant="light"
-                                        >
-                                          <div
-                                            aria-label="Live chat window header"
-                                            className="css-1v07zf4"
-                                            role="region"
-                                            style={
-                                              {
-                                                "zIndex": 2,
-                                              }
-                                            }
-                                            title="my chat integration"
-                                          >
-                                            <Styled(div)>
-                                              <div
-                                                className="css-1ti7tcr"
-                                              >
-                                                <Styled(div)>
-                                                  <div
-                                                    className="css-1jtrw5v"
-                                                  >
-                                                    <Styled(div)
-                                                      isPlaceholder={false}
-                                                    >
-                                                      <div
-                                                        className="css-qiet1b"
-                                                      >
-                                                        my chat integration
-                                                      </div>
-                                                    </Styled(div)>
-                                                  </div>
-                                                </Styled(div)>
-                                              </div>
-                                            </Styled(div)>
-                                          </div>
-                                        </Styled(div)>
-                                      </ConversationHeader>
-                                      <div
-                                        className="conversationContentWrapper"
-                                      >
-                                        <ChatIntegrationPreviewContent>
-                                          <div
-                                            className="content"
-                                          >
-                                            <div
-                                              className="content"
-                                            />
-                                            <QuickReplies
-                                              mainColor="#123456"
-                                              quickReplies={
-                                                [
-                                                  "Get order status",
-                                                  "Apply promo code",
-                                                ]
-                                              }
-                                            >
-                                              <div
-                                                className="quickRepliesContent"
-                                              >
-                                                <div
-                                                  className="quickRepliesWrapper"
-                                                >
-                                                  <button
-                                                    className="btn btn-reply-action reply"
-                                                    key="Get order status-0"
-                                                    style={
-                                                      {
-                                                        "borderColor": "#123456",
-                                                        "color": "#123456",
-                                                      }
-                                                    }
-                                                  >
-                                                    Get order status
-                                                  </button>
-                                                  <button
-                                                    className="btn btn-reply-action reply"
-                                                    key="Apply promo code-1"
-                                                    style={
-                                                      {
-                                                        "borderColor": "#123456",
-                                                        "color": "#123456",
-                                                      }
-                                                    }
-                                                  >
-                                                    Apply promo code
-                                                  </button>
-                                                </div>
-                                              </div>
-                                            </QuickReplies>
-                                          </div>
-                                        </ChatIntegrationPreviewContent>
-                                        <ChatMessageInput
-                                          aria-label="Gorgias message input"
-                                          leadIcon={<AddIcon />}
-                                          leadIconAriaLabel="Add attachment"
-                                          placeholder="Type a message..."
-                                          readOnly={true}
-                                          trailIcon={<PlaneIcon />}
-                                          trailIconAriaLabel="Send message"
-                                        >
-                                          <Styled(div)>
-                                            <div
-                                              className="css-ctovm3"
-                                            >
-                                              <IconButton
-                                                aria-label="Add attachment"
-                                                fill="ghost"
-                                                icon={<AddIcon />}
-                                                variant="primary"
-                                              >
-                                                <Styled(button)
-                                                  aria-label="Add attachment"
-                                                  fill="ghost"
-                                                  theme={
-                                                    {
-                                                      "mainColor": "#123456",
-                                                    }
-                                                  }
-                                                  type="button"
-                                                  variant="primary"
-                                                >
-                                                  <button
-                                                    aria-label="Add attachment"
-                                                    className="css-1dsoodl"
-                                                    fill="ghost"
-                                                    type="button"
-                                                  >
-                                                    <Styled(div)
-                                                      fill="ghost"
-                                                      variant="primary"
-                                                    >
-                                                      <div
-                                                        className="css-ouhew3"
-                                                        fill="ghost"
-                                                      >
-                                                        <AddIcon>
-                                                          <svg
-                                                            fill="none"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            width="24"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                          >
-                                                            <path
-                                                              className="withFill"
-                                                              d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
-                                                            />
-                                                          </svg>
-                                                        </AddIcon>
-                                                      </div>
-                                                    </Styled(div)>
-                                                  </button>
-                                                </Styled(button)>
-                                              </IconButton>
-                                              <TextArea
-                                                aria-label="Gorgias message input"
-                                                id="chat-message-input"
-                                                isAlternative={true}
-                                                isExpandable={false}
-                                                isValid={true}
-                                                leadIcon={<AddIcon />}
-                                                leadIconAriaLabel="Add attachment"
-                                                maxHeight={180}
-                                                minHeight={44}
-                                                onChange={[Function]}
-                                                placeholder="Type a message..."
-                                                readOnly={true}
-                                                trailIcon={<PlaneIcon />}
-                                                trailIconAriaLabel="Send message"
-                                              >
-                                                <Styled(div)>
-                                                  <div
-                                                    className="css-s53yqv"
-                                                  >
-                                                    <Styled(textarea)
-                                                      aria-invalid={false}
-                                                      aria-label="Gorgias message input"
-                                                      id="chat-message-input"
-                                                      isAlternative={true}
-                                                      isExpandable={false}
-                                                      isValid={true}
-                                                      leadIcon={<AddIcon />}
-                                                      leadIconAriaLabel="Add attachment"
-                                                      maxHeight={180}
-                                                      minHeight={44}
-                                                      name="chat-message-input"
-                                                      onChange={[Function]}
-                                                      placeholder="Type a message..."
-                                                      readOnly={true}
-                                                      trailIcon={<PlaneIcon />}
-                                                      trailIconAriaLabel="Send message"
-                                                    >
-                                                      <textarea
-                                                        aria-invalid={false}
-                                                        aria-label="Gorgias message input"
-                                                        className="css-qhufd7"
-                                                        id="chat-message-input"
-                                                        name="chat-message-input"
-                                                        onChange={[Function]}
-                                                        placeholder="Type a message..."
-                                                        readOnly={true}
-                                                      />
-                                                    </Styled(textarea)>
-                                                  </div>
-                                                </Styled(div)>
-                                              </TextArea>
-                                              <IconButton
-                                                aria-label="Send message"
-                                                fill="ghost"
-                                                icon={<PlaneIcon />}
-                                                variant="primary"
-                                              >
-                                                <Styled(button)
-                                                  aria-label="Send message"
-                                                  fill="ghost"
-                                                  theme={
-                                                    {
-                                                      "mainColor": "#123456",
-                                                    }
-                                                  }
-                                                  type="button"
-                                                  variant="primary"
-                                                >
-                                                  <button
-                                                    aria-label="Send message"
-                                                    className="css-1dsoodl"
-                                                    fill="ghost"
-                                                    type="button"
-                                                  >
-                                                    <Styled(div)
-                                                      fill="ghost"
-                                                      variant="primary"
-                                                    >
-                                                      <div
-                                                        className="css-ouhew3"
-                                                        fill="ghost"
-                                                      >
-                                                        <PlaneIcon>
-                                                          <svg
-                                                            fill="none"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            width="24"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                          >
-                                                            <g>
-                                                              <path
-                                                                className="withFill"
-                                                                d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
-                                                              />
-                                                            </g>
-                                                          </svg>
-                                                        </PlaneIcon>
-                                                      </div>
-                                                    </Styled(div)>
-                                                  </button>
-                                                </Styled(button)>
-                                              </IconButton>
-                                            </div>
-                                          </Styled(div)>
-                                        </ChatMessageInput>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </CustomizedChatLauncher>
-                            </ThemeProvider>
-                          </ChatIntegrationPreview>
+                          my chat integration
                         </div>
                       </div>
                     </div>
-                  </Col>
+                  </div>
+                  <div
+                    class="conversationContentWrapper"
+                  >
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="content"
+                      />
+                      <div
+                        class="quickRepliesContent"
+                      >
+                        <div
+                          class="quickRepliesWrapper"
+                        >
+                          <button
+                            class="btn btn-reply-action reply"
+                            style="color: rgb(18, 52, 86); border-color: #123456;"
+                          >
+                            Get order status
+                          </button>
+                          <button
+                            class="btn btn-reply-action reply"
+                            style="color: rgb(18, 52, 86); border-color: #123456;"
+                          >
+                            Apply promo code
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="css-ctovm3"
+                    >
+                      <button
+                        aria-label="Add attachment"
+                        class="css-1dsoodl"
+                        fill="ghost"
+                        type="button"
+                      >
+                        <div
+                          class="css-ouhew3"
+                          fill="ghost"
+                        >
+                          <svg
+                            fill="none"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              class="withFill"
+                              d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                            />
+                          </svg>
+                        </div>
+                      </button>
+                      <div
+                        class="css-s53yqv"
+                      >
+                        <textarea
+                          aria-invalid="false"
+                          aria-label="Gorgias message input"
+                          class="css-qhufd7"
+                          id="chat-message-input"
+                          name="chat-message-input"
+                          placeholder="Type a message..."
+                          readonly=""
+                          style="height: 0px;"
+                        />
+                      </div>
+                      <button
+                        aria-label="Send message"
+                        class="css-1dsoodl"
+                        fill="ghost"
+                        type="button"
+                      >
+                        <div
+                          class="css-ouhew3"
+                          fill="ghost"
+                        >
+                          <svg
+                            fill="none"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g>
+                              <path
+                                class="withFill"
+                                d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                              />
+                            </g>
+                          </svg>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </Row>
+              </div>
             </div>
-          </Container>
-        </GorgiasChatIntegrationPreviewContainer>
-        <GorgiasChatIntegrationQuickRepliesSunsetModal
-          integration={
-            Immutable.Map {
-              "id": 7,
-              "name": "my chat integration",
-              "meta": Immutable.Map {},
-              "decoration": Immutable.Map {
-                "introduction_text": "this is an intro",
-                "input_placeholder": "type something please",
-                "main_color": "#123456",
-              },
-            }
-          }
-        />
+          </div>
+        </div>
       </div>
-    </GorgiasChatIntegrationQuickRepliesComponent>
-  </Connect(GorgiasChatIntegrationQuickRepliesComponent)>
-</Provider>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick replies from the integration 1`] = `
-<Provider
-  store={
-    {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
+<div
+  class="full-width"
 >
-  <Connect(GorgiasChatIntegrationQuickRepliesComponent)
-    currentUser={Immutable.Map {}}
-    integration={
-      Immutable.Map {
-        "id": 7,
-        "name": "my chat integration",
-        "meta": Immutable.Map {
-          "quick_replies": Immutable.Map {
-            "enabled": true,
-            "replies": Immutable.List [
-              "foo",
-              "bar",
-            ],
-          },
-        },
-        "decoration": Immutable.Map {
-          "introduction_text": "this is an intro",
-          "input_placeholder": "type something please",
-          "main_color": "#123456",
-        },
-      }
-    }
-    updateOrCreateIntegration={[MockFunction]}
+  <div
+    class="page-header pageHeader"
   >
-    <GorgiasChatIntegrationQuickRepliesComponent
-      integration={
-        Immutable.Map {
-          "id": 7,
-          "name": "my chat integration",
-          "meta": Immutable.Map {
-            "quick_replies": Immutable.Map {
-              "enabled": true,
-              "replies": Immutable.List [
-                "foo",
-                "bar",
-              ],
-            },
-          },
-          "decoration": Immutable.Map {
-            "introduction_text": "this is an intro",
-            "input_placeholder": "type something please",
-            "main_color": "#123456",
-          },
-        }
-      }
-      updateOrCreateIntegration={[Function]}
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/channels/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+      </ol>
+    </nav>
+    <div>
+      <div
+        data-testid="GorgiasChatIntegrationConnectedChannel"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="GorgiasChatIntegrationHeader"
+  />
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
     >
       <div
-        className="full-width"
+        class="col"
       >
-        <PageHeader
-          title={
-            <Breadcrumb
-              aria-label="breadcrumb"
-              listTag="ol"
-              tag="nav"
-            >
-              <BreadcrumbItem
-                tag="li"
-              >
-                <Link
-                  to="/app/settings/channels/gorgias_chat"
-                >
-                  Chat
-                </Link>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                tag="li"
-              >
-                my chat integration
-              </BreadcrumbItem>
-            </Breadcrumb>
-          }
+        <form
+          class=""
         >
           <div
-            className="page-header pageHeader"
+            class="mb-4"
           >
-            <Breadcrumb
-              aria-label="breadcrumb"
-              listTag="ol"
-              tag="nav"
+            <h4>
+              Quick replies
+            </h4>
+            <p
+              class="section"
             >
-              <nav
-                aria-label="breadcrumb"
-                className=""
+              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
+              <br />
+              <a
+                href="https://docs.gorgias.com/en-US/quick-replies-81794"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <ol
-                  className="breadcrumb"
+                Learn more
+              </a>
+               
+              about quick replies in our Help Center.
+            </p>
+            <div
+              class="d-flex align-items-center mb16"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  aria-label="Enable quick replies"
+                  class="label label"
+                  for="toggle-button-4"
+                  role="switch"
                 >
-                  <BreadcrumbItem
-                    tag="li"
-                  >
-                    <li
-                      className="breadcrumb-item"
-                    >
-                      <Link
-                        to="/app/settings/channels/gorgias_chat"
-                      >
-                        <a
-                          to="/app/settings/channels/gorgias_chat"
-                        >
-                          Chat
-                        </a>
-                      </Link>
-                    </li>
-                  </BreadcrumbItem>
-                  <BreadcrumbItem
-                    tag="li"
-                  >
-                    <li
-                      className="breadcrumb-item"
-                    >
-                      my chat integration
-                    </li>
-                  </BreadcrumbItem>
-                </ol>
-              </nav>
-            </Breadcrumb>
-            <div>
-              <Component
-                integration={
-                  Immutable.Map {
-                    "id": 7,
-                    "name": "my chat integration",
-                    "meta": Immutable.Map {
-                      "quick_replies": Immutable.Map {
-                        "enabled": true,
-                        "replies": Immutable.List [
-                          "foo",
-                          "bar",
-                        ],
-                      },
-                    },
-                    "decoration": Immutable.Map {
-                      "introduction_text": "this is an intro",
-                      "input_placeholder": "type something please",
-                      "main_color": "#123456",
-                    },
-                  }
-                }
+                  <input
+                    aria-label="Enable quick replies"
+                    class="input"
+                    disabled=""
+                    id="toggle-button-4"
+                    name="toggle-button-4"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+              <div
+                class="ml-2"
               >
-                <div
-                  data-testid="GorgiasChatIntegrationConnectedChannel"
-                />
-              </Component>
+                <b>
+                  Enable quick replies
+                </b>
+              </div>
             </div>
           </div>
-        </PageHeader>
-        <Component
-          integration={
-            Immutable.Map {
-              "id": 7,
-              "name": "my chat integration",
-              "meta": Immutable.Map {
-                "quick_replies": Immutable.Map {
-                  "enabled": true,
-                  "replies": Immutable.List [
-                    "foo",
-                    "bar",
-                  ],
-                },
-              },
-              "decoration": Immutable.Map {
-                "introduction_text": "this is an intro",
-                "input_placeholder": "type something please",
-                "main_color": "#123456",
-              },
-            }
-          }
-        >
           <div
-            data-testid="GorgiasChatIntegrationHeader"
-          />
-        </Component>
-        <GorgiasChatIntegrationPreviewContainer
-          preview={
-            <ChatIntegrationPreview
-              avatar={
-                {
-                  "companyLogoUrl": undefined,
-                  "imageType": "agent-picture",
-                  "nameType": "agent-first-name",
-                }
-              }
-              backgroundColorStyle="gradient"
-              displayBotLabel={true}
-              introductionText="this is an intro"
-              isOnline={true}
-              mainColor="#123456"
-              mainFontFamily="Inter"
-              name="my chat integration"
-              position={
-                {
-                  "alignment": "bottom-right",
-                  "offsetX": 0,
-                  "offsetY": 0,
-                }
-              }
-              useMainColorOutsideBusinessHours={false}
-            >
-              <ChatIntegrationPreviewContent>
-                <div
-                  className="content"
-                />
-                <QuickReplies
-                  mainColor="#123456"
-                  quickReplies={
-                    [
-                      "foo",
-                      "bar",
-                    ]
-                  }
-                />
-              </ChatIntegrationPreviewContent>
-            </ChatIntegrationPreview>
-          }
-        >
-          <Container
-            className="pageContainer"
-            fluid={true}
-            tag="div"
+            class="container"
           >
             <div
-              className="pageContainer container-fluid"
+              class="row row"
             >
-              <Row
-                tag="div"
-                widths={
-                  [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <div
+                class="flex-grow pr-0 col"
               >
                 <div
-                  className="row"
+                  class="wrapper my-0"
                 >
-                  <Col
-                    tag="div"
-                    widths={
-                      [
-                        "xs",
-                        "sm",
-                        "md",
-                        "lg",
-                        "xl",
-                      ]
-                    }
+                  <input
+                    class="input"
+                    id="input-text-5"
+                    maxlength="20"
+                    name="item-0"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="foo"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-danger"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+            <div
+              class="row row"
+            >
+              <div
+                class="flex-grow pr-0 col"
+              >
+                <div
+                  class="wrapper my-0"
+                >
+                  <input
+                    class="input"
+                    id="input-text-6"
+                    maxlength="20"
+                    name="item-1"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="bar"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-danger"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+            <button
+              class="d-flex align-items-center btn btn-secondary btn-sm"
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                add
+              </i>
+              <span
+                class="ml-2"
+              >
+                Add Quick Reply
+              </span>
+            </button>
+          </div>
+          <div>
+            <button
+              aria-disabled="false"
+              class="wrapper fill primary medium"
+              type="submit"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      <div
+        class="col"
+      >
+        <div
+          class="stickyParent"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="light wrapper preview previewWithBackground"
+              style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
+            >
+              <div
+                class="buttonWrapper bottom-right"
+              >
+                <div
+                  class="axisLauncherWrapper"
+                >
+                  <button
+                    class="css-kv5pal"
+                    color="#123456"
                   >
                     <div
-                      className="col"
+                      class="css-m4oh12"
                     >
-                      <Form
-                        onSubmit={[Function]}
-                        tag="form"
+                      <svg
+                        aria-label="Bubble icon button"
+                        fill="none"
+                        height="28"
+                        role="img"
+                        viewBox="0 0 100 100"
+                        width="28"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <form
-                          className=""
-                          onSubmit={[Function]}
+                        <filter
+                          id="33c9df204aeec9aa096f1fd360bd4160"
                         >
-                          <div
-                            className="mb-4"
-                          >
-                            <h4>
-                              Quick replies
-                            </h4>
-                            <p
-                              className="section"
-                            >
-                              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
-                              <br />
-                              <a
-                                href="https://docs.gorgias.com/en-US/quick-replies-81794"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                              >
-                                Learn more
-                              </a>
-                               
-                              about quick replies in our Help Center.
-                            </p>
-                            <GorgiasChatIntegrationQuickRepliesSunsetAlert
-                              integration={
-                                Immutable.Map {
-                                  "id": 7,
-                                  "name": "my chat integration",
-                                  "meta": Immutable.Map {
-                                    "quick_replies": Immutable.Map {
-                                      "enabled": true,
-                                      "replies": Immutable.List [
-                                        "foo",
-                                        "bar",
-                                      ],
-                                    },
-                                  },
-                                  "decoration": Immutable.Map {
-                                    "introduction_text": "this is an intro",
-                                    "input_placeholder": "type something please",
-                                    "main_color": "#123456",
-                                  },
-                                }
-                              }
+                          <fegaussianblur
+                            in="SourceAlpha"
+                            stdDeviation="0,4"
+                          />
+                          <feoffset
+                            dx="0"
+                            dy="4"
+                            result="offsetblur"
+                          />
+                          <fecomponenttransfer>
+                            <fefunca
+                              slope="0.4"
+                              type="linear"
                             />
-                            <div
-                              className="d-flex align-items-center mb16"
-                            >
-                              <ToggleInput
-                                aria-label="Enable quick replies"
-                                isToggled={true}
-                                onClick={[Function]}
-                              >
-                                <div>
-                                  <Label
-                                    aria-checked={true}
-                                    aria-label="Enable quick replies"
-                                    className="label"
-                                    htmlFor="toggle-button-4"
-                                    isDisabled={false}
-                                    onClick={[Function]}
-                                    role="switch"
-                                  >
-                                    <label
-                                      aria-checked={true}
-                                      aria-label="Enable quick replies"
-                                      className="label label"
-                                      htmlFor="toggle-button-4"
-                                      onClick={[Function]}
-                                      role="switch"
-                                    >
-                                      <input
-                                        aria-label="Enable quick replies"
-                                        checked={true}
-                                        className="input"
-                                        disabled={true}
-                                        id="toggle-button-4"
-                                        name="toggle-button-4"
-                                        type="checkbox"
-                                      />
-                                      <div
-                                        className="slider"
-                                      />
-                                    </label>
-                                  </Label>
-                                </div>
-                              </ToggleInput>
-                              <div
-                                className="ml-2"
-                              >
-                                <b>
-                                  Enable quick replies
-                                </b>
-                              </div>
-                            </div>
-                          </div>
-                          <ListField
-                            addLabel="Add Quick Reply"
-                            className="container"
-                            disabled={false}
-                            items={
-                              Immutable.List [
-                                "foo",
-                                "bar",
-                              ]
-                            }
-                            maxItems={3}
-                            maxLength={20}
-                            onChange={[Function]}
-                          >
-                            <div
-                              className="container"
-                            >
-                              <Row
-                                className="row"
-                                key="0"
-                                tag="div"
-                                widths={
-                                  [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="row row"
-                                >
-                                  <Col
-                                    className="flex-grow pr-0"
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="flex-grow pr-0 col"
-                                    >
-                                      <ForwardRef(TextInput)
-                                        className="my-0"
-                                        isDisabled={false}
-                                        isRequired={true}
-                                        maxLength={20}
-                                        name="item-0"
-                                        onChange={[Function]}
-                                        placeholder="Type something (limited to 20 characters)"
-                                        size={300}
-                                        value="foo"
-                                      >
-                                        <div
-                                          className="wrapper my-0"
-                                        >
-                                          <input
-                                            className="input"
-                                            disabled={false}
-                                            id="input-text-5"
-                                            maxLength={20}
-                                            name="item-0"
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            size={300}
-                                            type="text"
-                                            value="foo"
-                                          />
-                                        </div>
-                                      </ForwardRef(TextInput)>
-                                    </div>
-                                  </Col>
-                                  <Col
-                                    className="d-flex col-sm-auto delete"
-                                    onClick={[Function]}
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="d-flex col-sm-auto delete col"
-                                      onClick={[Function]}
-                                    >
-                                      <i
-                                        className="material-icons md-2 text-danger"
-                                      >
-                                        clear
-                                      </i>
-                                    </div>
-                                  </Col>
-                                </div>
-                              </Row>
-                              <Row
-                                className="row"
-                                key="1"
-                                tag="div"
-                                widths={
-                                  [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="row row"
-                                >
-                                  <Col
-                                    className="flex-grow pr-0"
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="flex-grow pr-0 col"
-                                    >
-                                      <ForwardRef(TextInput)
-                                        className="my-0"
-                                        isDisabled={false}
-                                        isRequired={true}
-                                        maxLength={20}
-                                        name="item-1"
-                                        onChange={[Function]}
-                                        placeholder="Type something (limited to 20 characters)"
-                                        size={300}
-                                        value="bar"
-                                      >
-                                        <div
-                                          className="wrapper my-0"
-                                        >
-                                          <input
-                                            className="input"
-                                            disabled={false}
-                                            id="input-text-6"
-                                            maxLength={20}
-                                            name="item-1"
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            size={300}
-                                            type="text"
-                                            value="bar"
-                                          />
-                                        </div>
-                                      </ForwardRef(TextInput)>
-                                    </div>
-                                  </Col>
-                                  <Col
-                                    className="d-flex col-sm-auto delete"
-                                    onClick={[Function]}
-                                    tag="div"
-                                    widths={
-                                      [
-                                        "xs",
-                                        "sm",
-                                        "md",
-                                        "lg",
-                                        "xl",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="d-flex col-sm-auto delete col"
-                                      onClick={[Function]}
-                                    >
-                                      <i
-                                        className="material-icons md-2 text-danger"
-                                      >
-                                        clear
-                                      </i>
-                                    </div>
-                                  </Col>
-                                </div>
-                              </Row>
-                              <Button
-                                className="d-flex align-items-center"
-                                color="secondary"
-                                disabled={false}
-                                onClick={[Function]}
-                                size="sm"
-                                tag="button"
-                              >
-                                <button
-                                  aria-label={null}
-                                  className="d-flex align-items-center btn btn-secondary btn-sm"
-                                  disabled={false}
-                                  onClick={[Function]}
-                                  type="button"
-                                >
-                                  <i
-                                    className="material-icons md-2"
-                                  >
-                                    add
-                                  </i>
-                                  <span
-                                    className="ml-2"
-                                  >
-                                    Add Quick Reply
-                                  </span>
-                                </button>
-                              </Button>
-                            </div>
-                          </ListField>
-                          <div>
-                            <ForwardRef(Button)
-                              isDisabled={false}
-                              isLoading={false}
-                              type="submit"
-                            >
-                              <BaseButton
-                                isDisabled={false}
-                                isLoading={false}
-                              >
-                                <button
-                                  aria-disabled={false}
-                                  className="wrapper fill primary medium"
-                                  type="submit"
-                                >
-                                  Save Changes
-                                </button>
-                              </BaseButton>
-                            </ForwardRef(Button)>
-                          </div>
-                        </form>
-                      </Form>
+                          </fecomponenttransfer>
+                          <fecomposite
+                            in2="offsetblur"
+                            operator="in"
+                          />
+                          <femerge>
+                            <femergenode />
+                            <femergenode
+                              in="SourceGraphic"
+                            />
+                          </femerge>
+                        </filter>
+                        <path
+                          d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+                          fill="#fff"
+                          filter="#33c9df204aeec9aa096f1fd360bd4160"
+                        />
+                      </svg>
                     </div>
-                  </Col>
-                  <Col
-                    tag="div"
-                    widths={
-                      [
-                        "xs",
-                        "sm",
-                        "md",
-                        "lg",
-                        "xl",
-                      ]
-                    }
+                    <div
+                      class="css-199spez"
+                    >
+                      <svg
+                        fill="none"
+                        height="28"
+                        viewBox="0 0 28 28"
+                        width="28"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                    <span
+                      class="css-1oft1bb"
+                      color="#fff"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div
+                class=""
+              >
+                <div
+                  class="dialog"
+                  style="background-color: rgb(18, 52, 86);"
+                >
+                  <div
+                    class="css-cad7de"
+                    color="#123456"
+                  />
+                  <div
+                    class="css-1vo7hu9"
+                  />
+                  <div
+                    class="noise"
+                  />
+                  <div
+                    aria-label="Live chat window header"
+                    class="css-1v07zf4"
+                    role="region"
+                    style="z-index: 2;"
+                    title="my chat integration"
                   >
                     <div
-                      className="col"
+                      class="css-1ti7tcr"
                     >
                       <div
-                        className="stickyParent"
+                        class="css-1jtrw5v"
                       >
                         <div
-                          className="preview"
+                          class="css-qiet1b"
                         >
-                          <ChatIntegrationPreview
-                            avatar={
-                              {
-                                "companyLogoUrl": undefined,
-                                "imageType": "agent-picture",
-                                "nameType": "agent-first-name",
-                              }
-                            }
-                            backgroundColorStyle="gradient"
-                            displayBotLabel={true}
-                            introductionText="this is an intro"
-                            isOnline={true}
-                            mainColor="#123456"
-                            mainFontFamily="Inter"
-                            name="my chat integration"
-                            position={
-                              {
-                                "alignment": "bottom-right",
-                                "offsetX": 0,
-                                "offsetY": 0,
-                              }
-                            }
-                            useMainColorOutsideBusinessHours={false}
-                          >
-                            <ThemeProvider
-                              theme={
-                                {
-                                  "mainColor": "#123456",
-                                }
-                              }
-                            >
-                              <CustomizedChatLauncher
-                                className="preview previewWithBackground"
-                                isClosed={false}
-                                launcher={
-                                  {
-                                    "type": "icon",
-                                  }
-                                }
-                                mainColor="#123456"
-                                mainFontFamily="Inter"
-                                position={
-                                  {
-                                    "alignment": "bottom-right",
-                                    "offsetX": 0,
-                                    "offsetY": 0,
-                                  }
-                                }
-                              >
-                                <div
-                                  className="light wrapper preview previewWithBackground"
-                                  style={
-                                    {
-                                      "fontFamily": "Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif",
-                                    }
-                                  }
-                                >
-                                  <div
-                                    className="buttonWrapper bottom-right"
-                                  >
-                                    <div
-                                      className="axisLauncherWrapper"
-                                    >
-                                      <Launcher
-                                        fillColor="#123456"
-                                        hasLaunched={true}
-                                        shouldHideLabel={true}
-                                      >
-                                        <Styled(button)
-                                          color="#123456"
-                                          showIconOnly={true}
-                                        >
-                                          <button
-                                            className="css-kv5pal"
-                                            color="#123456"
-                                          >
-                                            <Styled(div)
-                                              hideIcon={true}
-                                              isLabelHidden={true}
-                                            >
-                                              <div
-                                                className="css-m4oh12"
-                                              >
-                                                <BubbleIcon
-                                                  color="#fff"
-                                                >
-                                                  <svg
-                                                    aria-label="Bubble icon button"
-                                                    fill="none"
-                                                    height="28"
-                                                    role="img"
-                                                    viewBox="0 0 100 100"
-                                                    width="28"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <filter
-                                                      id="33c9df204aeec9aa096f1fd360bd4160"
-                                                    >
-                                                      <feGaussianBlur
-                                                        in="SourceAlpha"
-                                                        stdDeviation="0,4"
-                                                      />
-                                                      <feOffset
-                                                        dx="0"
-                                                        dy="4"
-                                                        result="offsetblur"
-                                                      />
-                                                      <feComponentTransfer>
-                                                        <feFuncA
-                                                          slope="0.4"
-                                                          type="linear"
-                                                        />
-                                                      </feComponentTransfer>
-                                                      <feComposite
-                                                        in2="offsetblur"
-                                                        operator="in"
-                                                      />
-                                                      <feMerge>
-                                                        <feMergeNode />
-                                                        <feMergeNode
-                                                          in="SourceGraphic"
-                                                        />
-                                                      </feMerge>
-                                                    </filter>
-                                                    <path
-                                                      d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
-                                                      fill="#fff"
-                                                      filter="#33c9df204aeec9aa096f1fd360bd4160"
-                                                    />
-                                                  </svg>
-                                                </BubbleIcon>
-                                              </div>
-                                            </Styled(div)>
-                                            <Styled(div)
-                                              hideIcon={false}
-                                              isCloseIcon={true}
-                                              isLabelHidden={true}
-                                            >
-                                              <div
-                                                className="css-199spez"
-                                              >
-                                                <CloseIcon
-                                                  color="#fff"
-                                                >
-                                                  <svg
-                                                    fill="none"
-                                                    height="28"
-                                                    viewBox="0 0 28 28"
-                                                    width="28"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
-                                                      fill="#fff"
-                                                    />
-                                                  </svg>
-                                                </CloseIcon>
-                                              </div>
-                                            </Styled(div)>
-                                            <Styled(span)
-                                              color="#fff"
-                                              showIconOnly={true}
-                                            >
-                                              <span
-                                                className="css-1oft1bb"
-                                                color="#fff"
-                                              />
-                                            </Styled(span)>
-                                          </button>
-                                        </Styled(button)>
-                                      </Launcher>
-                                    </div>
-                                  </div>
-                                  <div
-                                    className=""
-                                  >
-                                    <div
-                                      className="dialog"
-                                      style={
-                                        {
-                                          "backgroundColor": "#123456",
-                                        }
-                                      }
-                                    >
-                                      <Styled(div)
-                                        color="#123456"
-                                      >
-                                        <div
-                                          className="css-cad7de"
-                                          color="#123456"
-                                        />
-                                      </Styled(div)>
-                                      <Styled(div)>
-                                        <div
-                                          className="css-1vo7hu9"
-                                        />
-                                      </Styled(div)>
-                                      <div
-                                        className="noise"
-                                      />
-                                      <ConversationHeader
-                                        aria-label="Live chat window header"
-                                        leadIcon={null}
-                                        role="region"
-                                        style={
-                                          {
-                                            "zIndex": 2,
-                                          }
-                                        }
-                                        title="my chat integration"
-                                        variant="light"
-                                      >
-                                        <Styled(div)
-                                          aria-label="Live chat window header"
-                                          leadIcon={null}
-                                          role="region"
-                                          style={
-                                            {
-                                              "zIndex": 2,
-                                            }
-                                          }
-                                          title="my chat integration"
-                                          variant="light"
-                                        >
-                                          <div
-                                            aria-label="Live chat window header"
-                                            className="css-1v07zf4"
-                                            role="region"
-                                            style={
-                                              {
-                                                "zIndex": 2,
-                                              }
-                                            }
-                                            title="my chat integration"
-                                          >
-                                            <Styled(div)>
-                                              <div
-                                                className="css-1ti7tcr"
-                                              >
-                                                <Styled(div)>
-                                                  <div
-                                                    className="css-1jtrw5v"
-                                                  >
-                                                    <Styled(div)
-                                                      isPlaceholder={false}
-                                                    >
-                                                      <div
-                                                        className="css-qiet1b"
-                                                      >
-                                                        my chat integration
-                                                      </div>
-                                                    </Styled(div)>
-                                                  </div>
-                                                </Styled(div)>
-                                              </div>
-                                            </Styled(div)>
-                                          </div>
-                                        </Styled(div)>
-                                      </ConversationHeader>
-                                      <div
-                                        className="conversationContentWrapper"
-                                      >
-                                        <ChatIntegrationPreviewContent>
-                                          <div
-                                            className="content"
-                                          >
-                                            <div
-                                              className="content"
-                                            />
-                                            <QuickReplies
-                                              mainColor="#123456"
-                                              quickReplies={
-                                                [
-                                                  "foo",
-                                                  "bar",
-                                                ]
-                                              }
-                                            >
-                                              <div
-                                                className="quickRepliesContent"
-                                              >
-                                                <div
-                                                  className="quickRepliesWrapper"
-                                                >
-                                                  <button
-                                                    className="btn btn-reply-action reply"
-                                                    key="foo-0"
-                                                    style={
-                                                      {
-                                                        "borderColor": "#123456",
-                                                        "color": "#123456",
-                                                      }
-                                                    }
-                                                  >
-                                                    foo
-                                                  </button>
-                                                  <button
-                                                    className="btn btn-reply-action reply"
-                                                    key="bar-1"
-                                                    style={
-                                                      {
-                                                        "borderColor": "#123456",
-                                                        "color": "#123456",
-                                                      }
-                                                    }
-                                                  >
-                                                    bar
-                                                  </button>
-                                                </div>
-                                              </div>
-                                            </QuickReplies>
-                                          </div>
-                                        </ChatIntegrationPreviewContent>
-                                        <ChatMessageInput
-                                          aria-label="Gorgias message input"
-                                          leadIcon={<AddIcon />}
-                                          leadIconAriaLabel="Add attachment"
-                                          placeholder="Type a message..."
-                                          readOnly={true}
-                                          trailIcon={<PlaneIcon />}
-                                          trailIconAriaLabel="Send message"
-                                        >
-                                          <Styled(div)>
-                                            <div
-                                              className="css-ctovm3"
-                                            >
-                                              <IconButton
-                                                aria-label="Add attachment"
-                                                fill="ghost"
-                                                icon={<AddIcon />}
-                                                variant="primary"
-                                              >
-                                                <Styled(button)
-                                                  aria-label="Add attachment"
-                                                  fill="ghost"
-                                                  theme={
-                                                    {
-                                                      "mainColor": "#123456",
-                                                    }
-                                                  }
-                                                  type="button"
-                                                  variant="primary"
-                                                >
-                                                  <button
-                                                    aria-label="Add attachment"
-                                                    className="css-1dsoodl"
-                                                    fill="ghost"
-                                                    type="button"
-                                                  >
-                                                    <Styled(div)
-                                                      fill="ghost"
-                                                      variant="primary"
-                                                    >
-                                                      <div
-                                                        className="css-ouhew3"
-                                                        fill="ghost"
-                                                      >
-                                                        <AddIcon>
-                                                          <svg
-                                                            fill="none"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            width="24"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                          >
-                                                            <path
-                                                              className="withFill"
-                                                              d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
-                                                            />
-                                                          </svg>
-                                                        </AddIcon>
-                                                      </div>
-                                                    </Styled(div)>
-                                                  </button>
-                                                </Styled(button)>
-                                              </IconButton>
-                                              <TextArea
-                                                aria-label="Gorgias message input"
-                                                id="chat-message-input"
-                                                isAlternative={true}
-                                                isExpandable={false}
-                                                isValid={true}
-                                                leadIcon={<AddIcon />}
-                                                leadIconAriaLabel="Add attachment"
-                                                maxHeight={180}
-                                                minHeight={44}
-                                                onChange={[Function]}
-                                                placeholder="Type a message..."
-                                                readOnly={true}
-                                                trailIcon={<PlaneIcon />}
-                                                trailIconAriaLabel="Send message"
-                                              >
-                                                <Styled(div)>
-                                                  <div
-                                                    className="css-s53yqv"
-                                                  >
-                                                    <Styled(textarea)
-                                                      aria-invalid={false}
-                                                      aria-label="Gorgias message input"
-                                                      id="chat-message-input"
-                                                      isAlternative={true}
-                                                      isExpandable={false}
-                                                      isValid={true}
-                                                      leadIcon={<AddIcon />}
-                                                      leadIconAriaLabel="Add attachment"
-                                                      maxHeight={180}
-                                                      minHeight={44}
-                                                      name="chat-message-input"
-                                                      onChange={[Function]}
-                                                      placeholder="Type a message..."
-                                                      readOnly={true}
-                                                      trailIcon={<PlaneIcon />}
-                                                      trailIconAriaLabel="Send message"
-                                                    >
-                                                      <textarea
-                                                        aria-invalid={false}
-                                                        aria-label="Gorgias message input"
-                                                        className="css-qhufd7"
-                                                        id="chat-message-input"
-                                                        name="chat-message-input"
-                                                        onChange={[Function]}
-                                                        placeholder="Type a message..."
-                                                        readOnly={true}
-                                                      />
-                                                    </Styled(textarea)>
-                                                  </div>
-                                                </Styled(div)>
-                                              </TextArea>
-                                              <IconButton
-                                                aria-label="Send message"
-                                                fill="ghost"
-                                                icon={<PlaneIcon />}
-                                                variant="primary"
-                                              >
-                                                <Styled(button)
-                                                  aria-label="Send message"
-                                                  fill="ghost"
-                                                  theme={
-                                                    {
-                                                      "mainColor": "#123456",
-                                                    }
-                                                  }
-                                                  type="button"
-                                                  variant="primary"
-                                                >
-                                                  <button
-                                                    aria-label="Send message"
-                                                    className="css-1dsoodl"
-                                                    fill="ghost"
-                                                    type="button"
-                                                  >
-                                                    <Styled(div)
-                                                      fill="ghost"
-                                                      variant="primary"
-                                                    >
-                                                      <div
-                                                        className="css-ouhew3"
-                                                        fill="ghost"
-                                                      >
-                                                        <PlaneIcon>
-                                                          <svg
-                                                            fill="none"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            width="24"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                          >
-                                                            <g>
-                                                              <path
-                                                                className="withFill"
-                                                                d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
-                                                              />
-                                                            </g>
-                                                          </svg>
-                                                        </PlaneIcon>
-                                                      </div>
-                                                    </Styled(div)>
-                                                  </button>
-                                                </Styled(button)>
-                                              </IconButton>
-                                            </div>
-                                          </Styled(div)>
-                                        </ChatMessageInput>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </CustomizedChatLauncher>
-                            </ThemeProvider>
-                          </ChatIntegrationPreview>
+                          my chat integration
                         </div>
                       </div>
                     </div>
-                  </Col>
+                  </div>
+                  <div
+                    class="conversationContentWrapper"
+                  >
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="content"
+                      />
+                      <div
+                        class="quickRepliesContent"
+                      >
+                        <div
+                          class="quickRepliesWrapper"
+                        >
+                          <button
+                            class="btn btn-reply-action reply"
+                            style="color: rgb(18, 52, 86); border-color: #123456;"
+                          >
+                            foo
+                          </button>
+                          <button
+                            class="btn btn-reply-action reply"
+                            style="color: rgb(18, 52, 86); border-color: #123456;"
+                          >
+                            bar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="css-ctovm3"
+                    >
+                      <button
+                        aria-label="Add attachment"
+                        class="css-1dsoodl"
+                        fill="ghost"
+                        type="button"
+                      >
+                        <div
+                          class="css-ouhew3"
+                          fill="ghost"
+                        >
+                          <svg
+                            fill="none"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              class="withFill"
+                              d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                            />
+                          </svg>
+                        </div>
+                      </button>
+                      <div
+                        class="css-s53yqv"
+                      >
+                        <textarea
+                          aria-invalid="false"
+                          aria-label="Gorgias message input"
+                          class="css-qhufd7"
+                          id="chat-message-input"
+                          name="chat-message-input"
+                          placeholder="Type a message..."
+                          readonly=""
+                          style="height: 0px;"
+                        />
+                      </div>
+                      <button
+                        aria-label="Send message"
+                        class="css-1dsoodl"
+                        fill="ghost"
+                        type="button"
+                      >
+                        <div
+                          class="css-ouhew3"
+                          fill="ghost"
+                        >
+                          <svg
+                            fill="none"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g>
+                              <path
+                                class="withFill"
+                                d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                              />
+                            </g>
+                          </svg>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </Row>
+              </div>
             </div>
-          </Container>
-        </GorgiasChatIntegrationPreviewContainer>
-        <GorgiasChatIntegrationQuickRepliesSunsetModal
-          integration={
-            Immutable.Map {
-              "id": 7,
-              "name": "my chat integration",
-              "meta": Immutable.Map {
-                "quick_replies": Immutable.Map {
-                  "enabled": true,
-                  "replies": Immutable.List [
-                    "foo",
-                    "bar",
-                  ],
-                },
-              },
-              "decoration": Immutable.Map {
-                "introduction_text": "this is an intro",
-                "input_placeholder": "type something please",
-                "main_color": "#123456",
-              },
-            }
-          }
-        />
+          </div>
+        </div>
       </div>
-    </GorgiasChatIntegrationQuickRepliesComponent>
-  </Connect(GorgiasChatIntegrationQuickRepliesComponent)>
-</Provider>
+    </div>
+  </div>
+</div>
 `;

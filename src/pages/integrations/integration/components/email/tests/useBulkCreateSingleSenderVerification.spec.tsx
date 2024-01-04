@@ -1,7 +1,6 @@
 import {Provider} from 'react-redux'
 import React from 'react'
-import {renderHook} from '@testing-library/react-hooks'
-import {act} from 'react-test-renderer'
+import {act, renderHook} from '@testing-library/react-hooks'
 import {mockStore} from 'utils/testing'
 import {createVerification} from 'models/singleSenderVerification/resources'
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'

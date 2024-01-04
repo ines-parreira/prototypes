@@ -1,5 +1,5 @@
 import React from 'react'
-import {mount, shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,18 +13,18 @@ const mockStore = configureMockStore([thunk])
 describe('BusinessHours component', () => {
     it('should render default values', () => {
         const mockSubmitSetting = jest.fn()
-        const component = shallow(
+        const {container} = render(
             <BusinessHoursContainer
                 submitSetting={mockSubmitSetting}
                 businessHoursSettings={fromJS({})}
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render values from state', () => {
-        const component = mount(
+        const {container} = render(
             <Provider
                 store={mockStore({
                     currentAccount: fromJS({
@@ -55,6 +55,6 @@ describe('BusinessHours component', () => {
             </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,31 +1,31 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import {ErrorBoundary} from '../ErrorBoundary'
 
 describe('<ErrorBoundary/>', () => {
-    const Foo = () => <div>foo</div>
-
     it('should render children when there is no error', () => {
-        const component = mount(
+        const Foo = () => <div>foo</div>
+        const {container} = render(
             <ErrorBoundary>
                 <Foo />
             </ErrorBoundary>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render an error message because an error occurred', () => {
-        const component = mount(
+        const Foo = () => {
+            throw new Error('foo')
+        }
+
+        const {container} = render(
             <ErrorBoundary>
                 <Foo />
             </ErrorBoundary>
         )
 
-        const error = new Error('Fake error')
-        component.find(Foo).simulateError(error)
-
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

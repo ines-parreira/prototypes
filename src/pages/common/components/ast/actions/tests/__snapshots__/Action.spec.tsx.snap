@@ -2,86 +2,72 @@
 
 exports[`Action render() should render a warning about potential page deactivation in Facebook 1`] = `
 <div
-  className="Action d-flex align-items-baseline"
-  style={
-    {
-      "paddingLeft": "NaNpx",
-    }
-  }
+  class="Action d-flex align-items-baseline"
 >
-  <ActionSelect
-    parent={1}
-    value="facebookHideComment"
-  />
-  <ActionWarning>
+  <div>
+    ActionSelect
+  </div>
+  <span
+    class="alert-warning wrapper"
+  >
     An extensive use of automatic Facebook actions may deactivate your page on Facebook!
-  </ActionWarning>
+  </span>
 </div>
 `;
 
 exports[`Action render() should render a warning about potential page deactivation in Facebook 2`] = `
 <div
-  className="Action d-flex align-items-baseline"
-  style={
-    {
-      "paddingLeft": "NaNpx",
-    }
-  }
+  class="Action d-flex align-items-baseline"
 >
-  <ActionSelect
-    parent={2}
-    value="facebookLikeComment"
-  />
-  <ActionWarning>
+  <div>
+    ActionSelect
+  </div>
+  <span
+    class="alert-warning wrapper"
+  >
     An extensive use of automatic Facebook actions may deactivate your page on Facebook!
-  </ActionWarning>
+  </span>
 </div>
 `;
 
 exports[`Action render() should render a warning regarding team assignment 1`] = `
 <div
-  className="Action d-flex align-items-baseline"
-  style={
-    {
-      "paddingLeft": "NaNpx",
-    }
-  }
+  class="Action d-flex align-items-baseline"
 >
-  <ActionSelect
-    parent={4}
-    value="setTeamAssignee"
-  />
+  <div>
+    ActionSelect
+  </div>
   <span
-    className="compactAction compact-action"
-    key="children"
+    class="compactAction compact-action"
   >
-    <MockedChild
-      compact={true}
-      key=".0"
-      properties={[]}
-    />
+    <div />
   </span>
-  <TeamAssigneeActionWarning />
+  <span
+    class="alert-warning wrapper"
+  >
+    To set up team auto-assignment, go to the
+     
+    <a
+      to="/app/automation/ticket-assignment"
+    >
+      Ticket assignment
+    </a>
+     page
+  </span>
 </div>
 `;
 
 exports[`Action render() should render an error saying an action cannot be empty 1`] = `
 <div
-  className="Action"
-  style={
-    {
-      "paddingLeft": "NaNpx",
-    }
-  }
+  class="Action"
 >
-  <ActionSelect
-    parent={3}
-    value=""
-  />
-  <Errors
-    inline={true}
+  <div>
+    ActionSelect
+  </div>
+  <div
+    class="d-inline-block text-danger ml-2"
   >
     An action cannot be empty
-  </Errors>
+  </div>
 </div>
 `;
