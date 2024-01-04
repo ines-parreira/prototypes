@@ -132,6 +132,7 @@ export type WorkflowConfiguration = {
     is_draft: boolean
     name: string
     initial_step_id: string
+    updated_datetime?: string
     entrypoint?: {
         label: string
         label_tkey: string

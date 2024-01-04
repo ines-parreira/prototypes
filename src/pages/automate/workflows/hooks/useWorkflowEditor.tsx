@@ -58,8 +58,9 @@ export type WorkflowEditorContext = {
     isDirty: boolean
     isFetchPending: boolean
     isSavePending: boolean
-    handleValidate: () => Maybe<string>
-    handleSave: () => Promise<void>
+    handleValidate: (isPublishing: boolean) => Maybe<string>
+    handleSave: () => Promise<string | undefined>
+    handlePublish: () => Promise<string | undefined>
     handleDiscard: () => void
     checkInvalidVariablesForNode: (
         node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
@@ -165,6 +166,9 @@ export function useWorkflowEditor(
     const workflowFactoryInstance = useRef(
         workflowConfigurationFactory(currentAccountId, workflowId)
     )
+
+    const configuration = remoteConfiguration || workflowFactoryInstance.current
+
     const [visualBuilderGraph, setVisualBuilderGraph] =
         useState<VisualBuilderGraph>(
             computeNodesPositions(
@@ -273,70 +277,142 @@ export function useWorkflowEditor(
         [visualBuilderGraphDirty]
     )
 
-    const handleValidate = useCallback(() => {
-        const configurationDirty =
-            transformVisualBuilderGraphIntoWfConfiguration(
+    const handleValidate = useCallback(
+        (isPublishing: boolean) => {
+            const configurationDirty =
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    visualBuilderGraphDirty
+                )
+
+            const error = validate(configurationDirty, isPublishing)
+
+            if (error) return error
+            if (configurationDirty.is_draft && !isPublishing) return null
+
+            const graphVariablesError = checkGraphVariablesValidity(
+                visualBuilderGraphDirty,
+                translateGraph
+            )
+
+            if (graphVariablesError) {
+                const nextGraph = switchLanguage(
+                    visualBuilderGraphDirty,
+                    graphVariablesError.lang
+                )
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: nextGraph,
+                })
+                return graphVariablesError.error
+            }
+
+            const incompleteLangs = getLangsOfIncompleteTranslations(
                 visualBuilderGraphDirty
             )
+            if (incompleteLangs.length > 0) {
+                const nextGraph = switchLanguage(
+                    visualBuilderGraphDirty,
+                    incompleteLangs[0]
+                )
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: nextGraph,
+                })
+                return 'Complete steps in all available languages in order to create a flow'
+            }
+            const tooLargeLangs = getLangsOfTooLargeTranslations(
+                visualBuilderGraphDirty
+            )
+            if (tooLargeLangs.length > 0) {
+                const nextGraph = switchLanguage(
+                    visualBuilderGraphDirty,
+                    tooLargeLangs[0]
+                )
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: nextGraph,
+                })
+                return 'This Flow is too large to save. Please remove steps or shorten responses and try again.'
+            }
 
-        const error = validate(configurationDirty)
-
-        if (error) return error
-
-        const graphVariablesError = checkGraphVariablesValidity(
+            return null
+        },
+        [
+            translateGraph,
             visualBuilderGraphDirty,
-            translateGraph
-        )
+            getLangsOfIncompleteTranslations,
+            getLangsOfTooLargeTranslations,
+            switchLanguage,
+            dispatch,
+        ]
+    )
 
-        if (graphVariablesError) {
-            const nextGraph = switchLanguage(
-                visualBuilderGraphDirty,
-                graphVariablesError.lang
-            )
+    const updateWorkflow = useCallback(
+        async (configurationDirty: WorkflowConfiguration) => {
+            setIsSavePending(true)
+            let configuration: WorkflowConfiguration
+            try {
+                // why saving order differ depending on isNew?
+                // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
+                if (isNew) {
+                    const updatedConfiguration =
+                        await upsertWorkflowConfiguration(
+                            emptyTranslatedTexts(configurationDirty)
+                        )
+
+                    await saveTranslations(visualBuilderGraphDirty)
+                    configuration = updatedConfiguration
+                } else {
+                    await saveTranslations(visualBuilderGraphDirty)
+                    const updatedConfiguration =
+                        await upsertWorkflowConfiguration(
+                            emptyTranslatedTexts(configurationDirty)
+                        )
+
+                    configuration = updatedConfiguration
+                }
+            } catch (e) {
+                setIsSavePending(false)
+                throw e
+            }
+
+            setRemoteConfiguration({
+                ...configurationDirty,
+                updated_datetime: configuration.updated_datetime,
+            })
             dispatch({
                 type: 'RESET_GRAPH',
-                graph: nextGraph,
+                graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
+                    configurationDirty
+                ),
             })
-            return graphVariablesError.error
-        }
+            setIsSavePending(false)
+            return configuration.id
+        },
+        [
+            isNew,
+            upsertWorkflowConfiguration,
+            saveTranslations,
+            visualBuilderGraphDirty,
+            dispatch,
+        ]
+    )
 
-        const incompleteLangs = getLangsOfIncompleteTranslations(
-            visualBuilderGraphDirty
-        )
-        if (incompleteLangs.length > 0) {
-            const nextGraph = switchLanguage(
-                visualBuilderGraphDirty,
-                incompleteLangs[0]
-            )
-            dispatch({
-                type: 'RESET_GRAPH',
-                graph: nextGraph,
-            })
-            return 'Complete steps in all available languages in order to create a flow'
-        }
-        const tooLargeLangs = getLangsOfTooLargeTranslations(
-            visualBuilderGraphDirty
-        )
-        if (tooLargeLangs.length > 0) {
-            const nextGraph = switchLanguage(
-                visualBuilderGraphDirty,
-                tooLargeLangs[0]
-            )
-            dispatch({
-                type: 'RESET_GRAPH',
-                graph: nextGraph,
-            })
-            return 'This Flow is too large to save. Please remove steps or shorten responses and try again.'
-        }
+    const handlePublish = useCallback(async () => {
+        const isAlreadyPublished = configuration.is_draft === false
+        if (isAlreadyPublished && !isDirty) return
 
-        return null
+        const configurationDirty =
+            transformVisualBuilderGraphIntoWfConfiguration(
+                visualBuilderGraphDirty,
+                false
+            )
+        return await updateWorkflow(configurationDirty)
     }, [
-        translateGraph,
+        updateWorkflow,
         visualBuilderGraphDirty,
-        getLangsOfIncompleteTranslations,
-        getLangsOfTooLargeTranslations,
-        switchLanguage,
-        dispatch,
+        isDirty,
+        configuration.is_draft,
     ])
 
     const handleSave = useCallback(async () => {
@@ -346,42 +422,8 @@ export function useWorkflowEditor(
             transformVisualBuilderGraphIntoWfConfiguration(
                 visualBuilderGraphDirty
             )
-
-        setIsSavePending(true)
-        try {
-            // why saving order differ depending on isNew?
-            // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
-            if (isNew) {
-                await upsertWorkflowConfiguration(
-                    emptyTranslatedTexts(configurationDirty)
-                )
-                await saveTranslations(visualBuilderGraphDirty)
-            } else {
-                await saveTranslations(visualBuilderGraphDirty)
-                await upsertWorkflowConfiguration(
-                    emptyTranslatedTexts(configurationDirty)
-                )
-            }
-        } catch (e) {
-            setIsSavePending(false)
-            throw e
-        }
-        setRemoteConfiguration(configurationDirty)
-        dispatch({
-            type: 'RESET_GRAPH',
-            graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
-                configurationDirty
-            ),
-        })
-        setIsSavePending(false)
-    }, [
-        isDirty,
-        upsertWorkflowConfiguration,
-        visualBuilderGraphDirty,
-        saveTranslations,
-        isNew,
-        dispatch,
-    ])
+        return await updateWorkflow(configurationDirty)
+    }, [updateWorkflow, visualBuilderGraphDirty, isDirty])
 
     const handleDiscard = useCallback(() => {
         const nextGraph = computeNodesPositions(
@@ -528,7 +570,7 @@ export function useWorkflowEditor(
 
     return {
         hookError,
-        configuration: remoteConfiguration || workflowFactoryInstance.current,
+        configuration,
         visualBuilderGraph: visualBuilderGraphDirty,
         isFetchPending,
         isSavePending,
@@ -537,6 +579,7 @@ export function useWorkflowEditor(
         checkNodeHasVariablesUsedInChildren,
         handleValidate,
         handleSave,
+        handlePublish,
         handleDiscard,
         dispatch,
         visualBuilderNodeIdEditing,
@@ -588,15 +631,21 @@ function isHttpRequestStepIncomplete({
     return false
 }
 
-function validate(conf: WorkflowConfiguration): Maybe<string> {
+function validate(
+    conf: WorkflowConfiguration,
+    isPublishing: boolean
+): Maybe<string> {
+    const action = isPublishing ? 'publish' : 'save'
     if (!conf.name.trim()) {
-        return 'You must add a flow name in order to save'
+        return `You must add a flow name in order to ${action}`
     }
     if (conf.name.length > 100) {
         return 'Flow name must be less than 100 characters'
     }
+
+    if (conf.is_draft && !isPublishing) return null
     if (conf.steps.length === 1) {
-        return 'You must add at least one step after the trigger button in order to save'
+        return 'You must add at least one step after the trigger button in order to publish'
     }
 
     const httpRequestSteps = conf.steps.filter(
@@ -617,7 +666,7 @@ function validate(conf: WorkflowConfiguration): Maybe<string> {
         ) ||
         httpRequestSteps.find((s) => isHttpRequestStepIncomplete(s.settings))
     ) {
-        return 'Complete or delete incomplete steps in order to save'
+        return 'Complete or delete incomplete steps in order to publish'
     }
 
     const urlValidationMessage = httpRequestSteps
@@ -661,7 +710,8 @@ export function createWorkflowEditorContextForPreview(
         checkInvalidVariablesForNode: () => false,
         checkNodeHasVariablesUsedInChildren: () => false,
         handleValidate: () => null,
-        handleSave: () => Promise.resolve(),
+        handleSave: () => Promise.resolve(''),
+        handlePublish: () => Promise.resolve(''),
         handleDiscard: () => null,
         dispatch: () => null,
         visualBuilderNodeIdEditing: null,

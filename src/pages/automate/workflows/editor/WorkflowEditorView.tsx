@@ -1,16 +1,9 @@
-import React, {
-    PropsWithChildren,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useRef,
-} from 'react'
+import React, {useCallback, useEffect, useRef} from 'react'
 import {Container} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
-import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {
     useSelfServiceStoreIntegrationContext,
@@ -22,6 +15,13 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import {formatDatetime} from 'utils'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTimezone} from 'state/currentUser/selectors'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
 import {
@@ -36,9 +36,11 @@ import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
 
 import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
 import {WORKFLOW_TEMPLATES} from '../workflowTemplates'
+import {DraftBadge} from '../components/DraftBadge'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
+import {WorkflowEditorActionButtons} from './WorkflowEditorActionButtons'
 
 type WorkflowEditorViewProps = {
     currentAccountId: number
@@ -46,9 +48,10 @@ type WorkflowEditorViewProps = {
     shopName: string
     workflowId: string
     isNewWorkflow: boolean
-    goToWorkflowsListPage: () => void
-    goToWorkflowTemplatesPage: () => void
-    goToConnectedChannelsPage: () => void
+    onDiscard: (fromView: string | undefined) => void
+    onSave?: () => void
+    onDraftCreated: () => void
+    onPublish: (isFirstTime: boolean) => void
     notifyMerchant: (message: Notification) => void
 }
 
@@ -56,9 +59,10 @@ function WorkflowEditorViewWrapped({
     currentAccountId,
     workflowId,
     isNewWorkflow,
-    goToWorkflowsListPage,
-    goToWorkflowTemplatesPage,
-    goToConnectedChannelsPage,
+    onSave,
+    onDiscard,
+    onDraftCreated,
+    onPublish,
     notifyMerchant,
     shopName,
     shopType,
@@ -66,7 +70,17 @@ function WorkflowEditorViewWrapped({
     const {template: templateSlug, from: fromView} =
         useSearch<{template: string | undefined; from: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
+    const areFlowsDraftsEnabled = Boolean(
+        useFlags()[FeatureFlagKey.FlowsDrafts]
+    )
 
+    const userTimezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
+
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.ShortMonthDayWithTime
+    )
     const handleNotify = useCallback(
         (message: string, kind: 'success' | 'error') => {
             notifyMerchant({
@@ -98,8 +112,10 @@ function WorkflowEditorViewWrapped({
 
     // flags
     const isDirty = workflowEditorContext.isDirty
+    const isDraft = workflowEditorContext.configuration.is_draft
     const isFetchPending = workflowEditorContext.isFetchPending
     const isSavePending = workflowEditorContext.isSavePending
+    const isExistingDraft = !isNewWorkflow && isDraft
     const workflowNameIsErrored =
         workflowEditorContext.visualBuilderGraph.name.trim().length === 0 ||
         workflowEditorContext.visualBuilderGraph.name.length > 100
@@ -141,19 +157,21 @@ function WorkflowEditorViewWrapped({
         notifyMerchant,
     ])
 
-    // handlers
     const handleDiscard = () => {
         workflowEditorContext.handleDiscard()
     }
-    const handleCancel = () => {
-        if (fromView === 'templates') {
-            goToWorkflowTemplatesPage()
-        } else {
-            goToWorkflowsListPage()
-        }
-    }
-    const handleSave = async () => {
-        const configurationError = workflowEditorContext.handleValidate()
+
+    const handleSave = () =>
+        upsertWorkflow(areFlowsDraftsEnabled ? true : false)
+
+    const handlePublish = () => upsertWorkflow(false)
+
+    const upsertWorkflow = async (
+        isDraft = areFlowsDraftsEnabled ? true : false
+    ) => {
+        const configurationError = workflowEditorContext.handleValidate(
+            !isDraft
+        )
         if (configurationError) {
             workflowEditorContext.setShouldShowErrors(true)
             notifyMerchant({
@@ -162,9 +180,15 @@ function WorkflowEditorViewWrapped({
             })
             return
         }
+
         if (!storeIntegrationId) return
+        const isFirstTimePublish =
+            !isDraft && workflowEditorContext.configuration.is_draft
+
         try {
-            await workflowEditorContext.handleSave()
+            if (isDraft) await workflowEditorContext.handleSave()
+            else await workflowEditorContext.handlePublish()
+
             if (isNewWorkflow) {
                 await appendWorkflowInStore(workflowId, storeIntegrationId)
             } else {
@@ -173,7 +197,11 @@ function WorkflowEditorViewWrapped({
                     () => {
                         // update without modifying anything, just make it trigger channels cache invalidation
                     },
-                    {},
+                    {
+                        success: isFirstTimePublish
+                            ? 'Flow successfully published. You can now enable it on the desired channels.'
+                            : 'Successfully updated',
+                    },
                     storeIntegrationId
                 )
             }
@@ -186,14 +214,34 @@ function WorkflowEditorViewWrapped({
             return
         }
 
-        if (isNewWorkflow) {
+        if (!isDraft) {
+            onPublish(isFirstTimePublish)
+        } else if (isDraft) {
+            if (isNewWorkflow) onDraftCreated()
+            else onSave?.()
+        }
+
+        notify({
+            isNewWorkflow,
+            isFirstTimePublish,
+        })
+    }
+
+    const notify = ({
+        isNewWorkflow,
+        isFirstTimePublish,
+    }: {
+        isNewWorkflow: boolean
+        isFirstTimePublish: boolean
+    }) => {
+        if (isFirstTimePublish) {
+            if (!isNewWorkflow) return
             notifyMerchant({
                 message:
-                    'Flow successfully created. Select the desired channel to enable and arrange flows.',
+                    'Flow successfully published. You can now enable it on the desired channels.',
                 status: NotificationStatus.Success,
                 dismissAfter: 4000,
             })
-            goToConnectedChannelsPage()
         } else {
             notifyMerchant({
                 message: isNewWorkflow
@@ -201,7 +249,6 @@ function WorkflowEditorViewWrapped({
                     : 'Successfully updated',
                 status: NotificationStatus.Success,
             })
-            goToWorkflowsListPage()
         }
     }
 
@@ -242,45 +289,48 @@ function WorkflowEditorViewWrapped({
                     className={css.pageHeader}
                     title={
                         <div className={css.headerLeft}>
-                            <TextInput
-                                ref={inputRef}
-                                className={css.headerLeftInput}
-                                isRequired
-                                onChange={(name) => {
-                                    workflowEditorContext.dispatch({
-                                        type: 'SET_NAME',
-                                        name,
-                                    })
-                                }}
-                                placeholder={
-                                    !isNewWorkflow &&
-                                    workflowEditorContext.isFetchPending
-                                        ? '...'
-                                        : 'Add flow name'
-                                }
-                                value={
-                                    workflowEditorContext.visualBuilderGraph
-                                        .name
-                                }
-                                isDisabled={isFetchPending}
-                                hasError={
-                                    workflowEditorContext.shouldShowErrors &&
-                                    workflowNameIsErrored
-                                }
-                                onKeyDown={(event) => {
-                                    if (event.key === 'Enter') {
-                                        inputRef.current?.blur()
+                            <div className={css.headerInner}>
+                                <TextInput
+                                    ref={inputRef}
+                                    className={css.headerLeftInput}
+                                    isRequired
+                                    onChange={(name) => {
+                                        workflowEditorContext.dispatch({
+                                            type: 'SET_NAME',
+                                            name,
+                                        })
+                                    }}
+                                    placeholder={
+                                        !isNewWorkflow &&
+                                        workflowEditorContext.isFetchPending
+                                            ? '...'
+                                            : 'Add flow name'
                                     }
-                                }}
-                            />
+                                    value={
+                                        workflowEditorContext.visualBuilderGraph
+                                            .name
+                                    }
+                                    isDisabled={isFetchPending}
+                                    hasError={
+                                        workflowEditorContext.shouldShowErrors &&
+                                        workflowNameIsErrored
+                                    }
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Enter') {
+                                            inputRef.current?.blur()
+                                        }
+                                    }}
+                                />
+                                {isExistingDraft && <DraftBadge />}
+                            </div>
                             <span className={css.headerLeftdescription}>
                                 Flow name will not be visible to customers
                             </span>
                         </div>
                     }
                 >
-                    <div className={css.headerRight}>
-                        <>
+                    <>
+                        <div className={css.headerRight}>
                             <WorkflowLanguageSelect
                                 available={
                                     workflowEditorContext.visualBuilderGraph
@@ -304,107 +354,45 @@ function WorkflowEditorViewWrapped({
                                     })
                                 }}
                             />
-                            {isNewWorkflow ? (
-                                <>
-                                    <Button
-                                        onClick={handleCancel}
-                                        isLoading={isFetchPending}
-                                        intent="secondary"
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        onClick={handleSave}
-                                        isLoading={
-                                            isFetchPending || isSavePending
-                                        }
-                                        isDisabled={!isDirty}
-                                    >
-                                        Create flow
-                                    </Button>
-                                </>
-                            ) : (
-                                <>
-                                    <ButtonWithConfirmation
-                                        confirmationButtonLabel="Discard Changes"
-                                        confirmationTitle="Discard changes?"
-                                        confirmationText="Your changes will be lost and this action cannot be undone"
-                                        isDisabled={
-                                            !isDirty ||
-                                            isFetchPending ||
-                                            isSavePending
-                                        }
-                                        onClick={handleDiscard}
-                                    >
-                                        Discard Changes
-                                    </ButtonWithConfirmation>
-                                    <Button
-                                        onClick={handleSave}
-                                        isLoading={
-                                            isFetchPending || isSavePending
-                                        }
-                                    >
-                                        Save & Close
-                                    </Button>
-                                </>
+
+                            <WorkflowEditorActionButtons
+                                isNewWorkflow={isNewWorkflow}
+                                areDraftsEnabled={areFlowsDraftsEnabled}
+                                isFetchPending={isFetchPending}
+                                isSavePending={isSavePending}
+                                isDraft={isDraft}
+                                isDirty={isDirty}
+                                onCancel={() => onDiscard(fromView)}
+                                onSave={handleSave}
+                                onPublish={handlePublish}
+                                onDiscard={handleDiscard}
+                            />
+                        </div>
+                        {!isNewWorkflow &&
+                            workflowEditorContext.configuration
+                                .updated_datetime &&
+                            areFlowsDraftsEnabled && (
+                                <div className={css.lastSaved}>
+                                    Last saved{' '}
+                                    {formatDatetime(
+                                        workflowEditorContext.configuration
+                                            .updated_datetime,
+                                        datetimeFormat,
+                                        userTimezone
+                                    )}
+                                </div>
                             )}
-                        </>
-                    </div>
+                    </>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
                     <WorkflowVisualBuilder />
                 </Container>
                 <UnsavedChangesPrompt
-                    onSave={handleSave}
+                    onSave={() => (isDraft ? handleSave() : handlePublish())}
                     when={isDirty && !isSavePending}
                 />
             </div>
         </WorkflowChannelSupportContext.Provider>
-    )
-}
-
-function ButtonWithConfirmation({
-    confirmationButtonLabel,
-    confirmationTitle,
-    confirmationText,
-    isDisabled,
-    onClick,
-    children,
-}: PropsWithChildren<{
-    confirmationButtonLabel?: string
-    confirmationTitle: ReactNode
-    confirmationText: ReactNode
-    isDisabled: boolean
-    onClick: () => void
-}>) {
-    if (isDisabled)
-        return (
-            <Button intent="secondary" isDisabled={true}>
-                {children}
-            </Button>
-        )
-    return (
-        <ConfirmationPopover
-            buttonProps={{
-                intent: 'destructive',
-            }}
-            cancelButtonProps={{intent: 'secondary'}}
-            onConfirm={onClick}
-            showCancelButton={true}
-            confirmLabel={confirmationButtonLabel}
-            title={confirmationTitle}
-            content={confirmationText}
-        >
-            {({uid, onDisplayConfirmation}) => (
-                <Button
-                    id={uid}
-                    intent="secondary"
-                    onClick={onDisplayConfirmation}
-                >
-                    {children}
-                </Button>
-            )}
-        </ConfirmationPopover>
     )
 }
 

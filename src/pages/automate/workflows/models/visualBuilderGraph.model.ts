@@ -145,7 +145,8 @@ export function walkVisualBuilderGraph(
 }
 
 export function transformVisualBuilderGraphIntoWfConfiguration(
-    g: VisualBuilderGraph
+    g: VisualBuilderGraph,
+    isDraft = true
 ) {
     const c: WorkflowConfiguration = _cloneDeep<WorkflowConfiguration>(
         g.wfConfigurationOriginal
@@ -154,6 +155,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
     c.available_languages = g.available_languages
     c.steps = []
     c.transitions = []
+    c.is_draft = isDraft
     const stepIdByNodeId: Record<string, string> = {}
     walkVisualBuilderGraph(
         g,

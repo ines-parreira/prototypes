@@ -14,7 +14,6 @@ import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {
     LanguageCode,
@@ -24,6 +23,7 @@ import {
 import DeleteWorkflowAction from './DeleteWorkflowAction'
 
 import css from './WorkflowsRow.less'
+import {DraftBadge} from './DraftBadge'
 
 type Props = {
     storeIntegrationId: number
@@ -112,10 +112,9 @@ const WorkflowRow = ({
             <BodyCell className={css.name}>
                 {workflow.name}
                 {workflow.is_draft && (
-                    <Badge type={ColorType.Black} className={css.badge}>
-                        <i className="material-icons">edit</i>
-                        draft
-                    </Badge>
+                    <span className={css.leftSpacingMd}>
+                        <DraftBadge />
+                    </span>
                 )}
             </BodyCell>
             <BodyCell size="smallest">

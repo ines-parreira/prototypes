@@ -1,5 +1,6 @@
-@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
-@import (reference) '~@gorgias/design-tokens/dist/css/typographyTokens.less';
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~css/typography';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 :local {
     .page {
@@ -9,7 +10,7 @@
     }
 
     .pageHeader {
-        gap: 24px;
+        gap: @layout-spacing-m;
         min-height: auto;
         align-items: flex-start;
         padding: 16px 24px;
@@ -34,19 +35,34 @@
             input {
                 font-size: @heading-section-regular-font-size;
             }
+
             height: 40px;
         }
 
         .headerLeftdescription {
             color: var(--neutral-grey-5);
-            margin-top: @layout-spacing-xxs;
+            margin-top: @layout-spacing-xs;
             line-height: normal;
         }
+    }
+
+    .headerInner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: @layout-spacing-xs;
     }
 
     .headerRight {
         display: flex;
         flex-wrap: wrap;
         gap: @layout-spacing-xs;
+    }
+
+    .lastSaved {
+        .body-regular();
+        margin-top: @layout-spacing-xs;
+        display: flex;
+        justify-content: flex-end;
     }
 }

@@ -48,6 +48,27 @@ export default function WorkflowEditorViewContainer() {
         [dispatch]
     )
 
+    const handleFlowDraftCreated = useCallback(() => {
+        history.push(
+            `/app/automation/${shopType}/${shopName}/flows/edit/${workflowId}`
+        )
+    }, [history, shopName, shopType, workflowId])
+
+    const handleFlowPublished = useCallback(
+        (isFirstTimePublish: boolean) => {
+            if (isFirstTimePublish) goToConnectedChannelsPage()
+            else goToWorkflowsListPage()
+        },
+        [goToConnectedChannelsPage, goToWorkflowsListPage]
+    )
+
+    const handleFlowDiscard = useCallback(
+        (fromView: string | undefined) => {
+            if (fromView === 'templates') goToWorkflowTemplatesPage()
+            else goToWorkflowsListPage()
+        },
+        [goToWorkflowsListPage, goToWorkflowTemplatesPage]
+    )
     if (!hasAutomate) {
         return <Redirect to="/app/automation" />
     }
@@ -56,11 +77,11 @@ export default function WorkflowEditorViewContainer() {
         <ErrorBoundary sentryTags={{section: 'workflows'}}>
             <WorkflowEditorView
                 currentAccountId={currentAccountId}
-                goToWorkflowsListPage={goToWorkflowsListPage}
-                goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
-                goToConnectedChannelsPage={goToConnectedChannelsPage}
                 workflowId={workflowId}
                 isNewWorkflow={isNewWorkflow}
+                onDraftCreated={handleFlowDraftCreated}
+                onPublish={handleFlowPublished}
+                onDiscard={handleFlowDiscard}
                 notifyMerchant={notifyMerchant}
                 shopName={shopName}
                 shopType={shopType}

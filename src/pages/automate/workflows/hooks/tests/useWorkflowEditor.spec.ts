@@ -68,6 +68,76 @@ describe('useWorkflowEditor', () => {
         expect(result.current.hookError).toBeDefined()
     })
 
+    it('should be a draft when is new', () => {
+        const {result} = renderHook(() =>
+            useWorkflowEditor(1, 'a', true, _noop)
+        )
+        expect(result.current.configuration.is_draft).toBe(true)
+    })
+
+    it('should be a draft when saved but not published', async () => {
+        updateMock({
+            fetchWorkflowConfiguration: () =>
+                Promise.resolve({
+                    id: 'a',
+                    internal_id: 'int-a',
+                    account_id: 1,
+                    is_draft: true,
+                    name: 'remote name',
+                    initial_step_id: 'messages1',
+                    entrypoint: {
+                        label: 'entrypoint',
+                        label_tkey: 'entrypoint',
+                    },
+                    steps: [
+                        {
+                            id: 'messages1',
+                            kind: 'messages',
+                            settings: {
+                                messages: [
+                                    {
+                                        content: {
+                                            text: 'Hello',
+                                            html: '<p>Hello</p>',
+                                            text_tkey: 'Hello',
+                                            html_tkey: '<p>Hello</p>',
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                        {
+                            id: 'handover1',
+                            kind: 'handover',
+                            settings: {},
+                        },
+                    ],
+                    transitions: [
+                        {
+                            id: 'messages1-handover1',
+                            from_step_id: 'messages1',
+                            to_step_id: 'handover1',
+                        },
+                    ],
+                } as WorkflowConfiguration),
+        })
+        const {result, waitForNextUpdate} = renderHook(() =>
+            useWorkflowEditor(1, 'a', false, _noop)
+        )
+        await waitForNextUpdate()
+        expect(result.current.configuration.is_draft).toBe(true)
+
+        // save
+        act(() => void result.current.handleSave())
+        await waitForNextUpdate()
+        expect(result.current.configuration.is_draft).toBe(true)
+
+        // publish
+        act(() => void result.current.handlePublish())
+        await waitForNextUpdate()
+        expect(result.current.configuration.is_draft).toBe(false)
+    })
+
     it('reflects changes on workflow name', async () => {
         updateMock({
             fetchWorkflowConfiguration: () =>

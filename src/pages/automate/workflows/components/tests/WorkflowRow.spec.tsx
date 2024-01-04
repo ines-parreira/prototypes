@@ -69,6 +69,33 @@ describe('<WorkflowsRow />', () => {
         await screen.findByText(`${shop1} (current store)`)
         await screen.findByText(shop2)
     })
+
+    it('should render a draft badge if workflow is draft', async () => {
+        renderWithRouterAndDnD(
+            <Provider store={mockStore()}>
+                <WorkflowRow
+                    goToEditWorkflowPage={jest.fn()}
+                    onDuplicate={duplicateFunction}
+                    onDelete={jest.fn()}
+                    notifyMerchant={notifyMerchant}
+                    workflow={
+                        {
+                            id: 'Workflow 1',
+                            name: 'Workflow 1',
+                            available_languages: ['en-US'],
+                            updated_datetime: '2023-12-22T09:57:21.303Z',
+                            is_draft: true,
+                        } as WorkflowConfigurationShallow
+                    }
+                    isUpdatePending={false}
+                    storeIntegrations={sortedIntegrations}
+                    storeIntegrationId={1}
+                />
+            </Provider>
+        )
+        await screen.findByText('draft')
+    })
+
     it('Create duplicate for current store', async () => {
         const {getByText, getByTitle} = renderWithRouterAndDnD(comp)
 

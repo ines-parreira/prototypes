@@ -104,6 +104,17 @@ export function getDateAndTimeFormat(
                         DateTimeFormatType.SHORT_DATE_EN_US
                     ]
             }
+        case DateAndTimeFormatting.ShortMonthDayWithTime:
+            switch (dateSetting) {
+                case DateFormatType.en_GB:
+                    return DateTimeFormatMapper[
+                        DateTimeFormatType.SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_GB
+                    ]
+                default:
+                    return DateTimeFormatMapper[
+                        DateTimeFormatType.SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_US
+                    ]
+            }
         case DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay:
             switch (dateSetting) {
                 case DateFormatType.en_GB:

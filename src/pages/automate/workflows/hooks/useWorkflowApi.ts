@@ -238,7 +238,7 @@ export const workflowConfigurationFactory = (
         id: workflowId,
         internal_id: ulid(),
         account_id: accountId,
-        is_draft: false,
+        is_draft: true,
         name: '',
         initial_step_id: workflowCallStepId,
         available_languages: ['en-US'],

@@ -20,6 +20,7 @@ export enum DateAndTimeFormatting {
     ShortDateWithYear,
     ShortDateWithYearAndOrdinalSuffixDay,
     ShortDateWithDayOfWeekAndYear,
+    ShortMonthDayWithTime,
     LongDate,
     LongDateWithDayOfWeek,
     LongDateWithYear,
@@ -70,6 +71,8 @@ export enum DateTimeFormatType {
     RELATIVE_DATE_AND_TIME_EN_GB_AM_PM,
     RELATIVE_DATE_AND_TIME_EN_US_24_HOUR,
     RELATIVE_DATE_AND_TIME_EN_US_AM_PM,
+    SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_US,
+    SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_GB,
 }
 
 export type DateTimeResultFormatType =
@@ -107,6 +110,10 @@ export const DateTimeFormatMapper: EnumDictionary<
         'MM/DD/YYYY HH:mm',
     [DateTimeFormatType.COMPACT_DATE_WITH_TIME_EN_US_AM_PM]:
         'MM/DD/YYYY hh:mm A',
+    [DateTimeFormatType.SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_US]:
+        'MMM D [at] h:mm a',
+    [DateTimeFormatType.SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_GB]:
+        'D MMM [at] h:mm a',
     [DateTimeFormatType.SHORT_DATE_EN_GB]: 'D MMM',
     [DateTimeFormatType.SHORT_DATE_EN_US]: 'MMM D',
     [DateTimeFormatType.SHORT_DATE_WITH_ORDINAL_SUFFIX_DAY_EN_GB]: 'Do MMM',
