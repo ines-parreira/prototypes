@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import {StatsFilters} from 'models/stat/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock} from 'utils/testing'
@@ -29,7 +29,7 @@ describe('<VoiceCallVolumeMetric />', () => {
         )
     }
 
-    it('should render', () => {
+    it('should render', async () => {
         const trendValue = {
             data: {
                 prevValue: 10,
@@ -45,6 +45,11 @@ describe('<VoiceCallVolumeMetric />', () => {
         expect(getByText('+50%')).toHaveClass('positive')
         expect(getByText('15')).toBeInTheDocument()
         expect(getByText('from 10')).toBeInTheDocument()
+
+        fireEvent.mouseOver(getByText('+50%'))
+        await waitFor(() =>
+            expect(getByText('Compared to: Feb 02, 2021')).toBeInTheDocument()
+        )
     })
 
     it('should render less is better', () => {

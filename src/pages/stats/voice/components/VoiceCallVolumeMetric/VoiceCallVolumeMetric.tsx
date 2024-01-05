@@ -1,13 +1,19 @@
+import moment from 'moment'
 import React from 'react'
 
 import TrendBadge from 'pages/stats/TrendBadge'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import {formatMetricValue, MetricTrendFormat} from 'pages/stats/common/utils'
+import {
+    comparedPeriodString,
+    formatMetricValue,
+    MetricTrendFormat,
+} from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {getPreviousPeriod} from 'utils/reporting'
 
 type VoiceCallVolumeMetricProps = {
     title: string
@@ -41,6 +47,7 @@ function VoiceCallVolumeMetric({
     )
     const voiceCallsCount = voiceCallCountTrend.data?.value
     const prevValue = voiceCallCountTrend.data?.prevValue
+    const previousPeriod = getPreviousPeriod(statsFilters.period)
 
     return (
         <MetricCard
@@ -52,6 +59,10 @@ function VoiceCallVolumeMetric({
             trendBadge={
                 <TrendBadge
                     {...getTrendProps(voiceCallCountTrend, moreIsBetter)}
+                    tooltip={comparedPeriodString(
+                        moment(previousPeriod.start_datetime),
+                        moment(previousPeriod.end_datetime)
+                    )}
                 />
             }
         >
