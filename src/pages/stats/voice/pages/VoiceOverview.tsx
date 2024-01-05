@@ -51,6 +51,7 @@ function VoiceOverview() {
                         value={pageStatsFilters.integrations}
                         integrations={phoneIntegrations}
                         isMultiple
+                        variant={'ghost'}
                     />
                     <PeriodStatsFilter
                         initialSettings={{

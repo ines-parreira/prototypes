@@ -59,14 +59,17 @@ export const VoiceCallTable = ({
         return new Array(CALL_LIST_PAGE_SIZE).fill(null).map((_, rowIndex) => (
             <TableBodyRow key={rowIndex}>
                 {[
-                    ['activity', 445],
-                    ['integration', 200],
-                    ['date', 200],
-                    ['state', 100],
-                    ['duration', 100],
-                    ['ticket', 120],
+                    ['activity', 407],
+                    ['integration', 174],
+                    ['date', 174],
+                    ['state', 74],
+                    ['duration', 74],
+                    ['ticket', 94],
                 ].map(([key, width]) => (
-                    <BodyCell key={key}>
+                    <BodyCell
+                        key={key}
+                        justifyContent={key === 'duration' ? 'right' : 'left'}
+                    >
                         <Skeleton inline width={width} />
                     </BodyCell>
                 ))}
@@ -109,6 +112,8 @@ export const VoiceCallTable = ({
                     />
                     <HeaderCellProperty
                         title={'Duration'}
+                        justifyContent={'right'}
+                        wrapContent={true}
                         className={css.smallCell}
                         tooltip={
                             'Total duration from the moment the call is started.'
