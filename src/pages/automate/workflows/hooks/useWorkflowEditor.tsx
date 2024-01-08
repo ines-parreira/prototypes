@@ -58,6 +58,7 @@ export type WorkflowEditorContext = {
     isDirty: boolean
     isFetchPending: boolean
     isSavePending: boolean
+    isPublishPending: boolean
     handleValidate: (isPublishing: boolean) => Maybe<string>
     handleSave: () => Promise<string | undefined>
     handlePublish: () => Promise<string | undefined>
@@ -151,6 +152,7 @@ export function useWorkflowEditor(
     } = useWorkflowApi()
     const [isFetchPending, setIsFetchPending] = useState(!isNew)
     const [isSavePending, setIsSavePending] = useState(false)
+    const [isPublishPending, setIsPublishPending] = useState(false)
     const [isDownloadPending, setIsDownloadPending] = useState(false)
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
@@ -349,31 +351,24 @@ export function useWorkflowEditor(
 
     const updateWorkflow = useCallback(
         async (configurationDirty: WorkflowConfiguration) => {
-            setIsSavePending(true)
             let configuration: WorkflowConfiguration
-            try {
-                // why saving order differ depending on isNew?
-                // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
-                if (isNew) {
-                    const updatedConfiguration =
-                        await upsertWorkflowConfiguration(
-                            emptyTranslatedTexts(configurationDirty)
-                        )
 
-                    await saveTranslations(visualBuilderGraphDirty)
-                    configuration = updatedConfiguration
-                } else {
-                    await saveTranslations(visualBuilderGraphDirty)
-                    const updatedConfiguration =
-                        await upsertWorkflowConfiguration(
-                            emptyTranslatedTexts(configurationDirty)
-                        )
+            // why saving order differ depending on isNew?
+            // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
+            if (isNew) {
+                const updatedConfiguration = await upsertWorkflowConfiguration(
+                    emptyTranslatedTexts(configurationDirty)
+                )
 
-                    configuration = updatedConfiguration
-                }
-            } catch (e) {
-                setIsSavePending(false)
-                throw e
+                await saveTranslations(visualBuilderGraphDirty)
+                configuration = updatedConfiguration
+            } else {
+                await saveTranslations(visualBuilderGraphDirty)
+                const updatedConfiguration = await upsertWorkflowConfiguration(
+                    emptyTranslatedTexts(configurationDirty)
+                )
+
+                configuration = updatedConfiguration
             }
 
             setRemoteConfiguration({
@@ -386,7 +381,7 @@ export function useWorkflowEditor(
                     configurationDirty
                 ),
             })
-            setIsSavePending(false)
+
             return configuration.id
         },
         [
@@ -402,12 +397,17 @@ export function useWorkflowEditor(
         const isAlreadyPublished = configuration.is_draft === false
         if (isAlreadyPublished && !isDirty) return
 
-        const configurationDirty =
-            transformVisualBuilderGraphIntoWfConfiguration(
-                visualBuilderGraphDirty,
-                false
-            )
-        return await updateWorkflow(configurationDirty)
+        try {
+            setIsPublishPending(true)
+            const configurationDirty =
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    visualBuilderGraphDirty,
+                    false
+                )
+            return await updateWorkflow(configurationDirty)
+        } finally {
+            setIsPublishPending(false)
+        }
     }, [
         updateWorkflow,
         visualBuilderGraphDirty,
@@ -418,11 +418,16 @@ export function useWorkflowEditor(
     const handleSave = useCallback(async () => {
         if (!isDirty) return
 
-        const configurationDirty =
-            transformVisualBuilderGraphIntoWfConfiguration(
-                visualBuilderGraphDirty
-            )
-        return await updateWorkflow(configurationDirty)
+        try {
+            setIsSavePending(true)
+            const configurationDirty =
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    visualBuilderGraphDirty
+                )
+            return await updateWorkflow(configurationDirty)
+        } finally {
+            setIsSavePending(false)
+        }
     }, [updateWorkflow, visualBuilderGraphDirty, isDirty])
 
     const handleDiscard = useCallback(() => {
@@ -574,6 +579,7 @@ export function useWorkflowEditor(
         visualBuilderGraph: visualBuilderGraphDirty,
         isFetchPending,
         isSavePending,
+        isPublishPending,
         isDirty: isVisualBuilderGraphDirty,
         checkInvalidVariablesForNode,
         checkNodeHasVariablesUsedInChildren,
@@ -706,6 +712,7 @@ export function createWorkflowEditorContextForPreview(
         visualBuilderGraph,
         isFetchPending: false,
         isSavePending: false,
+        isPublishPending: false,
         isDirty: false,
         checkInvalidVariablesForNode: () => false,
         checkNodeHasVariablesUsedInChildren: () => false,

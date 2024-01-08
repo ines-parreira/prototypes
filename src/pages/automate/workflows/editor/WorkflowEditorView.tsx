@@ -115,6 +115,7 @@ function WorkflowEditorViewWrapped({
     const isDraft = workflowEditorContext.configuration.is_draft
     const isFetchPending = workflowEditorContext.isFetchPending
     const isSavePending = workflowEditorContext.isSavePending
+    const isPublishPending = workflowEditorContext.isPublishPending
     const isExistingDraft = !isNewWorkflow && isDraft
     const workflowNameIsErrored =
         workflowEditorContext.visualBuilderGraph.name.trim().length === 0 ||
@@ -200,7 +201,7 @@ function WorkflowEditorViewWrapped({
                     {
                         success: isFirstTimePublish
                             ? 'Flow successfully published. You can now enable it on the desired channels.'
-                            : 'Successfully updated',
+                            : 'Successfully saved',
                     },
                     storeIntegrationId
                 )
@@ -242,11 +243,9 @@ function WorkflowEditorViewWrapped({
                 status: NotificationStatus.Success,
                 dismissAfter: 4000,
             })
-        } else {
+        } else if (isNewWorkflow) {
             notifyMerchant({
-                message: isNewWorkflow
-                    ? 'Successfully created'
-                    : 'Successfully updated',
+                message: 'Successfully saved',
                 status: NotificationStatus.Success,
             })
         }
@@ -360,6 +359,7 @@ function WorkflowEditorViewWrapped({
                                 areDraftsEnabled={areFlowsDraftsEnabled}
                                 isFetchPending={isFetchPending}
                                 isSavePending={isSavePending}
+                                isPublishPending={isPublishPending}
                                 isDraft={isDraft}
                                 isDirty={isDirty}
                                 onCancel={() => onDiscard(fromView)}

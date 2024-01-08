@@ -57,9 +57,8 @@ export default function WorkflowEditorViewContainer() {
     const handleFlowPublished = useCallback(
         (isFirstTimePublish: boolean) => {
             if (isFirstTimePublish) goToConnectedChannelsPage()
-            else goToWorkflowsListPage()
         },
-        [goToConnectedChannelsPage, goToWorkflowsListPage]
+        [goToConnectedChannelsPage]
     )
 
     const handleFlowDiscard = useCallback(

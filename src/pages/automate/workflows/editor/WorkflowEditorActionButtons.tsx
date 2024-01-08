@@ -6,6 +6,7 @@ interface Props {
     isNewWorkflow: boolean
     areDraftsEnabled: boolean
     isFetchPending: boolean
+    isPublishPending: boolean
     isSavePending: boolean
     isDraft: boolean
     isDirty: boolean
@@ -20,6 +21,7 @@ export const WorkflowEditorActionButtons = ({
     areDraftsEnabled,
     isFetchPending,
     isSavePending,
+    isPublishPending,
     isDraft,
     isDirty,
     onCancel,
@@ -32,7 +34,7 @@ export const WorkflowEditorActionButtons = ({
             <>
                 <Button
                     onClick={onCancel}
-                    isLoading={isFetchPending}
+                    isDisabled={isFetchPending}
                     intent="secondary"
                 >
                     Cancel
@@ -40,8 +42,8 @@ export const WorkflowEditorActionButtons = ({
 
                 <Button
                     onClick={onSave}
-                    isLoading={isFetchPending}
-                    isDisabled={!isDirty}
+                    isLoading={isFetchPending || isSavePending}
+                    isDisabled={!isDirty || isFetchPending}
                     intent="secondary"
                 >
                     Save
@@ -49,8 +51,8 @@ export const WorkflowEditorActionButtons = ({
 
                 <Button
                     onClick={onPublish}
-                    isLoading={isFetchPending || isSavePending}
-                    isDisabled={!isDirty}
+                    isLoading={isFetchPending || isPublishPending}
+                    isDisabled={!isDirty || isFetchPending}
                 >
                     Publish
                 </Button>
@@ -65,7 +67,7 @@ export const WorkflowEditorActionButtons = ({
                     confirmationButtonLabel="Discard Changes"
                     confirmationTitle="Discard changes?"
                     confirmationText="Your changes will be lost and this action cannot be undone"
-                    isDisabled={!isDirty || isFetchPending || isSavePending}
+                    isDisabled={!isDirty || isSavePending || isFetchPending}
                     onClick={onDiscard}
                 >
                     Discard Changes
@@ -74,8 +76,8 @@ export const WorkflowEditorActionButtons = ({
                 {isDraft && (
                     <Button
                         onClick={onSave}
-                        isLoading={isFetchPending}
-                        isDisabled={!isDirty}
+                        isLoading={isSavePending}
+                        isDisabled={!isDirty || isFetchPending}
                         intent="secondary"
                     >
                         Save
@@ -83,7 +85,8 @@ export const WorkflowEditorActionButtons = ({
                 )}
                 <Button
                     onClick={onPublish}
-                    isLoading={isFetchPending || isSavePending}
+                    isLoading={isPublishPending}
+                    isDisabled={!isDirty || isFetchPending}
                 >
                     Publish
                 </Button>
@@ -97,6 +100,7 @@ export const WorkflowEditorActionButtons = ({
                 <Button
                     onClick={onCancel}
                     isLoading={isFetchPending}
+                    disabled={isFetchPending}
                     intent="secondary"
                 >
                     Cancel
@@ -106,7 +110,7 @@ export const WorkflowEditorActionButtons = ({
                     confirmationButtonLabel="Discard Changes"
                     confirmationTitle="Discard changes?"
                     confirmationText="Your changes will be lost and this action cannot be undone"
-                    isDisabled={!isDirty || isFetchPending || isSavePending}
+                    isDisabled={!isDirty || isSavePending}
                     onClick={onDiscard}
                 >
                     Discard Changes
@@ -114,8 +118,8 @@ export const WorkflowEditorActionButtons = ({
             )}
             <Button
                 onClick={onPublish}
-                isLoading={isFetchPending || isSavePending}
-                isDisabled={!isDirty}
+                isLoading={isPublishPending}
+                isDisabled={!isDirty || isFetchPending}
             >
                 {isNewWorkflow ? 'Create flow' : 'Save & Close'}
             </Button>
