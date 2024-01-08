@@ -26,7 +26,7 @@ export const TagActionPreview = ({action}: Props) => {
         )
 
         return (
-            <TagLabel key={tag} decoration={tagObject.get('decoration')}>
+            <TagLabel key={tag} decoration={tagObject?.get('decoration')}>
                 {tag}
             </TagLabel>
         )
