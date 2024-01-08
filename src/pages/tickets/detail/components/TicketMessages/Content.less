@@ -1,8 +1,13 @@
 @import (reference) '~css/typography.less';
 
 :local {
-    .content > * {
-        position: inherit;
+    .content {
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
+
+        > * {
+            position: inherit;
+        }
     }
 
     .white-space {

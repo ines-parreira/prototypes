@@ -21,6 +21,9 @@ export const parseHtml = (html = '', global = window): Document => {
 }
 
 export const linkifyHtml = (body: string) => {
+    // parse html before linkifying it.
+    // linkifyjs's html tokenizer (simple-html-tokenizer) breaks and returns empty string
+    // when encountering invalid chars or unsupported tags (CDATA, DOCTYPE, MDO, etc.).
     const doc = parseHtml(body)
     const linkifiedBody = linkifyjsElement(doc.body, linkifyOptions)
     // merge head and body contents, in case we need to load resources from head.

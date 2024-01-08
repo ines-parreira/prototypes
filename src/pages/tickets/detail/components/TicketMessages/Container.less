@@ -15,6 +15,12 @@
 
     &:hover {
         background: var(--neutral-grey-1);
+
+        :global {
+            .message-content {
+                background: var(--neutral-grey-1);
+            }
+        }
     }
 
     &.internal {
@@ -42,6 +48,10 @@
                     var(--neutral-grey-4-s),
                     calc(var(--neutral-grey-4-l) - 10%)
                 ) !important;
+            }
+
+            .message-content {
+                background: unset;
             }
         }
     }

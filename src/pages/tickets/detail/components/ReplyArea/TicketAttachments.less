@@ -21,8 +21,7 @@
 
         &:hover,
         &:active {
-            background: #000 !important;
-
+            background: var(--neutral-grey-6);
             color: var(--neutral-grey-0);
         }
     }
@@ -75,7 +74,12 @@
         .productMeta {
             position: absolute;
             top: 0;
-            background: fade(#333, 90%);
+            background: hsla(
+                var(--neutral-grey-5-h),
+                var(--neutral-grey-5-s),
+                var(--neutral-grey-5-l),
+                0.9
+            );
             opacity: 0;
             color: var(--neutral-grey-0);
             height: 100%;
@@ -139,7 +143,7 @@
         padding: 0.8em;
         transition: all 0.3s;
 
-        color: #000;
+        color: var(--neutral-grey-6);
         font-size: 10px;
 
         @media @mobiles {
@@ -148,7 +152,12 @@
     }
 
     .hasPreview .itemMeta {
-        background: fade(#333, 90%);
+        background: hsla(
+            var(--neutral-grey-5-h),
+            var(--neutral-grey-5-s),
+            var(--neutral-grey-5-l),
+            0.9
+        );
         opacity: 0;
 
         color: var(--neutral-grey-0);

@@ -4,21 +4,18 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
 <div
   class="component"
 >
-  <div>
-    <div
-      class="content white-space"
+  <div
+    class="message-content content white-space"
+  >
+    text 
+    <a
+      class="linkified"
+      href="http://gorgias.io/"
+      rel="noreferrer noopener"
+      target="_blank"
     >
-      text 
-      <a
-        class="linkified"
-        href="http://gorgias.io/"
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        http://gorgias.io/
-      </a>
-    </div>
-    
+      http://gorgias.io/
+    </a>
   </div>
   <div
     class="carousel"
@@ -113,30 +110,27 @@ exports[`Body should display the Twitter quoted tweet card if there's matching m
 <div
   class="component"
 >
-  <div>
-    <div
-      class="content"
+  <div
+    class="message-content content"
+  >
+    si! more! 
+    <a
+      class="linkified"
+      href="https://t.co/PcepQOiI6X"
+      rel="noreferrer noopener"
+      target="_blank"
     >
-      si! more! 
-      <a
-        class="linkified"
-        href="https://t.co/PcepQOiI6X"
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        https://t.co/PcepQOiI6X
-      </a>
-       
-      <a
-        class="linkified"
-        href="https://t.co/F62lVxUXgG"
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        https://t.co/F62lVxUXgG
-      </a>
-    </div>
-    
+      https://t.co/PcepQOiI6X
+    </a>
+     
+    <a
+      class="linkified"
+      href="https://t.co/F62lVxUXgG"
+      rel="noreferrer noopener"
+      target="_blank"
+    >
+      https://t.co/F62lVxUXgG
+    </a>
   </div>
   <div
     class=" px-0 ml-n2 container"
@@ -351,15 +345,12 @@ exports[`Body should display the Yotpo product card if there's matching metadata
 <div
   class="component"
 >
-  <div>
-    <div
-      class="content"
-    >
-      <div>
-        This is a really good product!
-      </div>
+  <div
+    class="message-content content"
+  >
+    <div>
+      This is a really good product!
     </div>
-    
   </div>
   <div
     class="genericCard card"
