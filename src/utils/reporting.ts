@@ -11,7 +11,7 @@ import {
     ReportingQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {AutomationEventMember} from 'models/reporting/cubes/AutomationEventCube'
+
 import {HelpCenterTrackingEventMember} from '../models/reporting/cubes/HelpCenterTrackingEventCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
@@ -56,7 +56,6 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
 export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: AutomationBillingEventMember.PeriodStart,
     periodEnd: AutomationBillingEventMember.PeriodEnd,
-    channels: AutomationEventMember.Channel,
     integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,

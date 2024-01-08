@@ -20,14 +20,6 @@ exports[`time series Automate OverallTimeSaved should render expected query snap
         ],
       },
       {
-        "member": "AutomationEvent.channel",
-        "operator": "equals",
-        "values": [
-          "help-center",
-          "chat",
-        ],
-      },
-      {
         "member": "AutomationBillingEvent.periodEnd",
         "operator": "beforeDate",
         "values": [
@@ -79,14 +71,6 @@ exports[`time series Automate useAutomatedInteractionTimeSeries should render ex
         ],
       },
       {
-        "member": "AutomationEvent.channel",
-        "operator": "equals",
-        "values": [
-          "help-center",
-          "chat",
-        ],
-      },
-      {
         "member": "AutomationBillingEvent.periodEnd",
         "operator": "beforeDate",
         "values": [
@@ -129,14 +113,6 @@ exports[`time series Automate useAutomationRateTimeSeries should render expected
         "operator": "beforeDate",
         "values": [
           "2021-06-04T23:59:59.000",
-        ],
-      },
-      {
-        "member": "AutomationEvent.channel",
-        "operator": "equals",
-        "values": [
-          "help-center",
-          "chat",
         ],
       },
       {

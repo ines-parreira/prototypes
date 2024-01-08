@@ -1,27 +1,12 @@
-import {TicketCube} from 'models/reporting/cubes/TicketCube'
-import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
-
-export enum BillableTicketMeasure {
-    AvgResolutionTime = 'avgResolutionTime',
-    AvgFirstResponseTime = 'avgFirstResponseTime',
-}
+import {Cube} from 'models/reporting/types'
 
 export enum BillableTicketDimension {
-    TicketId = 'ticketId',
     AccountId = 'accountId',
-    FirstHelpdeskMessageDatetime = 'firstHelpdeskMessageDatetime',
-    FirstMessageChannel = 'firstMessageChannel',
-    FirstHelpdeskMessageUserId = 'firstHelpdeskMessageUserId',
-    BillableTicketCount = 'billableTicketCount',
+    TicketCreatedDate = 'ticketCreatedDate',
+    TotalTicketsPerDay = 'totalTicketsPerDay',
+    TotalResolutionTimePerDay = 'totalResolutionTimePerDay',
+    TotalFirstResponseTimePerDay = 'totalFirstResponseTimePerDay',
+    TotalBillableTicketPerDay = 'totalBillableTicketPerDay',
 }
 
-type BillableTicketCube = Cube<
-    BillableTicketMeasure,
-    BillableTicketDimension,
-    never
->
-
-export type BillableTicketCubeWithJoins = JoinedCubesWithMapping<
-    BillableTicketCube,
-    TicketCube
->
+export type BillableTicketCube = Cube<BillableTicketDimension, never>
