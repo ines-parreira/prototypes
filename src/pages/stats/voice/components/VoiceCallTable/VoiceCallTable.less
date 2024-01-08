@@ -3,15 +3,15 @@
 :local {
     .container {
         width: 100%;
-        max-height: 90vh;
         overflow-y: auto;
+        max-height: calc(100vh - 300px);
     }
 
     .table {
         box-sizing: border-box;
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: 0;
 
-        tr {
+        .tableRow {
             height: 64px;
             background: var(--neutral-grey-0);
             &:hover {
@@ -39,6 +39,33 @@
                     left: 0;
                     z-index: 2;
                     background: inherit;
+                }
+            }
+        }
+
+        .tableHead {
+            position: sticky;
+            top: 0;
+            height: 64px;
+            z-index: 3;
+            background: var(--neutral-grey-0);
+
+            &:after {
+                content: '';
+                pointer-events: none;
+                position: absolute;
+                border-bottom: 1px solid var(--neutral-grey-3);
+                width: 100%;
+                z-index: 3;
+                margin-top: -1px;
+            }
+
+            td {
+                background: var(--neutral-grey-0);
+
+                &:first-child {
+                    z-index: 5;
+                    background: var(--neutral-grey-0);
                 }
             }
         }

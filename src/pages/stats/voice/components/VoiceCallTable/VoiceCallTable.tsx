@@ -55,9 +55,9 @@ export const VoiceCallTable = ({
         setCurrentPage(nextPage)
     }
 
-    const showSkeletons = useMemo(() => {
+    const skeletons = useMemo(() => {
         return new Array(CALL_LIST_PAGE_SIZE).fill(null).map((_, rowIndex) => (
-            <TableBodyRow key={rowIndex}>
+            <TableBodyRow key={rowIndex} className={css.tableRow}>
                 {[
                     ['activity', 407],
                     ['integration', 174],
@@ -69,13 +69,17 @@ export const VoiceCallTable = ({
                     <BodyCell
                         key={key}
                         justifyContent={key === 'duration' ? 'right' : 'left'}
+                        className={classNames({
+                            [css.withShadow]:
+                                isTableScrolled && key === 'activity',
+                        })}
                     >
                         <Skeleton inline width={width} />
                     </BodyCell>
                 ))}
             </TableBodyRow>
         ))
-    }, [])
+    }, [isTableScrolled])
 
     if (!isFetching && data?.length === 0) {
         return (
@@ -88,110 +92,123 @@ export const VoiceCallTable = ({
     }
 
     return (
-        <div ref={ref} className={css.container} onScroll={handleScroll}>
-            <TableWrapper className={css.table} style={{width}}>
-                <TableHead>
-                    <HeaderCellProperty
-                        title={'Activity'}
-                        className={classNames(css.activityCell, {
-                            [css.withShadow]: isTableScrolled,
-                        })}
-                    />
-                    <HeaderCellProperty
-                        title={'Integration'}
-                        className={css.integrationCell}
-                    />
-                    <HeaderCellProperty
-                        title={'Date'}
-                        className={css.dateCell}
-                    />
-                    <HeaderCellProperty
-                        title={'State'}
-                        className={css.smallCell}
-                        tooltip={'The status of the phone call.'}
-                    />
-                    <HeaderCellProperty
-                        title={'Duration'}
-                        justifyContent={'right'}
-                        wrapContent={true}
-                        className={css.smallCell}
-                        tooltip={
-                            'Total duration from the moment the call is started.'
-                        }
-                    />
-                    <HeaderCellProperty
-                        title={'Ticket'}
-                        className={css.ticketCell}
-                    />
-                </TableHead>
-                <TableBody>
-                    {isFetching
-                        ? showSkeletons
-                        : data?.map((item, index) => (
-                              <TableBodyRow key={`row-${index}`}>
-                                  <BodyCell
-                                      className={classNames(css.activityCell, {
-                                          [css.withShadow]: isTableScrolled,
-                                      })}
+        <>
+            <div ref={ref} className={css.container} onScroll={handleScroll}>
+                <TableWrapper className={css.table} style={{width}}>
+                    <TableHead
+                        className={classNames(css.tableHead, css.tableRow)}
+                    >
+                        <HeaderCellProperty
+                            title={'Activity'}
+                            className={classNames(css.activityCell, {
+                                [css.withShadow]: isTableScrolled,
+                            })}
+                        />
+                        <HeaderCellProperty
+                            title={'Integration'}
+                            className={css.integrationCell}
+                        />
+                        <HeaderCellProperty
+                            title={'Date'}
+                            className={css.dateCell}
+                        />
+                        <HeaderCellProperty
+                            title={'State'}
+                            className={css.smallCell}
+                            tooltip={'The status of the phone call.'}
+                        />
+                        <HeaderCellProperty
+                            title={'Duration'}
+                            justifyContent={'right'}
+                            wrapContent={true}
+                            className={css.smallCell}
+                            tooltip={
+                                'Total duration from the moment the call is started.'
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={'Ticket'}
+                            className={css.ticketCell}
+                        />
+                    </TableHead>
+                    <TableBody>
+                        {isFetching
+                            ? skeletons
+                            : data?.map((item, index) => (
+                                  <TableBodyRow
+                                      key={`row-${index}`}
+                                      className={css.tableRow}
                                   >
-                                      <VoiceCallActivity voiceCall={item} />
-                                  </BodyCell>
-                                  <BodyCell className={css.integrationCell}>
-                                      {item.integrationId ? (
-                                          <VoiceIntegrationBasicLabel
-                                              integrationId={item.integrationId}
-                                              phoneNumber={
-                                                  isInboundVoiceCallSummary(
-                                                      item
-                                                  )
-                                                      ? item.phoneNumberDestination
-                                                      : item.phoneNumberSource
+                                      <BodyCell
+                                          className={classNames(
+                                              css.activityCell,
+                                              {
+                                                  [css.withShadow]:
+                                                      isTableScrolled,
                                               }
-                                          />
-                                      ) : (
-                                          '-'
-                                      )}
-                                  </BodyCell>
-                                  <BodyCell className={css.dateCell}>
-                                      <DatetimeLabel
-                                          dateTime={item.createdAt?.slice(
-                                              0,
-                                              -4
                                           )}
-                                          breakDate
-                                      />
-                                  </BodyCell>
-                                  <BodyCell className={css.smallCell}>
-                                      <VoiceCallStatusLabel
-                                          voiceCallStatus={item.status}
-                                          direction={item.direction}
-                                      />
-                                  </BodyCell>
-                                  <BodyCell
-                                      className={css.smallCell}
-                                      justifyContent={'right'}
-                                  >
-                                      {!!item.duration
-                                          ? getFormattedDurationEndedCall(
-                                                item.duration
-                                            )
-                                          : '-'}
-                                  </BodyCell>
-                                  <BodyCell className={css.ticketCell}>
-                                      {item.ticketId ? (
-                                          <Link
-                                              to={`/app/ticket/${item.ticketId}`}
-                                          >
-                                              View ticket
-                                          </Link>
-                                      ) : (
-                                          '-'
-                                      )}
-                                  </BodyCell>
-                              </TableBodyRow>
-                          ))}
-                </TableBody>
-            </TableWrapper>
+                                      >
+                                          <VoiceCallActivity voiceCall={item} />
+                                      </BodyCell>
+                                      <BodyCell className={css.integrationCell}>
+                                          {item.integrationId ? (
+                                              <VoiceIntegrationBasicLabel
+                                                  integrationId={
+                                                      item.integrationId
+                                                  }
+                                                  phoneNumber={
+                                                      isInboundVoiceCallSummary(
+                                                          item
+                                                      )
+                                                          ? item.phoneNumberDestination
+                                                          : item.phoneNumberSource
+                                                  }
+                                              />
+                                          ) : (
+                                              '-'
+                                          )}
+                                      </BodyCell>
+                                      <BodyCell className={css.dateCell}>
+                                          <DatetimeLabel
+                                              dateTime={item.createdAt?.slice(
+                                                  0,
+                                                  -4
+                                              )}
+                                              breakDate
+                                          />
+                                      </BodyCell>
+                                      <BodyCell className={css.smallCell}>
+                                          <VoiceCallStatusLabel
+                                              voiceCallStatus={item.status}
+                                              direction={item.direction}
+                                          />
+                                      </BodyCell>
+                                      <BodyCell
+                                          className={css.smallCell}
+                                          justifyContent={'right'}
+                                      >
+                                          {!!item.duration
+                                              ? getFormattedDurationEndedCall(
+                                                    item.duration
+                                                )
+                                              : '-'}
+                                      </BodyCell>
+                                      <BodyCell className={css.ticketCell}>
+                                          {item.ticketId ? (
+                                              <Link
+                                                  to={`/app/ticket/${item.ticketId}`}
+                                              >
+                                                  View ticket
+                                              </Link>
+                                          ) : (
+                                              '-'
+                                          )}
+                                      </BodyCell>
+                                  </TableBodyRow>
+                              ))}
+                    </TableBody>
+                </TableWrapper>
+            </div>
             {totalPages > 1 && (
                 <Pagination
                     currentPage={currentPage}
@@ -200,6 +217,6 @@ export const VoiceCallTable = ({
                     className={css.pagination}
                 />
             )}
-        </div>
+        </>
     )
 }
