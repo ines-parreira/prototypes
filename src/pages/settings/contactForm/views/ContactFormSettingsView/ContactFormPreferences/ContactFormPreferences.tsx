@@ -1,3 +1,5 @@
+import axios from 'axios'
+import {get} from 'lodash'
 import classNames from 'classnames'
 import React, {useState} from 'react'
 import {Container} from 'reactstrap'
@@ -126,6 +128,12 @@ const ContactFormPreferences = (): JSX.Element => {
 
         const isDeleted = !error && result
 
+        const errorMessage =
+            (axios.isAxiosError(error) &&
+                get(error, 'response.status') === 400 &&
+                get(error, 'response.data.message')) ||
+            'Failed to delete the Contact Form'
+
         setIsDeletionModalShown(false)
         dispatch(
             notifyAction({
@@ -134,7 +142,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     : NotificationStatus.Error,
                 message: isDeleted
                     ? 'Contact form deleted successfully'
-                    : 'Failed to delete the Contact Form',
+                    : errorMessage,
             })
         )
 

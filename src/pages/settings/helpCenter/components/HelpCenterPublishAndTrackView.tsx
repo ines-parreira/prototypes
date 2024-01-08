@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
+import {get} from 'lodash'
 import _debounce from 'lodash/debounce'
 import {Route, Switch, useHistory, useLocation} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -163,6 +164,21 @@ export const HelpCenterInstallationView: React.FC = () => {
                             status: NotificationStatus.Success,
                         })
                     )
+                })
+                .catch((err) => {
+                    const errorMessage =
+                        (axios.isAxiosError(err) &&
+                            get(err, 'response.status') === 400 &&
+                            get(err, 'response.data.message')) ||
+                        'Could not delete the Help Center'
+
+                    void dispatch(
+                        notify({
+                            message: errorMessage,
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                    reportError(err as Error)
                 })
         }
     }
