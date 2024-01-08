@@ -101,34 +101,37 @@ const ContactFormMailtoReplacementSection = ({
                     </ul>
                 )}
 
-                {mailtoReplacementConfig && (
-                    <>
-                        <h5 className="body-semibold">Email links replaced</h5>
+                {mailtoReplacementConfig &&
+                    mailtoReplacementConfig.emails.length > 0 && (
+                        <>
+                            <h5 className="body-semibold">
+                                Email links replaced
+                            </h5>
 
-                        <ul className={css.list}>
-                            {mailtoReplacementConfig.emails.map((email) => (
-                                <li
-                                    key={email}
-                                    className={css.item}
-                                    data-testid={`email-replaced-${email}`}
-                                >
-                                    <span>{email}</span>
-
-                                    <IconButton
-                                        onClick={() => {
-                                            onRemoveEmail(email)
-                                        }}
-                                        fillStyle="ghost"
-                                        intent="secondary"
-                                        data-testid={`revert-email-${email}`}
+                            <ul className={css.list}>
+                                {mailtoReplacementConfig.emails.map((email) => (
+                                    <li
+                                        key={email}
+                                        className={css.item}
+                                        data-testid={`email-replaced-${email}`}
                                     >
-                                        undo
-                                    </IconButton>
-                                </li>
-                            ))}
-                        </ul>
-                    </>
-                )}
+                                        <span>{email}</span>
+
+                                        <IconButton
+                                            onClick={() => {
+                                                onRemoveEmail(email)
+                                            }}
+                                            fillStyle="ghost"
+                                            intent="secondary"
+                                            data-testid={`revert-email-${email}`}
+                                        >
+                                            undo
+                                        </IconButton>
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
 
                 {emailList.length > 0 && (
                     <div>

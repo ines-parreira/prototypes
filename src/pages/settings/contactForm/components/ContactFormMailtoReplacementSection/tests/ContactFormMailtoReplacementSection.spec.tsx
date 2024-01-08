@@ -176,5 +176,39 @@ describe('<ContactFormMailtoReplacementSection />', () => {
                 })
             })
         })
+
+        it('should remove replaced email section when no email replaced', async () => {
+            const testEmail = createGmailIntegration(1, 'test1@mail.com')
+            mockUseEmailIntegrations.mockReturnValue({
+                defaultIntegration: undefined,
+                emailIntegrations: [testEmail],
+            })
+
+            renderComponent()
+
+            const email = testEmail.name
+
+            userEvent.click(screen.getByText('Replace links'))
+
+            await waitFor(() =>
+                expect(
+                    screen.getByTestId(`email-replaced-${email}`)
+                ).toBeInTheDocument()
+            )
+            expect(
+                screen.queryByText('Email links replaced')
+            ).toBeInTheDocument()
+
+            userEvent.click(screen.getByTestId(`revert-email-${email}`))
+
+            await waitFor(() =>
+                expect(
+                    screen.getByTestId(`email-detected-${email}`)
+                ).toBeInTheDocument()
+            )
+            expect(
+                screen.queryByText('Email links replaced')
+            ).not.toBeInTheDocument()
+        })
     })
 })
