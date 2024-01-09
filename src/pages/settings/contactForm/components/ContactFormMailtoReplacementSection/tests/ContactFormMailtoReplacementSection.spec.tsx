@@ -178,6 +178,43 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             })
         })
 
+        it('should add email to the replaced list if one email already replaced', async () => {
+            renderComponent()
+
+            const email1 = testEmails[0].name
+            const email2 = testEmails[1].name
+
+            // Unselect 2nd email
+            userEvent.click(screen.getByLabelText(email2))
+
+            userEvent.click(screen.getByText('Replace links'))
+
+            // Check only 1st email is replaced
+            await waitFor(() =>
+                expect(
+                    screen.getByTestId(`email-replaced-${email1}`)
+                ).toBeInTheDocument()
+            )
+
+            expect(
+                screen.getByTestId(`email-detected-${email2}`)
+            ).toBeInTheDocument()
+
+            // Select 2nd email
+            userEvent.click(screen.getByLabelText(email2))
+
+            userEvent.click(screen.getByText('Replace links'))
+
+            await waitFor(() =>
+                expect(
+                    screen.getByTestId(`email-replaced-${email1}`)
+                ).toBeInTheDocument()
+            )
+            expect(
+                screen.getByTestId(`email-replaced-${email2}`)
+            ).toBeInTheDocument()
+        })
+
         it('should remove replaced email section when no email replaced', async () => {
             const testEmail = createGmailIntegration(1, 'test1@mail.com')
             mockUseEmailIntegrations.mockReturnValue({

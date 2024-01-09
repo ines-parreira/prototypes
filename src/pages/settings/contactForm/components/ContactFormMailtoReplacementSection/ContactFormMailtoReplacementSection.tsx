@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import classNames from 'classnames'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -30,16 +30,17 @@ const ContactFormMailtoReplacementSection = ({
         useContactFormMailtoReplacementConfig({contactFormId})
     const [selectedEmails, setSelectedEmails] = useState<string[]>(emailList)
 
-    useEffect(() => {
-        setSelectedEmails(emailList)
-    }, [emailList])
-
     const onAlertClose = () => {
         setAlertDiscarded(false)
     }
 
     const onAddEmails = () => {
-        upsertMailtoReplacementConfig(selectedEmails)
+        const previousEmails = mailtoReplacementConfig?.emails || []
+        const uniqNewEmails = Array.from(
+            new Set([...selectedEmails, ...previousEmails])
+        )
+
+        upsertMailtoReplacementConfig(uniqNewEmails)
 
         setSelectedEmails([])
     }
@@ -48,6 +49,12 @@ const ContactFormMailtoReplacementSection = ({
         const newEmails = mailtoReplacementConfig?.emails.filter(
             (configEmail) => configEmail !== email
         )
+
+        // Preselect the email that was removed
+        setSelectedEmails((prevSelectedEmails) => [
+            ...prevSelectedEmails,
+            email,
+        ])
 
         if (newEmails) {
             upsertMailtoReplacementConfig(newEmails)
