@@ -38,7 +38,7 @@
         "headerText": "Gorgias Team",
         "inputPlaceholder": "Type a message...",
         "emailCapturePlaceholder": "your@email.com",
-        "requiredEmailCaptureInputLabel": "Email",
+        "requiredEmailCaptureInputLabel": "Leave us your email",
         "emailCaptureInputLabel": "Leave us your email",
         "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
         "emailCaptureOnlineThanksText": "Thanks! We will email you at {email} if you leave.",

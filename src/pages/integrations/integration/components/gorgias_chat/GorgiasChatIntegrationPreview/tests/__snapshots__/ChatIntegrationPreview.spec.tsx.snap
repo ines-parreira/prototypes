@@ -198,11 +198,16 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                   class="css-r0ijy4"
                 >
                   <label
-                    aria-label="Email"
+                    aria-label="Leave us your email"
                     class="css-zs6vvb"
                     for="email-capture-intput"
                   >
-                    Email
+                    Leave us your email
+                    <span
+                      class="required"
+                    >
+                      *
+                    </span>
                   </label>
                   <div
                     class="css-t0lbh8"
@@ -211,10 +216,11 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                       aria-invalid="false"
                       class="css-1jkukg3"
                       id="email-capture-intput"
-                      label="Email"
+                      label="Leave us your email"
                       name="email-capture-intput"
                       placeholder="your@email.com"
                       readonly=""
+                      required=""
                       type="email"
                       value=""
                     />
@@ -868,11 +874,16 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                   class="css-r0ijy4"
                 >
                   <label
-                    aria-label="Email"
+                    aria-label="Leave us your email"
                     class="css-zs6vvb"
                     for="email-capture-intput"
                   >
-                    Email
+                    Leave us your email
+                    <span
+                      class="required"
+                    >
+                      *
+                    </span>
                   </label>
                   <div
                     class="css-t0lbh8"
@@ -881,10 +892,11 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                       aria-invalid="false"
                       class="css-1jkukg3"
                       id="email-capture-intput"
-                      label="Email"
+                      label="Leave us your email"
                       name="email-capture-intput"
                       placeholder="your@email.com"
                       readonly=""
+                      required=""
                       type="email"
                       value=""
                     />
@@ -1201,11 +1213,11 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                     class="css-r0ijy4"
                   >
                     <label
-                      aria-label="Email"
+                      aria-label="Leave us your email"
                       class="css-zs6vvb"
                       for="email-capture-intput"
                     >
-                      Email
+                      Leave us your email
                       <span
                         class="required"
                       >
@@ -1219,7 +1231,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                         aria-invalid="false"
                         class="css-1jkukg3"
                         id="email-capture-intput"
-                        label="Email"
+                        label="Leave us your email"
                         name="email-capture-intput"
                         placeholder="your@email.com"
                         readonly=""

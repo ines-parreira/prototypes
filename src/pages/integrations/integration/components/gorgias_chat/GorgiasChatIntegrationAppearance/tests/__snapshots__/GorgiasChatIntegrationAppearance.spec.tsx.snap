@@ -1158,11 +1158,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -1171,10 +1176,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -2615,11 +2621,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -2628,10 +2639,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -4043,11 +4055,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -4056,10 +4073,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -5471,11 +5489,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -5484,10 +5507,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -6899,11 +6923,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -6912,10 +6941,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -8327,11 +8357,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -8340,10 +8375,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -9643,11 +9679,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -9656,10 +9697,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -10969,11 +11011,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -10982,10 +11029,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -12415,11 +12463,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -12428,10 +12481,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -13785,11 +13839,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -13798,10 +13857,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />
@@ -15213,11 +15273,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Email"
+                                      aria-label="Leave us your email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Email
+                                      Leave us your email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
                                     </label>
                                     <div
                                       class="css-t0lbh8"
@@ -15226,10 +15291,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Email"
+                                        label="Leave us your email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
+                                        required=""
                                         type="email"
                                         value=""
                                       />

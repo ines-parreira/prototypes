@@ -27,6 +27,7 @@ const EmailCaptureMessage: React.FC<Props> = ({language}) => {
                 readOnly
                 label={translatedTexts.requiredEmailCaptureInputLabel}
                 placeholder={translatedTexts.emailCapturePlaceholder}
+                required
             />
         </div>
     )
