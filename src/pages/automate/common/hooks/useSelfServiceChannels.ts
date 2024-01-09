@@ -1,5 +1,7 @@
 import {useMemo} from 'react'
 
+import {TicketChannel} from 'business/types/ticket'
+
 import useSelfServiceHelpCenterChannels, {
     SelfServiceHelpCenterChannel,
 } from './useSelfServiceHelpCenterChannels'
@@ -16,6 +18,18 @@ export type SelfServiceChannel =
     | SelfServiceStandaloneContactFormChannel
 
 export type SelfServiceChannelType = SelfServiceChannel['type']
+
+export const isSelfServiceHelpCenterChannel = (
+    channel: SelfServiceChannel
+): channel is SelfServiceHelpCenterChannel =>
+    channel.type === TicketChannel.HelpCenter
+export const isSelfServiceChatChannel = (
+    channel: SelfServiceChannel
+): channel is SelfServiceChatChannel => channel.type === TicketChannel.Chat
+export const isSelfServiceStandaloneContactFormChannel = (
+    channel: SelfServiceChannel
+): channel is SelfServiceStandaloneContactFormChannel =>
+    channel.type === TicketChannel.ContactForm
 
 const useSelfServiceChannels = (shopType: string, shopName: string) => {
     const chatIntegrations = useSelfServiceChatChannels(shopType, shopName)

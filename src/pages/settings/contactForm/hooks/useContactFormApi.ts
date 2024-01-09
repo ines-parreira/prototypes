@@ -4,7 +4,6 @@ import {get} from 'lodash'
 import {useHistory} from 'react-router-dom'
 import {
     ContactForm,
-    ContactFormAutomationSettings,
     CreateContactFormDto,
     UpdateContactFormDto,
     UpsertContactFormAutomationSettingsDto,
@@ -21,7 +20,10 @@ import {
 } from 'state/entities/contactForm/contactFormsAutomationSettings'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {reportError} from 'utils/errors'
-import {CONTACT_FORM_BASE_PATH} from '../constants'
+import {
+    CONTACT_FORM_BASE_PATH,
+    CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
+} from '../constants'
 
 export const useContactFormApi = () => {
     const dispatch = useAppDispatch()
@@ -214,9 +216,7 @@ export const useContactFormApi = () => {
     )
 
     const fetchAutomationSettingsByContactFormId = useCallback(
-        async (
-            contactFormId: number
-        ): Promise<ContactFormAutomationSettings | null> => {
+        async (contactFormId: number) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -231,14 +231,18 @@ export const useContactFormApi = () => {
                         automationSettings,
                     })
                 )
-
-                return automationSettings
             } catch (error) {
                 if (
                     axios.isAxiosError(error) &&
                     error.response?.status === 404
                 ) {
-                    return null
+                    return dispatch(
+                        contactFormAutomationSettingsFetched({
+                            contactFormId: contactFormId.toString(),
+                            automationSettings:
+                                CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
+                        })
+                    )
                 }
 
                 if (error instanceof Error) {
@@ -254,7 +258,7 @@ export const useContactFormApi = () => {
         async (
             contactFormId: number,
             payload: UpsertContactFormAutomationSettingsDto
-        ): Promise<ContactFormAutomationSettings> => {
+        ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -270,8 +274,6 @@ export const useContactFormApi = () => {
                         automationSettings: updatedAutomationSettings,
                     })
                 )
-
-                return updatedAutomationSettings
             } catch (error) {
                 if (error instanceof Error) {
                     reportError(error)

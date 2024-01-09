@@ -4,11 +4,10 @@ import classnames from 'classnames'
 import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {TicketChannel} from 'business/types/ticket'
 
-import css from './ConnectedChannelIcon.less'
+import css from './ChannelIcon.less'
 
 type Props = {
     type: SelfServiceChannelType
-    className?: string
 }
 
 const getIconFromChannelType = (
@@ -26,22 +25,14 @@ const getIconFromChannelType = (
     }
 }
 
-const ConnectedChannelIcon = ({type, className, ...otherProps}: Props) => {
+const ChannelIcon = ({type}: Props) => {
     const {icon, className: iconClassName} = getIconFromChannelType(type)
 
     return (
-        <i
-            className={classnames(
-                'icon d-inline-block material-icons',
-                css.icon,
-                className,
-                iconClassName
-            )}
-            {...otherProps}
-        >
+        <i className={classnames('material-icons', css.icon, iconClassName)}>
             {icon}
         </i>
     )
 }
 
-export default ConnectedChannelIcon
+export default ChannelIcon

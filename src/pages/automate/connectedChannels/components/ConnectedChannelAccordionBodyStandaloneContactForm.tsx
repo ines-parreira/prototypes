@@ -1,9 +1,8 @@
 import React, {useMemo} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {ContactFormAutomationSettings} from 'models/contactForm/types'
 import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
+import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import {TicketChannel} from 'business/types/ticket'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
@@ -13,7 +12,6 @@ import {
 } from '../../common/components/constants'
 import useAppSelector from '../../../../hooks/useAppSelector'
 import {getHasAutomate} from '../../../../state/billing/selectors'
-import {FeatureFlagKey} from '../../../../config/featureFlags'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
@@ -25,11 +23,8 @@ type Props = {
 const ConnectedChannelAccordionBodyStandaloneContactForm = ({
     channel,
 }: Props) => {
-    const contactFormOrderManagementEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.ContactFormOrderManagement]
-
     const {automationSettings, handleContactFormAutomationSettingsUpdate} =
-        useContactFormsAutomationSettings(channel.value.id)
+        useContactFormAutomationSettings(channel.value.id)
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
@@ -79,22 +74,17 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                     })
                 }}
             />
-
-            {contactFormOrderManagementEnabled && (
-                <ConnectedChannelFeatureToggle
-                    value={
-                        automationSettings?.order_management?.enabled ?? false
-                    }
-                    name={ORDER_MANAGEMENT}
-                    disabled={!hasAutomate}
-                    onChange={(enabled) => {
-                        void handleContactFormAutomationSettingsUpdate({
-                            order_management: {enabled},
-                        })
-                    }}
-                    action={!hasAutomate && <AutomateSubscriptionAction />}
-                />
-            )}
+            <ConnectedChannelFeatureToggle
+                value={automationSettings?.order_management?.enabled ?? false}
+                name={ORDER_MANAGEMENT}
+                disabled={!hasAutomate}
+                onChange={(enabled) => {
+                    void handleContactFormAutomationSettingsUpdate({
+                        order_management: {enabled},
+                    })
+                }}
+                action={!hasAutomate && <AutomateSubscriptionAction />}
+            />
         </>
     )
 }

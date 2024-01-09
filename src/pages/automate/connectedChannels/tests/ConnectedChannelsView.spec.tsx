@@ -83,7 +83,14 @@ const renderComponent = (
         ...defaultState,
         entities: {
             contactForm: {
-                contactFormsAutomationSettings: {},
+                contactFormsAutomationSettings: {
+                    automationSettingsByContactFormId: {
+                        [contactForm.id]: {
+                            workflows: [],
+                            order_management: {enabled: false},
+                        },
+                    },
+                },
                 contactForms: {
                     contactFormById: _keyBy([contactForm], 'id'),
                 },

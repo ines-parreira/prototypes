@@ -13,17 +13,20 @@ import {
     PolicyKey,
     ReturnActionType,
 } from 'models/selfServiceConfiguration/types'
-import {TicketChannel} from 'business/types/ticket'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
 import useEffectOnce from 'hooks/useEffectOnce'
-
+import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+
 import {ORDER_MANAGEMENT} from '../common/components/constants'
+import {
+    isSelfServiceChatChannel,
+    isSelfServiceStandaloneContactFormChannel,
+} from '../common/hooks/useSelfServiceChannels'
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
 import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
@@ -71,12 +74,16 @@ const OrderManagementView = () => {
     const chatApplicationIds = useMemo(
         () =>
             channels
-                .filter(
-                    (channel): channel is SelfServiceChatChannel =>
-                        channel.type === TicketChannel.Chat
-                )
+                .filter(isSelfServiceChatChannel)
                 .map(({value}) => value.meta.app_id)
                 .filter((value): value is string => Boolean(value)),
+        [channels]
+    )
+    const contactFormIds = useMemo(
+        () =>
+            channels
+                .filter(isSelfServiceStandaloneContactFormChannel)
+                .map(({value}) => value.id),
         [channels]
     )
 
@@ -92,6 +99,8 @@ const OrderManagementView = () => {
 
     const {applicationsAutomationSettings} =
         useApplicationsAutomationSettings(chatApplicationIds)
+    const {contactFormsAutomationSettings} =
+        useContactFormsAutomationSettings(contactFormIds)
 
     const [hoveredOrderManagementFlow, setHoveredOrderManagementFlow] =
         useState<PolicyKey>()
@@ -145,7 +154,12 @@ const OrderManagementView = () => {
 
     const isLoading =
         !selfServiceConfiguration ||
-        chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
+        chatApplicationIds.some(
+            (id) => !(id in applicationsAutomationSettings)
+        ) ||
+        contactFormIds.some(
+            (id) => !(id.toString() in contactFormsAutomationSettings)
+        )
 
     return (
         <AutomateView title={ORDER_MANAGEMENT} isLoading={isLoading}>

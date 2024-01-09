@@ -31,3 +31,8 @@ export const CONTACT_FORM_EMBED_FORM_TEXTS = {
         </>
     ),
 }
+
+export const CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS = {
+    workflows: [],
+    order_management: {enabled: false},
+}

@@ -17,10 +17,8 @@ import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactForm
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import FlowsBanner from 'pages/settings/contactForm/components/FlowsBanner'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAutomationProduct} from 'state/billing/selectors'
-import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
+
+import ContactFormFlowsBanner from './ContactFormFlowsBanner'
 
 const initUpdateDto = (
     subject_lines: ContactForm['subject_lines']
@@ -42,13 +40,6 @@ const ContactFormCustomization = (): JSX.Element => {
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
         Pick<UpdateContactFormDto, 'subject_lines'>
     >(() => initUpdateDto(contactForm.subject_lines))
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
-
-    const {automationSettings, isFetchPending} =
-        useContactFormsAutomationSettings(contactForm.id, true)
-    const workflows = automationSettings?.workflows || []
-    const hasFlowsEnabled =
-        workflows.some((workflow) => workflow.enabled) && !isFetchPending
 
     const discardChanges = () => {
         setUpdateContactFormDto(initUpdateDto(contactForm.subject_lines))
@@ -135,9 +126,8 @@ const ContactFormCustomization = (): JSX.Element => {
                     </Button>
                 </div>
                 <section className={contactFormCss.mtXl}>
-                    {!hasFlowsEnabled && (
-                        <FlowsBanner
-                            isSubscribedToAutomation={!!automationProduct}
+                    {contactForm.shop_name && (
+                        <ContactFormFlowsBanner
                             contactFormId={contactForm.id}
                             shopName={contactForm.shop_name}
                         />

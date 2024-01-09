@@ -14,6 +14,7 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
 
 import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
 
@@ -32,6 +33,9 @@ const OrderManagementPreview = ({
         useOrderManagementPreviewContext()
     const applicationsAutomationSettings = useAppSelector(
         getChatsApplicationAutomationSettings
+    )
+    const contactFormsAutomationSettings = useAppSelector(
+        getContactFormsAutomationSettings
     )
 
     return (
@@ -61,6 +65,19 @@ const OrderManagementPreview = ({
                     isOrderManagementDisabled = Boolean(
                         channel.value.self_service_deactivated_datetime
                     )
+                } else if (channel.type === TicketChannel.ContactForm) {
+                    const applicationAutomationSettings =
+                        contactFormsAutomationSettings[channel.value.id]
+                    isOrderManagementDisabled =
+                        applicationAutomationSettings?.order_management
+                            .enabled === false
+                    workflowsEntrypoints =
+                        applicationAutomationSettings?.workflows.map(
+                            (workflow) => ({
+                                ...workflow,
+                                workflow_id: workflow.id,
+                            })
+                        )
                 }
 
                 if (isOrderManagementDisabled) {

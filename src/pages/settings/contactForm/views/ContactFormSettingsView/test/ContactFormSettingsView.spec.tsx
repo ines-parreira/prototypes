@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import LD from 'launchdarkly-react-client-sdk'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
+import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {
@@ -33,7 +33,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
-jest.mock('pages/automate/common/hooks/useContactFormsAutomationSettings')
+jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 
 const queryClient = mockQueryClient()
 
@@ -88,7 +88,7 @@ describe('<ContactFormSettingsView />', () => {
         jest.mocked(useSupportedLocales).mockReturnValue(
             getLocalesResponseFixture
         )
-        jest.mocked(useContactFormsAutomationSettings).mockReturnValue({
+        jest.mocked(useContactFormAutomationSettings).mockReturnValue({
             automationSettings: {
                 order_management: {
                     enabled: true,

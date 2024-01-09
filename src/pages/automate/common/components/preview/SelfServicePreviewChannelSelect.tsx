@@ -1,13 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 
 import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import SourceIcon from 'pages/common/components/SourceIcon'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+
+import ChannelIcon from '../ChannelIcon'
 
 import css from './SelfServicePreviewChannelSelect.less'
 
@@ -58,11 +59,7 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
             onToggle={setIsSelectOpen}
             ref={targetRef}
             isDisabled={!channels.length}
-            prefix={
-                channel && (
-                    <SourceIcon type={channel.type} className={css.inputIcon} />
-                )
-            }
+            prefix={channel && <ChannelIcon type={channel.type} />}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (
@@ -82,11 +79,10 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
                                     onClick={handleChange}
                                     shouldCloseOnSelect
                                 >
-                                    <SourceIcon
-                                        type={option.type}
-                                        className={css.itemIcon}
-                                    />
-                                    {option.label}
+                                    <ChannelIcon type={option.type} />
+                                    <span className={css.itemLabel}>
+                                        {option.label}
+                                    </span>
                                 </DropdownItem>
                             ))}
                         </DropdownBody>

@@ -7,9 +7,10 @@ import Accordion from 'pages/common/components/accordion/Accordion'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {IntegrationType} from 'models/integration/constants'
 import useSelfServiceChannels, {
+    isSelfServiceChatChannel,
+    isSelfServiceStandaloneContactFormChannel,
     SelfServiceChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
@@ -27,6 +28,7 @@ import useWorkflowChannelSupport, {
 import {FeatureFlagKey} from '../../../config/featureFlags'
 import {CHANNELS} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
+import useContactFormsAutomationSettings from '../common/hooks/useContactFormsAutomationSettings'
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
 import ConnectedChannelsViewContext, {
@@ -121,17 +123,23 @@ const ConnectedChannelsView = () => {
     const chatApplicationIds = useMemo(
         () =>
             channels
-                .filter(
-                    (channel): channel is SelfServiceChatChannel =>
-                        channel.type === TicketChannel.Chat
-                )
+                .filter(isSelfServiceChatChannel)
                 .map(({value}) => value.meta.app_id)
                 .filter((value): value is string => Boolean(value)),
+        [channels]
+    )
+    const contactFormIds = useMemo(
+        () =>
+            channels
+                .filter(isSelfServiceStandaloneContactFormChannel)
+                .map(({value}) => value.id),
         [channels]
     )
 
     const {applicationsAutomationSettings} =
         useApplicationsAutomationSettings(chatApplicationIds)
+    const {contactFormsAutomationSettings} =
+        useContactFormsAutomationSettings(contactFormIds)
 
     const handleExpandedChannelChange = (channelIndex: string | null) => {
         setExpandedChannelIndex(channelIndex ? parseInt(channelIndex, 10) : -1)
@@ -151,16 +159,14 @@ const ConnectedChannelsView = () => {
     const isLoading =
         !selfServiceConfiguration ||
         isWorkflowsFetchPending ||
-        chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
+        chatApplicationIds.some(
+            (id) => !(id in applicationsAutomationSettings)
+        ) ||
+        contactFormIds.some(
+            (id) => !(id.toString() in contactFormsAutomationSettings)
+        )
 
     const expandedChannel = channels[expandedChannelIndex]
-
-    // Remove displayContactForms after we fully enable ContactFormOrderManagement
-    const contactFormOrderManagementEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.ContactFormOrderManagement]
-    const displayContactForms =
-        connectedChannelsViewContext.workflowsEntrypoints.length > 0 ||
-        contactFormOrderManagementEnabled
 
     return (
         <AutomateView title={CHANNELS} isLoading={isLoading}>
@@ -180,23 +186,13 @@ const ConnectedChannelsView = () => {
                                     expandedItem={expandedChannelIndex.toString()}
                                     onChange={handleExpandedChannelChange}
                                 >
-                                    {channels.map((channel, index) => {
-                                        if (
-                                            channel.type ===
-                                                TicketChannel.ContactForm &&
-                                            !displayContactForms
-                                        ) {
-                                            return null
-                                        }
-
-                                        return (
-                                            <ConnectedChannelAccordionItem
-                                                key={index}
-                                                index={index}
-                                                channel={channel}
-                                            />
-                                        )
-                                    })}
+                                    {channels.map((channel, index) => (
+                                        <ConnectedChannelAccordionItem
+                                            key={index}
+                                            index={index}
+                                            channel={channel}
+                                        />
+                                    ))}
                                 </Accordion>
                             </WorkflowChannelSupportContext.Provider>
                         </ConnectedChannelsViewContext.Provider>

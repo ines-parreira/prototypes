@@ -20,6 +20,8 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
         }[]
     >([])
     useEffect(() => {
+        let ignore = false
+
         async function f() {
             const enabledWorkflowIdsInChannel =
                 channelAutomationSettingsEntrypoints
@@ -36,6 +38,9 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
                 enabledWorkflowIdsInChannel,
                 channelLanguage
             )
+            if (ignore) {
+                return
+            }
             const entrypointLabelByWorkflowId: Record<string, string> =
                 _mapValues(entrypoints, 'label')
             setEntrypoints(
@@ -49,6 +54,10 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
             )
         }
         void f()
+
+        return () => {
+            ignore = true
+        }
     }, [
         channelAutomationSettingsEntrypoints,
         channelLanguage,

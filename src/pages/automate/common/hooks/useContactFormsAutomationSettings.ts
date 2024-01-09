@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from 'react'
+import {useEffect} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -6,18 +6,11 @@ import useAsyncFn from 'hooks/useAsyncFn'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {
-    contactFormAutomationSettingsFetched,
-    contactFormAutomationSettingsUpdated,
-    getContactFormsAutomationSettings,
-} from 'state/entities/contactForm/contactFormsAutomationSettings'
+import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {ContactFormAutomationSettings} from 'models/contactForm/types'
 
-const useContactFormsAutomationSettings = (
-    contactFormId: number,
-    silentFail?: boolean
-) => {
+const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
     const dispatch = useAppDispatch()
     const {
         isReady,
@@ -32,33 +25,19 @@ const useContactFormsAutomationSettings = (
     const [
         {loading: isFetchPending},
         handleContactFormAutomationSettingsFetch,
-    ] = useAsyncFn(async () => {
-        if (!isReady) {
-            return
-        }
-
-        try {
-            const automationSettings =
-                await fetchAutomationSettingsByContactFormId(contactFormId)
-
-            if (automationSettings === null) {
-                void dispatch(
-                    contactFormAutomationSettingsFetched({
-                        contactFormId: contactFormId.toString(),
-                        automationSettings: {
-                            workflows: [],
-                            order_management: {
-                                enabled: false,
-                            },
-                        },
-                    })
-                )
+    ] = useAsyncFn(
+        async (contactFormIds: number[]) => {
+            if (!isReady) {
+                return
             }
-        } catch (error) {
-            // We allow the silent fail for the case where we call this hook
-            // from the Customization tab. There we don't know beforehand if
-            // the contact form is connected to a shop or not.
-            if (!silentFail) {
+
+            try {
+                await Promise.all(
+                    contactFormIds.map((contactFormId) =>
+                        fetchAutomationSettingsByContactFormId(contactFormId)
+                    )
+                )
+            } catch (error) {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch',
@@ -66,25 +45,22 @@ const useContactFormsAutomationSettings = (
                     })
                 )
             }
-        }
-    }, [isReady])
+        },
+        [isReady]
+    )
 
     const [
         {loading: isUpdatePending},
         handleContactFormAutomationSettingsUpdate,
     ] = useAsyncFn(
-        async (automationSettings: Partial<ContactFormAutomationSettings>) => {
+        async (
+            contactFormId: number,
+            automationSettings: Partial<ContactFormAutomationSettings>
+        ) => {
             try {
-                const res = await upsertAutomationSettingsByContactFormId(
+                await upsertAutomationSettingsByContactFormId(
                     contactFormId,
                     automationSettings
-                )
-
-                void dispatch(
-                    contactFormAutomationSettingsUpdated({
-                        contactFormId: contactFormId.toString(),
-                        automationSettings: res,
-                    })
                 )
 
                 void dispatch(
@@ -106,38 +82,26 @@ const useContactFormsAutomationSettings = (
     )
 
     useEffect(() => {
-        const valueMissing =
-            contactFormsAutomationSettings[contactFormId.toString()] ===
-            undefined
+        const valuesMissing = contactFormIds.filter(
+            (id) => !(id.toString() in contactFormsAutomationSettings)
+        )
 
-        if (valueMissing) {
-            void handleContactFormAutomationSettingsFetch()
+        if (valuesMissing.length) {
+            void handleContactFormAutomationSettingsFetch(valuesMissing)
         }
     }, [
-        contactFormId,
+        contactFormIds,
         contactFormsAutomationSettings,
         handleContactFormAutomationSettingsFetch,
     ])
 
-    return useMemo(
-        () => ({
-            isFetchPending,
-            isUpdatePending,
-            automationSettings: contactFormsAutomationSettings[
-                contactFormId.toString()
-            ] ?? {workflows: []},
-            handleContactFormAutomationSettingsFetch,
-            handleContactFormAutomationSettingsUpdate,
-        }),
-        [
-            isFetchPending,
-            isUpdatePending,
-            contactFormId,
-            contactFormsAutomationSettings,
-            handleContactFormAutomationSettingsFetch,
-            handleContactFormAutomationSettingsUpdate,
-        ]
-    )
+    return {
+        isFetchPending,
+        isUpdatePending,
+        contactFormsAutomationSettings,
+        handleContactFormAutomationSettingsFetch,
+        handleContactFormAutomationSettingsUpdate,
+    }
 }
 
 export default useContactFormsAutomationSettings

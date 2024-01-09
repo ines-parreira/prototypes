@@ -1,7 +1,6 @@
 import React, {ReactNode, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
-import {TicketChannel} from 'business/types/ticket'
 import useSelfServiceChannels, {
     SelfServiceChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
@@ -20,17 +19,7 @@ type Props = {
 const OrderManagementPreviewProvider = ({children}: Props) => {
     useHistoryTracking(SegmentEvent.AutomateOrderManagementVisited)
     const {shopName} = useParams<{shopName: string}>()
-    const allChannels = useSelfServiceChannels(
-        IntegrationType.Shopify,
-        shopName
-    )
-
-    // filter out contact form channels until contact forms gain order management features
-    const channels = useMemo(
-        () =>
-            allChannels.filter(({type}) => type !== TicketChannel.ContactForm),
-        [allChannels]
-    )
+    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const [channel, setChannel] = useState<SelfServiceChannel | undefined>(
         channels[0]

@@ -10,11 +10,11 @@ import {
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {TicketChannel} from 'business/types/ticket'
+import ChannelIcon from 'pages/automate/common/components/ChannelIcon'
 
 import css from './ConnectedChannelAccordionItem.less'
 import ConnectedChannelAccordionBodyChat from './ConnectedChannelAccordionBodyChat'
 import ConnectedChannelAccordionBodyHelpCenter from './ConnectedChannelAccordionBodyHelpCenter'
-import ConnectedChannelIcon from './ConnectedChannelIcon'
 import ConnectedChannelAccordionBodyStandaloneContactForm from './ConnectedChannelAccordionBodyStandaloneContactForm'
 
 type Props = {
@@ -49,7 +49,7 @@ const ConnectedChannelAccordionItem = ({index, channel}: Props) => {
         <AccordionItem id={index.toString(10)}>
             <AccordionHeader>
                 <div className={css.channelAccordionHeader}>
-                    <ConnectedChannelIcon type={channel.type} />
+                    <ChannelIcon type={channel.type} />
 
                     <div className={css.channelName}>
                         {channelNamePrefix(channel.type)}: {channel.value.name}

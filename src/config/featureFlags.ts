@@ -35,7 +35,6 @@ export enum FeatureFlagKey {
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
     ChatTranscript = 'chat-transcript',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
-    ContactFormOrderManagement = 'contact-form-order-management',
     ConvertAutoUpgrade = 'convert-auto-upgrade',
     ConvertCampaignBundleWarning = 'convert-campaign-bundle-warning',
     CustomerTimelineButton = 'customer-timeline-button',
