@@ -1,11 +1,15 @@
+import {strict as assert} from 'assert'
 import {act, renderHook} from '@testing-library/react-hooks'
+import {ulid} from 'ulidx'
 import useWorkflowApi from '../useWorkflowApi'
 import useWorkflowTranslations from '../useWorkflowTranslations'
 import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../../models/workflowConfiguration.model'
+import {
+    transformWorkflowConfigurationIntoVisualBuilderGraph,
+    WorkflowConfigurationBuilder,
+} from '../../models/workflowConfiguration.model'
 import {LanguageCode} from '../../models/workflowConfiguration.types'
-
-const {workflowConfigurationFactory} = jest.requireActual('../useWorkflowApi')
+import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../../constants'
 
 let mockStore: Record<string, Record<string, string>> = {}
 
@@ -20,19 +24,9 @@ const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
     },
     fetchWorkflowTranslations: (internalId: string, language: string) =>
         Promise.resolve(mockStore[language]),
-    workflowConfigurationFactory,
 } as const
 
 jest.mock('../useWorkflowApi')
-
-const visualBuilderGraphFixture: VisualBuilderGraph =
-    transformWorkflowConfigurationIntoVisualBuilderGraph(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        workflowConfigurationFactory()
-    )
-if (visualBuilderGraphFixture.nodes[0].type === 'trigger_button') {
-    visualBuilderGraphFixture.nodes[0].data.label = 'english text'
-}
 
 beforeEach(() => {
     ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue(
@@ -42,6 +36,29 @@ beforeEach(() => {
 })
 
 describe('useWorkflowTranslations', () => {
+    let graph: VisualBuilderGraph
+    const graphTriggerLabelTkey = ulid()
+
+    beforeEach(() => {
+        const b = new WorkflowConfigurationBuilder({
+            id: 'test',
+            name: 'test',
+            account_id: 1,
+            entrypoint: {
+                label: 'english text',
+                label_tkey: graphTriggerLabelTkey,
+            },
+            initialMessage: {
+                content: {
+                    html: 'test',
+                    text: 'test',
+                },
+            },
+        })
+        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        graph = transformWorkflowConfigurationIntoVisualBuilderGraph(b.build())
+    })
+
     it('loads translations', async () => {
         const {result, waitForNextUpdate} = renderHook(() =>
             useWorkflowTranslations('id', ['en-US'], false, true)
@@ -60,7 +77,6 @@ describe('useWorkflowTranslations', () => {
             useWorkflowTranslations('id', ['en-US'], false, true)
         )
         await waitForNextUpdate()
-        let graph = visualBuilderGraphFixture
 
         act(() => {
             graph = result.current.switchLanguage(graph, 'fr-FR')
@@ -96,18 +112,15 @@ describe('useWorkflowTranslations', () => {
             }
         )
         await waitForNextUpdate()
-        let graph = visualBuilderGraphFixture
         act(() => {
             graph = result.current.switchLanguage(graph, 'fr-FR')
         })
         // we switched to french that was not existing in available_languages, now it exists
         // we simulate the prop change passed as hook argument
         rerender(['en-US', 'fr-FR'])
-        let triggerLabelTkey = ''
-        if (graph.nodes[0].type === 'trigger_button') {
-            graph.nodes[0].data.label = 'french text'
-            triggerLabelTkey = graph.nodes[0].data.label_tkey
-        }
+        assert(graph.nodes[0].type === 'trigger_button')
+        graph.nodes[0].data.label = 'french text'
+
         await act(() => result.current.saveTranslations(graph))
 
         expect(result.current).toEqual(
@@ -116,9 +129,11 @@ describe('useWorkflowTranslations', () => {
                 areTranslationsDirty: false,
             })
         )
-        expect(mockStore['fr-FR']).toEqual({
-            [triggerLabelTkey]: 'french text',
-        })
+        expect(mockStore['fr-FR']).toEqual(
+            expect.objectContaining({
+                [graphTriggerLabelTkey]: 'french text',
+            })
+        )
     })
 
     it('list incomplete translations', async () => {
@@ -126,12 +141,42 @@ describe('useWorkflowTranslations', () => {
             useWorkflowTranslations('id', ['en-US', 'fr-FR'], false, true)
         )
         await waitForNextUpdate()
-        let graph = visualBuilderGraphFixture
         act(() => {
             graph = result.current.switchLanguage(graph, 'fr-FR')
         })
         const incompleteLangs =
             result.current.getLangsOfIncompleteTranslations(graph)
         expect(incompleteLangs).toEqual(['fr-FR'])
+    })
+
+    it('removes stale translations', async () => {
+        const {result, waitForNextUpdate, rerender} = renderHook(
+            (availableLanguages: LanguageCode[]) =>
+                useWorkflowTranslations('id', availableLanguages, false, true),
+            {
+                initialProps: ['en-US'] as LanguageCode[],
+            }
+        )
+        await waitForNextUpdate()
+        act(() => {
+            graph = result.current.switchLanguage(graph, 'fr-FR')
+        })
+        // we switched to french that was not existing in available_languages, now it exists
+        // we simulate the prop change passed as hook argument
+        rerender(['en-US', 'fr-FR'])
+        assert(graph.nodes[0].type === 'trigger_button')
+        graph.nodes[0].data.label = 'french text'
+
+        // remove node
+        graph.nodes.splice(1, 1)
+
+        await act(() => result.current.saveTranslations(graph))
+
+        expect(mockStore['fr-FR']).toEqual({
+            [graphTriggerLabelTkey]: 'french text',
+        })
+        expect(mockStore['en-US']).toEqual({
+            [graphTriggerLabelTkey]: 'english text',
+        })
     })
 })

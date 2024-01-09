@@ -15,6 +15,7 @@ import _keys from 'lodash/keys'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import _mapValues from 'lodash/mapValues'
+import _pick from 'lodash/pick'
 
 import {LanguageCode} from '../models/workflowConfiguration.types'
 import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
@@ -390,8 +391,22 @@ function snapshotTranslations(
         },
         {ignoreKeys: ['wfConfigurationOriginal']}
     )
+    const tkeys = Object.keys(translations)
+    // When snapshotting translations for current language we also remove stale tkeys from translations for ALL
+    // remaining languages. This prevents a situation when translations for deleted step are only removed from
+    // translations for current language.
+    const cleanedTranslationsByLang = Object.entries(
+        translationsByLang
+    ).reduce<TranslationsByLang>(
+        (acc, [lang, translations]) => ({
+            ...acc,
+            [lang]: _pick(translations, tkeys),
+        }),
+        {}
+    )
+
     return {
-        ...translationsByLang,
+        ...cleanedTranslationsByLang,
         [currentLanguage]: translations,
     }
 }
