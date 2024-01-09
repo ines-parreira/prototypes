@@ -160,7 +160,7 @@ export default function VoiceIntegrationPreferences({
                                                 className="mb-3"
                                             >
                                                 This new configuration will be
-                                                implemented from January 10th
+                                                implemented from January 17th
                                                 onwards. Kindly review and
                                                 adjust your{' '}
                                                 <strong>team preference</strong>{' '}

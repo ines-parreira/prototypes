@@ -28,7 +28,7 @@ export default function RoutingRuleDecomissionBanner() {
             message={
                 <>
                     We’re introducing a new setting to easily route Voice calls.
-                    By <strong>January 10, 2024</strong>, please confirm your
+                    By <strong>January 17, 2024</strong>, please confirm your
                     settings.
                 </>
             }
