@@ -246,9 +246,6 @@ describe('<AutomateOverview />', () => {
     })
 
     it('should display paywall', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AutomateRebranding]: false,
-        }))
         const defaultState = {
             billing: fromJS(billingState),
             currentAccount: fromJS({

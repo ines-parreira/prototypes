@@ -75,35 +75,20 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
             >
               <div
                 class="container"
-                data-testid="automationModalDescription"
+                data-testid="automateModalDescription"
               >
                 <div
                   class="card"
                 >
                   <div
-                    class="alert info alert"
+                    class="cardHeader"
                   >
                     <div
-                      class="iconContainer"
+                      class="title"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        auto_awesome
-                      </i>
-                    </div>
-                    <div
-                      class="content"
-                    >
-                      <span
-                        class="label"
-                      >
-                        Unlock these features by subscribing to
-                         
-                        <strong>
-                          Automation
-                        </strong>
-                      </span>
+                      Ready to upgrade with 
+                      Automate
+                      ?
                     </div>
                   </div>
                   <div
@@ -113,36 +98,36 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                       class="feature"
                     >
                       <i
-                        class="material-icons"
+                        class="material-icons rounded"
                       >
-                        contact_support
+                        check
                       </i>
                       <div>
-                        Automate FAQs and product recommendations
+                        Lower ticket volume, resolution time, and stress
                       </div>
                     </div>
                     <div
                       class="feature"
                     >
                       <i
-                        class="material-icons-outlined"
+                        class="material-icons rounded"
                       >
-                        assignment_return
+                        check
                       </i>
                       <div>
-                        Automate order tracking and return/cancellation requests
+                        Choose a plan based on your usage
                       </div>
                     </div>
                     <div
                       class="feature"
                     >
                       <i
-                        class="material-icons"
+                        class="material-icons rounded"
                       >
-                        insights
+                        check
                       </i>
                       <div>
-                        Measure automation performance with a powerful dashboard
+                        Change plans or cancel at any time
                       </div>
                     </div>
                   </div>
@@ -159,11 +144,17 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                       Select a plan
                     </div>
                     <a
-                      href="https://www.gorgias.com/pricing"
+                      class="link"
+                      href="https://link.gorgias.com/vyp"
                       rel="noreferrer noopener"
                       target="_blank"
                     >
-                      See Plans Details
+                      Explore Pricing Plans
+                      <i
+                        class="linkIcon material-icons"
+                      >
+                        open_in_new
+                      </i>
                     </a>
                   </div>
                   <div
@@ -382,35 +373,20 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
             >
               <div
                 class="container"
-                data-testid="automationModalDescription"
+                data-testid="automateModalDescription"
               >
                 <div
                   class="card"
                 >
                   <div
-                    class="alert info alert"
+                    class="cardHeader"
                   >
                     <div
-                      class="iconContainer"
+                      class="title"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        auto_awesome
-                      </i>
-                    </div>
-                    <div
-                      class="content"
-                    >
-                      <span
-                        class="label"
-                      >
-                        Unlock these features by subscribing to
-                         
-                        <strong>
-                          Automation
-                        </strong>
-                      </span>
+                      Ready to upgrade with 
+                      Automate
+                      ?
                     </div>
                   </div>
                   <div
@@ -420,36 +396,36 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                       class="feature"
                     >
                       <i
-                        class="material-icons"
+                        class="material-icons rounded"
                       >
-                        contact_support
+                        check
                       </i>
                       <div>
-                        Automate FAQs and product recommendations
+                        Lower ticket volume, resolution time, and stress
                       </div>
                     </div>
                     <div
                       class="feature"
                     >
                       <i
-                        class="material-icons-outlined"
+                        class="material-icons rounded"
                       >
-                        assignment_return
+                        check
                       </i>
                       <div>
-                        Automate order tracking and return/cancellation requests
+                        Choose a plan based on your usage
                       </div>
                     </div>
                     <div
                       class="feature"
                     >
                       <i
-                        class="material-icons"
+                        class="material-icons rounded"
                       >
-                        insights
+                        check
                       </i>
                       <div>
-                        Measure automation performance with a powerful dashboard
+                        Change plans or cancel at any time
                       </div>
                     </div>
                   </div>
@@ -466,11 +442,17 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                       Select a plan
                     </div>
                     <a
-                      href="https://www.gorgias.com/pricing"
+                      class="link"
+                      href="https://link.gorgias.com/vyp"
                       rel="noreferrer noopener"
                       target="_blank"
                     >
-                      See Plans Details
+                      Explore Pricing Plans
+                      <i
+                        class="linkIcon material-icons"
+                      >
+                        open_in_new
+                      </i>
                     </a>
                   </div>
                   <div

@@ -47,7 +47,6 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import Tooltip from 'pages/common/components/Tooltip'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './RuleRow.less'
 import {getRuleActions} from './ruleEditors/utils'
 
@@ -79,7 +78,6 @@ export function RuleRow({
     )
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
-    const {rulesUrl} = useIsAutomateRebranding()
     const appNode = useAppNode()
 
     useEffect(() => {
@@ -114,7 +112,7 @@ export function RuleRow({
                     deactivated_datetime: null,
                 })
                 void dispatch(ruleCreated(newRule))
-                history.push(`${rulesUrl}/${newRule.id}`)
+                history.push(`/app/settings/rules/${newRule.id}`)
                 void dispatch(
                     notify({
                         message: 'Rule duplicated successfully',
@@ -193,7 +191,7 @@ export function RuleRow({
         [rule, datetimeFormat]
     )
 
-    const link = useMemo(() => `${rulesUrl}/${rule.id}`, [rule, rulesUrl])
+    const link = useMemo(() => `/app/settings/rules/${rule.id}`, [rule.id])
 
     const handleToggleClick = useCallback(
         (onDisplayConfirmation: (event: MouseEvent) => void) =>

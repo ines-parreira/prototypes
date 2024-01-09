@@ -32,7 +32,6 @@ import {formatDatetime, errorToChildren} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './MacrosSettingsTable.less'
 
 type OwnProps = {
@@ -67,7 +66,6 @@ export function MacrosSettingsTableContainer({
         () => options.orderBy?.split(':')[1] as OrderDirection,
         [options.orderBy]
     )
-    const {macrosUrl} = useIsAutomateRebranding()
     const hasAgentPrivileges = useHasAgentPrivileges()
 
     const handleMacroDelete = async (macroId: number) => {
@@ -101,7 +99,7 @@ export function MacrosSettingsTableContainer({
                 language,
             })
             macroCreated(res)
-            history.push(`${macrosUrl}/${res.id}`)
+            history.push(`/app/settings/macros/${res.id}`)
         } catch (error) {
             void notify({
                 message: 'Failed to duplicate macro',
@@ -188,7 +186,7 @@ export function MacrosSettingsTableContainer({
                         }
 
                         const {name, language, updated_datetime, usage} = macro
-                        const to = `${macrosUrl}/${macroId}`
+                        const to = `/app/settings/macros/${macroId}`
 
                         const tags = macro.actions
                             .filter(

@@ -14,7 +14,6 @@ import {
     proMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import * as utils from 'utils'
 import {AcceptedThemes, Theme} from 'theme'
 
@@ -44,9 +43,7 @@ describe('<Navbar />', () => {
         isTrialing: false,
         submitSetting: jest.fn(),
         isPreferencesLoading: false,
-        flags: {
-            [FeatureFlagKey.AutomateRebranding]: false,
-        },
+        flags: {},
         savedTheme: Theme.Modern,
         theme: Theme.Modern as AcceptedThemes,
         setTheme: jest.fn(),
@@ -217,43 +214,17 @@ describe('<Navbar />', () => {
         expect(getByText(/your profile/i)).toBeTruthy()
     })
 
-    it.each([
-        [{hasAgentPrevillage: true, isAutomateRebranding: true}],
-        [{hasAgentPrevillage: false, isAutomateRebranding: false}],
-        [{hasAgentPrevillage: true, isAutomateRebranding: false}],
-    ])(
-        'Should render Automate %s',
-        ({hasAgentPrevillage, isAutomateRebranding}) => {
-            jest.spyOn(utils, 'hasRole').mockReturnValue(hasAgentPrevillage)
+    it('should render Automate', () => {
+        jest.spyOn(utils, 'hasRole').mockReturnValue(true)
 
-            const {getByText} = render(
-                <Navbar
-                    {...{
-                        ...minProps,
-                        flags: {
-                            [FeatureFlagKey.AutomateRebranding]:
-                                isAutomateRebranding,
-                        },
-                    }}
-                />
-            )
+        const {getByText} = render(<Navbar {...minProps} />)
 
-            expect(getByText('Automate')).toBeInTheDocument()
-        }
-    )
+        expect(getByText('Automate')).toBeInTheDocument()
+    })
 
-    it('should not render Automate if not have Agent Previllage', () => {
+    it('should not render Automate if not have Agent privilege', () => {
         jest.spyOn(utils, 'hasRole').mockReturnValue(false)
-        const {queryByText} = render(
-            <Navbar
-                {...{
-                    ...minProps,
-                    flags: {
-                        [FeatureFlagKey.AutomateRebranding]: true,
-                    },
-                }}
-            />
-        )
+        const {queryByText} = render(<Navbar {...minProps} />)
 
         expect(queryByText('Automate')).not.toBeInTheDocument()
     })

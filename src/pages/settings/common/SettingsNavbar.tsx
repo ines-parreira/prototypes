@@ -116,12 +116,10 @@ const CATEGORIES: Category[] = [
             {
                 to: 'rules',
                 text: 'Rules',
-                requiredFeatureFlags: [FeatureFlagKey.AutomateRebranding],
             },
             {
                 to: 'macros',
                 text: 'Macros',
-                requiredFeatureFlags: [FeatureFlagKey.AutomateRebranding],
             },
             {
                 requiredRole: ADMIN_ROLE,
@@ -163,7 +161,6 @@ const CATEGORIES: Category[] = [
             {
                 to: 'ticket-assignment',
                 text: 'Ticket assignment',
-                requiredFeatureFlags: [FeatureFlagKey.AutomateRebranding],
             },
         ],
     },

@@ -64,7 +64,7 @@ describe('<MacrosCreateDropdown/>', () => {
         fireEvent.click(getByText('Create macro'))
         expect(history.push).toHaveBeenNthCalledWith(
             1,
-            '/app/automation/macros/new'
+            '/app/settings/macros/new'
         )
     })
 })

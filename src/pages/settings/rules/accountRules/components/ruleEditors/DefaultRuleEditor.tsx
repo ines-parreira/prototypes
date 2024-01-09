@@ -41,7 +41,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import useAsyncFn from 'hooks/useAsyncFn'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {CodeASTType} from '../../../types'
 import RuleItemButtons from '../../../components/RuleItemButtons'
 import RuleEditor from '../../../components/RuleEditor'
@@ -64,7 +63,6 @@ const DefaultRuleEditor = (
     ref: ForwardedRef<EditorHandle>
 ) => {
     const {errors} = useContext(ErrorsContext)
-    const {rulesUrl} = useIsAutomateRebranding()
     const [ruleDraft, setRuleDraft] = useState<RuleDraft>(getEmptyRule())
     const eventTypes = useMemo(() => getEventTypes(ruleDraft), [ruleDraft])
     const dispatch = useAppDispatch()
@@ -111,7 +109,7 @@ const DefaultRuleEditor = (
                         status: NotificationStatus.Success,
                     })
                 )
-                history.push(`${rulesUrl}/${newRule.id}`)
+                history.push(`/app/settings/rules/${newRule.id}`)
             } catch (error) {
                 void notify({
                     message: `Failed to duplicate rule.`,
@@ -186,9 +184,9 @@ const DefaultRuleEditor = (
                 message: 'Cannot create a new rule: Rule limit reached',
                 status: NotificationStatus.Warning,
             })
-            history.push(rulesUrl)
+            history.push('/app/settings/rules')
         }
-    }, [rule, limitStatus, rulesUrl])
+    }, [rule, limitStatus])
 
     useEffect(() => {
         if (rule) {

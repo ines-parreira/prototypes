@@ -36,12 +36,7 @@ describe('usePerformanceTips', () => {
             ),
         })
 
-        expect(mock).toHaveBeenCalledWith(
-            lowerIsBetterMetric,
-            value,
-            plan,
-            '/app/automation'
-        )
+        expect(mock).toHaveBeenCalledWith(lowerIsBetterMetric, value, plan)
     })
 
     it('should call tip service with null plan when subscription missing', () => {
@@ -54,11 +49,6 @@ describe('usePerformanceTips', () => {
             ),
         })
 
-        expect(mock).toHaveBeenCalledWith(
-            lowerIsBetterMetric,
-            value,
-            null,
-            '/app/automation'
-        )
+        expect(mock).toHaveBeenCalledWith(lowerIsBetterMetric, value, null)
     })
 })

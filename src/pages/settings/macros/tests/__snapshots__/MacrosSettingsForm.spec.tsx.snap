@@ -18,7 +18,7 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
           class="breadcrumb-item"
         >
           <a
-            to="/app/automation/macros"
+            to="/app/settings/macros"
           >
             Macros
           </a>
@@ -72,7 +72,7 @@ exports[`<MacrosSettingsForm/> should render a filled form when passed macro id 
           class="breadcrumb-item"
         >
           <a
-            to="/app/automation/macros"
+            to="/app/settings/macros"
           >
             Macros
           </a>
@@ -124,7 +124,7 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
           class="breadcrumb-item"
         >
           <a
-            to="/app/automation/macros"
+            to="/app/settings/macros"
           >
             Macros
           </a>

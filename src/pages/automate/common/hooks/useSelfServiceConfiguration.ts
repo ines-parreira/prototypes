@@ -1,5 +1,4 @@
 import {useCallback, useEffect, useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
 
 import {Draft} from 'immer'
 import useAppSelector from 'hooks/useAppSelector'
@@ -17,16 +16,13 @@ import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
-import {useIsAutomateRebranding} from './useIsAutomateRebranding'
 
 const useSelfServiceConfiguration = (
     shopType: string,
     shopName: string,
     notificationHandler?: (notification: Notification) => void
 ) => {
-    const history = useHistory()
     const dispatch = useAppDispatch()
-    const {isAutomateRebranding} = useIsAutomateRebranding()
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
     )
@@ -105,7 +101,7 @@ const useSelfServiceConfiguration = (
                 status: NotificationStatus.Error,
             })
         }
-    }, [storeIntegrationId, history, handleNotify, isAutomateRebranding])
+    }, [storeIntegrationId, handleNotify])
 
     useEffect(() => {
         if (!selfServiceConfiguration && storeIntegrationId) {

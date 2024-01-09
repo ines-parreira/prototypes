@@ -20,7 +20,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
           class="breadcrumb-item"
         >
           <a
-            to="/app/automation/rules"
+            to="/app/settings/rules"
           >
             Rules
           </a>
@@ -363,7 +363,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
           class="breadcrumb-item"
         >
           <a
-            to="/app/automation/rules"
+            to="/app/settings/rules"
           >
             Rules
           </a>
@@ -706,7 +706,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
           class="breadcrumb-item"
         >
           <a
-            to="/app/automation/rules"
+            to="/app/settings/rules"
           >
             Rules
           </a>
@@ -1000,7 +1000,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
             Start with a pre-made rule template and adapt it to fit your needs.
           </p>
           <a
-            to="/app/automation/rules/library"
+            to="/app/settings/rules/library"
           >
             <button
               aria-disabled="false"

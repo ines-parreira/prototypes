@@ -45,7 +45,6 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {MacroActionName} from 'models/macroAction/types'
 import useAsyncFn from 'hooks/useAsyncFn'
 
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './MacrosSettingsForm.less'
 
 export function MacrosSettingsFormContainer({
@@ -60,7 +59,6 @@ export function MacrosSettingsFormContainer({
     const hasAgentPrivileges = useHasAgentPrivileges()
     const {macroId} = useParams<{macroId?: string}>()
 
-    const {macrosUrl} = useIsAutomateRebranding()
     const [macroForm, setMacroForm] = useState<MacroDraft>(
         getDefaultMacro().toJS()
     )
@@ -77,7 +75,7 @@ export function MacrosSettingsFormContainer({
                     message: 'Failed to fetch macro',
                     status: NotificationStatus.Error,
                 })
-                history.push(macrosUrl)
+                history.push('/app/settings/macros')
             }
         }, [macroId])
     const handleActionsChange = (actions: List<any>) => {
@@ -134,7 +132,7 @@ export function MacrosSettingsFormContainer({
                     } macro.`,
                     status: NotificationStatus.Success,
                 })
-                history.push(macrosUrl)
+                history.push('/app/settings/macros')
             } catch (error) {
                 const gorgiasError = error as MacroApiError
                 const message = gorgiasError.response.data.error.msg
@@ -162,7 +160,7 @@ export function MacrosSettingsFormContainer({
                     message: `Successfully duplicated macro.`,
                     status: NotificationStatus.Success,
                 })
-                history.push(`${macrosUrl}/${res.id}`)
+                history.push(`/app/settings/macros/${res.id}`)
             } catch (error) {
                 void notify({
                     message: 'Failed to duplicate macro.',
@@ -183,7 +181,7 @@ export function MacrosSettingsFormContainer({
                 message: 'Successfully deleted macro',
                 status: NotificationStatus.Success,
             })
-            history.push(macrosUrl)
+            history.push('/app/settings/macros')
         } catch (error) {
             void notify({
                 title: (error as MacroApiError).response.data.error.msg,
@@ -221,7 +219,7 @@ export function MacrosSettingsFormContainer({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to={macrosUrl}>Macros</Link>
+                            <Link to="/app/settings/macros">Macros</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {!macroId

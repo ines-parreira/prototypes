@@ -137,6 +137,6 @@ describe('<AutomateSubscriptionModal />', () => {
             SegmentEvent.AutomatePaywallModalUpsell,
             {location: undefined}
         )
-        expect(getByTestId('automationModalDescription')).toBeInTheDocument()
+        expect(getByTestId('automateModalDescription')).toBeInTheDocument()
     })
 })

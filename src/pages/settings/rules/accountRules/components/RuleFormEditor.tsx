@@ -30,7 +30,6 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import TrackedRuleLibraryLink, {
     Source,
 } from '../../components/TrackedRuleLibraryLink'
@@ -98,7 +97,6 @@ const RuleNavbar = ({activeTab, handleTabChange}: NavbarProps) => (
 
 export const RuleFormEditor = ({rule}: Props) => {
     const editor = useRef<EditorHandle>(null)
-    const {rulesUrl} = useIsAutomateRebranding()
     const dispatch = useAppDispatch()
     const [activeTab, setActiveTab] = useState('settings')
     const hasAgentPrivileges = useHasAgentPrivileges()
@@ -129,7 +127,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                             message: 'Successfully updated rule',
                         })
                     )
-                    history.push(rulesUrl)
+                    history.push('/app/settings/rules')
                 } catch (error) {
                     void dispatch(
                         notify({
@@ -148,7 +146,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                             message: 'Successfully created rule',
                         })
                     )
-                    history.push(rulesUrl)
+                    history.push('/app/settings/rules')
                 } catch (error) {
                     void dispatch(
                         notify({
@@ -169,7 +167,7 @@ export const RuleFormEditor = ({rule}: Props) => {
         }
         try {
             await deleteRule(rule.id)
-            history.push(rulesUrl)
+            history.push('/app/settings/rules')
             dispatch(ruleDeleted(rule.id))
             void dispatch(
                 notify({
@@ -238,7 +236,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to={rulesUrl}>Rules</Link>
+                            <Link to="/app/settings/rules">Rules</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>{title}</BreadcrumbItem>
                     </Breadcrumb>

@@ -19,7 +19,6 @@ import {AccountFeature} from 'state/currentAccount/types'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
@@ -148,12 +147,8 @@ import QuickResponsesViewContainer from './automate/quickResponses/QuickResponse
 import WorkflowsViewContainer from './automate/workflows/WorkflowsViewContainer'
 import WorkflowEditorViewContainer from './automate/workflows/editor/WorkflowEditorViewContainer'
 import SelfServiceHelpCentersProvider from './automate/common/providers/SelfServiceHelpCentersProvider'
-import QuickResponsesPaywallView from './automate/quickResponses/QuickResponsesPaywallView'
-import OrderManagementPaywallView from './automate/orderManagement/OrderManagementPaywallView'
-import ArticleRecommendationPaywallView from './automate/articleRecommendation/ArticleRecommendationPaywallView'
 import OrderManagementPreviewProvider from './automate/orderManagement/OrderManagementPreviewProvider'
 import ConnectedChannelsViewContainer from './automate/connectedChannels/ConnectedChannelsViewContainer'
-import WorkflowsPaywallView from './automate/workflows/WorkflowsPaywallView'
 import WorkflowTemplatesViewContainer from './automate/workflows/WorkflowTemplatesViewContainer'
 import SelfServiceContactFormsProvider from './automate/common/providers/SelfServiceContactFormsProvider'
 import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketInsights'
@@ -499,7 +494,6 @@ export function StatsRoutes() {
 
     const displayVoiceAnalytics: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
-    const {isAutomateRebranding} = useIsAutomateRebranding()
 
     useEffect(logPageChange, [location.pathname])
 
@@ -705,16 +699,9 @@ export function StatsRoutes() {
                     exact
                     path={`${path}/${ROUTE_OLD_PERFORMANCE_BY_FEATURES}`}
                 >
-                    {isAutomateRebranding ? (
-                        <Redirect
-                            to={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
-                        />
-                    ) : (
-                        <App
-                            content={SelfServiceStatsPage}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
+                    <Redirect
+                        to={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
+                    />
                 </Route>
                 <Route
                     exact
@@ -1339,96 +1326,9 @@ export function AutomationRoutes() {
 
 function AutomationContent() {
     const {path} = useRouteMatch()
-    const {isAutomateRebranding} = useIsAutomateRebranding()
-    const settingPath = '/app/settings'
     const isTrainMyAiEnabled = useFlags()[FeatureFlagKey.TrainMyAiEnabled]
     return (
         <Switch>
-            {/* Macros */}
-            <Route path={`${path}/macros`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${settingPath}/macros`} exact />
-                ) : (
-                    <MacrosSettingsContent />
-                )}
-            </Route>
-            {isAutomateRebranding ? (
-                <Route path={`${path}/macros/new`} exact>
-                    <Redirect to={`${settingPath}/macros/new`} exact />
-                </Route>
-            ) : (
-                <Route
-                    path={`${path}/macros/new`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        MacrosSettingsForm,
-                        AGENT_ROLE,
-                        PageSection.Macros
-                    )}
-                />
-            )}
-
-            {isAutomateRebranding ? (
-                <Redirect
-                    from={`${path}/macros/:macroId`}
-                    to={`${settingPath}/macros/:macroId`}
-                />
-            ) : (
-                <Route path={`${path}/macros/:macroId`} exact>
-                    <MacrosSettingsForm />
-                </Route>
-            )}
-
-            {/* Rules */}
-            <Route path={`${path}/rules`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${settingPath}/rules`} exact />
-                ) : (
-                    <RulesView />
-                )}
-            </Route>
-            <Route path={`${path}/rules/library`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${settingPath}/rules/library`} exact />
-                ) : (
-                    <RulesLibrary />
-                )}
-            </Route>
-            {isAutomateRebranding ? (
-                <Route
-                    path={`${path}/rules/new`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        RuleDetailForm,
-                        AGENT_ROLE,
-                        PageSection.Rules
-                    )}
-                />
-            ) : (
-                <Route path={`${path}/rules/new`} exact>
-                    <Redirect to={`${settingPath}/rules/new`} exact />
-                </Route>
-            )}
-            {isAutomateRebranding ? (
-                <Redirect
-                    from={`${path}/rules/:ruleId`}
-                    to={`${settingPath}/rules/:ruleId`}
-                    exact
-                />
-            ) : (
-                <Route path={`${path}/rules/:ruleId`} exact>
-                    <RuleDetailForm />
-                </Route>
-            )}
-            {/* ticket assignment */}
-            <Route path={`${path}/ticket-assignment`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${settingPath}/ticket-assignment`} exact />
-                ) : (
-                    <TicketAssignment />
-                )}
-            </Route>
-            {/* Automate routes */}
             <Route
                 path={`${path}/:shopType/:shopName/quick-responses`}
                 exact
@@ -1587,46 +1487,12 @@ function AutomationContent() {
                     </SelfServiceContactFormsProvider>
                 </SelfServiceHelpCentersProvider>
             </Route>
-            <Route path={`${path}/flows`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${path}`} />
-                ) : (
-                    <WorkflowsPaywallView />
-                )}
-            </Route>
-            <Route path={`${path}/quick-responses`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${path}`} />
-                ) : (
-                    <QuickResponsesPaywallView />
-                )}
-            </Route>
-            <Route path={`${path}/order-management`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${path}`} />
-                ) : (
-                    <OrderManagementPaywallView />
-                )}
-            </Route>
-            <Route path={`${path}/article-recommendation`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${path}`} />
-                ) : (
-                    <ArticleRecommendationPaywallView />
-                )}
-            </Route>
             <Route path={`${path}`} exact>
                 <AutomateRoute />
             </Route>
-            {typeof isAutomateRebranding !== 'undefined' && (
-                <Route>
-                    {isAutomateRebranding ? (
-                        <Redirect to={`${path}`} />
-                    ) : (
-                        <Redirect to={`${path}/macros`} />
-                    )}
-                </Route>
-            )}
+            <Route>
+                <Redirect to={`${path}`} />
+            </Route>
         </Switch>
     )
 }

@@ -40,7 +40,6 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import RuleLibrary from './ruleLibrary/RuleLibrary'
 import CreateCustomRuleFooter from './components/CreateCustomRuleFooter'
 
@@ -51,7 +50,6 @@ export function RulesLibraryContainer() {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const hasAgentPrivileges = useHasAgentPrivileges()
 
-    const {rulesUrl} = useIsAutomateRebranding()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const logSearch = useCallback(
         _debounce((key: string) => {
@@ -125,11 +123,11 @@ export function RulesLibraryContainer() {
                 (rule) => rule.settings?.slug === searchSlug
             )
             if (rule) {
-                history.replace(`${rulesUrl}/${rule.id}`)
+                history.replace(`/app/settings/rules/${rule.id}`)
             }
             setSlug(searchSlug)
         }
-    }, [location, history, rules, rulesUrl])
+    }, [location, history, rules])
 
     useDebounce(() => setDebouncedSearchTerm(searchTerm), 200, [searchTerm])
 
@@ -145,7 +143,7 @@ export function RulesLibraryContainer() {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to={rulesUrl}>Rules</Link>
+                                <Link to="/app/settings/rules">Rules</Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 Rule Templates
@@ -185,7 +183,7 @@ export function RulesLibraryContainer() {
                                 !hasAgentPrivileges
                             }
                             onClick={() => {
-                                history.push(`${rulesUrl}/new`)
+                                history.push(`/app/settings/rules/new`)
                             }}
                         >
                             Create Custom Rule

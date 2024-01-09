@@ -16,12 +16,10 @@ import {
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getHasAutomate} from 'state/billing/selectors'
 import {Category} from 'models/integration/types'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {
     ROUTE_AUTOMATE_OVERVIEW,
     PAGE_TITLE_OVERVIEW,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-    ROUTE_OLD_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from './constants'
 
@@ -30,6 +28,7 @@ type Props = {
 }
 
 const OVERVIEW_PATH = `/app/stats/${ROUTE_AUTOMATE_OVERVIEW}`
+const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
 
 export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -46,10 +45,6 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                 .map((integration) => integration.type)
         )
     )
-    const {isAutomateRebranding} = useIsAutomateRebranding()
-    const PERFORMANCE_BY_FEATURE_PATH = isAutomateRebranding
-        ? `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
-        : `/app/stats/${ROUTE_OLD_PERFORMANCE_BY_FEATURES}`
 
     const automateRoutes: {
         label: ReactNode

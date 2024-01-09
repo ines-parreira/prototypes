@@ -34,7 +34,6 @@ import {eventNameToLabel} from 'config/rules'
 
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {textToHTML} from 'utils/html'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import css from './Event.less'
 
 type Props = {
@@ -66,7 +65,6 @@ const RuleSuggestionEvent = ({
         | EventType.RuleSuggestionSuggested
 }) => {
     const recipes = useRuleRecipes()
-    const {rulesUrl} = useIsAutomateRebranding()
     const ruleName = recipes?.[slug]?.rule?.name ?? slug
 
     return (
@@ -76,7 +74,7 @@ const RuleSuggestionEvent = ({
                 : 'Rule'}
             {' "'}
             <Link
-                to={`${rulesUrl}/library?${slug}`}
+                to={`/app/settings/rules/library?${slug}`}
                 title="Rule"
                 target="_blank"
                 rel="noreferrer"
@@ -102,13 +100,12 @@ const RuleActionName = ({
     data: Map<any, any>
     triggeringEventType: string
 }) => {
-    const {rulesUrl} = useIsAutomateRebranding()
     return (
         <div id={`rule-code-${rule_id}-${context}`}>
             <ActionName>
                 Rule "
                 <a
-                    href={`${rulesUrl}/${data.get('id') as number}`}
+                    href={`/app/settings/rules/${data.get('id') as number}`}
                     target="_blank"
                     rel="noreferrer"
                 >

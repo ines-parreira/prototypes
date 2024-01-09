@@ -48,7 +48,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
     id="rule-name-1"
   >
     <a
-      to="/app/automation/rules/1"
+      to="/app/settings/rules/1"
     >
       <div
         class="middleColumnContent"
@@ -65,7 +65,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
     class="link-full-td align-middle smallest pr-4"
   >
     <a
-      to="/app/automation/rules/1"
+      to="/app/settings/rules/1"
     >
       <div
         class="text-faded"
@@ -154,7 +154,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     id="rule-name-1"
   >
     <a
-      to="/app/automation/rules/1"
+      to="/app/settings/rules/1"
     >
       <div
         class="middleColumnContent"
@@ -171,7 +171,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     class="link-full-td align-middle smallest pr-4"
   >
     <a
-      to="/app/automation/rules/1"
+      to="/app/settings/rules/1"
     >
       <div
         class="text-faded"
@@ -260,7 +260,7 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
     id="rule-name-1"
   >
     <a
-      to="/app/automation/rules/1"
+      to="/app/settings/rules/1"
     >
       <div
         class="middleColumnContent"
@@ -287,7 +287,7 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
     class="link-full-td align-middle smallest pr-4"
   >
     <a
-      to="/app/automation/rules/1"
+      to="/app/settings/rules/1"
     >
       <div
         class="text-faded"

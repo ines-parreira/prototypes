@@ -10,7 +10,6 @@ import Errors from 'pages/common/components/ast/Errors'
 import {computeLeftPadding} from 'pages/common/components/ast/utils'
 import {RuleItemActions} from 'pages/settings/rules/types'
 
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
 import css from './Action.less'
@@ -28,11 +27,11 @@ type Props = {
 }
 
 const TeamAssigneeActionWarning = () => {
-    const {ticketAssignmentUrl} = useIsAutomateRebranding()
     return (
         <ActionWarning key="warning">
             To set up team auto-assignment, go to the{' '}
-            <Link to={ticketAssignmentUrl}>Ticket assignment</Link> page
+            <Link to="/app/settings/ticket-assignment">Ticket assignment</Link>{' '}
+            page
         </ActionWarning>
     )
 }

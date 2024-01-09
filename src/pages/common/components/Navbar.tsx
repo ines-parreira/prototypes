@@ -121,7 +121,6 @@ const mainMenu: MenuItem[] = [
         icon: 'bolt',
         segmentProp: {link: 'automation'},
         requiredRole: AGENT_ROLE,
-        requiredFeatureFlag: FeatureFlagKey.AutomateRebranding,
     },
     {
         url: '/app/customers',
@@ -400,22 +399,18 @@ export class Navbar extends Component<Props, State> {
 
                             <DropdownMenu className={css['dropdown-menu']}>
                                 {mainMenu.map((item) => {
-                                    const shouldHideAutomate =
-                                        item.requiredFeatureFlag &&
-                                        flags?.[item.requiredFeatureFlag] &&
-                                        item.requiredRole &&
-                                        !hasRole(currentUser, item.requiredRole)
                                     const shouldHideItem =
-                                        item.requiredFeatureFlag &&
-                                        !flags?.[item.requiredFeatureFlag] &&
-                                        item.requiredRole &&
-                                        !hasRole(currentUser, item.requiredRole)
+                                        (item.requiredFeatureFlag &&
+                                            !flags?.[
+                                                item.requiredFeatureFlag
+                                            ]) ||
+                                        (item.requiredRole &&
+                                            !hasRole(
+                                                currentUser,
+                                                item.requiredRole
+                                            ))
 
-                                    if (
-                                        item.label === 'Automate'
-                                            ? shouldHideAutomate
-                                            : shouldHideItem
-                                    ) {
+                                    if (shouldHideItem) {
                                         return null
                                     }
 

@@ -52,7 +52,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
           Automate this ticket with the
            
           <a
-            href="/app/automation/rules/library?rule-recipe-fixture"
+            href="/app/settings/rules/library?rule-recipe-fixture"
             rel="noreferrer"
             target="_blank"
           >
@@ -241,7 +241,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
           Automate this ticket with the
            
           <a
-            href="/app/automation/rules/library?rule-recipe-fixture"
+            href="/app/settings/rules/library?rule-recipe-fixture"
             rel="noreferrer"
             target="_blank"
           >
@@ -404,8 +404,8 @@ exports[`RuleSuggestion should send internal note because no text in suggestion 
         },
       ],
       "attachments": [],
-      "body_html": "<div>Sent via suggested rule: <a target="_blank" href="/app/automation/rules/library?rule-recipe-fixture">my rule</a></div>",
-      "body_text": "Sent via suggested rule: <a target="_blank" href="/app/automation/rules/library?rule-recipe-fixture">my rule</a>",
+      "body_html": "<div>Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?rule-recipe-fixture">my rule</a></div>",
+      "body_text": "Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?rule-recipe-fixture">my rule</a>",
       "channel": "email",
       "from_agent": true,
       "macros": [],

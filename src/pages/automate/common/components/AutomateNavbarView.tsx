@@ -5,12 +5,10 @@ import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegratio
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {compare} from 'utils'
 import navbarCss from 'assets/css/navbar.less'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {useIsAutomateRebranding} from '../hooks/useIsAutomateRebranding'
 import AutomateNavbarSectionBlock from './AutomateNavbarSectionBlock'
 
 import {
@@ -55,8 +53,6 @@ const AutomateNavbarView = () => {
         initialCollapsedSections
     )
 
-    const {isAutomateRebranding} = useIsAutomateRebranding()
-
     useEffectOnce(() => {
         if (!collapsedSections || !match) {
             return
@@ -94,41 +90,30 @@ const AutomateNavbarView = () => {
     }
 
     return (
-        <>
-            <div className={navbarCss.category}>
-                {sortedStoreIntegrations.map((storeIntegration) => {
-                    const shopType = storeIntegration.type
-                    const shopName =
-                        getShopNameFromStoreIntegration(storeIntegration)
-                    const key: SectionKey = `${shopType}:${shopName}`
+        <div className={navbarCss.category}>
+            {sortedStoreIntegrations.map((storeIntegration) => {
+                const shopType = storeIntegration.type
+                const shopName =
+                    getShopNameFromStoreIntegration(storeIntegration)
+                const key: SectionKey = `${shopType}:${shopName}`
 
-                    return (
-                        <AutomateNavbarSectionBlock
-                            key={key}
-                            name={storeIntegration.name}
-                            shopType={shopType}
-                            shopName={shopName}
-                            onToggle={() => {
-                                handleToggle(key)
-                            }}
-                            isExpanded={
-                                !!collapsedSections &&
-                                !collapsedSections.includes(key)
-                            }
-                        />
-                    )
-                })}
-            </div>
-            {!isAutomateRebranding && !storeIntegrations.length && (
-                <Alert
-                    className="mx-3 py-3 px-2 mt-4"
-                    type={AlertType.Error}
-                    icon
-                >
-                    Add a store integration to start using add-on features
-                </Alert>
-            )}
-        </>
+                return (
+                    <AutomateNavbarSectionBlock
+                        key={key}
+                        name={storeIntegration.name}
+                        shopType={shopType}
+                        shopName={shopName}
+                        onToggle={() => {
+                            handleToggle(key)
+                        }}
+                        isExpanded={
+                            !!collapsedSections &&
+                            !collapsedSections.includes(key)
+                        }
+                    />
+                )
+            })}
+        </div>
     )
 }
 

@@ -5,7 +5,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 
 export enum Source {
     CreateRuleButton = 'create-rule-button',
@@ -19,10 +18,9 @@ type Props = {
 
 const TrackedRuleLibraryLink: React.FC<Props> = ({from, children}) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {rulesUrl} = useIsAutomateRebranding()
     return (
         <Link
-            to={`${rulesUrl}/library`}
+            to={`/app/settings/rules/library`}
             onClick={() =>
                 logEvent(SegmentEvent.RuleLibraryVisited, {
                     from,

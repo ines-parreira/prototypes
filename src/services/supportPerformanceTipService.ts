@@ -62,9 +62,7 @@ const grades = [
     TipQualifier.Success,
 ]
 
-export const tips = (
-    settingsUrl: string
-): Record<MetricName, Record<TipQualifier, string[]>> => ({
+export const tips: Record<MetricName, Record<TipQualifier, string[]>> = {
     [MetricName.MessagesPerTicket]: {
         [TipQualifier.LightError]: [
             'Create a <a href="/app/settings/help-center" target="_blank">knowledge base or FAQ</a> page to point customers to an existing resource',
@@ -94,8 +92,8 @@ export const tips = (
     [MetricName.MedianFirstResponseTime]: {
         [TipQualifier.LightError]: [
             'Use <a href="/app/tickets/new/public" target="_blank">Views</a> to organize tickets, and prioritize customer service and triage tickets.',
-            `Use <a href="${settingsUrl}/ticket-assignment" target="_blank">auto-assignment</a> to route tickets to the correct team faster.`,
-            `Create Auto-tag <a href="${settingsUrl}/rules" target="_blank">Rules</a> and route tickets based on channel, language, or other qualities`,
+            `Use <a href="/app/settings/ticket-assignment" target="_blank">auto-assignment</a> to route tickets to the correct team faster.`,
+            `Create Auto-tag <a href="/app/settings/rules" target="_blank">Rules</a> and route tickets based on channel, language, or other qualities`,
         ],
         [TipQualifier.LightSuccess]: [
             `Use our <a href="/app/automation" target="_blank">Automate</a> to its full potential to reduce your FRT.`,
@@ -106,8 +104,8 @@ export const tips = (
     },
     [MetricName.MedianResolutionTime]: {
         [TipQualifier.LightError]: [
-            `Create <a href="${settingsUrl}/macros" target="_blank">Macros</a> to answer frequently asked questions, and personalize with variables`,
-            `Set up automated <a href="${settingsUrl}/rules" target="_blank">Rules</a> to instantly fire a personalized message`,
+            `Create <a href="/app/settings/macros" target="_blank">Macros</a> to answer frequently asked questions, and personalize with variables`,
+            `Set up automated <a href="/app/settings/rules" target="_blank">Rules</a> to instantly fire a personalized message`,
             'Provide instant answer to easy questions that you receive in high volume.',
         ],
         [TipQualifier.LightSuccess]: [
@@ -117,7 +115,7 @@ export const tips = (
             'Prioritize decreasing it for high-value tickets (VIPs, escalations, item in cart)',
         ],
     },
-})
+}
 
 export interface Tip {
     content: string
@@ -171,8 +169,7 @@ export const randomIndexGrade = (list: string[]) =>
 export const getPerformanceTip = (
     metric: MetricName,
     value: number | null,
-    plan: PlanName | null,
-    macrosAndRulesBaseUrl = '/app/automation'
+    plan: PlanName | null
 ): Tip | null => {
     if (!value || !plan) {
         return null
@@ -180,7 +177,7 @@ export const getPerformanceTip = (
 
     const baselines = MetricsBaselinesJSON[metric][plan]
     const {grade} = getMetricGrader(metric)(baselines, value)
-    const content = randomIndexGrade(tips(macrosAndRulesBaseUrl)[metric][grade])
+    const content = randomIndexGrade(tips[metric][grade])
 
     return {
         content,

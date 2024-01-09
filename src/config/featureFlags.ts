@@ -5,7 +5,6 @@ export enum FeatureFlagKey {
     AnalyticsDrillDownExport = 'analytics-drill-down-export',
     AutomateLandingPage = 'automate-landing-page',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
-    AutomateRebranding = 'automate-rebranding',
     AutoMergeAccountSetting = 'auto-merge-account-setting',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',

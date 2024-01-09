@@ -13,7 +13,7 @@ import {
     automationSubscriptionProductPrices,
     legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
-import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
+import {AGENT_ROLE} from 'config/user'
 import {RootState} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {getLDClient} from 'utils/launchDarkly'
@@ -59,58 +59,6 @@ describe('<AutomateNavbar />', () => {
     )
 
     describe('render()', () => {
-        it('should not render automate navbar for non-agent user without Automate', () => {
-            const {container} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentUser: fromJS({
-                            ...user,
-                            role: {name: BASIC_AGENT_ROLE},
-                        }),
-                    })}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <ThemeProvider>
-                            <AutomateNavbar />
-                        </ThemeProvider>
-                    </DndProvider>
-                </Provider>
-            )
-
-            expect(container).toMatchSnapshot()
-        })
-
-        it('should not render automate navbar for non-agent user with Automate', () => {
-            const {container} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                        currentUser: fromJS({
-                            ...user,
-                            role: {name: BASIC_AGENT_ROLE},
-                        }),
-                    })}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <ThemeProvider>
-                            <AutomateNavbar />
-                        </ThemeProvider>
-                    </DndProvider>
-                </Provider>
-            )
-
-            expect(container).toMatchSnapshot()
-        })
-
         it('should render automate navbar for agent without Automate and without legacy automate features', () => {
             const {container} = render(
                 <Provider

@@ -13,7 +13,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {IntegrationType} from 'models/integration/constants'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {
@@ -64,7 +63,6 @@ export default function Meta(props: Props) {
     const dispatch = useAppDispatch()
     const rules = useAppSelector(rulesSelector)
     const recipes = useRuleRecipes()
-    const {rulesUrl} = useIsAutomateRebranding()
 
     const [{loading: isFetchingRule, value: rule}, startFetchingRule] =
         useAsyncFn(
@@ -420,7 +418,7 @@ export default function Meta(props: Props) {
                         <Spinner className={css.spinner} color="dark" />
                     ) : (
                         <Link
-                            to={`${rulesUrl}/${props.ruleId}`}
+                            to={`/app/settings/rules/${props.ruleId}`}
                             title="Rule"
                             target="_blank"
                             rel="noreferrer"
@@ -454,7 +452,7 @@ export default function Meta(props: Props) {
                         <Spinner className={css.spinner} color="dark" />
                     ) : (
                         <Link
-                            to={`${rulesUrl}/library?${meta.rule_suggestion_slug}`}
+                            to={`/app/settings/rules/library?${meta.rule_suggestion_slug}`}
                             title="Rule"
                             target="_blank"
                             rel="noreferrer"

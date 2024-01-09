@@ -36,11 +36,9 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
-import {AutomationPrice, Price, ProductType} from 'models/billing/types'
+import {Price, ProductType} from 'models/billing/types'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import {SegmentEvent, logEvent} from 'common/segment'
-import AutomatePlanSubscriptionDescription from './AutomatePlanSubscriptionDescription'
 import css from './AutomateSubscriptionModal.less'
 
 type Props = {
@@ -122,7 +120,6 @@ const AutomateSubscriptionModal = ({
     const domain: string = currentAccount.get('domain')
 
     const currentPriceIds: string[] = useCurrentPriceIds()
-    const {isAutomateRebranding} = useIsAutomateRebranding()
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
         useAsyncFn(async (prices: string[]) => {
             try {
@@ -221,29 +218,16 @@ const AutomateSubscriptionModal = ({
                             : 'manage-automation-addon-modal-body'
                     }
                 >
-                    {isAutomateRebranding ? (
-                        <PlanSubscriptionDescription
-                            productType={ProductType.Automation}
-                            prices={automationPrices}
-                            isTrialing={isTrialingSubscription}
-                            isEnterprisePlan={isEnterprisePlan}
-                            interval={interval}
-                            selectedPrice={selectedPrice}
-                            setSelectedPrice={setSelectedPrice}
-                            setIsSubscriptionEnabled={setIsSubscriptionEnabled}
-                        />
-                    ) : (
-                        <AutomatePlanSubscriptionDescription
-                            isTrialing={isTrialingSubscription}
-                            isEnterprisePlan={isEnterprisePlan}
-                            automationPrices={automationPrices}
-                            interval={interval}
-                            selectedPrice={selectedPrice as AutomationPrice}
-                            setSelectedPrice={setSelectedPrice as any}
-                            setIsSubscriptionEnabled={setIsSubscriptionEnabled}
-                        />
-                    )}
-
+                    <PlanSubscriptionDescription
+                        productType={ProductType.Automation}
+                        prices={automationPrices}
+                        isTrialing={isTrialingSubscription}
+                        isEnterprisePlan={isEnterprisePlan}
+                        interval={interval}
+                        selectedPrice={selectedPrice}
+                        setSelectedPrice={setSelectedPrice}
+                        setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                    />
                     {!!image && (
                         <img
                             alt="automation features"

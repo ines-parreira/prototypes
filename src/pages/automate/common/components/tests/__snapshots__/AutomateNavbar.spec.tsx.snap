@@ -1,363 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutomateNavbar /> render() should not render automate navbar for non-agent user with Automate 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automate
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automate
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-2"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      />
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AutomateNavbar /> render() should not render automate navbar for non-agent user without Automate 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automate
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automate
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-1"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      />
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
 exports[`<AutomateNavbar /> render() should render automate navbar for admin with Automate 1`] = `
 <div>
   <div
@@ -476,7 +118,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <button
           aria-disabled="false"
           class="wrapper button ghost primary medium"
-          id="spotlight-button-8"
+          id="spotlight-button-6"
           type="button"
         >
           <span
@@ -857,7 +499,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <button
           aria-disabled="false"
           class="wrapper button ghost primary medium"
-          id="spotlight-button-7"
+          id="spotlight-button-5"
           type="button"
         >
           <span
@@ -1174,7 +816,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <button
           aria-disabled="false"
           class="wrapper button ghost primary medium"
-          id="spotlight-button-6"
+          id="spotlight-button-4"
           type="button"
         >
           <span
@@ -1191,88 +833,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       </div>
       <div
         class="navbar-content"
-      >
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/flows"
-          >
-            <div
-              class="name"
-            >
-              Flows
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/quick-responses"
-          >
-            <div
-              class="name"
-            >
-              Quick Responses
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/order-management"
-          >
-            <div
-              class="name"
-            >
-              Order Management
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/article-recommendation"
-          >
-            <div
-              class="name"
-            >
-              Article Recommendation
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-      </div>
+      />
       <div
         data-candu-id="navbar-menu-spacer"
       />
@@ -1434,7 +995,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <button
           aria-disabled="false"
           class="wrapper button ghost primary medium"
-          id="spotlight-button-5"
+          id="spotlight-button-3"
           type="button"
         >
           <span
@@ -1815,7 +1376,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <button
           aria-disabled="false"
           class="wrapper button ghost primary medium"
-          id="spotlight-button-4"
+          id="spotlight-button-2"
           type="button"
         >
           <span
@@ -2132,7 +1693,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <button
           aria-disabled="false"
           class="wrapper button ghost primary medium"
-          id="spotlight-button-3"
+          id="spotlight-button-1"
           type="button"
         >
           <span
@@ -2149,88 +1710,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       </div>
       <div
         class="navbar-content"
-      >
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/flows"
-          >
-            <div
-              class="name"
-            >
-              Flows
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/quick-responses"
-          >
-            <div
-              class="name"
-            >
-              Quick Responses
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/order-management"
-          >
-            <div
-              class="name"
-            >
-              Order Management
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="/app/automation/article-recommendation"
-          >
-            <div
-              class="name"
-            >
-              Article Recommendation
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              arrow_circle_up
-            </i>
-          </a>
-        </div>
-      </div>
+      />
       <div
         data-candu-id="navbar-menu-spacer"
       />

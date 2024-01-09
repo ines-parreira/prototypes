@@ -21,7 +21,7 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
             class="breadcrumb-item"
           >
             <a
-              to="/app/automation/rules"
+              to="/app/settings/rules"
             >
               Rules
             </a>
@@ -242,7 +242,7 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
             class="breadcrumb-item"
           >
             <a
-              to="/app/automation/rules"
+              to="/app/settings/rules"
             >
               Rules
             </a>

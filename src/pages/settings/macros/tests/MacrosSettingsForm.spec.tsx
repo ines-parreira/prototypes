@@ -138,12 +138,12 @@ describe('<MacrosSettingsForm/>', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/automation/macros'
+                '/app/settings/macros'
             )
         })
     })
 
-    it('should create macro and redirect to /app/automation/macros', async () => {
+    it('should create macro and redirect to /app/settings/macros', async () => {
         mockUseParams.mockReturnValue({})
         render(<MacrosSettingsFormContainer {...minProps} />)
 
@@ -160,7 +160,7 @@ describe('<MacrosSettingsForm/>', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/automation/macros'
+                '/app/settings/macros'
             )
         })
     })
@@ -192,7 +192,7 @@ describe('<MacrosSettingsForm/>', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/automation/macros'
+                '/app/settings/macros'
             )
         })
     })
@@ -329,7 +329,7 @@ describe('<MacrosSettingsForm/>', () => {
         expect(mockCreateMacro).toHaveBeenCalledTimes(1)
     })
 
-    it('should delete macro and redirect to /app/automation/macros', async () => {
+    it('should delete macro and redirect to /app/settings/macros', async () => {
         render(
             <MacrosSettingsFormContainer
                 {...minProps}
@@ -349,10 +349,7 @@ describe('<MacrosSettingsForm/>', () => {
             message: 'Successfully deleted macro',
             status: NotificationStatus.Success,
         })
-        expect(history.push).toHaveBeenNthCalledWith(
-            1,
-            '/app/automation/macros'
-        )
+        expect(history.push).toHaveBeenNthCalledWith(1, '/app/settings/macros')
     })
 
     it('should notify when failing to delete macro', async () => {
@@ -413,7 +410,7 @@ describe('<MacrosSettingsForm/>', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 2,
-                '/app/automation/macros/5'
+                '/app/settings/macros/5'
             )
         })
     })

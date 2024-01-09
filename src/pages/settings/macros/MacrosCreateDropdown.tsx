@@ -16,7 +16,6 @@ import {JobType} from 'models/job/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {useIsAutomateRebranding} from 'pages/automate/common/hooks/useIsAutomateRebranding'
 import history from '../../history'
 
 import MacrosCSVImportPopover from './MacrosCSVImportPopover'
@@ -26,7 +25,6 @@ export function MacrosCreateDropdown(): JSX.Element {
     const [isImportOpen, setImportOpen] = useState(false)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const hasAgentPrivileges = useHasAgentPrivileges()
-    const {macrosUrl} = useIsAutomateRebranding()
 
     const _downloadMacros = () => {
         logEvent(SegmentEvent.MacrosExportClicked, {
@@ -66,7 +64,7 @@ export function MacrosCreateDropdown(): JSX.Element {
                 <Button
                     color="primary"
                     onClick={() => {
-                        history.push(`${macrosUrl}/new`)
+                        history.push(`/app/settings/macros/new`)
                     }}
                     type="button"
                     disabled={!hasAgentPrivileges}
