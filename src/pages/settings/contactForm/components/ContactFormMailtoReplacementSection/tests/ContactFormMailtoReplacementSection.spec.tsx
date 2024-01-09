@@ -169,6 +169,7 @@ describe('<ContactFormMailtoReplacementSection />', () => {
                     screen.getByTestId(`email-detected-${email}`)
                 ).toBeInTheDocument()
             )
+            expect(screen.getByLabelText(email)).toBeChecked()
             await waitFor(() => {
                 expect(notify).toHaveBeenCalledWith({
                     message: 'Replaced with link to Contact Form.',
