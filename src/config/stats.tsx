@@ -22,7 +22,6 @@ import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
 import TicketsCreatedPerTagViewLink from 'pages/stats/common/TicketsCreatedPerTagViewLink'
 import TicketsCreatedPerChannelViewLink from 'pages/stats/common/TicketsCreatedPerChannelViewLink'
-import {AutomateStatsSelfServiceMetric} from 'pages/stats/AutomateStatsSelfServiceMetric'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
@@ -68,9 +67,6 @@ export const USERS_STATUSES = 'users-statuses'
 export const OPEN_TICKETS_ASSIGNMENT_STATUSES =
     'open-tickets-assignment-statuses'
 export const SUPPORT_VOLUME_PER_HOUR = 'support-volume-per-hour'
-export const AUTOMATION_OVERVIEW = 'automation-overview'
-export const AUTOMATION_FLOW = 'automation-flow'
-export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
 export const SELF_SERVICE_OVERVIEW_V2 = 'self-service-overview-v2'
 export const AUTOMATE_PERFORMANCE_BY_FEATURE = 'automate-performance-by-feature'
@@ -1304,132 +1300,6 @@ export const stats = toImmutable<
             },
         }),
     },
-    [AUTOMATION_OVERVIEW]: {
-        style: 'key-metrics',
-        api_resource_name: AUTOMATION_OVERVIEW,
-        metrics: [
-            {
-                label: 'Overall automation rate',
-                name: 'overall_automation',
-                tooltip:
-                    'Percentage of customer interactions automated with Gorgias automation features. ' +
-                    'The top 10% merchants of Gorgias are able to reach 33% of overall automation',
-            },
-            {
-                label: 'Automated via rules',
-                name: 'automated_via_rules',
-                tooltip:
-                    'Percentage of customer interactions automated using rules. ',
-            },
-            {
-                label: 'Automated via self-service',
-                name: 'automated_via_selfservice',
-                tooltip:
-                    'Percentage of customer interactions automated using self-service. ',
-                component: AutomateStatsSelfServiceMetric,
-            },
-        ],
-    },
-    [AUTOMATION_FLOW]: {
-        helpText:
-            'Vizualize at a glance where your customer interactions come from, if they are automated and if so, from which channel.',
-        style: 'sankey',
-        downloadable: true,
-        colorMap: {
-            total: '#ded7de',
-            email: '#9bc0fc',
-            phone: '#fed7a3',
-            chat: '#febea3',
-            social: '#f89eab',
-            rules: '#24d69d',
-            automated: '#4a8df9',
-            not_automated: '#ded7de',
-            self_service: '#8088D6',
-            fallback: '#8fce6e',
-        },
-        priority: {
-            total: 1,
-            email: 1,
-            phone: 2,
-            chat: 3,
-            social: 4,
-            rules: 1,
-            self_service: 2,
-            automated: 1,
-            not_automated: 2,
-        },
-        options: () => ({
-            animation: false,
-            plugins: {
-                tooltip: {
-                    mode: 'nearest',
-                    displayColors: false,
-                    titleFont: {
-                        size: 12,
-                        weight: 'bold',
-                    },
-                    titleMarginBottom: 4,
-                    caretSize: 0,
-                },
-            },
-        }),
-    },
-    [AUTOMATION_PER_CHANNEL]: {
-        helpText: 'Number of customer interactions automated by channels',
-        style: 'bar',
-        downloadable: true,
-        lines: {
-            automated: {
-                label: 'Automated via rule',
-                color: '#24d69d',
-            },
-            automated_selfserve: {
-                label: 'Automated via Self-Service',
-                color: '#8088D6',
-            },
-            not_automated: {
-                label: 'Not automated',
-                color: '#d2d7de',
-            },
-        },
-        options: (legend: Map<any, any>) => ({
-            scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: true,
-                    grid: {
-                        drawBorder: false,
-                        display: false,
-                    },
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatTickNumber,
-                    }),
-                },
-
-                y: {
-                    stacked: true,
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb,
-                    }),
-                    grid: defaultYAxeGridLines,
-                },
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: (tooltipItem: {label: string}[]) => {
-                            return humanizeString(tooltipItem[0].label)
-                        },
-                    },
-                },
-            },
-        }),
-    },
     [SELF_SERVICE_OVERVIEW]: {
         style: 'key-metrics',
         api_resource_name: SELF_SERVICE_OVERVIEW,
@@ -1774,8 +1644,4 @@ const formatDurationTooltipCb = (ctx: TooltipItem<ChartType>) => {
     return `${ctx.dataset.label || ''}: ${
         formatDuration(ctx.parsed.y, 2) || '0'
     } `
-}
-
-function formatTickNumber(this: Scale<any>, value: number) {
-    return humanizeString(this.getLabelForValue(value))
 }

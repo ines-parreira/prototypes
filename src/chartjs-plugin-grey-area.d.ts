@@ -8,9 +8,4 @@ declare module 'chart.js' {
             end: string
         }
     }
-    interface SankeyDataPoint {
-        from: string
-        to: string
-        flow: number
-    }
 }

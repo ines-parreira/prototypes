@@ -14,7 +14,6 @@ import {
     Filler,
     ArcElement,
 } from 'chart.js'
-import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
 import './polyfills'
 
@@ -163,8 +162,6 @@ export function initApp() {
         Legend,
         LinearScale,
         CategoryScale,
-        SankeyController,
-        Flow,
         Filler,
         GreyArea,
         ArcElement

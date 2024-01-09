@@ -61,7 +61,6 @@ export type StatData =
     | OneDimensionalChart
     | OneDimensionalUnionChart
     | TwoDimensionalChart
-    | SankeyDiagram
 
 export type OneDimensionalChart = {
     data: {
@@ -102,19 +101,6 @@ export type TwoDimensionalChart<
 export type TextStatAxisValue = {
     name: string
     type: Exclude<StatType, StatType.Number>
-}
-
-export type SankeyDiagram = {
-    data: {
-        from: string
-        to: string
-        flow: number
-    }[]
-    label: string
-    legend: {
-        labels: Record<string, string>
-        states: string[]
-    }
 }
 
 export type StatAxisValue =

@@ -19,7 +19,6 @@ import {
     Filler,
     ArcElement,
 } from 'chart.js'
-import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
 export const parameters = {
     chromatic: {disableSnapshot: true},
@@ -71,8 +70,6 @@ Chart.register(
     Legend,
     LinearScale,
     CategoryScale,
-    SankeyController,
-    Flow,
     Filler,
     ArcElement
 )

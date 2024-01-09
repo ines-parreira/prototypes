@@ -76,15 +76,6 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
         })
     return (
         <div className={cssNavbar.menu}>
-            {
-                // TMP: This link will come back when the page will be reworked
-                // <NavbarLink
-                //     {...COMMON_NAV_LINK_PROPS}
-                //     to="/app/stats/automation"
-                // >
-                //     Overview
-                // </NavbarLink>
-            }
             {!hasAutomate ? (
                 <>
                     <AutomateNavbarPaywallNavbarLink

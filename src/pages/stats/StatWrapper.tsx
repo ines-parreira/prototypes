@@ -12,12 +12,7 @@ import {fromJS, Map} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import Loader from 'pages/common/components/Loader/Loader'
-import {
-    SankeyDiagram,
-    Stat,
-    StatsFilters,
-    TwoDimensionalChart,
-} from 'models/stat/types'
+import {Stat, StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -34,7 +29,7 @@ import StatsHelpIcon from './common/components/StatsHelpIcon'
 import css from './StatWrapper.less'
 
 type Props = {
-    stat: Stat<TwoDimensionalChart | SankeyDiagram> | null
+    stat: Stat<TwoDimensionalChart> | null
     statDataLabelOverride?: ReactNode
     isFetchingStat: boolean
     resourceName: string

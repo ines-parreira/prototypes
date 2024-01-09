@@ -112,7 +112,6 @@ import DEPRECATED_SupportPerformanceOverview from 'pages/stats/DEPRECATED_Suppor
 import SupportPerformanceBusiestTimesOfDays from 'pages/stats/SupportPerformanceBusiestTimesOfDays'
 import LiveOverview from 'pages/stats/LiveOverview'
 import LiveAgents from 'pages/stats/LiveAgents'
-import AutomationOverview from 'pages/stats/AutomationOverview'
 import AutomateMacros from 'pages/stats/AutomateMacros'
 import AutomateIntents from 'pages/stats/AutomateIntents'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
@@ -650,16 +649,6 @@ export function StatsRoutes() {
                     render={() => (
                         <App
                             content={CampaignStatsPaywallView}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
-                />
-                <Route
-                    exact
-                    path={`${path}/automation`}
-                    render={() => (
-                        <App
-                            content={AutomationOverview}
                             navbar={StatsNavbarContainer}
                         />
                     )}
