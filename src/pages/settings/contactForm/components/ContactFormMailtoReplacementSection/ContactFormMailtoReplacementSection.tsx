@@ -71,7 +71,7 @@ const ContactFormMailtoReplacementSection = ({
             <div className={css.sectionContainer}>
                 <div className={css.title}>
                     <h5 className="body-semibold mb-0">
-                        Email links detected{' '}
+                        Email links to detect{' '}
                     </h5>
                     <IconTooltip>
                         By default, we detect links on your website associated
