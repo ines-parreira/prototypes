@@ -96,7 +96,8 @@ export const useContactFormMailtoReplacementConfig = ({
                 )
                 queryClient.setQueryData(
                     queryKey,
-                    context?.previousMailtoReplacementConfig
+                    // null is needed to update the state when creation of config failed. setQueryData doesn't update the state if we pass undefined
+                    context?.previousMailtoReplacementConfig ?? null
                 )
             },
             onSuccess: (data) => {

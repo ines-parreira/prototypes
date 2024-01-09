@@ -38,7 +38,7 @@ const ContactFormPublish = (): JSX.Element => {
         enabled: Boolean(contactForm.shop_name),
     })
     const {copyButtonText} = useClipboard('#copy-shareable-link')
-    const isHelpCenterAnalyticsEnabled: boolean | undefined =
+    const isHelpCenterReplaceMailtoLinkEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterReplaceMailtoLink]
 
     const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
@@ -137,13 +137,14 @@ const ContactFormPublish = (): JSX.Element => {
                             />
                         </section>
 
-                        {isHelpCenterAnalyticsEnabled && (
-                            <section>
-                                <ContactFormMailtoReplacementSection
-                                    contactFormId={contactForm.id}
-                                />
-                            </section>
-                        )}
+                        {isHelpCenterReplaceMailtoLinkEnabled &&
+                            contactForm.shop_name && (
+                                <section>
+                                    <ContactFormMailtoReplacementSection
+                                        contactFormId={contactForm.id}
+                                    />
+                                </section>
+                            )}
                     </div>
                 </Route>
             </Switch>

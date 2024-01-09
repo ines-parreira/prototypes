@@ -137,7 +137,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a sh
 
 exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - not connected to any stores should render correct section 1`] = `
 <div
-  class="alert warning closable"
+  class="alert warning closable alert"
 >
   <div
     class="iconContainer"

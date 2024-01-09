@@ -38,12 +38,18 @@ const ContactFormAutoEmbedWarningBanner = (
         return (
             <Alert
                 icon
+                className={css.alert}
                 type={AlertType.Warning}
                 onClose={() => {
                     setIsConnectDismissed(true)
                 }}
             >
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
                     <div style={{display: 'inline-block'}}>
                         Connect Shopify to enable auto-embedding to your
                         website.
