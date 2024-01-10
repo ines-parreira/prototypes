@@ -5213,6 +5213,13 @@
   dependencies:
     "@types/d3-dsv" "*"
 
+"@types/d3-flextree@2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@types/d3-flextree/-/d3-flextree-2.1.4.tgz#60bcb03c8fd60952274c066de7286867b8c7a1c1"
+  integrity sha512-VcJAeoG51p0RBese55p/OHarbqe9QvQauzCkRAuORT3t9UOa+LzqCpTBMVYxBahyp4vAe1ML3sgeQKRU7Gv+KA==
+  dependencies:
+    "@types/d3-hierarchy" "*"
+
 "@types/d3-force@*":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@types/d3-force/-/d3-force-3.0.4.tgz#2d50bd2b695f709797e1745644f6bc123e6e5f5a"
