@@ -1,9 +1,7 @@
 import {useCallback, useEffect, useReducer, useState} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {NotificationStatus} from 'state/notifications/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
 import useWorkflowApi from './useWorkflowApi'
@@ -53,10 +51,6 @@ const reducer = (state: UseStoreWorkflowsState, action: Action) => {
 export const useStoreWorkflowsApi = (
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 ) => {
-    const areFlowsDraftsEnabled = Boolean(
-        useFlags()[FeatureFlagKey.FlowsDrafts]
-    )
-
     const [state, dispatch] = useReducer(reducer, initialState)
     const {
         isUpdatePending: isWorkflowApiUpdatePending,
@@ -71,9 +65,7 @@ export const useStoreWorkflowsApi = (
     >({})
 
     const loadWorkflowsConfigurations = useCallback(async () => {
-        const configurations = await fetchWorkflowConfigurations(
-            areFlowsDraftsEnabled
-        )
+        const configurations = await fetchWorkflowConfigurations(true)
 
         setWorkflowConfigurationById(
             configurations.reduce(
@@ -84,7 +76,7 @@ export const useStoreWorkflowsApi = (
                 {} as Record<string, WorkflowConfigurationShallow>
             )
         )
-    }, [fetchWorkflowConfigurations, areFlowsDraftsEnabled])
+    }, [fetchWorkflowConfigurations])
 
     useEffect(() => {
         void loadWorkflowsConfigurations()

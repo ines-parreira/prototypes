@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useRef} from 'react'
 import {Container} from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
 import TextInput from 'pages/common/forms/input/TextInput'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -21,7 +20,6 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
 import {
@@ -70,9 +68,6 @@ function WorkflowEditorViewWrapped({
     const {template: templateSlug, from: fromView} =
         useSearch<{template: string | undefined; from: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
-    const areFlowsDraftsEnabled = Boolean(
-        useFlags()[FeatureFlagKey.FlowsDrafts]
-    )
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -162,14 +157,11 @@ function WorkflowEditorViewWrapped({
         workflowEditorContext.handleDiscard()
     }
 
-    const handleSave = () =>
-        upsertWorkflow(areFlowsDraftsEnabled ? true : false)
+    const handleSave = () => upsertWorkflow(true)
 
     const handlePublish = () => upsertWorkflow(false)
 
-    const upsertWorkflow = async (
-        isDraft = areFlowsDraftsEnabled ? true : false
-    ) => {
+    const upsertWorkflow = async (isDraft = true) => {
         const configurationError = workflowEditorContext.handleValidate(
             !isDraft
         )
@@ -356,7 +348,6 @@ function WorkflowEditorViewWrapped({
 
                             <WorkflowEditorActionButtons
                                 isNewWorkflow={isNewWorkflow}
-                                areDraftsEnabled={areFlowsDraftsEnabled}
                                 isFetchPending={isFetchPending}
                                 isSavePending={isSavePending}
                                 isPublishPending={isPublishPending}
@@ -370,8 +361,7 @@ function WorkflowEditorViewWrapped({
                         </div>
                         {!isNewWorkflow &&
                             workflowEditorContext.configuration
-                                .updated_datetime &&
-                            areFlowsDraftsEnabled && (
+                                .updated_datetime && (
                                 <div className={css.lastSaved}>
                                     Last saved{' '}
                                     {formatDatetime(
