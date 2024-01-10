@@ -268,7 +268,7 @@
         "@types/zen-observable": "0.8.3",
         "@typescript-eslint/eslint-plugin": "5.2.0",
         "@typescript-eslint/parser": "5.2.0",
-        "axios-mock-adapter": "1.18.1",
+        "axios-mock-adapter": "^1.22.0",
         "babel-loader": "8.1.0",
         "chromatic": "^7.2.0",
         "circular-dependency-plugin": "^5.2.2",

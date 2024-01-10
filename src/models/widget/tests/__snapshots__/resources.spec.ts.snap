@@ -247,7 +247,7 @@ exports[`widgets resources fetchWidgets should resolve with a list of widgets on
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/widgets/",
+    "responseURL": "/api/widgets/",
   },
   "status": 200,
 }

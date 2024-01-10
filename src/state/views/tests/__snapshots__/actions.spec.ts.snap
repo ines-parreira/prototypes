@@ -5,6 +5,7 @@ exports[`actions createJob() should call the job API with the view JSON in it's 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -43,6 +44,7 @@ exports[`actions createJob() should call the job API with the view JSON in it's 
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -51,6 +53,7 @@ exports[`actions createJob() should call the job API with the view id in it's pa
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -89,6 +92,7 @@ exports[`actions createJob() should call the job API with the view id in it's pa
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -97,11 +101,13 @@ exports[`actions deleteView() should prevent deletion of last view of same type 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -144,11 +150,13 @@ exports[`actions deleteView() should redirect to other view of same type when de
   ],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -254,11 +262,13 @@ exports[`actions fetchViewItems should fetch current page with cursor 2`] = `
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -328,11 +338,13 @@ exports[`actions fetchViewItems should fetch current page without cursor 2`] = `
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -402,11 +414,13 @@ exports[`actions fetchViewItems should fetch next page 2`] = `
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -476,11 +490,13 @@ exports[`actions fetchViewItems should fetch prev page 2`] = `
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -531,11 +547,13 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -586,11 +604,13 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -641,11 +661,13 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -693,6 +715,7 @@ exports[`actions fetchViewItems should pass the view because it is dirty 2`] = `
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -731,6 +754,7 @@ exports[`actions fetchViewItems should pass the view because it is dirty 2`] = `
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 
@@ -798,6 +822,7 @@ exports[`actions submitView() should create view when id is 0 1`] = `
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -836,6 +861,7 @@ exports[`actions submitView() should create view when id is 0 1`] = `
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -859,6 +885,7 @@ exports[`actions submitView() should update view 1`] = `
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -897,6 +924,7 @@ exports[`actions submitView() should update view 1`] = `
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 

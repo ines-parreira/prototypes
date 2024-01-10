@@ -5,6 +5,7 @@ exports[`<EditFieldForm/> should create custom field if the save button is click
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -43,6 +44,7 @@ exports[`<EditFieldForm/> should create custom field if the save button is click
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 

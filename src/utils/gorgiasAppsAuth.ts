@@ -1,4 +1,4 @@
-import {AxiosRequestConfig, AxiosResponse} from 'axios'
+import {AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
 import gorgiasApiClient from 'models/api/resources'
 
 function isValidAccessToken(token: string | null): boolean {
@@ -16,19 +16,13 @@ function isValidAccessToken(token: string | null): boolean {
 export const buildGorgiasAppsAuthInterceptor = () => {
     const authService = new GorgiasAppAuthService()
 
-    const gorgiasAppsAuthInterceptor = async (config: AxiosRequestConfig) => {
-        const accessTokenHeaders = await authService.getAccessTokenHeaders()
+    return async (config: InternalAxiosRequestConfig) => {
+        const accessToken = await authService.getAccessToken()
 
-        return {
-            ...config,
-            headers: {
-                ...config.headers,
-                ...accessTokenHeaders,
-            },
-        }
+        config.headers.setAuthorization(accessToken)
+
+        return config
     }
-
-    return gorgiasAppsAuthInterceptor
 }
 
 export class GorgiasAppAuthService {
@@ -55,13 +49,19 @@ export class GorgiasAppAuthService {
         this.authPendingRequest = null
     }
 
-    public async getAccessTokenHeaders() {
+    public async getAccessToken() {
         if (!isValidAccessToken(this.accessToken)) {
             await this.renewAccessToken()
         }
-        return {
-            authorization: this.accessToken ? `Bearer ${this.accessToken}` : '',
-        }
+        return this.accessToken ? `Bearer ${this.accessToken}` : ''
+    }
+
+    public async getAccessTokenHeaders() {
+        const axiosHeaders = new AxiosHeaders()
+
+        axiosHeaders.setAuthorization(await this.getAccessToken())
+
+        return axiosHeaders
     }
 }
 

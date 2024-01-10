@@ -17,7 +17,7 @@ describe('gorgiasAppsAuth', () => {
         const interceptor = buildGorgiasAppsAuthInterceptor()
         // eslint-disable-next-line no-restricted-properties
         axiosClient = axios.create()
-        axiosClient.interceptors.request.use(interceptor as any)
+        axiosClient.interceptors.request.use(interceptor)
 
         mockGorgiasAPI = new MockAdapter(client)
         mockAppAPI = new MockAdapter(axiosClient)
@@ -37,7 +37,7 @@ describe('gorgiasAppsAuth', () => {
 
         expect(mockAppAPI.history.get.length).toBe(1)
         expect(mockAppAPI.history.get[0].headers).toMatchObject({
-            authorization: `Bearer ${TOKEN_EXAMPLE}`,
+            Authorization: `Bearer ${TOKEN_EXAMPLE}`,
         })
     })
 

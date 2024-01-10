@@ -44,7 +44,7 @@ exports[`user resources createUserSetting should resolve on success 1`] = `
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/users/0/settings/",
+    "responseURL": "/api/users/0/settings/",
   },
   "status": 200,
 }
@@ -94,7 +94,7 @@ exports[`user resources updateUserSetting should resolve on success 1`] = `
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/users/0/settings/2/",
+    "responseURL": "/api/users/0/settings/2/",
   },
   "status": 200,
 }
@@ -105,6 +105,7 @@ exports[`user resources updateUserSetting should resolve on success 2`] = `
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -143,5 +144,6 @@ exports[`user resources updateUserSetting should resolve on success 2`] = `
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

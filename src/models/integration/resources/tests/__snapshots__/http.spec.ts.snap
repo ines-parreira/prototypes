@@ -37,11 +37,13 @@ exports[`HTTP event resources getHTTPEvent should resolve with an existing Custo
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -82,10 +84,12 @@ exports[`HTTP event resources getHTTPEvents should resolve with a list of http e
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;

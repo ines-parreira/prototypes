@@ -493,7 +493,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
   ],
   "headers": {},
   "request": {
-    "responseUrl": "/api/integrations",
+    "responseURL": "/api/integrations",
   },
   "status": 200,
 }

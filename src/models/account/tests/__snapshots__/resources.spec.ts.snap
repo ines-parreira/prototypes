@@ -54,7 +54,7 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/account/settings/",
+    "responseURL": "/api/account/settings/",
   },
   "status": 200,
 }
@@ -114,7 +114,7 @@ exports[`account resources updateAccountSetting should resolve on success 1`] = 
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/account/settings/2/",
+    "responseURL": "/api/account/settings/2/",
   },
   "status": 200,
 }
@@ -125,6 +125,7 @@ exports[`account resources updateAccountSetting should resolve on success 2`] = 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -163,5 +164,6 @@ exports[`account resources updateAccountSetting should resolve on success 2`] = 
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

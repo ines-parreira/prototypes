@@ -5,6 +5,7 @@ exports[`tickets actions bulkUpdate() should call the jobs api with the given pa
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -43,6 +44,7 @@ exports[`tickets actions bulkUpdate() should call the jobs api with the given pa
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 

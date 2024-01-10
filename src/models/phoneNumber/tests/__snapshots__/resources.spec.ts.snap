@@ -93,6 +93,7 @@ exports[`phone numbers resources createPhoneNumber should resolve with a new Pho
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -131,6 +132,7 @@ exports[`phone numbers resources createPhoneNumber should resolve with a new Pho
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -257,6 +259,7 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -295,5 +298,6 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

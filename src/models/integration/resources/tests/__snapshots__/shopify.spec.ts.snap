@@ -41,11 +41,13 @@ exports[`Shopify shop tag resources fetchShopTags() should fetch shop Customer t
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -90,10 +92,12 @@ exports[`Shopify shop tag resources fetchShopTags() should fetch shop Order tags
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;

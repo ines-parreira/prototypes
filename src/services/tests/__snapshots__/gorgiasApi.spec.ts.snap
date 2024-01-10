@@ -125,11 +125,13 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -140,6 +142,7 @@ exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -183,6 +186,7 @@ exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 
@@ -231,11 +235,13 @@ exports[`services GorgiasApi deleteDraftOrder() should delete a draft order 1`] 
   ],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -244,6 +250,7 @@ exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of gi
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -290,6 +297,7 @@ exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of gi
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -335,11 +343,13 @@ exports[`services GorgiasApi getViewSharing() should fetch view's sharing option
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -348,6 +358,7 @@ exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -391,6 +402,7 @@ exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an 
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 
@@ -399,6 +411,7 @@ exports[`services GorgiasApi setViewSharing() should update view's sharing optio
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -442,6 +455,7 @@ exports[`services GorgiasApi setViewSharing() should update view's sharing optio
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 
@@ -450,6 +464,7 @@ exports[`services GorgiasApi startSubscription() should start the subscription o
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -493,6 +508,7 @@ exports[`services GorgiasApi startSubscription() should start the subscription o
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 
@@ -501,6 +517,7 @@ exports[`services GorgiasApi updateCreditCard() should update the credit card of
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -544,5 +561,6 @@ exports[`services GorgiasApi updateCreditCard() should update the credit card of
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

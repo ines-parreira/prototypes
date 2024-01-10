@@ -111,7 +111,7 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/users/",
+    "responseURL": "/api/users/",
   },
   "status": 200,
 }

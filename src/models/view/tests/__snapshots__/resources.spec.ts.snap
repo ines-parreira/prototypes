@@ -147,6 +147,7 @@ exports[`view resources createView should resolve with a new View on success 2`]
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -185,6 +186,7 @@ exports[`view resources createView should resolve with a new View on success 2`]
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -647,7 +649,7 @@ exports[`view resources fetchViewsPaginated should resolve with a View list on s
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/views/",
+    "responseURL": "/api/views/",
   },
   "status": 200,
 }
@@ -800,6 +802,7 @@ exports[`view resources updateView should resolve with an updated View on succes
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -838,5 +841,6 @@ exports[`view resources updateView should resolve with an updated View on succes
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

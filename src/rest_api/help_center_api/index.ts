@@ -5,7 +5,6 @@ import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
 import {Client} from './client.generated'
 import {AppAbility, AbilityRules, createAbility} from './ability'
 import {helpCenterAPI} from './client'
-import { AxiosHeaders, AxiosRequestConfig } from 'axios'
 
 let agentAbility: AppAbility | undefined
 
@@ -41,15 +40,10 @@ async function buildHelpCenterClient(
 
         setAgentAbility?.(createAgentAbility(accessToken))
 
-        return {
-            ...config,
-            headers: {
-                ...config.headers,
-                authorization: getBearerAuthorizationHeader(accessToken || ''),
-                /* TODO update type after this will be fixed
-                 * https://github.com/axios/axios/issues/5573 */
-            } as unknown as AxiosHeaders,
-        }
+        const bearerToken = getBearerAuthorizationHeader(accessToken || '')
+
+        config.headers.setAuthorization(bearerToken)
+        return config
     })
 
     return client

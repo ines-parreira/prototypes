@@ -36,6 +36,7 @@ exports[`team resources createTeam should resolve with a new Team on success 2`]
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -74,6 +75,7 @@ exports[`team resources createTeam should resolve with a new Team on success 2`]
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -113,7 +115,7 @@ exports[`team resources deleteTeam should resolve on success 1`] = `
   "data": undefined,
   "headers": {},
   "request": {
-    "responseUrl": "/api/teams/1/",
+    "responseURL": "/api/teams/1/",
   },
   "status": 200,
 }
@@ -188,7 +190,7 @@ exports[`team resources fetchTeamMembers should resolve with the team members on
   ],
   "headers": {},
   "request": {
-    "responseUrl": "/api/teams/35/members",
+    "responseURL": "/api/teams/35/members",
   },
   "status": 200,
 }
@@ -313,7 +315,7 @@ exports[`team resources fetchTeams should resolve with a Team list on success 1`
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/teams/",
+    "responseURL": "/api/teams/",
   },
   "status": 200,
 }
@@ -345,6 +347,7 @@ exports[`team resources updateTeam should resolve with the updated team on succe
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -383,5 +386,6 @@ exports[`team resources updateTeam should resolve with the updated team on succe
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

@@ -27,6 +27,7 @@ exports[`custom field resources createCustomField should resolve with a new Cust
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -65,6 +66,7 @@ exports[`custom field resources createCustomField should resolve with a new Cust
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -127,11 +129,13 @@ exports[`custom field resources getCustomField should resolve with an existing C
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -202,11 +206,13 @@ exports[`custom field resources getCustomFields should resolve with a list of pa
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -237,6 +243,7 @@ exports[`custom field resources updateCustomField should resolve with an updated
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -275,6 +282,7 @@ exports[`custom field resources updateCustomField should resolve with an updated
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 
@@ -309,6 +317,7 @@ exports[`custom field resources updateCustomFields should resolve with a list of
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -347,6 +356,7 @@ exports[`custom field resources updateCustomFields should resolve with a list of
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
 
@@ -377,6 +387,7 @@ exports[`custom field resources updatePartialCustomField should resolve with an 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -415,5 +426,6 @@ exports[`custom field resources updatePartialCustomField should resolve with an 
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

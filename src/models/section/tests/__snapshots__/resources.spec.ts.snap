@@ -17,6 +17,7 @@ exports[`section resources createSection should resolve with a new Section on su
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -55,6 +56,7 @@ exports[`section resources createSection should resolve with a new Section on su
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -111,6 +113,7 @@ exports[`section resources updateSection should resolve with an updated Section 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -149,5 +152,6 @@ exports[`section resources updateSection should resolve with an updated Section 
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

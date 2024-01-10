@@ -107,7 +107,7 @@ exports[`client resources resources axios instance should resolve with data 1`] 
     "x-gorgias-release": "1",
   },
   "request": {
-    "responseUrl": "/api",
+    "responseURL": "/api",
   },
   "status": 200,
 }
@@ -118,6 +118,7 @@ exports[`client resources resources axios instance should send a request with da
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -156,5 +157,6 @@ exports[`client resources resources axios instance should send a request with da
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;

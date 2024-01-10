@@ -1,6 +1,5 @@
 import memoize from 'memoize-one'
 import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
-import {AxiosHeaders} from 'axios'
 
 import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
 import {isProduction, isStaging} from 'utils/environment'
@@ -30,15 +29,11 @@ async function buildMigrationClient(): Promise<Client> {
     client.interceptors.request.use(async (config) => {
         const accessToken = await getAccessToken()
 
-        return {
-            ...config,
-            headers: {
-                ...config.headers,
-                authorization: getBearerAuthorizationHeader(accessToken || ''),
-                /* TODO update type after this will be fixed
-                 * https://github.com/axios/axios/issues/5573 */
-            } as unknown as AxiosHeaders,
-        }
+        const bearerToken = getBearerAuthorizationHeader(accessToken || '')
+
+        config.headers.setAuthorization(bearerToken)
+
+        return config
     })
 
     return client

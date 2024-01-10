@@ -95,6 +95,7 @@ exports[`macro resources createMacro should resolve with a new Macro on success 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -133,6 +134,7 @@ exports[`macro resources createMacro should resolve with a new Macro on success 
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -439,7 +441,7 @@ Sincerely,
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/macros/",
+    "responseURL": "/api/macros/",
   },
   "status": 200,
 }
@@ -540,6 +542,7 @@ exports[`macro resources updateMacro should resolve with the updated macro on su
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -578,5 +581,6 @@ exports[`macro resources updateMacro should resolve with the updated macro on su
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;

@@ -5,6 +5,7 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -46,6 +47,7 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -54,6 +56,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -95,6 +98,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -138,11 +142,13 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -186,11 +192,13 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -234,11 +242,13 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -282,10 +292,12 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;

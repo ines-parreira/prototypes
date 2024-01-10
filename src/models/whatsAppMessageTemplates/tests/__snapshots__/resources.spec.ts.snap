@@ -99,10 +99,12 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;

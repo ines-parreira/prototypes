@@ -21,7 +21,7 @@ const apiClient = axios.create({
         'Content-Type': 'application/json',
     },
 })
-apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor as any)
+apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
 type WorkflowApi = {
     isFetchPending: boolean

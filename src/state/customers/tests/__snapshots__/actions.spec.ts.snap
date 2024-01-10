@@ -38,11 +38,13 @@ exports[`customers actions bulkDeleteCustomer() 1`] = `
   ],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 

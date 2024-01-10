@@ -5,6 +5,7 @@ exports[`<AddFieldForm/> should create custom field if the save button is clicke
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -43,6 +44,7 @@ exports[`<AddFieldForm/> should create custom field if the save button is clicke
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 

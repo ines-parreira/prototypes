@@ -43,11 +43,13 @@ exports[`event resources fetchEvents should format option value to snake_case 1`
     },
   ],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
   "post": [],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -131,7 +133,7 @@ exports[`event resources fetchEvents should resolve with an Event list on succes
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/events/",
+    "responseURL": "/api/events/",
   },
   "status": 200,
 }

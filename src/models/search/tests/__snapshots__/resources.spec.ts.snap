@@ -5,6 +5,7 @@ exports[`search resource search should call the search endpoint with the type 1`
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -43,6 +44,7 @@ exports[`search resource search should call the search endpoint with the type 1`
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 

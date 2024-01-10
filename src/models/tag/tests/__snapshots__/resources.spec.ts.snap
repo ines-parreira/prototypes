@@ -18,6 +18,7 @@ exports[`tag resources createTag should resolve with a new Tag on success 2`] = 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -56,6 +57,7 @@ exports[`tag resources createTag should resolve with a new Tag on success 2`] = 
     },
   ],
   "put": [],
+  "unlink": [],
 }
 `;
 
@@ -175,7 +177,7 @@ exports[`tag resources fetchTags should resolve with a Tag list on success 1`] =
   },
   "headers": {},
   "request": {
-    "responseUrl": "/api/tags/",
+    "responseURL": "/api/tags/",
   },
   "status": 200,
 }
@@ -199,6 +201,7 @@ exports[`tag resources updateTag should resolve with the updated tag on success 
   "delete": [],
   "get": [],
   "head": [],
+  "link": [],
   "list": [],
   "options": [],
   "patch": [],
@@ -237,5 +240,6 @@ exports[`tag resources updateTag should resolve with the updated tag on success 
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
+  "unlink": [],
 }
 `;
