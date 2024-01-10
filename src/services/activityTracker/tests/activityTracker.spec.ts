@@ -5,6 +5,7 @@ import {AGENT_ACTIVITY_HEALTHCHECK_INTERVAL, ActivityEvents} from '../constants'
 describe('activityTracker', () => {
     let activityTracker: typeof import('../activityTracker')
     beforeEach(async () => {
+        document.hasFocus = jest.fn(() => false)
         return import('../activityTracker').then((module) => {
             jest.resetModules()
             activityTracker = module
@@ -15,8 +16,19 @@ describe('activityTracker', () => {
         expect(activityTracker.default).toBeInstanceOf(BrowserEventTracker)
     })
 
+    it('should not perform a healthcheck if the window is not focused', () => {
+        const eventTrackerSpy = jest.spyOn(activityTracker.default, 'logEvent')
+        document.hasFocus = jest.fn(() => false)
+        jest.useFakeTimers()
+        activityTracker.startActivityHealthCheck()
+        jest.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
+
+        expect(eventTrackerSpy).not.toHaveBeenCalled()
+    })
+
     it('should perform a healthcheck every AGENT_ACTIVITY_HEALTHCHECK_INTERVAL', () => {
         const eventTrackerSpy = jest.spyOn(activityTracker.default, 'logEvent')
+        document.hasFocus = jest.fn(() => true)
         jest.useFakeTimers()
         activityTracker.startActivityHealthCheck()
         jest.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
@@ -29,6 +41,7 @@ describe('activityTracker', () => {
 
     it('should stop the healthcheck', () => {
         const eventTrackerSpy = jest.spyOn(activityTracker.default, 'logEvent')
+        document.hasFocus = jest.fn(() => true)
         jest.useFakeTimers()
 
         activityTracker.startActivityHealthCheck()

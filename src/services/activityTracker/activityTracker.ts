@@ -43,7 +43,12 @@ export const startActivityHealthCheck = () => {
     if (activityTrackerHealthCheckInterval) return
 
     activityTrackerHealthCheckInterval = window.setInterval(() => {
-        activityTrackerInstance.logEvent(ActivityEvents.UserIsActive)
+        const isFocused = document.hasFocus()
+        const isVisible = document.visibilityState === 'visible'
+
+        if (isFocused && isVisible) {
+            activityTrackerInstance.logEvent(ActivityEvents.UserIsActive)
+        }
     }, AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
 }
 
