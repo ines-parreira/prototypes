@@ -117,7 +117,7 @@ const ContactFormMailtoReplacementSection = ({
 
                 {mailtoReplacementConfig &&
                     mailtoReplacementConfig.emails.length > 0 && (
-                        <>
+                        <div className={css.replacedEmailsContainer}>
                             <h5 className="body-semibold">
                                 Email links replaced
                             </h5>
@@ -155,7 +155,7 @@ const ContactFormMailtoReplacementSection = ({
                                     )
                                 )}
                             </ul>
-                        </>
+                        </div>
                     )}
 
                 {emailList.length > 0 && (
