@@ -12,8 +12,17 @@ import {NotificationStatus} from 'state/notifications/types'
 import ContactFormMailtoReplacementSection from '../ContactFormMailtoReplacementSection'
 import {useEmailIntegrations} from '../../../hooks/useEmailIntegrations'
 
+import {getMailtoReplacementConfig} from '../resources'
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useHelpCenterApi: () => ({client: jest.fn()}),
+}))
 jest.mock('../../../hooks/useEmailIntegrations', () => ({
     useEmailIntegrations: jest.fn(),
+}))
+jest.mock('../resources', () => ({
+    getMailtoReplacementConfig: jest.fn(),
+    upsertMailtoReplacementConfig: jest.fn(),
 }))
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(() => () => Promise.resolve()),
@@ -22,6 +31,7 @@ jest.mock('state/notifications/actions', () => ({
 const CONTACT_FORM_ID = 1
 
 const mockUseEmailIntegrations = jest.mocked(useEmailIntegrations)
+const mockGetMailtoReplacementConfig = jest.mocked(getMailtoReplacementConfig)
 const mockStore = configureMockStore([thunk])()
 const queryClient = mockQueryClient()
 
@@ -50,6 +60,7 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             defaultIntegration: undefined,
             emailIntegrations: [],
         })
+        mockGetMailtoReplacementConfig.mockReturnValue(Promise.resolve(null))
         queryClient.clear()
     })
     it('should render component', () => {
@@ -246,6 +257,42 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             )
             expect(
                 screen.queryByText('Email links replaced')
+            ).not.toBeInTheDocument()
+        })
+
+        it('should remove reverted email from detect section when it not in the email integration list', async () => {
+            const testEmail1 = createGmailIntegration(1, 'test1@mail.com')
+            const testEmail2 = createGmailIntegration(2, 'test2@mail.com')
+            const email1 = testEmail1.name
+            const email2 = testEmail2.name
+
+            // Set email integration only for 1 email but return mailto config with 2 emails
+            mockUseEmailIntegrations.mockReturnValue({
+                defaultIntegration: undefined,
+                emailIntegrations: [testEmail1],
+            })
+            mockGetMailtoReplacementConfig.mockReturnValue(
+                Promise.resolve({emails: [email1, email2]})
+            )
+
+            renderComponent()
+
+            await waitFor(() =>
+                expect(
+                    screen.getByTestId(`email-replaced-${email2}`)
+                ).toBeInTheDocument()
+            )
+
+            // Revert email
+            userEvent.click(screen.getByTestId(`revert-email-${email2}`))
+
+            await waitFor(() =>
+                expect(
+                    screen.queryByTestId(`email-replaced-${email2}`)
+                ).not.toBeInTheDocument()
+            )
+            expect(
+                screen.queryByTestId(`email-detected-${email2}`)
             ).not.toBeInTheDocument()
         })
     })

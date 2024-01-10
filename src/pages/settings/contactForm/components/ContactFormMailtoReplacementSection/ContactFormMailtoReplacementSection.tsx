@@ -26,19 +26,24 @@ const ContactFormMailtoReplacementSection = ({
         true
     )
 
-    const {emailList, upsertMailtoReplacementConfig, mailtoReplacementConfig} =
-        useContactFormMailtoReplacementConfig({contactFormId})
+    const {
+        emailList,
+        upsertMailtoReplacementConfig,
+        mailtoReplacementConfig,
+        emailsFromEmailIntegrations,
+    } = useContactFormMailtoReplacementConfig({contactFormId})
     const [selectedEmails, setSelectedEmails] = useState<string[]>(emailList)
-
     const onAlertClose = () => {
         setAlertDiscarded(false)
     }
 
     const onAddEmails = () => {
-        const previousEmails = mailtoReplacementConfig?.emails || []
+        const mailtoReplacementConfigEmails =
+            mailtoReplacementConfig?.emails || []
         const uniqNewEmails = Array.from(
-            new Set([...selectedEmails, ...previousEmails])
-        )
+            new Set([...selectedEmails, ...mailtoReplacementConfigEmails])
+            // Edge case: if user selects all emails and one of them was already deleted from email integration we filter them out
+        ).filter((email) => emailsFromEmailIntegrations.includes(email))
 
         upsertMailtoReplacementConfig(uniqNewEmails)
 

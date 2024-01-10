@@ -144,5 +144,6 @@ export const useContactFormMailtoReplacementConfig = ({
         mailtoReplacementConfig,
         upsertMailtoReplacementConfig,
         isLoading,
+        emailsFromEmailIntegrations,
     }
 }
