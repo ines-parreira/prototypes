@@ -71,7 +71,6 @@ export enum FeatureFlagKey {
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     SplitTicketView = 'split-ticket-view',
     TicketNavigationArrows = 'ticket-navigation-arrows',
-    TrainMyAiEnabled = 'train-my-ai-enabled',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
 }

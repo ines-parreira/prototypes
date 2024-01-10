@@ -78,7 +78,6 @@ import css from './SelfServiceStatsPage.less'
 export const SelfServiceStatsPage = (): JSX.Element => {
     const isNewAutomateFeatureEnabled =
         useFlags()[FeatureFlagKey.NewAutomationAddon]
-    const isTrainMyAiEnabled = useFlags()[FeatureFlagKey.TrainMyAiEnabled]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
     const [workflowConfigurations, setWorkflowConfigurations] = useState<
@@ -465,7 +464,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         }
                         helpAutoHide={false}
                         visibilityLink={
-                            isTrainMyAiEnabled &&
                             !articleRecommendationDisabled &&
                             !articleRecommendationPerformanceNoData
                                 ? {

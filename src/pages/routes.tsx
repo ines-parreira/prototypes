@@ -1315,7 +1315,6 @@ export function AutomationRoutes() {
 
 function AutomationContent() {
     const {path} = useRouteMatch()
-    const isTrainMyAiEnabled = useFlags()[FeatureFlagKey.TrainMyAiEnabled]
     return (
         <Switch>
             <Route
@@ -1454,16 +1453,14 @@ function AutomationContent() {
                     AGENT_ROLE
                 )}
             />
-            {isTrainMyAiEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/train-my-ai`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        TrainMyAiViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
+            <Route
+                path={`${path}/:shopType/:shopName/train-my-ai`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    TrainMyAiViewContainer,
+                    AGENT_ROLE
+                )}
+            />
             <Route path={`${path}/:shopType/:shopName/connected-channels`}>
                 <SelfServiceHelpCentersProvider>
                     <SelfServiceContactFormsProvider>

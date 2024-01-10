@@ -246,6 +246,26 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             </a>
           </div>
           <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Train My AI
+              </span>
+              <div
+                class="badge badge"
+              >
+                NEW
+              </div>
+            </a>
+          </div>
+          <div
             class="section section"
           >
             <div
@@ -334,6 +354,26 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               >
                 Channels
               </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Train My AI
+              </span>
+              <div
+                class="badge badge"
+              >
+                NEW
+              </div>
             </a>
           </div>
         </div>
@@ -651,6 +691,26 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               >
                 Channels
               </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Train My AI
+              </span>
+              <div
+                class="badge badge"
+              >
+                NEW
+              </div>
             </a>
           </div>
         </div>
@@ -1123,6 +1183,26 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             </a>
           </div>
           <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Train My AI
+              </span>
+              <div
+                class="badge badge"
+              >
+                NEW
+              </div>
+            </a>
+          </div>
+          <div
             class="section section"
           >
             <div
@@ -1211,6 +1291,26 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               >
                 Channels
               </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Train My AI
+              </span>
+              <div
+                class="badge badge"
+              >
+                NEW
+              </div>
             </a>
           </div>
         </div>
@@ -1528,6 +1628,26 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               >
                 Channels
               </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Train My AI
+              </span>
+              <div
+                class="badge badge"
+              >
+                NEW
+              </div>
             </a>
           </div>
         </div>
