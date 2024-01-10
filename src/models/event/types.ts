@@ -268,6 +268,7 @@ export enum RuleActionFailureCauses {
     NoReplyNoReturnPath = 'no-return-path',
     NoReplyNotEmail = 'not-email',
     NoReplyRecent = 'recent-auto-reply',
+    NoReplySpamTicket = 'spam-ticket',
     NoReplyToAgent = 'no-autoreply-no-nonagents',
     NoReplyUnanswerableChannel = 'unanswerable-channel',
     NoSnoozeClosedTicket = 'no-snooze-closed-ticket',
@@ -328,6 +329,10 @@ export const rulesActionsFailures: {
             'Can only auto-reply to a given customer once every 5 minutes.',
         severity: RuleActionFailureSeverity.Warning,
     },
+    [RuleActionFailureCauses.NoReplySpamTicket]: {
+        description: 'Cannot auto-reply to a ticket marked as spam.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
     [RuleActionFailureCauses.NoReplyToAgent]: {
         description: 'Can only auto-reply to customer messages.',
         severity: RuleActionFailureSeverity.Warning,
@@ -337,7 +342,7 @@ export const rulesActionsFailures: {
         severity: RuleActionFailureSeverity.Warning,
     },
     [RuleActionFailureCauses.NoSnoozeClosedTicket]: {
-        description: 'Cannot only snooze an open ticket.',
+        description: 'Can only snooze an open ticket.',
         severity: RuleActionFailureSeverity.Warning,
     },
     [RuleActionFailureCauses.NoSnoozePastDate]: {
