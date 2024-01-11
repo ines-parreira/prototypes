@@ -21,6 +21,7 @@ export enum PageSection {
     ImportPhoneNumber = 'import-phone-number',
     TwilioSubaccountStatus = 'twilio-subaccount-status',
     CreditShopifyBillingIntegration = 'credit-shopify-billing-integration',
+    CreateShopifyCharge = 'create-shopify-charge',
     SidebarSettings = 'sidebar-settings',
 }
 
@@ -49,4 +50,5 @@ export enum SectionPageHeader {
     TwilioSubaccountStatus = 'Twilio Subaccount Status',
     CreditShopifyBillingIntegration = 'Credit Shopify billing integration',
     SidebarSettings = 'sidebar-settings',
+    CreateShopifyCharge = 'Create Shopify Charge',
 }

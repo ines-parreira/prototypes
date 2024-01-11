@@ -81,4 +81,7 @@ export const roleRestrictionConfigs: Record<
     [PageSection.SidebarSettings]: {
         pageHeader: SectionPageHeader.SidebarSettings,
     },
+    [PageSection.CreateShopifyCharge]: {
+        pageHeader: SectionPageHeader.CreateShopifyCharge,
+    },
 }

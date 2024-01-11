@@ -117,6 +117,7 @@ import AutomateIntents from 'pages/stats/AutomateIntents'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from 'pages/tasks/detail/TwilioSubaccountStatusForm'
 import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBillingIntegration'
+import CreateShopifyCharge from 'pages/tasks/detail/CreateShopifyCharge'
 import EditTicketField from 'pages/settings/ticketFields/EditTicketField'
 import {RevenueAddonApiClientProvider} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
 import {
@@ -1779,6 +1780,22 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                                 CreditShopifyBillingIntegration,
                                 ADMIN_ROLE,
                                 PageSection.CreditShopifyBillingIntegration
+                            )}
+                            navbar={SettingsNavbar}
+                        />
+                    )}
+                />
+            )}
+            {window.USER_IMPERSONATED && (
+                <Route
+                    path={`${path}/create-shopify-charge`}
+                    exact
+                    render={() => (
+                        <App
+                            content={memoizedWithUserRoleRequired(
+                                CreateShopifyCharge,
+                                ADMIN_ROLE,
+                                PageSection.CreateShopifyCharge
                             )}
                             navbar={SettingsNavbar}
                         />
