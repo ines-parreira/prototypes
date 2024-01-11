@@ -16,6 +16,8 @@ import {sortEmailByDomainAndName} from './utils'
 type MailtoReplacementConfigGetDto =
     Components.Schemas.MailtoReplacementConfigGetDto
 
+const REVERTED_EMAIl_MESSAGE = 'Email has been removed'
+
 // This is contract with the server where we can know what happened on the server by status code.
 // This is needed because by technical requirement we have 1 endpoint for update/create/delete
 const MESSAGE_BY_STATUS_CODE: Record<number, string> = {
@@ -100,18 +102,38 @@ export const useContactFormMailtoReplacementConfig = ({
                     context?.previousMailtoReplacementConfig ?? null
                 )
             },
-            onSuccess: (data) => {
+            onSuccess: (data, _, context) => {
                 const statusCode = data?.statusCode ?? 200
-                const messageByStatusCode =
-                    MESSAGE_BY_STATUS_CODE[statusCode] ??
-                    MESSAGE_BY_STATUS_CODE[200]
 
-                dispatch(
-                    notify({
-                        message: messageByStatusCode,
-                        status: NotificationStatus.Success,
-                    })
-                )
+                // 200 = config was updated
+                if (statusCode === 200) {
+                    // If we have less email we can assume that we remove email form the list
+                    const prevEmailsLength =
+                        context?.previousMailtoReplacementConfig?.emails
+                            .length ?? 0
+                    const currEmailsLength = data?.data.emails.length ?? 0
+                    const isReverted = prevEmailsLength > currEmailsLength
+
+                    dispatch(
+                        notify({
+                            message: isReverted
+                                ? REVERTED_EMAIl_MESSAGE
+                                : MESSAGE_BY_STATUS_CODE[200],
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                } else {
+                    const messageByStatusCode =
+                        MESSAGE_BY_STATUS_CODE[statusCode] ??
+                        MESSAGE_BY_STATUS_CODE[200]
+
+                    dispatch(
+                        notify({
+                            message: messageByStatusCode,
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                }
             },
         })
 

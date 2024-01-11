@@ -147,10 +147,33 @@ describe('<ContactFormMailtoReplacementSection />', () => {
                     screen.getByTestId(`email-replaced-${email}`)
                 ).toBeInTheDocument()
             )
+        })
+
+        it('should notify with correct message when revert emails', async () => {
+            renderComponent()
+
+            const email = testEmails[0].name
+
+            userEvent.click(screen.getByText('Replace links'))
+
+            await waitFor(() =>
+                expect(
+                    screen.getByTestId(`email-replaced-${email}`)
+                ).toBeInTheDocument()
+            )
 
             await waitFor(() => {
                 expect(notify).toHaveBeenCalledWith({
                     message: 'Replaced with link to Contact Form.',
+                    status: NotificationStatus.Success,
+                })
+            })
+
+            userEvent.click(screen.getByTestId(`revert-email-${email}`))
+
+            await waitFor(() => {
+                expect(notify).toHaveBeenCalledWith({
+                    message: 'Email has been removed',
                     status: NotificationStatus.Success,
                 })
             })
