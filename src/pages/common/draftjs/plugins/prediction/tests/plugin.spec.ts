@@ -8,7 +8,7 @@ import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
 import {flushPromises} from '../../../../../../utils/testing'
 import client from '../../../../../../models/api/resources'
-import {predictionKey} from '../state'
+import {cachedSelection, predictionKey} from '../state'
 
 jest.mock('../../../../../../utils/errors')
 jest.mock('utils/launchDarkly', () => ({getLDClient: jest.fn()}))
@@ -47,8 +47,10 @@ const getFeedbackCalls = () =>
 beforeEach(() => {
     clearCache()
     predictionKey.set(null)
+    cachedSelection.set(null)
     jest.resetAllMocks()
     jest.restoreAllMocks()
+    jest.useFakeTimers()
     ;(getLDClient as jest.Mock).mockReturnValue({variation: () => true})
 })
 
