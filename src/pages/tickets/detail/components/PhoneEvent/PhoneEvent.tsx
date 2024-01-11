@@ -1,30 +1,18 @@
 import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import css from '../Event.less'
 import callAnsweredIcon from './icons/call-answered.svg'
-import callIncomingIcon from './icons/call-incoming.svg'
-import callOutgoingIcon from './icons/call-outgoing.svg'
-import callCompletedIcon from './icons/call-completed.svg'
 import callMissedIcon from './icons/call-missed.svg'
-import voicemailLeftIcon from './icons/voicemail-left.svg'
 import callForwardedIcon from './icons/call-forwarded.svg'
 import PhoneEventDetails from './PhoneEventDetails'
 
 const icons = new window.Map<string, string>([
-    [PhoneIntegrationEvent.IncomingPhoneCall, callIncomingIcon],
-    [PhoneIntegrationEvent.OutgoingPhoneCall, callOutgoingIcon],
-    [PhoneIntegrationEvent.CompletedPhoneCall, callCompletedIcon],
-    [PhoneIntegrationEvent.CallRecording, callCompletedIcon],
-    [PhoneIntegrationEvent.MissedPhoneCall, callMissedIcon],
-    [PhoneIntegrationEvent.VoicemailRecording, voicemailLeftIcon],
-    [PhoneIntegrationEvent.PhoneCallAnswered, callAnsweredIcon],
     [PhoneIntegrationEvent.ConversationStarted, callAnsweredIcon],
     [
         PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
@@ -51,13 +39,6 @@ const materialIcons = new window.Map<string, any>([
 ])
 
 const names = new window.Map<string, string>([
-    [PhoneIntegrationEvent.IncomingPhoneCall, 'Incoming call'],
-    [PhoneIntegrationEvent.OutgoingPhoneCall, 'Outgoing call placed'],
-    [PhoneIntegrationEvent.CompletedPhoneCall, 'Call ended'],
-    [PhoneIntegrationEvent.CallRecording, 'Call recording'],
-    [PhoneIntegrationEvent.MissedPhoneCall, 'Missed call'],
-    [PhoneIntegrationEvent.PhoneCallAnswered, 'Call answered'],
-    [PhoneIntegrationEvent.VoicemailRecording, 'Voicemail left'],
     [PhoneIntegrationEvent.ConversationStarted, 'Phone conversation started'],
     [
         PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
@@ -76,17 +57,8 @@ const names = new window.Map<string, string>([
         'Transferred call missed',
     ],
 ])
-const customerBasedEvents = [
-    PhoneIntegrationEvent.IncomingPhoneCall,
-    PhoneIntegrationEvent.MissedPhoneCall,
-    PhoneIntegrationEvent.VoicemailRecording,
-    PhoneIntegrationEvent.CallRecording,
-]
-const agentBasedEvents = [
-    PhoneIntegrationEvent.PhoneCallAnswered,
-    PhoneIntegrationEvent.OutgoingPhoneCall,
-    PhoneIntegrationEvent.ConversationStarted,
-]
+
+const agentBasedEvents = [PhoneIntegrationEvent.ConversationStarted]
 
 const callTransferEvents = [
     PhoneIntegrationEvent.PhoneCallTransferredToAgent,
@@ -95,12 +67,6 @@ const callTransferEvents = [
 ]
 
 const withDetailsEvents = [
-    PhoneIntegrationEvent.IncomingPhoneCall,
-    PhoneIntegrationEvent.OutgoingPhoneCall,
-    PhoneIntegrationEvent.CompletedPhoneCall,
-    PhoneIntegrationEvent.VoicemailRecording,
-    PhoneIntegrationEvent.CallRecording,
-    PhoneIntegrationEvent.PhoneCallAnswered,
     PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
     PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
     PhoneIntegrationEvent.MessagePlayed,
@@ -114,23 +80,11 @@ type Props = {
 
 export default function PhoneEvent({event, isLast}: Props): JSX.Element {
     const eventType = event.get('type')
-    const eventData = event.get('data', fromJS({})) as Map<string, any>
-    const callRecording = eventData.get('recording') as Map<string, any>
     const icon = icons.get(eventType) || null
     const materialIcon = materialIcons.get(eventType) || null
 
     const [displayAdditionalInfo, setDisplayAdditionalInfo] =
         useState<boolean>(false)
-
-    useEffectOnce(() => {
-        if (
-            eventType === PhoneIntegrationEvent.VoicemailRecording ||
-            (eventType === PhoneIntegrationEvent.CompletedPhoneCall &&
-                callRecording)
-        ) {
-            setDisplayAdditionalInfo(true)
-        }
-    })
 
     const doesEventTypeHaveDetails = withDetailsEvents.includes(eventType)
 
@@ -143,33 +97,17 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
             'name',
         ])
         const agentName: string | null = event.getIn(['user', 'name'])
-        const isCustomerBasedEvent = customerBasedEvents.includes(eventType)
         const isAgentBasedEvent = agentBasedEvents.includes(eventType)
         const isCallTransferEvent = callTransferEvents.includes(eventType)
 
         if (
-            (!isCustomerBasedEvent &&
-                !isAgentBasedEvent &&
-                !isCallTransferEvent) ||
+            (!isAgentBasedEvent && !isCallTransferEvent) ||
             (!agentName && isAgentBasedEvent) ||
-            (!customerName && isCustomerBasedEvent)
+            !customerName
         ) {
             return eventName
         }
 
-        if (isCustomerBasedEvent) {
-            if (
-                [
-                    PhoneIntegrationEvent.IncomingPhoneCall,
-                    PhoneIntegrationEvent.MissedPhoneCall,
-                ].includes(eventType)
-            ) {
-                return `${eventName} from ${customerName as string}`
-            }
-            if (PhoneIntegrationEvent.VoicemailRecording) {
-                return `${eventName} by ${customerName as string}`
-            }
-        }
         if (isAgentBasedEvent) {
             return `${eventName} by ${agentName as string}`
         }

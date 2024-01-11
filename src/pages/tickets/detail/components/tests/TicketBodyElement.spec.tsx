@@ -5,7 +5,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {INCOMING_PHONE_CALL} from 'constants/event'
 import {message as defaultMessage} from 'models/ticket/tests/mocks'
 import {TicketElement} from 'models/ticket/types'
 import {
@@ -16,6 +15,7 @@ import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement
 import {RootState} from 'state/types'
 import {reportError} from 'utils/errors'
 import * as voiceCallTypes from 'models/voiceCall/types'
+import {PHONE_CALL_CONVERSATION_STARTED} from 'constants/event'
 
 jest.mock('utils/errors')
 
@@ -179,7 +179,7 @@ describe('TicketBodyElement', () => {
                     element={
                         {
                             isEvent: true,
-                            type: INCOMING_PHONE_CALL,
+                            type: PHONE_CALL_CONVERSATION_STARTED,
                         } as unknown as TicketElement
                     }
                 />

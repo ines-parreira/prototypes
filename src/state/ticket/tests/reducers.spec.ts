@@ -1582,7 +1582,7 @@ describe('ticket reducers', () => {
                 payload: [
                     getEvent(1).set(
                         'type',
-                        PhoneIntegrationEvent.PhoneCallAnswered
+                        PhoneIntegrationEvent.PhoneCallForwarded
                     ),
                 ],
             }

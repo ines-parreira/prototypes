@@ -10,7 +10,6 @@ import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
 import {assumeMock} from 'utils/testing'
 
 import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
-import * as phoneEvents from 'constants/event'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
@@ -262,55 +261,6 @@ describe('ticket selectors', () => {
         expect(selectors.getEvents({} as RootState)).toEqualImmutable(
             fromJS([])
         )
-    })
-
-    it('getDisplayableEvents', () => {
-        state.ticket = state.ticket.set(
-            'events',
-            fromJS([
-                {
-                    type: phoneEvents.INCOMING_PHONE_CALL,
-                },
-                {
-                    type: phoneEvents.OUTGOING_PHONE_CALL,
-                },
-                {
-                    type: phoneEvents.PHONE_CALL_FORWARDED_TO_GORGIAS_NUMBER,
-                },
-                {
-                    type: phoneEvents.PHONE_CALL_TRANSFERRED_TO_AGENT,
-                },
-                {
-                    type: phoneEvents.COMPLETED_PHONE_CALL,
-                },
-                {
-                    type: phoneEvents.CALL_RECORDING,
-                },
-                {
-                    type: phoneEvents.VOICEMAIL_RECORDING,
-                },
-                {
-                    type: 'some-custom-event',
-                },
-            ])
-        )
-        const expected = fromJS([
-            {
-                type: phoneEvents.PHONE_CALL_FORWARDED_TO_GORGIAS_NUMBER,
-            },
-            {
-                type: phoneEvents.PHONE_CALL_TRANSFERRED_TO_AGENT,
-            },
-            {
-                type: 'some-custom-event',
-            },
-        ])
-
-        expect(selectors.getDisplayableEvents(state)).toEqualImmutable(expected)
-
-        expect(
-            selectors.getDisplayableEvents({} as RootState)
-        ).toEqualImmutable(fromJS([]))
     })
 
     it('getRuleSuggestion', () => {

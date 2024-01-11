@@ -11,7 +11,6 @@ import {
     TicketChannel,
 } from 'business/types/ticket'
 import {isImmutable, toImmutable} from 'common/utils'
-import {PHONE_EVENTS} from 'constants/event'
 import {MacroActionName} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
@@ -37,6 +36,8 @@ import {
     isGorgiasContactFormTicketMeta,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
+import {appQueryClient} from 'api/queryClient'
+import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {getProperty} from './selectors'
 import {EMPTY_SENDER, TICKET_CHANNEL_NAMES} from './constants'
 import {TicketState} from './types'
@@ -496,20 +497,19 @@ export function getOutboundCallFrom(
         }) as Map<any, any>
     }
 
-    const events: List<any> = ticket.get('events') || fromJS([])
-    const phoneEvents = events.filter((event: Map<any, any>) =>
-        PHONE_EVENTS.includes(event.get('type'))
-    )
+    const voiceCalls = appQueryClient.getQueryData<UseListVoiceCalls>(
+        voiceCallsKeys.list({ticket_id: ticket.get('id')})
+    )?.data
 
-    if (!phoneEvents.size) {
+    if (!voiceCalls?.length) {
         return channels.get(0) as Map<any, any>
     }
 
-    const lastIndex = phoneEvents.size - 1
-    const lastEvent = phoneEvents.get(lastIndex) as Map<any, any>
-    const integrationId = lastEvent.getIn(['data', 'integration', 'id'])
+    const lastVoiceCallIntegrationId = voiceCalls[0].integration_id
+
     const channel = channels.find(
-        (channel: Map<any, any>) => channel.get('id') === integrationId
+        (channel: Map<any, any>) =>
+            channel.get('id') === lastVoiceCallIntegrationId
     ) as Map<any, any> | undefined
 
     return channel || (channels.get(0) as Map<any, any>)

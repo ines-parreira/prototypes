@@ -8,7 +8,6 @@ import {
     TicketVia,
 } from 'business/types/ticket'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {integrationsState} from 'fixtures/integrations'
 import {channels as mockChannels} from 'fixtures/channels'
 import * as channelsService from 'services/channels'
@@ -32,6 +31,9 @@ import {
     TicketMessage,
 } from 'models/ticket/types'
 import {generateTicketMessagesId} from 'utils'
+import {appQueryClient} from 'api/queryClient'
+import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
+import {VoiceCall} from 'models/voiceCall/types'
 import {
     getNewMessageSender,
     getOutboundCallFrom,
@@ -1143,14 +1145,18 @@ describe('ticket utils', () => {
 
         it('should get the sender channel from ticket events', () => {
             const integrationId = 1
-            const ticket = fromJS({
-                events: [
-                    {
-                        type: PhoneIntegrationEvent.IncomingPhoneCall,
-                        data: {integration: {id: integrationId}},
-                    },
-                ],
-            })
+
+            appQueryClient.setQueryData<UseListVoiceCalls>(
+                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                {
+                    data: [
+                        {
+                            integration_id: integrationId,
+                        } as VoiceCall,
+                    ],
+                } as any
+            )
+
             const newMessageSourceType = TicketMessageSourceType.Phone
             const expectedSender = fromJS({
                 id: integrationId,
@@ -1277,10 +1283,6 @@ describe('ticket utils', () => {
                 any,
                 any
             >
-        const getPhoneEvent = (integrationId: number) => ({
-            type: PhoneIntegrationEvent.IncomingPhoneCall,
-            data: {integration: {id: integrationId}},
-        })
 
         it('should return empty sender because there is no channel', () => {
             const ticket = fromJS({})
@@ -1288,24 +1290,59 @@ describe('ticket utils', () => {
             expect(getOutboundCallFrom(ticket, channels)).toEqual(emptySender)
         })
 
-        it('should return first channel because there is no phone event', () => {
-            const ticket = fromJS({})
+        it('should return first channel because there is no voice call', () => {
+            const ticket = fromJS({id: 1}) as Map<any, any>
             const channel = getValidSender(1)
             const channels = fromJS([channel])
+
+            appQueryClient.setQueryData<UseListVoiceCalls>(
+                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                {
+                    data: [],
+                } as any
+            )
+
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
         })
 
         it('should return first channel because ticket channel is not defined in the channels list', () => {
-            const ticket = fromJS({events: [getPhoneEvent(1)]})
+            const ticket = fromJS({id: 1}) as Map<any, any>
             const channel = getValidSender(2)
             const channels = fromJS([channel])
+
+            appQueryClient.setQueryData<UseListVoiceCalls>(
+                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                {
+                    data: [
+                        {
+                            integration_id: 1,
+                        } as VoiceCall,
+                    ],
+                } as any
+            )
+
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
         })
 
         it('should return ticket channel because it is defined in the channels list', () => {
-            const ticket = fromJS({events: [getPhoneEvent(2)]})
+            const ticket = fromJS({id: 1}) as Map<any, any>
             const channel = getValidSender(2)
             const channels = fromJS([getValidSender(1), channel])
+
+            appQueryClient.setQueryData<UseListVoiceCalls>(
+                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                {
+                    data: [
+                        {
+                            integration_id: 2,
+                        } as VoiceCall,
+                        {
+                            integration_id: 1,
+                        } as VoiceCall,
+                    ],
+                } as any
+            )
+
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
         })
     })

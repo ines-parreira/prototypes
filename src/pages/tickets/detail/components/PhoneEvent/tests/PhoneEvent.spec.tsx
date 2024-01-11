@@ -21,12 +21,6 @@ describe('<PhoneEvent/>', () => {
 
     describe('render()', () => {
         it.each([
-            PhoneIntegrationEvent.IncomingPhoneCall,
-            PhoneIntegrationEvent.OutgoingPhoneCall,
-            PhoneIntegrationEvent.CompletedPhoneCall,
-            PhoneIntegrationEvent.MissedPhoneCall,
-            PhoneIntegrationEvent.VoicemailRecording,
-            PhoneIntegrationEvent.PhoneCallAnswered,
             PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
             PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
             PhoneIntegrationEvent.PhoneCallForwarded,
@@ -35,28 +29,6 @@ describe('<PhoneEvent/>', () => {
             const event = fromJS({
                 type: eventType,
                 customer: {name: 'Michael Gorgias'},
-            })
-            const {container} = render(
-                <Provider store={store}>
-                    <PhoneEvent event={event} isLast={false} />
-                </Provider>
-            )
-
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it.each([
-            PhoneIntegrationEvent.VoicemailRecording,
-            PhoneIntegrationEvent.CompletedPhoneCall,
-        ])('should render with opened details', (eventType) => {
-            const event = fromJS({
-                type: eventType,
-                data: {
-                    customer: {
-                        name: 'Michael Gorgias',
-                        phone_number: '+16624424075',
-                    },
-                },
             })
             const {container} = render(
                 <Provider store={store}>

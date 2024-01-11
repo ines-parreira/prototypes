@@ -30,7 +30,6 @@ import {integrationsState} from 'fixtures/integrations'
 import {phoneNumbers} from 'fixtures/newPhoneNumber'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import * as integrationSelectors from 'state/integrations/selectors'
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {getLastSenderChannel, getPreferredChannel} from 'state/ticket/utils'
 import {
     chatTicket,
@@ -38,7 +37,6 @@ import {
     instagramMedia,
 } from 'state/ticket/tests/fixtures'
 import socketManager from 'services/socketManager/socketManager'
-import {IntegrationType} from 'models/integration/types'
 import {ticket} from 'fixtures/ticket'
 import * as emailExtraUtils from 'state/newMessage/emailExtraUtils'
 import {convertFromHTML} from 'utils/editor'
@@ -509,21 +507,10 @@ describe('actions', () => {
             })
 
             it('should handle phone channel', () => {
-                const phoneIntegration = integrationsState.integrations.find(
-                    (integration) => integration.type === IntegrationType.Phone
-                )
-
                 store = mockStore({
                     integrations: fromJS(integrationsState),
                     entities: {newPhoneNumbers: phoneNumbers},
-                    ticket: fromJS({
-                        events: [
-                            {
-                                type: PhoneIntegrationEvent.IncomingPhoneCall,
-                                data: {integration: {id: phoneIntegration?.id}},
-                            },
-                        ],
-                    }),
+                    ticket: fromJS({}),
                     newMessage: initialState.set(
                         'newMessage',
                         makeNewMessage(

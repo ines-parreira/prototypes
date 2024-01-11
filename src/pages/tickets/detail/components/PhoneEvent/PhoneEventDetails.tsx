@@ -2,14 +2,10 @@ import React from 'react'
 import {fromJS, Map} from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import moment from 'moment'
-
 import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types/event'
 
 import {VoiceMessageType} from '../../../../../models/integration/constants'
 import css from './PhoneEventDetails.less'
-import PhoneEventDetailsVoicemail from './PhoneEventDetailsVoicemail'
-import PhoneEventDetailsCallRecording from './PhoneEventDetailsCallRecording'
 
 type PhoneEventDetailsProps = {
     event: Map<string, any>
@@ -18,13 +14,6 @@ type PhoneEventDetailsProps = {
 export default function PhoneEventDetails({
     event,
 }: PhoneEventDetailsProps): JSX.Element {
-    const getDuration = (durationInSeconds: string | number): string => {
-        const duration = moment.duration(Number(durationInSeconds), 'seconds')
-        const minutes = duration.minutes()
-        const seconds = duration.seconds()
-
-        return `${minutes}min ${seconds}s`
-    }
     const eventType = event.get('type')
     const eventData = event.get('data', fromJS({})) as Map<string, any>
     const formattedCustomerPhoneNumber = parsePhoneNumber(
@@ -35,34 +24,6 @@ export default function PhoneEventDetails({
     let content: JSX.Element
 
     switch (eventType) {
-        case PhoneIntegrationEvent.VoicemailRecording: {
-            content = (
-                <PhoneEventDetailsVoicemail
-                    eventData={eventData}
-                    customerName={customerName}
-                    phoneNumber={formattedCustomerPhoneNumber}
-                />
-            )
-            break
-        }
-        case PhoneIntegrationEvent.CompletedPhoneCall: {
-            const callDuration = getDuration(
-                eventData.getIn(['call', 'call_duration'], 0)
-            )
-
-            content = (
-                <>
-                    <div>
-                        <b>{customerName ? customerName : 'Phone number'}:</b>{' '}
-                        {formattedCustomerPhoneNumber}
-                    </div>
-                    <div>
-                        <b>Duration:</b> {callDuration}
-                    </div>
-                </>
-            )
-            break
-        }
         case PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber:
         case PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber: {
             const forwardCallPhoneNumber = eventData.getIn([
@@ -118,16 +79,6 @@ export default function PhoneEventDetails({
                     </b>{' '}
                     {textToSpeechContent}
                 </div>
-            )
-            break
-        }
-        case PhoneIntegrationEvent.CallRecording: {
-            content = (
-                <PhoneEventDetailsCallRecording
-                    eventData={eventData}
-                    customerName={customerName}
-                    phoneNumber={formattedCustomerPhoneNumber}
-                />
             )
             break
         }

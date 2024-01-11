@@ -21,7 +21,6 @@ import {
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
 import {getQueryData} from 'state/queries/selectors'
-import {LEGACY_PHONE_EVENTS} from 'constants/event'
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
@@ -161,16 +160,6 @@ export const getEvents = createImmutableSelector(
     (state) => (state.get('events') || fromJS([])) as List<any>
 )
 
-export const getDisplayableEvents = createImmutableSelector(
-    getEvents,
-    (events) => {
-        return events.filter(
-            (event: Map<any, any>) =>
-                !LEGACY_PHONE_EVENTS.includes(event.get('type'))
-        ) as List<any>
-    }
-)
-
 export const getSatisfactionSurveys = createImmutableSelector(
     getTicketState,
     (state) =>
@@ -211,7 +200,7 @@ const getVoiceCalls = createSelector(
 export const getBody = createImmutableSelector(
     getMessages,
     getPendingMessages,
-    getDisplayableEvents,
+    getEvents,
     getSatisfactionSurveys,
     getRuleSuggestion,
     getAISuggestion,
