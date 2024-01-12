@@ -1,4 +1,4 @@
-import {cleanup, fireEvent, screen} from '@testing-library/react'
+import {cleanup, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -30,12 +30,10 @@ describe('RoutingRuleDecomissionBanner', () => {
                 <RoutingRuleDecomissionBanner />
             </Provider>
         )
-        expect(
-            screen.getByText(/a new setting to easily route Voice calls/i)
-        ).toBeVisible()
+        expect(screen.getByTestId('routing-rule-banner-message')).toBeVisible()
     })
 
-    it('should not render banner if it was previously dismissed', () => {
+    it('should render banner even if it was previously dismissed', () => {
         usePersistedStateSpy.mockReturnValue([false, jest.fn()])
 
         renderWithRouter(
@@ -54,11 +52,11 @@ describe('RoutingRuleDecomissionBanner', () => {
             </Provider>
         )
         expect(
-            screen.queryByText(/a new setting to easily route Voice calls/i)
-        ).toBeNull()
+            screen.queryByTestId('routing-rule-banner-message')
+        ).not.toBeNull()
     })
 
-    it('users should be able to dismiss banner', () => {
+    it('users should not be able to dismiss banner', () => {
         const dismissFn = jest.fn()
         usePersistedStateSpy.mockReturnValue([true, dismissFn])
 
@@ -78,14 +76,11 @@ describe('RoutingRuleDecomissionBanner', () => {
             </Provider>
         )
 
-        expect(
-            screen.getByText(/a new setting to easily route Voice calls/i)
-        ).toBeVisible()
-        const closeIcon = screen.getByRole('img', {
+        expect(screen.getByTestId('routing-rule-banner-message')).toBeVisible()
+        const closeIcon = screen.queryByRole('img', {
             name: /close\-icon/i,
         })
-        fireEvent.click(closeIcon)
-        expect(dismissFn).toHaveBeenCalledWith(false)
+        expect(closeIcon).toBeNull()
     })
 
     it('should not render banner when there are no phone integrations', () => {
@@ -104,9 +99,7 @@ describe('RoutingRuleDecomissionBanner', () => {
                 <RoutingRuleDecomissionBanner />
             </Provider>
         )
-        expect(
-            screen.queryByText(/a new setting to easily route Voice calls/i)
-        ).toBeNull()
+        expect(screen.queryByTestId('routing-rule-banner-message')).toBeNull()
     })
 
     it('should not render banner while on the phone settings page', () => {
@@ -129,8 +122,6 @@ describe('RoutingRuleDecomissionBanner', () => {
             }
         )
 
-        expect(
-            screen.queryByText(/a new setting to easily route Voice calls/i)
-        ).toBeNull()
+        expect(screen.queryByTestId('routing-rule-banner-message')).toBeNull()
     })
 })
