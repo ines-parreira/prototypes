@@ -53,7 +53,7 @@ const FlowsBanner = ({
             </div>
             <div>
                 <img
-                    src={assetsUrl(`/img/contact-form/flows-banner.png`)}
+                    src={assetsUrl(`/img/contact-form/flows-banner.gif`)}
                     alt="Flows Banner"
                     className={css.image}
                 />
