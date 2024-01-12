@@ -780,7 +780,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           </div>
         </div>
         <header
-          class="footer"
+          class="footer footer"
         >
           <button
             aria-disabled="true"
@@ -789,6 +789,13 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             type="button"
           >
             Save
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper fill secondary medium"
+            type="button"
+          >
+            Discard Changes
           </button>
         </header>
       </div>

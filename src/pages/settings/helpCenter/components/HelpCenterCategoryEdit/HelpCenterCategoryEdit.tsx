@@ -135,6 +135,8 @@ export const HelpCenterCategoryEdit = ({
     )
     const [hasPendingChanges, setHasPendingChanges] = useState(false)
     const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
+    const [isAttemptingToDiscardChanges, setIsAttemptingToDiscardChanges] =
+        useState(false)
     const imageFile = useFileUpload()
     /**
      * We check here few cases
@@ -406,12 +408,21 @@ export const HelpCenterCategoryEdit = ({
         onClose()
         setHasPendingChanges(false)
         setIsAttemptingToClose(false)
+        setIsAttemptingToDiscardChanges(false)
         imageFile.discardFile()
     }
 
     const handleCloseModalAttempt = () => {
         if (hasPendingChanges) {
             setIsAttemptingToClose(true)
+        } else {
+            onClose()
+        }
+    }
+
+    const handleDiscardChangesAttempt = () => {
+        if (hasPendingChanges) {
+            setIsAttemptingToDiscardChanges(true)
         } else {
             onClose()
         }
@@ -719,14 +730,20 @@ export const HelpCenterCategoryEdit = ({
                     help="Category preview in search engine results."
                 />
             </Drawer.Content>
-            <Drawer.Footer>
+            <Drawer.Footer className={css.footer}>
                 <Button
                     data-testid="button-save"
                     isDisabled={!canSaveCategory}
                     onClick={attemptSave}
                     isLoading={isSaveProcessing}
                 >
-                    Save
+                    {isCreate ? 'Create Category' : 'Save'}
+                </Button>
+                <Button
+                    intent="secondary"
+                    onClick={handleDiscardChangesAttempt}
+                >
+                    Discard Changes
                 </Button>
                 {category?.id && onDelete && (
                     <Button
@@ -815,6 +832,25 @@ export const HelpCenterCategoryEdit = ({
                         decide to add it.
                     </span>
                 </ConfirmationModal>
+            )}
+            {hasPendingChanges && isAttemptingToDiscardChanges && (
+                <CloseModal
+                    isOpen={hasPendingChanges && isAttemptingToDiscardChanges}
+                    title={<span>Quit without saving?</span>}
+                    saveText="Save Changes"
+                    editText="Back to editing"
+                    discardText="Discard Changes"
+                    onDiscard={handleDiscard}
+                    onContinueEditing={() =>
+                        setIsAttemptingToDiscardChanges(false)
+                    }
+                    onSave={attemptSave}
+                >
+                    <span>
+                        By discarding changes, you will lose all progress made
+                        editing. Are you sure you want to proceed?
+                    </span>
+                </CloseModal>
             )}
             <CloseModal
                 isOpen={hasPendingChanges && isAttemptingToClose}
