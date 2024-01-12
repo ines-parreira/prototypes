@@ -173,7 +173,7 @@ describe('<ContactFormMailtoReplacementSection />', () => {
 
             await waitFor(() => {
                 expect(notify).toHaveBeenCalledWith({
-                    message: 'Email has been removed',
+                    message: 'Email reverted',
                     status: NotificationStatus.Success,
                 })
             })

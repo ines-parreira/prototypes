@@ -16,7 +16,7 @@ import {sortEmailByDomainAndName} from './utils'
 type MailtoReplacementConfigGetDto =
     Components.Schemas.MailtoReplacementConfigGetDto
 
-const REVERTED_EMAIl_MESSAGE = 'Email has been removed'
+const REVERTED_EMAIl_MESSAGE = 'Email reverted'
 
 // This is contract with the server where we can know what happened on the server by status code.
 // This is needed because by technical requirement we have 1 endpoint for update/create/delete
