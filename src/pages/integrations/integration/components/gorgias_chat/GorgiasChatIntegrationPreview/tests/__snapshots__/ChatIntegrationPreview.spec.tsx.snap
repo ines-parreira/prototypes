@@ -198,11 +198,11 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                   class="css-r0ijy4"
                 >
                   <label
-                    aria-label="Leave us your email"
+                    aria-label="Email"
                     class="css-zs6vvb"
                     for="email-capture-intput"
                   >
-                    Leave us your email
+                    Email
                     <span
                       class="required"
                     >
@@ -216,7 +216,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                       aria-invalid="false"
                       class="css-1jkukg3"
                       id="email-capture-intput"
-                      label="Leave us your email"
+                      label="Email"
                       name="email-capture-intput"
                       placeholder="your@email.com"
                       readonly=""
@@ -860,11 +860,6 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             class="messages"
           >
             <div
-              class="bubble firstMessageOfAppMaker"
-            >
-              Leave us your email and we will reply soon.
-            </div>
-            <div
               class="optionalEmailCapture"
             >
               <div
@@ -879,11 +874,6 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                     for="email-capture-intput"
                   >
                     Leave us your email
-                    <span
-                      class="required"
-                    >
-                      *
-                    </span>
                   </label>
                   <div
                     class="css-t0lbh8"
@@ -896,7 +886,6 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                       name="email-capture-intput"
                       placeholder="your@email.com"
                       readonly=""
-                      required=""
                       type="email"
                       value=""
                     />
@@ -1213,11 +1202,11 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                     class="css-r0ijy4"
                   >
                     <label
-                      aria-label="Leave us your email"
+                      aria-label="Email"
                       class="css-zs6vvb"
                       for="email-capture-intput"
                     >
-                      Leave us your email
+                      Email
                       <span
                         class="required"
                       >
@@ -1231,7 +1220,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
                         aria-invalid="false"
                         class="css-1jkukg3"
                         id="email-capture-intput"
-                        label="Leave us your email"
+                        label="Email"
                         name="email-capture-intput"
                         placeholder="your@email.com"
                         readonly=""

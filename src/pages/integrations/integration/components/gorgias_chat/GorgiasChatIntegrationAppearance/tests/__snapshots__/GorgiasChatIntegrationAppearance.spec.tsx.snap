@@ -1146,7 +1146,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -1158,11 +1158,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -1176,7 +1176,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -2609,7 +2609,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -2621,11 +2621,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -2639,7 +2639,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -4043,7 +4043,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -4055,11 +4055,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -4073,7 +4073,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -5477,7 +5477,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -5489,11 +5489,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -5507,7 +5507,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -6911,7 +6911,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -6923,11 +6923,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -6941,7 +6941,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -8345,7 +8345,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -8357,11 +8357,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -8375,7 +8375,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -9667,7 +9667,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -9679,11 +9679,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -9697,7 +9697,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -10999,7 +10999,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -11011,11 +11011,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -11029,7 +11029,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -12451,7 +12451,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -12463,11 +12463,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -12481,7 +12481,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -13827,7 +13827,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -13839,11 +13839,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -13857,7 +13857,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""
@@ -15261,7 +15261,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                               <div
                                 class="bubble firstMessageOfAppMaker"
                               >
-                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
                               </div>
                               <div
                                 class="optionalEmailCapture"
@@ -15273,11 +15273,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                     class="css-r0ijy4"
                                   >
                                     <label
-                                      aria-label="Leave us your email"
+                                      aria-label="Email"
                                       class="css-zs6vvb"
                                       for="email-capture-intput"
                                     >
-                                      Leave us your email
+                                      Email
                                       <span
                                         class="required"
                                       >
@@ -15291,7 +15291,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                         aria-invalid="false"
                                         class="css-1jkukg3"
                                         id="email-capture-intput"
-                                        label="Leave us your email"
+                                        label="Email"
                                         name="email-capture-intput"
                                         placeholder="your@email.com"
                                         readonly=""

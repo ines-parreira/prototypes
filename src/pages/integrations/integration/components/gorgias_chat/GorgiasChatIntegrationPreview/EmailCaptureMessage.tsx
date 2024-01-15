@@ -10,9 +10,10 @@ import css from './ChatIntegrationPreview.less'
 
 type Props = {
     language?: string
+    required?: boolean
 }
 
-const EmailCaptureMessage: React.FC<Props> = ({language}) => {
+const EmailCaptureMessage: React.FC<Props> = ({language, required = true}) => {
     const translatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
             language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
@@ -25,9 +26,13 @@ const EmailCaptureMessage: React.FC<Props> = ({language}) => {
                 isValid
                 type="email"
                 readOnly
-                label={translatedTexts.requiredEmailCaptureInputLabel}
+                label={
+                    required
+                        ? translatedTexts.requiredEmailCaptureInputLabel
+                        : translatedTexts.emailCaptureInputLabel
+                }
                 placeholder={translatedTexts.emailCapturePlaceholder}
-                required
+                required={required}
             />
         </div>
     )
