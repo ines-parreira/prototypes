@@ -485,7 +485,10 @@ export function AutomateOverview() {
                                         (automatedInteractionTrend.data
                                             ?.value ?? 0) *
                                         costSavedPerInteraction,
-                                    prevValue: null,
+                                    prevValue:
+                                        (automatedInteractionTrend.data
+                                            ?.prevValue ?? 0) *
+                                        costSavedPerInteraction,
                                 },
                             }}
                         />
