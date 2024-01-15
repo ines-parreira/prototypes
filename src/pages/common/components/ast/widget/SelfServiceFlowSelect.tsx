@@ -84,17 +84,18 @@ export function SelfServiceFlowSelect({
             if (config.report_issue_policy.enabled) {
                 config.report_issue_policy.cases.forEach((issue) => {
                     issue.reasons.forEach((reason) => {
-                        if (!availableFlows.has(reason)) {
-                            availableFlows.add(reason)
+                        if (!availableFlows.has(reason.reasonKey)) {
+                            availableFlows.add(reason.reasonKey)
                             const reasonSpecs =
                                 SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
                                     (opt) => opt.value === reason.reasonKey
                                 )
+
                             if (reasonSpecs) {
                                 const TOOLTIP_WORDS_THRESHOLD = 50
                                 const label = `Report issue: ${
                                     reasonSpecs['label'] as string
-                                } (${issue.title})`
+                                }`
 
                                 options = options.push({
                                     value: reason.reasonKey,
