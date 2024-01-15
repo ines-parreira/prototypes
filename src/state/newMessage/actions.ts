@@ -1281,7 +1281,7 @@ export function sendTicketMessage(
 
             if (
                 messageToSend?.ticket_id &&
-                messageToSend?.ticket_id !== ticketIdToUse
+                Number(messageToSend?.ticket_id) !== Number(ticketIdToUse)
             ) {
                 reportError(new Error('Invalid ticket message request.'), {
                     extra: {
