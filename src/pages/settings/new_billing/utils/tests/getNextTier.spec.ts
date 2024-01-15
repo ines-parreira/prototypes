@@ -2,17 +2,20 @@ import {
     convertPrice1,
     convertPrice2,
     convertPrice3,
+    convertPrice4,
+    convertPrice5,
     convertProduct,
 } from 'fixtures/productPrices'
 import {getNextTier} from '../getNextTier'
 
 describe('getNextTier', () => {
-    it('should return next tier from list', () => {
-        const result = getNextTier(convertProduct.prices, convertPrice1)
-        expect(result).toBe(convertPrice2)
-    })
-    it("should return undefined when it's the last tier", () => {
-        const result = getNextTier(convertProduct.prices, convertPrice3)
-        expect(result).toBe(undefined)
+    it.each([
+        [convertPrice1, convertPrice2],
+        [convertPrice3, convertPrice5],
+        [convertPrice4, convertPrice5],
+        [convertPrice5, undefined],
+    ])('should return next tier from list', (input, output) => {
+        const result = getNextTier(convertProduct.prices, input)
+        expect(result).toBe(output)
     })
 })

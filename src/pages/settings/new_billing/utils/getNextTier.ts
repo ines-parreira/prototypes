@@ -4,19 +4,33 @@ export const getNextTier = (
     prices?: Price[],
     price?: Price
 ): Price | undefined => {
-    // tier property is only available for convert prices at the moment
-    const currentTier = (price as ConvertPrice)?.tier
-    if (!currentTier || !prices) {
+    if (!price || !prices) {
         return undefined
     }
 
-    return prices?.find((price) => {
-        if (
-            price.interval === price?.interval &&
-            price.product_id === price?.product_id &&
-            (price as ConvertPrice)?.tier === currentTier + 1
-        ) {
-            return price
+    let minPrice: Price | undefined = undefined
+
+    for (const priceConfig of prices) {
+        if (!priceConfig) {
+            continue
         }
-    })
+
+        const isSameInterval = priceConfig.interval === price.interval
+        const isSameProduct = priceConfig.product_id === price.product_id
+        const isBigger =
+            priceConfig.num_quota_tickets &&
+            price.num_quota_tickets &&
+            priceConfig.num_quota_tickets > price.num_quota_tickets &&
+            priceConfig.amount >= price.amount
+        const isBetter = !minPrice || minPrice.amount > priceConfig.amount
+
+        // tier property is only available for convert prices at the moment
+        const tier = (price as ConvertPrice)?.tier
+
+        if (isSameInterval && isSameProduct && isBigger && isBetter && tier) {
+            minPrice = priceConfig
+        }
+    }
+
+    return minPrice
 }

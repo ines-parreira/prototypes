@@ -34,7 +34,7 @@ describe('PlanSubscriptionDescription', () => {
         expect(
             getByText('Ready to upgrade with Convert', {exact: false})
         ).toBeInTheDocument()
-        expect(getByText('$1/month', {exact: false})).toBeInTheDocument()
+        expect(getByText('$30/month', {exact: false})).toBeInTheDocument()
         expect(getByText('clicks/month')).toBeInTheDocument()
 
         PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(

@@ -316,7 +316,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
               </div>
               <div>
                 <b>
-                  $1
+                  $30
                 </b>
                 /
               </div>
@@ -351,7 +351,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     0
                      
                     of 
-                    10,000
+                    50
                      
                     clicks
                      used
