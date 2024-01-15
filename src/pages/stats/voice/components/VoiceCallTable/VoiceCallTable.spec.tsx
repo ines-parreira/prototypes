@@ -9,10 +9,14 @@ import {assumeMock} from 'utils/testing'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {StatsFilters} from 'models/stat/types'
 import {VoiceCallStatus} from 'models/voiceCall/types'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {RootState, StoreDispatch} from 'state/types'
 import {useVoiceCallList} from 'pages/stats/voice/hooks/useVoiceCallList'
 import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
-import {VoiceCallSummary} from 'pages/stats/voice/models/types'
+import {
+    VoiceCallFilterOptions,
+    VoiceCallSummary,
+} from 'pages/stats/voice/models/types'
 import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
 import {VoiceCallTable} from './VoiceCallTable'
 
@@ -53,12 +57,13 @@ describe('VoiceCallTable', () => {
         },
     }
 
-    const renderComponent = () => {
+    const renderComponent = (filterOption = VoiceCallFilterOptions.All) => {
         return render(
             <Provider store={mockStore({})}>
                 <VoiceCallTable
                     statsFilters={statsFilters}
                     userTimezone={'UTC'}
+                    filterOption={filterOption}
                 />
             </Provider>
         )
@@ -196,5 +201,23 @@ describe('VoiceCallTable', () => {
                 })
             ).toHaveClass('withShadow')
         })
+    })
+
+    it.each([
+        [undefined, undefined],
+        [VoiceCallFilterOptions.All, undefined],
+        [VoiceCallFilterOptions.Inbound, VoiceCallSegment.inboundCalls],
+        [VoiceCallFilterOptions.Outbound, VoiceCallSegment.outboundCalls],
+    ])('should handle filter option', (filterOption, expectedSegment) => {
+        useVoiceCallListMock.mockReturnValue({
+            data: [] as VoiceCallSummary[],
+            isFetching: false,
+        } as UseQueryResult<VoiceCallSummary[], unknown>)
+        useVoiceCallCountMock.mockReturnValue({total: 0, totalPages: 0})
+
+        renderComponent(filterOption)
+        expect(useVoiceCallListMock.mock.calls[0]).toEqual(
+            expect.arrayContaining([expectedSegment])
+        )
     })
 })

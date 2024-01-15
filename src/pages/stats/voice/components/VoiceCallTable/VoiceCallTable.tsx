@@ -19,7 +19,11 @@ import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import VoiceCallActivity from 'pages/stats/voice/components/VoiceCallActivity/VoiceCallActivity'
 import {useVoiceCallList} from 'pages/stats/voice/hooks/useVoiceCallList'
 import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
-import {isInboundVoiceCallSummary} from 'pages/stats/voice/models/types'
+import {
+    getVoiceSegmentFromFilter,
+    isInboundVoiceCallSummary,
+    VoiceCallFilterOptions,
+} from 'pages/stats/voice/models/types'
 import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
 
 import css from './VoiceCallTable.less'
@@ -27,11 +31,13 @@ import css from './VoiceCallTable.less'
 type VoiceCallTableProps = {
     statsFilters: StatsFilters
     userTimezone: string
+    filterOption?: VoiceCallFilterOptions
 }
 
 export const VoiceCallTable = ({
     statsFilters,
     userTimezone,
+    filterOption,
 }: VoiceCallTableProps) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [ref, {width}] = useMeasure<HTMLDivElement>()
@@ -39,9 +45,15 @@ export const VoiceCallTable = ({
     const {data, isFetching} = useVoiceCallList(
         statsFilters,
         userTimezone,
-        currentPage
+        currentPage,
+        CALL_LIST_PAGE_SIZE,
+        getVoiceSegmentFromFilter(filterOption)
     )
-    const {totalPages} = useVoiceCallCount(statsFilters, userTimezone)
+    const {totalPages} = useVoiceCallCount(
+        statsFilters,
+        userTimezone,
+        getVoiceSegmentFromFilter(filterOption)
+    )
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {

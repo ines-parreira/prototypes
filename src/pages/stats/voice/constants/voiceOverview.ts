@@ -20,3 +20,6 @@ export const MISSED_CALLS_METRIC_HINT =
 
 export const CALL_ACTIVITY_TITLE = 'Activity'
 export const CALL_LIST_TITLE = 'List of calls'
+export const ALL_CALLS_FILTER_LABEL = 'All calls'
+export const INBOUND_CALLS_FILTER_LABEL = 'Inbound calls'
+export const OUTBOUND_CALLS_FILTER_LABEL = 'Outbound calls'

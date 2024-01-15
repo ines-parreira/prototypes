@@ -1,6 +1,7 @@
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
+    VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
 import {VoiceCallStatus} from 'models/voiceCall/types'
 
@@ -31,5 +32,24 @@ export type VoiceCallSummary = {
     phoneNumberSource: string
 }
 
+export enum VoiceCallFilterOptions {
+    All = 'all',
+    Inbound = 'inbound',
+    Outbound = 'outbound',
+}
+
 export const isInboundVoiceCallSummary = (call: VoiceCallSummary) =>
     call.direction === 'inbound'
+
+export const getVoiceSegmentFromFilter = (
+    filter?: VoiceCallFilterOptions
+): VoiceCallSegment | undefined => {
+    switch (filter) {
+        case VoiceCallFilterOptions.All:
+            return undefined
+        case VoiceCallFilterOptions.Inbound:
+            return VoiceCallSegment.inboundCalls
+        case VoiceCallFilterOptions.Outbound:
+            return VoiceCallSegment.outboundCalls
+    }
+}

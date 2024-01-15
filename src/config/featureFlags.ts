@@ -40,6 +40,7 @@ export enum FeatureFlagKey {
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
     DisplayVoiceAnalytics = 'display-voice-analytics',
+    DisplayVoiceAnalyticsNiceToHave = 'display-voice-analytics-nice-to-have',
     EarlyAdopter = 'early-adopter',
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     EnableNewLanguages = 'enable-new-languages',

@@ -5,10 +5,14 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {render, fireEvent} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
+    ALL_CALLS_FILTER_LABEL,
     CALL_LIST_TITLE,
     CALL_VOLUME_METRICS_TITLE,
     INBOUND_CALLS_METRIC_TITLE,
+    INBOUND_CALLS_FILTER_LABEL,
     MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
@@ -32,6 +36,11 @@ const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceOverview', () => {
+    beforeEach(() => {
+        resetLDMocks()
+        mockFlags({[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true})
+    })
+
     const renderVoiceOverview = (featureEnabled = true) => {
         const statsFilters: StatsFilters = {
             period: {
@@ -72,7 +81,7 @@ describe('VoiceOverview', () => {
     }
 
     it('should render page title', () => {
-        const {queryByText} = renderVoiceOverview()
+        const {queryByText, queryAllByText, getByText} = renderVoiceOverview()
 
         // header elements
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
@@ -91,6 +100,15 @@ describe('VoiceOverview', () => {
 
         // list of calls section
         expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
+
+        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(2)
+        fireEvent.click(queryAllByText(ALL_CALLS_FILTER_LABEL)[0])
+        expect(queryByText(INBOUND_CALLS_FILTER_LABEL)).toBeInTheDocument()
+        expect(queryByText(OUTBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
+
+        fireEvent.click(getByText(INBOUND_CALLS_FILTER_LABEL))
+        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(1)
+        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(2)
 
         // footer
         expect(

@@ -1,5 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import moment from 'moment/moment'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import StatsPage from 'pages/stats/StatsPage'
@@ -32,8 +35,15 @@ import ChartCard from 'pages/stats/ChartCard'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import {VoiceCallTable} from 'pages/stats/voice/components/VoiceCallTable/VoiceCallTable'
+import VoiceCallDirectionFilter from 'pages/stats/voice/components/VoiceCallDirectionFilter/VoiceCallDirectionFilter'
+import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
 
 function VoiceOverview() {
+    const displayVoiceAnalyticsNiceToHave: boolean =
+        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave] || false
+    const [tableFilterOption, setTableFilterOption] = useState(
+        VoiceCallFilterOptions.All
+    )
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -107,10 +117,23 @@ function VoiceOverview() {
             </DashboardSection>
             <DashboardSection title={CALL_ACTIVITY_TITLE}>
                 <DashboardGridCell>
-                    <ChartCard title={CALL_LIST_TITLE} noPadding>
+                    <ChartCard
+                        title={CALL_LIST_TITLE}
+                        noPadding
+                        titleExtra={
+                            displayVoiceAnalyticsNiceToHave && (
+                                <VoiceCallDirectionFilter
+                                    onFilterSelect={(
+                                        option: VoiceCallFilterOptions
+                                    ) => setTableFilterOption(option)}
+                                />
+                            )
+                        }
+                    >
                         <VoiceCallTable
                             statsFilters={cleanStatsFilters}
                             userTimezone={userTimezone}
+                            filterOption={tableFilterOption}
                         />
                     </ChartCard>
                 </DashboardGridCell>
