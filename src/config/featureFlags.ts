@@ -74,4 +74,5 @@ export enum FeatureFlagKey {
     TicketNavigationArrows = 'ticket-navigation-arrows',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    HelpCenterRulesAndViews = 'help-center-rules-and-views',
 }

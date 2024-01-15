@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import pluralize from 'pluralize'
 import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {ISO639English} from 'constants/languages'
@@ -27,12 +28,14 @@ import SelectInputBox, {
 import TextInput from 'pages/common/forms/input/TextInput'
 import Label from 'pages/common/forms/Label/Label'
 import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
-import {getMessagingIntegrations} from 'state/integrations/selectors'
+import {getOperationalIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getEmptyRule} from 'state/rules/utils'
 import {getAST} from 'utils'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {IntegrationType} from 'models/integration/constants'
 import css from './RuleCreationModalContent.less'
 
 type Props = {
@@ -69,7 +72,16 @@ function makeRuleCode(teamId: number, conditionStatement: string) {
 
 export default function RuleCreationModalContent({onClose, team}: Props) {
     const dispatch = useAppDispatch()
-    const integrations = useAppSelector(getMessagingIntegrations)
+    const isAppIntegrationEnabled =
+        useFlags()[FeatureFlagKey.HelpCenterRulesAndViews]
+    const integrations = useAppSelector(getOperationalIntegrations).filter(
+        (integration) => {
+            return !(
+                integration?.get('type') === IntegrationType.App &&
+                !isAppIntegrationEnabled
+            )
+        }
+    )
     const tags = useAppSelector((state) => state.entities.tags)
     const ref = useRef<HTMLFormElement>(null)
     const defaultTeamName = useMemo(

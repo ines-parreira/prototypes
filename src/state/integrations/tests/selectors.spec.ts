@@ -40,7 +40,7 @@ import {
     getOnboardingMeta,
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutFacebook,
-    getMessagingIntegrations,
+    getOperationalIntegrations,
     DEPRECATED_getPhoneIntegrations,
     getActiveIntegrations,
     getChannelsForSourceType,
@@ -97,9 +97,10 @@ describe('integrations selectors', () => {
         expect(integrations).toEqual(expected)
     })
 
-    describe('getMessagingIntegrations()', () => {
+    describe('getOperationalIntegrations()', () => {
         it('should get messaging integrations', () => {
-            const messagingIntegrations = getMessagingIntegrations(state).toJS()
+            const messagingIntegrations =
+                getOperationalIntegrations(state).toJS()
             const allIntegrations: Integration[] =
                 DEPRECATED_getIntegrations(state).toJS()
             const expected = allIntegrations.filter(
@@ -113,7 +114,12 @@ describe('integrations selectors', () => {
                         IntegrationType.Phone,
                         IntegrationType.Twitter,
                         IntegrationType.GorgiasChat,
-                    ].includes(integration.type)
+                    ].includes(integration.type) ||
+                    (integration.type === IntegrationType.App &&
+                        (integration.meta.address.startsWith('help-center') ||
+                            integration.meta.address.startsWith(
+                                'contact-form'
+                            )))
             )
 
             expect(messagingIntegrations).toEqual(expected)

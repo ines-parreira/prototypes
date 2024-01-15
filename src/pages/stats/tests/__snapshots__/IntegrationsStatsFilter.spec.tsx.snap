@@ -396,6 +396,54 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           </span>
         </label>
       </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-26"
+        >
+          <input
+            class="input"
+            id="checkbox-26"
+            name="checkbox-26"
+            type="checkbox"
+          />
+          <img
+            alt="logo-app"
+            class="integrationIcon"
+          />
+          <span
+            id="label-tooltip-27"
+          >
+             Contact Form (Morty)
+          </span>
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-28"
+        >
+          <input
+            class="input"
+            id="checkbox-28"
+            name="checkbox-28"
+            type="checkbox"
+          />
+          <img
+            alt="logo-app"
+            class="integrationIcon"
+          />
+          <span
+            id="label-tooltip-29"
+          >
+             Help Center (Rick)
+          </span>
+        </label>
+      </div>
     </div>
   </div>
 </div>
@@ -403,7 +451,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
 
 exports[`IntegrationsStatsFilter should render icon for aircall integration 1`] = `
 <span
-  id="label-tooltip-27"
+  id="label-tooltip-31"
 >
    aircall integration
 </span>
@@ -411,7 +459,7 @@ exports[`IntegrationsStatsFilter should render icon for aircall integration 1`] 
 
 exports[`IntegrationsStatsFilter should render icon for email integration 1`] = `
 <span
-  id="label-tooltip-39"
+  id="label-tooltip-43"
 >
    email integration
 </span>
@@ -419,7 +467,7 @@ exports[`IntegrationsStatsFilter should render icon for email integration 1`] = 
 
 exports[`IntegrationsStatsFilter should render icon for facebook integration 1`] = `
 <span
-  id="label-tooltip-41"
+  id="label-tooltip-45"
 >
    facebook integration
 </span>
@@ -427,7 +475,7 @@ exports[`IntegrationsStatsFilter should render icon for facebook integration 1`]
 
 exports[`IntegrationsStatsFilter should render icon for gmail integration 1`] = `
 <span
-  id="label-tooltip-29"
+  id="label-tooltip-33"
 >
    gmail integration
 </span>
@@ -435,7 +483,7 @@ exports[`IntegrationsStatsFilter should render icon for gmail integration 1`] = 
 
 exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration 1`] = `
 <span
-  id="label-tooltip-49"
+  id="label-tooltip-53"
 >
    gorgias_chat integration
 </span>
@@ -443,7 +491,7 @@ exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration
 
 exports[`IntegrationsStatsFilter should render icon for http integration 1`] = `
 <span
-  id="label-tooltip-43"
+  id="label-tooltip-47"
 >
    http integration
 </span>
@@ -451,7 +499,7 @@ exports[`IntegrationsStatsFilter should render icon for http integration 1`] = `
 
 exports[`IntegrationsStatsFilter should render icon for outlook integration 1`] = `
 <span
-  id="label-tooltip-31"
+  id="label-tooltip-35"
 >
    outlook integration
 </span>
@@ -459,7 +507,7 @@ exports[`IntegrationsStatsFilter should render icon for outlook integration 1`] 
 
 exports[`IntegrationsStatsFilter should render icon for phone integration 1`] = `
 <span
-  id="label-tooltip-45"
+  id="label-tooltip-49"
 >
    phone integration
 </span>
@@ -467,7 +515,7 @@ exports[`IntegrationsStatsFilter should render icon for phone integration 1`] = 
 
 exports[`IntegrationsStatsFilter should render icon for shopify integration 1`] = `
 <span
-  id="label-tooltip-33"
+  id="label-tooltip-37"
 >
    shopify integration
 </span>
@@ -475,7 +523,7 @@ exports[`IntegrationsStatsFilter should render icon for shopify integration 1`] 
 
 exports[`IntegrationsStatsFilter should render icon for sms integration 1`] = `
 <span
-  id="label-tooltip-47"
+  id="label-tooltip-51"
 >
    sms integration
 </span>
@@ -483,7 +531,7 @@ exports[`IntegrationsStatsFilter should render icon for sms integration 1`] = `
 
 exports[`IntegrationsStatsFilter should render icon for whatsapp integration 1`] = `
 <span
-  id="label-tooltip-37"
+  id="label-tooltip-41"
 >
    whatsapp integration
 </span>
@@ -491,7 +539,7 @@ exports[`IntegrationsStatsFilter should render icon for whatsapp integration 1`]
 
 exports[`IntegrationsStatsFilter should render icon for zendesk integration 1`] = `
 <span
-  id="label-tooltip-35"
+  id="label-tooltip-39"
 >
    zendesk integration
 </span>
