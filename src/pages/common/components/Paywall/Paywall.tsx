@@ -38,6 +38,7 @@ type Props = {
     testimonial?: PaywallConfig['testimonial']
     showUpgradeCta?: boolean
     customCta?: ReactNode
+    customBadge?: ReactNode
     modal?: ReactNode
 }
 
@@ -54,6 +55,7 @@ const Paywall = ({
     testimonial,
     showUpgradeCta,
     customCta,
+    customBadge,
     modal,
 }: Props) => {
     const [isLightboxOpen, setIsLightboxOpen] = useState(false)
@@ -144,6 +146,7 @@ const Paywall = ({
                                             {`${requiredUpgrade} ${upgradeType}`}
                                         </Badge>
                                     )}
+                                    {customBadge}
                                 </div>
                                 <h1 className={css.contentTitle}>{header}</h1>
                                 <div className={css.description}>
