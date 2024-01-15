@@ -29,6 +29,7 @@ type Recipient = SourceAddress & {id?: number}
 
 export type NewMessage = {
     id?: string
+    ticket_id?: string
     source: Omit<Source, 'to'> & {to?: Recipient[]}
     channel: string
     sender: User

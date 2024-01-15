@@ -9,6 +9,7 @@ import _omit from 'lodash/omit'
 import _split from 'lodash/split'
 import axios, {AxiosError, CancelToken} from 'axios'
 
+import {reportError} from 'utils/errors'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
     fetchTicketReplyMacro,
@@ -1112,7 +1113,10 @@ export function prepareTicketMessage({
                     return reject(new TicketMessageInvalidSendDataError())
                 }
 
-                messageToSend = dataToSend.newMessage
+                messageToSend = {
+                    ...dataToSend.newMessage,
+                    ticket_id: ticket?.get('id'),
+                }
                 replyAreaState = dataToSend.replyAreaState
             }
 
@@ -1259,23 +1263,36 @@ export function sendTicketMessage(
             const {ticket} = getState()
             let promise
 
+            const ticketIdToUse = ticketId || (ticket.get('id') as number)
+
             if (action) {
                 promise = client.put<Message>(
-                    `/api/tickets/${
-                        ticketId || (ticket.get('id') as number)
-                    }/messages/${messageToSend.id || ''}/${
-                        action ? `?action=${action}` : ''
-                    }`,
+                    `/api/tickets/${ticketIdToUse}/messages/${
+                        messageToSend.id || ''
+                    }/${action ? `?action=${action}` : ''}`,
                     messageToSend
                 )
             } else {
                 promise = client.post<Message>(
-                    `/api/tickets/${
-                        ticketId || (ticket.get('id') as number)
-                    }/messages/`,
+                    `/api/tickets/${ticketIdToUse}/messages/`,
                     messageToSend
                 )
             }
+
+            if (
+                messageToSend?.ticket_id &&
+                messageToSend?.ticket_id !== ticketIdToUse
+            ) {
+                reportError(new Error('Invalid ticket message request.'), {
+                    extra: {
+                        ticket_id: ticketIdToUse,
+                        ticket_message: {
+                            ticket_id: messageToSend?.ticket_id,
+                        },
+                    },
+                })
+            }
+
             void promise
                 .then((json) => json?.data)
                 .then(

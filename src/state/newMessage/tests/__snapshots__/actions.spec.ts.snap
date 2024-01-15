@@ -2298,6 +2298,7 @@ exports[`actions new message prepareTicketMessage should prepare next new messag
     "type": "instagram-comment",
   },
   "subject": "",
+  "ticket_id": 12,
   "via": "helpdesk",
 }
 `;
@@ -2373,6 +2374,7 @@ exports[`actions new message sendTicketMessage should submit new message 1`] = `
         "type": "email",
       },
       "subject": "",
+      "ticket_id": 12,
       "via": "helpdesk",
     },
     "messageId": "nowTimestamp",
