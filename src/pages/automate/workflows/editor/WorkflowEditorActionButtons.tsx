@@ -83,7 +83,9 @@ export const WorkflowEditorActionButtons = ({
             <Button
                 onClick={onPublish}
                 isLoading={isPublishPending}
-                isDisabled={!isDirty || isFetchPending}
+                isDisabled={
+                    isDraft ? isFetchPending : isFetchPending || !isDirty
+                }
             >
                 Publish
             </Button>
