@@ -25,44 +25,6 @@
         }
     }
 
-    .skeleton {
-        :global(.react-loading-skeleton) {
-            --base-color: var(--neutral-grey-2);
-            --highlight-color: var(--neutral-grey-1);
-            line-height: normal;
-        }
-        padding: 16px;
-
-        div {
-            padding: 16px 12px;
-            height: 40px;
-            box-sizing: content-box;
-            width: auto;
-            align-items: flex-start;
-
-            &:not(:last-of-type) {
-                margin-bottom: 8px;
-            }
-        }
-    }
-
-    .empty {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: auto;
-        color: var(--neutral-grey-4);
-
-        .emptyTitle {
-            .heading-subsection-semibold();
-        }
-
-        .description {
-            .body-regular();
-            margin-top: 8px;
-        }
-    }
-
     .titleWrapper {
         display: flex;
         align-items: center;
