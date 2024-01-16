@@ -5,9 +5,9 @@ import {useDrag} from 'react-dnd'
 import navbarCss from 'assets/css/navbar.less'
 import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
+import useViewId from 'hooks/useViewId'
 import {View, ViewVisibility} from 'models/view/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {getActiveView} from 'state/views/selectors'
 
 import {hasRole} from 'utils'
 import css from './TicketNavbarView.less'
@@ -22,7 +22,6 @@ type Props = {
 
 const TicketNavbarView = ({className, view, viewCount}: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
-    const activeView = useAppSelector(getActiveView)
     const currentUser = useAppSelector((state) => state.currentUser)
     const sections = useAppSelector((state) => state.entities.sections)
     const views = useAppSelector((state) => state.entities.views)
@@ -44,10 +43,8 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
         }),
     })
 
-    const isActiveView = useMemo(
-        () => view.id === activeView.get('id'),
-        [activeView, view]
-    )
+    const viewId = useViewId()
+    const isActiveView = view.id === viewId
 
     drag(wrapperRef)
 

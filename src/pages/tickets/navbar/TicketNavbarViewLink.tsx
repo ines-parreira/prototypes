@@ -11,14 +11,13 @@ import {Link} from 'react-router-dom'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import navbarCss from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
-import useAppSelector from 'hooks/useAppSelector'
+import useViewId from 'hooks/useViewId'
 import {View} from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {getActiveView} from 'state/views/selectors'
 
 import css from './TicketNavbarViewLink.less'
 
@@ -35,13 +34,14 @@ const TicketNavbarViewLink = (
 ) => {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
-
     const [splitTicketViewEnabled] = useSplitTicketView()
 
-    const activeView = useAppSelector(getActiveView)
+    const viewId = useViewId()
+
     const ref = useRef<HTMLDivElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
-    const isActiveView = view.id === activeView.get('id')
+
+    const isActiveView = view.id === viewId
 
     const dispatch = useAppDispatch()
     const ticketNavbarId = `ticket-navbar-view-${view.id}`

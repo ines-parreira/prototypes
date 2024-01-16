@@ -8,12 +8,16 @@ import {Provider} from 'react-redux'
 import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
 import {user as currentUserFixture} from 'fixtures/users'
 import {view} from 'fixtures/views'
+import useViewId from 'hooks/useViewId'
 import {View} from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import {mockStore} from 'utils/testing'
 
 import TicketNavbarView from '../TicketNavbarView'
+
+jest.mock('hooks/useViewId', () => jest.fn())
+const useViewIdMock = useViewId as jest.Mock
 
 jest.mock(
     'pages/common/components/ViewName/ViewName',
@@ -46,6 +50,10 @@ describe('<TicketNavbarView/>', () => {
         ui: {views: {activeViewId: 4}},
         currentUser: fromJS(currentUserFixture),
     }
+
+    beforeEach(() => {
+        useViewIdMock.mockReturnValue(123)
+    })
 
     it('should render', () => {
         const {container} = render(

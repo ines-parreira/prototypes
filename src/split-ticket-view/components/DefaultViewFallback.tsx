@@ -6,6 +6,7 @@ import {getViewIdToDisplay} from 'state/views/selectors'
 import {TicketListView} from 'ticket-list-view'
 
 type Params = {
+    ticketId?: string
     viewId?: string
 }
 
@@ -17,7 +18,10 @@ type Params = {
 // On the flip-side, it is not possible to use hooks in the components passed to
 // the render prop, so we've had to resort to this intermediary component in the
 // meantime which does the fallback to the default view id.
-export default function DefaultViewFallback({viewId: urlViewId}: Params) {
+export default function DefaultViewFallback({
+    ticketId: urlTicketId,
+    viewId: urlViewId,
+}: Params) {
     const defaultViewId = useAppSelector((state) =>
         getViewIdToDisplay(state)(ViewType.TicketList)
     )
@@ -27,5 +31,10 @@ export default function DefaultViewFallback({viewId: urlViewId}: Params) {
         [defaultViewId, urlViewId]
     )
 
-    return <TicketListView viewId={viewId} />
+    const ticketId = useMemo(
+        () => (urlTicketId ? parseInt(urlTicketId, 10) : undefined),
+        [urlTicketId]
+    )
+
+    return <TicketListView activeTicketId={ticketId} viewId={viewId} />
 }

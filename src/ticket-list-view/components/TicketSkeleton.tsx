@@ -4,7 +4,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import css from './TicketSkeleton.less'
 
-export const TicketSkeleton = () => {
+export default function TicketSkeleton() {
     return (
         <div className={css.container}>
             <Skeleton height={24} className={css.icon} />
@@ -15,5 +15,3 @@ export const TicketSkeleton = () => {
         </div>
     )
 }
-
-export default TicketSkeleton

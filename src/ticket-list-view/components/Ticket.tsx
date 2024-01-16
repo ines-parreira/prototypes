@@ -16,6 +16,7 @@ type InjectedProps = ComponentProps<typeof CSSTransition> &
     ComponentProps<NonNullable<Components['Item']>>
 
 type Props = {
+    isActive: boolean
     ticket: TicketPartial | TicketSummary
     viewId: number
 }
@@ -30,6 +31,7 @@ const classNames = {
 }
 
 export default function Ticket({
+    isActive,
     ticket,
     viewId,
     context, // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -56,7 +58,7 @@ export default function Ticket({
                 style={style}
             >
                 <Link
-                    className={css.inner}
+                    className={cn(css.inner, {[css.active]: isActive})}
                     to={`/app/views/${viewId}/${ticket.id}`}
                 >
                     {!('channel' in ticket) ? (
@@ -70,14 +72,14 @@ export default function Ticket({
                             />
                             <div
                                 className={cn(css.content, {
-                                    [css.unread]: ticket.is_unread,
+                                    [css.unread]: !isActive && ticket.is_unread,
                                 })}
                             >
                                 <div className={css.wrapper}>
                                     <div className={css.subject}>
                                         {ticket.subject}
                                     </div>
-                                    {ticket.is_unread && (
+                                    {!isActive && ticket.is_unread && (
                                         <div className={css.counter} />
                                     )}
                                 </div>

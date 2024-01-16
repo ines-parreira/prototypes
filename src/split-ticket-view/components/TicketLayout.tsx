@@ -27,12 +27,13 @@ const handleResize = (widths: number[]) => {
 }
 
 type Params = {
+    ticketId: string
     viewId: string
 }
 
 export default function TicketLayout({
     match: {
-        params: {viewId},
+        params: {viewId, ticketId},
     },
 }: RouteComponentProps<Params>) {
     return (
@@ -41,7 +42,7 @@ export default function TicketLayout({
                 <TicketNavbar disableResize />
             </Panel>
             <Panel>
-                <DefaultViewFallback viewId={viewId} />
+                <DefaultViewFallback viewId={viewId} ticketId={ticketId} />
             </Panel>
             <Panel className={css.container}>
                 <TicketDetail />

@@ -25,19 +25,24 @@ import Ticket from './Ticket'
 import css from './TicketListView.less'
 
 type Props = {
+    activeTicketId?: number
     viewId: number
 }
 
-export default function TicketListView({viewId}: Props) {
+export default function TicketListView({activeTicketId, viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const [sortOrder, setSortOrder] = useSortOrder()
     const {loadMore, setElement, tickets} = useTickets(viewId, sortOrder)
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketSummary) => (
-            <Ticket ticket={ticket} viewId={viewId} />
+            <Ticket
+                isActive={ticket.id === activeTicketId}
+                ticket={ticket}
+                viewId={viewId}
+            />
         ),
-        [viewId]
+        [activeTicketId, viewId]
     )
 
     const setScrollerRef = useCallback(
