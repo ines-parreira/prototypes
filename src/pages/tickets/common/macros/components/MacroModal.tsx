@@ -1,4 +1,4 @@
-import React, {Component, FormEvent} from 'react'
+import React, {Component, createRef, FormEvent} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import classnames from 'classnames'
@@ -70,6 +70,7 @@ export class MacroModalContainer extends Component<Props, State> {
     static defaultProps: Pick<Props, 'activeView'> = {
         activeView: fromJS({}),
     }
+    modalRef = createRef<HTMLDivElement>()
 
     multipleActionsNames = [
         MacroActionName.Http,
@@ -344,6 +345,7 @@ export class MacroModalContainer extends Component<Props, State> {
                 onClose={closeModal}
                 className={css.component}
                 size="huge"
+                ref={this.modalRef}
             >
                 <ModalHeader
                     title={selectionMode ? 'Macros' : 'Manage Macros'}
@@ -389,6 +391,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                         setActions={this._setActions}
                                         setName={this._setName}
                                         setLanguage={this._setLanguage}
+                                        container={this.modalRef}
                                     />
                                 )}
                             </Col>

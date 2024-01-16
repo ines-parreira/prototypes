@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import type {KeyboardEvent} from 'react'
+import type {ComponentProps, KeyboardEvent} from 'react'
 import ReactDOM from 'react-dom'
 import classnames from 'classnames'
 import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
-import {Dropdown, DropdownItem, DropdownToggle} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {RootState} from 'state/types'
@@ -30,7 +30,7 @@ type OwnProps = {
     removeTag: (tag: string) => void
     transparent: boolean
     right?: boolean
-    dropdownContainer?: HTMLElement
+    dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
     disabled?: boolean
     bindKeys?: boolean
 }

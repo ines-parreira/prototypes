@@ -1,58 +1,63 @@
-import React from 'react'
-import {fromJS, Map} from 'immutable'
+import React, {ComponentProps, useMemo} from 'react'
+import {fromJS, List, Map} from 'immutable'
+import {DropdownMenu} from 'reactstrap'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
 type Props = {
     args: Map<string, string>
+    dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
     index: number
     disabled?: boolean
-    updateActionArgs: (index: number, args: Map<string, string>) => void
     right?: boolean
-    dropdownContainer?: HTMLElement
+    updateActionArgs: (index: number, args: Map<string, string>) => void
 }
 
-export default class AddTagsAction extends React.Component<Props> {
-    splitIncomingTags = () =>
-        this.props.args
-            .get('tags', '')
-            .split(',')
-            .filter((t: string) => !!t)
+const AddTagsAction = ({
+    args,
+    disabled,
+    dropdownContainer,
+    index,
+    right,
+    updateActionArgs,
+}: Props) => {
+    const splitIncomingTags = useMemo(
+        () =>
+            args
+                .get('tags', '')
+                .split(',')
+                .filter((t: string) => !!t),
+        [args]
+    )
 
-    addTag = (tag: string) => {
-        const initialTagList = this.splitIncomingTags()
-        const newTagList = initialTagList.concat(tag).join(',')
-        this.props.updateActionArgs(
-            this.props.index,
-            fromJS({tags: newTagList})
-        )
+    const addTag = (tag: string) => {
+        const newTagList = splitIncomingTags.concat(tag).join(',')
+        updateActionArgs(index, fromJS({tags: newTagList}))
     }
 
-    removeTag = (tag: string) => {
-        const initialTagList = this.splitIncomingTags()
+    const removeTag = (tag: string) => {
+        const initialTagList = [...splitIncomingTags]
         initialTagList.splice(initialTagList.indexOf(tag), 1)
         const newTagList = initialTagList.join(',')
-        this.props.updateActionArgs(
-            this.props.index,
-            fromJS({tags: newTagList})
-        )
+        updateActionArgs(index, fromJS({tags: newTagList}))
     }
 
-    render() {
-        const {right, dropdownContainer} = this.props
-        const ticketTags = fromJS(
-            this.splitIncomingTags().map((t) => ({name: t}))
-        )
+    const ticketTags = useMemo(
+        () =>
+            fromJS(splitIncomingTags.map((tag) => ({name: tag}))) as List<any>,
+        [splitIncomingTags]
+    )
 
-        return (
-            <TicketTags
-                ticketTags={ticketTags}
-                disabled={this.props.disabled}
-                addTag={this.addTag}
-                removeTag={this.removeTag}
-                right={!!right}
-                dropdownContainer={dropdownContainer}
-            />
-        )
-    }
+    return (
+        <TicketTags
+            ticketTags={ticketTags}
+            disabled={disabled}
+            addTag={addTag}
+            removeTag={removeTag}
+            right={!!right}
+            dropdownContainer={dropdownContainer}
+        />
+    )
 }
+
+export default AddTagsAction

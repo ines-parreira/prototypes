@@ -7,13 +7,13 @@ type Props = ComponentProps<typeof DropdownMenu> & {
     style?: CSSProperties
 }
 
-export default function TagDropdownMenu(props: Props) {
+export default function TagDropdownMenu({container, ...props}: Props) {
     const appNode = useAppNode()
 
     return (
         <DropdownMenu
             {...props}
-            container={appNode ?? undefined}
+            container={container ?? appNode ?? undefined}
             style={{
                 padding: 0,
                 ...props.style,

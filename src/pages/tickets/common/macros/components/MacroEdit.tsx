@@ -1,4 +1,4 @@
-import React, {Component, ComponentClass} from 'react'
+import React, {Component, ComponentClass, ComponentProps} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
@@ -49,6 +49,7 @@ type Props = {
     setName: (name: string) => void
     setLanguage: (language: string | null) => void
     flags: LDFlagSet
+    container?: ComponentProps<typeof DropdownMenu>['container']
 } & ConnectedProps<typeof connector>
 
 export class MacroEdit extends Component<Props> {
@@ -237,6 +238,7 @@ export class MacroEdit extends Component<Props> {
                             index={index}
                             args={action.get('arguments')}
                             updateActionArgs={this._updateActionArguments}
+                            dropdownContainer={this.props.container}
                         />
                     ),
                 }
