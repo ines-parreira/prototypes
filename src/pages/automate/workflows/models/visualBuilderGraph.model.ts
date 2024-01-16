@@ -414,6 +414,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         to_step_id: workflowCallStepId,
                         event: incomingEdge?.data?.event,
                     })
+                } else {
+                    c.initial_step_id = workflowCallStepId
                 }
             } else if (
                 node.type === 'end' &&
@@ -439,6 +441,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         to_step_id: handoverStepId,
                         event: incomingEdge?.data?.event,
                     })
+                } else {
+                    c.initial_step_id = handoverStepId
                 }
             } else if (node.type === 'http_request') {
                 const stepId =
