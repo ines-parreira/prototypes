@@ -88,6 +88,7 @@ const CreditShopifyBillingIntegration = () => {
                             value={creditAmount}
                             onChange={setCreditAmount}
                             hasControls={false}
+                            step={0.01}
                             id="shopify-credit-amount"
                         />
                     </div>

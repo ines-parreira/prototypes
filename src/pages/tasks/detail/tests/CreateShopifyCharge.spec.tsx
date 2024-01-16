@@ -41,9 +41,9 @@ describe('<CreateShopifyCharge />', () => {
         )
 
         fireEvent.change(getByLabelText(/Amount/), {
-            target: {value: '36.84'},
+            target: {value: 36.84},
         })
-        fireEvent.change(getByLabelText(/Description/), {
+        fireEvent.change(getByLabelText(/Details/), {
             target: {value: 'test charge'},
         })
 
@@ -56,7 +56,7 @@ describe('<CreateShopifyCharge />', () => {
                 JSON.stringify({
                     name: 'create_shopify_charge',
                     params: {
-                        amount: '36.84',
+                        amount: 36.84,
                         description: 'test charge',
                     },
                 })
@@ -72,7 +72,7 @@ describe('<CreateShopifyCharge />', () => {
         )
 
         // only filling one field, others remain empty
-        fireEvent.change(getByLabelText(/Description/), {
+        fireEvent.change(getByLabelText(/Details/), {
             target: {value: 'test charge'},
         })
 

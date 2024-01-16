@@ -45,11 +45,22 @@ describe('<CreditShopifyBillingIntegration />', () => {
             target: {value: 'One month free of charge for a loyal customer'},
         })
         fireEvent.change(getByLabelText('Credit amount'), {
-            target: {value: '360'},
+            target: {value: '360.49'},
         })
 
         fireEvent.click(getByText('Add credit'))
         fireEvent.click(getByText('Confirm'))
+
+        expect(mockedServer.history.post[0].data).toBe(
+            JSON.stringify({
+                name: 'credit_shopify_store_used_for_billing',
+                params: {
+                    amount: 360.49,
+                    description:
+                        'One month free of charge for a loyal customer',
+                },
+            })
+        )
 
         await waitFor(() => {
             expect(notify).toHaveBeenCalledWith({
