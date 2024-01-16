@@ -52,10 +52,13 @@ const FlowsBanner = ({
                 </Button>
             </div>
             <div>
-                <img
-                    src={assetsUrl(`/img/contact-form/flows-banner.gif`)}
-                    alt="Flows Banner"
-                    className={css.image}
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    src={assetsUrl(`/img/contact-form/flows-banner.mp4`)}
+                    className={css.video}
                 />
             </div>
         </div>

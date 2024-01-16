@@ -234,6 +234,12 @@ module.exports = (env = {}) => {
                     type: 'javascript/auto',
                     use: [urlLoader],
                 },
+                // video
+                {
+                    test: /\.mp4$/i,
+                    type: 'javascript/auto',
+                    use: [urlLoader],
+                },
                 // embed node_modules assets
                 {
                     test: {
