@@ -5,7 +5,6 @@ import React, {
     forwardRef,
     Fragment,
     ReactElement,
-    ReactNode,
     useCallback,
     useMemo,
 } from 'react'
@@ -32,7 +31,10 @@ type Props = {
 export default function TicketListView({activeTicketId, viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const [sortOrder, setSortOrder] = useSortOrder()
-    const {loadMore, setElement, tickets} = useTickets(viewId, sortOrder)
+    const {loadMore, setElement, tickets, newTickets, ticketIds} = useTickets(
+        viewId,
+        sortOrder
+    )
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketSummary) => (
@@ -40,9 +42,10 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
                 isActive={ticket.id === activeTicketId}
                 ticket={ticket}
                 viewId={viewId}
+                isNewTicket={!!newTickets[ticket.id]}
             />
         ),
-        [activeTicketId, viewId]
+        [activeTicketId, viewId, newTickets]
     )
 
     const setScrollerRef = useCallback(
@@ -59,13 +62,27 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
             Item: ({
                 children,
                 ...props
-            }: {children?: ReactNode} & Partial<
-                ComponentProps<typeof CSSTransition>
-            > &
+            }: Partial<ComponentProps<typeof CSSTransition>> &
                 ComponentProps<NonNullable<Components['Item']>>) => (
                 <Fragment>
-                    {Children.map(children, (child) =>
-                        cloneElement(child as ReactElement, props)
+                    {Children.map<
+                        ReactElement<ComponentProps<typeof Ticket>>,
+                        ReactElement<ComponentProps<typeof Ticket>>
+                    >(
+                        children as ReactElement<ComponentProps<typeof Ticket>>,
+                        (child) => {
+                            const isVisible = props.in
+
+                            return cloneElement(child, {
+                                ...props,
+                                exit: isVisible
+                                    ? false
+                                    : !!ticketIds.current?.length &&
+                                      !ticketIds.current.includes(
+                                          child.props.ticket?.id
+                                      ),
+                            })
+                        }
                     )}
                 </Fragment>
             ),
@@ -77,7 +94,7 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
                 </div>
             )),
         }),
-        []
+        [ticketIds]
     )
 
     return (

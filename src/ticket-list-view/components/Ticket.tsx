@@ -19,6 +19,7 @@ type Props = {
     isActive: boolean
     ticket: TicketPartial | TicketSummary
     viewId: number
+    isNewTicket?: boolean
 }
 
 type MergedProps = Props & Partial<InjectedProps>
@@ -34,6 +35,7 @@ export default function Ticket({
     isActive,
     ticket,
     viewId,
+    isNewTicket,
     context, // eslint-disable-line @typescript-eslint/no-unused-vars
     style,
     ['data-index']: dataIndex,
@@ -46,8 +48,8 @@ export default function Ticket({
         <CSSTransition
             classNames={classNames}
             timeout={650}
-            unmountOnExit
             {...transitionProps}
+            enter={isNewTicket}
         >
             <div
                 className={css.outer}

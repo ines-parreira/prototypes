@@ -1,17 +1,17 @@
 import {render} from '@testing-library/react'
-import React, {ReactElement} from 'react'
+import React, {ComponentProps, ReactElement} from 'react'
 import {Virtuoso} from 'react-virtuoso'
 
 import {ticket} from 'fixtures/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 
-jest.mock('hooks/useAppSelector')
-const useAppSelectorMock = useAppSelector as jest.Mock
-
 import useTickets from '../../hooks/useTickets'
 import {TicketPartial} from '../../types'
 import Ticket from '../Ticket'
 import TicketListView from '../TicketListView'
+
+jest.mock('hooks/useAppSelector')
+const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('react-virtuoso', () => ({Virtuoso: jest.fn()}))
 const VirtuosoMock = Virtuoso as jest.Mock
@@ -60,6 +60,8 @@ describe('<TicketListView />', () => {
             setElement,
             staleTickets: {},
             tickets: [ticket],
+            newTickets: {},
+            ticketIds: {current: [152]},
         })
     })
 
@@ -81,5 +83,76 @@ describe('<TicketListView />', () => {
 
         endReached()
         expect(loadMore).toHaveBeenCalledWith()
+    })
+
+    it('should mark ticket as new', () => {
+        TicketMock.mockImplementation(
+            ({isNewTicket}: ComponentProps<typeof Ticket>) => {
+                return <p>{String(isNewTicket)}</p>
+            }
+        )
+        useTicketsMock.mockReturnValue({
+            loadMore,
+            setElement,
+            staleTickets: {},
+            tickets: [ticket],
+            newTickets: {[ticket.id]: ticket},
+            ticketIds: {current: [152]},
+        })
+        const {getByText} = render(<TicketListView viewId={123} />)
+        expect(getByText('true')).toBeInTheDocument()
+    })
+
+    it('should flip exit transition prop for removed ticket', () => {
+        const newTickets = [ticket, {...ticket, id: 456}]
+        TicketMock.mockImplementation(
+            ({exit}: ComponentProps<typeof Ticket>) => {
+                return <p>{String(exit)}</p>
+            }
+        )
+        VirtuosoMock.mockImplementation(
+            ({
+                itemContent,
+                scrollerRef,
+                components: {Item},
+            }: {
+                itemContent: (
+                    index: number,
+                    ticket: ComponentProps<typeof Ticket>['ticket']
+                ) => ReactElement
+                scrollerRef: (ref: HTMLElement | Window | null) => void
+                components: {Item: (props: any) => ReactElement}
+            }) => {
+                return (
+                    <div ref={scrollerRef}>
+                        {newTickets.map((t) => (
+                            <Item key={t.id}>{itemContent(0, t)}</Item>
+                        ))}
+                    </div>
+                )
+            }
+        )
+        useTicketsMock.mockReturnValue({
+            loadMore,
+            setElement,
+            staleTickets: {},
+            tickets: [ticket, {...ticket, id: 456}],
+            newTickets: {},
+            ticketIds: {current: [152, 456]},
+        })
+
+        const {rerender, getByText} = render(<TicketListView viewId={123} />)
+        useTicketsMock.mockReturnValue({
+            loadMore,
+            setElement,
+            staleTickets: {},
+            tickets: [ticket],
+            newTickets: [],
+            ticketIds: {current: [152]},
+        })
+
+        rerender(<TicketListView viewId={123} />)
+        rerender(<TicketListView viewId={123} />)
+        expect(getByText('true')).toBeInTheDocument()
     })
 })

@@ -1,8 +1,11 @@
 import {useEffect, useMemo, useState} from 'react'
 
 import useDebouncedValue from 'hooks/useDebouncedValue'
+import usePrevious from 'hooks/usePrevious'
 
+import useTicketIds from '../hooks/useTicketIds'
 import {TICKET_HEIGHT} from '../constants'
+import {TicketPartial} from '../types'
 import useElementSize from './useElementSize'
 import useScrollOffset from './useScrollOffset'
 import {SortOrder} from './useSortOrder'
@@ -15,6 +18,20 @@ export default function useTickets(viewId: number, sortOrder: SortOrder) {
         viewId,
         sortOrder
     )
+    const previousPartials = usePrevious(partials)
+    const previousPartialsMap = useMemo(() => {
+        return previousPartials?.reduce(
+            (acc, p) => ({...acc, [p.id]: p}),
+            {} as Record<string, TicketPartial>
+        )
+    }, [previousPartials])
+    const newPartials = useMemo(() => {
+        if (!previousPartialsMap || !Object.keys(previousPartialsMap).length) {
+            return []
+        }
+
+        return partials.filter((p) => !previousPartialsMap[p.id])
+    }, [partials, previousPartialsMap])
     const {markUpdated, staleTickets} = useStaleTickets(partials)
 
     const [element, setElement] = useState<HTMLElement | null>(null)
@@ -35,6 +52,25 @@ export default function useTickets(viewId: number, sortOrder: SortOrder) {
         () => partials.slice(startIndex, endIndex),
         [endIndex, partials, startIndex]
     )
+    const visiblePartialsMap = useMemo(
+        () =>
+            visiblePartials.reduce(
+                (acc, p) => ({...acc, [p.id]: p}),
+                {} as Record<string, TicketPartial>
+            ),
+        [visiblePartials]
+    )
+    const visibleNewPartialsMap = useMemo(
+        () =>
+            newPartials.reduce((acc, p) => {
+                if (visiblePartialsMap[p.id]) {
+                    acc[p.id] = p
+                }
+                return acc
+            }, {} as Record<string, TicketPartial>),
+        [newPartials, visiblePartialsMap]
+    )
+
     const visibleStaleTicketIds = useMemo(
         (): number[] =>
             visiblePartials
@@ -60,6 +96,8 @@ export default function useTickets(viewId: number, sortOrder: SortOrder) {
         setLatest(endIndex, latestTimestamp)
     }, [endIndex, latestTimestamp, setLatest])
 
+    const ticketIds = useTicketIds(tickets)
+
     return {
         hasMore,
         loading,
@@ -67,5 +105,7 @@ export default function useTickets(viewId: number, sortOrder: SortOrder) {
         setElement,
         staleTickets,
         tickets,
+        newTickets: visibleNewPartialsMap,
+        ticketIds,
     }
 }
