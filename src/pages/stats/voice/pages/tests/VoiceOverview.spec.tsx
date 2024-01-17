@@ -18,6 +18,9 @@ import {
     TOTAL_CALLS_METRIC_TITLE,
     VOICE_LEARN_MORE_URL,
     VOICE_OVERVIEW_PAGE_TITLE,
+    CALLER_EXPERIENCE_METRICS_TITLE,
+    AVERAGE_TALK_TIME_METRIC_TITLE,
+    AVERAGE_WAIT_TIME_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
 import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
@@ -90,6 +93,11 @@ describe('VoiceOverview', () => {
         // filters
         expect(queryByText('All integrations')).toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
+
+        // caller experience cards
+        expect(queryByText(CALLER_EXPERIENCE_METRICS_TITLE)).toBeInTheDocument()
+        expect(queryByText(AVERAGE_TALK_TIME_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(AVERAGE_WAIT_TIME_METRIC_TITLE)).toBeInTheDocument()
 
         // metric cards
         expect(queryByText(CALL_VOLUME_METRICS_TITLE)).toBeInTheDocument()

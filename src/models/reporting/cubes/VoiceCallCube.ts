@@ -3,6 +3,8 @@ import {StatsFiltersMembers} from 'utils/reporting'
 
 export enum VoiceCallMeasure {
     VoiceCallCount = 'VoiceCall.count',
+    VoiceCallAverageTalkTime = 'VoiceCall.averageTalkTimeSeconds',
+    VoiceCallAverageWaitTime = 'VoiceCall.averageWaitTimeSeconds',
 }
 
 export enum VoiceCallDimension {

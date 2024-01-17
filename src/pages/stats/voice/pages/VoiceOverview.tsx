@@ -7,9 +7,14 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import StatsPage from 'pages/stats/StatsPage'
 import {
+    AVERAGE_TALK_TIME_METRIC_HINT,
+    AVERAGE_TALK_TIME_METRIC_TITLE,
+    AVERAGE_WAIT_TIME_METRIC_HINT,
+    AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_ACTIVITY_TITLE,
     CALL_LIST_TITLE,
     CALL_VOLUME_METRICS_TITLE,
+    CALLER_EXPERIENCE_METRICS_TITLE,
     INBOUND_CALLS_METRIC_HINT,
     INBOUND_CALLS_METRIC_TITLE,
     MIN_DATE_FOR_VOICE_STATS,
@@ -34,9 +39,13 @@ import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import ChartCard from 'pages/stats/ChartCard'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
+import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {VoiceCallTable} from 'pages/stats/voice/components/VoiceCallTable/VoiceCallTable'
 import VoiceCallDirectionFilter from 'pages/stats/voice/components/VoiceCallDirectionFilter/VoiceCallDirectionFilter'
-import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
+import {
+    VoiceCallAverageTimeMetric,
+    VoiceCallFilterOptions,
+} from 'pages/stats/voice/models/types'
 
 function VoiceOverview() {
     const displayVoiceAnalyticsNiceToHave: boolean =
@@ -77,6 +86,28 @@ function VoiceOverview() {
                 </>
             }
         >
+            {displayVoiceAnalyticsNiceToHave && (
+                <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
+                    <DashboardGridCell size={6}>
+                        <VoiceCallCallerExperienceMetric
+                            metric={VoiceCallAverageTimeMetric.WaitTime}
+                            title={AVERAGE_WAIT_TIME_METRIC_TITLE}
+                            hint={AVERAGE_WAIT_TIME_METRIC_HINT}
+                            statsFilters={cleanStatsFilters}
+                            userTimezone={userTimezone}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={6}>
+                        <VoiceCallCallerExperienceMetric
+                            metric={VoiceCallAverageTimeMetric.TalkTime}
+                            title={AVERAGE_TALK_TIME_METRIC_TITLE}
+                            hint={AVERAGE_TALK_TIME_METRIC_HINT}
+                            statsFilters={cleanStatsFilters}
+                            userTimezone={userTimezone}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
+            )}
             <DashboardSection title={CALL_VOLUME_METRICS_TITLE}>
                 <DashboardGridCell size={3}>
                     <VoiceCallVolumeMetric

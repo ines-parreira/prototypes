@@ -9,7 +9,10 @@ import {
     VoiceCallMeasure,
     VoiceCallDimension,
 } from 'models/reporting/cubes/VoiceCallCube'
+import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 import {
+    voiceCallAverageTalkTimeQueryFactory,
+    voiceCallAverageWaitTimeQueryFactory,
     voiceCallCountQueryFactory,
     voiceCallListQueryFactory,
 } from '../voiceCall'
@@ -104,6 +107,90 @@ describe('voice queries factories', () => {
                 limit,
                 order: [[VoiceCallDimension.CreatedAt, OrderDirection.Desc]],
             })
+        }
+    )
+
+    it('voiceCallAverageTalkTimeQueryFactory should create a query', () => {
+        const query = voiceCallAverageTalkTimeQueryFactory(statsFilters, 'UTC')
+
+        expect(query).toEqual({
+            measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
+            dimensions: [],
+            filters: [
+                {
+                    member: VoiceCallMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceCallMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [],
+        })
+    })
+
+    it('voiceCallAverageWaitTimeQueryFactory should create a query', () => {
+        const query = voiceCallAverageWaitTimeQueryFactory(statsFilters, 'UTC')
+
+        expect(query).toEqual({
+            measures: [VoiceCallMeasure.VoiceCallAverageWaitTime],
+            dimensions: [],
+            filters: [
+                {
+                    member: VoiceCallMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceCallMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [VoiceCallSegment.inboundCalls],
+        })
+    })
+
+    it.each([
+        voiceCallAverageTalkTimeQueryFactory,
+        voiceCallAverageWaitTimeQueryFactory,
+    ])(
+        'should limit period to after MIN_DATE_FOR_ADVANCED_VOICE_STATS',
+        (factory) => {
+            const periodStart = formatReportingQueryDate(moment('2023-12-01'))
+            const periodEnd = formatReportingQueryDate(moment('2023-12-28'))
+            const statsFilters: StatsFilters = {
+                period: {
+                    end_datetime: periodEnd,
+                    start_datetime: periodStart,
+                },
+            }
+            const query = factory(statsFilters, 'UTC')
+            expect(query.filters).toEqual([
+                {
+                    member: VoiceCallMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(
+                            moment(MIN_DATE_FOR_ADVANCED_VOICE_STATS)
+                        ),
+                    ],
+                },
+                {
+                    member: VoiceCallMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [
+                        formatReportingQueryDate(
+                            moment(MIN_DATE_FOR_ADVANCED_VOICE_STATS)
+                        ),
+                    ],
+                },
+            ])
         }
     )
 })

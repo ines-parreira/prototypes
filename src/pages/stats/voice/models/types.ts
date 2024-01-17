@@ -38,6 +38,11 @@ export enum VoiceCallFilterOptions {
     Outbound = 'outbound',
 }
 
+export enum VoiceCallAverageTimeMetric {
+    TalkTime = 'averageTalkTime',
+    WaitTime = 'averageWaitTime',
+}
+
 export const isInboundVoiceCallSummary = (call: VoiceCallSummary) =>
     call.direction === 'inbound'
 
