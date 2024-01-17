@@ -1,4 +1,4 @@
-import {cleanup, screen} from '@testing-library/react'
+import {cleanup, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -33,7 +33,7 @@ describe('RoutingRuleDecomissionBanner', () => {
         expect(screen.getByTestId('routing-rule-banner-message')).toBeVisible()
     })
 
-    it('should render banner even if it was previously dismissed', () => {
+    it('should not render banner if it was previously dismissed', () => {
         usePersistedStateSpy.mockReturnValue([false, jest.fn()])
 
         renderWithRouter(
@@ -51,12 +51,10 @@ describe('RoutingRuleDecomissionBanner', () => {
                 <RoutingRuleDecomissionBanner />
             </Provider>
         )
-        expect(
-            screen.queryByTestId('routing-rule-banner-message')
-        ).not.toBeNull()
+        expect(screen.queryByTestId('routing-rule-banner-message')).toBeNull()
     })
 
-    it('users should not be able to dismiss banner', () => {
+    it('users should be able to dismiss banner', () => {
         const dismissFn = jest.fn()
         usePersistedStateSpy.mockReturnValue([true, dismissFn])
 
@@ -77,10 +75,11 @@ describe('RoutingRuleDecomissionBanner', () => {
         )
 
         expect(screen.getByTestId('routing-rule-banner-message')).toBeVisible()
-        const closeIcon = screen.queryByRole('img', {
+        const closeIcon = screen.getByRole('img', {
             name: /close\-icon/i,
         })
-        expect(closeIcon).toBeNull()
+        fireEvent.click(closeIcon)
+        expect(dismissFn).toHaveBeenCalledWith(false)
     })
 
     it('should not render banner when there are no phone integrations', () => {

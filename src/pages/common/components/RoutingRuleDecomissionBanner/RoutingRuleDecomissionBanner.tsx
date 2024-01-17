@@ -3,16 +3,23 @@ import {useRouteMatch} from 'react-router-dom'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
+import {usePersistedState} from 'common/hooks'
 import BannerNotification from '../BannerNotifications/BannerNotification'
 
+const BANNER_VISIBILITY_KEY = 'routing-rule-decomission-banner-visibility-2'
+
 export default function RoutingRuleDecomissionBanner() {
+    const [isBannerVisible, setIsBannerVisible] = usePersistedState<
+        Maybe<boolean>
+    >(BANNER_VISIBILITY_KEY, true)
+
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const isVoiceSettingsPage = useRouteMatch({
         path: ['/app/settings/channels/phone/:id/preferences'],
         exact: true,
     })
 
-    if (!phoneIntegrations?.length || isVoiceSettingsPage) {
+    if (!phoneIntegrations?.length || isVoiceSettingsPage || !isBannerVisible) {
         return null
     }
 
@@ -38,6 +45,8 @@ export default function RoutingRuleDecomissionBanner() {
             }
             status={NotificationStatus.Error}
             id="routing-rule-decomission"
+            closable
+            onClose={() => setIsBannerVisible(false)}
             allowHTML
             showIcon
         />
