@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {ReactNode, useRef} from 'react'
 import {DropdownItem} from 'reactstrap'
 import {useDrag, useDrop} from 'react-dnd'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -11,7 +11,7 @@ type Props = {
     isChecked: boolean
     isIndeterminate?: boolean
     onChange: (value: boolean) => void
-    tooltip?: string
+    tooltip?: ReactNode
     disabled?: boolean
     option: {id: string}
     onDrop: (item: {id: string}, monitor: {id: string}) => {id: string}

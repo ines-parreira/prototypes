@@ -8,6 +8,8 @@ import {AUTOMATED_INTERACTIONS_LABEL} from './constants'
 import {AutomateMetricProps} from './types'
 import {getTrendProps} from './utils'
 
+export const AUTOMATED_INTERACTION_TOOLTIP =
+    'Fully automated interactions solved without any agent intervention.'
 export const AutomatedInteractionsMetric = ({
     trend: automatedInteractionsTrend,
     showTips,
@@ -17,7 +19,7 @@ export const AutomatedInteractionsMetric = ({
             isLoading={automatedInteractionsTrend.isFetching}
             title={AUTOMATED_INTERACTIONS_LABEL}
             hint={{
-                title: 'Fully automated interactions solved without any agent intervention using Gorgias Automate features.',
+                title: AUTOMATED_INTERACTION_TOOLTIP,
             }}
             trendBadge={
                 <TrendBadge {...getTrendProps(automatedInteractionsTrend)} />

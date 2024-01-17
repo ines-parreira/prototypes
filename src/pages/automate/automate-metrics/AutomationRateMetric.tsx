@@ -4,10 +4,19 @@ import MetricCard from 'pages/stats/MetricCard'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'
+
 import {AUTOMATION_RATE_FIXED_STATS, AUTOMATION_RATE_LABEL} from './constants'
 import {AutomateMetricProps} from './types'
 import {getTrendProps, toPercentage} from './utils'
 
+export const AUTOMATION_RATE_TOOLTIP = (
+    <>
+        Automated interactions as a percent of all customer interactions.{' '}
+        <a target="_blank" href="https://link.gorgias.com/mnp" rel="noreferrer">
+            How is it calculated?
+        </a>
+    </>
+)
 export const AutomationRateMetric = ({
     trend: automationRateTrend,
     showTips,
@@ -26,9 +35,7 @@ export const AutomationRateMetric = ({
     return (
         <MetricCard
             title={AUTOMATION_RATE_LABEL}
-            hint={{
-                title: 'Automated interactions as a percent of all customer interactions handled without any agent intervention using Automate features.',
-            }}
+            hint={{title: AUTOMATION_RATE_TOOLTIP}}
             isLoading={automationRateTrend.isFetching}
             trendBadge={<TrendBadge {...getTrendProps(automationRateTrend)} />}
             tip={

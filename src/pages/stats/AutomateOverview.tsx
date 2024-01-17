@@ -55,6 +55,8 @@ import useSearch from 'hooks/useSearch'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {mergeStatsFilters} from 'state/stats/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
@@ -510,7 +512,8 @@ export function AutomateOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATION_RATE_LABEL}
-                            hint="Automated interactions as a percent of all customer interactions handled without any agent intervention using Automate features."
+                            hint={AUTOMATION_RATE_TOOLTIP}
+                            tooltipProps={{autohide: false}}
                         >
                             <LineChart
                                 isCurvedLine={false}
@@ -530,7 +533,7 @@ export function AutomateOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATED_INTERACTIONS_LABEL}
-                            hint="Fully automated interactions that are solved without human intervention using Gorgias Automate features."
+                            hint={AUTOMATED_INTERACTION_TOOLTIP}
                         >
                             <LineChart
                                 isCurvedLine={false}
@@ -557,7 +560,7 @@ export function AutomateOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL}
-                            hint="Fully automated interactions solved without any agent intervention using Automate features."
+                            hint={AUTOMATED_INTERACTION_TOOLTIP}
                         >
                             <LineChart
                                 isCurvedLine={false}

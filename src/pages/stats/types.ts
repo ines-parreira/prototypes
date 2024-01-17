@@ -1,3 +1,4 @@
+import {ReactNode} from 'react'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBillingEventCube'
 
 export type AutomatedInteractionByFeatures = Exclude<
@@ -24,7 +25,7 @@ export type TwoDimensionalDataItem = {
 }
 
 export type TooltipData = {
-    title: string
+    title: ReactNode
     link?: string
     className?: string
 }
