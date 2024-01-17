@@ -33,7 +33,26 @@ export default function computeDefaultWidths({config, totalWidth}: Options) {
         remainingWidth -= min
     })
 
-    if (remainingWidth <= 0) return widths
+    if (remainingWidth === 0) {
+        return widths
+    }
+
+    // subtract from the panel widths that are still not at their
+    // minimum width until they reach their minimum
+    if (remainingWidth < 0) {
+        for (let i = 0; i < widths.length; i++) {
+            const currentWidth = widths[i]
+            const [, min = 0] = config[i]
+
+            const subtractedWidth = currentWidth + remainingWidth
+            if (subtractedWidth >= min) {
+                widths[i] = subtractedWidth
+                break
+            }
+        }
+
+        return widths
+    }
 
     // then we divvy up the remaining width across all panels, we
     // floor this to avoid weird sub-pixel alignments

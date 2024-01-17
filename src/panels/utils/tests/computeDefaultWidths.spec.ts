@@ -54,4 +54,28 @@ describe('computeDefaultWidths', () => {
 
         expect(result).toEqual([200, 150, 650])
     })
+
+    it('should return the widths as-is if they already fill the total width', () => {
+        const result = computeDefaultWidths({
+            config: [
+                [30, 10, 200],
+                [70, 20, 200],
+            ],
+            totalWidth: 100,
+        })
+
+        expect(result).toEqual([30, 70])
+    })
+
+    it('should subtract from the panel widths that are still not at their minimum when remaining width is negative', () => {
+        const result = computeDefaultWidths({
+            config: [
+                [70, 10, 200],
+                [80, 20, 200],
+            ],
+            totalWidth: 100,
+        })
+
+        expect(result).toEqual([20, 80])
+    })
 })

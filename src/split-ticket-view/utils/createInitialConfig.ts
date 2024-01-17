@@ -1,7 +1,7 @@
 import {Config} from 'panels/types'
+import {createConfig} from 'panels/utils'
 
 import {LayoutKeys} from '../constants'
-import createConfig from './createConfig'
 
 const createInitialConfig = (layoutKey: LayoutKeys, defaultConfig: Config) => {
     // this is a temporary value that will be fully replaced by the storedWidths value

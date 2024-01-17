@@ -1,5 +1,4 @@
-import {Config} from 'panels'
-import {PanelConfig} from 'panels/types'
+import {Config, PanelConfig} from 'panels'
 
 const createConfig = (
     widths: number[],

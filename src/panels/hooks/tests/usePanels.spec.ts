@@ -37,6 +37,14 @@ describe('usePanels', () => {
         expect(result.current.panelWidths).toEqual([200, 800])
     })
 
+    it('should update panel widths when screen size changes', () => {
+        const {result, rerender} = renderHook(() => usePanels(config))
+        useScreenSizeMock.mockReturnValue([2000, 800])
+        rerender()
+
+        expect(result.current.panelWidths).toEqual([200, 1800])
+    })
+
     it('should return a resize start handler for each handle', () => {
         const {result} = renderHook(() => usePanels(config))
         expect(result.current.resizeStartHandlers).toEqual([
