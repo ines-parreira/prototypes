@@ -1,4 +1,5 @@
 import React from 'react'
+import Loader from 'pages/common/components/Loader/Loader'
 import {DrillDownDownloadButton} from 'pages/stats/DrillDownDownloadButton'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
@@ -22,7 +23,7 @@ const getTheInfoLabel = (totalResults: number) => {
     )
 }
 
-export const TOTAL_RESULTS_PLACEHOLDER = '?'
+export const TOTAL_RESULTS_PLACEHOLDER = 'Fetching tickets...'
 
 export const DrillDownInfobar = ({
     metricData,
@@ -34,7 +35,11 @@ export const DrillDownInfobar = ({
     return (
         <div className={css.wrapper}>
             <div className={css.icon}>
-                <i className="material-icons">info</i>
+                {isFetching ? (
+                    <Loader size="14px" minHeight="14px" />
+                ) : (
+                    <i className="material-icons">info</i>
+                )}
             </div>
             <div className={css.text}>
                 {isFetching
