@@ -1190,7 +1190,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
               <div
                 class="bubble firstMessageOfAppMaker"
               >
-                Welcome! Please enter your email to connect with our team.
+                Welcome! Please enter your email and send us a message to connect with our team.
               </div>
               <div
                 class="optionalEmailCapture"
