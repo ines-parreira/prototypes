@@ -1,7 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {FormGroup} from 'reactstrap'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import isURL, {IsURLOptions} from 'validator/lib/isURL'
 import Button from 'pages/common/components/button/Button'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,6 +17,9 @@ import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
+import InputField from 'pages/common/forms/input/InputField'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
@@ -29,6 +34,7 @@ import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
 import ToggleInput from '../../../common/forms/ToggleInput'
 import Tooltip from '../../../common/components/Tooltip'
 
+import {getAbsoluteUrl} from '../utils/helpCenter.utils'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {LinkList} from './LinkList'
 import css from './HelpCenterCustomizationView.less'
@@ -43,6 +49,15 @@ export const HelpCenterCustomizationView = () => {
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [links, setLinks] = useState<NavigationLink[]>([])
     const [extraHTML, setExtraHTML] = useState<ExtraHTMLDto | null>(null)
+    const [logoHyperlink, setLogoHyperlink] = useState<string>('')
+    const [logoHyperlinkErrMessage, setLogoHyperlinkErrMessage] =
+        useState<string>('')
+
+    const isHelpCenterLogoHyperlinkEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.HelpCenterLogoHyperlink]
+    const isURLOptions: IsURLOptions = {
+        require_host: true,
+    }
     const [isDirty, setIsDirty] = useState(false)
 
     useEffect(() => {
@@ -81,6 +96,14 @@ export const HelpCenterCustomizationView = () => {
 
         void init()
     }, [helpCenterId, selectedLocale, client])
+
+    const translation = useMemo(() => {
+        return helpCenter.translations?.find((t) => t.locale === selectedLocale)
+    }, [helpCenter.translations, selectedLocale])
+
+    useEffect(() => {
+        setLogoHyperlink(translation?.logo_hyperlink || '')
+    }, [translation])
 
     const linksWithoutSocial = useMemo(
         () =>
@@ -132,6 +155,7 @@ export const HelpCenterCustomizationView = () => {
         headerNavigation.resetFields()
         footerNavigation.resetFields()
         socialNavigation.resetFields()
+        setLogoHyperlink(translation?.logo_hyperlink || '')
         setIsDirty(false)
     }
     const handleSaveLinks = async () => {
@@ -204,8 +228,50 @@ export const HelpCenterCustomizationView = () => {
         }
     }
 
+    const handleSaveHyperlink = async () => {
+        if (client && isLogoHyperlinkUpdated) {
+            if (logoHyperlinkErrMessage) {
+                void dispatch(
+                    notify({
+                        message: 'URL is invalid',
+                        status: NotificationStatus.Error,
+                    })
+                )
+
+                throw new Error('URL is invalid')
+            }
+
+            let translations = helpCenter.translations
+            const {data: updatedTranslation} =
+                await client.updateHelpCenterTranslation(
+                    {
+                        help_center_id: helpCenterId,
+                        locale: selectedLocale,
+                    },
+                    {
+                        logo_hyperlink:
+                            logoHyperlink === ''
+                                ? null
+                                : getAbsoluteUrl(
+                                      {domain: logoHyperlink},
+                                      false
+                                  ),
+                    }
+                )
+
+            translations = helpCenter.translations?.map((translation) =>
+                translation.locale === updatedTranslation.locale
+                    ? updatedTranslation
+                    : translation
+            )
+
+            dispatch(helpCenterUpdated({...helpCenter, translations}))
+        }
+    }
+
     const handleOnSave = async () => {
         try {
+            await handleSaveHyperlink()
             await handleSaveLinks()
             await handleSaveExtraHTML()
 
@@ -230,6 +296,20 @@ export const HelpCenterCustomizationView = () => {
             reportError(err as Error)
         }
     }
+
+    const handleOnChangeLogoHyperlink = (nextValue: string) => {
+        if (nextValue !== '' && !isURL(nextValue, isURLOptions)) {
+            setLogoHyperlinkErrMessage('URL is invalid')
+        } else if (nextValue === '' || isURL(nextValue, isURLOptions)) {
+            setLogoHyperlinkErrMessage('')
+        }
+        setIsDirty(true)
+        setLogoHyperlink(nextValue)
+    }
+
+    const isLogoHyperlinkUpdated = useMemo(() => {
+        return logoHyperlink !== (translation?.logo_hyperlink || '')
+    }, [logoHyperlink, translation])
 
     const isCustomHeaderToggled = useMemo(() => {
         if (!extraHTML) {
@@ -271,6 +351,20 @@ export const HelpCenterCustomizationView = () => {
                         center.
                     </p>
                 </div>
+                {isHelpCenterLogoHyperlinkEnabled && (
+                    <div className={css.inputField}>
+                        <InputField
+                            type="text"
+                            name="logoHyperlink"
+                            label="Logo hyperlink"
+                            caption="Redirect your logo to a custom URL."
+                            error={logoHyperlinkErrMessage}
+                            value={logoHyperlink}
+                            isDisabled={isCustomHeaderToggled}
+                            onChange={handleOnChangeLogoHyperlink}
+                        />
+                    </div>
+                )}
                 <div className={css.toggleSection}>
                     <ToggleInput
                         isToggled={isCustomHeaderToggled}

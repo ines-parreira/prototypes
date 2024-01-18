@@ -1605,6 +1605,7 @@ declare namespace Components {
       };
       chat_app_key: string | null;
       contact_form_id: number | null;
+      logo_hyperlink?: string | null;
     }
     export interface HelpCenterTranslationSeoMeta {
       title: string | null;
@@ -2364,6 +2365,7 @@ declare namespace Components {
          */
         custom_footer_deactivated?: boolean;
       };
+      logo_hyperlink?: string | null;
     }
     export interface UpdateNavigationLinkDto {
       /**

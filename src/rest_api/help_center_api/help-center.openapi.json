@@ -4676,7 +4676,8 @@
                         "allOf": [{"$ref": "#/components/schemas/ExtraHTML"}]
                     },
                     "chat_app_key": {"type": "string", "nullable": true},
-                    "contact_form_id": {"type": "number", "nullable": true}
+                    "contact_form_id": {"type": "number", "nullable": true},
+                    "logo_hyperlink": {"type": "string", "nullable": true}
                 },
                 "required": [
                     "created_datetime",
@@ -5262,7 +5263,8 @@
                     },
                     "extra_html": {
                         "allOf": [{"$ref": "#/components/schemas/ExtraHTMLDto"}]
-                    }
+                    },
+                    "logo_hyperlink": {"type": "string", "nullable": true}
                 }
             },
             "CustomDomain": {
