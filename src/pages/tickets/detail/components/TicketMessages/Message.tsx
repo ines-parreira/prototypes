@@ -15,36 +15,40 @@ import SourceDetailsHeader from './SourceDetailsHeader'
 
 type Props = {
     message: TicketMessage
-    ticketId: number
     setStatus?: (status: string) => void
-    showSourceDetails: boolean
-    isLastRead: boolean
-    timezone: string
     showMessageStatusIndicator?: boolean
+    showSourceDetails: boolean
+    ticketId: number
+    timezone: string
 }
 
-export default function Message(props: Props) {
-    const {message} = props
+export default function Message({
+    message,
+    setStatus,
+    showMessageStatusIndicator,
+    showSourceDetails,
+    ticketId,
+    timezone,
+}: Props) {
     const hasError = isFailed(message)
     const [isOver, setIsOver] = useState(false)
 
-    const contentToRender = (
+    return (
         <div
             className={classNames(css.wrapper, {
-                [css.hasSourceDetails]: props.showSourceDetails,
+                [css.hasSourceDetails]: showSourceDetails,
             })}
             onMouseEnter={() => setIsOver(true)}
             onMouseLeave={() => setIsOver(false)}
         >
-            {props.showSourceDetails && (
+            {showSourceDetails && (
                 <SourceDetailsHeader
                     className={css.sourceDetails}
                     contentClassName={css.sourceDetailsContent}
                     message={message}
-                    timezone={props.timezone}
-                    isLastRead={props.isLastRead}
+                    timezone={timezone}
                     displayMessageStatusIndicator={
-                        isOver || props.showMessageStatusIndicator
+                        isOver || showMessageStatusIndicator
                     }
                     hideTimestamp={!isOver}
                     showIntents={isOver}
@@ -63,13 +67,11 @@ export default function Message(props: Props) {
             <Actions message={message} />
             <Errors
                 message={message}
-                ticketId={props.ticketId}
+                ticketId={ticketId}
                 loading={isPending(message)}
                 hasActionError={hasFailedAction(message)}
-                setStatus={props.setStatus}
+                setStatus={setStatus}
             />
         </div>
     )
-
-    return contentToRender
 }

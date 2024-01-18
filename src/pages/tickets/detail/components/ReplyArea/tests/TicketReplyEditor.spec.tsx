@@ -1,16 +1,15 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {createEvent, fireEvent, render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
-import {EditorState, ContentState} from 'draft-js'
+import {ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
-import {
-    convertFromHTML,
-    convertToHTML,
-    createDraftJSKeyGeneratorMock,
-} from 'utils/editor'
+import {convertToHTML, createDraftJSKeyGeneratorMock} from 'utils/editor'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 import * as channelsService from 'services/channels'
@@ -21,6 +20,15 @@ import {TicketReplyEditorContainer} from '../TicketReplyEditor'
 jest.mock('draft-js/lib/generateRandomKey', () =>
     jest.fn().mockReturnValue('mock-key')
 )
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
+const store = mockStore({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    ui: {editor: {}},
+})
 
 describe('TicketReplyEditor component', () => {
     beforeEach(() => {
@@ -50,91 +58,10 @@ describe('TicketReplyEditor component', () => {
     }
 
     it('should render empty ticket', () => {
-        const component = shallow(
-            <TicketReplyEditorContainer
-                {...minProps}
-                newMessage={fromJS({
-                    state: {
-                        contentState: ContentState.createFromText(''),
-                    },
-                    _internal: {
-                        loading: {
-                            submitMessage: false,
-                        },
-                    },
-                    newMessage: {
-                        body_text: '',
-                        body_html: '',
-                    },
-                })}
-                newMessageType={TicketMessageSourceType.Email}
-            />
-        )
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should not allow attachments for instagram comments', () => {
-        const component = shallow(
-            <TicketReplyEditorContainer
-                {...minProps}
-                newMessage={fromJS({
-                    state: {
-                        contentState: ContentState.createFromText(''),
-                    },
-                    _internal: {
-                        loading: {
-                            submitMessage: false,
-                        },
-                    },
-                    newMessage: {
-                        body_text: '',
-                        body_html: '',
-                    },
-                })}
-                newMessageType={TicketMessageSourceType.InstagramComment}
-            />
-        )
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should not allow attachments for instagram mentions', () => {
-        const component = shallow(
-            <TicketReplyEditorContainer
-                {...minProps}
-                newMessage={fromJS({
-                    state: {
-                        contentState: ContentState.createFromText(''),
-                    },
-                    _internal: {
-                        loading: {
-                            submitMessage: false,
-                        },
-                    },
-                    newMessage: {
-                        body_text: '',
-                        body_html: '',
-                    },
-                })}
-                newMessageType={TicketMessageSourceType.InstagramMention}
-            />
-        )
-        expect(component).toMatchSnapshot()
-    })
-
-    it.each([
-        // Simulate having an existing GIF and adding a new attachment
-        [fromJS([{content_type: 'image/gif'}]), [{type: 'image/jpg'}]],
-        // Simulate having an existing attachment and adding a new GIF one
-        [fromJS([{content_type: 'image/jpg'}]), [{type: 'image/gif'}]],
-    ])(
-        'should not allow GIF + other attachments for Twitter tweets',
-        (existingAttachments, newAttachments) => {
-            const notifyMock = jest.fn()
-
-            const component = shallow<TicketReplyEditorContainer>(
+        const {container} = render(
+            <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
-                    addAttachments={_noop}
                     newMessage={fromJS({
                         state: {
                             contentState: ContentState.createFromText(''),
@@ -149,14 +76,106 @@ describe('TicketReplyEditor component', () => {
                             body_html: '',
                         },
                     })}
-                    attachments={existingAttachments}
-                    newMessageType={TicketMessageSourceType.TwitterTweet}
-                    notify={notifyMock}
+                    newMessageType={TicketMessageSourceType.Email}
                 />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should not allow attachments for instagram comments', () => {
+        const {queryByText} = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    newMessage={fromJS({
+                        state: {
+                            contentState: ContentState.createFromText(''),
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        newMessage: {
+                            body_text: '',
+                            body_html: '',
+                        },
+                    })}
+                    newMessageType={TicketMessageSourceType.InstagramComment}
+                />
+            </Provider>
+        )
+        expect(queryByText('attach_file')).not.toBeInTheDocument()
+    })
+
+    it('should not allow attachments for instagram mention comments', () => {
+        const {queryByText} = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    newMessage={fromJS({
+                        state: {
+                            contentState: ContentState.createFromText(''),
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        newMessage: {
+                            body_text: '',
+                            body_html: '',
+                        },
+                    })}
+                    newMessageType={
+                        TicketMessageSourceType.InstagramMentionComment
+                    }
+                />
+            </Provider>
+        )
+        expect(queryByText('attach_file')).not.toBeInTheDocument()
+    })
+
+    it.each([
+        // Simulate having an existing GIF and adding a new attachment
+        [fromJS([{content_type: 'image/gif'}]), [{type: 'image/jpg'}]],
+        // Simulate having an existing attachment and adding a new GIF one
+        [fromJS([{content_type: 'image/jpg'}]), [{type: 'image/gif'}]],
+    ])(
+        'should not allow GIF + other attachments for Twitter tweets',
+        (existingAttachments, newAttachments) => {
+            const notifyMock = jest.fn()
+
+            const {getByLabelText} = render(
+                <Provider store={store}>
+                    <TicketReplyEditorContainer
+                        {...minProps}
+                        addAttachments={_noop}
+                        newMessage={fromJS({
+                            state: {
+                                contentState: ContentState.createFromText(''),
+                            },
+                            _internal: {
+                                loading: {
+                                    submitMessage: false,
+                                },
+                            },
+                            newMessage: {
+                                body_text: '',
+                                body_html: '',
+                            },
+                        })}
+                        attachments={existingAttachments}
+                        newMessageType={TicketMessageSourceType.TwitterTweet}
+                        notify={notifyMock}
+                    />
+                </Provider>
             )
 
-            // Simulate adding new file
-            component.instance().handleFiles(newAttachments as File[])
+            fireEvent.change(getByLabelText('attach_file'), {
+                target: {files: newAttachments},
+            })
 
             expect(notifyMock).toBeCalledWith({
                 type: 'error',
@@ -201,28 +220,36 @@ describe('TicketReplyEditor component', () => {
         })
         let newMessageText: string
 
-        const component = shallow<TicketReplyEditorContainer>(
-            <TicketReplyEditorContainer
-                {...minProps}
-                newMessageType={TicketMessageSourceType.Email}
-                newMessage={newMessage}
-                ticket={ticket}
-                setResponseText={(props) => {
-                    newMessageText = (
-                        props!.get('contentState') as ContentState
-                    ).getPlainText()
-                }}
-                shouldDisplayQuickReply={false}
-            />
+        const {unmount, container} = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    newMessageType={TicketMessageSourceType.Email}
+                    newMessage={newMessage}
+                    ticket={ticket}
+                    setResponseText={(props) => {
+                        newMessageText = (
+                            props!.get('contentState') as ContentState
+                        ).getPlainText()
+                    }}
+                    shouldDisplayQuickReply={false}
+                />
+            </Provider>
         )
 
-        // simulate RichField change event
-        const editorState = EditorState.createWithContent(
-            ContentState.createFromText('Pizza Pepperoni')
-        )
-        component.instance().onEditorChange(editorState)
+        // simulate "onEditorChange" RichField change event
+        const editor = container.querySelector('.public-DraftEditor-content')!
+        const event = createEvent.paste(editor, {
+            clipboardData: {
+                types: ['text/plain'],
+                getData: () => 'Pizza Pepperoni',
+            },
+        })
+        fireEvent(editor, event)
+        fireEvent(editor, event)
+
         // simulate leaving ticket
-        component.unmount()
+        unmount()
         // simulate blank newMessage
         newMessageText = ''
 
@@ -235,7 +262,7 @@ describe('TicketReplyEditor component', () => {
         }, 500)
     })
 
-    it('should allow inline image', (done) => {
+    it('should allow inline image', () => {
         const ticket: Map<any, any> = fromJS({
             id: 123,
             events: [],
@@ -266,22 +293,18 @@ describe('TicketReplyEditor component', () => {
             },
         })
 
-        const component = shallow(
-            <TicketReplyEditorContainer
-                {...minProps}
-                newMessageType={TicketMessageSourceType.FacebookMessenger}
-                newMessage={newMessage}
-                ticket={ticket}
-            />
+        const {getByText} = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    newMessageType={TicketMessageSourceType.FacebookMessenger}
+                    newMessage={newMessage}
+                    ticket={ticket}
+                />
+            </Provider>
         )
 
-        // needed for lifecycle
-        setTimeout(() => {
-            // Jest will throw an Timeout error if it fails
-            // because expect throw()s
-            expect(component).toMatchSnapshot()
-            done()
-        }, 500)
+        expect(getByText('insert_photo')).toBeInTheDocument()
     })
 
     it('should render message with inline image', (done) => {
@@ -316,26 +339,33 @@ describe('TicketReplyEditor component', () => {
         })
         let newEditorState: ContentState
 
-        const component = shallow<TicketReplyEditorContainer>(
-            <TicketReplyEditorContainer
-                {...minProps}
-                newMessageType={TicketMessageSourceType.Aircall}
-                newMessage={newMessage}
-                ticket={ticket}
-                setResponseText={(props) => {
-                    newEditorState = props!.get('contentState')
-                }}
-            />
+        const {container} = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    newMessageType={TicketMessageSourceType.Aircall}
+                    newMessage={newMessage}
+                    ticket={ticket}
+                    setResponseText={(props) => {
+                        newEditorState = props!.get('contentState')
+                    }}
+                />
+            </Provider>
         )
 
         let htmlString = `<b>this is an</b> inline image: <img alt="abc" src="https://this-is-a-link-of-image/and-this-is-the-image.png">`
         htmlString = sanitizeHtmlForFacebookMessenger(htmlString)
 
-        // simulate RichField change event
-        const editorState = EditorState.createWithContent(
-            convertFromHTML(htmlString)
-        )
-        component.instance().onEditorChange(editorState)
+        // simulate "onEditorChange" RichField change event
+        const editor = container.querySelector('.public-DraftEditor-content')!
+        const event = createEvent.paste(editor, {
+            clipboardData: {
+                types: ['text/plain'],
+                getData: () => htmlString,
+            },
+        })
+        fireEvent(editor, event)
+        fireEvent(editor, event)
 
         // needed for lifecycle
         setTimeout(() => {
@@ -346,27 +376,25 @@ describe('TicketReplyEditor component', () => {
 
     it('should not allow "videos", "shopify products" or "discount codes" for new channels', () => {
         jest.spyOn(channelsService, 'isNewChannel').mockReturnValue(true)
-        const component = shallow(
-            <TicketReplyEditorContainer
-                {...minProps}
-                newMessage={fromJS({
-                    state: {
-                        contentState: ContentState.createFromText(''),
-                    },
-                    integrations: {
-                        integrations: [{type: 'shopify'}],
-                    },
-                })}
-                newMessageType={'tiktok-shop' as TicketMessageSourceType}
-            />
+        const {queryByText} = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    newMessage={fromJS({
+                        state: {
+                            contentState: ContentState.createFromText(''),
+                        },
+                        integrations: {
+                            integrations: [{type: 'shopify'}],
+                        },
+                    })}
+                    newMessageType={'tiktok-shop' as TicketMessageSourceType}
+                />
+            </Provider>
         )
 
-        const displayedActions = component
-            .find('ForwardRef(TicketRichField)')
-            .prop('displayedActions')
-
-        expect(displayedActions).not.toContain('VIDEO')
-        expect(displayedActions).not.toContain('PRODUCTPICKER')
-        expect(displayedActions).not.toContain('DISCOUNTCODE')
+        expect(queryByText(/insert video/i)).not.toBeInTheDocument()
+        expect(queryByText('shopify')).not.toBeInTheDocument()
+        expect(queryByText('discount')).not.toBeInTheDocument()
     })
 })

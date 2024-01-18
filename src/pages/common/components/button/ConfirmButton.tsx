@@ -63,5 +63,3 @@ export default function ConfirmButton({
         </ConfirmationPopover>
     )
 }
-
-ConfirmButton.displayName = 'ConfirmButton'

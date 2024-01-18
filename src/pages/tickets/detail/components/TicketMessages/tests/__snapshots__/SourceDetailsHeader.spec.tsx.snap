@@ -1,206 +1,184 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of the date because the message is duplicated and should not render the SourceActionsHeader because the message is deleted 1`] = `
+exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActionsHeader because the message is not duplicated
+            and is not deleted 1`] = `
 <div
-  className="wrapper"
-  data-focus={false}
+  class="wrapper"
+  data-focus="false"
 >
   <div
-    className="content"
+    class="content"
   >
-    <From
-      key="ref-widget"
-      label="go to"
+    <div
+      class="widgets"
     >
-      <a
-        href={1234}
-        rel="noopener noreferrer"
-        target="_blank"
+      <div
+        class="dropdown dropdown"
       >
-        ticket
-      </a>
-    </From>
-  </div>
-</div>
-`;
-
-exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of the date because the message is duplicated and should render the SourceActionsHeader because the message is not deleted 1`] = `
-<div
-  className="wrapper"
-  data-focus={false}
->
-  <div
-    className="content"
-  >
-    <ContextProvider
-      value={
-        {
-          "setFocus": [Function],
-        }
-      }
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn btn-secondary hidden-sm-down dropdownToggle btn btn-secondary"
+          type="button"
+        >
+          <i
+            class="material-icons"
+            title="More"
+          >
+            more_vert
+          </i>
+        </button>
+        <div
+          aria-hidden="true"
+          class="menuWrapper dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
+        >
+          <div
+            class="menu"
+          >
+            <div
+              class="actions"
+            >
+              <button
+                class="dropdownItem dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <div
+                  class="icon"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    visibility_off
+                  </i>
+                </div>
+                <div
+                  class="content"
+                >
+                  <div
+                    class="title"
+                  >
+                    Hide comment
+                  </div>
+                  <div
+                    class="description"
+                  >
+                    Hide the comment in Facebook
+                  </div>
+                </div>
+              </button>
+              <div
+                id="private-reply-button-1"
+              >
+                <button
+                  class="dropdownItem dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <div
+                    class="icon"
+                  >
+                    <img
+                      alt="private message icon"
+                      class="messengerIcon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Message
+                    </div>
+                    <div
+                      class="description"
+                    >
+                      Respond with a  message
+                    </div>
+                  </div>
+                </button>
+              </div>
+              <button
+                class="dropdownItem dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <div
+                  class="icon"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    auto_awesome
+                  </i>
+                </div>
+                <div
+                  class="content"
+                >
+                  <div
+                    class="title"
+                  >
+                    All intents
+                  </div>
+                  <div
+                    class="description"
+                  >
+                    See detected intents
+                  </div>
+                </div>
+                <div
+                  class="forwardIcon"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    arrow_forward_ios
+                  </i>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span
+      class=""
     >
-      <Connect(SourceActionsHeader)
-        collapseActions={true}
-        collapseIntents={true}
-        message={
-          {
-            "channel": "facebook",
-            "created_datetime": "",
-            "from_agent": false,
-            "id": 1,
-            "isMessage": true,
-            "meta": {
-              "hidden_datetime": "2020-06-18T14:10:14.291746",
-              "is_duplicated": true,
-              "private_reply": {
-                "original_ticket_id": 1234,
-              },
-            },
-            "public": true,
-            "receiver": {
-              "email": "mary.poppins@example.com",
-              "firstname": "Mary",
-              "id": 2,
-              "lastname": "Poppins",
-              "name": "Mary Poppins",
-            },
-            "sender": {
-              "email": "john.doe@example.com",
-              "firstname": "John",
-              "id": 1,
-              "lastname": "Doe",
-              "name": "John Doe",
-            },
-            "source": {
-              "from": {
-                "address": "657788504429455-657788504429455",
-                "name": "Page",
-              },
-              "to": [
-                {
-                  "address": "657788504429455-4135481299826174",
-                  "name": "Cust Omer",
-                },
-              ],
-              "type": "facebook-comment",
-            },
-            "subject": "Some subject",
-            "uri": "http://example.com/messages/1",
-            "via": "facebook",
-          }
-        }
-        showIntents={true}
-      />
-    </ContextProvider>
-    <From
-      key="ref-widget"
-      label="go to"
-    >
-      <a
-        href={1234}
-        rel="noopener noreferrer"
-        target="_blank"
+      <span
+        id="datetime-tooltip-"
       >
-        ticket
-      </a>
-    </From>
+        01/09/2024
+      </span>
+    </span>
   </div>
 </div>
 `;
 
-exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActionsHeader because the message is not duplicated and is not deleted 1`] = `
+exports[`<SourceDetailsHeader/> should render a DatetimeLabel because the message is not duplicated and should not render the
+            SourceActionsHeader because the message is deleted 1`] = `
 <div
-  className="wrapper"
-  data-focus={false}
+  class="wrapper"
+  data-focus="false"
 >
   <div
-    className="content"
+    class="content"
   >
-    <ContextProvider
-      value={
-        {
-          "setFocus": [Function],
-        }
-      }
+    <span
+      class=""
     >
-      <Connect(SourceActionsHeader)
-        collapseActions={true}
-        collapseIntents={true}
-        message={
-          {
-            "actions": null,
-            "attachments": [],
-            "channel": "facebook",
-            "created_datetime": "",
-            "external_id": null,
-            "failed_datetime": null,
-            "from_agent": false,
-            "id": 1,
-            "integration_id": null,
-            "isMessage": true,
-            "is_retriable": false,
-            "meta": null,
-            "opened_datetime": null,
-            "public": true,
-            "receiver": {
-              "email": "mary.poppins@example.com",
-              "firstname": "Mary",
-              "id": 2,
-              "lastname": "Poppins",
-              "name": "Mary Poppins",
-            },
-            "rule_id": null,
-            "sender": {
-              "email": "john.doe@example.com",
-              "firstname": "John",
-              "id": 1,
-              "lastname": "Doe",
-              "name": "John Doe",
-            },
-            "source": {
-              "from": {
-                "address": "657788504429455-657788504429455",
-                "name": "Page",
-              },
-              "to": [
-                {
-                  "address": "657788504429455-4135481299826174",
-                  "name": "Cust Omer",
-                },
-              ],
-              "type": "facebook-comment",
-            },
-            "stripped_html": null,
-            "stripped_signature": null,
-            "stripped_text": null,
-            "subject": "Some subject",
-            "uri": "http://example.com/messages/1",
-            "via": "facebook",
-          }
-        }
-        showIntents={true}
-      />
-    </ContextProvider>
-    <Connect(DatetimeLabelContainer)
-      className=""
-      dateTime=""
-    />
-  </div>
-</div>
-`;
-
-exports[`<SourceDetailsHeader/> should render a DatetimeLabel because the message is not duplicated and should not render the SourceActionsHeader because the message is deleted 1`] = `
-<div
-  className="wrapper"
-  data-focus={false}
->
-  <div
-    className="content"
-  >
-    <Connect(DatetimeLabelContainer)
-      className=""
-      dateTime=""
-    />
+      <span
+        id="datetime-tooltip-"
+      >
+        01/09/2024
+      </span>
+    </span>
   </div>
 </div>
 `;

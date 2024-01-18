@@ -1,470 +1,116 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AuditLogEvent/> render() should not render when tag is missing 1`] = `""`;
-
-exports[`<AuditLogEvent/> render() should not render when the content is missing 1`] = `""`;
-
-exports[`<AuditLogEvent/> render() should not render when the executed rule is a system rule 1`] = `""`;
-
-exports[`<AuditLogEvent/> render() should render should fallback to the email address when user has no name 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          mode
-        </i>
-      </div>
-      <ActionName
-        key="name"
-      >
-        Subject updated
-      </ActionName>
-      <Filler>
-        by
-      </Filler>
-      <AgentLabel
-        name="user3@example.com"
-      />
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AuditLogEvent/> render() should render should render via team auto assignment when the event is auto assigned 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          person_add
-        </i>
-      </div>
-      <ActionName
-        key="action-name"
-      >
-        Assigned
-      </ActionName>
-      <Filler>
-        via Team auto-assignment
-      </Filler>
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AuditLogEvent/> render() should render when the customer has changed - name is empty 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          people
-        </i>
-      </div>
-      <ActionName>
-        Customer changed from
-         
-        <a
-          href="/app/customer/2"
-        >
-          Customer #2
-        </a>
-         
-        to
-         
-        <a
-          href="/app/customer/3"
-        >
-          Customer #3
-        </a>
-      </ActionName>
-      <Filler>
-        by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AuditLogEvent/> render() should render when the customer has changed 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          people
-        </i>
-      </div>
-      <ActionName>
-        Customer changed from
-         
-        <a
-          href="/app/customer/2"
-        >
-          customer 2
-        </a>
-         
-        to
-         
-        <a
-          href="/app/customer/3"
-        >
-          customer 3
-        </a>
-      </ActionName>
-      <Filler>
-        by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AuditLogEvent/> render() should render when the event has been added via a rule 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          loop
-        </i>
-      </div>
-      <ActionName>
-        Reopened
-      </ActionName>
-      <Filler>
-        via rule
-      </Filler>
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.500000"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AuditLogEvent/> render() should render when the event is the last component to display before the reply area 1`] = `
-<div
-  className="component last"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          loop
-        </i>
-      </div>
-      <ActionName>
-        Reopened
-      </ActionName>
-      <Filler>
-        by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
-  </div>
-</div>
-`;
-
 exports[`<AuditLogEvent/> render() should render when the rule has a triggering event type 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           settings
         </i>
       </div>
-      <RuleActionName
-        context="foo"
-        data={
-          Immutable.Map {
-            "id": 1,
-            "name": "Rule 1",
-            "triggering_event_type": "ticket-created",
-          }
-        }
-        rule_id={1}
-        triggeringEventType="ticket-created"
-      />
-      <Tooltip
-        placement="top"
-        target="rule-code-1-foo"
-      />
+      <div
+        id="rule-code-1-foo"
+      >
+        <span
+          class="actionName"
+        >
+          Rule "
+          <a
+            href="/app/settings/rules/1"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Rule 1
+          </a>
+          " executed
+        </span>
+        <span
+          class="filler"
+        >
+          on "
+          ticket created
+          "
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
   <div
-    className="failedActions"
+    class="failedActions"
   />
-</div>
-`;
-
-exports[`<AuditLogEvent/> render() should render when the rule has failed actions 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          settings
-        </i>
-      </div>
-      <RuleActionName
-        context="foo"
-        data={
-          Immutable.Map {
-            "id": 1,
-            "name": "Rule 1",
-            "triggering_event_type": "ticket-created",
-            "failed_actions": Immutable.List [
-              Immutable.Map {
-                "action_name": "applyMacro",
-                "failure_reason": "recent-auto-reply",
-              },
-            ],
-          }
-        }
-        rule_id={1}
-        triggeringEventType="ticket-created"
-      />
-      <Tooltip
-        placement="top"
-        target="rule-code-1-foo"
-      />
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
-  </div>
-  <div
-    className="failedActions"
-  >
-    <div
-      className="failedAction"
-      key="action-0"
-    >
-      <span
-        className="failureName"
-      >
-        Apply macro
-         
-      </span>
-      failed:
-      <span
-        className="failureReasonWarning"
-      >
-        Can only auto-reply to a given customer once every 5 minutes.
-      </span>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<AuditLogEvent/> render() should render when the ticket subject updated data is null 1`] = `
-<div
-  className="component"
->
-  <div
-    className="event"
-  >
-    <div
-      className="content"
-    >
-      <div
-        className="icon"
-      >
-        <i
-          className="material-icons"
-        >
-          mode
-        </i>
-      </div>
-      <ActionName
-        key="name"
-      >
-        Subject updated
-      </ActionName>
-      <Filler>
-        by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
-    </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
-  </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render when the user ID is missing 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           loop
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Reopened
-      </ActionName>
+      </span>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ai-suggestion-suggested 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           lightbulb
         </i>
       </div>
       <span>
-        <ActionName>
+        <span
+          class="actionName"
+        >
           Gorgias AI
-        </ActionName>
+        </span>
          suggested
          
         <span
@@ -476,392 +122,504 @@ exports[`<AuditLogEvent/> render() should render with event type ai-suggestion-s
         </span>
          
         for this ticket
-        <Tooltip
-          dangerouslySetInnerHTML={
-            {
-              "__html": "<div>suggested text</div>",
-            }
-          }
-          placement="top"
-          target="ai-suggestion-event-log"
-        />
       </span>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type rule-executed 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           settings
         </i>
       </div>
-      <RuleActionName
-        context="foo"
-        data={
-          Immutable.Map {
-            "id": 1,
-            "name": "Rule 1",
-          }
-        }
-        rule_id={1}
-      />
-      <Tooltip
-        placement="top"
-        target="rule-code-1-foo"
-      />
+      <div
+        id="rule-code-1-foo"
+      >
+        <span
+          class="actionName"
+        >
+          Rule "
+          <a
+            href="/app/settings/rules/1"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Rule 1
+          </a>
+          " executed
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
   <div
-    className="failedActions"
+    class="failedActions"
   />
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type rule-executed 2`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           settings
         </i>
       </div>
-      <RuleSuggestionEvent
-        eventType="rule-executed"
-        slug="rule_suggestion"
-      />
+      <span
+        class="actionName"
+      >
+        Rule
+         "
+        <a
+          rel="noreferrer"
+          target="_blank"
+          title="Rule"
+          to="/app/settings/rules/library?rule_suggestion"
+        >
+          rule_suggestion
+        </a>
+        " 
+        applied to ticket manually
+      </span>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type rule-suggestion-suggested 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           lightbulb
         </i>
       </div>
-      <RuleSuggestionEvent
-        eventType="rule-suggestion-suggested"
-        slug="rule_suggestion"
-      />
+      <span
+        class="actionName"
+      >
+        Gorgias Tip suggested rule
+         "
+        <a
+          rel="noreferrer"
+          target="_blank"
+          title="Rule"
+          to="/app/settings/rules/library?rule_suggestion"
+        >
+          rule_suggestion
+        </a>
+        " 
+        to ticket
+      </span>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-assigned 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           person_add
         </i>
       </div>
-      <ActionName
-        key="action-name"
+      <span
+        class="actionName"
       >
         Assigned
-      </ActionName>
-      <Filler
-        key="to"
+      </span>
+      <span
+        class="filler"
       >
         to
-      </Filler>
-      <AgentLabel
-        className="assigneeLabel"
-        key="assign-label"
-        name="User 1"
-      />
-      <Filler>
+      </span>
+      <div
+        class="AgentLabel assigneeLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-assigned and missing assignee 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           person_add
         </i>
       </div>
-      <ActionName
-        key="action-name"
+      <span
+        class="actionName"
       >
         Assigned
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-closed 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon success"
+        class="icon success"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           done
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Closed
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-created 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           add
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Created
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
-exports[`<AuditLogEvent/> render() should render with event type ticket-customer-updated 1`] = `""`;
+exports[`<AuditLogEvent/> render() should render with event type ticket-customer-updated 1`] = `null`;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-marked-spam 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon warning"
+        class="icon warning"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           flag
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Marked as spam
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-merged 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           call_merge
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Merged
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-message-summary-created 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           email
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         <b>
           Chat summarized
         </b>
@@ -869,7 +627,6 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-message-
          
         <a
           href="#"
-          onClick={[Function]}
         >
           <u>
             Unseen chat messages
@@ -878,659 +635,880 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-message-
          
         were sent by email
          
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-reopened 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           loop
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Reopened
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-self-unsnoozed 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           timer_off
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Snooze delay ended
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           timer
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Snoozed
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-subject-updated 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           mode
         </i>
       </div>
-      <ActionName
-        key="name"
+      <span
+        class="actionName"
       >
         Subject updated
-      </ActionName>
+      </span>
       <span
-        className="equalFiller"
-        key="from"
+        class="equalFiller"
       >
         from
       </span>
       <span
-        className="actionName"
-        key="old"
+        class="actionName"
       >
         foo
       </span>
       <span
-        className="equalFiller"
-        key="to"
+        class="equalFiller"
       >
         to
       </span>
       <span
-        className="actionName"
-        key="new"
+        class="actionName"
       >
         bar
       </span>
-      <Filler>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-tags-added 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           local_offer
         </i>
       </div>
-      <ActionName
-        key="action-name-left"
+      <span
+        class="actionName"
       >
         Tagged
-      </ActionName>
-      <TagLabel
-        className="equalFiller"
-        key="1"
+      </span>
+      <span
+        class="badge-tag equalFiller badge badge-secondary"
       >
         tag-1
-      </TagLabel>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-tags-added and several tags 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           local_offer
         </i>
       </div>
-      <ActionName
-        key="action-name-left"
+      <span
+        class="actionName"
       >
         Tagged
-      </ActionName>
-      <TagLabel
-        className="equalFiller"
-        key="1"
+      </span>
+      <span
+        class="badge-tag equalFiller badge badge-secondary"
       >
         tag-1
-      </TagLabel>
-      <TagLabel
-        className="equalFiller"
-        key="2"
+      </span>
+      <span
+        class="badge-tag equalFiller badge badge-secondary"
       >
         tag-2
-      </TagLabel>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-tags-removed 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           local_offer
         </i>
       </div>
-      <ActionName
-        key="action-name-left"
+      <span
+        class="actionName"
       >
         Untagged
-      </ActionName>
-      <TagLabel
-        className="equalFiller"
-        key="1"
+      </span>
+      <span
+        class="badge-tag equalFiller badge badge-secondary"
       >
         tag-1
-      </TagLabel>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-tags-removed and several tags 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           local_offer
         </i>
       </div>
-      <ActionName
-        key="action-name-left"
+      <span
+        class="actionName"
       >
         Untagged
-      </ActionName>
-      <TagLabel
-        className="equalFiller"
-        key="1"
+      </span>
+      <span
+        class="badge-tag equalFiller badge badge-secondary"
       >
         tag-1
-      </TagLabel>
-      <TagLabel
-        className="equalFiller"
-        key="2"
+      </span>
+      <span
+        class="badge-tag equalFiller badge badge-secondary"
       >
         tag-2
-      </TagLabel>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-team-assigned 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           group_add
         </i>
       </div>
-      <ActionName
-        key="action-name"
+      <span
+        class="actionName"
       >
         Assigned
-      </ActionName>
-      <Filler
-        key="to"
+      </span>
+      <span
+        class="filler"
       >
         to
-      </Filler>
-      <TeamLabel
-        className="assigneeLabel"
-        key="team-label"
-        name="Team 1"
-        shouldDisplayAvatar={false}
-        shouldDisplayTeamIcon={false}
-      />
-      <Filler>
+      </span>
+      <div
+        class="TeamLabel assigneeLabel"
+      >
+        <span
+          class="material-icons md-2"
+        >
+          people
+        </span>
+        <span
+          class="name"
+        >
+          Team 1
+        </span>
+      </div>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-team-assigned and missing assignee 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           group_add
         </i>
       </div>
-      <ActionName
-        key="action-name"
+      <span
+        class="actionName"
       >
         Assigned
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-team-unassigned 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           person_add_disabled
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Unassigned from team
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-trashed 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon danger"
+        class="icon danger"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           delete
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Deleted
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-unassigned 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           person_add_disabled
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Unassigned from user
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-unmarked-spam 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           undo
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Unmarked as spam
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-untrashed 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="icon"
+        class="icon"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           undo
         </i>
       </div>
-      <ActionName>
+      <span
+        class="actionName"
+      >
         Undeleted
-      </ActionName>
-      <Filler>
+      </span>
+      <span
+        class="filler"
+      >
         by
-      </Filler>
-      <AgentLabel
-        name="User 1"
-      />
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          class="material-icons md-2"
+          data-testid="accountCircle"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2019-11-15 19:00:00.000000"
-    />
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
   </div>
 </div>
 `;

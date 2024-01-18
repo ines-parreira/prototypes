@@ -40,7 +40,6 @@ describe('Header', () => {
                     id="some-header"
                     message={message}
                     timezone="America/Los_Angeles"
-                    isLastRead={false}
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
@@ -57,7 +56,6 @@ describe('Header', () => {
                     id="some-header"
                     message={message}
                     timezone="America/Los_Angeles"
-                    isLastRead={false}
                     isMessageHidden={true}
                     isMessageDeleted={false}
                 />
@@ -74,7 +72,6 @@ describe('Header', () => {
                     id="some-header"
                     message={duplicatedHiddenFacebookMessage}
                     timezone="America/Los_Angeles"
-                    isLastRead={false}
                     isMessageHidden={true}
                     isMessageDeleted={false}
                 />
@@ -91,7 +88,6 @@ describe('Header', () => {
                     id="some-header"
                     message={message}
                     timezone="America/Los_Angeles"
-                    isLastRead={false}
                     isMessageHidden={false}
                     isMessageDeleted={true}
                 />
@@ -107,7 +103,6 @@ describe('Header', () => {
                     id="some-header"
                     message={message}
                     timezone="America/Los_Angeles"
-                    isLastRead={false}
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
@@ -127,7 +122,6 @@ describe('Header', () => {
                     id="some-header"
                     message={message}
                     timezone="America/Los_Angeles"
-                    isLastRead={false}
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />

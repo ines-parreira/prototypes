@@ -24,7 +24,6 @@ type Props = {
     lastMessageDatetimeAfterMount: Moment | null
     children?: ReactNode
     timezone: string
-    isLastRead: boolean
     containsLastCustomerMessage: boolean
     displayMessageStatusIndicator?: boolean
     isMessageHidden: boolean
@@ -173,7 +172,6 @@ export default class Container extends Component<Props> {
                     <Header
                         id={this.props.id}
                         message={message}
-                        isLastRead={this.props.isLastRead}
                         displayMessageStatusIndicator={
                             displayMessageStatusIndicator
                         }

@@ -18,23 +18,21 @@ type Props = {
     id: string
     message: TicketMessage
     timezone: string
-    isLastRead: boolean
     hasError?: boolean
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
     displayMessageStatusIndicator?: boolean
 }
 
-export default function Header(props: Props) {
-    const {
-        message,
-        timezone,
-        isLastRead,
-        hasError,
-        isMessageHidden,
-        isMessageDeleted,
-        displayMessageStatusIndicator = false,
-    } = props
+export default function Header({
+    id,
+    message,
+    timezone,
+    hasError,
+    isMessageHidden,
+    isMessageDeleted,
+    displayMessageStatusIndicator = false,
+}: Props) {
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
     let metaContent = (
@@ -99,7 +97,7 @@ export default function Header(props: Props) {
 
                 {message.source && (
                     <Source
-                        id={props.id}
+                        id={id}
                         isForwarded={isForwarded}
                         createdDatetime={message.created_datetime}
                         channel={message.channel}
@@ -111,7 +109,6 @@ export default function Header(props: Props) {
             <SourceDetailsHeader
                 className={css.sourceDetails}
                 message={message}
-                isLastRead={isLastRead}
                 displayMessageStatusIndicator={displayMessageStatusIndicator}
                 timezone={timezone}
                 isMessageDeleted={isMessageDeleted}

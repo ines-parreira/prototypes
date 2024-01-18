@@ -30,11 +30,7 @@ import ContactReasonSuggestion from 'pages/tickets/detail/components/RuleSuggest
 import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurvey'
 import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {
-    getLastCustomerMessage,
-    getLastReadMessage,
-    getTicketState,
-} from 'state/ticket/selectors'
+import {getLastCustomerMessage, getTicketState} from 'state/ticket/selectors'
 import {reportError} from 'utils/errors'
 import {generateTicketMessagesId} from 'utils'
 import {isVoiceCall} from 'models/voiceCall/types'
@@ -64,7 +60,6 @@ const TicketBodyElement = ({
 }: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
     const lastCustomerMessage = useAppSelector(getLastCustomerMessage)
-    const lastReadMessage = useAppSelector(getLastReadMessage)
     const ticket = useAppSelector(getTicketState)
 
     const isDeprecatedPrivateEvent = (ticketEvent: TicketEvent) => {
@@ -99,7 +94,6 @@ const TicketBodyElement = ({
                 id={generateTicketMessagesId(index)}
                 lastCustomerMessage={lastCustomerMessage}
                 lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
-                lastReadMessageId={lastReadMessage.get('id')}
                 messages={element}
                 setStatus={setStatus}
                 ticketId={ticket.get('id')}

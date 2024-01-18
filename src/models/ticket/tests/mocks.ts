@@ -66,7 +66,7 @@ export const facebookMessageNoMeta: TicketMessage = {
     uri: 'http://example.com/messages/1',
     public: true,
     from_agent: false,
-    created_datetime: '',
+    created_datetime: '2024-01-09T15:10:01.996156+00:00',
     isMessage: true,
     source: {
         to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],

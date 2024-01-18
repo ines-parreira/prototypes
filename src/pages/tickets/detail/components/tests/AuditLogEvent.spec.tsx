@@ -1,7 +1,8 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {render} from '@testing-library/react'
 
+import {emptyRuleRecipeFixture as mockEmptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {SYSTEM_RULE_TYPE, TAGS_ADDED_KEY} from 'models/event/constants'
 import {
     TicketEventType,
@@ -13,12 +14,31 @@ import {RuleEvent} from 'state/rules/types'
 
 import {AuditLogEventContainer} from '../AuditLogEvent'
 
+jest.mock(
+    'pages/common/utils/labels',
+    () =>
+        ({
+            ...jest.requireActual('pages/common/utils/labels'),
+            DatetimeLabel: ({dateTime}: {dateTime: string}) => (
+                <div>{dateTime}</div>
+            ),
+        } as Record<string, unknown>)
+)
+
+jest.mock('state/entities/ruleRecipes/hooks', () => ({
+    useRuleRecipes: () => ({
+        'rule-name': mockEmptyRuleRecipeFixture,
+    }),
+}))
+
 describe('<AuditLogEvent/>', () => {
+    const email = 'user3@example.com'
+
     const minProps = {
         users: fromJS([
             {id: 1, name: 'User 1'},
             {id: 2, name: 'User 2'},
-            {id: 3, name: '', email: 'user3@example.com'},
+            {id: 3, name: '', email},
         ]),
         teams: fromJS([
             {id: 1, name: 'Team 1'},
@@ -97,7 +117,7 @@ describe('<AuditLogEvent/>', () => {
                 ],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -105,7 +125,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it.each<[TicketEventType, EventData]>([
@@ -113,7 +133,7 @@ describe('<AuditLogEvent/>', () => {
                 [TICKET_EVENT_TYPES.TicketTagsRemoved, {tags_removed: [1, 2]}],
             ])('with event type %s and several tags', (eventType, data) => {
                 const event = getEvent(eventType, data)
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -121,7 +141,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it.each<[TicketEventType, EventData]>([
@@ -129,7 +149,7 @@ describe('<AuditLogEvent/>', () => {
                 [TICKET_EVENT_TYPES.TicketTeamAssigned, {assignee_team_id: 9}],
             ])('with event type %s and missing assignee', (eventType, data) => {
                 const event = getEvent(eventType, data)
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -137,7 +157,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('when the rule has a triggering event type', () => {
@@ -147,7 +167,7 @@ describe('<AuditLogEvent/>', () => {
                     triggering_event_type: RuleEvent.TicketCreated,
                 })
 
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -155,7 +175,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('when the rule has failed actions', () => {
@@ -171,7 +191,7 @@ describe('<AuditLogEvent/>', () => {
                     ]),
                 })
 
-                const component = shallow(
+                const {getByText} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -179,7 +199,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(getByText(/failed:/i)).toBeInTheDocument
             })
 
             it('when the user ID is missing', () => {
@@ -191,7 +211,7 @@ describe('<AuditLogEvent/>', () => {
                     }
                 )
 
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -199,13 +219,13 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('when the event is the last component to display before the reply area', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketReopened)
 
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -213,7 +233,9 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    (container.firstChild as Element).classList.contains('last')
+                ).toBeTruthy()
             })
 
             it('when the event has been added via a rule', () => {
@@ -230,7 +252,7 @@ describe('<AuditLogEvent/>', () => {
                         created_datetime: '2019-11-15 19:00:00.500000',
                     }
                 )
-                const component = shallow(
+                const {getByText} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         events={fromJS([ruleExecutedEvent, event])}
@@ -239,7 +261,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(getByText(/via rule/i)).toBeInTheDocument()
             })
 
             it('should render via team auto assignment when the event is auto assigned', () => {
@@ -251,7 +273,7 @@ describe('<AuditLogEvent/>', () => {
                     },
                     {user_id: null}
                 )
-                const component = shallow(
+                const {getByText} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -259,25 +281,29 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    getByText('via Team auto-assignment')
+                ).toBeInTheDocument()
             })
 
             it('when the customer has changed', () => {
+                const name1 = 'customer 2'
+                const name2 = 'customer 3'
                 const event = getEvent(
                     TICKET_EVENT_TYPES.TicketCustomerUpdated,
                     {
                         old_customer: {
                             id: 2,
-                            name: 'customer 2',
+                            name: name1,
                         },
                         new_customer: {
                             id: 3,
-                            name: 'customer 3',
+                            name: name2,
                         },
                     }
                 )
 
-                const component = shallow(
+                const {getByText} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -285,7 +311,9 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(getByText(/customer changed from/i)).toBeInTheDocument()
+                expect(getByText(name1)).toBeInTheDocument()
+                expect(getByText(name2)).toBeInTheDocument()
             })
 
             it('when the customer has changed - name is empty', () => {
@@ -303,7 +331,7 @@ describe('<AuditLogEvent/>', () => {
                     }
                 )
 
-                const component = shallow(
+                const {getByText} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -311,19 +339,20 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(getByText(/customer changed from/i)).toBeInTheDocument()
+                expect(getByText('Customer #3')).toBeInTheDocument()
             })
 
             it('when the ticket subject updated data is null', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated)
-                const component = shallow(
+                const {getByText} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
                 )
-                expect(component).toMatchSnapshot()
+                expect(getByText(/subject updated/i)).toBeInTheDocument()
             })
 
             it('should fallback to the email address when user has no name', () => {
@@ -331,14 +360,14 @@ describe('<AuditLogEvent/>', () => {
                     ...getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated),
                     user_id: 3,
                 }
-                const component = shallow(
+                const {getByText} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
                 )
-                expect(component).toMatchSnapshot()
+                expect(getByText(email)).toBeInTheDocument()
             })
         })
 
@@ -346,7 +375,7 @@ describe('<AuditLogEvent/>', () => {
             it('when the content is missing', () => {
                 const event = getEvent('invalid' as any)
 
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -354,7 +383,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toBeNull()
             })
 
             it('when the executed rule is a system rule', () => {
@@ -362,7 +391,7 @@ describe('<AuditLogEvent/>', () => {
                     type: SYSTEM_RULE_TYPE,
                 })
 
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -370,7 +399,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toBeNull()
             })
 
             it('when tag is missing', () => {
@@ -378,7 +407,7 @@ describe('<AuditLogEvent/>', () => {
                     [TAGS_ADDED_KEY]: [999],
                 })
 
-                const component = shallow(
+                const {container} = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -386,7 +415,7 @@ describe('<AuditLogEvent/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toBeNull()
             })
         })
     })

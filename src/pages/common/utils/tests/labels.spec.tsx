@@ -21,14 +21,15 @@ import * as labels from '../labels'
  * Mock it to always return the same data.
  */
 const mockMath = Object.create(global.Math) as typeof global.Math
+mockMath.random = () => 1
+global.Math = mockMath
 const integrationJsObject = {
     type: 'email',
     name: 'common',
     meta: {address: 'specific'},
 }
 const integrationMap = fromJS(integrationJsObject)
-mockMath.random = () => 1
-global.Math = mockMath
+
 const mockStore = configureMockStore()
 
 jest.mock('../../components/Tooltip', () => () => 'TooltipMock')

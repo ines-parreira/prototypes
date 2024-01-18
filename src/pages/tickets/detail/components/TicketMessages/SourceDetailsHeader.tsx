@@ -12,15 +12,14 @@ import SourceDetailsContext from './SourceDetailsContext'
 import css from './SourceDetails.less'
 
 type Props = {
-    message: TicketMessage
-    isLastRead: boolean
-    timezone: string
     className?: string
     contentClassName?: string
-    isMessageDeleted?: boolean
-    showIntents?: boolean
     displayMessageStatusIndicator?: boolean
     hideTimestamp?: boolean
+    isMessageDeleted?: boolean
+    message: TicketMessage
+    showIntents?: boolean
+    timezone: string
 }
 
 const From = ({label, children}: {label: string; children?: ReactNode}) => (
@@ -30,22 +29,22 @@ const From = ({label, children}: {label: string; children?: ReactNode}) => (
     </span>
 )
 
-export default function SourceDetailsHeader(props: Props) {
+export default function SourceDetailsHeader({
+    className,
+    contentClassName,
+    displayMessageStatusIndicator = false,
+    hideTimestamp = false,
+    isMessageDeleted,
+    message,
+    showIntents = true,
+    timezone,
+}: Props) {
     const [focus, setFocus] = useState(false)
 
     const [ref, {width}] = useMeasure()
     const [debouncedWidth, setDebouncedWidth] = useState(width)
 
     useDebounce(() => setDebouncedWidth(width), 300, [width])
-
-    const {
-        message,
-        timezone,
-        isMessageDeleted,
-        displayMessageStatusIndicator = false,
-        hideTimestamp = false,
-        showIntents = true,
-    } = props
 
     const actionHeader = useMemo(() => {
         const collapseActions = debouncedWidth < 400
@@ -91,11 +90,11 @@ export default function SourceDetailsHeader(props: Props) {
 
     return (
         <div
-            className={classnames(css.wrapper, props.className)}
+            className={classnames(css.wrapper, className)}
             data-focus={focus}
             ref={ref as React.LegacyRef<HTMLDivElement>}
         >
-            <div className={classnames(css.content, props.contentClassName)}>
+            <div className={classnames(css.content, contentClassName)}>
                 {actionHeader}
                 {message.from_agent && message.id && (
                     <SeenIndicator

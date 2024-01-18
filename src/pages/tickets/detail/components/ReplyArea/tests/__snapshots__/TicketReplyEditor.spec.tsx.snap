@@ -1,443 +1,206 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketReplyEditor component should allow inline image 1`] = `
-<div
-  className="component"
->
-  <ForwardRef(TicketRichField)
-    attachFiles={[Function]}
-    attachments={Immutable.List []}
-    buttons={
-      [
-        <div
-          className="attachment"
-        >
-          <label
-            className="m-0"
-            htmlFor="attachments-input"
-            id="attachment"
-          >
-            <i
-              className="material-icons"
-            >
-              attach_file
-            </i>
-          </label>
-          <Tooltip
-            autohide={false}
-            delay={100}
-            placement="bottom"
-            target="attachment"
-          >
-            Add attachment
-          </Tooltip>
-          <input
-            id="attachments-input"
-            multiple={true}
-            onChange={[Function]}
-            onClick={[Function]}
-            type="file"
-          />
-        </div>,
-      ]
-    }
-    canAddMention={false}
-    canDropFiles={true}
-    canInsertInlineImages={true}
-    className="richField"
-    defaultContentState={
-      Immutable.Record {
-        "entityMap": {
-          "__add": [Function],
-          "__create": [Function],
-          "__get": [Function],
-          "__getLastCreatedEntityKey": [Function],
-          "__mergeData": [Function],
-          "__replaceData": [Function],
-          "add": [Function],
-          "create": [Function],
-          "get": [Function],
-          "getLastCreatedEntityKey": [Function],
-          "mergeData": [Function],
-          "replaceData": [Function],
-        },
-        "blockMap": Immutable.OrderedMap {
-          "mock-key-1": Immutable.Record {
-            "key": "mock-key-1",
-            "type": "unstyled",
-            "text": "",
-            "characterList": Immutable.List [],
-            "depth": 0,
-            "data": Immutable.Map {},
-          },
-        },
-        "selectionBefore": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-        "selectionAfter": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-      }
-    }
-    displayedActions={
-      [
-        "EMOJI",
-        "PRODUCTPICKER",
-        "IMAGE",
-        "VIDEO",
-        "DISCOUNTCODE",
-      ]
-    }
-    emailExtraEnabled={true}
-    mentionSuggestions={Immutable.List []}
-    notify={[MockFunction]}
-    onChange={[Function]}
-    placeholder="Click here to reply, or press r."
-    predictionContext={Immutable.Map {}}
-    predictionDebounce={0}
-    spellCheck={true}
-    tabIndex={4}
-    value={
-      {
-        "html": "",
-        "text": "",
-      }
-    }
-  />
-</div>
-`;
-
-exports[`TicketReplyEditor component should not allow attachments for instagram comments 1`] = `
-<div
-  className="component"
->
-  <ForwardRef(TicketRichField)
-    attachFiles={[Function]}
-    attachments={Immutable.List []}
-    buttons={[]}
-    canAddMention={false}
-    canDropFiles={true}
-    canInsertInlineImages={false}
-    className="richField"
-    defaultContentState={
-      Immutable.Record {
-        "entityMap": {
-          "__add": [Function],
-          "__create": [Function],
-          "__get": [Function],
-          "__getLastCreatedEntityKey": [Function],
-          "__mergeData": [Function],
-          "__replaceData": [Function],
-          "add": [Function],
-          "create": [Function],
-          "get": [Function],
-          "getLastCreatedEntityKey": [Function],
-          "mergeData": [Function],
-          "replaceData": [Function],
-        },
-        "blockMap": Immutable.OrderedMap {
-          "mock-key-1": Immutable.Record {
-            "key": "mock-key-1",
-            "type": "unstyled",
-            "text": "",
-            "characterList": Immutable.List [],
-            "depth": 0,
-            "data": Immutable.Map {},
-          },
-        },
-        "selectionBefore": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-        "selectionAfter": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-      }
-    }
-    displayedActions={
-      [
-        "EMOJI",
-        "PRODUCTPICKER",
-        "VIDEO",
-        "DISCOUNTCODE",
-      ]
-    }
-    emailExtraEnabled={true}
-    mentionSuggestions={Immutable.List []}
-    notify={[MockFunction]}
-    onChange={[Function]}
-    placeholder="Click here to reply, or press r."
-    predictionContext={Immutable.Map {}}
-    predictionDebounce={0}
-    readOnly={false}
-    spellCheck={true}
-    tabIndex={4}
-    value={
-      {
-        "html": "",
-        "text": "",
-      }
-    }
-  />
-</div>
-`;
-
-exports[`TicketReplyEditor component should not allow attachments for instagram mentions 1`] = `
-<div
-  className="component"
->
-  <ForwardRef(TicketRichField)
-    attachFiles={[Function]}
-    attachments={Immutable.List []}
-    buttons={
-      [
-        <div
-          className="attachment"
-        >
-          <label
-            className="m-0"
-            htmlFor="attachments-input"
-            id="attachment"
-          >
-            <i
-              className="material-icons"
-            >
-              attach_file
-            </i>
-          </label>
-          <Tooltip
-            autohide={false}
-            delay={100}
-            placement="bottom"
-            target="attachment"
-          >
-            Add attachment
-          </Tooltip>
-          <input
-            id="attachments-input"
-            multiple={true}
-            onChange={[Function]}
-            onClick={[Function]}
-            type="file"
-          />
-        </div>,
-      ]
-    }
-    canAddMention={false}
-    canDropFiles={true}
-    canInsertInlineImages={false}
-    className="richField"
-    defaultContentState={
-      Immutable.Record {
-        "entityMap": {
-          "__add": [Function],
-          "__create": [Function],
-          "__get": [Function],
-          "__getLastCreatedEntityKey": [Function],
-          "__mergeData": [Function],
-          "__replaceData": [Function],
-          "add": [Function],
-          "create": [Function],
-          "get": [Function],
-          "getLastCreatedEntityKey": [Function],
-          "mergeData": [Function],
-          "replaceData": [Function],
-        },
-        "blockMap": Immutable.OrderedMap {
-          "mock-key-1": Immutable.Record {
-            "key": "mock-key-1",
-            "type": "unstyled",
-            "text": "",
-            "characterList": Immutable.List [],
-            "depth": 0,
-            "data": Immutable.Map {},
-          },
-        },
-        "selectionBefore": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-        "selectionAfter": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-      }
-    }
-    displayedActions={
-      [
-        "EMOJI",
-        "PRODUCTPICKER",
-        "VIDEO",
-        "DISCOUNTCODE",
-      ]
-    }
-    emailExtraEnabled={true}
-    mentionSuggestions={Immutable.List []}
-    notify={[MockFunction]}
-    onChange={[Function]}
-    placeholder="Click here to reply, or press r."
-    predictionContext={Immutable.Map {}}
-    predictionDebounce={0}
-    readOnly={false}
-    spellCheck={true}
-    tabIndex={4}
-    value={
-      {
-        "html": "",
-        "text": "",
-      }
-    }
-  />
-</div>
-`;
-
 exports[`TicketReplyEditor component should render empty ticket 1`] = `
 <div
-  className="component"
+  class="component"
 >
-  <ForwardRef(TicketRichField)
-    attachFiles={[Function]}
-    attachments={Immutable.List []}
-    buttons={
-      [
+  <div
+    class="richField rich-textarea-wrapper"
+  >
+    <div
+      class="editor-wrapper"
+    >
+      <div
+        class="withMinHeight"
+      >
         <div
-          className="attachment"
+          class="DraftEditor-root"
         >
-          <label
-            className="m-0"
-            htmlFor="attachments-input"
-            id="attachment"
+          <div
+            class="public-DraftEditorPlaceholder-root"
+          >
+            <div
+              class="public-DraftEditorPlaceholder-inner"
+              id="placeholder-mock-key-4"
+              style="white-space: pre-wrap;"
+            >
+              Click here to reply, or press r.
+            </div>
+          </div>
+          <div
+            class="DraftEditor-editorContainer"
+          >
+            <div
+              aria-autocomplete="list"
+              aria-describedby="placeholder-mock-key-4"
+              aria-expanded="true"
+              class="notranslate public-DraftEditor-content"
+              contenteditable="true"
+              role="combobox"
+              spellcheck="true"
+              style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+              tabindex="4"
+            >
+              <div
+                data-contents="true"
+              >
+                <div
+                  class=""
+                  data-block="true"
+                  data-editor="mock-key-4"
+                  data-offset-key="mock-key-3-0-0"
+                >
+                  <div
+                    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                    data-offset-key="mock-key-3-0-0"
+                  >
+                    <span
+                      data-offset-key="mock-key-3-0-0"
+                    >
+                      <br
+                        data-text="true"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="editor-toolbar page"
+    >
+      <div
+        class="actionsWrapper"
+      >
+        <div
+          class="actions"
+        >
+          <button
+            aria-disabled="false"
+            class="wrapper button wrapper small fill secondary small"
+            id="toolbar-button-1"
+            type="button"
           >
             <i
-              className="material-icons"
+              class="material-icons icon"
             >
-              attach_file
+              format_bold
             </i>
-          </label>
-          <Tooltip
-            autohide={false}
-            delay={100}
-            placement="bottom"
-            target="attachment"
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper button wrapper small fill secondary small"
+            id="toolbar-button-2"
+            type="button"
           >
-            Add attachment
-          </Tooltip>
-          <input
-            id="attachments-input"
-            multiple={true}
-            onChange={[Function]}
-            onClick={[Function]}
-            type="file"
+            <i
+              class="material-icons icon"
+            >
+              format_italic
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper button wrapper small fill secondary small"
+            id="toolbar-button-3"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              format_underline
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper button wrapper small fill secondary small"
+            id="toolbar-button-4"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              link
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper button wrapper small fill secondary small"
+            id="toolbar-button-5"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              insert_photo
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper button wrapper small fill secondary small"
+            id="toolbar-button-6"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              video_library
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper button wrapper small fill secondary small"
+            id="toolbar-button-7"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              insert_emoticon
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper button fill secondary small"
+            type="button"
+          >
+            <div
+              class="attachment"
+            >
+              <label
+                class="m-0"
+                for="attachments-input"
+                id="attachment"
+              >
+                <i
+                  class="material-icons"
+                >
+                  attach_file
+                </i>
+              </label>
+              <input
+                id="attachments-input"
+                multiple=""
+                type="file"
+              />
+            </div>
+          </button>
+          <div
+            class="hoverOverlay"
+          >
+            Add files as attachments
+          </div>
+          <div
+            class="rightSection"
           />
-        </div>,
-      ]
-    }
-    canAddMention={false}
-    canDropFiles={true}
-    canInsertInlineImages={true}
-    className="richField"
-    defaultContentState={
-      Immutable.Record {
-        "entityMap": {
-          "__add": [Function],
-          "__create": [Function],
-          "__get": [Function],
-          "__getLastCreatedEntityKey": [Function],
-          "__mergeData": [Function],
-          "__replaceData": [Function],
-          "add": [Function],
-          "create": [Function],
-          "get": [Function],
-          "getLastCreatedEntityKey": [Function],
-          "mergeData": [Function],
-          "replaceData": [Function],
-        },
-        "blockMap": Immutable.OrderedMap {
-          "mock-key-1": Immutable.Record {
-            "key": "mock-key-1",
-            "type": "unstyled",
-            "text": "",
-            "characterList": Immutable.List [],
-            "depth": 0,
-            "data": Immutable.Map {},
-          },
-        },
-        "selectionBefore": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-        "selectionAfter": Immutable.Record {
-          "anchorKey": "mock-key-1",
-          "anchorOffset": 0,
-          "focusKey": "mock-key-1",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-      }
-    }
-    displayedActions={
-      [
-        "BOLD",
-        "ITALIC",
-        "UNDERLINE",
-        "LINK",
-        "IMAGE",
-        "EMOJI",
-        "PRODUCTPICKER",
-        "VIDEO",
-        "DISCOUNTCODE",
-      ]
-    }
-    emailExtraEnabled={true}
-    mentionSuggestions={Immutable.List []}
-    notify={[MockFunction]}
-    onChange={[Function]}
-    placeholder="Click here to reply, or press r."
-    predictionContext={Immutable.Map {}}
-    predictionDebounce={0}
-    readOnly={false}
-    spellCheck={true}
-    tabIndex={4}
-    value={
-      {
-        "html": "",
-        "text": "",
-      }
-    }
-  />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
-exports[`TicketReplyEditor component should render message with inline image 1`] = `"<div>this is an inline image: </div><figure style="display:inline-block;margin:0"><img src="https://this-is-a-link-of-image/and-this-is-the-image.png" width="400" style="max-width: 100%"></figure>"`;
+exports[`TicketReplyEditor component should render message with inline image 1`] = `"<div>this is an inline image: &lt;img alt=&quot;abc&quot; src=&quot;<a href="https://this-is-a-link-of-image/and-this-is-the-image.png&quot" class="linkified" target="_blank">https://this-is-a-link-of-image/and-this-is-the-image.png&quot</a>; /&gt;this is an inline image: &lt;img alt=&quot;abc&quot; src=&quot;<a href="https://this-is-a-link-of-image/and-this-is-the-image.png&quot" class="linkified" target="_blank">https://this-is-a-link-of-image/and-this-is-the-image.png&quot</a>; /&gt;</div>"`;

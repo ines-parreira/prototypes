@@ -1,99 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketSubmitButtons component should not render confirm popover 1`] = `
-<div
-  className="buttons"
-  id="submit-button-div"
->
-  <ForwardRef(Button)
-    className="mr-2"
-    id="submit-button"
-    isDisabled={false}
-    isLoading={false}
-    tabIndex={5}
-    type="submit"
-  >
-    Send
-  </ForwardRef(Button)>
-  <Tooltip
-    offset="0, 4px"
-    placement="top"
-    target="submit-button"
-  >
-    Ctrl + Enter
-  </Tooltip>
-  <ForwardRef(Button)
-    id="submit-and-close-button"
-    intent="secondary"
-    isDisabled={false}
-    isLoading={false}
-    onClick={[Function]}
-    type="submit"
-  >
-    Send
-     & Close
-  </ForwardRef(Button)>
-  <Tooltip
-    offset="0, 4px"
-    placement="top"
-    target="submit-and-close-button"
-  >
-    Ctrl + Shift + Enter
-  </Tooltip>
-</div>
-`;
-
 exports[`TicketSubmitButtons component should render buttons with a filled ticket 1`] = `
 <div
-  className="component d-flex align-items-center justify-content-between"
+  class="component d-flex align-items-center justify-content-between"
 >
   <div
-    className="buttons"
+    class="buttons"
     id="submit-button-div"
   >
-    <ConfirmButton
-      className="mr-2"
-      confirmationContent="Are you sure you want to create a ticket with no subject?"
+    <button
+      aria-disabled="false"
+      class="wrapper mr-2 fill primary medium"
       id="submit-button"
-      isDisabled={false}
-      isLoading={false}
-      tabIndex={5}
-      type="submit"
+      tabindex="5"
+      type="button"
     >
       Send
-    </ConfirmButton>
-    <Tooltip
-      offset="0, 4px"
-      placement="top"
-      target="submit-button"
-    >
-      Ctrl + Enter
-    </Tooltip>
-    <ConfirmButton
-      confirmationContent="Are you sure you want to create a ticket with no subject?"
+    </button>
+    <button
+      aria-disabled="false"
+      class="wrapper fill secondary medium"
       id="submit-and-close-button"
-      intent="secondary"
-      isDisabled={false}
-      isLoading={false}
-      onConfirm={[Function]}
-      type="submit"
+      type="button"
     >
       Send
        & Close
-    </ConfirmButton>
-    <Tooltip
-      offset="0, 4px"
-      placement="top"
-      target="submit-and-close-button"
-    >
-      Ctrl + Shift + Enter
-    </Tooltip>
+    </button>
   </div>
   <small
-    className="tip text-faded d-none d-md-inline-block"
+    class="tip text-faded d-none d-md-inline-block"
   >
     <i
-      className="material-icons md-1 mr-1 align-text-bottom"
+      class="material-icons md-1 mr-1 align-text-bottom"
     >
       info
     </i>
@@ -105,170 +43,11 @@ exports[`TicketSubmitButtons component should render buttons with a filled ticke
        (right arrow) to go to next ticket
     </span>
     <i
-      className="material-icons md-1 cursor-pointer ml-1 mr-1 align-text-bottom"
+      class="material-icons md-1 cursor-pointer ml-1 mr-1 align-text-bottom"
       id="hide-helpers-button"
-      onClick={[Function]}
     >
       close
     </i>
-    <Tooltip
-      placement="top"
-      target="hide-helpers-button"
-    >
-      Permanently hide tips
-    </Tooltip>
   </small>
-</div>
-`;
-
-exports[`TicketSubmitButtons component should render buttons with an empty ticket 1`] = `
-<div
-  className="buttons"
-  id="submit-button-div"
->
-  <ConfirmButton
-    className="mr-2"
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-button"
-    isDisabled={true}
-    isLoading={false}
-    tabIndex={5}
-    type="submit"
-  >
-    Send
-  </ConfirmButton>
-  <ConfirmButton
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-and-close-button"
-    intent="secondary"
-    isDisabled={true}
-    isLoading={false}
-    onConfirm={[Function]}
-    type="submit"
-  >
-    Send
-     & Close
-  </ConfirmButton>
-</div>
-`;
-
-exports[`TicketSubmitButtons component should render buttons with content that can't be sent 1`] = `
-<div
-  className="buttons"
-  id="submit-button-div"
->
-  <ConfirmButton
-    className="mr-2"
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-button"
-    isDisabled={true}
-    isLoading={false}
-    tabIndex={5}
-    type="submit"
-  >
-    Send
-  </ConfirmButton>
-  <ConfirmButton
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-and-close-button"
-    intent="secondary"
-    isDisabled={true}
-    isLoading={false}
-    onConfirm={[Function]}
-    type="submit"
-  >
-    Send
-     & Close
-  </ConfirmButton>
-</div>
-`;
-
-exports[`TicketSubmitButtons component should render buttons with contentless action 1`] = `
-<div
-  className="buttons"
-  id="submit-button-div"
->
-  <ConfirmButton
-    className="mr-2"
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-button"
-    isDisabled={false}
-    isLoading={false}
-    tabIndex={5}
-    type="submit"
-  >
-    Apply Macro
-  </ConfirmButton>
-  <Tooltip
-    offset="0, 4px"
-    placement="top"
-    target="submit-button"
-  >
-    Ctrl + Enter
-  </Tooltip>
-  <ConfirmButton
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-and-close-button"
-    intent="secondary"
-    isDisabled={false}
-    isLoading={false}
-    onConfirm={[Function]}
-    type="submit"
-  >
-    Apply Macro
-     & Close
-  </ConfirmButton>
-  <Tooltip
-    offset="0, 4px"
-    placement="top"
-    target="submit-and-close-button"
-  >
-    Ctrl + Shift + Enter
-  </Tooltip>
-</div>
-`;
-
-exports[`TicketSubmitButtons component should render buttons with contentless action and message content 1`] = `
-<div
-  className="buttons"
-  id="submit-button-div"
->
-  <ConfirmButton
-    className="mr-2"
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-button"
-    isDisabled={false}
-    isLoading={false}
-    tabIndex={5}
-    type="submit"
-  >
-    Send
-  </ConfirmButton>
-  <Tooltip
-    offset="0, 4px"
-    placement="top"
-    target="submit-button"
-  >
-    Ctrl + Enter
-  </Tooltip>
-  <ConfirmButton
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-and-close-button"
-    intent="secondary"
-    isDisabled={false}
-    isLoading={false}
-    onConfirm={[Function]}
-    type="submit"
-  >
-    Send
-     & Close
-  </ConfirmButton>
-  <Tooltip
-    offset="0, 4px"
-    placement="top"
-    target="submit-and-close-button"
-  >
-    Ctrl + Shift + Enter
-  </Tooltip>
 </div>
 `;

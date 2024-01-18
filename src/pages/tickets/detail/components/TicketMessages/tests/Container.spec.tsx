@@ -49,7 +49,6 @@ describe('Container', () => {
         hasCursor: false,
         message,
         timezone: 'America/Los_Angeles',
-        isLastRead: false,
         lastMessageDatetimeAfterMount: moment('2017-01-01T12:12:34Z'),
         isMessageHidden: false,
         isMessageDeleted: false,

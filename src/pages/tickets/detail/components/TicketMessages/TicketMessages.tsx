@@ -21,8 +21,6 @@ type Props = {
     hasCursor: boolean
     lastMessageDatetimeAfterMount: Moment | null
     setStatus?: (status: string) => void
-    lastReadMessageId?: number
-    lastSentMessageIdFromAgent?: number
     highlightedElements: HighlightedElements | null
     customer: Map<any, any>
     lastCustomerMessage: Map<any, any>
@@ -37,7 +35,6 @@ export default function TicketMessages({
     hasCursor,
     lastMessageDatetimeAfterMount,
     setStatus,
-    lastReadMessageId,
     highlightedElements,
     lastCustomerMessage,
     customer = fromJS({}),
@@ -56,12 +53,6 @@ export default function TicketMessages({
     const showMessageStatusIndicator =
         !!message.opened_datetime &&
         messages.some((message) => message.opened_datetime === null)
-
-    const isLastReadMessage = !!(
-        message.id &&
-        lastReadMessageId &&
-        message.id === lastReadMessageId
-    )
 
     const containerContainsHighlightedMessages =
         messages
@@ -92,7 +83,6 @@ export default function TicketMessages({
             hasCursor={hasCursor}
             lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
             timezone={timezone}
-            isLastRead={isLastReadMessage}
             containsLastCustomerMessage={containsLastCustomerMessage}
             displayMessageStatusIndicator={groupAfterLastCustomerMessage}
             isMessageHidden={isTicketMessageHidden(message)}
@@ -110,7 +100,6 @@ export default function TicketMessages({
                     ticketId={ticketId}
                     setStatus={setStatus}
                     showSourceDetails={!!index}
-                    isLastRead={isLastReadMessage}
                     timezone={timezone}
                     showMessageStatusIndicator={showMessageStatusIndicator}
                 />

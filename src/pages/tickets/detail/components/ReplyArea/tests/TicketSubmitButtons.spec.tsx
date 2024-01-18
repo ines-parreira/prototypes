@@ -1,12 +1,14 @@
-import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import React, {ComponentProps, ReactElement} from 'react'
 import {Map, fromJS} from 'immutable'
 
+import {render} from '@testing-library/react'
 import {ACTION_TEMPLATES} from 'config'
 import {MacroActionName} from 'models/macroAction/types'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {TicketSubmitButtonsContainer} from '../TicketSubmitButtons'
 
 jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
+jest.mock('pages/common/components/button/ConfirmButton')
 
 describe('TicketSubmitButtons component', () => {
     const minNewMessage = {
@@ -39,59 +41,85 @@ describe('TicketSubmitButtons component', () => {
         submitSetting: jest.fn(),
     }
 
+    beforeEach(() => {
+        ;(
+            ConfirmButton as jest.MockedFunction<typeof ConfirmButton>
+        ).mockImplementation(
+            (props) =>
+                jest
+                    .requireActual<Record<string, typeof ConfirmButton>>(
+                        'pages/common/components/button/ConfirmButton'
+                    )
+                    .default(props) as ReactElement
+        )
+    })
+
     it('should render buttons with a filled ticket', () => {
-        const component = shallow(
+        const {container} = render(
             <TicketSubmitButtonsContainer {...minProps} />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render buttons with an empty ticket', () => {
-        const component = shallow(
+        const {getByText} = render(
             <TicketSubmitButtonsContainer
                 {...minProps}
                 hasContent={false}
                 canSend={false}
             />
         )
-        expect(component.find('div.buttons')).toMatchSnapshot()
+        expect(getByText('Send & Close').getAttribute('aria-disabled')).toBe(
+            'true'
+        )
+        expect(getByText('Send').getAttribute('aria-disabled')).toBe('true')
     })
 
     it("should render buttons with content that can't be sent", () => {
-        const component = shallow(
+        const {getByText} = render(
             <TicketSubmitButtonsContainer {...minProps} canSend={false} />
         )
-        expect(component.find('div.buttons')).toMatchSnapshot()
+        expect(getByText('Send & Close').getAttribute('aria-disabled')).toBe(
+            'true'
+        )
+        expect(getByText('Send').getAttribute('aria-disabled')).toBe('true')
     })
 
     it('should render buttons with contentless action', () => {
-        const component = shallow(
+        const {getByText} = render(
             <TicketSubmitButtonsContainer
                 {...minProps}
                 hasContent={false}
                 hasContentlessAction={true}
             />
         )
-        expect(component.find('div.buttons')).toMatchSnapshot()
+
+        expect(getByText('Apply Macro')).toBeInTheDocument()
+        expect(getByText('Apply Macro & Close')).toBeInTheDocument()
     })
 
     it('should render buttons with contentless action and message content', () => {
-        const component = shallow(
+        const {getByText} = render(
             <TicketSubmitButtonsContainer
                 {...minProps}
                 hasContentlessAction={true}
             />
         )
-        expect(component.find('div.buttons')).toMatchSnapshot()
+        expect(getByText('Send & Close')).toBeInTheDocument()
+        expect(getByText('Send')).toBeInTheDocument()
     })
 
     it('should not render confirm popover', () => {
-        const component = shallow(
+        ;(
+            ConfirmButton as jest.MockedFunction<typeof ConfirmButton>
+        ).mockImplementationOnce(() => <div>ConfirmButton</div>)
+
+        const {queryByText} = render(
             <TicketSubmitButtonsContainer
                 {...minProps}
                 ticket={ticketWithSubject}
             />
         )
-        expect(component.find('div.buttons')).toMatchSnapshot()
+        expect(queryByText('ConfirmButton')).not.toBeInTheDocument()
     })
 })
