@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment'
+import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 
 import {
     useWorkloadPerChannelDistribution,
@@ -120,6 +121,9 @@ jest.mock('services/supportPerformanceTipService')
 
 jest.mock('pages/stats/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
+
+jest.mock('pages/stats/support-performance/components/WorkloadPerChannelChart')
+const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultStatsFilters: StatsFilters = {
@@ -321,6 +325,9 @@ describe('<SupportPerformanceOverview />', () => {
         )
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
+        workloadPerChannelChartMock.mockImplementation(() => (
+            <div>workloadPerChannelChartMock</div>
+        ))
         jest.spyOn(PerformanceTipHook, 'usePerformanceTips').mockReturnValue({
             type: TipQualifier.Success,
             content: 'Tip: some content',

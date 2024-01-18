@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
+import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
 
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import {useWorkloadPerChannelDistribution} from 'hooks/reporting/distributions'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
@@ -40,7 +40,6 @@ import {
 } from 'hooks/reporting/timeSeries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -52,7 +51,6 @@ import {
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
-    TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
 } from 'services/reporting/constants'
 import {getTimezone} from 'state/currentUser/selectors'
 import {OverviewMetric} from 'state/ui/stats/types'
@@ -73,7 +71,6 @@ import TipsToggle from './TipsToggle'
 import DashboardSection from './DashboardSection'
 import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
-import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
 import {DEFAULT_TIMEZONE} from './constants'
 
@@ -183,11 +180,6 @@ export default function SupportPerformanceOverview() {
         requestStatsFilters,
         userTimezone,
         granularity
-    )
-
-    const workloadPerChannel = useWorkloadPerChannelDistribution(
-        requestStatsFilters,
-        userTimezone
     )
 
     const periodComparisonTooltipText =
@@ -744,16 +736,7 @@ export default function SupportPerformanceOverview() {
                         </ChartCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
-                        <ChartCard
-                            title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
-                            hint="Distribution of all tickets of the period (both “open” and “closed”) by channel"
-                        >
-                            {workloadPerChannel.data ? (
-                                <GaugeChart data={workloadPerChannel.data} />
-                            ) : (
-                                <Skeleton />
-                            )}
-                        </ChartCard>
+                        <WorkloadPerChannelChart />
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />

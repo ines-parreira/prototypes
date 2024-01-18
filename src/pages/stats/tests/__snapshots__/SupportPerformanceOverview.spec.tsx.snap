@@ -1372,66 +1372,8 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
               class="cell"
               style="grid-column: span 12 / span 12;"
             >
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
-                <div
-                  class="titleWrapper"
-                >
-                  <div
-                    class="title"
-                  >
-                    <span>
-                      Total workload by channel
-                    </span>
-                    <div
-                      class="wrapper tooltip"
-                    >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
-                      >
-                        info
-                      </i>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div
-                    class="chart"
-                  >
-                    <div
-                      style="background-color: rgb(51, 115, 219); flex-grow: 0.8547008547008547;"
-                      title="email"
-                    />
-                    <div
-                      style="background-color: rgb(214, 56, 77); flex-grow: 0.1452991452991453;"
-                      title="chat"
-                    />
-                  </div>
-                  <div
-                    class="legend legend"
-                  >
-                    <div
-                      class="legendItem"
-                    >
-                      <div
-                        class="legendCaret"
-                        style="background-color: rgb(51, 115, 219);"
-                      />
-                      email
-                    </div>
-                    <div
-                      class="legendItem"
-                    >
-                      <div
-                        class="legendCaret"
-                        style="background-color: rgb(214, 56, 77);"
-                      />
-                      chat
-                    </div>
-                  </div>
-                </div>
+              <div>
+                workloadPerChannelChartMock
               </div>
             </div>
           </div>
