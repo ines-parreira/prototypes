@@ -4,6 +4,7 @@ import moment, {Moment} from 'moment-timezone'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import {withAppNode, WithAppNodeProps} from 'appNode'
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
@@ -49,7 +50,8 @@ type Props = {
     className: string
     hideTicket: () => Promise<void>
     setStatus: (status: string) => any
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    WithAppNodeProps
 
 type State = {
     askTrashConfirmation: boolean
@@ -192,6 +194,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             timezone,
             notify,
             ticketPartialUpdate,
+            appNode,
         } = this.props
         const {askTrashConfirmation} = this.state
         const isUpdate = !!ticket.get('id')
@@ -397,9 +400,9 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                             ])}
                             setUser={setAgent}
                             setTeam={setTeam}
-                            className={css.assignee}
                             transparent
                             bindKeys
+                            dropdownContainer={appNode ?? undefined}
                         />
                     </div>
                 </div>
@@ -438,4 +441,4 @@ const connector = connect(
     }
 )
 
-export default connector(TicketHeaderContainer)
+export default connector(withAppNode(TicketHeaderContainer))

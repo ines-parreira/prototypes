@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {withAppNode, WithAppNodeProps} from 'appNode'
 import {FORM_CONTENT_TYPE} from 'config'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 import {MacroActionName} from 'models/macroAction/types'
@@ -33,7 +34,8 @@ type Props = {
     ticketId: number
     disabled?: boolean
     className?: string
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    WithAppNodeProps
 
 type State = {
     currentArguments: Map<any, any>
@@ -231,7 +233,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         )
                                     }}
                                     handleTeams={true}
-                                    dropdownContainer={document.body}
+                                    dropdownContainer={
+                                        this.props.appNode ?? undefined
+                                    }
                                 />
                             )
                         case 'assignee_user-select':
@@ -247,7 +251,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         )
                                     }}
                                     handleUsers={true}
-                                    dropdownContainer={document.body}
+                                    dropdownContainer={
+                                        this.props.appNode ?? undefined
+                                    }
                                 />
                             )
                         case 'status-select':
@@ -260,7 +266,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         this.setValue(key, value.get('status'))
                                     }}
                                     fullWidth={false}
-                                    dropdownContainer={document.body}
+                                    dropdownContainer={
+                                        this.props.appNode ?? undefined
+                                    }
                                     disabled={this.props.disabled}
                                 />
                             )
@@ -278,7 +286,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                             )
                                         }}
                                         right={true}
-                                        dropdownContainer={document.body}
+                                        dropdownContainer={
+                                            this.props.appNode ?? undefined
+                                        }
                                         disabled={this.props.disabled}
                                     />
                                 </div>
@@ -535,4 +545,4 @@ const connector = connect(null, {
     updateActionArgsOnApplied,
 })
 
-export default connector(TicketReplyActionContainer)
+export default connector(withAppNode(TicketReplyActionContainer))

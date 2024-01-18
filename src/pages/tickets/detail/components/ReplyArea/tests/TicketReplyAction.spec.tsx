@@ -24,6 +24,7 @@ describe('<TicketReplyAction />', () => {
         remove: jest.fn(),
         ticketId: 1,
         updateActionArgsOnApplied: jest.fn(),
+        appNode: null,
     }
 
     it('should call updateActionArgsOnApplied when the internal note is updated', () => {

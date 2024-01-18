@@ -1,9 +1,8 @@
-import React, {Component} from 'react'
+import React, {Component, ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
+import {DropdownMenu} from 'reactstrap'
 
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
-
-import css from './SetAssigneeAction.less'
 
 type Props = {
     action: Map<string, any>
@@ -11,7 +10,7 @@ type Props = {
     handleTeams?: boolean
     handleUsers?: boolean
     updateActionArgs: (index: number, args: Map<any, any>) => void
-    dropdownContainer?: HTMLElement
+    dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
 }
 
 export default class SetAssigneeAction extends Component<Props> {
@@ -38,7 +37,6 @@ export default class SetAssigneeAction extends Component<Props> {
         const {action, handleTeams, handleUsers, dropdownContainer} = this.props
         return (
             <TicketAssignee
-                className={css.assignee}
                 currentAssigneeUser={action.getIn([
                     'arguments',
                     'assignee_user',

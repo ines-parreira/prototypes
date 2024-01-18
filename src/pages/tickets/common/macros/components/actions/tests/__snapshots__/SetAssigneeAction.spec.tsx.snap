@@ -2,7 +2,7 @@
 
 exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
 <div
-  class="assignee dropdown"
+  class="dropdown dropdown"
 >
   <button
     aria-expanded="false"
@@ -37,7 +37,7 @@ exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
 
 exports[`<SetAssigneeAction/> render() should render team dropdown with current assignee 1`] = `
 <div
-  class="assignee dropdown"
+  class="dropdown dropdown"
 >
   <button
     aria-expanded="false"
@@ -136,7 +136,7 @@ exports[`<SetAssigneeAction/> render() should render team dropdown with current 
 
 exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
 <div
-  class="assignee dropdown"
+  class="dropdown dropdown"
 >
   <button
     aria-expanded="false"
@@ -196,7 +196,7 @@ exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
 
 exports[`<SetAssigneeAction/> render() should render user dropdown with current assignee 1`] = `
 <div
-  class="assignee dropdown"
+  class="dropdown dropdown"
 >
   <button
     aria-expanded="false"

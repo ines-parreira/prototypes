@@ -141,7 +141,6 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                                     }
                                 />
                                 <TicketAssignee
-                                    className={css.assignee}
                                     currentAssigneeUser={ticketAssigneeUser}
                                     currentAssigneeTeam={ticketAssigneeTeam}
                                     handleTeams={true}

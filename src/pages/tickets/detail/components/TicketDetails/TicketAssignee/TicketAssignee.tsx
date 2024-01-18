@@ -1,4 +1,5 @@
 import React, {
+    ComponentProps,
     KeyboardEvent,
     useCallback,
     useEffect,
@@ -31,7 +32,7 @@ type Props = {
     currentAssigneeTeam?: Map<any, any> | null
     direction?: Direction
     menuDirection?: string
-    dropdownContainer?: HTMLElement
+    dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
     setUser: (
         ...args: ArgumentsOf<typeof setAgent>
     ) => ReturnType<ReturnType<typeof setAgent>> | void
@@ -206,7 +207,7 @@ const TicketAssignee = ({
 
     return (
         <Dropdown
-            className={className}
+            className={classnames(css.dropdown, className)}
             isOpen={isDropdownOpen}
             toggle={toggle}
             a11y={false}
