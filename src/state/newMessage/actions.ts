@@ -8,6 +8,7 @@ import _throttle from 'lodash/throttle'
 import _omit from 'lodash/omit'
 import _split from 'lodash/split'
 import axios, {AxiosError, CancelToken} from 'axios'
+import * as Sentry from '@sentry/react'
 
 import {reportError} from 'utils/errors'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -1209,6 +1210,19 @@ export function prepareTicketMessage({
                 })
             }
 
+            Sentry.addBreadcrumb({
+                message: `Preparing ticket message: ${messageToSend.body_text?.substring(
+                    0,
+                    50
+                )}...`,
+                data: {
+                    status,
+                    retryMessage,
+                    resetMessage,
+                },
+                level: 'info',
+            })
+
             dispatch({
                 type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
                 message: messageToSend,
@@ -1263,7 +1277,8 @@ export function sendTicketMessage(
             const {ticket} = getState()
             let promise
 
-            const ticketIdToUse = ticketId || (ticket.get('id') as number)
+            const ticketIdArg = ticketId || (ticket.get('id') as number)
+            const ticketIdToUse = messageToSend?.ticket_id ?? ticketIdArg
 
             if (action) {
                 promise = client.put<Message>(
@@ -1281,14 +1296,14 @@ export function sendTicketMessage(
 
             if (
                 messageToSend?.ticket_id &&
-                Number(messageToSend?.ticket_id) !== Number(ticketIdToUse)
+                Number(messageToSend?.ticket_id) !== Number(ticketIdArg)
             ) {
                 reportError(new Error('Invalid ticket message request.'), {
                     extra: {
-                        ticket_id: ticketIdToUse,
-                        ticket_message: {
-                            ticket_id: messageToSend?.ticket_id,
-                        },
+                        ticket_id_arg: ticketId,
+                        ticket_id_redux: ticket.get('id'),
+                        ticket_id_used: ticketIdToUse,
+                        ticket_id_new_message: messageToSend?.ticket_id,
                     },
                 })
             }
