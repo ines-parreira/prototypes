@@ -1,79 +1,151 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BusinessHoursForm component should render 1`] = `
+exports[`<BusinessHoursForm /> should render 1`] = `
 <div
-  className="businessHoursInput"
+  class="businessHoursInput"
 >
-  <SelectField
-    allowCustomValue={false}
-    fixedWidth={true}
-    fullWidth={false}
-    id={null}
-    onChange={[Function]}
-    onSearchChange={[Function]}
-    options={
-      [
-        {
-          "label": <i>
-            Everyday
-          </i>,
-          "text": "Everyday",
-          "value": "1,2,3,4,5,6,7",
-        },
-        {
-          "label": <i>
-            Weekdays
-          </i>,
-          "text": "Weekdays",
-          "value": "1,2,3,4,5",
-        },
-        {
-          "label": <i>
-            Weekend
-          </i>,
-          "text": "Weekend",
-          "value": "6,7",
-        },
-        {
-          "label": "Monday",
-          "value": "1",
-        },
-        {
-          "label": "Tuesday",
-          "value": "2",
-        },
-        {
-          "label": "Wednesday",
-          "value": "3",
-        },
-        {
-          "label": "Thursday",
-          "value": "4",
-        },
-        {
-          "label": "Friday",
-          "value": "5",
-        },
-        {
-          "label": "Saturday",
-          "value": "6",
-        },
-        {
-          "label": "Sunday",
-          "value": "7",
-        },
-      ]
-    }
-    placeholder="Select an option"
-    required={false}
-    singular="option"
-    style={{}}
-    value="1"
-  />
-  <Input
-    className="timeField"
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label"
+            style="min-width: 82px; opacity: 1;"
+          >
+            Monday
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 82px;"
+            type="text"
+            value=""
+          />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <button
+          class="option option--focused dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <i>
+              Everyday
+            </i>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <i>
+              Weekdays
+            </i>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <i>
+              Weekend
+            </i>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Tuesday
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Wednesday
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Thursday
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Friday
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Saturday
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Sunday
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <input
+    class="timeField form-control"
     name="fromTime"
-    onChange={[Function]}
     pattern="[0-9][0-9]:[0-9][0-9]"
     type="time"
     value="09:00"
@@ -81,10 +153,9 @@ exports[`BusinessHoursForm component should render 1`] = `
   <p>
     to
   </p>
-  <Input
-    className="timeField"
+  <input
+    class="timeField form-control"
     name="toTime"
-    onChange={[Function]}
     pattern="[0-9][0-9]:[0-9][0-9]"
     type="time"
     value="18:00"
