@@ -108,6 +108,17 @@ export default function WorkflowsView({
                                     Contact Form.
                                 </div>
                                 <a
+                                    href="https://link.gorgias.com/pnl"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    className={css.descriptionLink}
+                                >
+                                    <i className="material-icons mr-2">
+                                        ondemand_video
+                                    </i>
+                                    Join our Flows Masterclass live webinar
+                                </a>
+                                <a
                                     href="https://docs.gorgias.com/en-US/flows-101-252069"
                                     rel="noopener noreferrer"
                                     target="_blank"
@@ -116,7 +127,7 @@ export default function WorkflowsView({
                                     <i className="material-icons mr-2">
                                         menu_book
                                     </i>
-                                    Learn More About Flows
+                                    Learn more about Flows
                                 </a>
                                 <a
                                     href="https://docs.gorgias.com/en-US/create-a-new-flow-256472"
@@ -127,7 +138,7 @@ export default function WorkflowsView({
                                     <i className="material-icons mr-2">
                                         menu_book
                                     </i>
-                                    How To Create A Flow
+                                    How to create a Flow
                                 </a>
                                 <Alert icon className={css.alert}>
                                     Control where customers see Flows in{' '}

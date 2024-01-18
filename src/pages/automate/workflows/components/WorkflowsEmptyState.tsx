@@ -37,6 +37,26 @@ const WorkflowsEmptyState: React.FC<Props> = ({
                             Help customers select products, answer support
                             questions, and more with Flows!
                         </p>
+                        <div className={css.links}>
+                            <a
+                                href="https://link.gorgias.com/pnl"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons mr-2">
+                                    ondemand_video
+                                </i>
+                                Join our Flows Masterclass live webinar
+                            </a>
+                            <a
+                                href="https://docs.gorgias.com/en-US/flows-101-252069"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons mr-2">menu_book</i>
+                                Learn more about Flows
+                            </a>
+                        </div>
                     </div>
                     <div>
                         <img
