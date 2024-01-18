@@ -2903,6 +2903,25 @@
                 "tags": ["contact-forms"]
             }
         },
+        "/api/help-center/contact-forms/purge-cache": {
+            "post": {
+                "operationId": "contactFormPurgeCache",
+                "summary": "Purge cache for Contact Form",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PurgeCacheContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"201": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
         "/api/help-center/contact-forms/update-email-integration": {
             "post": {
                 "operationId": "updateEmailIntegration",
@@ -3677,7 +3696,119 @@
                             }
                         }
                     }
-                }
+                },
+                "tags": ["contact-form-mailto-replacement-config"]
+            }
+        },
+        "/api/help-center/article-templates": {
+            "get": {
+                "operationId": "listArticleTemplates",
+                "summary": "List article templates",
+                "parameters": [
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "en-GB",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ArticleTemplateDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-templates"]
+            }
+        },
+        "/api/help-center/article-templates/{template_key}": {
+            "get": {
+                "operationId": "getArticleTemplate",
+                "summary": "Retrieve article template",
+                "parameters": [
+                    {
+                        "name": "template_key",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "shippingPolicy",
+                                "howToReturn",
+                                "howToCancelOrder",
+                                "howToTrackOrder",
+                                "refundsOrExchanges",
+                                "packageLostOrDamaged"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "en-GB",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTemplateDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-templates"]
             }
         }
     },
@@ -4288,7 +4419,8 @@
                     "code_snippet_template": {
                         "type": "string",
                         "description": "Code snippet template to use to embed this help center"
-                    }
+                    },
+                    "integration_id": {"type": "number", "nullable": true}
                 },
                 "required": [
                     "created_datetime",
@@ -4315,7 +4447,8 @@
                     "gaid",
                     "email_integration",
                     "automation_settings_id",
-                    "code_snippet_template"
+                    "code_snippet_template",
+                    "integration_id"
                 ]
             },
             "AccountInfoDto": {
@@ -4725,6 +4858,7 @@
                         "type": "string",
                         "description": "Code snippet template to use to embed this help center"
                     },
+                    "integration_id": {"type": "number", "nullable": true},
                     "account_id": {"type": "number"},
                     "translations": {
                         "minItems": 1,
@@ -4764,6 +4898,7 @@
                     "email_integration",
                     "automation_settings_id",
                     "code_snippet_template",
+                    "integration_id",
                     "account_id"
                 ]
             },
@@ -5795,6 +5930,18 @@
                     "unlisted_id": {"type": "string"},
                     "category_id": {"type": "number", "nullable": true},
                     "help_center_id": {"type": "number"},
+                    "template_key": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                            "shippingPolicy",
+                            "howToReturn",
+                            "howToCancelOrder",
+                            "howToTrackOrder",
+                            "refundsOrExchanges",
+                            "packageLostOrDamaged"
+                        ]
+                    },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -6024,6 +6171,18 @@
                     },
                     "category_id": {"type": "number", "nullable": true},
                     "help_center_id": {"type": "number"},
+                    "template_key": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                            "shippingPolicy",
+                            "howToReturn",
+                            "howToCancelOrder",
+                            "howToTrackOrder",
+                            "refundsOrExchanges",
+                            "packageLostOrDamaged"
+                        ]
+                    },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -6208,6 +6367,18 @@
                     },
                     "category_id": {"type": "number", "nullable": true},
                     "help_center_id": {"type": "number"},
+                    "template_key": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                            "shippingPolicy",
+                            "howToReturn",
+                            "howToCancelOrder",
+                            "howToTrackOrder",
+                            "refundsOrExchanges",
+                            "packageLostOrDamaged"
+                        ]
+                    },
                     "id": {"type": "number"},
                     "translation": {
                         "$ref": "#/components/schemas/LocalArticleTranslation"
@@ -6279,6 +6450,18 @@
                         }
                     },
                     "help_center_id": {"type": "number"},
+                    "template_key": {
+                        "nullable": true,
+                        "type": "string",
+                        "enum": [
+                            "shippingPolicy",
+                            "howToReturn",
+                            "howToCancelOrder",
+                            "howToTrackOrder",
+                            "refundsOrExchanges",
+                            "packageLostOrDamaged"
+                        ]
+                    },
                     "id": {"type": "number"}
                 },
                 "required": [
@@ -6405,6 +6588,19 @@
                         "nullable": true,
                         "default": null,
                         "deprecated": true
+                    },
+                    "template_key": {
+                        "nullable": true,
+                        "type": "string",
+                        "default": null,
+                        "enum": [
+                            "shippingPolicy",
+                            "howToReturn",
+                            "howToCancelOrder",
+                            "howToTrackOrder",
+                            "refundsOrExchanges",
+                            "packageLostOrDamaged"
+                        ]
                     }
                 },
                 "required": ["translation"]
@@ -6979,7 +7175,8 @@
                         "nullable": true,
                         "description": "Automation settings id in contact form",
                         "example": 2
-                    }
+                    },
+                    "integration_id": {"type": "number", "nullable": true}
                 },
                 "required": [
                     "created_datetime",
@@ -6997,7 +7194,8 @@
                     "url_template",
                     "shop_name",
                     "deactivated_datetime",
-                    "automation_settings_id"
+                    "automation_settings_id",
+                    "integration_id"
                 ]
             },
             "ContactFormsListPageDto": {
@@ -7158,6 +7356,11 @@
                     "url",
                     "is_embedded"
                 ]
+            },
+            "PurgeCacheContactFormDto": {
+                "type": "object",
+                "properties": {"shop_name": {"type": "string"}},
+                "required": ["shop_name"]
             },
             "FallbackEmailIntegrationDto": {
                 "type": "object",
@@ -7561,6 +7764,25 @@
                     "shopifyShopName": {"type": "string"}
                 },
                 "required": ["emails", "contactFormUid", "shopifyShopName"]
+            },
+            "ArticleTemplateDto": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "enum": [
+                            "shippingPolicy",
+                            "howToReturn",
+                            "howToCancelOrder",
+                            "howToTrackOrder",
+                            "refundsOrExchanges",
+                            "packageLostOrDamaged"
+                        ],
+                        "type": "string"
+                    },
+                    "title": {"type": "string"},
+                    "html_content": {"type": "string"}
+                },
+                "required": ["key", "title", "html_content"]
             }
         }
     },

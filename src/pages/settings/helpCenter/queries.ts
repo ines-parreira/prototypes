@@ -9,6 +9,8 @@ import {
     createPageEmbedment,
     updatePageEmbedment,
     deletePageEmbedment,
+    getArticleTemplates,
+    getArticleTemplate,
 } from './resources'
 
 /**
@@ -74,6 +76,22 @@ export const helpCenterPageEmbedmentsKeys = {
 }
 
 /**
+ * RQ Key Factory for Help Center Article Templates
+ */
+export const articleTemplateKeys = {
+    all: () => ['articleTemplate'] as const,
+    lists: () => [...articleTemplateKeys.all(), 'list'] as const,
+    list: (locale: Paths.ListArticleTemplates.Parameters.Locale) =>
+        [...articleTemplateKeys.lists(), locale] as const,
+    details: (locale: Paths.ListArticleTemplates.Parameters.Locale) =>
+        [...articleTemplateKeys.list(locale), 'detail'] as const,
+    detail: (
+        locale: Paths.ListArticleTemplates.Parameters.Locale,
+        key: Paths.GetArticleTemplate.Parameters.TemplateKey
+    ) => [...articleTemplateKeys.details(locale), key] as const,
+}
+
+/**
  * queries
  */
 
@@ -118,6 +136,59 @@ export const useGetPageEmbedments = <
             getPageEmbedments(client, {
                 help_center_id: helpCenterId,
             }),
+        enabled: !!client,
+        ...overrides,
+    })
+}
+
+export const useGetArticleTemplates = <
+    TData = Awaited<ReturnType<typeof getArticleTemplates>>
+>(
+    locale: Paths.ListArticleTemplates.Parameters.Locale,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleTemplates>>,
+        unknown,
+        TData
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: articleTemplateKeys.list(locale),
+        queryFn: async () =>
+            getArticleTemplates(client, {
+                locale,
+            }),
+        enabled: !!client,
+        ...overrides,
+    })
+}
+
+export const useGetArticleTemplate = <
+    TData = Awaited<ReturnType<typeof getArticleTemplate>>
+>(
+    key: Paths.GetArticleTemplate.Parameters.TemplateKey,
+    locale: Paths.GetArticleTemplate.Parameters.Locale,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleTemplate>>,
+        unknown,
+        TData
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: articleTemplateKeys.detail(locale, key),
+        queryFn: async () =>
+            getArticleTemplate(
+                client,
+                {
+                    template_key: key,
+                },
+                {
+                    locale,
+                }
+            ),
         enabled: !!client,
         ...overrides,
     })

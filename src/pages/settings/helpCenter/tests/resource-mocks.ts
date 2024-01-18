@@ -11,6 +11,12 @@ import {
     PageEmbedmentsGeneric500ErrorFixture,
     PageEmbedmentFixture,
 } from '../fixtures/pageEmbedment'
+import {
+    ArticleTemplatesListFixture,
+    ArticleTemplatesEmptyListFixture,
+    ArticleTemplatesGeneric500ErrorFixture,
+} from '../fixtures/articleTemplate.fixture'
+
 import * as helpCenterResourceMethods from '../resources'
 
 export type MockOptions = 'success' | 'error' | 'success-empty'
@@ -80,6 +86,35 @@ export const mockResourceServerReplies = (
             .reply(500, PageEmbedmentsGeneric500ErrorFixture)
     }
 
+    if (options.getArticleTemplates === 'success') {
+        mockedServer
+            .onGet('/api/help-center/article-templates')
+            .reply(200, ArticleTemplatesListFixture)
+    }
+    if (options.getArticleTemplates === 'success-empty') {
+        mockedServer
+            .onGet('/api/help-center/article-templates')
+            .reply(200, ArticleTemplatesEmptyListFixture)
+    }
+
+    if (options.getArticleTemplates === 'error') {
+        mockedServer
+            .onGet(`/api/help-center/article-templates`)
+            .reply(500, ArticleTemplatesGeneric500ErrorFixture)
+    }
+
+    if (options.getArticleTemplate === 'success') {
+        mockedServer
+            .onGet('/api/help-center/article-templates/shippingPolicy')
+            .reply(200, ArticleTemplatesListFixture[0])
+    }
+
+    if (options.getArticleTemplate === 'error') {
+        mockedServer
+            .onGet(`/api/help-center/article-templates/shippingPolicy`)
+            .reply(500, ArticleTemplatesGeneric500ErrorFixture)
+    }
+
     return {
         fixtures: {
             ShopifyPagesListFixture,
@@ -89,6 +124,9 @@ export const mockResourceServerReplies = (
             PageEmbedmentsListFixture,
             PageEmbedmentsEmptyListFixture,
             PageEmbedmentsGeneric500ErrorFixture,
+            ArticleTemplatesListFixture,
+            ArticleTemplatesEmptyListFixture,
+            ArticleTemplatesGeneric500ErrorFixture,
         },
     }
 }

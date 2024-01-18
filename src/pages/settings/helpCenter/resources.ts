@@ -67,3 +67,31 @@ export const deletePageEmbedment = async (
 
     return null
 }
+
+export const getArticleTemplates = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.ListArticleTemplates.QueryParameters
+) => {
+    if (!client) return null
+
+    const res = await client.listArticleTemplates(pathParameters)
+
+    return res.data
+}
+
+export const getArticleTemplate = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.GetArticleTemplate.PathParameters,
+    queryParameters: Paths.GetArticleTemplate.QueryParameters
+) => {
+    if (!client) return null
+
+    const parameters = {
+        ...pathParameters,
+        ...queryParameters,
+    }
+
+    const res = await client.getArticleTemplate(parameters)
+
+    return res.data
+}

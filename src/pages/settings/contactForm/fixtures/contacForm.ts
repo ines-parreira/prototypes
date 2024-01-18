@@ -4,6 +4,7 @@ import {Components} from '../../../../rest_api/help_center_api/client.generated'
 
 export const ContactFormFixture: ContactForm = {
     id: 1,
+    integration_id: null,
     account_id: 1,
     help_center_id: null,
     name: 'SF Bicycles Contact Form',

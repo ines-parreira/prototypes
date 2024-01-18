@@ -10,6 +10,8 @@ import {
     useGetPageEmbedments,
     useCreatePageEmbedment,
     useUpdatePageEmbedment,
+    useGetArticleTemplates,
+    useGetArticleTemplate,
 } from '../queries'
 import {mockResourceServerReplies} from './resource-mocks'
 
@@ -239,6 +241,113 @@ describe('useUpdatePageEmbedment', () => {
         })
 
         result.current.mutate([sdkMocks.client, pathParams, payload])
+
+        await waitFor(() => {
+            expect(result.current.isError).toBeTruthy()
+            expect(result.current.error).toMatchInlineSnapshot(
+                `[Error: Request failed with status code 500]`
+            )
+        })
+    })
+})
+
+describe('useGetArticleTemplates', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const locale = 'en-US'
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+        queryClient.getQueryCache().clear()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+    })
+
+    it('resolves with the list of article templates', async () => {
+        const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
+            getArticleTemplates: 'success',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetArticleTemplates(locale),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+
+        expect(result.current.data).toEqual(
+            mocks.fixtures.ArticleTemplatesListFixture
+        )
+    })
+
+    it('returns the error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getArticleTemplates: 'error',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetArticleTemplates(locale),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => {
+            expect(result.current.isError).toBeTruthy()
+            expect(result.current.error).toMatchInlineSnapshot(
+                `[Error: Request failed with status code 500]`
+            )
+        })
+    })
+})
+
+describe('useGetArticleTemplate', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const locale = 'en-US'
+    const templateKey = 'shippingPolicy'
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+        queryClient.getQueryCache().clear()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+    })
+
+    it('resolves with the article template', async () => {
+        const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
+            getArticleTemplate: 'success',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetArticleTemplate(templateKey, locale),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+
+        expect(result.current.data).toEqual(
+            mocks.fixtures.ArticleTemplatesListFixture[0]
+        )
+    })
+
+    it('returns the error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getArticleTemplate: 'error',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetArticleTemplate(templateKey, locale),
+            {
+                wrapper,
+            }
+        )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()

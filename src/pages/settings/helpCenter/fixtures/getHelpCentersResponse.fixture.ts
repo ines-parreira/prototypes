@@ -4,6 +4,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
     data: [
         {
             id: 1,
+            integration_id: null,
             uid: '1',
             code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
@@ -33,6 +34,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         },
         {
             id: 2,
+            integration_id: null,
             uid: '2',
             code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
@@ -62,6 +64,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         },
         {
             id: 3,
+            integration_id: null,
             uid: '3',
             code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
@@ -91,6 +94,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         },
         {
             id: 4,
+            integration_id: null,
             uid: '4',
             code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
@@ -131,6 +135,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
 
 export const getSingleHelpCenterResponseFixture: HelpCenter = {
     id: 1,
+    integration_id: null,
     uid: '1',
     code_snippet_template: '<script...></script><div></div>',
     source: 'manual',

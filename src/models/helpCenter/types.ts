@@ -166,3 +166,6 @@ export type HelpCenterAutomationSettings =
 
 // PAGE EMBEDMENT
 export type HelpCenterPageEmbedment = Components.Schemas.PageEmbedmentDto
+
+// ARTICLE TEMPLATE
+export type ArticleTemplate = Components.Schemas.ArticleTemplateDto

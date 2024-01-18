@@ -102,6 +102,214 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
 }
 `;
 
+exports[`getArticleTemplate rejects if the server returns an error 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {
+        "locale": "en-US",
+      },
+      "paramsSerializer": {
+        "serialize": [Function],
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/help-center/article-templates/shippingPolicy",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`getArticleTemplate resolves with an article template on success 1`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {
+        "locale": "en-US",
+      },
+      "paramsSerializer": {
+        "serialize": [Function],
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/help-center/article-templates/shippingPolicy",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`getArticleTemplates rejects if the server returns an error 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {
+        "locale": "en-US",
+      },
+      "paramsSerializer": {
+        "serialize": [Function],
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/help-center/article-templates",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`getArticleTemplates resolves with a list of article templates on success 1`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {
+        "locale": "en-US",
+      },
+      "paramsSerializer": {
+        "serialize": [Function],
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/help-center/article-templates",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
 exports[`getPageEmbedments rejects if the server returns an error 2`] = `
 {
   "delete": [],
