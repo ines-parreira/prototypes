@@ -18,7 +18,7 @@ export const fetchTicketsByTicketIds = async (ticketIds: number[]) => {
         }
     )
 
-    return res
+    return res.data.data
 }
 
 export const fetchTicketsByRuleId = async (

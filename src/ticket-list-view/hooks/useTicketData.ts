@@ -7,7 +7,8 @@ import {TicketSummary} from '../types'
 
 export default function useTicketData(
     visibleStaleTicketIds: number[],
-    markUpdated: (ticketIds: number[]) => void
+    markUpdated: (ticketIds: number[]) => void,
+    ticketId?: number
 ) {
     const queryClient = useQueryClient()
     const [data, setData] = useState<Record<number, TicketSummary>>({})
@@ -21,6 +22,22 @@ export default function useTicketData(
     )
 
     useEffect(() => {
+        if (!ticketId) return
+        setData((currentData) => {
+            const ticket = currentData[ticketId]
+            if (!ticket) return currentData
+
+            return {
+                ...currentData,
+                [ticketId]: {
+                    ...ticket,
+                    is_unread: false,
+                },
+            }
+        })
+    }, [ticketId])
+
+    useEffect(() => {
         void (async () => {
             if (!visibleStaleTicketIds.length) return
 
@@ -32,10 +49,7 @@ export default function useTicketData(
                 })
 
                 setData((currentData) =>
-                    res.data.data.reduce(
-                        (acc, d) => ({...acc, [d.id]: d}),
-                        currentData
-                    )
+                    res.reduce((acc, d) => ({...acc, [d.id]: d}), currentData)
                 )
 
                 markUpdated(visibleStaleTicketIds)

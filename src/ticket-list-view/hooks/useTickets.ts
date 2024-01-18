@@ -13,7 +13,11 @@ import useStaleTickets from './useStaleTickets'
 import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
 
-export default function useTickets(viewId: number, sortOrder: SortOrder) {
+export default function useTickets(
+    viewId: number,
+    sortOrder: SortOrder,
+    ticketId?: number
+) {
     const {hasMore, loading, loadMore, partials, setLatest} = useTicketPartials(
         viewId,
         sortOrder
@@ -79,7 +83,7 @@ export default function useTickets(viewId: number, sortOrder: SortOrder) {
         [staleTickets, visiblePartials]
     )
 
-    const data = useTicketData(visibleStaleTicketIds, markUpdated)
+    const data = useTicketData(visibleStaleTicketIds, markUpdated, ticketId)
     const tickets = partials.map((partial) => data[partial.id] || partial)
 
     const latestTimestamp = useMemo(() => {

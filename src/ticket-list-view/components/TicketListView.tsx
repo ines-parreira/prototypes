@@ -33,7 +33,8 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
     const [sortOrder, setSortOrder] = useSortOrder()
     const {loadMore, setElement, tickets, newTickets, ticketIds} = useTickets(
         viewId,
-        sortOrder
+        sortOrder,
+        activeTicketId
     )
 
     const getItemContent = useCallback(
