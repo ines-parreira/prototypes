@@ -237,6 +237,13 @@
                         "schema": {"type": "string"}
                     },
                     {
+                        "name": "with_wizard",
+                        "required": false,
+                        "in": "query",
+                        "description": "Include the wizard in the response",
+                        "schema": {"type": "boolean"}
+                    },
+                    {
                         "name": "active",
                         "required": false,
                         "in": "query",
@@ -339,6 +346,13 @@
                         "required": true,
                         "in": "path",
                         "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "with_wizard",
+                        "required": false,
+                        "in": "query",
+                        "description": "Include the wizard in the response",
+                        "schema": {"type": "boolean"}
                     },
                     {
                         "name": "fields",
@@ -569,6 +583,36 @@
                     }
                 },
                 "tags": ["help-centers"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/sitemap-urls": {
+            "get": {
+                "operationId": "getHelpCenterSiteMapUrls",
+                "summary": "Get all the site map urls for the help center with the given id",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/HelpCenterSiteMapUrlDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-site-map-urls"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/translations": {
@@ -4191,6 +4235,27 @@
                 },
                 "required": ["id", "email"]
             },
+            "WizardStepDataVo": {
+                "type": "object",
+                "properties": {
+                    "platform_type": {"type": "object", "example": "ecommerce"}
+                },
+                "required": ["platform_type"]
+            },
+            "HelpCenterWizardDto": {
+                "type": "object",
+                "properties": {
+                    "step_name": {"type": "string", "example": "Automation"},
+                    "step_data": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/WizardStepDataVo"}
+                        ]
+                    },
+                    "completed": {"type": "boolean", "nullable": true}
+                },
+                "required": ["step_name"]
+            },
             "CreateHelpCenterWithAccountIdDto": {
                 "type": "object",
                 "properties": {
@@ -4281,6 +4346,12 @@
                         "example": {"id": 1, "email": "jonh@example.com"},
                         "allOf": [
                             {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "wizard": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
                         ]
                     },
                     "account_id": {"type": "number"}
@@ -4420,7 +4491,13 @@
                         "type": "string",
                         "description": "Code snippet template to use to embed this help center"
                     },
-                    "integration_id": {"type": "number", "nullable": true}
+                    "integration_id": {"type": "number", "nullable": true},
+                    "wizard": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
+                        ]
+                    }
                 },
                 "required": [
                     "created_datetime",
@@ -4860,6 +4937,12 @@
                         "description": "Code snippet template to use to embed this help center"
                     },
                     "integration_id": {"type": "number", "nullable": true},
+                    "wizard": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
+                        ]
+                    },
                     "account_id": {"type": "number"},
                     "translations": {
                         "minItems": 1,
@@ -5009,6 +5092,12 @@
                             {"$ref": "#/components/schemas/EmailIntegrationDto"}
                         ]
                     },
+                    "wizard": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
+                        ]
+                    },
                     "powered_by_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
@@ -5078,6 +5167,59 @@
                         ]
                     }
                 }
+            },
+            "HelpCenterSiteMapUrlLocalizedUrlDto": {
+                "type": "object",
+                "properties": {
+                    "locale": {
+                        "enum": [
+                            "en-US",
+                            "en-GB",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
+                        ],
+                        "type": "string"
+                    },
+                    "url": {"type": "string"}
+                },
+                "required": ["locale", "url"]
+            },
+            "HelpCenterSiteMapUrlDto": {
+                "type": "object",
+                "properties": {
+                    "url": {"type": "string"},
+                    "type": {
+                        "enum": ["article", "category", "contact_form"],
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "localized_urls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HelpCenterSiteMapUrlLocalizedUrlDto"
+                        }
+                    }
+                },
+                "required": [
+                    "url",
+                    "type",
+                    "updated_datetime",
+                    "localized_urls"
+                ]
             },
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",
@@ -7782,9 +7924,27 @@
                         "type": "string"
                     },
                     "title": {"type": "string"},
-                    "html_content": {"type": "string"}
+                    "html_content": {"type": "string"},
+                    "category": {
+                        "enum": [
+                            "orderManagement",
+                            "returnsAndRefunds",
+                            "shippingAndDelivery"
+                        ],
+                        "type": "string"
+                    },
+                    "score": {
+                        "type": "number",
+                        "description": "\n      The relevancy of the article template.\n      The higher being the more relevant.\n      Static article templates have a score between 0 and -1.\n      Expecting AI articles to have a score between 0 and 1 in the future.\n    "
+                    }
                 },
-                "required": ["key", "title", "html_content"]
+                "required": [
+                    "key",
+                    "title",
+                    "html_content",
+                    "category",
+                    "score"
+                ]
             }
         }
     },

@@ -164,6 +164,16 @@ declare namespace Components {
       key: "shippingPolicy" | "howToReturn" | "howToCancelOrder" | "howToTrackOrder" | "refundsOrExchanges" | "packageLostOrDamaged";
       title: string;
       html_content: string;
+      category: "orderManagement" | "returnsAndRefunds" | "shippingAndDelivery";
+      /**
+       * 
+       *       The relevancy of the article template.
+       *       The higher being the more relevant.
+       *       Static article templates have a score between 0 and -1.
+       *       Expecting AI articles to have a score between 0 and 1 in the future.
+       *     
+       */
+      score: number;
     }
     export interface ArticleTranslationRatingDto {
       /**
@@ -1236,6 +1246,22 @@ declare namespace Components {
          */
         email: string;
       } | null;
+      wizard?: {
+        /**
+         * example:
+         * Automation
+         */
+        step_name: string;
+        step_data?: {
+          /**
+           * example:
+           * ecommerce
+           */
+          platform_type: {
+          };
+        } | null;
+        completed?: boolean | null;
+      } | null;
       account_id?: number;
     }
     export interface CreateNavigationLinkDto {
@@ -1484,6 +1510,22 @@ declare namespace Components {
        */
       code_snippet_template: string;
       integration_id: number | null;
+      wizard?: {
+        /**
+         * example:
+         * Automation
+         */
+        step_name: string;
+        step_data?: {
+          /**
+           * example:
+           * ecommerce
+           */
+          platform_type: {
+          };
+        } | null;
+        completed?: boolean | null;
+      } | null;
       account_id: number;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
@@ -1550,6 +1592,32 @@ declare namespace Components {
        */
       code_snippet_template: string;
       integration_id: number | null;
+      wizard?: {
+        /**
+         * example:
+         * Automation
+         */
+        step_name: string;
+        step_data?: {
+          /**
+           * example:
+           * ecommerce
+           */
+          platform_type: {
+          };
+        } | null;
+        completed?: boolean | null;
+      } | null;
+    }
+    export interface HelpCenterSiteMapUrlDto {
+      url: string;
+      type: "article" | "category" | "contact_form";
+      updated_datetime: string; // date-time
+      localized_urls: HelpCenterSiteMapUrlLocalizedUrlDto[];
+    }
+    export interface HelpCenterSiteMapUrlLocalizedUrlDto {
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      url: string;
     }
     export interface HelpCenterStorePageDto {
       external_id: string;
@@ -1615,6 +1683,22 @@ declare namespace Components {
       meta: PageMetaDto;
       object: "list";
       data: HelpCenterTranslationDto[];
+    }
+    export interface HelpCenterWizardDto {
+      /**
+       * example:
+       * Automation
+       */
+      step_name: string;
+      step_data?: {
+        /**
+         * example:
+         * ecommerce
+         */
+        platform_type: {
+        };
+      } | null;
+      completed?: boolean | null;
     }
     export interface HelpCentersListPageDto {
       meta: PageMetaDto;
@@ -2281,6 +2365,22 @@ declare namespace Components {
          */
         email: string;
       } | null;
+      wizard?: {
+        /**
+         * example:
+         * Automation
+         */
+        step_name: string;
+        step_data?: {
+          /**
+           * example:
+           * ecommerce
+           */
+          platform_type: {
+          };
+        } | null;
+        completed?: boolean | null;
+      } | null;
       /**
        * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
        * example:
@@ -2421,6 +2521,14 @@ declare namespace Components {
     }
     export interface UpsertMailtoReplacementConfigDto {
       emails: string[];
+    }
+    export interface WizardStepDataVo {
+      /**
+       * example:
+       * ecommerce
+       */
+      platform_type: {
+      };
     }
     export interface WorkflowHandoverDto {
       contact_form_uid?: string;
@@ -3075,11 +3183,13 @@ declare namespace Paths {
     namespace Parameters {
       export type Fields = string[];
       export type HelpCenterId = number;
+      export type WithWizard = boolean;
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
     }
     export interface QueryParameters {
+      with_wizard?: Parameters.WithWizard;
       fields?: Parameters.Fields;
     }
     namespace Responses {
@@ -3110,6 +3220,17 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetHelpCenterDto;
+    }
+  }
+  namespace GetHelpCenterSiteMapUrls {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.HelpCenterSiteMapUrlDto[];
     }
   }
   namespace GetHotswapStatus {
@@ -3423,12 +3544,14 @@ declare namespace Paths {
       export type PerPage = any;
       export type ShopName = string;
       export type Subdomain = string;
+      export type WithWizard = boolean;
     }
     export interface QueryParameters {
       subdomain?: Parameters.Subdomain;
       custom_domain?: Parameters.CustomDomain;
       shop_name?: Parameters.ShopName;
       account_id?: Parameters.AccountId;
+      with_wizard?: Parameters.WithWizard;
       active?: Parameters.Active;
       fields?: Parameters.Fields;
       per_page?: Parameters.PerPage;
@@ -3929,6 +4052,14 @@ export interface OperationMethods {
     data?: Paths.UpsertHelpCenterAutomationSettings.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
+  /**
+   * getHelpCenterSiteMapUrls - Get all the site map urls for the help center with the given id
+   */
+  'getHelpCenterSiteMapUrls'(
+    parameters?: Parameters<Paths.GetHelpCenterSiteMapUrls.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetHelpCenterSiteMapUrls.Responses.$200>
   /**
    * listHelpCenterTranslations - List help center's translations
    */
@@ -4851,6 +4982,16 @@ export interface PathsDictionary {
       data?: Paths.UpsertHelpCenterAutomationSettings.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/sitemap-urls']: {
+    /**
+     * getHelpCenterSiteMapUrls - Get all the site map urls for the help center with the given id
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetHelpCenterSiteMapUrls.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetHelpCenterSiteMapUrls.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/translations']: {
     /**
