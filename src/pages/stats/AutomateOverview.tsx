@@ -57,6 +57,7 @@ import {mergeStatsFilters} from 'state/stats/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
+import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
@@ -67,7 +68,6 @@ import ChannelsStatsFilter from './ChannelsStatsFilter'
 import ChartCard from './ChartCard'
 import DashboardGridCell from './DashboardGridCell'
 import DashboardSection from './DashboardSection'
-import {DownloadOverviewDataButton} from './DownloadOverviewDataButton'
 import LineChart from './LineChart'
 
 import PeriodStatsFilter from './PeriodStatsFilter'

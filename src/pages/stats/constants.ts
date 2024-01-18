@@ -23,3 +23,5 @@ export const FEATURE_LABELS: Record<AutomatedInteractionByFeatures, string> = {
     [AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders]:
         'Autoresponders',
 }
+
+export const DEFAULT_TIMEZONE = 'UTC'

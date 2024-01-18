@@ -1,14 +1,11 @@
-import React, {useMemo, useState} from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
+import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
 
-import {SegmentEvent, logEvent} from 'common/segment'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import {
-    useWorkloadPerChannelDistribution,
-    useWorkloadPerChannelDistributionForPreviousPeriod,
-} from 'hooks/reporting/distributions'
+import {useWorkloadPerChannelDistribution} from 'hooks/reporting/distributions'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
@@ -57,8 +54,6 @@ import {
     TICKETS_REPLIED_LABEL,
     TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
 } from 'services/reporting/constants'
-import {DownloadOverviewDataButton} from 'pages/stats/DownloadOverviewDataButton'
-import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {getTimezone} from 'state/currentUser/selectors'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {getPreviousPeriod, periodToReportingGranularity} from 'utils/reporting'
@@ -80,11 +75,11 @@ import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
+import {DEFAULT_TIMEZONE} from './constants'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
-const DEFAULT_TIMEZONE = 'UTC'
 export const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
 
@@ -195,52 +190,6 @@ export default function SupportPerformanceOverview() {
         userTimezone
     )
 
-    const workloadPerChannelPrevious =
-        useWorkloadPerChannelDistributionForPreviousPeriod(
-            requestStatsFilters,
-            userTimezone
-        )
-
-    const exportableData = useMemo(() => {
-        return {
-            customerSatisfactionTrend,
-            medianFirstResponseTimeTrend,
-            medianResolutionTimeTrend,
-            messagesPerTicketTrend,
-            openTicketsTrend,
-            closedTicketsTrend,
-            ticketsCreatedTrend,
-            ticketsRepliedTrend,
-            messagesSentTrend,
-            ticketsCreatedTimeSeries,
-            ticketsClosedTimeSeries,
-            ticketsRepliedTimeSeries,
-            messagesSentTimeSeries,
-            workloadPerChannel,
-            workloadPerChannelPrevious,
-        }
-    }, [
-        closedTicketsTrend,
-        customerSatisfactionTrend,
-        medianFirstResponseTimeTrend,
-        messagesPerTicketTrend,
-        messagesSentTimeSeries,
-        messagesSentTrend,
-        openTicketsTrend,
-        medianResolutionTimeTrend,
-        ticketsClosedTimeSeries,
-        ticketsCreatedTimeSeries,
-        ticketsCreatedTrend,
-        ticketsRepliedTimeSeries,
-        ticketsRepliedTrend,
-        workloadPerChannel,
-        workloadPerChannelPrevious,
-    ])
-
-    const loading = useMemo(() => {
-        return Object.values(exportableData).some((metric) => metric.isFetching)
-    }, [exportableData])
-
     const periodComparisonTooltipText =
         getBadgeTooltipForPreviousPeriod(statsFilters)
 
@@ -271,18 +220,7 @@ export default function SupportPerformanceOverview() {
                 filters={
                     <>
                         <SupportPerformanceFilters />
-                        <DownloadOverviewDataButton
-                            onClick={async () => {
-                                logEvent(SegmentEvent.StatDownloadClicked, {
-                                    name: 'all-metrics',
-                                })
-                                await saveReport(
-                                    exportableData,
-                                    statsFilters.period
-                                )
-                            }}
-                            disabled={loading}
-                        />
+                        <DownloadOverviewData />
                     </>
                 }
             >

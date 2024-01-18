@@ -6,7 +6,6 @@ import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment'
 
-import {logEvent, SegmentEvent} from 'common/segment'
 import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
@@ -36,7 +35,6 @@ import {
 } from 'hooks/reporting/metricTrends'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock} from 'utils/testing'
-import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -76,6 +74,12 @@ jest.mock('hooks/reporting/metricTrends')
 jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
     <div>ChannelsStatsFilter</div>
 ))
+jest.mock(
+    'pages/stats/support-performance/components/DownloadOverviewData.tsx',
+    () => ({
+        DownloadOverviewData: () => null,
+    })
+)
 
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend
@@ -113,14 +117,9 @@ jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock('services/supportPerformanceTipService')
-jest.mock('common/segment')
-const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('pages/stats/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
-
-jest.mock('services/reporting/supportPerformanceReportingService')
-const saveReportMock = assumeMock(saveReport)
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultStatsFilters: StatsFilters = {
@@ -391,23 +390,6 @@ describe('<SupportPerformanceOverview />', () => {
             )
         }
     )
-
-    it('should send event to segment and call saveReport on download data button click', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceOverview />
-            </Provider>
-        )
-        fireEvent.click(getByText(/Download data/))
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.StatDownloadClicked,
-            expect.objectContaining({
-                name: 'all-metrics',
-            })
-        )
-        expect(saveReportMock).toHaveBeenCalled()
-    })
 
     describe('Performance Tips', () => {
         it('should show tips by default', () => {

@@ -1,10 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {DownloadOverviewDataButton} from 'pages/stats/DownloadOverviewDataButton'
-
-jest.mock('utils/file')
-jest.mock('services/reporting/supportPerformanceReportingService')
+import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 
 describe('DownloadOverviewData', () => {
     it('should be disabled', () => {
