@@ -23,7 +23,6 @@ import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
-import {migrateBracketNotationToDotNotation} from '../models/variables.model'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -73,15 +72,7 @@ export default function useWorkflowTranslations(
             const translationsByLang = langTranslationsPair.reduce(
                 (acc, [lang, translations]) => ({
                     ...acc,
-                    [lang]: Object.entries(translations ?? {}).reduce<
-                        Record<string, string>
-                    >(
-                        (acc, [key, value]) => ({
-                            ...acc,
-                            [key]: migrateBracketNotationToDotNotation(value),
-                        }),
-                        {}
-                    ),
+                    [lang]: translations,
                 }),
                 {} as TranslationsByLang
             )

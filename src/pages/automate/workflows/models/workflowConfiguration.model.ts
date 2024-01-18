@@ -35,7 +35,6 @@ import {
     WorkflowStepWorkflowCall,
     WorkflowTransition,
 } from './workflowConfiguration.types'
-import {migrateBracketNotationToDotNotation} from './variables.model'
 
 export function walkWorkflowConfigurationGraph(
     c: WorkflowConfiguration,
@@ -81,15 +80,6 @@ function injectTkeysInContentIfNotExist(content: MessageContent) {
     }
 }
 
-function migrateBracketNotationToDotNotationVariable(content: MessageContent) {
-    const {html, text, ...rest} = content
-    return {
-        html: migrateBracketNotationToDotNotation(html),
-        text: migrateBracketNotationToDotNotation(text),
-        ...rest,
-    }
-}
-
 function injectTkeysInChoicesIfNotExist(
     choices: MultipleChoicesNodeType['data']['choices']
 ) {
@@ -130,10 +120,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'multiple_choices',
                 data: {
-                    content: migrateBracketNotationToDotNotationVariable(
-                        injectTkeysInContentIfNotExist(
-                            step.settings.messages[0].content
-                        )
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
                     ),
                     choices: injectTkeysInChoicesIfNotExist(
                         nextSteps[0].settings.choices
@@ -157,10 +145,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'text_reply',
                 data: {
-                    content: migrateBracketNotationToDotNotationVariable(
-                        injectTkeysInContentIfNotExist(
-                            step.settings.messages[0].content
-                        )
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
                     ),
                     wfConfigurationRef: {
                         wfConfigurationMessagesStepId: step.id,
@@ -181,10 +167,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'file_upload',
                 data: {
-                    content: migrateBracketNotationToDotNotationVariable(
-                        injectTkeysInContentIfNotExist(
-                            step.settings.messages[0].content
-                        )
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
                     ),
                     wfConfigurationRef: {
                         wfConfigurationMessagesStepId: step.id,
@@ -239,10 +223,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'order_selection',
                 data: {
-                    content: migrateBracketNotationToDotNotationVariable(
-                        injectTkeysInContentIfNotExist(
-                            messagesStep.settings.messages[0].content
-                        )
+                    content: injectTkeysInContentIfNotExist(
+                        messagesStep.settings.messages[0].content
                     ),
                     wfConfigurationRef: {
                         wfConfigurationMessagesStepId: messagesStep.id,
@@ -267,10 +249,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'automated_message',
                 data: {
-                    content: migrateBracketNotationToDotNotationVariable(
-                        injectTkeysInContentIfNotExist(
-                            step.settings.messages[0].content
-                        )
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
                     ),
                     wfConfigurationRef: {
                         wfConfigurationMessagesStepId: step.id,

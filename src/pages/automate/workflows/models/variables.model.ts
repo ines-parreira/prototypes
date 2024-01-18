@@ -305,15 +305,6 @@ export function isValidLiquidSyntaxInNode(
     }
 }
 
-const bracketNotationVariableRegex = new RegExp(
-    '({{[^\\[]*)\\["([^"]*)"\\]([^{}]*}})',
-    'g'
-)
-
-export function migrateBracketNotationToDotNotation(text: string) {
-    return text.replace(bracketNotationVariableRegex, '$1.$2$3')
-}
-
 const urlEncodedVariableRegex = new RegExp('%7B%7B(.+?)(?=%7D%7D)%7D%7D', 'g')
 
 export function unescapeUrlEncodedVariables(text: string) {
