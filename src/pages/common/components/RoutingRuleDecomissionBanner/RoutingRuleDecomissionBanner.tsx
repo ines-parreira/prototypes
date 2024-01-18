@@ -27,7 +27,7 @@ export default function RoutingRuleDecomissionBanner() {
         <BannerNotification
             message={
                 <div data-testid="routing-rule-banner-message">
-                    On <strong>January 17th</strong>, we will be introducing our{' '}
+                    On <strong>January 18th</strong>, we will be introducing our{' '}
                     <a
                         href="https://docs.gorgias.com/en-US/voice-routing-370054"
                         target="_blank"
