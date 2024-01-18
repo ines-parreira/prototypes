@@ -1,6 +1,7 @@
 import React from 'react'
 import {Container} from 'reactstrap'
 import {NavLink} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 
@@ -20,6 +21,7 @@ import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategorie
 import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
 import settingsCss from 'pages/settings/settings.less'
 import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
 import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
@@ -27,7 +29,9 @@ import {useSearchContext} from '../../providers/SearchContext'
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 
 import {getRootCategory} from '../../../../../state/entities/helpCenter/categories'
+
 import css from './CategoriesView.less'
+import LandingPage from './components/LandingPage'
 
 type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     helpCenter: HelpCenter
@@ -51,6 +55,8 @@ export const CategoriesViews = ({
     })
     const {isPassingRulesCheck} = useAbilityChecker()
     const {setSearchInput} = useSearchContext()
+    const articleTemplatesFlag =
+        useFlags()[FeatureFlagKey.ObservabilityArticleTemplates]
 
     const handleOnReorder = ({
         categories,
@@ -78,6 +84,8 @@ export const CategoriesViews = ({
         uncategorizedArticles.length === 0 &&
         uncategorizedArticleCount === 0
 
+    const showLandingPage = showCreateFirst && articleTemplatesFlag
+
     const canUpdateArticle = isPassingRulesCheck(({can}) =>
         can('update', 'ArticleEntity')
     )
@@ -93,79 +101,91 @@ export const CategoriesViews = ({
     return (
         <>
             {showCreateFirst ? (
-                <Container fluid className={settingsCss.pageContainer}>
-                    <h1>
-                        Start your help center here&nbsp;
-                        <span aria-label="books" role="img">
-                            📚
-                        </span>
-                    </h1>
-                    <p>
-                        Write your first article or create your first category
-                        to be displayed in your very own help center.
-                    </p>
-                    <div className={css.createFirst}>
-                        <Button
-                            className={css.createButton}
-                            onClick={onCreateArticle}
-                            isDisabled={!canUpdateArticle}
-                        >
-                            <i className="material-icons-outlined mr-1">add</i>
-                            Article
-                        </Button>
-
-                        <Button
-                            className={css.createButton}
-                            intent="secondary"
-                            onClick={onCreateCategory}
-                            isDisabled={!canUpdateCategory}
-                        >
-                            <i className="material-icons mr-1">add</i>
-                            Category
-                        </Button>
-                    </div>
-
-                    <ImportSection
-                        className={css.importSection}
-                        isDisabled={!(canUpdateArticle && canUpdateCategory)}
+                showLandingPage ? (
+                    <LandingPage
+                        canUpdateArticle={canUpdateArticle}
+                        onCreateArticle={onCreateArticle}
                     />
-
-                    {helpCenter.source === 'automation' && (
-                        <div className={css.bannerContainer}>
-                            <Banner
-                                preview={
-                                    <img
-                                        className={css.bannerImage}
-                                        src={standalonePreview}
-                                        alt=""
-                                    />
-                                }
-                                title="Not ready to add articles? Customize your Help Center in the meantime."
+                ) : (
+                    <Container fluid className={settingsCss.pageContainer}>
+                        <h1>
+                            Start your help center here&nbsp;
+                            <span aria-label="books" role="img">
+                                📚
+                            </span>
+                        </h1>
+                        <p>
+                            Write your first article or create your first
+                            category to be displayed in your very own help
+                            center.
+                        </p>
+                        <div className={css.createFirst}>
+                            <Button
+                                className={css.createButton}
+                                onClick={onCreateArticle}
+                                isDisabled={!canUpdateArticle}
                             >
-                                <div className={css.bannerContent}>
-                                    <div>
-                                        <div>
-                                            We created a Help Center to help get
-                                            you started. Customize it by adding
-                                            a logo,
-                                        </div>
-                                        <div>
-                                            background image, your brand color
-                                            and fonts, and more!
-                                        </div>
-                                    </div>
-                                    <NavLink
-                                        className={css.bannerLink}
-                                        to={`${baseURL}/appearance`}
-                                        exact
-                                    >
-                                        Customize Help Center
-                                    </NavLink>
-                                </div>
-                            </Banner>
+                                <i className="material-icons-outlined mr-1">
+                                    add
+                                </i>
+                                Article
+                            </Button>
+
+                            <Button
+                                className={css.createButton}
+                                intent="secondary"
+                                onClick={onCreateCategory}
+                                isDisabled={!canUpdateCategory}
+                            >
+                                <i className="material-icons mr-1">add</i>
+                                Category
+                            </Button>
                         </div>
-                    )}
-                </Container>
+
+                        <ImportSection
+                            className={css.importSection}
+                            isDisabled={
+                                !(canUpdateArticle && canUpdateCategory)
+                            }
+                        />
+
+                        {helpCenter.source === 'automation' && (
+                            <div className={css.bannerContainer}>
+                                <Banner
+                                    preview={
+                                        <img
+                                            className={css.bannerImage}
+                                            src={standalonePreview}
+                                            alt=""
+                                        />
+                                    }
+                                    title="Not ready to add articles? Customize your Help Center in the meantime."
+                                >
+                                    <div className={css.bannerContent}>
+                                        <div>
+                                            <div>
+                                                We created a Help Center to help
+                                                get you started. Customize it by
+                                                adding a logo,
+                                            </div>
+                                            <div>
+                                                background image, your brand
+                                                color and fonts, and more!
+                                            </div>
+                                        </div>
+                                        <NavLink
+                                            className={css.bannerLink}
+                                            to={`${baseURL}/appearance`}
+                                            exact
+                                        >
+                                            Customize Help Center
+                                        </NavLink>
+                                    </div>
+                                </Banner>
+                            </div>
+                        )}
+                    </Container>
+                )
             ) : (
                 <CategoriesTable
                     renderArticleList={renderArticleList}

@@ -58,6 +58,7 @@ type Props = {
     className?: string
     isDisabled?: boolean
     isButton?: boolean
+    buttonLabel?: string
 }
 
 export const ACTIVE_MIGRATION_UPDATE_TIMEOUT = 3 * 1000
@@ -66,6 +67,7 @@ export const ImportSection: React.FC<Props> = ({
     className,
     isDisabled,
     isButton,
+    buttonLabel,
 }: Props) => {
     const dispatch = useAppDispatch()
     const migrationClient = useMigrationApi()
@@ -607,7 +609,9 @@ export const ImportSection: React.FC<Props> = ({
                         }
                         className={css.button}
                     >
-                        <i className="material-icons">cloud_upload</i>
+                        {buttonLabel || (
+                            <i className="material-icons">cloud_upload</i>
+                        )}
                     </Button>
                     <Tooltip
                         target="import-button"

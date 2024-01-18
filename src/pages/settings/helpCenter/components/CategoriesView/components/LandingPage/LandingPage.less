@@ -1,0 +1,33 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        margin: 0;
+        padding: 0;
+    }
+
+    .wrapper {
+        max-width: 1202px;
+        padding: @layout-spacing-m;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: @layout-spacing-xs;
+    }
+
+    .sectionWrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .title {
+        font-size: @heading-section-medium-font-size;
+        font-weight: 600;
+    }
+}

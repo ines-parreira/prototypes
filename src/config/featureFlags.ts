@@ -55,6 +55,7 @@ export enum FeatureFlagKey {
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HelpCenterReplaceMailtoLink = 'help-center-replace-mailto-link',
+    ObservabilityArticleTemplates = 'observability-article-templates',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MacroForwardByEmail = 'macro-forward-by-email',

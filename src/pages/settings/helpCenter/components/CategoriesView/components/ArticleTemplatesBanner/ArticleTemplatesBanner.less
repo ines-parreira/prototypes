@@ -1,0 +1,46 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .container {
+        border-radius: 4px;
+        background-color: var(--main-latte);
+    }
+
+    .wrapper {
+        max-width: 1200px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: @layout-spacing-s @layout-spacing-s 0;
+        gap: @layout-spacing-s;
+
+        @media @large-desktops {
+            justify-content: space-between;
+            padding: 0px 64px;
+            flex-direction: row;
+        }
+    }
+
+    .bannerContent {
+        max-width: 380px;
+        display: flex;
+        gap: @layout-spacing-xs;
+        flex-direction: column;
+    }
+
+    .bannerTitle {
+        font-size: @heading-section-medium-font-size;
+        font-weight: 600;
+        color: #222222; // Using fixed color instead of token so that the text is readable on Dark theme as well
+    }
+
+    .bannerDescription {
+        color: #6a6a6a; // Using fixed color instead of token so that the text is readable on Dark theme as well
+    }
+
+    .image {
+        max-width: 100%;
+    }
+}
