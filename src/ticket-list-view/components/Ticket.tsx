@@ -1,6 +1,6 @@
+import React, {ComponentProps, useMemo} from 'react'
 import cn from 'classnames'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
 import {CSSTransition} from 'react-transition-group'
 import {Link} from 'react-router-dom'
 import {Components} from 'react-virtuoso'
@@ -44,6 +44,14 @@ export default function Ticket({
     ['data-known-size']: dataKnownSize,
     ...transitionProps
 }: MergedProps) {
+    const datetime = useMemo(() => {
+        return 'channel' in ticket
+            ? ticket.last_message_datetime
+                ? moment(ticket.last_message_datetime).fromNow()
+                : moment(ticket.updated_datetime).fromNow()
+            : null
+    }, [ticket])
+
     return (
         <CSSTransition
             classNames={classNames}
@@ -89,11 +97,7 @@ export default function Ticket({
                                     <div className={css.excerpt}>
                                         {ticket.excerpt}
                                     </div>
-                                    <div className={css.time}>
-                                        {moment(
-                                            ticket.last_message_datetime
-                                        ).fromNow()}
-                                    </div>
+                                    <div className={css.time}>{datetime}</div>
                                 </div>
                             </div>
                         </>
