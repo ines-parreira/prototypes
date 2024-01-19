@@ -8,8 +8,8 @@ import trackIcon from 'assets/img/self-service/track.svg'
 import returnIcon from 'assets/img/self-service/return.svg'
 import cancelIcon from 'assets/img/self-service/cancel.svg'
 import reportIssueIcon from 'assets/img/self-service/report-issue.svg'
-import gorgiasLogo from 'assets/img/help-center/gorgias-logo.svg'
 
+import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 import css from './SelfServiceHelpCenterHomePage.less'
@@ -48,60 +48,14 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
 
     if (isOrderManagementUnavailable) {
         return (
-            <div
-                className={classnames(css.container, {
-                    [css.isInitialEntry]: isInitialEntry,
-                })}
-            >
-                <div className={css.searchBar}>
-                    <i
-                        className={classnames(
-                            'material-icons',
-                            css.searchBarIcon
-                        )}
-                    >
-                        search
-                    </i>
-                    {helpCenterTexts.searchComboboxInputPlaceholder}
-                </div>
-                <div className={css.title}>
-                    {helpCenterTexts.getMoreInformationLabel}
-                </div>
-                <div className={css.seeAll}>
-                    {helpCenterTexts.homePageAllArticlesLinkLabel}
-                    <i className={classnames('material-icons', css.seeAllIcon)}>
-                        arrow_forward
-                    </i>
-                </div>
-                <div className={css.articlesContainer}>
-                    <div className={css.article}>
-                        <div className={css.articleTitle}>
-                            Lorem ipsum dolor sit amet
-                        </div>
-                        <div className={css.articleDescription}>
-                            Viva Forevis aptent taciti sociosqu ad litora
-                            torquent. Si u mundo tá muito paradis? Toma um mé
-                            que o mundo vai girarzis! Nullam volutpat risus nec
-                            leo commodo, ut interdum diam laoreet.
-                        </div>
-                    </div>
-                    <div className={css.article}>
-                        <div className={css.articleTitle}>
-                            Lorem ipsum dolor sit amet
-                        </div>
-                        <div className={css.articleDescription}>
-                            Viva Forevis aptent taciti sociosqu ad litora
-                            torquent. Si u mundo tá muito paradis? Toma um mé
-                            que o mundo vai girarzis! Nullam volutpat risus nec
-                            leo commodo, ut interdum diam laoreet.
-                        </div>
-                    </div>
-                </div>
-                <div className={css.footer}>
-                    {helpCenterTexts.poweredByGorgiasTextBeforeLogo}
-                    <img src={gorgiasLogo} alt="Gorgias" />
-                </div>
-            </div>
+            <HelpCenterPreviewHomePage
+                searchPlaceholder={
+                    helpCenterTexts.searchComboboxInputPlaceholder
+                }
+                isSearchbar={!helpCenter.search_deactivated_datetime}
+                primaryColor={helpCenter.primary_color}
+                primaryFont={helpCenter.primary_font_family}
+            />
         )
     }
 

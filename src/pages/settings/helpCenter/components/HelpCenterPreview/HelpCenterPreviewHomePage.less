@@ -1,0 +1,119 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+// --preview-primary-color and --preview-primary-font custom css variables from react
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 40px; // custom spacing
+
+        font-family: var(--preview-primary-font);
+    }
+
+    .searchBar {
+        .heading-subsection-regular();
+        display: flex;
+        align-items: center;
+        margin: @layout-spacing-s 0;
+        border-radius: @layout-spacing-xxs;
+        padding: @layout-spacing-s;
+        gap: @layout-spacing-xs;
+        background-color: var(--neutral-grey-0);
+        box-shadow: 0px 2px 4px rgba(22, 22, 22, 0.16);
+    }
+
+    .sectionHeader {
+        display: flex;
+        justify-content: space-between;
+
+        color: var(--neutral-grey-6);
+
+        padding-bottom: @layout-spacing-s;
+    }
+
+    .title {
+        .heading-section-semibold();
+    }
+
+    .seeAll {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .body-semibold();
+    }
+
+    .icon {
+        font-size: @heading-section-medium-font-size;
+    }
+
+    .itemList {
+        padding-left: 0;
+        display: inline-flex;
+        gap: @layout-spacing-s;
+
+        width: 100%;
+    }
+
+    .verticalList {
+        flex-direction: column;
+    }
+
+    .item {
+        list-style: none;
+        height: 156px;
+        border-radius: @layout-spacing-xxs;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        cursor: pointer;
+
+        transition: border-color 0.4s;
+        border: 1px solid transparent;
+
+        &:hover {
+            border-color: var(--preview-primary-color);
+
+            .itemArticleName {
+                color: var(--preview-primary-color);
+            }
+        }
+    }
+
+    .articleItem {
+        padding: @layout-spacing-m;
+        border-color: var(--neutral-grey-2);
+    }
+
+    .articleDescription {
+        .body-regular();
+        color: var(--neutral-grey-5);
+        margin-bottom: 0;
+    }
+
+    .itemImage {
+        flex: 1;
+        background-color: var(--neutral-grey-2);
+    }
+
+    .itemCatName {
+        height: 56px;
+        align-items: center;
+        display: flex;
+        padding: @layout-spacing-xs;
+
+        background-color: var(--neutral-grey-0);
+        .body-semibold();
+    }
+
+    .itemArticleName {
+        transition: color 0.4s;
+
+        .heading-subsection-semibold();
+        padding-bottom: @layout-spacing-xxs;
+    }
+}
