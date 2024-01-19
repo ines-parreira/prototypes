@@ -48,15 +48,16 @@ describe('reporting', () => {
             {
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-aao-impact-${moment().format(DATE_TIME_FORMAT)}.csv`]:
+                }-automate-impact-${moment().format(DATE_TIME_FORMAT)}.csv`]:
                     fakeReport,
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-aao-performance-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                    fakeReport,
+                }-automate-performance-${moment().format(
+                    DATE_TIME_FORMAT
+                )}.csv`]: fakeReport,
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-aao-performance-feature-${moment().format(
+                }-automate-performance-feature-${moment().format(
                     DATE_TIME_FORMAT
                 )}.csv`]: fakeReport,
             },

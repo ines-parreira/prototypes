@@ -121,13 +121,12 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
 
     return saveZippedFiles(
         {
-            [`${periodPrefix}-aao-impact-${export_datetime}.csv`]: createCsv(
-                impactData()
-            ),
+            [`${periodPrefix}-automate-impact-${export_datetime}.csv`]:
+                createCsv(impactData()),
 
-            [`${periodPrefix}-aao-performance-${export_datetime}.csv`]:
+            [`${periodPrefix}-automate-performance-${export_datetime}.csv`]:
                 createCsv(performanceData),
-            [`${periodPrefix}-aao-performance-feature-${export_datetime}.csv`]:
+            [`${periodPrefix}-automate-performance-feature-${export_datetime}.csv`]:
                 createCsv(performanceFeatureData),
         },
         `${periodPrefix}-overview-metrics-${export_datetime}`
