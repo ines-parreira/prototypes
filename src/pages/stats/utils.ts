@@ -1,8 +1,9 @@
 import {ChartArea, TooltipItem} from 'chart.js'
 import moment from 'moment'
 import {ReportingGranularity} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
 import {formatPercentage} from 'pages/common/utils/numbers'
-import {getFormat} from 'pages/stats/common/utils'
+import {getFormat, SHORT_FORMAT} from 'pages/stats/common/utils'
 
 import {toRGBA} from 'utils'
 import {
@@ -12,7 +13,7 @@ import {
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
 } from 'utils/date'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
 
 export const NUMBER_TICK_FORMATTER = new Intl.NumberFormat('en-US', {
     notation: 'compact',
@@ -122,4 +123,13 @@ export const getUtcPeriodFromDateAndGranularity = (
         start_datetime: formatReportingQueryDate(startDate),
         end_datetime: formatReportingQueryDate(endDate),
     }
+}
+
+export const getBadgeTooltipForPreviousPeriod = (
+    statsFilters: StatsFilters
+) => {
+    const period = getPreviousPeriod(statsFilters.period)
+    return `Compared to: ${moment(period.start_datetime).format(
+        SHORT_FORMAT
+    )} - ${moment(period.end_datetime).format(SHORT_FORMAT)}`
 }

@@ -6,6 +6,9 @@ import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
+import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
 
 import {
     useWorkloadPerChannelDistribution,
@@ -34,7 +37,7 @@ import {
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {
     useMessagesSentTimeSeries,
@@ -50,9 +53,11 @@ import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import SupportPerformanceOverview, {
     AGENTS_REPORT_RELEASE_DATE,
     STATS_TIPS_VISIBILITY_KEY,
-} from '../SupportPerformanceOverview'
+} from 'pages/stats/SupportPerformanceOverview'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+const TIP_PLACEHOLDER = 'Tip:'
 
 jest.mock('hooks/useId', () => () => 'abc')
 
@@ -118,6 +123,11 @@ jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock('services/supportPerformanceTipService')
+jest.mock('pages/stats/support-performance/components/TrendCard')
+const trendCardMock = assumeMock(TrendCard)
+
+jest.mock('pages/stats/SupportPerformanceTip')
+const supportPerformanceTipMock = assumeMock(SupportPerformanceTip)
 
 jest.mock('pages/stats/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
@@ -324,7 +334,13 @@ describe('<SupportPerformanceOverview />', () => {
             workloadDistribution
         )
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        trendCardMock.mockImplementation(({tip}) => (
+            <div>TrendCardMock {tip}</div>
+        ))
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
+        supportPerformanceTipMock.mockImplementation(() => (
+            <div>{TIP_PLACEHOLDER}</div>
+        ))
         workloadPerChannelChartMock.mockImplementation(() => (
             <div>workloadPerChannelChartMock</div>
         ))
@@ -347,12 +363,12 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it.each([
-        customerSatisfactionMetricTrend,
-        medianFirstResponseTimeMetricTrend,
-        medianResolutionTimeMetricTrend,
-        messagesPerTicketMetricTrend,
+        OverviewMetric.CustomerSatisfaction,
+        OverviewMetric.MedianFirstResponseTime,
+        OverviewMetric.MedianResolutionTime,
+        OverviewMetric.MessagesPerTicket,
     ])(
-        'should render customer experience section with a badge tooltip #$#',
+        'should render customer experience section with TrendCards %#',
         (customerMetricTrend) => {
             render(
                 <Provider store={mockStore(defaultState)}>
@@ -360,38 +376,10 @@ describe('<SupportPerformanceOverview />', () => {
                 </Provider>
             )
 
-            expect(trendBadgeMock.mock.calls).toContainEqual(
+            expect(trendCardMock.mock.calls).toContainEqual(
                 expect.arrayContaining([
                     expect.objectContaining({
-                        interpretAs: customerMetricTrend.data.interpretAs,
-                        tooltip: 'Compared to: Feb 2nd, 2021 - Feb 2nd, 2021',
-                        value: customerMetricTrend.data.value,
-                    }),
-                ])
-            )
-        }
-    )
-
-    it.each([
-        openTicketsMetricTrend,
-        closedTicketsMetricTrend,
-        createdTicketsMetricTrend,
-        repliedTicketsMetricTrend,
-        messagesSentMetricTrend,
-    ])(
-        'should render workload section trend badges as neutral with a badge tooltip #$#',
-        (workloadMetricTrend) => {
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <SupportPerformanceOverview />
-                </Provider>
-            )
-            expect(trendBadgeMock.mock.calls).toContainEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        interpretAs: 'neutral',
-                        tooltip: 'Compared to: Feb 2nd, 2021 - Feb 2nd, 2021',
-                        value: workloadMetricTrend.data.value,
+                        overviewMetric: customerMetricTrend,
                     }),
                 ])
             )

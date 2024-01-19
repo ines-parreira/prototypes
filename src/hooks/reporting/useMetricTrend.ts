@@ -1,9 +1,11 @@
+import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
 import {ReportingQuery} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
 
 export type MetricTrend = {
     isFetching: boolean
@@ -13,6 +15,13 @@ export type MetricTrend = {
         prevValue: number | null
     }
 }
+
+export type MetricTrendHook = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+) => MetricTrend
 
 export type QueryReturnType<Measure extends Cubes['measures']> = [
     Record<Measure, string | null>

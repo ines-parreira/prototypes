@@ -1,19 +1,25 @@
 import React from 'react'
 import sanitizeHtml from 'sanitize-html'
+import useAppSelector from 'hooks/useAppSelector'
 import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 
 import {MetricName} from 'services/reporting/constants'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export const SupportPerformanceTip = ({
     metric,
-    data,
+    useTrend,
 }: {
     metric: MetricName
-    data: MetricTrend['data']
+    useTrend: MetricTrendHook
 }) => {
-    const tip = usePerformanceTips(metric, data?.value || null)
+    const {cleanStatsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
+    const trend = useTrend(cleanStatsFilters, userTimezone)
+    const tip = usePerformanceTips(metric, trend?.data?.value || null)
 
     return (
         <PerformanceTip

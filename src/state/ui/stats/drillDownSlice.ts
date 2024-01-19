@@ -8,7 +8,7 @@ import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFiel
 import {ReportingQuery} from 'models/reporting/types'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
-import {overviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -215,7 +215,7 @@ export const getDrillDownMetricColumn = (
     } else if ('customFieldValue' in metricData) {
         metricTitle = ''
     } else {
-        metricTitle = overviewMetricConfig[metricData.metricName].title
+        metricTitle = OverviewMetricConfig[metricData.metricName].title
     }
 
     return {

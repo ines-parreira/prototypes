@@ -1,4 +1,16 @@
 import {
+    useClosedTicketsTrend,
+    useCustomerSatisfactionTrend,
+    useMedianFirstResponseTimeTrend,
+    useMedianResolutionTimeTrend,
+    useMessagesPerTicketTrend,
+    useMessagesSentTrend,
+    useOpenTicketsTrend,
+    useTicketsCreatedTrend,
+    useTicketsRepliedTrend,
+} from 'hooks/reporting/metricTrends'
+import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
+import {
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MESSAGES_PER_TICKET_LABEL,
@@ -12,11 +24,14 @@ import {
 import {OverviewMetric} from 'state/ui/stats/types'
 import {TooltipData} from './types'
 
-export const overviewMetricConfig: Record<
+export const OverviewMetricConfig: Record<
     OverviewMetric,
     {
         hint: TooltipData
         title: string
+        useTrend: MetricTrendHook
+        interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
+        withFrom: boolean
     }
 > = {
     [OverviewMetric.CustomerSatisfaction]: {
@@ -25,6 +40,9 @@ export const overviewMetricConfig: Record<
             title: 'Average CSAT score for tickets assigned to the agent for which a survey was sent within the timeframe; surveys are sent following ticket resolution',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#1customer-satisfaction-csat',
         },
+        interpretAs: 'more-is-better',
+        useTrend: useCustomerSatisfactionTrend,
+        withFrom: false,
     },
     [OverviewMetric.MedianFirstResponseTime]: {
         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -32,6 +50,9 @@ export const overviewMetricConfig: Record<
             title: 'Median time between 1st customer message and 1st agent response, for tickets where the response was sent within the selected timeframe',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#2-first-response-time',
         },
+        interpretAs: 'less-is-better',
+        useTrend: useMedianFirstResponseTimeTrend,
+        withFrom: false,
     },
     [OverviewMetric.MedianResolutionTime]: {
         title: MEDIAN_RESOLUTION_TIME_LABEL,
@@ -39,6 +60,9 @@ export const overviewMetricConfig: Record<
             title: 'Median time between 1st customer message and the last time the ticket was closed, for tickets closed within the selected timeframe',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#3-resolution-time',
         },
+        interpretAs: 'less-is-better',
+        useTrend: useMedianResolutionTimeTrend,
+        withFrom: false,
     },
     [OverviewMetric.MessagesPerTicket]: {
         title: MESSAGES_PER_TICKET_LABEL,
@@ -46,6 +70,9 @@ export const overviewMetricConfig: Record<
             title: 'Average number of messages exchanged in tickets closed within the selected timeframe; includes auto-responses',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#4-messages-per-ticket',
         },
+        interpretAs: 'less-is-better',
+        useTrend: useMessagesPerTicketTrend,
+        withFrom: false,
     },
     [OverviewMetric.OpenTickets]: {
         title: OPEN_TICKETS_LABEL,
@@ -53,6 +80,9 @@ export const overviewMetricConfig: Record<
             title: 'Number of tickets with the status “open” at the end of the period',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#1-open-tickets',
         },
+        interpretAs: 'neutral',
+        useTrend: useOpenTicketsTrend,
+        withFrom: true,
     },
     [OverviewMetric.TicketsClosed]: {
         title: TICKETS_CLOSED_LABEL,
@@ -60,6 +90,9 @@ export const overviewMetricConfig: Record<
             title: 'Number of unique closed tickets within the selected timeframe (that did not reopen), assigned to selected agent(s)/team(s)',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#2-closed-tickets',
         },
+        interpretAs: 'neutral',
+        useTrend: useClosedTicketsTrend,
+        withFrom: true,
     },
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
@@ -67,6 +100,9 @@ export const overviewMetricConfig: Record<
             title: 'Number of inbound and outbound tickets created within the selected timeframe.\nWhen filtering by an agent, only tickets created by the agent are counted.',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#3-tickets-created',
         },
+        interpretAs: 'neutral',
+        useTrend: useTicketsCreatedTrend,
+        withFrom: true,
     },
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
@@ -74,6 +110,9 @@ export const overviewMetricConfig: Record<
             title: 'Number of unique tickets where an agent sent a message within the selected timeframe',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#4-tickets-replied',
         },
+        interpretAs: 'neutral',
+        useTrend: useTicketsRepliedTrend,
+        withFrom: true,
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
@@ -81,5 +120,8 @@ export const overviewMetricConfig: Record<
             title: 'Number of messages sent by an agent within the selected timeframe (excluding internal-notes)',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#5-messages-sent',
         },
+        interpretAs: 'neutral',
+        useTrend: useMessagesSentTrend,
+        withFrom: true,
     },
 }

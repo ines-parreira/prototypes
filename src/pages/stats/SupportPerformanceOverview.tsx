@@ -2,7 +2,9 @@ import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
+import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
+import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
 
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
@@ -11,7 +13,6 @@ import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {StatsFilters} from 'models/stat/types'
 import StatsPage from 'pages/stats/StatsPage'
 import {
     currentAccountHasFeature,
@@ -19,19 +20,7 @@ import {
     getSurveysSettingsJS,
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
-import {getPageStatsFilters, getStatsFilters} from 'state/stats/selectors'
-import blueStar from 'assets/img/icons/blue-star.svg'
-import {
-    useClosedTicketsTrend,
-    useCustomerSatisfactionTrend,
-    useMedianFirstResponseTimeTrend,
-    useMessagesPerTicketTrend,
-    useMessagesSentTrend,
-    useOpenTicketsTrend,
-    useMedianResolutionTimeTrend,
-    useTicketsCreatedTrend,
-    useTicketsRepliedTrend,
-} from 'hooks/reporting/metricTrends'
+import {getPageStatsFilters} from 'state/stats/selectors'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -41,35 +30,19 @@ import {
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {
-    CUSTOMER_SATISFACTION_LABEL,
-    MEDIAN_FIRST_RESPONSE_TIME_LABEL,
-    MESSAGES_PER_TICKET_LABEL,
     MESSAGES_SENT_LABEL,
     MetricName,
-    OPEN_TICKETS_LABEL,
-    MEDIAN_RESOLUTION_TIME_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
 } from 'services/reporting/constants'
 import {getTimezone} from 'state/currentUser/selectors'
 import {OverviewMetric} from 'state/ui/stats/types'
-import {getPreviousPeriod, periodToReportingGranularity} from 'utils/reporting'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {overviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
-import {
-    formatMetricValue,
-    formatTimeSeriesData,
-    SHORT_FORMAT,
-} from './common/utils'
-import MetricCard from './MetricCard'
-import TrendBadge from './TrendBadge'
-import BigNumberMetric from './BigNumberMetric'
+import {periodToReportingGranularity} from 'utils/reporting'
+import {formatTimeSeriesData} from './common/utils'
 import DashboardGridCell from './DashboardGridCell'
 import TipsToggle from './TipsToggle'
 import DashboardSection from './DashboardSection'
-import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import LineChart from './LineChart'
 import {DEFAULT_TIMEZONE} from './constants'
@@ -79,19 +52,6 @@ export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
 export const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
-
-function getBadgeTooltipForPreviousPeriod(statsFilters: StatsFilters) {
-    const period = getPreviousPeriod(statsFilters.period)
-    return `Compared to: ${moment(period.start_datetime).format(
-        SHORT_FORMAT
-    )} - ${moment(period.end_datetime).format(SHORT_FORMAT)}`
-}
-
-const NoDataTooltip = () => (
-    <IconTooltip icon={'help_outline'} className={css.tooltipIcon}>
-        No data available for the selected period.
-    </IconTooltip>
-)
 
 export default function SupportPerformanceOverview() {
     const accountCreatedDatetime = useAppSelector(
@@ -119,46 +79,8 @@ export default function SupportPerformanceOverview() {
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
-    const statsFilters = useAppSelector(getStatsFilters)
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
-
-    const customerSatisfactionTrend = useCustomerSatisfactionTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const medianFirstResponseTimeTrend = useMedianFirstResponseTimeTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const medianResolutionTimeTrend = useMedianResolutionTimeTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const messagesPerTicketTrend = useMessagesPerTicketTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const openTicketsTrend = useOpenTicketsTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const closedTicketsTrend = useClosedTicketsTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const ticketsCreatedTrend = useTicketsCreatedTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const ticketsRepliedTrend = useTicketsRepliedTrend(
-        requestStatsFilters,
-        userTimezone
-    )
-    const messagesSentTrend = useMessagesSentTrend(
-        requestStatsFilters,
-        userTimezone
-    )
 
     const granularity = periodToReportingGranularity(requestStatsFilters.period)
     const ticketsCreatedTimeSeries = useTicketsCreatedTimeSeries(
@@ -181,9 +103,6 @@ export default function SupportPerformanceOverview() {
         userTimezone,
         granularity
     )
-
-    const periodComparisonTooltipText =
-        getBadgeTooltipForPreviousPeriod(statsFilters)
 
     return (
         <div className="full-width">
@@ -226,89 +145,33 @@ export default function SupportPerformanceOverview() {
                     }
                 >
                     <DashboardGridCell size={3}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.CustomerSatisfaction
                             ]}
-                            isLoading={customerSatisfactionTrend.isFetching}
-                            trendBadge={
-                                <TrendBadge
-                                    format={'percent'}
-                                    interpretAs="more-is-better"
-                                    isLoading={!customerSatisfactionTrend.data}
-                                    tooltip={periodComparisonTooltipText}
-                                    value={
-                                        customerSatisfactionTrend.data?.value
-                                    }
-                                    prevValue={
-                                        customerSatisfactionTrend.data
-                                            ?.prevValue
-                                    }
-                                />
-                            }
+                            overviewMetric={OverviewMetric.CustomerSatisfaction}
                             tip={
                                 areTipsVisible &&
                                 (hasSatisfactionSurveyEnabledAndConfigured ? (
                                     <SupportPerformanceTip
                                         metric={MetricName.CustomerSatisfaction}
-                                        data={customerSatisfactionTrend.data}
+                                        {...OverviewMetricConfig[
+                                            OverviewMetric.CustomerSatisfaction
+                                        ]}
                                     />
                                 ) : (
                                     <ActivateCustomerSatisfactionSurveyTip />
                                 ))
                             }
-                        >
-                            <BigNumberMetric
-                                isLoading={!customerSatisfactionTrend.data}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={
-                                        !!customerSatisfactionTrend.data?.value
-                                    }
-                                    metricData={{
-                                        title: CUSTOMER_SATISFACTION_LABEL,
-                                        metricName:
-                                            OverviewMetric.CustomerSatisfaction,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        customerSatisfactionTrend.data?.value
-                                    )}
-                                </DrillDownModalTrigger>
-                                {!customerSatisfactionTrend.data?.value ? (
-                                    <NoDataTooltip />
-                                ) : (
-                                    <img
-                                        className={css.customerSatisfactionStar}
-                                        src={blueStar}
-                                        alt="Blue star"
-                                    />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.MedianFirstResponseTime
                             ]}
-                            isLoading={medianFirstResponseTimeTrend.isFetching}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="less-is-better"
-                                    isLoading={
-                                        !medianFirstResponseTimeTrend.data
-                                    }
-                                    tooltip={periodComparisonTooltipText}
-                                    value={
-                                        medianFirstResponseTimeTrend.data?.value
-                                    }
-                                    prevValue={
-                                        medianFirstResponseTimeTrend.data
-                                            ?.prevValue
-                                    }
-                                />
+                            overviewMetric={
+                                OverviewMetric.MedianFirstResponseTime
                             }
                             tip={
                                 areTipsVisible && (
@@ -316,357 +179,94 @@ export default function SupportPerformanceOverview() {
                                         metric={
                                             MetricName.MedianFirstResponseTime
                                         }
-                                        data={medianFirstResponseTimeTrend.data}
+                                        {...OverviewMetricConfig[
+                                            OverviewMetric
+                                                .MedianFirstResponseTime
+                                        ]}
                                     />
                                 )
                             }
-                        >
-                            <BigNumberMetric
-                                isLoading={!medianFirstResponseTimeTrend.data}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={
-                                        !!medianFirstResponseTimeTrend.data
-                                            ?.value
-                                    }
-                                    metricData={{
-                                        title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
-                                        metricName:
-                                            OverviewMetric.MedianFirstResponseTime,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        medianFirstResponseTimeTrend.data
-                                            ?.value,
-                                        'duration'
-                                    )}
-                                </DrillDownModalTrigger>
-
-                                {!medianFirstResponseTimeTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.MedianResolutionTime
                             ]}
-                            isLoading={medianResolutionTimeTrend.isFetching}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="less-is-better"
-                                    isLoading={!medianResolutionTimeTrend.data}
-                                    tooltip={periodComparisonTooltipText}
-                                    value={
-                                        medianResolutionTimeTrend.data?.value
-                                    }
-                                    prevValue={
-                                        medianResolutionTimeTrend.data
-                                            ?.prevValue
-                                    }
-                                />
-                            }
+                            overviewMetric={OverviewMetric.MedianResolutionTime}
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
+                                        {...OverviewMetricConfig[
+                                            OverviewMetric.MedianResolutionTime
+                                        ]}
                                         metric={MetricName.MedianResolutionTime}
-                                        data={medianResolutionTimeTrend.data}
                                     />
                                 )
                             }
-                        >
-                            <BigNumberMetric
-                                isLoading={!medianResolutionTimeTrend.data}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={
-                                        !!medianResolutionTimeTrend.data?.value
-                                    }
-                                    metricData={{
-                                        title: MEDIAN_RESOLUTION_TIME_LABEL,
-                                        metricName:
-                                            OverviewMetric.MedianResolutionTime,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        medianResolutionTimeTrend.data?.value,
-                                        'duration'
-                                    )}
-                                </DrillDownModalTrigger>
-
-                                {!medianResolutionTimeTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.MessagesPerTicket
                             ]}
-                            isLoading={messagesPerTicketTrend.isFetching}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="less-is-better"
-                                    isLoading={!messagesPerTicketTrend.data}
-                                    tooltip={periodComparisonTooltipText}
-                                    value={messagesPerTicketTrend.data?.value}
-                                    prevValue={
-                                        messagesPerTicketTrend.data?.prevValue
-                                    }
-                                />
-                            }
+                            overviewMetric={OverviewMetric.MessagesPerTicket}
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
                                         metric={MetricName.MessagesPerTicket}
-                                        data={messagesPerTicketTrend.data}
+                                        {...OverviewMetricConfig[
+                                            OverviewMetric.MessagesPerTicket
+                                        ]}
                                     />
                                 )
                             }
-                        >
-                            <BigNumberMetric
-                                isLoading={!messagesPerTicketTrend.data}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={
-                                        !!messagesPerTicketTrend.data?.value
-                                    }
-                                    metricData={{
-                                        title: MESSAGES_PER_TICKET_LABEL,
-                                        metricName:
-                                            OverviewMetric.MessagesPerTicket,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        messagesPerTicketTrend.data?.value
-                                    )}
-                                </DrillDownModalTrigger>
-                                {!messagesPerTicketTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
+
                 <DashboardSection title="Workload">
                     <DashboardGridCell size={6}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.OpenTickets
                             ]}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="neutral"
-                                    isLoading={!openTicketsTrend.data}
-                                    prevValue={openTicketsTrend.data?.prevValue}
-                                    tooltip={periodComparisonTooltipText}
-                                    value={openTicketsTrend.data?.value}
-                                />
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={!openTicketsTrend.data}
-                                from={formatMetricValue(
-                                    openTicketsTrend.data?.prevValue
-                                )}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={!!openTicketsTrend.data?.value}
-                                    metricData={{
-                                        title: OPEN_TICKETS_LABEL,
-                                        metricName: OverviewMetric.OpenTickets,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        openTicketsTrend.data?.value
-                                    )}
-                                </DrillDownModalTrigger>
-
-                                {!openTicketsTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                            overviewMetric={OverviewMetric.OpenTickets}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.TicketsClosed
                             ]}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="neutral"
-                                    isLoading={!closedTicketsTrend.data}
-                                    prevValue={
-                                        closedTicketsTrend.data?.prevValue
-                                    }
-                                    tooltip={periodComparisonTooltipText}
-                                    value={closedTicketsTrend.data?.value}
-                                />
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={!closedTicketsTrend.data}
-                                from={formatMetricValue(
-                                    closedTicketsTrend.data?.prevValue
-                                )}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={!!closedTicketsTrend.data?.value}
-                                    metricData={{
-                                        title: TICKETS_CLOSED_LABEL,
-                                        metricName:
-                                            OverviewMetric.TicketsClosed,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        closedTicketsTrend.data?.value
-                                    )}
-                                </DrillDownModalTrigger>
-
-                                {!closedTicketsTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                            overviewMetric={OverviewMetric.TicketsClosed}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.TicketsCreated
                             ]}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="neutral"
-                                    isLoading={!ticketsCreatedTrend.data}
-                                    prevValue={
-                                        ticketsCreatedTrend.data?.prevValue
-                                    }
-                                    tooltip={periodComparisonTooltipText}
-                                    value={ticketsCreatedTrend.data?.value}
-                                />
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={!ticketsCreatedTrend.data}
-                                from={formatMetricValue(
-                                    ticketsCreatedTrend.data?.prevValue
-                                )}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={!!ticketsCreatedTrend.data?.value}
-                                    metricData={{
-                                        title: TICKETS_CREATED_LABEL,
-                                        metricName:
-                                            OverviewMetric.TicketsCreated,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        ticketsCreatedTrend.data?.value
-                                    )}
-                                </DrillDownModalTrigger>
-
-                                {!ticketsCreatedTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                            overviewMetric={OverviewMetric.TicketsCreated}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.TicketsReplied
                             ]}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="neutral"
-                                    isLoading={!ticketsRepliedTrend.data}
-                                    prevValue={
-                                        ticketsRepliedTrend.data?.prevValue
-                                    }
-                                    tooltip={periodComparisonTooltipText}
-                                    value={ticketsRepliedTrend.data?.value}
-                                />
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={!ticketsRepliedTrend.data}
-                                from={formatMetricValue(
-                                    ticketsRepliedTrend.data?.prevValue
-                                )}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={!!ticketsRepliedTrend.data?.value}
-                                    metricData={{
-                                        title: TICKETS_REPLIED_LABEL,
-                                        metricName:
-                                            OverviewMetric.TicketsReplied,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        ticketsRepliedTrend.data?.value
-                                    )}
-                                </DrillDownModalTrigger>
-
-                                {!ticketsRepliedTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                            overviewMetric={OverviewMetric.TicketsReplied}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
-                        <MetricCard
-                            {...overviewMetricConfig[
+                        <TrendCard
+                            {...OverviewMetricConfig[
                                 OverviewMetric.MessagesSent
                             ]}
-                            trendBadge={
-                                <TrendBadge
-                                    format="percent"
-                                    interpretAs="neutral"
-                                    isLoading={!messagesSentTrend.data}
-                                    prevValue={
-                                        messagesSentTrend.data?.prevValue
-                                    }
-                                    tooltip={periodComparisonTooltipText}
-                                    value={messagesSentTrend.data?.value}
-                                />
-                            }
-                        >
-                            <BigNumberMetric
-                                isLoading={!messagesSentTrend.data}
-                                from={formatMetricValue(
-                                    messagesSentTrend.data?.prevValue
-                                )}
-                            >
-                                <DrillDownModalTrigger
-                                    enabled={!!messagesSentTrend.data?.value}
-                                    metricData={{
-                                        title: MESSAGES_SENT_LABEL,
-                                        metricName: OverviewMetric.MessagesSent,
-                                    }}
-                                >
-                                    {formatMetricValue(
-                                        messagesSentTrend.data?.value
-                                    )}
-                                </DrillDownModalTrigger>
-
-                                {!messagesSentTrend.data?.value && (
-                                    <NoDataTooltip />
-                                )}
-                            </BigNumberMetric>
-                        </MetricCard>
+                            overviewMetric={OverviewMetric.MessagesSent}
+                        />
                     </DashboardGridCell>
-
                     <DashboardGridCell size={6}>
                         <ChartCard
                             title={TICKETS_CREATED_LABEL}
