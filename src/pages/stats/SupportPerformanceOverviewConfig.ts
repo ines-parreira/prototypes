@@ -10,6 +10,7 @@ import {
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
+import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -32,6 +33,7 @@ export const OverviewMetricConfig: Record<
         useTrend: MetricTrendHook
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         withFrom: boolean
+        metricFormat?: MetricTrendFormat
     }
 > = {
     [OverviewMetric.CustomerSatisfaction]: {
@@ -51,6 +53,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#2-first-response-time',
         },
         interpretAs: 'less-is-better',
+        metricFormat: 'duration',
         useTrend: useMedianFirstResponseTimeTrend,
         withFrom: false,
     },
@@ -61,6 +64,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#3-resolution-time',
         },
         interpretAs: 'less-is-better',
+        metricFormat: 'duration',
         useTrend: useMedianResolutionTimeTrend,
         withFrom: false,
     },

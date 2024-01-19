@@ -6,7 +6,7 @@ import {NoDataTooltip} from 'pages/stats/support-performance/components/NoDataTo
 import useAppSelector from 'hooks/useAppSelector'
 import blueStar from 'assets/img/icons/blue-star.svg'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {formatMetricValue, MetricTrendFormat} from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import css from 'pages/stats/SupportPerformanceOverview.less'
@@ -22,6 +22,7 @@ export const TrendCard = ({
     tip,
     interpretAs,
     withFrom,
+    metricFormat,
 }: {
     useTrend: MetricTrendHook
     hint: TooltipData
@@ -30,6 +31,7 @@ export const TrendCard = ({
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     withFrom: boolean
+    metricFormat?: MetricTrendFormat
 }) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -66,7 +68,7 @@ export const TrendCard = ({
                         metricName: overviewMetric,
                     }}
                 >
-                    {formatMetricValue(trend.data?.value)}
+                    {formatMetricValue(trend.data?.value, metricFormat)}
                 </DrillDownModalTrigger>
                 {!trend.data?.value ? (
                     <NoDataTooltip />
