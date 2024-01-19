@@ -92,6 +92,7 @@ describe('VoiceOverview', () => {
 
         // filters
         expect(queryByText('All integrations')).toBeInTheDocument()
+        expect(queryByText('1 agent')).toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
 
         // caller experience cards

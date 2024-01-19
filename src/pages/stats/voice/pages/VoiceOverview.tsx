@@ -36,6 +36,7 @@ import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import ChartCard from 'pages/stats/ChartCard'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
@@ -72,6 +73,12 @@ function VoiceOverview() {
                         isMultiple
                         variant={'ghost'}
                     />
+                    {displayVoiceAnalyticsNiceToHave && (
+                        <AgentsStatsFilter
+                            value={pageStatsFilters.agents}
+                            variant={'ghost'}
+                        />
+                    )}
                     <PeriodStatsFilter
                         initialSettings={{
                             minDate: moment(
