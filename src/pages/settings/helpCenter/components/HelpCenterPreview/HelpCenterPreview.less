@@ -1,49 +1,44 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography.less';
 
 :local {
     .container {
         background: var(--neutral-grey-1);
-        overflow: hidden;
-        border-radius: 5px;
         width: 384px;
+        overflow: hidden;
         height: 680px;
-        pointer-events: none;
-        box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
+        box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
         display: flex;
         flex-direction: column;
     }
 
-    .topBar {
-        display: block;
-        height: 2em;
-        min-height: 2em;
-        padding-left: 0.4em;
-        background-color: #edeeef;
-
-        &:before {
-            display: block;
-            width: 4.2em;
-            height: 100%;
-            content: '';
-            background-image: radial-gradient(
-                ellipse at center,
-                #f8f9fa 0%,
-                #f8f9fa 45%,
-                transparent 45%
-            );
-            background-repeat: repeat-x;
-            background-size: 1.4em 1.4em;
-            background-position: 0 center;
-        }
+    .header {
+        height: 72px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: @layout-spacing-m @layout-spacing-s;
+        background: var(--neutral-grey-0);
     }
 
-    .titleBar {
+    .name {
         .heading-section-semibold();
         color: var(--neutral-grey-6);
-        padding: 24px 16px;
-        height: 72px;
         text-align: center;
-        background: var(--neutral-grey-0);
-        margin-bottom: 11px;
+    }
+
+    .menu {
+        font-size: @heading-page-regular-font-size;
+    }
+
+    .logo {
+        height: 32px; // this value from help center front project
+        max-width: 100%;
+        padding-right: @layout-spacing-xs; // safe zone
+    }
+
+    .content {
+        padding: @layout-spacing-m @layout-spacing-s;
+        overflow-y: auto;
     }
 }

@@ -4,7 +4,6 @@
 
 :local {
     .orderManagementContainer {
-        background-color: var(--neutral-grey-0);
         color: var(--neutral-grey-6);
         flex: 1;
 
@@ -24,7 +23,6 @@
     .orderManagementItemsContainer {
         display: flex;
         flex-direction: column;
-        padding: @layout-spacing-m;
         row-gap: @layout-spacing-s;
     }
 
@@ -32,6 +30,7 @@
         .heading-subsection-semibold();
         display: flex;
         align-items: center;
+        background-color: var(--neutral-grey-0);
         column-gap: @layout-spacing-s;
         border: 1px solid var(--neutral-grey-3);
         border-radius: 8px;
@@ -48,6 +47,7 @@
         display: flex;
         align-items: center;
         column-gap: @layout-spacing-s;
+        background-color: var(--neutral-grey-0);
         border: 1px solid var(--neutral-grey-3);
         border-radius: 8px;
         padding: @layout-spacing-m @layout-spacing-s;
@@ -81,7 +81,7 @@
         .heading-subsection-regular();
         display: flex;
         align-items: center;
-        margin: 13px @layout-spacing-s @layout-spacing-m;
+        margin: 13px 0;
         padding: @layout-spacing-s;
         gap: @layout-spacing-xs;
         filter: drop-shadow(0px 2px 4px rgba(22, 22, 22, 0.16));
@@ -99,7 +99,7 @@
         font-weight: 600;
         font-size: 24px;
         line-height: 32px;
-        margin: 64px @layout-spacing-s 40px;
+        margin: 64px 0 40px;
     }
 
     .seeAll {
@@ -109,7 +109,6 @@
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        margin: 0 @layout-spacing-s;
         gap: @layout-spacing-xxs;
         text-transform: capitalize;
     }
@@ -127,6 +126,8 @@
 
     .article {
         display: flex;
+        border-radius: @layout-spacing-xs;
+        border: 1px solid var(--neutral-grey-3);
         flex-direction: column;
         padding: @layout-spacing-m;
         gap: @layout-spacing-xxs;
