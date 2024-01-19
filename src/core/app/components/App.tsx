@@ -7,7 +7,6 @@ import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBa
 import KeyboardHelp from 'pages/common/components/KeyboardHelp/KeyboardHelp'
 import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
 import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
-import RoutingRuleDecomissionBanner from 'pages/common/components/RoutingRuleDecomissionBanner/RoutingRuleDecomissionBanner'
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import {useTheme} from 'theme'
 
@@ -38,7 +37,6 @@ export default function App({children}: Props) {
             <BannerNotifications />
             <EmailMigrationBanner />
             <EmailDisconnectedBanner />
-            <RoutingRuleDecomissionBanner />
             <ScriptTagMigrationBanner />
             <ScriptTagMigrationModal />
             <Spotlight />
