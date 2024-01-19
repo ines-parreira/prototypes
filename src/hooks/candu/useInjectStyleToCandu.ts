@@ -11,9 +11,6 @@ const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
             }
             .candu-card {
                 --background-color: var(--neutral-grey-0) !important;
-                &:hover {
-                    --box-shadow: 0px 4px 4px 0px var(--neutral-grey-2) !important;
-                }
             }
             .candu-checklist--group-title {
                 --color: var(--neutral-grey-6) !important;
@@ -26,7 +23,7 @@ const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
             .variant-base.candu-card {
                 --color: var(--neutral-grey-6) !important;
                 --background-color: var(--neutral-grey-0) !important;
-                --border-color: var(--neutral-grey-4) !important;
+                --border-color: var(--neutral-grey-3) !important;
             }
             .candu-link {
                 --color: var(--main-primary) !important;

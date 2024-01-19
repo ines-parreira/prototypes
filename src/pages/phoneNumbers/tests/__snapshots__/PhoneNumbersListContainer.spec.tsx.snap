@@ -32,7 +32,6 @@ exports[`<PhoneNumberListContainer /> render() should render Candu selector with
       class="row"
     >
       <div
-        class="container-fluid"
         data-candu-id="phone-numbers-empty-placeholder"
       />
     </div>

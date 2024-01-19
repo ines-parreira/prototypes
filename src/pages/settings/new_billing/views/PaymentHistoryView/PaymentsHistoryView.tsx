@@ -6,6 +6,8 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {AxiosError} from 'axios'
 
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import useCallbackRef from 'hooks/useCallbackRef'
 import GorgiasApi from 'services/gorgiasApi'
 import {fetchInvoices, updateInvoiceInList} from 'state/billing/actions'
 import {notify} from 'state/notifications/actions'
@@ -27,6 +29,8 @@ const PaymentsHistoryView = () => {
     const [invoiceBeingPaid, setInvoiceBeingPaid] = useState<Invoice | null>(
         null
     )
+    const [descriptionNode, setDescriptionNode] = useCallbackRef()
+    useInjectStyleToCandu(descriptionNode)
 
     useEffect(() => {
         const getInvoices = async () => {
@@ -99,18 +103,20 @@ const PaymentsHistoryView = () => {
         }
     }
 
-    if (isLoading) {
-        return <Loader data-testid="loader" />
-    }
-
-    return (
+    return isLoading ? (
+        <Loader data-testid="loader" />
+    ) : (
         <div className={css.container}>
             <div className={css.header}>
                 <div className={css.title}>
                     <i className="material-icons">receipt</i>
                     Payment history
                 </div>
-                <div className={css.description}>
+                <div
+                    className={css.description}
+                    data-candu-id="payment-history"
+                    ref={setDescriptionNode}
+                >
                     The account owner will receive an invoice by email at the
                     start of each billing period.
                 </div>

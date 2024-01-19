@@ -15,6 +15,8 @@ import history from 'pages/history'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import useCallbackRef from 'hooks/useCallbackRef'
 
 import css from 'pages/settings/settings.less'
 
@@ -40,6 +42,8 @@ export function PhoneNumbersListContainer() {
             }
         }
     )
+    const [placeholderNode, setPlaceholderNode] = useCallbackRef()
+    useInjectStyleToCandu(placeholderNode)
 
     useEffect(() => {
         void handleFetchPhoneNumbers()
@@ -66,9 +70,9 @@ export function PhoneNumbersListContainer() {
                         <Loader />
                     ) : (
                         <Row>
-                            <Container
-                                fluid
+                            <div
                                 data-candu-id="phone-numbers-empty-placeholder"
+                                ref={setPlaceholderNode}
                             />
                         </Row>
                     ))}
