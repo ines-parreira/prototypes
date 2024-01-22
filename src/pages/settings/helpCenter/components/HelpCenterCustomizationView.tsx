@@ -156,6 +156,7 @@ export const HelpCenterCustomizationView = () => {
         footerNavigation.resetFields()
         socialNavigation.resetFields()
         setLogoHyperlink(translation?.logo_hyperlink || '')
+        setLogoHyperlinkErrMessage('')
         setIsDirty(false)
     }
     const handleSaveLinks = async () => {
