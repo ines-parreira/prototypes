@@ -103,7 +103,13 @@ module.exports = {
         '@typescript-eslint/no-unsafe-argument': ['off'],
         '@typescript-eslint/no-floating-promises': [2, {ignoreVoid: true}],
         '@typescript-eslint/ban-ts-comment': ['off'],
-        '@typescript-eslint/no-unused-vars': ['error'],
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            {
+                argsIgnorePattern: '^__',
+                varsIgnorePattern: '^__',
+            },
+        ],
         '@typescript-eslint/no-explicit-any': ['off'],
         '@typescript-eslint/explicit-module-boundary-types': ['off'],
         '@typescript-eslint/no-non-null-assertion': ['off'],
