@@ -68,7 +68,7 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
                     '/img/paywalls/screens/automate_paywall_statistics.png'
                 ),
                 description:
-                    'Track performance and improve your automations with dedicated statistics',
+                    'Track performance and improve your automations with dedicated statistics.',
             },
         ],
     },
@@ -90,7 +90,7 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
                     '/img/paywalls/screens/automate_paywall_statistics.png'
                 ),
                 description:
-                    'Track performance and improve your automations with dedicated statistics',
+                    'Track performance and improve your automations with dedicated statistics.',
             },
             {
                 imageUrl: assetsUrl(
