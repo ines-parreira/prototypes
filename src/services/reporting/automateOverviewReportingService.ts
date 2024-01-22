@@ -5,7 +5,6 @@ import {
     CURRENT_PERIOD_LABEL,
     DATE_TIME_FORMAT,
     EMPTY_LABEL,
-    NOT_AVAILABLE_LABEL,
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
 import {createCsv, saveZippedFiles} from 'utils/file'
@@ -50,9 +49,8 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
         automatedInteractionTrend,
     } = data
 
-    const round = (value?: number | null) =>
-        value ? Math.round(value) : NOT_AVAILABLE_LABEL
-    const ifNullNa = (value?: number | null) => value || NOT_AVAILABLE_LABEL
+    const round = (value?: number | null) => (value ? Math.round(value) : 0)
+    const ifNullNa = (value?: number | null) => value || 0
 
     const impactData = () => [
         [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
