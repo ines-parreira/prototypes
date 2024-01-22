@@ -68,4 +68,20 @@ describe('<SettingsNavbar />', () => {
 
         expect(screen.getByText('Click Tracking')).toBeInTheDocument()
     })
+
+    it('should render the link to the Convert Installations when bundle installation is allowed for all', () => {
+        mockFlags({
+            [FeatureFlagKey.ConvertCampaignBundleWarning]: true,
+        })
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <ThemeProvider>
+                    <SettingsNavbar />
+                </ThemeProvider>
+            </Provider>,
+            {path: '/'}
+        )
+
+        expect(screen.getByText('Installations')).toBeInTheDocument()
+    })
 })
