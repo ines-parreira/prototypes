@@ -169,3 +169,18 @@ export type HelpCenterPageEmbedment = Components.Schemas.PageEmbedmentDto
 
 // ARTICLE TEMPLATE
 export type ArticleTemplate = Components.Schemas.ArticleTemplateDto
+
+// HELP CENTER CREATION WIZARD
+export enum HelpCenterCreationWizardStep {
+    Initialization = 'initialization',
+    Basics = 'basics',
+    Branding = 'branding',
+    Articles = 'articles',
+    Automate = 'automate',
+}
+
+export enum HelpCenterAutomateType {
+    NON_AUTOMATE = 'non-automate',
+    AUTOMATE_NO_STORE = 'automate-no-store',
+    AUTOMATE = 'automate',
+}

@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 import {Container} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -39,6 +40,7 @@ import {
 
 import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
 import {SearchContextProvider} from '../SearchContext'
@@ -46,6 +48,7 @@ import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
 import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
 import HelpCenterPaywall from '../../components/Paywalls/HelpCenterPaywall'
 import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
+import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
 
 const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -57,6 +60,9 @@ const CurrentHelpCenter: React.FC = () => {
     const helpCenter = useAppSelector(getCurrentHelpCenter)
     const viewLanguage = useAppSelector(getViewLanguage)
 
+    const helpCenterCreationWizard =
+        useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
+
     useEffect(() => {
         async function init() {
             if (client && helpCenterId) {
@@ -64,6 +70,7 @@ const CurrentHelpCenter: React.FC = () => {
                     const {data: helpCenter} = await client.getHelpCenter({
                         help_center_id: helpCenterId,
                         fields: ['translations'],
+                        with_wizard: true,
                     })
 
                     dispatch(changeHelpCenterId(helpCenter.id))
@@ -175,6 +182,18 @@ const CurrentHelpCenter: React.FC = () => {
                     exact
                     component={HelpCenterMaintenanceView}
                 />
+                {helpCenterCreationWizard && (
+                    <Route
+                        path={`${path}/new`}
+                        exact
+                        render={() => (
+                            <HelpCenterCreationWizard
+                                helpCenter={helpCenter}
+                                isUpdate
+                            />
+                        )}
+                    />
+                )}
             </Switch>
         </CurrentHelpCenterContext.Provider>
     )

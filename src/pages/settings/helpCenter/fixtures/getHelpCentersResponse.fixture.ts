@@ -31,6 +31,9 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             email_integration: null,
             automation_settings_id: null,
             account_id: 1,
+            wizard: {
+                step_name: 'automate',
+            },
         },
         {
             id: 2,

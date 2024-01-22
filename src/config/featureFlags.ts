@@ -51,6 +51,7 @@ export enum FeatureFlagKey {
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     HelpCenterAnalytics = 'help-center-analytics',
     HelpCenterAutoEmbed = 'help-center-auto-embed',
+    HelpCenterCreationWizard = 'help-center-creation-wizard',
     HelpCenterLogoHyperlink = 'help-center-logo-hyperlink',
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterSubjectLines = 'help-center-subject-lines',

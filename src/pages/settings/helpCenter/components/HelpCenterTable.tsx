@@ -2,7 +2,12 @@ import React, {MouseEvent, useCallback} from 'react'
 import moment from 'moment'
 
 import classNames from 'classnames'
-import {HelpCenter, Locale} from 'models/helpCenter/types'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {
+    HelpCenter,
+    HelpCenterCreationWizardStep,
+    Locale,
+} from 'models/helpCenter/types'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import Loader from 'pages/common/components/Loader/Loader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -13,6 +18,8 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import Button from 'pages/common/components/button/Button'
+import {FeatureFlagKey} from 'config/featureFlags'
 import IconButton from '../../../common/components/button/IconButton'
 import css from './HelpCenterTable.less'
 import StoreName from './StoreName'
@@ -23,7 +30,10 @@ type Props = {
     locales: {
         [key: string]: Locale
     }
-    onClick: (helpCenter: HelpCenter) => void
+    onClick: (
+        helpCenter: HelpCenter,
+        shouldNavigateToWizardCreation?: boolean
+    ) => void
     duplicateHelpCenter: (helpCenter: HelpCenter) => void
 }
 
@@ -34,6 +44,9 @@ export const HelpCenterTable: React.FC<Props> = ({
     onClick,
     duplicateHelpCenter,
 }) => {
+    const helpCenterCreationWizard =
+        useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
+
     const handleDuplicate = useCallback(
         (helpCenter: HelpCenter, event: MouseEvent): void => {
             event.stopPropagation()
@@ -41,6 +54,27 @@ export const HelpCenterTable: React.FC<Props> = ({
             duplicateHelpCenter(helpCenter)
         },
         [duplicateHelpCenter]
+    )
+
+    const isHelpCenterCreationWizardInProgress = useCallback(
+        (helpCenter: HelpCenter): boolean => {
+            return !!(
+                helpCenterCreationWizard &&
+                helpCenter?.wizard &&
+                !helpCenter.wizard.completed
+            )
+        },
+        [helpCenterCreationWizard]
+    )
+
+    const handleNextPage = useCallback(
+        (helpCenter: HelpCenter): void => {
+            const shouldNavigateToWizardCreation =
+                isHelpCenterCreationWizardInProgress(helpCenter)
+
+            onClick(helpCenter, shouldNavigateToWizardCreation)
+        },
+        [onClick, isHelpCenterCreationWizardInProgress]
     )
 
     if (isLoading) {
@@ -63,12 +97,14 @@ export const HelpCenterTable: React.FC<Props> = ({
             <TableBody>
                 {list.map((helpCenter) => {
                     const {id} = helpCenter
+                    const isHCWizardInProgress =
+                        isHelpCenterCreationWizardInProgress(helpCenter)
 
                     return (
                         <TableBodyRow
                             className={css.tableBodyRow}
                             key={id}
-                            onClick={() => onClick(helpCenter)}
+                            onClick={() => handleNextPage(helpCenter)}
                         >
                             <BodyCell className={css.helpCenterName}>
                                 {helpCenter.name}
@@ -97,34 +133,54 @@ export const HelpCenterTable: React.FC<Props> = ({
                             </BodyCell>
 
                             <BodyCell innerClassName={css.bodyCell}>
-                                <IconButton
-                                    className={css.iconButton}
-                                    fillStyle="ghost"
-                                    intent="secondary"
-                                    onClick={(event) =>
-                                        handleDuplicate(helpCenter, event)
-                                    }
-                                    title="Duplicate Help Center"
-                                >
-                                    file_copy
-                                </IconButton>
+                                {!isHCWizardInProgress && (
+                                    <IconButton
+                                        className={css.iconButton}
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        onClick={(event) =>
+                                            handleDuplicate(helpCenter, event)
+                                        }
+                                        title="Duplicate Help Center"
+                                    >
+                                        file_copy
+                                    </IconButton>
+                                )}
                             </BodyCell>
+
                             <BodyCell
                                 className={css.lastBodyCell}
                                 innerClassName={css.bodyCell}
                             >
-                                <IconButton
-                                    className={classNames(
-                                        css.iconButton,
-                                        css.chevronRight
-                                    )}
-                                    fillStyle="ghost"
-                                    intent="secondary"
-                                    onClick={() => onClick(helpCenter)}
-                                    title="Open Help Center"
-                                >
-                                    chevron_right
-                                </IconButton>
+                                {isHCWizardInProgress ? (
+                                    <Button
+                                        fillStyle="ghost"
+                                        onClick={() =>
+                                            handleNextPage(helpCenter)
+                                        }
+                                        title="Start Setup"
+                                    >
+                                        {helpCenter.wizard?.step_name ===
+                                        HelpCenterCreationWizardStep.Initialization
+                                            ? 'Start Setup'
+                                            : 'Continue Setup'}
+                                    </Button>
+                                ) : (
+                                    <IconButton
+                                        className={classNames(
+                                            css.iconButton,
+                                            css.chevronRight
+                                        )}
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        onClick={() =>
+                                            handleNextPage(helpCenter)
+                                        }
+                                        title="Open Help Center"
+                                    >
+                                        chevron_right
+                                    </IconButton>
+                                )}
                             </BodyCell>
                         </TableBodyRow>
                     )

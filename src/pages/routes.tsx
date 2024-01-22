@@ -156,6 +156,7 @@ import AutomateStatsPaywall from './stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from './automate/trainMyAi/TrainMyAiViewContainer'
 import AutomateRoute from './automate/common/components/AutomateRoute'
 import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrationApi'
+import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCenterCreationWizard'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -742,6 +743,9 @@ export function SettingsRoutes() {
     const isNavbarImprovementsEnabled: boolean =
         useFlags()[FeatureFlagKey.NavbarImprovements] || false
 
+    const isHelpCenterCreationWizardEnabled: boolean =
+        useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
+
     return (
         <Switch>
             <Route
@@ -772,7 +776,14 @@ export function SettingsRoutes() {
             {window.location.hostname.indexOf('gorgias.help') === -1 && (
                 <Route
                     path={`${path}/help-center`}
-                    render={HelpCenterSettingsRoutes}
+                    render={(props) => (
+                        <HelpCenterSettingsRoutes
+                            isHelpCenterCreationWizardEnabled={
+                                isHelpCenterCreationWizardEnabled
+                            }
+                            {...props}
+                        />
+                    )}
                 />
             )}
             {!!isDecoupleContactFormEnabled && (
@@ -1251,7 +1262,14 @@ export function ContactFormSettingsRoutes() {
     )
 }
 
-export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
+interface HelpCenterSettingsRoutesProps extends RouteComponentProps {
+    isHelpCenterCreationWizardEnabled: boolean
+}
+
+export function HelpCenterSettingsRoutes({
+    match: {path},
+    isHelpCenterCreationWizardEnabled,
+}: HelpCenterSettingsRoutesProps) {
     return (
         <HelpCenterApiClientProvider>
             <MigrationApiClientProvider>
@@ -1276,7 +1294,11 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                             exact
                             render={() => (
                                 <App
-                                    content={HelpCenterNewView}
+                                    content={
+                                        isHelpCenterCreationWizardEnabled
+                                            ? HelpCenterCreationWizard
+                                            : HelpCenterNewView
+                                    }
                                     navbar={SettingsNavbar}
                                 />
                             )}

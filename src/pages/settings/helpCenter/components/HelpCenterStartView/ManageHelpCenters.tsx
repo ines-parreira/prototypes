@@ -58,12 +58,16 @@ export const ManageHelpCenters = ({
 
     const {getProductBanner, updateProductBanner} = useProductBannerStorage()
 
-    const navigateToArticles = useCallback(
-        (currentHelpCenter: HelpCenter) => {
+    const navigateToNextPage = useCallback(
+        (
+            currentHelpCenter: HelpCenter,
+            shouldNavigateToWizardCreation = false
+        ) => {
             dispatch(changeHelpCenterId(currentHelpCenter.id))
             dispatch(changeViewLanguage(currentHelpCenter.default_locale))
+            const path = shouldNavigateToWizardCreation ? 'new' : 'articles'
             history.push(
-                `${HELP_CENTER_BASE_PATH}/${currentHelpCenter.id}/articles`
+                `${HELP_CENTER_BASE_PATH}/${currentHelpCenter.id}/${path}`
             )
         },
         [history, dispatch]
@@ -108,13 +112,13 @@ export const ManageHelpCenters = ({
 
                     dispatch(helpCenterCreated(newHelpCenter))
 
-                    navigateToArticles(newHelpCenter)
+                    navigateToNextPage(newHelpCenter)
                 })
                 .catch(() => {
                     void dispatch(errorNotification)
                 })
         },
-        [client, dispatch, navigateToArticles]
+        [client, dispatch, navigateToNextPage]
     )
 
     useEffect(() => {
@@ -177,7 +181,7 @@ export const ManageHelpCenters = ({
                             list={helpCenterList}
                             isLoading={helpCenterList.length === 0 && isLoading}
                             locales={localesByCode}
-                            onClick={navigateToArticles}
+                            onClick={navigateToNextPage}
                             duplicateHelpCenter={duplicateHelpCenter}
                         />
                     </div>

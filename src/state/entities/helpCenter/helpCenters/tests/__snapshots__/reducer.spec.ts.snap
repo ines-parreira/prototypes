@@ -34,6 +34,9 @@ exports[`helpCenters reducer createHelpCenter action should add a new help cente
       "theme": "light",
       "uid": "1",
       "updated_datetime": "2021-05-17T18:21:42.022Z",
+      "wizard": {
+        "step_name": "automate",
+      },
     },
   },
 }
@@ -113,6 +116,9 @@ exports[`helpCenters reducer fetchHelpCenter action should add a new help center
       "theme": "light",
       "uid": "1",
       "updated_datetime": "2021-05-17T18:21:42.022Z",
+      "wizard": {
+        "step_name": "automate",
+      },
     },
   },
 }
@@ -152,6 +158,9 @@ exports[`helpCenters reducer fetchHelpCenters action should add the help centers
       "theme": "light",
       "uid": "1",
       "updated_datetime": "2021-05-17T18:21:42.022Z",
+      "wizard": {
+        "step_name": "automate",
+      },
     },
     "2": {
       "account_id": 1,
@@ -290,6 +299,9 @@ exports[`helpCenters reducer updateHelpCenter action should replace an existing 
       "theme": "light",
       "uid": "1",
       "updated_datetime": "2021-05-17T18:21:42.022Z",
+      "wizard": {
+        "step_name": "automate",
+      },
     },
     "2": {
       "account_id": 1,

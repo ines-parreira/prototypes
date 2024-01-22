@@ -59,6 +59,7 @@ export const useHelpCenterList = (
                     } = await client.listHelpCenters({
                         ...params,
                         page: page + 1,
+                        with_wizard: true,
                     })
 
                     dispatch(

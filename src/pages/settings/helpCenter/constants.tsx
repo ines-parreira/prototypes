@@ -1,6 +1,7 @@
 import React from 'react'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 import {
+    HelpCenterCreationWizardStep,
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
@@ -214,4 +215,35 @@ export const HELP_CENTER_EMBED_FORM_TEXTS = {
             <br /> to embed the Help Center
         </>
     ),
+}
+
+// Help Center Creation Wizard configuration
+
+export const HELP_CENTER_STEPS_LABELS: Partial<
+    Record<HelpCenterCreationWizardStep, string>
+> = {
+    [HelpCenterCreationWizardStep.Basics]: 'Set up the basics',
+    [HelpCenterCreationWizardStep.Branding]: 'Add your branding',
+    [HelpCenterCreationWizardStep.Articles]: 'Add articles',
+    [HelpCenterCreationWizardStep.Automate]: 'Automate',
+}
+
+export const HELP_CENTER_STEPS_TITLES: Partial<
+    Record<HelpCenterCreationWizardStep, string>
+> = {
+    [HelpCenterCreationWizardStep.Basics]: 'Set up the basics',
+    [HelpCenterCreationWizardStep.Branding]: 'Add your branding',
+    [HelpCenterCreationWizardStep.Articles]: 'Add articles using templates',
+    [HelpCenterCreationWizardStep.Automate]: 'Automate',
+}
+
+export const HELP_CENTER_STEPS_DESCRIPTIONS: Partial<
+    Record<HelpCenterCreationWizardStep, string>
+> = {
+    [HelpCenterCreationWizardStep.Branding]:
+        'Give the Help Center your brands look and feel. Additional customization available later.',
+    [HelpCenterCreationWizardStep.Articles]:
+        'The template language is based on the default language set in Step 1. You can import your own articles after onboarding.',
+    [HelpCenterCreationWizardStep.Automate]:
+        'Start getting the most from Automate now.',
 }
