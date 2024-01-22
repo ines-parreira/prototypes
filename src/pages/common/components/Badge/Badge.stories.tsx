@@ -56,6 +56,16 @@ export const Default = Template.bind({})
 Default.args = defaultProps
 Default.parameters = templateParameters
 
+export const AvailableTypes = () => (
+    <>
+        {Object.values(ColorType).map((type) => (
+            <Badge key={type} type={type}>
+                {type}
+            </Badge>
+        ))}
+    </>
+)
+
 export const WithIcon = Template.bind({})
 WithIcon.args = {
     ...defaultProps,

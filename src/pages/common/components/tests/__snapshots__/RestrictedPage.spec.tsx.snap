@@ -114,7 +114,7 @@ exports[`<RestrictedPage/> should render for agent role and include higher permi
       <div
         class="badge"
       >
-        Lead agent
+        Lead
       </div>
     </div>
     <h2
@@ -160,7 +160,7 @@ exports[`<RestrictedPage/> should render for basic-agent role and include higher
       <div
         class="badge"
       >
-        Basic agent
+        Basic
       </div>
     </div>
     <h2
@@ -206,7 +206,7 @@ exports[`<RestrictedPage/> should render for lite-agent role and include higher 
       <div
         class="badge"
       >
-        Lite agent
+        Lite
       </div>
     </div>
     <h2
@@ -252,7 +252,7 @@ exports[`<RestrictedPage/> should render for observer-agent role and include hig
       <div
         class="badge"
       >
-        Observer agent
+        Observer
       </div>
     </div>
     <h2

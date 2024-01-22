@@ -20,12 +20,15 @@ export enum ColorType {
     Indigo = 'indigo',
     Purple = 'purple',
     Dark = 'dark',
-    Light = 'light',
     Blue = 'blue',
+    Teal = 'teal',
+    Light = 'light',
+    LightGrey = 'light-grey',
+    LightDark = 'light-dark',
     LightSuccess = 'light-success',
     LightWarning = 'light-warning',
     LightError = 'light-error',
-    Black = 'black',
+    LightPurple = 'light-purple',
 }
 
 const Badge = ({className, children, style, type, ...props}: Props) => {

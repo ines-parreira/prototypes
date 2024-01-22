@@ -2,7 +2,6 @@ import React, {CSSProperties, Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
-import _capitalize from 'lodash/capitalize'
 import _omit from 'lodash/omit'
 import {Badge as ReactstrapBadge, UncontrolledTooltipProps} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
@@ -26,7 +25,7 @@ import * as customersHelpers from 'state/customers/helpers'
 import {getTeams} from 'state/teams/selectors'
 import {RootState} from 'state/types'
 import {parseTimeDelta} from 'tickets/common/utils'
-import {formatDatetime, humanizeString} from 'utils'
+import {formatDatetime} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationChannel} from 'state/integrations/selectors'
 import {DateAndTimeFormatting} from 'constants/datetime'
@@ -363,20 +362,20 @@ export class RoleLabel extends Component<{
         let label = null
 
         if (role.name === UserRole.Admin) {
-            color = ColorType.Error
-            label = _capitalize(UserRole.Admin)
+            color = ColorType.LightError
+            label = 'Admin'
         } else if (role.name === UserRole.Agent) {
-            color = ColorType.Warning
-            label = 'Lead agent'
+            color = ColorType.LightWarning
+            label = 'Lead'
         } else if (role.name === UserRole.BasicAgent) {
-            color = ColorType.DarkGrey
-            label = _capitalize(humanizeString(UserRole.BasicAgent))
+            color = ColorType.Teal
+            label = 'Basic'
         } else if (role.name === UserRole.LiteAgent) {
-            color = ColorType.Classic
-            label = _capitalize(humanizeString(UserRole.LiteAgent))
+            color = ColorType.LightPurple
+            label = 'Lite'
         } else if (role.name === UserRole.ObserverAgent) {
-            color = ColorType.Grey
-            label = _capitalize(humanizeString(UserRole.ObserverAgent))
+            color = ColorType.LightGrey
+            label = 'Observer'
         }
 
         return <Badge type={color}>{label}</Badge>
