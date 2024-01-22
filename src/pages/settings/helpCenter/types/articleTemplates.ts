@@ -1,4 +1,4 @@
-export enum ArticleTemplateKeys {
+export enum ArticleTemplateKey {
     ShippingPolicy = 'shippingPolicy',
     HowToReturn = 'howToReturn',
     HowToCancelOrder = 'howToCancelOrder',
@@ -7,8 +7,8 @@ export enum ArticleTemplateKeys {
     PackageLostOrDamaged = 'packageLostOrDamaged',
 }
 
-export enum ArticleTemplateLabels {
-    OrderManagement = 'Order Management',
-    ReturnsRefunds = 'Returns & Refunds',
-    ShippingDelivery = 'Shipping & Delivery',
+export enum ArticleTemplateCategory {
+    OrderManagement = 'orderManagement',
+    ReturnsRefunds = 'returnsAndRefunds',
+    ShippingDelivery = 'shippingAndDelivery',
 }

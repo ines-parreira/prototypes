@@ -7925,6 +7925,10 @@
                     },
                     "title": {"type": "string"},
                     "html_content": {"type": "string"},
+                    "excerpt": {
+                        "type": "string",
+                        "description": "\n      A short summary of the article.\n      Usually the first paragraph of the article.\n    "
+                    },
                     "category": {
                         "enum": [
                             "orderManagement",
@@ -7942,6 +7946,7 @@
                     "key",
                     "title",
                     "html_content",
+                    "excerpt",
                     "category",
                     "score"
                 ]

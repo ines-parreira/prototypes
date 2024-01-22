@@ -7,19 +7,23 @@ import {validLocaleCode} from 'models/helpCenter/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
-
+import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
 
-import css from './LandingPage.less'
+import ArticleTemplateCard from '../ArticleTemplateCard'
+import css from './ArticleLandingPage.less'
 
-export type LandingPageProps = {
+export type ArticleLandingPageProps = {
     onCreateArticle: () => void
     canUpdateArticle: boolean | null
 }
 
-const LandingPage = ({onCreateArticle, canUpdateArticle}: LandingPageProps) => {
+const ArticleLandingPage = ({
+    onCreateArticle,
+    canUpdateArticle,
+}: ArticleLandingPageProps) => {
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const dispatch = useAppDispatch()
@@ -27,6 +31,9 @@ const LandingPage = ({onCreateArticle, canUpdateArticle}: LandingPageProps) => {
     const handleOnChangeLocale = (value: React.ReactText) => {
         dispatch(changeViewLanguage(validLocaleCode(value)))
     }
+
+    const getArticleTemplates = useGetArticleTemplates(viewLanguage)
+    const articleTemplates = getArticleTemplates.data || []
 
     return (
         <Container fluid className={css.container}>
@@ -54,9 +61,17 @@ const LandingPage = ({onCreateArticle, canUpdateArticle}: LandingPageProps) => {
                         />
                     </div>
                 </div>
+                <div className={css.templatesContainer}>
+                    {articleTemplates.map((template) => (
+                        <ArticleTemplateCard
+                            key={template.key}
+                            template={template}
+                        />
+                    ))}
+                </div>
             </div>
         </Container>
     )
 }
 
-export default LandingPage
+export default ArticleLandingPage

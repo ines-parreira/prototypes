@@ -31,7 +31,7 @@ import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {getRootCategory} from '../../../../../state/entities/helpCenter/categories'
 
 import css from './CategoriesView.less'
-import LandingPage from './components/LandingPage'
+import ArticleLandingPage from './components/ArticleLandingPage'
 
 type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     helpCenter: HelpCenter
@@ -102,7 +102,7 @@ export const CategoriesViews = ({
         <>
             {showCreateFirst ? (
                 showLandingPage ? (
-                    <LandingPage
+                    <ArticleLandingPage
                         canUpdateArticle={canUpdateArticle}
                         onCreateArticle={onCreateArticle}
                     />

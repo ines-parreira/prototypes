@@ -1,27 +1,33 @@
 import {ArticleTemplate} from 'models/helpCenter/types'
-import {ArticleTemplateKeys} from '../types/articleTemplates'
+import {ArticleTemplateKey} from '../types/articleTemplates'
 
 export const ArticleTemplatesListFixture: ArticleTemplate[] = [
     {
-        key: ArticleTemplateKeys.ShippingPolicy,
+        key: ArticleTemplateKey.ShippingPolicy,
         title: 'Shipping policy',
         html_content: '<h1>Shipping policy</h1>',
         category: 'shippingAndDelivery',
         score: 0,
+        excerpt:
+            'Our standard shipping time within [country/region] is [# of days] business days. Shipping charges, if applicable, will be calculated and displayed at checkout...',
     },
     {
-        key: ArticleTemplateKeys.HowToReturn,
+        key: ArticleTemplateKey.HowToReturn,
         title: 'How to return',
         html_content: '<h1>How to return</h1>',
         category: 'shippingAndDelivery',
         score: 0,
+        excerpt:
+            'Returns must be initiated within [x days] of receiving your order. Items must be unused and in the original packaging...',
     },
     {
-        key: ArticleTemplateKeys.HowToCancelOrder,
+        key: ArticleTemplateKey.HowToCancelOrder,
         title: 'How to cancel order',
         html_content: '<h1>How to cancel order</h1>',
         category: 'orderManagement',
         score: 0,
+        excerpt:
+            'You will have the option to cancel your order within your confirmation email. You may also contact our customer service team at [email/phone #]...',
     },
 ]
 

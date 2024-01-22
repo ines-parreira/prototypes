@@ -8,7 +8,6 @@
     }
 
     .wrapper {
-        max-width: 1202px;
         padding: @layout-spacing-m;
         display: flex;
         flex-direction: column;
@@ -29,5 +28,11 @@
     .title {
         font-size: @heading-section-medium-font-size;
         font-weight: 600;
+    }
+
+    .templatesContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: @layout-spacing-s;
     }
 }

@@ -1,0 +1,31 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .dialog {
+        max-width: 800px;
+    }
+
+    .modalBody {
+        max-height: 668px;
+        overflow: auto;
+    }
+
+    .preview {
+        padding: 64px;
+        margin: @layout-spacing-s;
+        border-radius: 10px;
+        border: 1px solid var(--neutral-grey-3);
+
+        h3 {
+            margin: 0;
+        }
+    }
+
+    .title {
+        font-size: @heading-page-semibold-line-height;
+        font-weight: @heading-page-semibold-font-weight;
+        margin-bottom: @layout-spacing-m;
+    }
+}

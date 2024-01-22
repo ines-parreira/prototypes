@@ -164,6 +164,13 @@ declare namespace Components {
       key: "shippingPolicy" | "howToReturn" | "howToCancelOrder" | "howToTrackOrder" | "refundsOrExchanges" | "packageLostOrDamaged";
       title: string;
       html_content: string;
+      /**
+       * 
+       *       A short summary of the article.
+       *       Usually the first paragraph of the article.
+       *     
+       */
+      excerpt: string;
       category: "orderManagement" | "returnsAndRefunds" | "shippingAndDelivery";
       /**
        * 
