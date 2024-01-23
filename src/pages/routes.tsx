@@ -1498,6 +1498,9 @@ function AutomationContent() {
                     </SelfServiceContactFormsProvider>
                 </SelfServiceHelpCentersProvider>
             </Route>
+            <Route path={`${path}/rules/library`} exact>
+                <Redirect to={'/app/settings/rules/library'} />
+            </Route>
             <Route path={`${path}`} exact>
                 <AutomateRoute />
             </Route>
