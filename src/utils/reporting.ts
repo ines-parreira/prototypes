@@ -1,4 +1,5 @@
 import moment, {Moment} from 'moment'
+import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {Cubes} from 'models/reporting/cubes'
 import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
@@ -12,7 +13,7 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
-import {HelpCenterTrackingEventMember} from '../models/reporting/cubes/HelpCenterTrackingEventCube'
+import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
@@ -59,6 +60,12 @@ export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
     integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
+}
+
+export const AgentTimeTrackingStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: AgentTimeTrackingMember.PeriodStart,
+    periodEnd: AgentTimeTrackingMember.PeriodEnd,
+    agents: TicketMember.AssigneeUserId,
 }
 
 export const NotSpamNorTrashedTicketsFilter = [

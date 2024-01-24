@@ -5,14 +5,15 @@ import {
     useMetricPerDimensionWithBreakdown,
 } from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
+import {onlineTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
 import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {StatsFilters} from 'models/stat/types'
 
 export const useMedianFirstResponseTimeMetricPerAgent = (
@@ -135,5 +136,16 @@ export const useOneTouchTicketsMetricPerAgent = (
 ) =>
     useMetricPerDimension(
         oneTouchTicketsPerAgentQueryFactory(statsFilters, timezone, sorting),
+        agentAssigneeId
+    )
+
+export const useOnlineTimePerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+) =>
+    useMetricPerDimension(
+        onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
         agentAssigneeId
     )

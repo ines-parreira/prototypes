@@ -1,8 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks/dom'
 import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     TableColumnsOrder,
     SystemTableViews,
@@ -20,6 +22,12 @@ import {TableColumn} from 'state/ui/stats/types'
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 describe('useAgentsTableConfigSetting', () => {
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsTimeBasedMetrics]: false,
+        }))
+    })
+
     it('should return default order if no Setting available', () => {
         const state = {
             currentAccount: fromJS(account),
@@ -39,11 +47,76 @@ describe('useAgentsTableConfigSetting', () => {
         })
     })
 
+    describe('onlineTime', () => {
+        const metrics = Object.keys(TableColumnsOrder).map((column) => ({
+            id: column,
+            visibility: true,
+        }))
+
+        const view = {
+            id: 'test',
+            name: 'Test view',
+            metrics: metrics,
+        }
+        const tableSetting: AccountSettingAgentsTableConfig = {
+            id: 123,
+            type: AccountSettingType.AgentsTableConfig,
+            data: {
+                active_view: 'test',
+                views: [view],
+            } as any,
+        }
+
+        const state = {
+            currentAccount: fromJS({
+                ...account,
+                settings: [...account.settings, tableSetting],
+            }),
+        } as RootState
+
+        it('should return new metrics that were not saved in settings', () => {
+            const {result} = renderHook(() => useAgentsTableConfigSetting(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(state)}>{children}</Provider>
+                ),
+            })
+
+            expect(result.current.columnsOrder).not.toContain(
+                TableColumn.OnlineTime
+            )
+            expect(result.current.currentView.metrics).not.toContainEqual({
+                id: TableColumn.OnlineTime,
+                visibility: null,
+            })
+        })
+
+        it('should return OnlineTime metrics when feature flag is disabled', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsTimeBasedMetrics]: true,
+            }))
+
+            const {result} = renderHook(() => useAgentsTableConfigSetting(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(state)}>{children}</Provider>
+                ),
+            })
+
+            expect(result.current.columnsOrder).toContain(
+                TableColumn.OnlineTime
+            )
+            expect(result.current.currentView.metrics).toContainEqual({
+                id: TableColumn.OnlineTime,
+                visibility: null,
+            })
+        })
+    })
+
     it('should return data from Setting', () => {
-        const metrics = [
-            {id: TableColumn.AgentName, visibility: true},
-            {id: TableColumn.RepliedTickets, visibility: true},
-        ]
+        const columns = Object.values(TableColumnsOrder)
+        const metrics = Object.values(TableColumnsOrder).map((column) => ({
+            id: column,
+            visibility: true,
+        }))
         const view = {
             id: 'test',
             name: 'Test view',
@@ -73,7 +146,7 @@ describe('useAgentsTableConfigSetting', () => {
 
         expect(result.current).toEqual({
             settings: tableSetting.data,
-            columnsOrder: metrics.map(({id}) => id),
+            columnsOrder: columns,
             currentView: view,
             submitActiveView: expect.any(Function),
         })

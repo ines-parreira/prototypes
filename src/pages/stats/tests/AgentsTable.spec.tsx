@@ -1,9 +1,13 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {OnlineTimeCellSummary} from 'pages/stats/OnlineTimeCellSummary'
+import {OnlineTimeCellContent} from 'pages/stats/OnlineTimeCellContent'
 import {agents} from 'fixtures/agents'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import {AgentsTable} from 'pages/stats/AgentsTable'
@@ -19,7 +23,7 @@ import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClos
 import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
 import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeCellSummary'
-import {TableColumnsOrder} from 'pages/stats/AgentsTableConfig'
+import {TableColumnsOrderWithOnlineTime} from 'pages/stats/AgentsTableConfig'
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
@@ -88,6 +92,8 @@ const PercentageOfClosedTicketsCellContentMock = assumeMock(
 )
 jest.mock('pages/stats/OneTouchTicketsCellContent.tsx')
 const OneTouchTicketsCellContentMock = assumeMock(OneTouchTicketsCellContent)
+jest.mock('pages/stats/OnlineTimeCellContent.tsx')
+const OnlineTimeCellContentMock = assumeMock(OnlineTimeCellContent)
 
 jest.mock('pages/stats/MedianFirstResponseTimeCellSummary.tsx')
 const MedianFirstResponseTimeCellSummaryMock = assumeMock(
@@ -115,6 +121,8 @@ const PercentageOfClosedTicketsCellSummaryMock = assumeMock(
 )
 jest.mock('pages/stats/OneTouchTicketsCellSummary.tsx')
 const OneTouchTicketsCellSummaryMock = assumeMock(OneTouchTicketsCellSummary)
+jest.mock('pages/stats/OnlineTimeCellSummary.tsx')
+const OnlineTimeCellSummaryMock = assumeMock(OnlineTimeCellSummary)
 
 jest.mock('pages/stats/AgentsHeaderCellContent.tsx')
 const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
@@ -144,6 +152,7 @@ describe('<AgentTable>', () => {
         CustomerSatisfactionCellContentMock,
         PercentageOfClosedTicketsCellContentMock,
         OneTouchTicketsCellContentMock,
+        OnlineTimeCellContentMock,
     ]
     metricCells.forEach((metricCell) => metricCell.mockImplementation(cellMock))
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
@@ -157,10 +166,14 @@ describe('<AgentTable>', () => {
         CustomerSatisfactionCellSummaryMock,
         PercentageOfClosedTicketsCellSummaryMock,
         OneTouchTicketsCellSummaryMock,
+        OnlineTimeCellSummaryMock,
     ]
     metricSummaryCells.forEach((metricCell) =>
         metricCell.mockImplementation(cellMock)
     )
+    jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        [FeatureFlagKey.AnalyticsTimeBasedMetrics]: true,
+    }))
 
     it('should render the table title, table header and rows', () => {
         render(
@@ -170,7 +183,7 @@ describe('<AgentTable>', () => {
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
-        TableColumnsOrder.forEach((column) => {
+        TableColumnsOrderWithOnlineTime.forEach((column) => {
             expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     column,

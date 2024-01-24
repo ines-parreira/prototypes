@@ -82,7 +82,6 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                 metricName.perAgentId,
                 ticketsRepliedMetricPerTicketDrillDownQueryFactory
             )
-
         case TableColumn.OneTouchTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,

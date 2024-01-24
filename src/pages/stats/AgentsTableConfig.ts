@@ -2,20 +2,21 @@ import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
-    useMessagesSentMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
+    useMessagesSentMetricPerAgent,
+    useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
-import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
+import {isExtraLargeScreen} from 'pages/common/utils/mobile'
 import {
     TableColumn,
     TableSetting,
     TableViewIdentifier,
 } from 'state/ui/stats/types'
-import {isExtraLargeScreen} from 'pages/common/utils/mobile'
 import {TooltipData} from './types'
 
 export const TableColumnsOrder: TableColumn[] = [
@@ -28,6 +29,11 @@ export const TableColumnsOrder: TableColumn[] = [
     TableColumn.MedianFirstResponseTime,
     TableColumn.MedianResolutionTime,
     TableColumn.OneTouchTickets,
+]
+
+export const TableColumnsOrderWithOnlineTime = [
+    ...TableColumnsOrder,
+    TableColumn.OnlineTime,
 ]
 
 export const agentPerformanceMetrics = TableColumnsOrder.map((column) => ({
@@ -56,6 +62,7 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.RepliedTickets]: 'Tickets Replied',
     [TableColumn.MessagesSent]: 'Messages Sent',
     [TableColumn.OneTouchTickets]: 'One-touch Tickets',
+    [TableColumn.OnlineTime]: 'Online time',
 }
 
 export const AGENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 200 : 300
@@ -93,6 +100,9 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
     },
     [TableColumn.OneTouchTickets]: {
         title: 'Percentage of closed tickets assigned to the agent with exactly 1 message sent by the agent (or rule).',
+    },
+    [TableColumn.OnlineTime]: {
+        title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
     },
 }
 
@@ -134,5 +144,7 @@ export const getQuery = (
             return useCustomerSatisfactionMetricPerAgent
         case TableColumn.OneTouchTickets:
             return useOneTouchTicketsPercentageMetricPerAgent
+        case TableColumn.OnlineTime:
+            return useOnlineTimePerAgent
     }
 }

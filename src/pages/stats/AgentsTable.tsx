@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import React, {PropsWithRef, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import {OnlineTimeCellSummary} from 'pages/stats/OnlineTimeCellSummary'
 import {User} from 'config/types/user'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {NumberedPagination} from 'pages/common/components/Paginations'
@@ -16,22 +17,23 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import css from 'pages/stats/AgentsTable.less'
+import {getColumnAlignment, getColumnWidth} from 'pages/stats/AgentsTableConfig'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
 import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
 import {MedianFirstResponseTimeCellSummary} from 'pages/stats/MedianFirstResponseTimeCellSummary'
-import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
-import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
-import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
-import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
 import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeCellSummary'
+import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
+import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
 import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
+import {OnlineTimeCellContent} from 'pages/stats/OnlineTimeCellContent'
+import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
+import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {SummaryCell} from 'pages/stats/SummaryCell'
-import {getColumnAlignment, getColumnWidth} from 'pages/stats/AgentsTableConfig'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
@@ -68,6 +70,8 @@ const getCell = (
             return MedianResolutionTimeCellContent
         case TableColumn.OneTouchTickets:
             return OneTouchTicketsCellContent
+        case TableColumn.OnlineTime:
+            return OnlineTimeCellContent
     }
 }
 
@@ -89,6 +93,8 @@ const getSummaryCell = (column: TableColumn): React.FC => {
             return MedianResolutionTimeCellSummary
         case TableColumn.OneTouchTickets:
             return OneTouchTicketsCellSummary
+        case TableColumn.OnlineTime:
+            return OnlineTimeCellSummary
         case TableColumn.AgentName:
             return SummaryCell
     }

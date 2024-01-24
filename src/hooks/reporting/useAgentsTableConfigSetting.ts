@@ -1,12 +1,16 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    SystemTableViews,
     agentPerformanceTableActiveView,
+    SystemTableViews,
+    TableColumnsOrder,
+    TableColumnsOrderWithOnlineTime,
 } from 'pages/stats/AgentsTableConfig'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {getAgentsTableConfigSettingsJS} from 'state/currentAccount/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {submitSetting} from 'state/currentAccount/actions'
+import {getAgentsTableConfigSettingsJS} from 'state/currentAccount/selectors'
+import {AccountSettingType} from 'state/currentAccount/types'
 import {TableView} from 'state/ui/stats/types'
 
 export const useAgentsTableConfigSetting = () => {
@@ -17,6 +21,26 @@ export const useAgentsTableConfigSetting = () => {
         currentSettings.views.find(
             (view) => view.id === currentSettings.active_view
         ) || agentPerformanceTableActiveView
+
+    const isOnlineTimeEnabled =
+        useFlags()[FeatureFlagKey.AnalyticsTimeBasedMetrics]
+
+    const columns = isOnlineTimeEnabled
+        ? TableColumnsOrderWithOnlineTime
+        : TableColumnsOrder
+
+    currentView.metrics = columns.map((metric) => {
+        const savedSetting = currentView.metrics.find(
+            (entry) => entry.id === metric
+        )
+        return {
+            id: metric,
+            visibility:
+                savedSetting?.visibility !== undefined
+                    ? savedSetting?.visibility
+                    : null,
+        }
+    })
 
     const submitActiveView = async (activeView: TableView) => {
         await dispatch(

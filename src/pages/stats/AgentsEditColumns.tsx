@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {v4 as uuidv4} from 'uuid'
@@ -44,6 +44,16 @@ export const AgentsEditColumns = () => {
     const [columnsVisibility, setColumnsVisibility] = useState<
         TableViewColumn[]
     >(currentView.metrics)
+
+    useEffect(() => {
+        if (columnsVisibility.length !== currentView.metrics.length) {
+            setColumnsVisibility(currentView.metrics)
+        }
+    }, [
+        columnsVisibility.length,
+        currentView.metrics,
+        currentView.metrics.length,
+    ])
 
     const toggle = () => setDropdownOpen((prevState) => !prevState)
 

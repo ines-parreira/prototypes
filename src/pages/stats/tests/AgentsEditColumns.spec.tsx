@@ -50,7 +50,9 @@ describe('<AgentsEditColumns>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText(TOGGLE_LABEL))
+        act(() => {
+            fireEvent.click(screen.getByText(TOGGLE_LABEL))
+        })
 
         expect(screen.getByRole('menu')).toBeInTheDocument()
     })

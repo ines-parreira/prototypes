@@ -45,6 +45,7 @@ export enum TableColumn {
     ClosedTickets = 'agent_closed_tickets',
     RepliedTickets = 'agent_replied_tickets',
     OneTouchTickets = 'agent_one_touch_tickets',
+    OnlineTime = 'agent_online_time',
 }
 
 export enum TableViewIdentifier {

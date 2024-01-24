@@ -2,6 +2,7 @@ import {useContext, useMemo} from 'react'
 import moment, {Moment} from 'moment'
 import _isNumber from 'lodash/isNumber'
 import {findKey} from 'lodash'
+import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -344,4 +345,5 @@ export const isMetricForAgent = (
     metric[TicketMember.AssigneeUserId] === String(agentId) ||
     metric[TicketMessagesMember.FirstHelpdeskMessageUserId] ===
         String(agentId) ||
-    metric[HelpdeskMessageMember.SenderId] === String(agentId)
+    metric[HelpdeskMessageMember.SenderId] === String(agentId) ||
+    metric[AgentTimeTrackingMember.UserId] === String(agentId)

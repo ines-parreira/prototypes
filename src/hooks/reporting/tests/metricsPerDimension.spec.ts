@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
+import {onlineTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
 import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -20,6 +21,7 @@ import {
     useMedianResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
+    useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {
     useMetricPerDimension,
@@ -264,6 +266,26 @@ describe('metricsPerDimension', () => {
                     timezone,
                     sorting
                 ),
+                agentId
+            )
+        })
+    })
+
+    describe('useOnlineTimePerAgent', () => {
+        it('should pass the query to useMetricPerDimension hook with agentId', () => {
+            renderHook(
+                () =>
+                    useOnlineTimePerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId
+                    ),
+                {}
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
                 agentId
             )
         })

@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
+import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -20,6 +21,7 @@ import {
     useMedianResolutionTimeMetric,
     useTicketsRepliedMetric,
     useOneTouchTicketsMetric,
+    useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
 import {useMetric} from 'hooks/reporting/useMetric'
 
@@ -101,6 +103,31 @@ describe('metrics', () => {
                         queryFactory(statsFilters, timezone),
                         ignoreNotAssignedTicketsFilter
                     )
+                )
+                expect(result.current).toBe(defaultMetricValue)
+            })
+        }
+    )
+
+    describe.each([
+        ['useOnlineTimeMetric', useOnlineTimeMetric, onlineTimeQueryFactory],
+    ])(
+        '%s',
+        (
+            _,
+            useTrendFn,
+            queryFactory: (
+                statsFilters: StatsFilters,
+                timezone: string
+            ) => ReportingQuery
+        ) => {
+            it('should create reporting metric', () => {
+                const {result} = renderHook(() =>
+                    useTrendFn(statsFilters, timezone)
+                )
+
+                expect(useMetricMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone)
                 )
                 expect(result.current).toBe(defaultMetricValue)
             })
