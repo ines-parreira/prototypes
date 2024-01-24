@@ -14,7 +14,7 @@ const timeSeriesData = {
     value: 4,
 }
 
-const buildQuery = <T>(isFetching: boolean, data: T) => ({
+const buildQuery = <T>(isFetching: boolean, data?: T) => ({
     isFetching,
     data,
     isError: false,
@@ -58,6 +58,53 @@ describe('reporting', () => {
                 [`${period.start_datetime}_${
                     period.end_datetime
                 }-automate-performance-feature-${moment().format(
+                    DATE_TIME_FORMAT
+                )}.csv`]: fakeReport,
+            },
+            `${period.start_datetime}_${
+                period.end_datetime
+            }-overview-metrics-${moment().format(DATE_TIME_FORMAT)}`
+        )
+    })
+
+    it('should call saveReport with some base query values unset', async () => {
+        const fakeReport = 'someValue'
+        jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
+        const zipperMock = jest.spyOn(files, 'saveZippedFiles')
+
+        await saveReport(
+            {
+                ...data,
+                ...{
+                    resolutionTimeTrend: buildQuery(false, {
+                        ...trendReportData,
+                        value: null,
+                    }),
+                    automationRateTrend: buildQuery(false, {
+                        ...trendReportData,
+                        value: null,
+                    }),
+                    automatedInteractionTimeSeries: buildQuery(false),
+                    automatedInteractionByEventTypesTimeSeries:
+                        buildQuery(false),
+                },
+            },
+            period
+        )
+
+        expect(zipperMock).toHaveBeenCalledWith(
+            {
+                [`${period.start_datetime}_${
+                    period.end_datetime
+                }-aao-impact-${moment().format(DATE_TIME_FORMAT)}.csv`]:
+                    fakeReport,
+                [`${period.start_datetime}_${
+                    period.end_datetime
+                }-aao-performance-${moment().format(DATE_TIME_FORMAT)}.csv`]:
+                    fakeReport,
+                [`${period.start_datetime}_${
+                    period.end_datetime
+                }-aao-performance-feature-${moment().format(
                     DATE_TIME_FORMAT
                 )}.csv`]: fakeReport,
             },
