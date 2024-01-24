@@ -233,7 +233,7 @@ export const buildAgentMetric = (column: AgentMetricColumn, agent: User) => ({
 
 export const notifyAboutExportSuccess = (currentUserEmail: string) =>
     notify({
-        message: `<strong>All tickets</strong> will be exported. You will receive the download link via email at <strong>${currentUserEmail}</strong> once the export is done.`,
+        message: `All tickets will be exported. You will receive the download link via email at <strong>${currentUserEmail}</strong> once the export is done.`,
         allowHTML: true,
         status: NotificationStatus.Success,
     })
