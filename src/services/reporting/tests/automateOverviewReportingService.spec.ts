@@ -1,7 +1,13 @@
 import moment from 'moment'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {saveReport} from 'services/reporting/automateOverviewReportingService'
+import {
+    AUTOMATE_IMPACT_FILENAME,
+    AUTOMATE_PERFORMANCE_FEATURE_FILENAME,
+    AUTOMATE_PERFORMANCE_FILENAME,
+    OVERVIEW_METRICS_FILENAME,
+    saveReport,
+} from 'services/reporting/automateOverviewReportingService'
 
 jest.mock('utils/file')
 
@@ -48,22 +54,23 @@ describe('reporting', () => {
             {
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-automate-impact-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                    fakeReport,
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-automate-performance-${moment().format(
+                }-${AUTOMATE_IMPACT_FILENAME}-${moment().format(
                     DATE_TIME_FORMAT
                 )}.csv`]: fakeReport,
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-automate-performance-feature-${moment().format(
+                }-${AUTOMATE_PERFORMANCE_FILENAME}-${moment().format(
+                    DATE_TIME_FORMAT
+                )}.csv`]: fakeReport,
+                [`${period.start_datetime}_${
+                    period.end_datetime
+                }-${AUTOMATE_PERFORMANCE_FEATURE_FILENAME}-${moment().format(
                     DATE_TIME_FORMAT
                 )}.csv`]: fakeReport,
             },
             `${period.start_datetime}_${
                 period.end_datetime
-            }-overview-metrics-${moment().format(DATE_TIME_FORMAT)}`
+            }-${OVERVIEW_METRICS_FILENAME}-${moment().format(DATE_TIME_FORMAT)}`
         )
     })
 
@@ -96,21 +103,23 @@ describe('reporting', () => {
             {
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-aao-impact-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                    fakeReport,
+                }-${AUTOMATE_IMPACT_FILENAME}-${moment().format(
+                    DATE_TIME_FORMAT
+                )}.csv`]: fakeReport,
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-aao-performance-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                    fakeReport,
+                }-${AUTOMATE_PERFORMANCE_FILENAME}-${moment().format(
+                    DATE_TIME_FORMAT
+                )}.csv`]: fakeReport,
                 [`${period.start_datetime}_${
                     period.end_datetime
-                }-aao-performance-feature-${moment().format(
+                }-${AUTOMATE_PERFORMANCE_FEATURE_FILENAME}-${moment().format(
                     DATE_TIME_FORMAT
                 )}.csv`]: fakeReport,
             },
             `${period.start_datetime}_${
                 period.end_datetime
-            }-overview-metrics-${moment().format(DATE_TIME_FORMAT)}`
+            }-${OVERVIEW_METRICS_FILENAME}-${moment().format(DATE_TIME_FORMAT)}`
         )
     })
 })

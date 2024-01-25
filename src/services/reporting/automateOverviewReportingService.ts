@@ -18,6 +18,12 @@ import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {FEATURE_LABELS} from 'pages/stats/constants'
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 
+export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
+export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'
+export const AUTOMATE_PERFORMANCE_FEATURE_FILENAME =
+    'automate-performance-feature'
+export const OVERVIEW_METRICS_FILENAME = 'overview-metrics'
+
 export interface Period {
     end_datetime: string
     start_datetime: string
@@ -119,14 +125,14 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
 
     return saveZippedFiles(
         {
-            [`${periodPrefix}-automate-impact-${export_datetime}.csv`]:
+            [`${periodPrefix}-${AUTOMATE_IMPACT_FILENAME}-${export_datetime}.csv`]:
                 createCsv(impactData()),
 
-            [`${periodPrefix}-automate-performance-${export_datetime}.csv`]:
+            [`${periodPrefix}-${AUTOMATE_PERFORMANCE_FILENAME}-${export_datetime}.csv`]:
                 createCsv(performanceData),
-            [`${periodPrefix}-automate-performance-feature-${export_datetime}.csv`]:
+            [`${periodPrefix}-${AUTOMATE_PERFORMANCE_FEATURE_FILENAME}-${export_datetime}.csv`]:
                 createCsv(performanceFeatureData),
         },
-        `${periodPrefix}-overview-metrics-${export_datetime}`
+        `${periodPrefix}-${OVERVIEW_METRICS_FILENAME}-${export_datetime}`
     )
 }
