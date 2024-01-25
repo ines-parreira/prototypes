@@ -1,51 +1,36 @@
+import moment from 'moment/moment'
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
-import moment from 'moment/moment'
+import TipsToggle from 'pages/stats/TipsToggle'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
-import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
 import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
 
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
-import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
-import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
-import StatsPage from 'pages/stats/StatsPage'
 import {
     currentAccountHasFeature,
     getCurrentAccountCreatedDatetime,
     getSurveysSettingsJS,
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {
-    useMessagesSentTimeSeries,
-    useTicketsClosedTimeSeries,
-    useTicketsCreatedTimeSeries,
-    useTicketsRepliedTimeSeries,
-} from 'hooks/reporting/timeSeries'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+
+import useAppSelector from 'hooks/useAppSelector'
+import useLocalStorage from 'hooks/useLocalStorage'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import StatsPage from 'pages/stats/StatsPage'
+import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {
-    MESSAGES_SENT_LABEL,
-    MetricName,
-    TICKETS_CLOSED_LABEL,
-    TICKETS_CREATED_LABEL,
-    TICKETS_REPLIED_LABEL,
-} from 'services/reporting/constants'
-import {getTimezone} from 'state/currentUser/selectors'
+    OverviewChartConfig,
+    OverviewMetricConfig,
+} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
+import {MetricName} from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
-import {periodToReportingGranularity} from 'utils/reporting'
-import {formatTimeSeriesData} from './common/utils'
 import DashboardGridCell from './DashboardGridCell'
-import TipsToggle from './TipsToggle'
 import DashboardSection from './DashboardSection'
-import ChartCard from './ChartCard'
-import LineChart from './LineChart'
-import {DEFAULT_TIMEZONE} from './constants'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
@@ -74,34 +59,6 @@ export default function SupportPerformanceOverview() {
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
         true
-    )
-
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
-    )
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
-
-    const granularity = periodToReportingGranularity(requestStatsFilters.period)
-    const ticketsCreatedTimeSeries = useTicketsCreatedTimeSeries(
-        requestStatsFilters,
-        userTimezone,
-        granularity
-    )
-    const ticketsClosedTimeSeries = useTicketsClosedTimeSeries(
-        requestStatsFilters,
-        userTimezone,
-        granularity
-    )
-    const ticketsRepliedTimeSeries = useTicketsRepliedTimeSeries(
-        requestStatsFilters,
-        userTimezone,
-        granularity
-    )
-    const messagesSentTimeSeries = useMessagesSentTimeSeries(
-        requestStatsFilters,
-        userTimezone,
-        granularity
     )
 
     return (
@@ -268,72 +225,32 @@ export default function SupportPerformanceOverview() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <ChartCard
-                            title={TICKETS_CREATED_LABEL}
-                            hint="Number of new tickets to handle"
-                        >
-                            <LineChart
-                                isLoading={!ticketsCreatedTimeSeries.data}
-                                data={formatTimeSeriesData(
-                                    ticketsCreatedTimeSeries.data,
-                                    TICKETS_CREATED_LABEL,
-                                    granularity
-                                )}
-                                hasBackground
-                                _displayLegacyTooltip
-                            />
-                        </ChartCard>
+                        <OverviewChartCard
+                            {...OverviewChartConfig[
+                                OverviewMetric.TicketsCreated
+                            ]}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <ChartCard
-                            title={TICKETS_CLOSED_LABEL}
-                            hint="Number of opened tickets solved by the end of the period"
-                        >
-                            <LineChart
-                                isLoading={!ticketsClosedTimeSeries.data}
-                                data={formatTimeSeriesData(
-                                    ticketsClosedTimeSeries.data,
-                                    'Closed tickets',
-                                    granularity
-                                )}
-                                hasBackground
-                                _displayLegacyTooltip
-                            />
-                        </ChartCard>
+                        <OverviewChartCard
+                            {...OverviewChartConfig[
+                                OverviewMetric.TicketsClosed
+                            ]}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <ChartCard
-                            title={TICKETS_REPLIED_LABEL}
-                            hint="Number of tickets where the customer got a response"
-                        >
-                            <LineChart
-                                isLoading={!ticketsRepliedTimeSeries.data}
-                                data={formatTimeSeriesData(
-                                    ticketsRepliedTimeSeries.data,
-                                    TICKETS_REPLIED_LABEL,
-                                    granularity
-                                )}
-                                hasBackground
-                                _displayLegacyTooltip
-                            />
-                        </ChartCard>
+                        <OverviewChartCard
+                            {...OverviewChartConfig[
+                                OverviewMetric.TicketsReplied
+                            ]}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <ChartCard
-                            title={MESSAGES_SENT_LABEL}
-                            hint="Number of messages received by your customer"
-                        >
-                            <LineChart
-                                isLoading={!messagesSentTimeSeries.data}
-                                data={formatTimeSeriesData(
-                                    messagesSentTimeSeries.data,
-                                    MESSAGES_SENT_LABEL,
-                                    granularity
-                                )}
-                                hasBackground
-                                _displayLegacyTooltip
-                            />
-                        </ChartCard>
+                        <OverviewChartCard
+                            {...OverviewChartConfig[
+                                OverviewMetric.MessagesSent
+                            ]}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <WorkloadPerChannelChart />

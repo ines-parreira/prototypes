@@ -1,11 +1,19 @@
+import {UseQueryResult} from '@tanstack/react-query'
 import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
+import {StatsFilters} from 'models/stat/types'
 import {DataResponse} from 'hooks/reporting/withDeciles'
 import {Cubes} from 'models/reporting/cubes'
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
 
 import {formatReportingQueryDate} from 'utils/reporting'
+
+export type TimeSeriesHook = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) => UseQueryResult<TimeSeriesDataItem[][]>
 
 export type TimeSeriesDataItem = {
     dateTime: string

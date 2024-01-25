@@ -1,4 +1,11 @@
 import {
+    useMessagesSentTimeSeries,
+    useTicketsClosedTimeSeries,
+    useTicketsCreatedTimeSeries,
+    useTicketsRepliedTimeSeries,
+} from 'hooks/reporting/timeSeries'
+import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
@@ -127,5 +134,38 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'neutral',
         useTrend: useMessagesSentTrend,
         withFrom: true,
+    },
+}
+
+export const OverviewChartConfig: Record<
+    | OverviewMetric.TicketsCreated
+    | OverviewMetric.TicketsClosed
+    | OverviewMetric.TicketsReplied
+    | OverviewMetric.MessagesSent,
+    {
+        title: string
+        hint: string
+        useTimeSeries: TimeSeriesHook
+    }
+> = {
+    [OverviewMetric.TicketsCreated]: {
+        title: TICKETS_CREATED_LABEL,
+        hint: 'Number of new tickets to handle',
+        useTimeSeries: useTicketsCreatedTimeSeries,
+    },
+    [OverviewMetric.TicketsClosed]: {
+        title: TICKETS_CLOSED_LABEL,
+        hint: 'Number of opened tickets solved by the end of the period',
+        useTimeSeries: useTicketsClosedTimeSeries,
+    },
+    [OverviewMetric.TicketsReplied]: {
+        title: TICKETS_REPLIED_LABEL,
+        hint: 'Number of tickets where the customer got a response',
+        useTimeSeries: useTicketsRepliedTimeSeries,
+    },
+    [OverviewMetric.MessagesSent]: {
+        title: MESSAGES_SENT_LABEL,
+        hint: 'Number of messages received by your customer',
+        useTimeSeries: useMessagesSentTimeSeries,
     },
 }
