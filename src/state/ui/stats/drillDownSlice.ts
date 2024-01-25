@@ -83,6 +83,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     TableColumn.PercentageOfClosedTickets,
     TableColumn.RepliedTickets,
     TableColumn.MessagesSent,
+    TableColumn.OneTouchTickets,
 ]
 
 export const initialState: DrillDownState = {

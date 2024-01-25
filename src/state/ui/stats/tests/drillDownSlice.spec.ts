@@ -169,7 +169,7 @@ describe('drillDownSlice', () => {
                 } as unknown as RootState)
             ).toEqual({
                 metricTitle: TableLabels[TableColumn.OneTouchTickets],
-                showMetric: true,
+                showMetric: false,
                 metricValueFormat: 'percent',
             })
 

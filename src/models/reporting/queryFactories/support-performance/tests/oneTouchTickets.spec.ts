@@ -160,7 +160,10 @@ describe('oneTouchTicketsPerTicketQueryFactory', () => {
         ).toEqual({
             ...oneTouchTicketsQueryFactory(statsFilters, timezone),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...oneTouchTicketsQueryFactory(statsFilters, timezone).filters,
                 TicketDrillDownFilter,
@@ -178,12 +181,16 @@ describe('oneTouchTicketsPerTicketQueryFactory', () => {
         ).toEqual({
             ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
             measures: [],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+            ],
             filters: [
                 ...oneTouchTicketsQueryFactory(filters, timezone).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
+            order: [[TicketDimension.CreatedDatetime, sorting]],
         })
     })
 })

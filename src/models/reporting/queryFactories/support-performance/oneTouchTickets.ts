@@ -57,10 +57,15 @@ export const oneTouchTicketsPerTicketQueryFactory = (
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
     measures: [],
-    dimensions: [TicketDimension.TicketId],
+    dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
     filters: [
         ...oneTouchTicketsQueryFactory(filters, timezone, sorting).filters,
         TicketDrillDownFilter,
     ],
     limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[TicketDimension.CreatedDatetime, sorting]],
+          }
+        : {}),
 })
