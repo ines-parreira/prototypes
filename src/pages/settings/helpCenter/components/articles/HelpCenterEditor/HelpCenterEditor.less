@@ -13,6 +13,10 @@
             #imageByURL-2 {
                 display: none; // uncomment when we start supporting image upload by URL
             }
+
+            .fr-toolbar {
+                border-color: var(--neutral-grey-4);
+            }
             .fr-toolbar.fr-top,
             .fr-second-toolbar {
                 border-radius: 0;
@@ -37,6 +41,16 @@
 
             .fr-toolbar {
                 background-color: var(--neutral-grey-2);
+
+                fr-tabs .fr-command.fr-btn:not(:hover):not(:focus) {
+                    &.fr-active-tab {
+                        background-color: var(--neutral-grey-0);
+                    }
+
+                    &.fr-active {
+                        background-color: var(--neutral-grey-0);
+                    }
+                }
             }
 
             .fr-command {
@@ -48,7 +62,33 @@
                     }
 
                     svg path {
-                        fill: var(--neutral-grey-6);
+                        fill: #222;
+                    }
+
+                    &.fr-btn-active-popup {
+                        background-color: var(--neutral-grey-3);
+                    }
+
+                    + .fr-dropdown-menu
+                        .fr-dropdown-wrapper
+                        .fr-dropdown-content {
+                        background-color: var(--neutral-grey-1);
+
+                        ul.fr-dropdown-list li a.fr-active {
+                            background-color: hsl(
+                                var(--neutral-grey-4-h),
+                                var(--neutral-grey-4-s),
+                                calc(var(--neutral-grey-4-l) + 10%)
+                            );
+                        }
+                    }
+
+                    &.fr-dropdown.fr-active {
+                        background-color: var(--neutral-grey-3);
+
+                        &:hover {
+                            background-color: var(--neutral-grey-3);
+                        }
                     }
                 }
             }
@@ -108,7 +148,7 @@
                     font-weight: 400;
                     font-size: 14px;
                     line-height: 20px;
-                    color: var(--neutral-grey-3);
+                    color: var(--neutral-grey-4);
                 }
 
                 > div {
@@ -120,14 +160,30 @@
                     gap: 8px;
                 }
             }
-        }
-    }
-}
 
-:global {
-    .fr-popup .fr-command.fr-btn {
-        svg path {
-            fill: var(--neutral-grey-6) !important;
+            .fr-desktop {
+                .fr-command {
+                    &:active {
+                        background-color: var(--neutral-grey-3);
+                    }
+
+                    &:hover:not(.fr-table-cell) {
+                        background-color: var(--neutral-grey-3);
+                    }
+                }
+            }
+
+            .fr-popup {
+                .fr-command.fr-btn {
+                    svg path {
+                        fill: #222 !important;
+                    }
+                }
+
+                .fr-buttons.fr-tabs {
+                    background-color: var(--neutral-grey-2);
+                }
+            }
         }
     }
 }
