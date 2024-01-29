@@ -1,100 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketReply/> should render the editor 1`] = `
+exports[`<TicketReply /> should render the editor 1`] = `
 <div
-  className="component"
+  class="component"
 >
-  <Connect(TicketReplyEditorContainer)
-    applyMacro={[MockFunction]}
-    macros={Immutable.Map {}}
-    richAreaRef={[MockFunction]}
-    shouldDisplayQuickReply={false}
-    ticket={
-      Immutable.Map {
-        "id": 1,
-        "reply_options": Immutable.Map {
-          "email": Immutable.Map {
-            "answerable": true,
-          },
-          "chat": Immutable.Map {
-            "answerable": false,
-            "reason": "You cannot respond.",
-          },
-          "facebook-messenger": Immutable.Map {
-            "answerable": true,
-          },
-        },
-      }
-    }
-  />
-  <TicketAttachments
-    attachments={Immutable.List []}
-    className="p-2 d-flex flex-wrap"
-    deleteAttachment={[MockFunction]}
-    removable={true}
-  />
-</div>
-`;
-
-exports[`<TicketReply/> should render the editor with the applied macro actions 1`] = `
-<div
-  className="component"
->
-  <Connect(TicketReplyEditorContainer)
-    applyMacro={[MockFunction]}
-    macros={Immutable.Map {}}
-    richAreaRef={[MockFunction]}
-    shouldDisplayQuickReply={false}
-    ticket={
-      Immutable.Map {
-        "id": 1,
-        "reply_options": Immutable.Map {
-          "email": Immutable.Map {
-            "answerable": true,
-          },
-          "chat": Immutable.Map {
-            "answerable": false,
-            "reason": "You cannot respond.",
-          },
-          "facebook-messenger": Immutable.Map {
-            "answerable": true,
-          },
-        },
-      }
-    }
-  />
-  <TicketAttachments
-    attachments={Immutable.List []}
-    className="p-2 d-flex flex-wrap"
-    deleteAttachment={[MockFunction]}
-    removable={true}
-  />
-  <TicketReplyActions
-    appliedMacro={
-      Immutable.Map {
-        "actions": Immutable.List [
-          Immutable.Map {
-            "execution": "back",
-            "name": "addInternalNote",
-            "title": "Send internal note",
-            "icon": "note",
-            "arguments": Immutable.Map {
-              "body_text": Immutable.Map {
-                "type": "string",
-                "default": "",
-              },
-              "body_html": Immutable.Map {
-                "type": "string",
-                "format": "html",
-                "default": "",
-              },
-            },
-          },
-        ],
-      }
-    }
-    onDelete={[MockFunction]}
-    ticketId={1}
-  />
+  <div
+    class="component"
+  >
+    <div
+      class="richField isInternal rich-textarea-wrapper"
+    >
+      <div
+        class="editor-wrapper"
+      >
+        <div
+          class="withMinHeight"
+        >
+          <div>
+            Editor
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

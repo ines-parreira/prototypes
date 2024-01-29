@@ -1,26 +1,26 @@
 import React, {ComponentProps} from 'react'
 import {render, fireEvent, waitFor} from '@testing-library/react'
-
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 
 import {logEvent} from 'common/segment'
-import {message} from 'models/ticket/tests/mocks'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
-import {sendIntentFeedbackSuccess} from 'state/ticket/actions'
-import {TicketMessageIntent} from 'models/ticket/types'
 import client from 'models/api/resources'
-import {IntentsFeedbackContainer} from '../IntentsFeedback'
+import {message} from 'models/ticket/tests/mocks'
+import {TicketMessageIntent} from 'models/ticket/types'
 
-jest.mock('state/ticket/actions')
+import {IntentsFeedback} from '../IntentsFeedback'
 
 jest.mock('common/segment')
+jest.mock('state/ticket/actions')
+
+const mockStore = configureMockStore([thunk])
 
 const logEventMock = logEvent as jest.Mock
 
-const sendIntentFeedbackSuccessMock = sendIntentFeedbackSuccess as jest.Mocked<
-    typeof sendIntentFeedbackSuccess
->
 const postMock = jest.spyOn(client, 'post')
 
 window.GORGIAS_CONSTANTS = {
@@ -40,14 +40,17 @@ describe('<IntentsFeedback />', () => {
         },
     ]
 
-    const minProps: ComponentProps<typeof IntentsFeedbackContainer> = {
+    const minProps: ComponentProps<typeof IntentsFeedback> = {
         message: message,
-        notify: jest.fn(),
-        sendIntentFeedbackSuccess: sendIntentFeedbackSuccessMock,
         allIntents: window.GORGIAS_CONSTANTS.INTENTS,
-        account: fromJS(account),
-        user: fromJS(user),
     }
+
+    const state = {
+        currentAccount: fromJS(account),
+        currentUser: fromJS(user),
+    }
+
+    const store = mockStore(state)
 
     describe('Single initial intent', () => {
         beforeEach(() => {
@@ -58,27 +61,35 @@ describe('<IntentsFeedback />', () => {
 
         it('should render active and available intents', () => {
             const {container} = render(
-                <IntentsFeedbackContainer {...minProps} />
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should add an intent on click add', () => {
             const {getAllByText, container} = render(
-                <IntentsFeedbackContainer {...minProps} />
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>
             )
             fireEvent.click(getAllByText('add')[0])
             expect(container).toMatchSnapshot()
         })
         it('should remove an intent on click remove', () => {
             const {getAllByText, container} = render(
-                <IntentsFeedbackContainer {...minProps} />
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>
             )
             fireEvent.click(getAllByText('close')[0])
             expect(container).toMatchSnapshot()
         })
         it('should send the unsaved intents to the backend on dropdown toggle', () => {
             const {getAllByText, getByRole} = render(
-                <IntentsFeedbackContainer {...minProps} />
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>
             )
             fireEvent.click(getAllByText('add')[0])
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
@@ -87,7 +98,9 @@ describe('<IntentsFeedback />', () => {
         })
         it('should not call the API if no change was made to active intents', () => {
             const {getAllByText, getByRole} = render(
-                <IntentsFeedbackContainer {...minProps} />
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>
             )
             fireEvent.click(getAllByText('add')[0]) // add bar/intent
             fireEvent.click(getAllByText('close')[0]) // remove bar/intent
@@ -123,7 +136,9 @@ describe('<IntentsFeedback />', () => {
 
         it('should not be able to add intent when three are active', () => {
             const {getAllByText, getByRole} = render(
-                <IntentsFeedbackContainer {...minProps} />
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>
             )
             fireEvent.click(getAllByText('add')[0])
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
@@ -133,7 +148,9 @@ describe('<IntentsFeedback />', () => {
         describe('Segment tracking', () => {
             it('should send event on menu toggle', async () => {
                 const {getByRole} = render(
-                    <IntentsFeedbackContainer {...minProps} />
+                    <Provider store={store}>
+                        <IntentsFeedback {...minProps} />
+                    </Provider>
                 )
                 fireEvent.click(getByRole('button'))
                 await waitFor(() => expect(logEventMock).toHaveBeenCalled())
@@ -142,7 +159,9 @@ describe('<IntentsFeedback />', () => {
 
             it('should send event on curation', async () => {
                 const {getAllByText, getByRole} = render(
-                    <IntentsFeedbackContainer {...minProps} />
+                    <Provider store={store}>
+                        <IntentsFeedback {...minProps} />
+                    </Provider>
                 )
                 fireEvent.click(getAllByText('close')[0])
                 fireEvent.mouseLeave(getByRole('menu', {hidden: true}))

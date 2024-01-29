@@ -1,22 +1,33 @@
 import React, {ComponentProps} from 'react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
 import {MacroActionName} from 'models/macroAction/types'
 import {ACTION_TEMPLATES} from 'config'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
-import {TicketReplyContainer} from '../TicketReply'
+import {TicketReply} from '../TicketReply'
 
-jest.unmock('../../../../../../business/ticket.ts')
+jest.unmock('business/ticket.ts')
 
 jest.mock('lodash/uniqueId', () => (id: number) => `${id}42`)
 
-describe('<TicketReply/>', () => {
+jest.mock('draft-js-plugins-editor', () => ({
+    __esModule: true,
+    default: () => <div>Editor</div>,
+    composeDecorators: jest.fn(),
+}))
+
+const mockStore = configureMockStore([thunk])
+
+describe('<TicketReply />', () => {
     const answerableSourceType = TicketMessageSourceType.Email
     const nonAnswerableSourceType = TicketMessageSourceType.Chat
 
-    const minProps: ComponentProps<typeof TicketReplyContainer> = {
+    const minProps: ComponentProps<typeof TicketReply> = {
         applyMacro: jest.fn(),
         macros: fromJS({}),
         richAreaRef: jest.fn(),
@@ -34,33 +45,50 @@ describe('<TicketReply/>', () => {
                 },
             },
         }),
-        newMessageAttachments: fromJS([]),
-        newMessageType: answerableSourceType,
-        deleteActionOnApplied: jest.fn(),
-        deleteAttachment: jest.fn(),
     }
 
     it('should render the editor', () => {
-        const component = shallow(<TicketReplyContainer {...minProps} />)
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                    newMessage: fromJS({state: {}}),
+                })}
+            >
+                <TicketReply {...minProps} />
+            </Provider>
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the editor with the applied macro actions', () => {
-        const component = shallow(
-            <TicketReplyContainer
-                {...minProps}
-                appliedMacro={fromJS({
-                    actions: [
-                        ACTION_TEMPLATES.find(
-                            (action) =>
-                                action.name === MacroActionName.AddInternalNote
-                        ),
-                    ],
+        const {queryByText} = render(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                    newMessage: fromJS({state: {}}),
                 })}
-            />
+            >
+                <TicketReply
+                    {...minProps}
+                    appliedMacro={fromJS({
+                        actions: [
+                            ACTION_TEMPLATES.find(
+                                (action) =>
+                                    action.name ===
+                                    MacroActionName.AddInternalNote
+                            ),
+                        ],
+                    })}
+                />
+            </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(queryByText(/Send internal note/)).toBeInTheDocument()
     })
 })

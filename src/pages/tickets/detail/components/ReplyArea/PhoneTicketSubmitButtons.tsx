@@ -1,27 +1,34 @@
-import React, {SyntheticEvent, useCallback, useEffect, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
 
+import useAppSelector from 'hooks/useAppSelector'
+
 import Button from 'pages/common/components/button/Button'
 import {getNewMessageSource} from 'state/newMessage/selectors'
-import {RootState} from 'state/types'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
 
 import css from './PhoneTicketSubmitButtons.less'
 
-type Props = ConnectedProps<typeof connector>
+function PhoneTicketSubmitButtons() {
+    const agent = useAppSelector(getCurrentUser)
+    const call = useAppSelector((state) => state.twilio.call)
+    const device = useAppSelector((state) => state.twilio.device)
+    const source = useAppSelector(getNewMessageSource)
+    const ticket = useAppSelector(DEPRECATED_getTicket)
 
-function PhoneTicketSubmitButtons({
-    device,
-    call,
-    source,
-    ticketId,
-    agentId,
-}: Props) {
+    const agentId = useMemo(() => agent.get('id') as number, [agent])
+    const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
+
     const {isValid, onSubmit} = useSubmit(source, ticketId, agentId)
     const isDisabled = !device || !!call || !isValid
 
@@ -50,16 +57,7 @@ function PhoneTicketSubmitButtons({
     )
 }
 
-const mapStateToProps = (state: RootState) => ({
-    device: state.twilio.device,
-    call: state.twilio.call,
-    source: getNewMessageSource(state),
-    ticketId: DEPRECATED_getTicket(state).get('id'),
-    agentId: getCurrentUser(state).get('id'),
-})
-
-const connector = connect(mapStateToProps)
-export default connector(PhoneTicketSubmitButtons)
+export default PhoneTicketSubmitButtons
 
 function useSubmit(source: Map<any, any>, ticketId: number, agentId: number) {
     const [fromAddress, setFromAddress] = useState<string>('')

@@ -1,23 +1,20 @@
 import _difference from 'lodash/difference'
 import _isEqual from 'lodash/isEqual'
 import React, {useState, useMemo, useEffect, useRef} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 
 import useAsyncFn from 'hooks/useAsyncFn'
-import {sendIntentFeedbackSuccess} from '../../../../../../state/ticket/actions'
-import Loader from '../../../../../common/components/Loader/Loader'
-import {NotificationStatus} from '../../../../../../state/notifications/types'
-import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
-import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
-import {humanizeString} from '../../../../../../utils'
-import client from '../../../../../../models/api/resources'
-import {notify} from '../../../../../../state/notifications/actions'
-import type {RootState} from '../../../../../../state/types'
-import type {
-    TicketMessage,
-    TicketMessageIntent,
-} from '../../../../../../models/ticket/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import client from 'models/api/resources'
+import type {TicketMessage, TicketMessageIntent} from 'models/ticket/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {sendIntentFeedbackSuccess} from 'state/ticket/actions'
+import {humanizeString} from 'utils'
 
 import {Messages} from './constants'
 import {IntentsFeedbackDropdown} from './IntentsFeedbackDropdown'
@@ -39,18 +36,19 @@ type Props = {
     onBack?: () => void
 }
 
-export const IntentsFeedbackContainer = ({
-    account,
-    user,
+export const IntentsFeedback = ({
     message,
-    notify,
-    sendIntentFeedbackSuccess,
     allIntents = window.GORGIAS_CONSTANTS.INTENTS,
     renderContentOnly,
     onContentMouseLeave,
     onToggle,
     onBack,
-}: Props & ConnectedProps<typeof connector>) => {
+}: Props) => {
+    const dispatch = useAppDispatch()
+
+    const user = useAppSelector(getCurrentUser)
+    const account = useAppSelector(getCurrentAccountState)
+
     const isMounted = useRef(true)
 
     useEffect(
@@ -126,26 +124,34 @@ export const IntentsFeedbackContainer = ({
                 trackFeedbackSubmission(newIntents)
             }
 
-            void sendIntentFeedbackSuccess({
-                messageId: message.id as number,
-                intents,
-            })
-            void notify({
-                message: Messages.NOTIFICATION_SUCCESS,
-                status: NotificationStatus.Success,
-            })
+            void dispatch(
+                sendIntentFeedbackSuccess({
+                    messageId: message.id as number,
+                    intents,
+                })
+            )
+            void dispatch(
+                notify({
+                    message: Messages.NOTIFICATION_SUCCESS,
+                    status: NotificationStatus.Success,
+                })
+            )
         } catch (error) {
             const {response} = error as AxiosError<{error: {msg: string}}>
             if (response) {
-                void notify({
-                    message: response.data.error.msg,
-                    status: NotificationStatus.Error,
-                })
+                void dispatch(
+                    notify({
+                        message: response.data.error.msg,
+                        status: NotificationStatus.Error,
+                    })
+                )
             } else {
-                void notify({
-                    message: Messages.NOTIFICATION_UNKNOWN_ERROR,
-                    status: NotificationStatus.Error,
-                })
+                void dispatch(
+                    notify({
+                        message: Messages.NOTIFICATION_UNKNOWN_ERROR,
+                        status: NotificationStatus.Error,
+                    })
+                )
             }
         }
     }, [intents, activeIntentsNames])
@@ -256,16 +262,4 @@ export const IntentsFeedbackContainer = ({
     )
 }
 
-const mapPropsToState = (state: RootState) => {
-    return {
-        user: getCurrentUser(state),
-        account: getCurrentAccountState(state),
-    }
-}
-
-const connector = connect(mapPropsToState, {
-    sendIntentFeedbackSuccess,
-    notify,
-})
-
-export default connector(IntentsFeedbackContainer)
+export default IntentsFeedback

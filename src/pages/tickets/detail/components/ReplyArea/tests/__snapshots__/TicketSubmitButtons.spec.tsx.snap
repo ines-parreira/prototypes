@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketSubmitButtons component should render buttons with a filled ticket 1`] = `
+exports[`<TicketSubmitButtons /> should render buttons with a filled ticket 1`] = `
 <div
   class="component d-flex align-items-center justify-content-between"
 >
@@ -9,20 +9,15 @@ exports[`TicketSubmitButtons component should render buttons with a filled ticke
     id="submit-button-div"
   >
     <button
-      aria-disabled="false"
-      class="wrapper mr-2 fill primary medium"
       id="submit-button"
-      tabindex="5"
-      type="button"
     >
+      ConfirmButtonMock: 
       Send
     </button>
     <button
-      aria-disabled="false"
-      class="wrapper fill secondary medium"
       id="submit-and-close-button"
-      type="button"
     >
+      ConfirmButtonMock: 
       Send
        & Close
     </button>

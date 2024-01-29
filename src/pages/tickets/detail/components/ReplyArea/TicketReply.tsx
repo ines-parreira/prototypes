@@ -1,11 +1,10 @@
-import React, {ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {ReactNode, useCallback} from 'react'
 import classNames from 'classnames'
 import {List, Map} from 'immutable'
 
-import {RootState} from 'state/types'
 import {canReply} from 'business/ticket'
-
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {deleteAttachment} from 'state/newMessage/actions'
 import {
@@ -28,22 +27,22 @@ type Props = {
     richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
-} & ConnectedProps<typeof connector>
+}
 
-export function TicketReplyContainer({
+export function TicketReply({
     appliedMacro,
     applyMacro,
     className: passedClassName,
-    deleteActionOnApplied,
-    deleteAttachment,
     macros,
-    newMessageAttachments,
-    newMessageType,
     replyAreaHeader,
     richAreaRef,
     shouldDisplayQuickReply,
     ticket,
 }: Props) {
+    const dispatch = useAppDispatch()
+    const newMessageAttachments = useAppSelector(getNewMessageAttachments)
+    const newMessageType = useAppSelector(getNewMessageType)
+
     const canReplyResult = canReply(
         newMessageType,
         newMessageAttachments.size,
@@ -53,6 +52,17 @@ export function TicketReplyContainer({
     const className = classNames(css.component, passedClassName, {
         'alert-warning': !!canReplyResult,
     })
+
+    const handleDeletion = useCallback(
+        (number) => dispatch(deleteAttachment(number)),
+        [dispatch]
+    )
+
+    const handleActionDeletion = useCallback(
+        (actionIndex, ticketId) =>
+            dispatch(deleteActionOnApplied(actionIndex, ticketId)),
+        [dispatch]
+    )
 
     return (
         <div className={className}>
@@ -71,31 +81,18 @@ export function TicketReplyContainer({
             <TicketAttachments
                 removable
                 attachments={newMessageAttachments}
-                deleteAttachment={deleteAttachment}
+                deleteAttachment={handleDeletion}
                 className="p-2 d-flex flex-wrap"
             />
             {appliedMacro ? (
                 <TicketReplyActions
                     ticketId={ticket.get('id')}
                     appliedMacro={appliedMacro}
-                    onDelete={deleteActionOnApplied}
+                    onDelete={handleActionDeletion}
                 />
             ) : null}
         </div>
     )
 }
 
-const connector = connect(
-    (state: RootState) => {
-        return {
-            newMessageAttachments: getNewMessageAttachments(state),
-            newMessageType: getNewMessageType(state),
-        }
-    },
-    {
-        deleteActionOnApplied,
-        deleteAttachment,
-    }
-)
-
-export default connector(TicketReplyContainer)
+export default TicketReply

@@ -1,23 +1,28 @@
 import React, {ReactNode, useCallback, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import _sample from 'lodash/sample'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {TicketStatus} from 'business/types/ticket'
+import keymap from 'config/shortcuts'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {MacroActionName} from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {MacroActionName} from 'models/macroAction/types'
-import {TicketStatus} from 'business/types/ticket'
-import {RootState} from 'state/types'
-import shortcutManager from 'services/shortcutManager'
-import keymap from 'config/shortcuts'
-import {isAccountActive} from 'state/currentAccount/selectors'
-import {submitSetting} from 'state/currentUser/actions'
-import {getPreferences, isHidingTips} from 'state/currentUser/selectors'
-import {canSend, hasContent} from 'state/newMessage/selectors'
-import {hasContentlessAction} from 'state/ticket/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
+import shortcutManager from 'services/shortcutManager'
+import {submitSetting} from 'state/currentUser/actions'
+import {
+    getPreferences,
+    isHidingTips as getIsHidingTips,
+} from 'state/currentUser/selectors'
+import {
+    canSend as getCanSend,
+    hasContent as getHasContent,
+} from 'state/newMessage/selectors'
+import {hasContentlessAction as getHasContentlessAction} from 'state/ticket/selectors'
 
 import css from './TicketSubmitButtons.less'
 
@@ -54,19 +59,19 @@ const TIPS: ReactNode[] = [
 
 type Props = {
     setTicketStatus: (status: TicketStatus) => void
-} & ConnectedProps<typeof connector>
+}
 
-export function TicketSubmitButtonsContainer({
-    canSend,
-    currentUserPreferences,
-    hasContent,
-    hasContentlessAction,
-    isHidingTips,
-    newMessage,
-    setTicketStatus,
-    submitSetting,
-    ticket,
-}: Props) {
+export function TicketSubmitButtons({setTicketStatus}: Props) {
+    const dispatch = useAppDispatch()
+
+    const hasContent = useAppSelector(getHasContent)
+    const currentUserPreferences = useAppSelector(getPreferences)
+    const isHidingTips = useAppSelector(getIsHidingTips)
+    const newMessage = useAppSelector((state) => state.newMessage)
+    const canSend = useAppSelector(getCanSend)
+    const hasContentlessAction = useAppSelector(getHasContentlessAction)
+    const ticket = useAppSelector((state) => state.ticket)
+
     const tip = useMemo(() => _sample(TIPS), [])
 
     const trackSendAndClosedClicked = useCallback(() => {
@@ -80,8 +85,8 @@ export function TicketSubmitButtonsContainer({
             ['data', 'hide_tips'],
             true
         )
-        return submitSetting(newPreferences.toJS(), false)
-    }, [currentUserPreferences, submitSetting])
+        return dispatch(submitSetting(newPreferences.toJS(), false))
+    }, [currentUserPreferences, dispatch])
 
     const isLoading = newMessage.getIn([
         '_internal',
@@ -220,20 +225,4 @@ export function TicketSubmitButtonsContainer({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        isAccountActive: isAccountActive(state),
-        hasContent: hasContent(state),
-        currentUserPreferences: getPreferences(state),
-        isHidingTips: isHidingTips(state),
-        newMessage: state.newMessage,
-        canSend: canSend(state),
-        hasContentlessAction: hasContentlessAction(state),
-        ticket: state.ticket,
-    }),
-    {
-        submitSetting,
-    }
-)
-
-export default connector(TicketSubmitButtonsContainer)
+export default TicketSubmitButtons

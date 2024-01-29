@@ -1,22 +1,53 @@
-import React, {ComponentProps, ReactElement} from 'react'
+import React, {ComponentProps} from 'react'
 import {Map, fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+
 import {ACTION_TEMPLATES} from 'config'
 import {MacroActionName} from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {TicketSubmitButtonsContainer} from '../TicketSubmitButtons'
+
+import TicketSubmitButtons from '../TicketSubmitButtons'
 
 jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
 
-describe('TicketSubmitButtons component', () => {
-    const minNewMessage = {
-        _internal: {
-            loading: {
-                submitMessage: false,
+jest.mock(
+    'pages/common/components/button/ConfirmButton',
+    () =>
+        ({
+            children,
+            id,
+            isDisabled,
+        }: Partial<ComponentProps<typeof ConfirmButton>>) =>
+            (
+                <button disabled={isDisabled} id={id}>
+                    ConfirmButtonMock: {children}
+                </button>
+            )
+)
+
+const mockStore = configureMockStore([thunk])
+
+describe('<TicketSubmitButtons />', () => {
+    const state = {
+        newMessage: fromJS({
+            newMessage: {
+                body_text: 'abc',
             },
-        },
+            _internal: {
+                loading: {
+                    submitMessage: false,
+                },
+            },
+        }),
+        currentAccount: fromJS({
+            status: {status: 'active'},
+        }),
+        currentUser: fromJS({}),
+        ticket: fromJS({}),
     }
 
     const createTicket = (actionNames: string[]) => {
@@ -28,98 +59,138 @@ describe('TicketSubmitButtons component', () => {
 
     const ticketWithSubject = createTicket([MacroActionName.SetSubject])
 
-    const minProps: ComponentProps<typeof TicketSubmitButtonsContainer> = {
-        ticket: fromJS({}),
-        isAccountActive: true,
-        canSend: true,
-        hasContentlessAction: false,
-        hasContent: true,
-        currentUserPreferences: fromJS({}),
-        isHidingTips: false,
-        newMessage: fromJS(minNewMessage),
-        setTicketStatus: jest.fn(),
-        submitSetting: jest.fn(),
-    }
-
-    beforeEach(() => {
-        ;(
-            ConfirmButton as jest.MockedFunction<typeof ConfirmButton>
-        ).mockImplementation(
-            (props) =>
-                jest
-                    .requireActual<Record<string, typeof ConfirmButton>>(
-                        'pages/common/components/button/ConfirmButton'
-                    )
-                    .default(props) as ReactElement
-        )
-    })
-
     it('should render buttons with a filled ticket', () => {
         const {container} = render(
-            <TicketSubmitButtonsContainer {...minProps} />
+            <Provider store={mockStore(state)}>
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should hide tips', () => {
+        const {queryByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        settings: [
+                            {
+                                type: 'preferences',
+                                data: {
+                                    hide_tips: true,
+                                },
+                            },
+                        ],
+                    }),
+                })}
+            >
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>
+        )
+        expect(queryByText(/Press/)).not.toBeInTheDocument()
+    })
+
     it('should render buttons with an empty ticket', () => {
-        const {getByText} = render(
-            <TicketSubmitButtonsContainer
-                {...minProps}
-                hasContent={false}
-                canSend={false}
-            />
+        const {getAllByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    newMessage: fromJS({
+                        newMessage: {
+                            body_text: '',
+                        },
+                    }),
+                })}
+            >
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>
         )
-        expect(getByText('Send & Close').getAttribute('aria-disabled')).toBe(
-            'true'
-        )
-        expect(getByText('Send').getAttribute('aria-disabled')).toBe('true')
+        const disabledButtons = getAllByText(/ConfirmButtonMock/)
+        expect(disabledButtons).toHaveLength(2)
+        expect(disabledButtons[0]).toBeDisabled()
+        expect(disabledButtons[1]).toBeDisabled()
     })
 
     it("should render buttons with content that can't be sent", () => {
-        const {getByText} = render(
-            <TicketSubmitButtonsContainer {...minProps} canSend={false} />
+        const {getAllByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    newMessage: fromJS({
+                        newMessage: {
+                            body_text: '',
+                        },
+                    }),
+                })}
+            >
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>
         )
-        expect(getByText('Send & Close').getAttribute('aria-disabled')).toBe(
-            'true'
-        )
-        expect(getByText('Send').getAttribute('aria-disabled')).toBe('true')
+        const disabledButtons = getAllByText(/ConfirmButtonMock/)
+        expect(disabledButtons).toHaveLength(2)
+        expect(disabledButtons[0]).toBeDisabled()
+        expect(disabledButtons[1]).toBeDisabled()
     })
 
     it('should render buttons with contentless action', () => {
-        const {getByText} = render(
-            <TicketSubmitButtonsContainer
-                {...minProps}
-                hasContent={false}
-                hasContentlessAction={true}
-            />
+        const {getAllByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    newMessage: fromJS({
+                        newMessage: {
+                            body_text: '',
+                        },
+                    }),
+                    ticket: ticketWithSubject,
+                })}
+            >
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>
         )
-
-        expect(getByText('Apply Macro')).toBeInTheDocument()
-        expect(getByText('Apply Macro & Close')).toBeInTheDocument()
+        const buttons = getAllByText(/Apply Macro/)
+        expect(buttons[0]).toBeInTheDocument()
+        expect(buttons[0]).toHaveAttribute('aria-disabled', 'false')
+        expect(buttons[1]).toBeInTheDocument()
+        expect(buttons[1]).toHaveAttribute('aria-disabled', 'false')
     })
 
     it('should render buttons with contentless action and message content', () => {
-        const {getByText} = render(
-            <TicketSubmitButtonsContainer
-                {...minProps}
-                hasContentlessAction={true}
-            />
+        const {getAllByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    newMessage: fromJS({
+                        newMessage: {
+                            body_text: 'abc',
+                        },
+                    }),
+                    ticket: ticketWithSubject,
+                })}
+            >
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>
         )
-        expect(getByText('Send & Close')).toBeInTheDocument()
-        expect(getByText('Send')).toBeInTheDocument()
+        const buttons = getAllByText(/Send/)
+        expect(buttons[0]).toBeInTheDocument()
+        expect(buttons[0]).toHaveAttribute('aria-disabled', 'false')
+        expect(buttons[1]).toBeInTheDocument()
+        expect(buttons[1]).toHaveAttribute('aria-disabled', 'false')
     })
 
     it('should not render confirm popover', () => {
-        ;(
-            ConfirmButton as jest.MockedFunction<typeof ConfirmButton>
-        ).mockImplementationOnce(() => <div>ConfirmButton</div>)
-
         const {queryByText} = render(
-            <TicketSubmitButtonsContainer
-                {...minProps}
-                ticket={ticketWithSubject}
-            />
+            <Provider
+                store={mockStore({
+                    ...state,
+                    ticket: ticketWithSubject,
+                })}
+            >
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>
         )
-        expect(queryByText('ConfirmButton')).not.toBeInTheDocument()
+
+        expect(queryByText(/ConfirmButtonMock/)).not.toBeInTheDocument()
     })
 })

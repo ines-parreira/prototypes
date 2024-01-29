@@ -1,29 +1,25 @@
 import React, {useCallback, useState} from 'react'
-
 import {AxiosError} from 'axios'
-import {connect} from 'react-redux'
-import {Map} from 'immutable'
 
+import {appQueryClient} from 'api/queryClient'
+import {UserRole} from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {Notification, NotificationStatus} from 'state/notifications/types'
 import client from 'models/api/resources'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {saveFileAsDownloaded} from 'utils/file'
-import * as currentUserSelectors from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
-import {hasRole, replaceAttachmentURL} from 'utils'
-import {UserRole} from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {appQueryClient} from 'api/queryClient'
 import {voiceCallsKeys} from 'models/voiceCall/queries'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {Notification, NotificationStatus} from 'state/notifications/types'
+import {hasRole, replaceAttachmentURL} from 'utils'
+import {saveFileAsDownloaded} from 'utils/file'
 
 import css from './DownloadableDeletableRecording.less'
 
 type OwnProps = {
     downloadRecordingURL: string
     deleteRecordingURL: string
-    currentUser: Map<any, any>
     callId?: number
 }
 
@@ -162,11 +158,11 @@ const DownloadButton = ({url}: ButtonProps) => {
 const DownloadableDeletableRecording = ({
     downloadRecordingURL,
     deleteRecordingURL,
-    currentUser,
     callId,
 }: OwnProps): JSX.Element => {
     const replacedDownloadRecordingURL =
         replaceAttachmentURL(downloadRecordingURL)
+    const currentUser = useAppSelector(getCurrentUser)
 
     return (
         <div className={css['recording-wrapper']}>
@@ -187,11 +183,4 @@ const DownloadableDeletableRecording = ({
     )
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        currentUser: currentUserSelectors.getCurrentUser(state),
-    }
-}
-
-const connector = connect(mapStateToProps)
-export default connector(DownloadableDeletableRecording)
+export default DownloadableDeletableRecording
