@@ -2,9 +2,11 @@ import React from 'react'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import moment from 'moment/moment'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {UseQueryResult} from '@tanstack/react-query'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {assumeMock} from 'utils/testing'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {StatsFilters} from 'models/stat/types'
@@ -56,6 +58,11 @@ describe('VoiceCallTable', () => {
             start_datetime: formatReportingQueryDate(moment()),
         },
     }
+
+    beforeEach(() => {
+        resetLDMocks()
+        mockFlags({[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true})
+    })
 
     const renderComponent = (filterOption = VoiceCallFilterOptions.All) => {
         return render(
@@ -114,7 +121,8 @@ describe('VoiceCallTable', () => {
         expect(getByText('Integration')).toBeInTheDocument()
         expect(getByText('Date')).toBeInTheDocument()
         expect(getByText('State')).toBeInTheDocument()
-        expect(getByText('Duration')).toBeInTheDocument()
+        expect(getByText('Length')).toBeInTheDocument()
+        expect(getByText('Wait time')).toBeInTheDocument()
         expect(getByText('Ticket')).toBeInTheDocument()
     })
 
@@ -144,6 +152,8 @@ describe('VoiceCallTable', () => {
                     ticketId: 1,
                     phoneNumberDestination: '+1234567890',
                     phoneNumberSource: '+112',
+                    talkTime: 100,
+                    waitTime: 12,
                 },
                 {
                     agentId: 2,
@@ -156,6 +166,8 @@ describe('VoiceCallTable', () => {
                     ticketId: null,
                     phoneNumberDestination: '+1234567890',
                     phoneNumberSource: '+112',
+                    talkTime: 101,
+                    waitTime: 13,
                 },
             ],
             isFetching: false,
@@ -170,6 +182,7 @@ describe('VoiceCallTable', () => {
         expect(getByText('VoiceIntegrationBasicLabel 1')).toBeInTheDocument()
         expect(getByText('Answered')).toBeInTheDocument()
         expect(getByText('1m 40s')).toBeInTheDocument()
+        expect(getByText('12s')).toBeInTheDocument()
         expect(getByText('View ticket')).toBeInTheDocument()
 
         // second call
@@ -178,6 +191,7 @@ describe('VoiceCallTable', () => {
         expect(getByText('VoiceIntegrationBasicLabel 2')).toBeInTheDocument()
         expect(getByText('Missed')).toBeInTheDocument()
         expect(getByText('1m 41s')).toBeInTheDocument()
+        expect(getByText('13s')).toBeInTheDocument()
         expect(getByText('-')).toBeInTheDocument()
     })
 

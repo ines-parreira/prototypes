@@ -18,8 +18,8 @@ export enum VoiceCallDimension {
     TicketId = 'VoiceCall.ticketId',
     AgentId = 'VoiceCall.agentId',
     CustomerId = 'VoiceCall.customerId',
-    TalkTime = 'VoiceCall.talkTime',
-    WaitTime = 'VoiceCall.waitTime',
+    TalkTime = 'VoiceCall.talkTimeSeconds',
+    WaitTime = 'VoiceCall.waitTimeSeconds',
     PhoneNumberSource = 'VoiceCall.phoneNumberSource',
     PhoneNumberDestination = 'VoiceCall.phoneNumberDestination',
 }

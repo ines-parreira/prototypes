@@ -17,6 +17,8 @@ export type VoiceCallStatListItem = {
     [VoiceCallDimension.PhoneNumberDestination]: string
     [VoiceCallDimension.PhoneNumberSource]: string
     [VoiceCallMeasure.VoiceCallCount]: string
+    [VoiceCallDimension.TalkTime]: string | null
+    [VoiceCallDimension.WaitTime]: string | null
 }
 
 export type VoiceCallSummary = {
@@ -30,6 +32,8 @@ export type VoiceCallSummary = {
     ticketId: number | null
     phoneNumberDestination: string
     phoneNumberSource: string
+    talkTime: number | null
+    waitTime: number | null
 }
 
 export enum VoiceCallFilterOptions {

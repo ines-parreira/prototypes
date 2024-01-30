@@ -57,5 +57,7 @@ export const selectVoiceCallData = (
         ticketId: parseNullableInteger(row[VoiceCallDimension.TicketId]),
         phoneNumberDestination: row[VoiceCallDimension.PhoneNumberDestination],
         phoneNumberSource: row[VoiceCallDimension.PhoneNumberSource],
+        talkTime: parseNullableInteger(row[VoiceCallDimension.TalkTime]),
+        waitTime: parseNullableInteger(row[VoiceCallDimension.WaitTime]),
     }))
 }

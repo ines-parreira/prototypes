@@ -75,6 +75,8 @@ describe('useVoiceCallList', () => {
                             '+123456789',
                         [VoiceCallDimension.PhoneNumberSource]: '+123456788',
                         [VoiceCallMeasure.VoiceCallCount]: '1',
+                        [VoiceCallDimension.TalkTime]: '12',
+                        [VoiceCallDimension.WaitTime]: '65',
                     },
                 ],
             },
@@ -93,6 +95,8 @@ describe('useVoiceCallList', () => {
                 ticketId: 123,
                 phoneNumberDestination: '+123456789',
                 phoneNumberSource: '+123456788',
+                talkTime: 12,
+                waitTime: 65,
             },
         ])
     })
@@ -113,6 +117,8 @@ describe('useVoiceCallList', () => {
                         [VoiceCallDimension.PhoneNumberDestination]: 'test',
                         [VoiceCallDimension.PhoneNumberSource]: 'test',
                         [VoiceCallMeasure.VoiceCallCount]: '1',
+                        [VoiceCallDimension.TalkTime]: null,
+                        [VoiceCallDimension.WaitTime]: null,
                     },
                 ],
             },
@@ -131,6 +137,8 @@ describe('useVoiceCallList', () => {
                 ticketId: null,
                 phoneNumberDestination: 'test',
                 phoneNumberSource: 'test',
+                talkTime: null,
+                waitTime: null,
             },
         ])
     })

@@ -22,7 +22,7 @@ export const MISSED_CALLS_METRIC_HINT =
 export const CALLER_EXPERIENCE_METRICS_TITLE = 'Caller Experience'
 export const AVERAGE_TALK_TIME_METRIC_TITLE = 'Average Talk Time'
 export const AVERAGE_TALK_TIME_METRIC_HINT =
-    'Average time agents spent talking to customers (does not include hold time)'
+    'Average time agents spent talking to customers'
 export const AVERAGE_WAIT_TIME_METRIC_TITLE = 'Average Wait Time'
 export const AVERAGE_WAIT_TIME_METRIC_HINT =
     'Average time spent by caller before an agent accepted the call or was sent to voicemail'

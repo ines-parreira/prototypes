@@ -88,6 +88,8 @@ describe('voice queries factories', () => {
                     VoiceCallDimension.TicketId,
                     VoiceCallDimension.PhoneNumberSource,
                     VoiceCallDimension.PhoneNumberDestination,
+                    VoiceCallDimension.TalkTime,
+                    VoiceCallDimension.WaitTime,
                 ],
                 filters: [
                     {

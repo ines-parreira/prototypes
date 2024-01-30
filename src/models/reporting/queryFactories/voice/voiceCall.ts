@@ -75,6 +75,8 @@ export const voiceCallListQueryFactory = (
         VoiceCallDimension.TicketId,
         VoiceCallDimension.PhoneNumberSource,
         VoiceCallDimension.PhoneNumberDestination,
+        VoiceCallDimension.TalkTime,
+        VoiceCallDimension.WaitTime,
     ],
     timezone,
     segments: segment ? [segment] : [],
