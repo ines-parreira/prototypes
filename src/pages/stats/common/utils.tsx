@@ -347,3 +347,24 @@ export const isMetricForAgent = (
         String(agentId) ||
     metric[HelpdeskMessageMember.SenderId] === String(agentId) ||
     metric[AgentTimeTrackingMember.UserId] === String(agentId)
+
+export const periodPickerMaxSpanDays = (
+    maxSpan?: daterangepicker.Options['maxSpan'],
+    minDate?: daterangepicker.Options['minDate']
+) => {
+    if (!minDate && maxSpan) {
+        return Number(maxSpan)
+    }
+
+    if (minDate && maxSpan) {
+        const today = moment()
+        const minDateToStart = moment(minDate)
+        const diffInDaysBetweenMinDateAndMaxSpan = today.diff(
+            minDateToStart,
+            'days'
+        )
+        return Math.min(diffInDaysBetweenMinDateAndMaxSpan, Number(maxSpan))
+    }
+
+    return NOT_AVAILABLE_PLACEHOLDER
+}

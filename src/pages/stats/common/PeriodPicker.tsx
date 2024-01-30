@@ -27,6 +27,7 @@ import {useTheme} from 'theme'
 import {formatDatetime} from 'utils'
 
 import css from './PeriodPicker.less'
+import {periodPickerMaxSpanDays} from './utils'
 
 type Props = {
     endDatetime: Moment
@@ -77,6 +78,15 @@ export const PeriodPickerContainer = ({
         return endHandlingTooltipHover
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const maxSpanDays = useMemo(
+        () =>
+            periodPickerMaxSpanDays(
+                initialSettings?.maxSpan,
+                initialSettings?.minDate
+            ),
+        [initialSettings?.maxSpan, initialSettings?.minDate]
+    )
 
     const someDaysAgoStartOfDay = (days: number) =>
         startOfToday().subtract(days - 1, 'days')
@@ -295,9 +305,7 @@ export const PeriodPickerContainer = ({
                         >
                             {tooltipTarget?.classList.contains('future-date')
                                 ? 'There is no data available on this date yet.'
-                                : `You can't select a period longer than ${
-                                      initialSettings?.maxSpan as string
-                                  } days.`}
+                                : `You can't select a period longer than ${maxSpanDays} days.`}
                         </Tooltip>
                     )}
                 </>

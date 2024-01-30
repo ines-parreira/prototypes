@@ -24,6 +24,8 @@ import {
     SHORT_FORMAT,
     NOT_AVAILABLE_TEXT,
     useStatsViewFilters,
+    periodPickerMaxSpanDays,
+    NOT_AVAILABLE_PLACEHOLDER,
 } from '../utils'
 
 const mockStore = configureMockStore([thunk])
@@ -416,6 +418,34 @@ describe('stats components utils', () => {
                     ],
                 },
             ])
+        })
+    })
+    describe('periodPickerMaxSpanDays', () => {
+        it('returns placeholder when no max span and no min date provided', () => {
+            expect(periodPickerMaxSpanDays()).toEqual(NOT_AVAILABLE_PLACEHOLDER)
+        })
+
+        it('returns provided max span when specified', () => {
+            const maxSpan = 90
+            expect(periodPickerMaxSpanDays(maxSpan)).toEqual(maxSpan)
+        })
+
+        it('returns placeholder when there is no max span and min date is provided', () => {
+            expect(
+                periodPickerMaxSpanDays(undefined, moment().subtract(5, 'days'))
+            ).toEqual(NOT_AVAILABLE_PLACEHOLDER)
+        })
+
+        it('returns days difference when minDate is in the past within the max span', () => {
+            const maxSpan = 200
+            const minDate = moment().subtract(100, 'days')
+            expect(periodPickerMaxSpanDays(maxSpan, minDate)).toEqual(100)
+        })
+
+        it('returns provided max span when minDate is in the past beyond the max span', () => {
+            const maxSpan = 100
+            const minDate = moment().subtract(200, 'days')
+            expect(periodPickerMaxSpanDays(maxSpan, minDate)).toEqual(maxSpan)
         })
     })
 })
