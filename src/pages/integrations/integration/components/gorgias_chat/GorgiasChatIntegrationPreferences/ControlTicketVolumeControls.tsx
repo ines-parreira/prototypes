@@ -40,7 +40,8 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
     const isLoading =
         articleRecommendationEnabled === undefined ||
         selfServiceConfiguration === undefined ||
-        helpCenterArticlesCount === undefined
+        (selfServiceConfiguration?.article_recommendation_help_center_id &&
+            helpCenterArticlesCount === undefined)
 
     const disableTicketControlVolume =
         isLoading ||
@@ -51,9 +52,21 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
             helpCenterArticlesCount
         )
 
-    const integrationId = integration.get('id') as string
-    const shopName = integration.getIn(['meta', 'shop_name']) as string
-    const shopType = integration.getIn(['meta', 'shop_type']) as string
+    const integrationId = integration.get('id') as string | undefined
+    const shopName = integration.getIn(['meta', 'shop_name']) as
+        | string
+        | undefined
+    const shopType = integration.getIn(['meta', 'shop_type']) as
+        | string
+        | undefined
+
+    const articleRecommendationLink = integrationId &&
+        shopName &&
+        shopType && {
+            pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
+            search: `?type=${TicketChannel.Chat}&id=${integrationId}`,
+            state: {from: 'chat-control-ticket-volume'},
+        }
 
     return (
         <div className={css.formSection}>
@@ -73,21 +86,18 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
                 >
                     <ToggleInput
                         onClick={onToggle}
-                        isToggled={isToggled}
+                        isToggled={
+                            disableTicketControlVolume ? false : isToggled
+                        }
                         isDisabled={disableTicketControlVolume}
                     >
                         Remove “Send us a message” button
                     </ToggleInput>
                 </div>
-                {disableTicketControlVolume && (
+                {disableTicketControlVolume && articleRecommendationLink && (
                     <Tooltip target={toggleInputRef} autohide={false}>
                         Disable{' '}
-                        <Link
-                            to={{
-                                pathname: `/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`,
-                                state: {from: 'chat-control-ticket-valume'},
-                            }}
-                        >
+                        <Link to={articleRecommendationLink}>
                             {ARTICLE_RECOMMENDATION}
                         </Link>{' '}
                         to remove “Send us a message” button.
