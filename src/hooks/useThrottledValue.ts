@@ -1,39 +1,20 @@
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
+import useThrottledCallback from './useThrottledCallback'
 
 const useThrottledValue = <T, U extends any[]>(
-    fn: (...args: U) => T,
-    ms = 200,
-    args: U
+    callback: (...args: U) => T,
+    args: U,
+    delay: number,
+    noTrailing = false
 ) => {
     const [state, setState] = useState<T | null>(null)
-    const timeout = useRef<ReturnType<typeof setTimeout>>()
-    const nextArgs = useRef<U>()
+
+    const throttledSetState = useThrottledCallback(setState, delay, noTrailing)
 
     useEffect(() => {
-        if (!timeout.current) {
-            setState(fn(...args))
-            const timeoutCallback = () => {
-                if (nextArgs.current) {
-                    setState(fn(...nextArgs.current))
-                    nextArgs.current = undefined
-                    timeout.current = setTimeout(timeoutCallback, ms)
-                } else {
-                    timeout.current = undefined
-                }
-            }
-            timeout.current = setTimeout(timeoutCallback, ms)
-        } else {
-            nextArgs.current = args
-        }
+        throttledSetState(() => callback(...args))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, args)
-
-    useEffect(
-        () => () => {
-            timeout.current && clearTimeout(timeout.current)
-        },
-        []
-    )
 
     return state
 }

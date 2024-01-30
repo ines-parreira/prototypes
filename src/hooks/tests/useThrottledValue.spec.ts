@@ -9,11 +9,10 @@ const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout')
 describe('useThrottledValue', () => {
     afterEach(() => {
         mockedFn.mockClear()
-        jest.clearAllTimers()
     })
 
-    const renderUseThrottledValue = <T>(initialProps: T, ms?: number) =>
-        renderHook((props) => useThrottledValue(mockedFn, ms, [props]), {
+    const renderUseThrottledValue = <T>(initialProps: T, ms: number) =>
+        renderHook((props) => useThrottledValue(mockedFn, [props], ms), {
             initialProps,
         })
 
@@ -47,21 +46,6 @@ describe('useThrottledValue', () => {
         hook.rerender('foo')
         act(() => {
             jest.advanceTimersByTime(100)
-        })
-
-        expect(hook.result.current).toBe('foo')
-        expect(mockedFn).toHaveBeenCalledTimes(2)
-    })
-
-    it('should use the default ms value when missing', () => {
-        const hook = renderUseThrottledValue('boo')
-
-        expect(hook.result.current).toBe('boo')
-        expect(mockedFn).toHaveBeenCalledTimes(1)
-
-        hook.rerender('foo')
-        act(() => {
-            jest.advanceTimersByTime(200)
         })
 
         expect(hook.result.current).toBe('foo')

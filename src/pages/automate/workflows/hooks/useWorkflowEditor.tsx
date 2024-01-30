@@ -270,13 +270,13 @@ export function useWorkflowEditor(
                     transformVisualBuilderGraphIntoWfConfiguration(graph)
                 )
             ),
-        500,
-        [visualBuilderGraphDirty]
+        [visualBuilderGraphDirty],
+        500
     )
     const currentTranslationSizeToLimitRate = useThrottledValue(
         (graph) => computeCurrentTranslationSizeToLimitRate(graph),
-        500,
-        [visualBuilderGraphDirty]
+        [visualBuilderGraphDirty],
+        500
     )
 
     const handleValidate = useCallback(
