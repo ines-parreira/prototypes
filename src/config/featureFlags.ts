@@ -49,6 +49,7 @@ export enum FeatureFlagKey {
     EnforceTicketsOnES = 'enforce-tickets-on-es',
     FlowsStepsHttpRequest = 'flows-steps-http-request',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
+    FlowsStepsShopperAuthentication = 'flows-steps-shopper-authentication-1',
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     HelpCenterAnalytics = 'help-center-analytics',
     HelpCenterAutoEmbed = 'help-center-auto-embed',

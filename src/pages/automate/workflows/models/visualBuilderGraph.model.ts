@@ -112,6 +112,7 @@ export function walkVisualBuilderGraph(
             outgoingEdges: VisualBuilderEdge[]
         }
     ) => void,
+    direction: 'upwards' | 'downwards' = 'downwards',
     indexes?: {
         nodeById: Record<string, VisualBuilderNode>
         edgesBySource: Record<string, VisualBuilderEdge[]>
@@ -119,28 +120,48 @@ export function walkVisualBuilderGraph(
     }
 ) {
     const {nodes, edges} = g
-    // build indexes on first iteration
+    // Build indexes on first iteration
     const {nodeById, edgesBySource, edgesByTarget} = indexes ?? {
         nodeById: _keyBy(nodes, 'id'),
         edgesBySource: _groupBy(edges, 'source'),
         edgesByTarget: _groupBy(edges, 'target'),
     }
+
     const node = nodeById[currentNodeId]
     if (!node) return
-    const incomingEdge = edgesByTarget[currentNodeId]?.[0]
-    const previousNode = incomingEdge
-        ? nodeById[incomingEdge.source]
-        : undefined
-    const outgoingEdges = edgesBySource[currentNodeId] ?? []
-    const nextNodes = outgoingEdges.map((e) => nodeById[e.target])
-    f(node, {previousNode, nextNodes, incomingEdge, outgoingEdges})
-    if (outgoingEdges.length === 0) return
-    for (const outgoingEdge of outgoingEdges) {
-        walkVisualBuilderGraph(g, outgoingEdge.target, f, {
-            nodeById,
-            edgesBySource,
-            edgesByTarget,
-        })
+
+    let nextEdges = []
+    let previousNode
+    let incomingEdge
+
+    if (direction === 'downwards') {
+        nextEdges = edgesBySource[currentNodeId] ?? []
+        incomingEdge = edgesByTarget[currentNodeId]?.[0]
+        previousNode = incomingEdge ? nodeById[incomingEdge.source] : undefined
+    } else {
+        nextEdges = edgesByTarget[currentNodeId] ?? []
+        const outgoingEdge = nextEdges.length > 0 ? nextEdges[0] : undefined
+        previousNode = outgoingEdge ? nodeById[outgoingEdge.target] : undefined
+    }
+
+    const nextNodes = nextEdges.map(
+        (e) => nodeById[direction === 'downwards' ? e.target : e.source]
+    )
+
+    f(node, {previousNode, nextNodes, incomingEdge, outgoingEdges: nextEdges})
+
+    for (const edge of nextEdges) {
+        walkVisualBuilderGraph(
+            g,
+            direction === 'downwards' ? edge.target : edge.source,
+            f,
+            direction,
+            {
+                nodeById,
+                edgesBySource,
+                edgesByTarget,
+            }
+        )
     }
 }
 
@@ -502,6 +523,31 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = stepId
                 }
                 stepIdByNodeId[node.id] = stepId
+            } else if (node.type === 'shopper_authentication') {
+                const stepId =
+                    node.data.wfConfigurationRef
+                        .wfConfigurationShopperAuthenticationStepId
+
+                const s: WorkflowStepShopperAuthentication = {
+                    id: stepId,
+                    kind: 'shopper-authentication',
+                    settings: {
+                        integration_id: node.data.integrationId,
+                    },
+                }
+                c.steps.push(s)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: stepId,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = stepId
+                }
+
+                stepIdByNodeId[node.id] = stepId
             }
         }
     )
@@ -539,4 +585,33 @@ export function getIncomingChoice(
         }
     }
     return undefined
+}
+
+export function isNodeUniquePerPath(
+    type: VisualBuilderNode['type'],
+    graph: VisualBuilderGraph,
+    nodeId: string
+) {
+    const {nodes} = graph
+    const childrenIds: Set<string> = new Set()
+    walkVisualBuilderGraph(
+        graph,
+        nodeId,
+        (node) => {
+            childrenIds.add(node.id)
+        },
+        'upwards'
+    )
+    walkVisualBuilderGraph(
+        graph,
+        nodeId,
+        (node) => {
+            childrenIds.add(node.id)
+        },
+        'downwards'
+    )
+
+    return !Boolean(
+        nodes.find((node) => childrenIds.has(node.id) && node.type === type)
+    )
 }

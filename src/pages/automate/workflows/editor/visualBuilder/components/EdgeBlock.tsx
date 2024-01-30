@@ -5,7 +5,10 @@ import {produce, Draft} from 'immer'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {
+    useWorkflowEditorContext,
+    WorkflowEditorContext,
+} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import {
@@ -23,6 +26,7 @@ import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisual
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection.svg'
 
+import {isNodeUniquePerPath} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import EdgeIconButton from './EdgeIconButton'
 import EdgeLabel from './EdgeLabel'
 import css from './EdgeBlock.less'
@@ -46,6 +50,7 @@ function useMenuItems(
     dispatch: React.Dispatch<VisualBuilderGraphAction>
 ) {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
+    const {visualBuilderGraph} = useWorkflowEditorContext()
     const [menuItems, setMenuItems] = useState<MenuItem[]>([
         {
             label: labelByVisualBuilderNodeType.multiple_choices,
@@ -130,6 +135,21 @@ function useMenuItems(
                 })
             },
         },
+        {
+            label: labelByVisualBuilderNodeType.shopper_authentication,
+            description: 'Confirm customer identity',
+            type: 'shopper_authentication',
+            icon: iconByVisualBuilderNodeType.shopper_authentication,
+            style: colorByVisualBuilderNodeType.shopper_authentication,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_SHOPPER_AUTHENTICATION_NODE',
+                    beforeNodeId: nodeId,
+                    storeIntegrationId: storeIntegration.id,
+                })
+            },
+        },
     ])
     const updateMenuItems = useCallback(
         (immerProducer: (draft: Draft<MenuItem>) => void) => {
@@ -139,6 +159,39 @@ function useMenuItems(
         },
         [setMenuItems]
     )
+
+    useEffect(() => {
+        if (
+            !isNodeUniquePerPath(
+                'shopper_authentication',
+                visualBuilderGraph,
+                nodeId
+            )
+        ) {
+            updateMenuItems((draft) => {
+                if (draft.type === 'shopper_authentication') {
+                    draft.disabledText =
+                        'Only one shopper authentication node is allowed per path.'
+                }
+            })
+        } else {
+            updateMenuItems((draft) => {
+                if (
+                    draft.type === 'shopper_authentication' &&
+                    draft.disabledText
+                ) {
+                    draft.disabledText = ''
+                }
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        visualBuilderGraph.nodes.length,
+        nodeId,
+        updateMenuItems,
+        isNodeUniquePerPath,
+    ])
+
     return {
         menuItems,
         updateMenuItems,
@@ -194,7 +247,10 @@ function useMenuItemsForConnectedChannels(
         updateMenuItems,
         configurationId,
     ])
-    return menuItems
+    return {
+        menuItems,
+        updateMenuItems,
+    }
 }
 
 export type VisualBuilderEdgeProps = {
@@ -228,7 +284,7 @@ export default function EdgeBlock({
         setFloatingRef(node)
     }, [])
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
-    const menuItems = useMenuItemsForConnectedChannels(
+    const {menuItems} = useMenuItemsForConnectedChannels(
         nodeId,
         dispatch,
         configurationId
@@ -260,9 +316,7 @@ export default function EdgeBlock({
             <EdgeIconButton
                 ref={edgeRef}
                 icon="add"
-                onClick={() => {
-                    setIsNodeMenuDropdownOpen(true)
-                }}
+                onClick={() => setIsNodeMenuDropdownOpen(true)}
             />
             <Dropdown
                 ref={onFloatingRefChange}

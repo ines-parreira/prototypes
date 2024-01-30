@@ -24,6 +24,7 @@ import {
 } from '../../../../common/hooks/useSelfServiceStoreIntegration'
 import OrderSelectionNode from '../nodes/OrderSelectionNode'
 import HttpRequestNode from '../nodes/HttpRequestNode'
+import ShopperAuthenticationNode from '../nodes/ShopperAuthenticationNode'
 import {VisualBuilderBackground} from './VisualBuilderBackground'
 
 type VisualBuilderTemplatePreviewProps = {
@@ -37,6 +38,7 @@ const nodeTypes = {
     text_reply: TextReplyNode,
     file_upload: FileUploadNode,
     order_selection: OrderSelectionNode,
+    shopper_authentication: ShopperAuthenticationNode,
     http_request: HttpRequestNode,
     end: EndNode,
 }
