@@ -17,6 +17,7 @@ import {
     useResolutionTimeWithAutomationTrend,
     useAutomationRateTrend,
     useAutomatedInteractionsTrend,
+    useDecreaseInResolutionTimeWithAutomationTrend,
 } from 'hooks/reporting/metricTrends'
 import {
     useAutomationRateTimeSeries,
@@ -65,6 +66,12 @@ jest.mock('hooks/reporting/metricTrends')
 const useFirstResponseTimeWithAutomationTrendMock = assumeMock(
     useFirstResponseTimeWithAutomationTrend
 )
+
+jest.mock('hooks/reporting/metricTrends')
+const useDecreaseInResolutionTimeWithAutomationTrendMock = assumeMock(
+    useDecreaseInResolutionTimeWithAutomationTrend
+)
+
 const useResolutionTimeWithAutomationTrendMock = assumeMock(
     useResolutionTimeWithAutomationTrend
 )
@@ -175,6 +182,13 @@ describe('<AutomateOverview />', () => {
             prevValue: 100,
         },
     }
+    const decreaseInResolutionTimeWithAutomateTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 91,
+            prevValue: 100,
+        },
+    }
     const resolutionTimeWithAutomationTrend = {
         ...defaultMetricTrend,
         data: {
@@ -215,6 +229,9 @@ describe('<AutomateOverview />', () => {
         }))
         useFirstResponseTimeWithAutomationTrendMock.mockReturnValue(
             firstResponseTimeWithAutomationTrend
+        )
+        useDecreaseInResolutionTimeWithAutomationTrendMock.mockReturnValue(
+            decreaseInResolutionTimeWithAutomateTrend
         )
         useResolutionTimeWithAutomationTrendMock.mockReturnValue(
             resolutionTimeWithAutomationTrend
@@ -416,28 +433,27 @@ describe('<AutomateOverview />', () => {
         }
     )
 
-    describe.each([['OTS show 0h 0m in case of', 0]])(
-        '%s',
-        (testName, value) => {
-            it('should show tips with sentiment ', () => {
-                localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-                useResolutionTimeWithAutomationTrendMock.mockReturnValue({
-                    ...defaultMetricTrend,
-                    data: {
-                        value,
-                        prevValue: value,
-                    },
-                })
-                const screen = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <AutomateOverview />
-                    </Provider>
-                )
-                fireEvent.click(screen.getByText(/Show tips/))
-                expect(screen.getByText('0h 0m'))
+    describe.each([
+        ['DecreaseInResolutionTimeWithAutomation show 0h 0m in case of', 0],
+    ])('%s', (testName, value) => {
+        it('should show tips with sentiment ', () => {
+            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
+            useDecreaseInResolutionTimeWithAutomationTrendMock.mockReturnValue({
+                ...defaultMetricTrend,
+                data: {
+                    value,
+                    prevValue: value,
+                },
             })
-        }
-    )
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <AutomateOverview />
+                </Provider>
+            )
+            fireEvent.click(screen.getByText(/Show tips/))
+            expect(screen.getByText('0h 0m'))
+        })
+    })
 
     describe.each([['AI show 0 in case of', 0]])('%s', (testName, value) => {
         it('should show tips with sentiment ', () => {

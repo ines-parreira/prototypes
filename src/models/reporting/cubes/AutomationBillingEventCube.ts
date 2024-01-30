@@ -4,7 +4,7 @@ import {BillableTicketCube} from './BillableTicketCube'
 export enum AutomationBillingEventMeasure {
     FirstResponseTimeWithAutomateFeatures = 'AutomationBillingEvent.firstResponseTimeWithAutomateFeatures',
     ResolutionTimeWithAutomateFeatures = 'AutomationBillingEvent.resolutionTimeWithAutomateFeatures',
-    OverallTimeSaved = 'AutomationBillingEvent.overallTimeSaved',
+    DecreaseInResolutionTimeWithAutomateFeatures = 'AutomationBillingEvent.decreaseInResolutionTimeWithAutomateFeatures',
     AutomationRate = 'AutomationBillingEvent.automationRate',
     AutomatedInteractions = 'AutomationBillingEvent.automatedInteractions',
     AutomatedInteractionsByTrackOrder = 'AutomationBillingEvent.automatedInteractionsByTrackOrder',

@@ -1,29 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`time series Automate OverallTimeSaved should render expected query snapshot 1`] = `
+exports[`time series Automate useAutomatedInteractionByFeatures should render expected query snapshot 1`] = `
 [
   {
     "dimensions": [],
     "filters": [
       {
         "member": "AutomationBillingEvent.periodStart",
-        "operator": "afterDate",
+        "operator": "afterOrOnDate",
         "values": [
           "2021-05-29T00:00:00.000",
         ],
       },
       {
         "member": "AutomationBillingEvent.periodEnd",
-        "operator": "beforeDate",
+        "operator": "beforeOrOnDate",
         "values": [
           "2021-06-04T23:59:59.000",
-        ],
-      },
-      {
-        "member": "AutomationBillingEvent.periodEnd",
-        "operator": "beforeDate",
-        "values": [
-          "2021-06-04T23:59:59+02:00",
         ],
       },
     ],
@@ -58,23 +51,16 @@ exports[`time series Automate useAutomatedInteractionTimeSeries should render ex
     "filters": [
       {
         "member": "AutomationBillingEvent.periodStart",
-        "operator": "afterDate",
+        "operator": "afterOrOnDate",
         "values": [
           "2021-05-29T00:00:00.000",
         ],
       },
       {
         "member": "AutomationBillingEvent.periodEnd",
-        "operator": "beforeDate",
+        "operator": "beforeOrOnDate",
         "values": [
           "2021-06-04T23:59:59.000",
-        ],
-      },
-      {
-        "member": "AutomationBillingEvent.periodEnd",
-        "operator": "beforeDate",
-        "values": [
-          "2021-06-04T23:59:59+02:00",
         ],
       },
     ],
@@ -103,23 +89,16 @@ exports[`time series Automate useAutomationRateTimeSeries should render expected
     "filters": [
       {
         "member": "AutomationBillingEvent.periodStart",
-        "operator": "afterDate",
+        "operator": "afterOrOnDate",
         "values": [
           "2021-05-29T00:00:00.000",
         ],
       },
       {
         "member": "AutomationBillingEvent.periodEnd",
-        "operator": "beforeDate",
+        "operator": "beforeOrOnDate",
         "values": [
           "2021-06-04T23:59:59.000",
-        ],
-      },
-      {
-        "member": "AutomationBillingEvent.periodEnd",
-        "operator": "beforeDate",
-        "values": [
-          "2021-06-04T23:59:59+02:00",
         ],
       },
     ],

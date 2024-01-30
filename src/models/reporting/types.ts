@@ -24,6 +24,8 @@ export enum ReportingFilterOperator {
     OnTheDate = 'onTheDate',
     BeforeDate = 'beforeDate',
     AfterDate = 'afterDate',
+    BeforeOrOnDate = 'beforeOrOnDate',
+    AfterOrOnDate = 'afterOrOnDate',
     MeasureFilter = 'measureFilter',
 }
 

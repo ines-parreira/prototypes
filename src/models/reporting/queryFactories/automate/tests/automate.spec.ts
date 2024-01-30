@@ -1,17 +1,17 @@
 import moment from 'moment/moment'
 
-import {overallTimeSavedQueryFactory} from 'models/reporting/queryFactories/automate/overallTimeSaved'
 import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
 import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
 } from 'models/reporting/cubes/AutomationBillingEventCube'
-import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomateFeaturesQueryFactory'
+import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
 import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
+import {decreaseInResolutionTimeQueryFactory} from '../decreaseInResolutionTime'
 
 describe('Automate', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -36,9 +36,9 @@ describe('Automate', () => {
             resolutionTimeWithAutomateFeaturesQueryFactory,
         ],
         [
-            'OverallTimeSaved',
-            AutomationBillingEventMeasure.OverallTimeSaved,
-            overallTimeSavedQueryFactory,
+            'DecreaseInResolutionTime',
+            AutomationBillingEventMeasure.DecreaseInResolutionTimeWithAutomateFeatures,
+            decreaseInResolutionTimeQueryFactory,
         ],
         [
             'AutomationRate',
@@ -65,12 +65,12 @@ describe('Automate', () => {
                     },
                     {
                         member: AutomationBillingEventMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
+                        operator: ReportingFilterOperator.AfterOrOnDate,
                         values: [periodStart],
                     },
                     {
                         member: AutomationBillingEventMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
+                        operator: ReportingFilterOperator.BeforeOrOnDate,
                         values: [periodEnd],
                     },
                 ],

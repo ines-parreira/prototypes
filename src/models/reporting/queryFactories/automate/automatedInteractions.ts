@@ -1,21 +1,15 @@
-import {automateDefaultFilters} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventDimension,
     AutomationBillingEventMeasure,
-    AutomationBillingEventMember,
 } from 'models/reporting/cubes/AutomationBillingEventCube'
-import {
-    ReportingFilterOperator,
-    ReportingGranularity,
-    TimeSeriesQuery,
-} from 'models/reporting/types'
+import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {AutomateStatsFiltersMembers, getFilterDateRange} from 'utils/reporting'
 import {
-    AutomateStatsFiltersMembers,
-    getFilterDateRange,
-    statsFiltersToReportingFilters,
-} from 'utils/reporting'
+    automateDefaultFilters,
+    statsAutomateFiltersToReportingFilters,
+} from 'models/reporting/queryFactories/automate/filters'
 
 export const automatedInteractionsQueryFactory = (
     filters: StatsFilters,
@@ -43,11 +37,9 @@ export const automatedInteractionsTimeSeriesQueryFactory = (
     ],
     timezone,
     filters: [
-        ...statsFiltersToReportingFilters(AutomateStatsFiltersMembers, filters),
-        {
-            member: AutomationBillingEventMember.PeriodEnd,
-            operator: ReportingFilterOperator.BeforeDate,
-            values: [filters.period.end_datetime],
-        },
+        ...statsAutomateFiltersToReportingFilters(
+            AutomateStatsFiltersMembers,
+            filters
+        ),
     ],
 })

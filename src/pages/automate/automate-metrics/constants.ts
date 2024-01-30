@@ -1,7 +1,7 @@
-export const TIME_SAVED = 'Time saved'
+export const DECREASE_IN_RESOLUTION_TIME = 'Decrease in resolution time'
 export const AUTOMATION_RATE_LABEL = 'Automation rate'
 export const AUTOMATED_INTERACTIONS_LABEL = 'Automated interactions'
-export const TIME_SAVED_ON_FIRST_RESPONSE = 'Decrease in first response time'
+export const DECREASE_IN_FIRST_RESPONSE = 'Decrease in first response time'
 export const COST_SAVED = 'Cost saved'
 
 export const AGENT_COST_PER_TICKET = 3.1

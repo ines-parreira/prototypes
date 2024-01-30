@@ -1,8 +1,8 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
-import {TimeSavedMetric} from '../TimeSavedMetric'
-import {TIME_SAVED} from '../constants'
+import {DecreaseInResolutionTimeMetric} from '../DecreaseInResolutionTimeMetric'
+import {DECREASE_IN_RESOLUTION_TIME} from '../constants'
 
 export type MetricTrend = {
     isFetching: boolean
@@ -22,21 +22,27 @@ const trend: MetricTrend = {
     },
 }
 
-describe('TimeSavedMetric', () => {
+describe('DecreaseInResolutionTimeMetric', () => {
     it('should render correctly', () => {
-        render(<TimeSavedMetric trend={trend} />)
+        render(<DecreaseInResolutionTimeMetric trend={trend} />)
 
-        expect(screen.getByText(TIME_SAVED)).toBeInTheDocument()
+        expect(
+            screen.getByText(DECREASE_IN_RESOLUTION_TIME)
+        ).toBeInTheDocument()
     })
 
     it('should render the correct value', () => {
-        render(<TimeSavedMetric trend={trend} />)
+        render(<DecreaseInResolutionTimeMetric trend={trend} />)
 
         expect(screen.getByText('53s')).toBeInTheDocument()
     })
 
     it('should render a loading state', () => {
-        render(<TimeSavedMetric trend={{...trend, isFetching: true}} />)
+        render(
+            <DecreaseInResolutionTimeMetric
+                trend={{...trend, isFetching: true}}
+            />
+        )
 
         expect(screen.queryByText('53s')).not.toBeInTheDocument()
     })

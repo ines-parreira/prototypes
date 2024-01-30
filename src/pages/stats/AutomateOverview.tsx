@@ -22,8 +22,8 @@ import {periodToReportingGranularity} from 'utils/reporting'
 import {
     useAutomatedInteractionsTrend,
     useAutomationRateTrend,
+    useDecreaseInResolutionTimeWithAutomationTrend,
     useFirstResponseTimeWithAutomationTrend,
-    useResolutionTimeWithAutomationTrend,
 } from 'hooks/reporting/metricTrends'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -42,7 +42,7 @@ import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrati
 import {
     AutomatedInteractionsMetric,
     AutomationRateMetric,
-    AutomationTimeSavedMetric,
+    DecreaseInResolutionTimeMetric,
     AutomationDecreaseInFirstResponseTimeMetric,
     AutomationCostSavedMetric,
 } from 'pages/automate/automate-metrics'
@@ -131,10 +131,12 @@ export function AutomateOverview() {
         pageStatsFilters,
         userTimezone
     )
-    const resolutionTimeTrend = useResolutionTimeWithAutomationTrend(
-        pageStatsFilters,
-        userTimezone
-    )
+
+    const decreaseInResolutionTimeWithAutomationTrend =
+        useDecreaseInResolutionTimeWithAutomationTrend(
+            pageStatsFilters,
+            userTimezone
+        )
 
     const automationRateTrend = useAutomationRateTrend(
         pageStatsFilters,
@@ -327,7 +329,7 @@ export function AutomateOverview() {
             automatedInteractionTimeSeries,
             automatedInteractionByEventTypesTimeSeries,
             firstResponseTimeTrend,
-            resolutionTimeTrend,
+            decreaseInResolutionTimeWithAutomationTrend,
             automationRateTrend,
             automatedInteractionTrend,
         }
@@ -336,7 +338,7 @@ export function AutomateOverview() {
         automatedInteractionTimeSeries,
         automatedInteractionByEventTypesTimeSeries,
         firstResponseTimeTrend,
-        resolutionTimeTrend,
+        decreaseInResolutionTimeWithAutomationTrend,
         automationRateTrend,
         automatedInteractionTrend,
     ])
@@ -497,8 +499,8 @@ export function AutomateOverview() {
                     </DashboardGridCell>
 
                     <DashboardGridCell size={4}>
-                        <AutomationTimeSavedMetric
-                            trend={resolutionTimeTrend}
+                        <DecreaseInResolutionTimeMetric
+                            trend={decreaseInResolutionTimeWithAutomationTrend}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>

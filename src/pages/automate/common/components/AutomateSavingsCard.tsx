@@ -46,8 +46,10 @@ export const AutomateSavingsCard = ({
                                         : '0h 0m'}
                                 </div>
                                 <div className="d-flex align-items-center">
-                                    <p className={css.subheading}>Of time</p>
-                                    <HintTooltip title="How much time agents would have spent resolving your automated interactions, based on your average resolution time." />
+                                    <p className={css.subheading}>
+                                        In average resolution time
+                                    </p>
+                                    <HintTooltip title="How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time." />
                                 </div>
                             </div>
                         </div>

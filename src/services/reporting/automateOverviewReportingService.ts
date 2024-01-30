@@ -11,12 +11,14 @@ import {createCsv, saveZippedFiles} from 'utils/file'
 import {
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
-    OVERALL_TIME_SAVED_BY_YOUR_TEAM,
-    TIME_SAVED_ON_FIRST_RESPONSE,
 } from 'pages/stats/self-service/constants'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {FEATURE_LABELS} from 'pages/stats/constants'
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
+import {
+    DECREASE_IN_FIRST_RESPONSE,
+    DECREASE_IN_RESOLUTION_TIME,
+} from 'pages/automate/automate-metrics/constants'
 
 export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
 export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'
@@ -39,7 +41,7 @@ export interface AutomateReportData {
     automatedInteractionTimeSeries: Fetching<TimeSeriesDataItem[][]>
     automatedInteractionByEventTypesTimeSeries: Fetching<TimeSeriesDataItem[][]>
     firstResponseTimeTrend: MetricTrend
-    resolutionTimeTrend: MetricTrend
+    decreaseInResolutionTimeWithAutomationTrend: MetricTrend
     automationRateTrend: MetricTrend
     automatedInteractionTrend: MetricTrend
 }
@@ -50,7 +52,7 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
         automatedInteractionTimeSeries,
         automatedInteractionByEventTypesTimeSeries,
         firstResponseTimeTrend,
-        resolutionTimeTrend,
+        decreaseInResolutionTimeWithAutomationTrend,
         automationRateTrend,
         automatedInteractionTrend,
     } = data
@@ -71,14 +73,14 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
             ifNullNa(automatedInteractionTrend.data?.prevValue),
         ],
         [
-            TIME_SAVED_ON_FIRST_RESPONSE,
+            DECREASE_IN_FIRST_RESPONSE,
             round(firstResponseTimeTrend.data?.value),
             round(firstResponseTimeTrend.data?.prevValue),
         ],
         [
-            OVERALL_TIME_SAVED_BY_YOUR_TEAM,
-            round(resolutionTimeTrend.data?.value),
-            round(resolutionTimeTrend.data?.prevValue),
+            DECREASE_IN_RESOLUTION_TIME,
+            round(decreaseInResolutionTimeWithAutomationTrend.data?.value),
+            round(decreaseInResolutionTimeWithAutomationTrend.data?.prevValue),
         ],
     ]
 

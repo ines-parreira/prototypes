@@ -29,7 +29,10 @@ const buildQuery = <T>(isFetching: boolean, data?: T) => ({
 describe('reporting', () => {
     const data: Parameters<typeof saveReport>[0] = {
         firstResponseTimeTrend: buildQuery(false, trendReportData),
-        resolutionTimeTrend: buildQuery(false, trendReportData),
+        decreaseInResolutionTimeWithAutomationTrend: buildQuery(
+            false,
+            trendReportData
+        ),
         automationRateTrend: buildQuery(false, trendReportData),
         automatedInteractionTrend: buildQuery(false, trendReportData),
         automationRateTimeSeries: buildQuery(false, [[timeSeriesData]]),

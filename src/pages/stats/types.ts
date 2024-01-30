@@ -5,7 +5,7 @@ export type AutomatedInteractionByFeatures = Exclude<
     AutomationBillingEventMeasure,
     | AutomationBillingEventMeasure.FirstResponseTimeWithAutomateFeatures
     | AutomationBillingEventMeasure.ResolutionTimeWithAutomateFeatures
-    | AutomationBillingEventMeasure.OverallTimeSaved
+    | AutomationBillingEventMeasure.DecreaseInResolutionTimeWithAutomateFeatures
     | AutomationBillingEventMeasure.AutomationRate
     | AutomationBillingEventMeasure.AutomatedInteractions
 >

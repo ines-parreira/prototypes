@@ -1,12 +1,14 @@
-import {automateDefaultFilters} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBillingEventCube'
 import {StatsFilters} from 'models/stat/types'
+import {automateDefaultFilters} from 'models/reporting/queryFactories/automate/filters'
 
-export const overallTimeSavedQueryFactory = (
+export const decreaseInResolutionTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string
 ) => ({
-    measures: [AutomationBillingEventMeasure.OverallTimeSaved],
+    measures: [
+        AutomationBillingEventMeasure.DecreaseInResolutionTimeWithAutomateFeatures,
+    ],
     dimensions: [],
     timezone,
     filters: automateDefaultFilters(filters),

@@ -1,4 +1,4 @@
-import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomateFeaturesQueryFactory'
+import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -11,8 +11,9 @@ import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/suppor
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
+import {decreaseInResolutionTimeQueryFactory} from 'models/reporting/queryFactories/automate/decreaseInResolutionTime'
 import {resolutionTimeWithAutomateFeaturesQueryFactory} from '../../models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
-import {overallTimeSavedQueryFactory} from '../../models/reporting/queryFactories/automate/overallTimeSaved'
+
 import {automationRateQueryFactory} from '../../models/reporting/queryFactories/automate/automationRate'
 import {automatedInteractionsQueryFactory} from '../../models/reporting/queryFactories/automate/automatedInteractions'
 
@@ -160,13 +161,13 @@ export const useResolutionTimeWithAutomationTrend = (
         )
     )
 
-export const useOverallTimeSavedWithAutomationTrend = (
+export const useDecreaseInResolutionTimeWithAutomationTrend = (
     filters: StatsFilters,
     timezone: string
 ) =>
     useMetricTrend(
-        overallTimeSavedQueryFactory(filters, timezone),
-        overallTimeSavedQueryFactory(
+        decreaseInResolutionTimeQueryFactory(filters, timezone),
+        decreaseInResolutionTimeQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )

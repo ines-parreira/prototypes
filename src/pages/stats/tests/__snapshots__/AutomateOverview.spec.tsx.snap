@@ -372,7 +372,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       <div
                         class="title"
                       >
-                        Time saved
+                        Decrease in resolution time
                         <div
                           class="wrapper tooltip"
                         >
@@ -394,7 +394,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        1m 32s
+                        1m 31s
                       </div>
                     </div>
                   </div>
@@ -1043,7 +1043,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     <div
                       class="title"
                     >
-                      Time saved
+                      Decrease in resolution time
                       <div
                         class="wrapper tooltip"
                       >
@@ -1065,7 +1065,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      1m 32s
+                      1m 31s
                     </div>
                   </div>
                 </div>
@@ -1693,7 +1693,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       <div
                         class="title"
                       >
-                        Time saved
+                        Decrease in resolution time
                         <div
                           class="wrapper tooltip"
                         >
@@ -1715,7 +1715,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        1m 32s
+                        1m 31s
                       </div>
                     </div>
                   </div>
@@ -2364,7 +2364,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     <div
                       class="title"
                     >
-                      Time saved
+                      Decrease in resolution time
                       <div
                         class="wrapper tooltip"
                       >
@@ -2386,7 +2386,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      1m 32s
+                      1m 31s
                     </div>
                   </div>
                 </div>
@@ -3014,7 +3014,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       <div
                         class="title"
                       >
-                        Time saved
+                        Decrease in resolution time
                         <div
                           class="wrapper tooltip"
                         >
@@ -3036,7 +3036,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        1m 32s
+                        1m 31s
                       </div>
                     </div>
                   </div>
@@ -3685,7 +3685,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     <div
                       class="title"
                     >
-                      Time saved
+                      Decrease in resolution time
                       <div
                         class="wrapper tooltip"
                       >
@@ -3707,7 +3707,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      1m 32s
+                      1m 31s
                     </div>
                   </div>
                 </div>
@@ -4331,7 +4331,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 <div
                   class="title"
                 >
-                  Time saved
+                  Decrease in resolution time
                   <div
                     class="wrapper tooltip"
                   >
@@ -4353,7 +4353,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 <div
                   class="wrapper heading-page-semibold"
                 >
-                  1m 32s
+                  1m 31s
                 </div>
               </div>
             </div>

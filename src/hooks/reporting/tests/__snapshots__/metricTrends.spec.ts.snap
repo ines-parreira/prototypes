@@ -14,14 +14,14 @@ exports[`metric trends Automate useAutomatedInteractionTrend should create autom
     },
     {
       "member": "AutomationBillingEvent.periodStart",
-      "operator": "afterDate",
+      "operator": "afterOrOnDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "AutomationBillingEvent.periodEnd",
-      "operator": "beforeDate",
+      "operator": "beforeOrOnDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
@@ -48,14 +48,14 @@ exports[`metric trends Automate useAutomationRateTrend should create automation 
     },
     {
       "member": "AutomationBillingEvent.periodStart",
-      "operator": "afterDate",
+      "operator": "afterOrOnDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "AutomationBillingEvent.periodEnd",
-      "operator": "beforeDate",
+      "operator": "beforeOrOnDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
@@ -63,6 +63,40 @@ exports[`metric trends Automate useAutomationRateTrend should create automation 
   ],
   "measures": [
     "AutomationBillingEvent.automationRate",
+  ],
+  "timezone": "UTC",
+}
+`;
+
+exports[`metric trends Automate useDecreaseInResolutionTimeWithAutomationTrend should create automation filters 1`] = `
+{
+  "dimensions": [],
+  "filters": [
+    {
+      "member": "AutomationBillingEvent.createdDate",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00.000",
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodStart",
+      "operator": "afterOrOnDate",
+      "values": [
+        "2021-05-29T00:00:00.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodEnd",
+      "operator": "beforeOrOnDate",
+      "values": [
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+  ],
+  "measures": [
+    "AutomationBillingEvent.decreaseInResolutionTimeWithAutomateFeatures",
   ],
   "timezone": "UTC",
 }
@@ -82,14 +116,14 @@ exports[`metric trends Automate useFirstResponseTimeWithAutomationTrend should c
     },
     {
       "member": "AutomationBillingEvent.periodStart",
-      "operator": "afterDate",
+      "operator": "afterOrOnDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "AutomationBillingEvent.periodEnd",
-      "operator": "beforeDate",
+      "operator": "beforeOrOnDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
@@ -97,40 +131,6 @@ exports[`metric trends Automate useFirstResponseTimeWithAutomationTrend should c
   ],
   "measures": [
     "AutomationBillingEvent.firstResponseTimeWithAutomateFeatures",
-  ],
-  "timezone": "UTC",
-}
-`;
-
-exports[`metric trends Automate useOverallTimeSavedWithAutomationTrend should create automation filters 1`] = `
-{
-  "dimensions": [],
-  "filters": [
-    {
-      "member": "AutomationBillingEvent.createdDate",
-      "operator": "inDateRange",
-      "values": [
-        "2021-05-29T00:00:00.000",
-        "2021-06-04T23:59:59.000",
-      ],
-    },
-    {
-      "member": "AutomationBillingEvent.periodStart",
-      "operator": "afterDate",
-      "values": [
-        "2021-05-29T00:00:00.000",
-      ],
-    },
-    {
-      "member": "AutomationBillingEvent.periodEnd",
-      "operator": "beforeDate",
-      "values": [
-        "2021-06-04T23:59:59.000",
-      ],
-    },
-  ],
-  "measures": [
-    "AutomationBillingEvent.overallTimeSaved",
   ],
   "timezone": "UTC",
 }
@@ -150,14 +150,14 @@ exports[`metric trends Automate useResolutionTimeWithAutomationTrend should crea
     },
     {
       "member": "AutomationBillingEvent.periodStart",
-      "operator": "afterDate",
+      "operator": "afterOrOnDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "AutomationBillingEvent.periodEnd",
-      "operator": "beforeDate",
+      "operator": "beforeOrOnDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],

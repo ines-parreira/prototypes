@@ -180,7 +180,7 @@ describe('time series', () => {
                 useAutomatedInteractionTimeSeries,
             ],
             [
-                'OverallTimeSaved',
+                'useAutomatedInteractionByFeatures',
                 [
                     AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder,
                     AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns,
@@ -208,17 +208,13 @@ describe('time series', () => {
                         filters: [
                             {
                                 member: AutomationBillingEventMember.PeriodStart,
-                                operator: ReportingFilterOperator.AfterDate,
+                                operator: ReportingFilterOperator.AfterOrOnDate,
                                 values: [periodStart],
                             },
                             {
                                 member: AutomationBillingEventMember.PeriodEnd,
-                                operator: ReportingFilterOperator.BeforeDate,
-                                values: [periodEnd],
-                            },
-                            {
-                                member: AutomationBillingEventMember.PeriodEnd,
-                                operator: ReportingFilterOperator.BeforeDate,
+                                operator:
+                                    ReportingFilterOperator.BeforeOrOnDate,
                                 values: [periodEnd],
                             },
                         ],

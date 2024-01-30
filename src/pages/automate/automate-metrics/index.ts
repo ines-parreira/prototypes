@@ -1,5 +1,5 @@
 export {AutomatedInteractionsMetric} from './AutomatedInteractionsMetric'
 export {AutomationRateMetric} from './AutomationRateMetric'
-export {TimeSavedMetric as AutomationTimeSavedMetric} from './TimeSavedMetric'
+export {DecreaseInResolutionTimeMetric} from './DecreaseInResolutionTimeMetric'
 export {DecreaseInFirstResponseTimeMetric as AutomationDecreaseInFirstResponseTimeMetric} from './DecreaseInFirstResponseTimeMetric'
 export {CostSavedMetric as AutomationCostSavedMetric} from './CostSavedMetric'

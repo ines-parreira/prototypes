@@ -22,6 +22,3 @@ export const AUTOMATION_RATE_LABEL = 'Automation rate'
 export const AUTOMATED_INTERACTIONS_LABEL = 'Automated interactions'
 export const AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL =
     AUTOMATED_INTERACTIONS_LABEL + ' by feature'
-export const TIME_SAVED_ON_FIRST_RESPONSE =
-    'Customer time saved on first response'
-export const OVERALL_TIME_SAVED_BY_YOUR_TEAM = 'Overall time saved by your team'

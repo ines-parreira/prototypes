@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 import React from 'react'
 
 import {DecreaseInFirstResponseTimeMetric} from '../DecreaseInFirstResponseTimeMetric'
-import {TIME_SAVED_ON_FIRST_RESPONSE} from '../constants'
+import {DECREASE_IN_FIRST_RESPONSE} from '../constants'
 
 export type MetricTrend = {
     isFetching: boolean
@@ -27,9 +27,7 @@ describe('DecreaseInFirstResponseTimeMetric', () => {
     it('should render correctly', () => {
         render(<DecreaseInFirstResponseTimeMetric trend={trend} />)
 
-        expect(
-            screen.getByText(TIME_SAVED_ON_FIRST_RESPONSE)
-        ).toBeInTheDocument()
+        expect(screen.getByText(DECREASE_IN_FIRST_RESPONSE)).toBeInTheDocument()
     })
 
     it('should render the correct value', () => {

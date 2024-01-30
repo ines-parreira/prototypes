@@ -2,12 +2,12 @@ import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBi
 import {StatsFilters} from 'models/stat/types'
 import {automateDefaultFilters} from 'models/reporting/queryFactories/automate/filters'
 
-export const resolutionTimeWithAutomateFeaturesQueryFactory = (
+export const firstResponseTimeWithAutomateFeaturesQueryFactory = (
     filters: StatsFilters,
     timezone: string
 ) => ({
     measures: [
-        AutomationBillingEventMeasure.ResolutionTimeWithAutomateFeatures,
+        AutomationBillingEventMeasure.FirstResponseTimeWithAutomateFeatures,
     ],
     dimensions: [],
     timezone,
