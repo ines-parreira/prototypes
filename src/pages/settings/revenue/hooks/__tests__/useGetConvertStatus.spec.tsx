@@ -32,6 +32,7 @@ jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => {
     }
 })
 
+let useIsConvertSubscriberMock: jest.SpyInstance
 describe('useGetConvertStatus', () => {
     const renderHookWithQueryClient = (
         fetchForAll?: boolean,
@@ -45,13 +46,18 @@ describe('useGetConvertStatus', () => {
             ),
         })
 
-    const mockUseIsConvertSubscriber = (isConvertSubscriber: boolean) =>
-        jest
+    const mockUseIsConvertSubscriber = (isConvertSubscriber: boolean) => {
+        useIsConvertSubscriberMock = jest
             .spyOn(isConvertSubscriberHook, 'useIsConvertSubscriber')
             .mockImplementation(() => isConvertSubscriber)
+    }
+
+    beforeEach(() => {
+        queryClient.clear()
+    })
 
     afterEach(() => {
-        queryClient.clear()
+        useIsConvertSubscriberMock.mockRestore()
     })
 
     it('should return api response', async () => {
