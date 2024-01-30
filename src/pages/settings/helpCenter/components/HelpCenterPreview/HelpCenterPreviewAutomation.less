@@ -1,0 +1,52 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+// --preview-primary-color and --preview-primary-font custom css variables from react
+:local {
+    .container {
+        font-family: var(--preview-primary-font);
+
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .flowItem {
+        background: var(--neutral-grey-0);
+        display: flex;
+        padding: @layout-spacing-s;
+        align-items: center;
+        border-radius: @layout-spacing-xs;
+        border: 1px solid var(--neutral-grey-2);
+        transition: border-color 0.4s;
+
+        &:hover {
+            border-color: var(--preview-primary-color);
+        }
+    }
+
+    .highlightedItem {
+        border-color: var(--preview-primary-color);
+    }
+
+    .flowImg {
+        padding-right: @layout-spacing-s;
+    }
+
+    .flowName {
+        color: var(--neutral-grey-6);
+        width: 100%;
+        .heading-subsection-semibold();
+        padding-right: @layout-spacing-xs; //safe zone
+        max-width: 100%;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .flowIcon {
+        font-size: @heading-page-regular-font-size;
+        color: var(--neutral-grey-4);
+    }
+}
