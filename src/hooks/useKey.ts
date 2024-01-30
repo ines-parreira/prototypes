@@ -1,15 +1,15 @@
 import {DependencyList, useMemo} from 'react'
 import noop from 'lodash/noop'
-import useEvent, {UseEventOptions, UseEventTarget} from './useEvent'
+import useEvent from './useEvent'
 
 type KeyPredicate = (event: KeyboardEvent) => boolean
 type KeyFilter = null | undefined | string | ((event: KeyboardEvent) => boolean)
 type Handler = (event: KeyboardEvent) => void
 
-interface UseKeyOptions<T extends UseEventTarget> {
+interface UseKeyOptions {
     event?: 'keydown' | 'keypress' | 'keyup'
-    target?: T | null
-    options?: UseEventOptions<T>
+    target?: Element | null
+    options?: AddEventListenerOptions
 }
 
 const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate =>
@@ -21,10 +21,10 @@ const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate =>
         ? () => true
         : () => false
 
-export default function useKey<T extends UseEventTarget>(
+export default function useKey(
     key: KeyFilter,
     fn: Handler = noop,
-    opts: UseKeyOptions<T> = {},
+    opts: UseKeyOptions = {},
     deps: DependencyList = [key]
 ) {
     const {event = 'keydown', target, options} = opts

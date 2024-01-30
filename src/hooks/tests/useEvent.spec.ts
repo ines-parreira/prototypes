@@ -1,222 +1,202 @@
-import {renderHook} from '@testing-library/react-hooks'
-import useEvent, {ElementListener, OnOffListener} from '../useEvent'
+import {act, renderHook} from '@testing-library/react-hooks'
+import {fireEvent} from '@testing-library/react'
 
-interface Props {
-    name: string
-    handler: (...args: any[]) => void
-    target: ElementListener | OnOffListener
-    options: any
-}
-
-const elementPropsList = [
-    {
-        name: 'name1',
-        handler: jest.fn(),
-        target: {
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
-        },
-        options: {a: 'opt1'},
-    },
-    {
-        name: 'name2',
-        handler: jest.fn(),
-        target: {
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
-        },
-        options: {a: 'opt2'},
-    },
-]
-
-const onOffPropsList = [
-    {
-        ...elementPropsList[0],
-        target: {
-            on: jest.fn(),
-            off: jest.fn(),
-        },
-    },
-    {
-        ...elementPropsList[1],
-        target: {
-            on: jest.fn(),
-            off: jest.fn(),
-        },
-    },
-]
+import useEvent from '../useEvent'
 
 describe('useEvent', () => {
-    it('should call addEventListener/removeEventListener on mount/unmount', () => {
-        expectMountAndUnmountToWork(
-            elementPropsList[0],
-            'addEventListener',
-            'removeEventListener'
+    it('should add and remove event listener', () => {
+        const listener = jest.fn()
+        const target = document.createElement('div')
+
+        jest.spyOn(target, 'addEventListener')
+        jest.spyOn(target, 'removeEventListener')
+
+        const {unmount} = renderHook(() => useEvent('click', listener, target))
+
+        act(() => {
+            fireEvent.click(target)
+        })
+
+        expect(listener).toHaveBeenCalledTimes(1)
+
+        unmount()
+
+        act(() => {
+            fireEvent.click(target)
+        })
+
+        expect(listener).toHaveBeenCalledTimes(1)
+
+        expect(target.addEventListener).toHaveBeenCalledWith(
+            'click',
+            listener,
+            undefined
+        )
+        expect(target.removeEventListener).toHaveBeenCalledWith(
+            'click',
+            listener,
+            undefined
         )
     })
 
-    it('should call on/off on mount/unmount', () => {
-        expectMountAndUnmountToWork(onOffPropsList[0], 'on', 'off')
+    it('should handle default target if target is not provided', () => {
+        const listener = jest.fn()
+
+        const {unmount} = renderHook(() => useEvent('click', listener))
+
+        act(() => {
+            fireEvent.click(window)
+        })
+
+        expect(listener).toHaveBeenCalledTimes(1)
+
+        unmount()
+
+        act(() => {
+            fireEvent.click(window)
+        })
+
+        expect(listener).toHaveBeenCalledTimes(1)
     })
 
-    it('should call addEventListener/removeEventListener on deps changes', () => {
-        expectDepsChangesToWork(
-            elementPropsList[0],
-            elementPropsList[1],
-            'addEventListener',
-            'removeEventListener'
+    it('should add and remove event listener with options', () => {
+        const listener = jest.fn()
+        const target = document.createElement('div')
+        const options = {capture: true, passive: true}
+
+        jest.spyOn(target, 'addEventListener')
+        jest.spyOn(target, 'removeEventListener')
+
+        const {unmount} = renderHook(() =>
+            useEvent('click', listener, target, options)
+        )
+
+        act(() => {
+            fireEvent.click(target)
+        })
+
+        expect(listener).toHaveBeenCalledTimes(1)
+
+        unmount()
+
+        act(() => {
+            fireEvent.click(target)
+        })
+
+        expect(listener).toHaveBeenCalledTimes(1)
+
+        expect(target.addEventListener).toHaveBeenCalledWith(
+            'click',
+            listener,
+            options
+        )
+        expect(target.removeEventListener).toHaveBeenCalledWith(
+            'click',
+            listener,
+            options
         )
     })
 
-    it('should call on/off on deps changes', () => {
-        expectDepsChangesToWork(
-            onOffPropsList[0],
-            onOffPropsList[1],
-            'on',
-            'off'
+    it('should add and remove event listener when parameters change', () => {
+        const listener = jest.fn()
+        const otherListener = jest.fn()
+        const target = document.createElement('div')
+        const otherTarget = document.createElement('span')
+
+        jest.spyOn(target, 'addEventListener')
+        jest.spyOn(target, 'removeEventListener')
+        jest.spyOn(otherTarget, 'addEventListener')
+        jest.spyOn(otherTarget, 'removeEventListener')
+
+        const getOptions = (): AddEventListenerOptions => ({
+            once: false,
+        })
+        const getOtherOptions = (): AddEventListenerOptions => ({
+            passive: false,
+        })
+
+        const {rerender, unmount} = renderHook(
+            ({type, listener, target, options}) =>
+                useEvent(type, listener, target, options),
+            {
+                initialProps: {
+                    type: 'click' as keyof HTMLElementEventMap,
+                    listener: listener,
+                    target: target as Element,
+                    options: getOptions(),
+                },
+            }
         )
+
+        expect(target.addEventListener).toBeCalledWith(
+            'click',
+            listener,
+            getOptions()
+        )
+
+        // Change the type
+        rerender({
+            type: 'focus',
+            listener,
+            target,
+            options: getOptions(),
+        })
+
+        expect(target.addEventListener).toBeCalledWith(
+            'focus',
+            listener,
+            getOptions()
+        )
+        expect(target.removeEventListener).toBeCalledTimes(1)
+
+        // Change the listener
+        rerender({
+            type: 'focus',
+            listener: otherListener,
+            target,
+            options: getOptions(),
+        })
+
+        expect(target.addEventListener).toBeCalledWith(
+            'focus',
+            otherListener,
+            getOptions()
+        )
+        expect(target.removeEventListener).toBeCalledTimes(2)
+
+        // Change the target
+        rerender({
+            type: 'focus',
+            listener: otherListener,
+            target: otherTarget,
+            options: getOptions(),
+        })
+
+        expect(otherTarget.addEventListener).toBeCalledWith(
+            'focus',
+            otherListener,
+            getOptions()
+        )
+        expect(target.removeEventListener).toBeCalledTimes(3)
+
+        // Change the options
+        rerender({
+            type: 'focus',
+            listener: otherListener,
+            target: otherTarget,
+            options: getOtherOptions(),
+        })
+
+        expect(otherTarget.addEventListener).toBeCalledWith(
+            'focus',
+            otherListener,
+            getOtherOptions()
+        )
+
+        expect(otherTarget.removeEventListener).toBeCalledTimes(1)
+
+        unmount()
+
+        expect(otherTarget.removeEventListener).toBeCalledTimes(2)
     })
 })
-
-const expectMountAndUnmountToWork = (
-    props: Props,
-    addEventListenerName: string,
-    removeEventListenerName: string
-) => {
-    const {unmount} = renderHook(
-        (p: Props) => useEvent(p.name, p.handler, p.target, p.options),
-        {
-            initialProps: props,
-        }
-    )
-    expect(
-        props.target[addEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(1)
-    expect(
-        props.target[addEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(props.name, props.handler, props.options)
-    unmount()
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(1)
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(props.name, props.handler, props.options)
-}
-
-const expectDepsChangesToWork = (
-    props: Props,
-    otherProps: Props,
-    addEventListenerName: string,
-    removeEventListenerName: string
-) => {
-    const {rerender} = renderHook(
-        (p: Props) => useEvent(p.name, p.handler, p.target, p.options),
-        {
-            initialProps: props,
-        }
-    )
-    expect(
-        props.target[addEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(1)
-    expect(
-        props.target[addEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(props.name, props.handler, props.options)
-
-    // deps are same as previous
-    rerender({
-        name: props.name,
-        handler: props.handler,
-        target: props.target,
-        options: props.options,
-    })
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).not.toHaveBeenCalled()
-
-    // name is different from previous
-    rerender({
-        name: otherProps.name,
-        handler: props.handler,
-        target: props.target,
-        options: props.options,
-    })
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(1)
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(props.name, props.handler, props.options)
-
-    // handler is different from previous
-    rerender({
-        name: otherProps.name,
-        handler: otherProps.handler,
-        target: props.target,
-        options: props.options,
-    })
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(2)
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(otherProps.name, props.handler, props.options)
-
-    // options contents is same as previous
-    rerender({
-        name: otherProps.name,
-        handler: otherProps.handler,
-        target: props.target,
-        options: {a: 'opt1'},
-    })
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(2)
-
-    // options is different from previous
-    rerender({
-        name: otherProps.name,
-        handler: otherProps.handler,
-        target: props.target,
-        options: otherProps.options,
-    })
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(3)
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(
-        otherProps.name,
-        otherProps.handler,
-        props.options
-    )
-
-    // target is different from previous
-    rerender({
-        name: otherProps.name,
-        handler: otherProps.handler,
-        target: otherProps.target,
-        options: otherProps.options,
-    })
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(4)
-    expect(
-        props.target[removeEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(
-        otherProps.name,
-        otherProps.handler,
-        otherProps.options
-    )
-
-    expect(
-        otherProps.target[addEventListenerName as keyof Props['target']]
-    ).toHaveBeenCalledTimes(1)
-    expect(
-        otherProps.target[addEventListenerName as keyof Props['target']]
-    ).toHaveBeenLastCalledWith(
-        otherProps.name,
-        otherProps.handler,
-        otherProps.options
-    )
-}
