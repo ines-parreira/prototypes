@@ -6,50 +6,33 @@ import {
     useRef,
     useLayoutEffect,
 } from 'react'
+import useEvent from './useEvent'
 
-type ParserOptions<T> =
-    | {
-          raw: true
-      }
-    | {
-          raw: false
-          serializer: (value: T) => string
-          deserializer: (value: string) => T
-      }
+type CustomLocalStorageEventPayload = {key: string}
+type CustomLocalStorageEvent = CustomEvent<CustomLocalStorageEventPayload>
+
+declare global {
+    interface WindowEventMap {
+        'local-storage': CustomLocalStorageEvent
+    }
+}
 
 const useLocalStorage = <T>(
     key: string,
-    initialValue?: T,
-    options?: ParserOptions<T>
+    initialValue?: T
 ): [T | undefined, Dispatch<SetStateAction<T | undefined>>, () => void] => {
-    if (!key) {
-        throw new Error('useLocalStorage key may not be falsy')
-    }
-
-    const deserializer: (value: any) => T = options
-        ? options.raw
-            ? (value) => value as unknown
-            : options.deserializer
-        : JSON.parse
-
     const initializer = useRef((key: string): T | undefined => {
         try {
-            const serializer = options
-                ? options.raw
-                    ? String
-                    : options.serializer
-                : JSON.stringify
-
             const localStorageValue = localStorage.getItem(key)
             if (localStorageValue !== null) {
-                return deserializer(localStorageValue)
+                return JSON.parse(localStorageValue) as T
             }
-            initialValue && localStorage.setItem(key, serializer(initialValue))
+            if (initialValue) {
+                localStorage.setItem(key, JSON.stringify(initialValue))
+            }
             return initialValue
         } catch {
-            // If user is in private mode or has storage restriction
-            // localStorage can throw. JSON.parse and JSON.stringify
-            // can throw, too.
+            // localStorage, JSON.parse and JSON.stringify can throw
             return initialValue
         }
     })
@@ -58,50 +41,78 @@ const useLocalStorage = <T>(
         initializer.current(key)
     )
 
+    const stateRef = useRef(state)
+    stateRef.current = state
+
     useLayoutEffect(() => setState(initializer.current(key)), [key])
 
-    const set: Dispatch<SetStateAction<T | undefined>> = useCallback(
-        (valOrFunc) => {
-            type DisaptchFunction = (value: T | undefined) => T
-            try {
-                const newState =
-                    typeof valOrFunc === 'function'
-                        ? (valOrFunc as DisaptchFunction)(state)
-                        : valOrFunc
-                if (typeof newState === 'undefined') return
-                let value: string
+    const resultingSetState: Dispatch<SetStateAction<T | undefined>> =
+        useCallback(
+            (valOrFunc) => {
+                try {
+                    const newState =
+                        valOrFunc instanceof Function
+                            ? valOrFunc(stateRef.current)
+                            : valOrFunc
 
-                if (options)
-                    if (options.raw)
-                        if (typeof newState === 'string') value = newState
-                        else value = JSON.stringify(newState)
-                    else if (options.serializer)
-                        value = options.serializer(newState)
-                    else value = JSON.stringify(newState)
-                else value = JSON.stringify(newState)
+                    if (newState === undefined) return
 
-                localStorage.setItem(key, value)
-                setState(deserializer(value))
-            } catch {
-                // If user is in private mode or has storage restriction
-                // localStorage can throw. Also JSON.stringify can throw.
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [key, setState]
-    )
+                    localStorage.setItem(key, JSON.stringify(newState))
+                    setState(newState)
+
+                    window.dispatchEvent(
+                        new CustomEvent<CustomLocalStorageEventPayload>(
+                            'local-storage',
+                            {
+                                detail: {key},
+                            }
+                        )
+                    )
+                } catch {
+                    // localStorage, JSON.parse and JSON.stringify can throw
+                }
+            },
+            [key, setState]
+        )
 
     const remove = useCallback(() => {
         try {
             localStorage.removeItem(key)
             setState(undefined)
         } catch {
-            // If user is in private mode or has storage restriction
-            // localStorage can throw.
+            // localStorage can throw
         }
     }, [key, setState])
 
-    return [state, set, remove]
+    const handleStorageChange = useCallback(
+        (event: StorageEvent | CustomLocalStorageEvent) => {
+            const keyFromEvent =
+                (event as StorageEvent).key ||
+                (event as CustomLocalStorageEvent).detail?.key
+
+            if (keyFromEvent !== key) {
+                return
+            }
+
+            try {
+                const localStorageValue = localStorage.getItem(key)
+                if (localStorageValue !== null) {
+                    setState(JSON.parse(localStorageValue) as T)
+                }
+            } catch {
+                // localStorage, JSON.parse and JSON.stringify can throw
+            }
+        },
+        [key]
+    )
+
+    // Triggered when changing local storage value in other tabs
+    useEvent('storage', handleStorageChange)
+
+    // Triggered when changing local storage value in the current tab with a custom event
+    useEvent('local-storage', handleStorageChange)
+
+    return [state, resultingSetState, remove]
 }
 
 export default useLocalStorage

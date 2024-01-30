@@ -141,25 +141,55 @@ describe('useLocalStorage', () => {
         )
 
         const [, setFoo] = result.current
+
         act(() => setFoo((state) => ({...state!, fizz: 'buzz'})))
         rerender()
 
         const [value] = result.current
         expect(value!.foo).toEqual('bar')
         expect(value!.fizz).toEqual('buzz')
+
+        // Make sure it doesn't use the initial state as argument for the next calls
+        act(() => setFoo((state) => ({...state!})))
+        rerender()
+
+        const [sameValue] = result.current
+        expect(sameValue!.foo).toEqual('bar')
+        expect(sameValue!.fizz).toEqual('buzz')
     })
 
-    it('should reject nullish or undefined keys', () => {
-        const {result} = renderHook(() => useLocalStorage(null as any))
-        try {
-            ;(() => {
-                // Keep this IIFE, reason: `fail is not defined`
-                return result.current
-            })()
-            fail('hook should have thrown')
-        } catch (e) {
-            expect(String(e)).toMatch(/key may not be/i)
-        }
+    it('should keep multiple hooks accessing the same key in sync', () => {
+        localStorage.setItem('foo', 'bar')
+        const hook = renderHook(() => useLocalStorage('foo'))
+        const otherHook = renderHook(() => useLocalStorage('foo'))
+
+        const [, setFoo] = hook.result.current
+        act(() => setFoo('potato'))
+        hook.rerender()
+        otherHook.rerender()
+
+        const [value] = hook.result.current
+        const [otherValue] = otherHook.result.current
+
+        expect(value).toEqual(otherValue)
+        expect(value).toEqual('potato')
+        expect(otherValue).toEqual('potato')
+    })
+
+    it('should react to local storage updates from other tab', () => {
+        const hook = renderHook(() => useLocalStorage('foo'))
+
+        act(() => {
+            localStorage.setItem('foo', '"bizz"')
+            window.dispatchEvent(
+                new StorageEvent('storage', {
+                    key: 'foo',
+                })
+            )
+        })
+
+        const [value] = hook.result.current
+        expect(value).toEqual('bizz')
     })
 
     describe('Integrates with rules of hooks when enforced by eslint', () => {
@@ -195,37 +225,6 @@ describe('useLocalStorage', () => {
             rerender()
             const [, s2] = result.current
             expect(s1).toBe(s2)
-        })
-    })
-
-    describe('Options: raw', () => {
-        it('should return a string when localStorage is a stringified object', () => {
-            localStorage.setItem('foo', JSON.stringify({fizz: 'buzz'}))
-            const {result} = renderHook(() =>
-                useLocalStorage('foo', null, {raw: true})
-            )
-            const [foo] = result.current
-            expect(typeof foo).toBe('string')
-        })
-
-        it('should return a string after an update and be equivalent to initial value', () => {
-            const storedObject = {fizz: 'bang'}
-
-            localStorage.setItem('foo', JSON.stringify({fizz: 'buzz'}))
-            const {result, rerender} = renderHook(() =>
-                useLocalStorage('foo', null, {raw: true})
-            )
-
-            const [, setFoo] = result.current
-
-            act(() => setFoo(storedObject as any))
-            rerender()
-
-            const [foo] = result.current
-            expect(typeof foo).toBe('string')
-
-            expect(JSON.parse(foo!)).toBeInstanceOf(Object)
-            expect(JSON.parse(foo!)).toEqual(storedObject)
         })
     })
 })
