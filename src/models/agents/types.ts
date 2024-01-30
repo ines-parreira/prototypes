@@ -18,6 +18,7 @@ export type FetchAgentsOptions = Omit<
 > &
     OrderParams<AgentSortableProperties> & {
         id?: number
+        email?: string
         externalId?: string
         roles?: UserRole[]
         relationships?: AgentsRelationshipsParam

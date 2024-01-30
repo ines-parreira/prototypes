@@ -41,6 +41,12 @@ describe('current account selectors', () => {
         ).toEqualImmutable(fromJS({}))
     })
 
+    it('getAccountOwnerId', () => {
+        expect(selectors.getAccountOwnerId(defaultState)).toEqualImmutable(
+            defaultState.currentAccount?.get('user_id')
+        )
+    })
+
     it('getCurrentAccountMeta', () => {
         expect(selectors.getCurrentAccountMeta(defaultState)).toEqualImmutable(
             defaultState.currentAccount?.get('meta')

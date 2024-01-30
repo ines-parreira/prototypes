@@ -8,9 +8,9 @@ import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroAction} from 'models/macroAction/types'
 import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
-import * as whatsAppUtils from '../whatsapp/utils'
-import WhatsAppEditorProvider from '../whatsapp/WhatsAppEditorProvider'
-import useWhatsAppEditor from '../whatsapp/useWhatsAppEditor'
+import * as whatsAppUtils from '../utils'
+import WhatsAppEditorProvider from '../WhatsAppEditorProvider'
+import useWhatsAppEditor from '../useWhatsAppEditor'
 
 const isWhatsAppWindowOpenSpy = jest.spyOn(
     whatsAppUtils,

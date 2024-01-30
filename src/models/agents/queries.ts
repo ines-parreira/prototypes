@@ -19,7 +19,7 @@ export const agentsKeys = {
     detail: (id: number) => [...agentsKeys.details(), id] as const,
 }
 
-export const useListAgents = (
+export const useListAgent = (
     params?: FetchAgentsOptions,
     overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchAgents>>>
 ) => {

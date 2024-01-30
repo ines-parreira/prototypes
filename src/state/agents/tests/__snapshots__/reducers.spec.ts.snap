@@ -33,28 +33,6 @@ exports[`agents reducers delete agent 1`] = `
 }
 `;
 
-exports[`agents reducers fetch agents pagination 1`] = `
-Immutable.Map {
-  "all": Immutable.List [],
-  "pagination": Immutable.Map {
-    "data": Immutable.List [
-      Immutable.Map {
-        "name": "Alex",
-      },
-      Immutable.Map {
-        "name": "Romain",
-      },
-    ],
-    "meta": Immutable.Map {
-      "nb_pages": 2,
-      "page": 1,
-    },
-  },
-  "locations": Immutable.Map {},
-  "typingStatuses": Immutable.Map {},
-}
-`;
-
 exports[`agents reducers fetch users (agents) 1`] = `
 Immutable.Map {
   "all": Immutable.List [],

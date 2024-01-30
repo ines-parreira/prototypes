@@ -3,7 +3,7 @@ import {Provider} from 'react-redux'
 import React from 'react'
 import {mockStore} from 'utils/testing'
 import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
-import WhatsAppMessageTemplateDetailsDrawer from '../whatsapp/WhatsAppMessageTemplateDetailsDrawer'
+import WhatsAppMessageTemplateDetailsDrawer from '../WhatsAppMessageTemplateDetailsDrawer'
 
 describe('WhatsAppMessageTemplateDetailsDrawer', () => {
     const renderComponent = () =>

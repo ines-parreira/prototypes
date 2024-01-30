@@ -51,31 +51,6 @@ describe('agents reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('fetch agents pagination', () => {
-        const resp = {
-            data: [
-                {
-                    name: 'Alex',
-                },
-                {
-                    name: 'Romain',
-                },
-            ],
-            meta: {
-                nb_pages: 2,
-                page: 1,
-            },
-        }
-
-        // success
-        expect(
-            reducer(initialState, {
-                type: constants.FETCH_AGENTS_PAGINATION_SUCCESS,
-                resp,
-            })
-        ).toMatchSnapshot()
-    })
-
     it('set agents location', () => {
         expect(
             reducer(initialState, {

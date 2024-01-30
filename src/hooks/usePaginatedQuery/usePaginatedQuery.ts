@@ -10,23 +10,20 @@ import {useSearchParam} from 'hooks/useSearchParam'
 
 import {useResponseCursor} from './useResponseCursor'
 
+type PaginatedQuery<T> = (
+    params: {cursor: ApiPaginationParams['cursor']; [key: string]: unknown},
+    overrides: UseQueryOptions<any>,
+    ...args: any
+) => UseQueryResult<AxiosResponse<ApiListResponseCursorPagination<T>>, unknown>
+
 /**
  * Enriches query result with pagination utils for cursor paginated endpoints.
  * It also persists current cursor in url search params.
  */
-export const usePaginatedQuery = <
-    U extends (
-        params: {cursor: ApiPaginationParams['cursor']; [key: string]: unknown},
-        overrides: UseQueryOptions<any>,
-        ...args: any
-    ) => UseQueryResult<
-        AxiosResponse<ApiListResponseCursorPagination<any>>,
-        unknown
-    >
->(
-    query: U,
-    params?: Parameters<U>[0],
-    overrides?: Parameters<U>[1],
+export const usePaginatedQuery = <T>(
+    query: PaginatedQuery<T>,
+    params?: Omit<Parameters<PaginatedQuery<T>>[0], 'cursor'>,
+    overrides?: Parameters<PaginatedQuery<T>>[1],
     searchParamLabel = 'cursor'
 ) => {
     const [cursor, setCursor] = useSearchParam(searchParamLabel)
@@ -41,7 +38,7 @@ export const usePaginatedQuery = <
         // We don’t want to re-fetch when we are back on first page
         // and cursor has just been cleared.
         {enabled: !(previousCursor && !cursor), ...overrides}
-    ) as ReturnType<U>
+    )
 
     const {
         previousCursor: goToPreviousCursor,

@@ -1,6 +1,6 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import Status, {StatusIntent} from '../Status'
+import Status, {StatusIntent} from '../WhatsAppMessageTemplateStatus'
 
 describe('Status', () => {
     it('should render dot and label', () => {

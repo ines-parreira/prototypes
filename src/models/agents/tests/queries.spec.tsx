@@ -42,17 +42,14 @@ describe('Agents queries', () => {
         queryClient.clear()
     })
 
-    describe('useListAgents', () => {
+    describe('useListAgent', () => {
         it('should return correct data on success', async () => {
             mockedResources.mockFetchAgents.mockResolvedValueOnce(
                 axiosSuccessResponse(apiListCursorPaginationResponse(agents))
             )
-            const {result, waitFor} = renderHook(
-                () => queries.useListAgents(),
-                {
-                    wrapper,
-                }
-            )
+            const {result, waitFor} = renderHook(() => queries.useListAgent(), {
+                wrapper,
+            })
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data?.data?.data).toStrictEqual(agents)
         })
@@ -61,12 +58,9 @@ describe('Agents queries', () => {
             mockedResources.mockFetchAgents.mockRejectedValueOnce(
                 Error('test error')
             )
-            const {result, waitFor} = renderHook(
-                () => queries.useListAgents(),
-                {
-                    wrapper,
-                }
-            )
+            const {result, waitFor} = renderHook(() => queries.useListAgent(), {
+                wrapper,
+            })
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })

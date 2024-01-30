@@ -6,7 +6,7 @@ import {
     countDistinctVariables,
     isWhatsAppMessageValid,
     isWhatsAppWindowOpen,
-} from '../whatsapp/utils'
+} from '../utils'
 
 describe('whatsAppUtils', () => {
     describe('countDistinctVariables', () => {

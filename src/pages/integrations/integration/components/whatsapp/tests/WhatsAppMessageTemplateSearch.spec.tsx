@@ -5,7 +5,7 @@ import {act} from 'react-dom/test-utils'
 import {mockStore} from 'utils/testing'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import WhatsAppMessageTemplateSearch from '../whatsapp/WhatsAppMessageTemplateSearch'
+import WhatsAppMessageTemplateSearch from '../WhatsAppMessageTemplateSearch'
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',

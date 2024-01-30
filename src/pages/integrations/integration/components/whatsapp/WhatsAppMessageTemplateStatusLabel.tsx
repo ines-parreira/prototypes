@@ -1,8 +1,10 @@
 import React from 'react'
-import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
-import Status, {StatusIntent} from 'pages/settings/users/Status'
 import useId from 'hooks/useId'
+
+import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
 import Tooltip from 'pages/common/components/Tooltip'
+
+import Status, {StatusIntent} from './WhatsAppMessageTemplateStatus'
 import {templateAlertContent} from './constants'
 
 type Props = {

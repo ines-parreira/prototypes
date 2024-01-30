@@ -3,7 +3,7 @@ import {UseMutationOptions} from '@tanstack/react-query'
 export type MutationOverrides<
     Action extends (...args: any) => unknown,
     SkipReturnType extends boolean = false,
-    TContext = unknown,
+    TContext = unknown
 > = Omit<
     UseMutationOptions<
         SkipReturnType extends true ? unknown : Awaited<ReturnType<Action>>,

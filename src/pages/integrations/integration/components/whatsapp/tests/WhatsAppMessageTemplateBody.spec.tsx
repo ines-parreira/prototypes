@@ -9,7 +9,7 @@ import {Provider} from 'react-redux'
 import React, {ComponentProps} from 'react'
 import {mockStore} from 'utils/testing'
 import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
-import WhatsAppMessageTemplateBody from '../whatsapp/WhatsAppMessageTemplateBody'
+import WhatsAppMessageTemplateBody from '../WhatsAppMessageTemplateBody'
 
 describe('WhatsAppMessageTemplateBody', () => {
     const onInputChange = jest.fn()

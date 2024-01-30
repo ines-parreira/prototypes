@@ -21,10 +21,6 @@ export default function reducer(
     action: StoreAction
 ): AgentsState {
     switch (action.type) {
-        case agentsConstants.FETCH_AGENTS_PAGINATION_SUCCESS: {
-            return state.set('pagination', fromJS(action.resp))
-        }
-
         case agentsConstants.CREATE_AGENT_SUCCESS: {
             return state.update('all', (agents) =>
                 (agents as List<any>).push(fromJS(action.resp))

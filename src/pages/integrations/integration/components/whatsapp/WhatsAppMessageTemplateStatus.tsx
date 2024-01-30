@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import css from './Status.less'
+import css from './WhatsAppMessageTemplateStatus.less'
 
 export enum StatusIntent {
     Warning = 'warning',

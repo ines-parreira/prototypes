@@ -14,15 +14,16 @@ export function axiosSuccessResponse<D>(data: D): AxiosResponse<D> {
 }
 
 export function apiListCursorPaginationResponse<D>(
-    data: D
+    data: D,
+    meta: {
+        next_cursor: string
+        prev_cursor: string
+    } = {next_cursor: '', prev_cursor: ''}
 ): ApiListResponseCursorPagination<D> {
     return {
         data,
         uri: '',
         object: '',
-        meta: {
-            next_cursor: '',
-            prev_cursor: '',
-        },
+        meta: meta,
     }
 }
