@@ -13,6 +13,7 @@ import {
     removeEditedWidget,
     startWidgetEdition,
     stopWidgetEdition,
+    updateEditedWidget,
 } from 'state/widgets/actions'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
@@ -36,10 +37,16 @@ import {
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
+import WrapperEditForm from 'infobar/ui/WrapperEditForm'
+import {PartialTemplate} from 'models/widget/types'
+
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
+
 import css from './Wrapper.less'
-import WrapperEdit from './forms/WrapperEdit'
+
+export const CUSTOMIZE_WIDGET_BUTTON_TEXT = 'Customize Widget'
+export const DELETE_WIDGET_BUTTON_TEXT = 'Delete Widget'
 
 type Props = {
     source: Maybe<Map<string, unknown>>
@@ -136,7 +143,7 @@ export default function Wrapper({widget, template, source}: Props) {
                                     }}
                                 >
                                     <ButtonIconLabel icon="edit">
-                                        Customize Widget
+                                        {CUSTOMIZE_WIDGET_BUTTON_TEXT}
                                         <Popover
                                             placement="left"
                                             isOpen={isPopupOpen}
@@ -149,9 +156,37 @@ export default function Wrapper({widget, template, source}: Props) {
                                             container={appNode ?? undefined}
                                         >
                                             <PopoverBody>
-                                                <WrapperEdit
-                                                    template={template}
-                                                    onClose={handleClosePopover}
+                                                <WrapperEditForm
+                                                    initialData={{
+                                                        color: template.getIn(
+                                                            ['meta', 'color'],
+                                                            ''
+                                                        ),
+                                                    }}
+                                                    onCancel={() => {
+                                                        dispatch(
+                                                            stopWidgetEdition()
+                                                        )
+                                                        handleClosePopover()
+                                                    }}
+                                                    onSubmit={(data) => {
+                                                        const wrapper: PartialTemplate =
+                                                            {
+                                                                type: 'wrapper',
+                                                                meta: {
+                                                                    color: data.color,
+                                                                },
+                                                            }
+                                                        dispatch(
+                                                            updateEditedWidget(
+                                                                wrapper
+                                                            )
+                                                        )
+                                                        dispatch(
+                                                            stopWidgetEdition()
+                                                        )
+                                                        handleClosePopover()
+                                                    }}
                                                 />
                                             </PopoverBody>
                                         </Popover>
@@ -172,7 +207,7 @@ export default function Wrapper({widget, template, source}: Props) {
                                 }}
                             >
                                 <ButtonIconLabel icon="delete">
-                                    Delete Widget
+                                    {DELETE_WIDGET_BUTTON_TEXT}
                                 </ButtonIconLabel>
                             </Button>
                         </div>

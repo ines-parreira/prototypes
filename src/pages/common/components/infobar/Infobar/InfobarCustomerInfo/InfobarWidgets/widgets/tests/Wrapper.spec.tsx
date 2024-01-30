@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {ComponentProps, ReactNode} from 'react'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {Action} from 'redux'
 
 import {renderHook} from '@testing-library/react-hooks'
 import {EditionContext} from 'providers/infobar/EditionContext'
@@ -14,7 +15,14 @@ import {
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import Wrapper, {useIntegration} from '../Wrapper'
+import WrapperEditForm, {FormData} from 'infobar/ui/WrapperEditForm'
+import {assumeMock} from 'utils/testing'
+
+import Wrapper, {
+    CUSTOMIZE_WIDGET_BUTTON_TEXT,
+    DELETE_WIDGET_BUTTON_TEXT,
+    useIntegration,
+} from '../Wrapper'
 
 jest.spyOn(actions, 'removeEditedWidget')
 
@@ -104,7 +112,26 @@ const woocommerceDataSource = fromJS({
     },
 })
 
+const MOCK_EDIT_FORM_COLOR_ID = 'edit-form-color'
+jest.mock('infobar/ui/WrapperEditForm', () =>
+    jest.fn((props: ComponentProps<typeof WrapperEditForm>) => (
+        <div>
+            <span data-testid={MOCK_EDIT_FORM_COLOR_ID}>
+                {props.initialData.color}
+            </span>
+        </div>
+    ))
+)
+const WrapperEditFormMock = assumeMock(WrapperEditForm)
+
 describe('InfobarWidgets component', () => {
+    const defaultTemplatePath = 'templatePath'
+    const defaultAbsolutePath = ['absolute', 'path']
+
+    beforeEach(() => {
+        store.clearActions()
+    })
+
     it('should display (without an edit or a remove icon)', () => {
         const {container} = render(
             <Provider store={store}>
@@ -112,8 +139,8 @@ describe('InfobarWidgets component', () => {
                     <Wrapper
                         template={fromJS({
                             ...shopifyWidget.template,
-                            templatePath: 'templatePath',
-                            absolutePath: ['absolute', 'path'],
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
                         })}
                         widget={fromJS(shopifyWidget)}
                         source={shopifySource}
@@ -132,8 +159,8 @@ describe('InfobarWidgets component', () => {
                     <Wrapper
                         template={fromJS({
                             ...shopifyWidget.template,
-                            templatePath: 'templatePath',
-                            absolutePath: ['absolute', 'path'],
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
                         })}
                         widget={fromJS(shopifyWidget)}
                         source={httpSource}
@@ -143,7 +170,7 @@ describe('InfobarWidgets component', () => {
         )
 
         expect(screen.queryByText('edit')).toBeNull()
-        fireEvent.click(screen.getAllByText('delete')[0])
+        fireEvent.click(screen.getAllByText(DELETE_WIDGET_BUTTON_TEXT)[0])
         expect(removeEditedWidget.mock.calls).toMatchSnapshot()
     })
 
@@ -154,8 +181,8 @@ describe('InfobarWidgets component', () => {
                     <Wrapper
                         template={fromJS({
                             ...httpWidget.template,
-                            templatePath: 'templatePath',
-                            absolutePath: ['absolute', 'path'],
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
                         })}
                         widget={fromJS(httpWidget)}
                         source={shopifySource}
@@ -166,7 +193,7 @@ describe('InfobarWidgets component', () => {
 
         fireEvent.click(screen.getAllByText('edit')[0])
         expect(screen.findByText('Border color'))
-        fireEvent.click(screen.getByText('Cancel'))
+        WrapperEditFormMock.mock.calls.slice(-1)[0][0].onCancel()
         await waitFor(() => {
             expect(screen.queryByText('Border color')).toBeNull()
         })
@@ -182,8 +209,8 @@ describe('InfobarWidgets component', () => {
                             meta: {
                                 color: '#fff',
                             },
-                            templatePath: 'templatePath',
-                            absolutePath: ['absolute', 'path'],
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
                         })}
                         widget={fromJS(httpWidget)}
                         source={shopifySource}
@@ -202,8 +229,8 @@ describe('InfobarWidgets component', () => {
                     <Wrapper
                         template={fromJS({
                             ...customerExternalDataWidget.template,
-                            templatePath: 'templatePath',
-                            absolutePath: ['absolute', 'path'],
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
                         })}
                         widget={fromJS(customerExternalDataWidget)}
                         source={customerExternalDataSource}
@@ -222,8 +249,8 @@ describe('InfobarWidgets component', () => {
                     <Wrapper
                         template={fromJS({
                             ...woocommerceDataWidget.template,
-                            templatePath: 'templatePath',
-                            absolutePath: ['absolute', 'path'],
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
                         })}
                         widget={fromJS(woocommerceDataWidget)}
                         source={woocommerceDataSource}
@@ -234,10 +261,130 @@ describe('InfobarWidgets component', () => {
 
         expect(container).toMatchSnapshot()
     })
+
+    it('should start widget edit on customize widget button click', () => {
+        const {getByText} = render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <Wrapper
+                        template={fromJS({
+                            ...woocommerceDataWidget.template,
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
+                        })}
+                        widget={fromJS(woocommerceDataWidget)}
+                        source={woocommerceDataSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+
+        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
+
+        expect(store.getActions()).toContainEqual(
+            actions.startWidgetEdition(defaultTemplatePath)
+        )
+    })
+
+    it('should pass the template color to edit form', () => {
+        const color = '#ff0000'
+        const {getByText, getByTestId} = render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <Wrapper
+                        template={fromJS({
+                            ...woocommerceDataWidget.template,
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
+                            meta: {
+                                color,
+                            },
+                        })}
+                        widget={fromJS(woocommerceDataWidget)}
+                        source={woocommerceDataSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+
+        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
+
+        expect(getByTestId(MOCK_EDIT_FORM_COLOR_ID)).toHaveTextContent(color)
+    })
+
+    it('should stop widget edit on form edit cancel', () => {
+        const {getByText} = render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <Wrapper
+                        template={fromJS({
+                            ...woocommerceDataWidget.template,
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
+                        })}
+                        widget={fromJS(woocommerceDataWidget)}
+                        source={woocommerceDataSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+
+        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
+        WrapperEditFormMock.mock.calls.slice(-1)[0][0].onCancel()
+
+        expect(store.getActions()).toContainEqual(actions.stopWidgetEdition())
+    })
+
+    it('should update widget and stop widget edit on form edit submit', () => {
+        const expectedData: FormData = {
+            color: '#abcdef',
+        }
+        const {getByText} = render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <Wrapper
+                        template={fromJS({
+                            ...woocommerceDataWidget.template,
+                            templatePath: defaultTemplatePath,
+                            absolutePath: defaultAbsolutePath,
+                        })}
+                        widget={fromJS(woocommerceDataWidget)}
+                        source={woocommerceDataSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+
+        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
+        WrapperEditFormMock.mock.calls.slice(-1)[0][0].onSubmit(expectedData)
+
+        const storeActions = store.getActions()
+        const stopEditAction = actions.stopWidgetEdition()
+        expect(storeActions).toContainEqual(stopEditAction)
+
+        const updateAction = actions.updateEditedWidget({
+            type: 'wrapper',
+            meta: {
+                color: expectedData.color,
+            },
+        })
+        expect(storeActions).toContainEqual(updateAction)
+
+        expect(
+            storeActions.findIndex(
+                ({type}: Action) => type === updateAction.type
+            )
+        ).toBeLessThan(
+            storeActions.findIndex(
+                ({type}: Action) => type === stopEditAction.type
+            )
+        )
+    })
 })
 
-// @ts-ignore
-const wrapper = ({children}) => <Provider store={store}>{children}</Provider>
+const wrapper = ({children}: {children: ReactNode}) => (
+    <Provider store={store}>{children}</Provider>
+)
 
 describe('useIntegration hook', () => {
     it('should return the integration extracted from the absolute path', () => {
