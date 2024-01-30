@@ -8,31 +8,23 @@ import MetricCard from 'pages/stats/MetricCard'
 import {StatsFilters} from 'models/stat/types'
 import {getAdvancedVoicePeriodFilters} from 'models/reporting/queryFactories/voice/voiceCall'
 import {getPreviousPeriod} from 'utils/reporting'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
-import {VoiceCallAverageTimeMetric} from 'pages/stats/voice/models/types'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 
 type VoiceCallCallerExperienceMetricProps = {
-    metric: VoiceCallAverageTimeMetric
     title: string
     hint: string
+    metricTrend: MetricTrend
     statsFilters: StatsFilters
-    userTimezone: string
 }
 
 function VoiceCallCallerExperienceMetric({
-    metric,
     title,
     hint,
     statsFilters,
-    userTimezone,
+    metricTrend,
 }: VoiceCallCallerExperienceMetricProps) {
-    const voiceCallCountTrend = useVoiceCallAverageTimeTrend(
-        metric,
-        statsFilters,
-        userTimezone
-    )
-    const voiceCallsAverageTime = voiceCallCountTrend.data?.value
-    const prevValue = voiceCallCountTrend.data?.prevValue
+    const voiceCallsAverageTime = metricTrend.data?.value
+    const prevValue = metricTrend.data?.prevValue
     const previousPeriod = getAdvancedVoicePeriodFilters(
         getPreviousPeriod(statsFilters.period)
     )
@@ -43,11 +35,11 @@ function VoiceCallCallerExperienceMetric({
             hint={{
                 title: hint,
             }}
-            isLoading={voiceCallCountTrend.isFetching}
+            isLoading={metricTrend.isFetching}
             trendBadge={
                 <TrendBadge
-                    value={voiceCallCountTrend.data?.value}
-                    prevValue={voiceCallCountTrend.data?.prevValue}
+                    value={metricTrend.data?.value}
+                    prevValue={metricTrend.data?.prevValue}
                     format={'percent'}
                     interpretAs={'less-is-better'}
                     tooltip={comparedPeriodString(
@@ -58,7 +50,7 @@ function VoiceCallCallerExperienceMetric({
             }
         >
             <BigNumberMetric
-                isLoading={voiceCallCountTrend.isFetching}
+                isLoading={metricTrend.isFetching}
                 from={
                     typeof prevValue === 'number'
                         ? formatMetricValue(prevValue, 'duration')

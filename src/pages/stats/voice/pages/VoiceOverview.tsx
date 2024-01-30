@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import moment from 'moment/moment'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
@@ -47,6 +48,10 @@ import {
     VoiceCallAverageTimeMetric,
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
+import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
+import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import {saveReport} from 'services/reporting/voiceOverviewReportingService'
 
 function VoiceOverview() {
     const displayVoiceAnalyticsNiceToHave: boolean =
@@ -61,6 +66,58 @@ function VoiceOverview() {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     useCleanStatsFilters(pageStatsFilters)
+
+    const averageWaitTimeTrend = useVoiceCallAverageTimeTrend(
+        VoiceCallAverageTimeMetric.WaitTime,
+        cleanStatsFilters,
+        userTimezone
+    )
+    const averageTalkTimeTrend = useVoiceCallAverageTimeTrend(
+        VoiceCallAverageTimeMetric.TalkTime,
+        cleanStatsFilters,
+        userTimezone
+    )
+    const totalCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const outboundCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone,
+        VoiceCallSegment.outboundCalls
+    )
+    const inboundCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone,
+        VoiceCallSegment.inboundCalls
+    )
+    const missedCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone,
+        VoiceCallSegment.missedCalls
+    )
+
+    const exportableData = useMemo(() => {
+        return {
+            averageWaitTimeTrend,
+            averageTalkTimeTrend,
+            totalCallsCountTrend,
+            outboundCallsCountTrend,
+            inboundCallsCountTrend,
+            missedCallsCountTrend,
+        }
+    }, [
+        averageWaitTimeTrend,
+        averageTalkTimeTrend,
+        totalCallsCountTrend,
+        outboundCallsCountTrend,
+        inboundCallsCountTrend,
+        missedCallsCountTrend,
+    ])
+
+    const loadingDownload = useMemo(() => {
+        return Object.values(exportableData).some((metric) => metric.isFetching)
+    }, [exportableData])
 
     return (
         <StatsPage
@@ -90,6 +147,20 @@ function VoiceOverview() {
                         value={pageStatsFilters.period}
                         variant={'ghost'}
                     />
+                    {displayVoiceAnalyticsNiceToHave && (
+                        <DownloadOverviewDataButton
+                            onClick={async () => {
+                                logEvent(SegmentEvent.StatDownloadClicked, {
+                                    name: 'all-metrics',
+                                })
+                                await saveReport(
+                                    exportableData,
+                                    pageStatsFilters.period
+                                )
+                            }}
+                            disabled={loadingDownload}
+                        />
+                    )}
                 </>
             }
         >
@@ -97,20 +168,18 @@ function VoiceOverview() {
                 <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
                     <DashboardGridCell size={6}>
                         <VoiceCallCallerExperienceMetric
-                            metric={VoiceCallAverageTimeMetric.WaitTime}
                             title={AVERAGE_WAIT_TIME_METRIC_TITLE}
                             hint={AVERAGE_WAIT_TIME_METRIC_HINT}
                             statsFilters={cleanStatsFilters}
-                            userTimezone={userTimezone}
+                            metricTrend={averageWaitTimeTrend}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <VoiceCallCallerExperienceMetric
-                            metric={VoiceCallAverageTimeMetric.TalkTime}
                             title={AVERAGE_TALK_TIME_METRIC_TITLE}
                             hint={AVERAGE_TALK_TIME_METRIC_HINT}
                             statsFilters={cleanStatsFilters}
-                            userTimezone={userTimezone}
+                            metricTrend={averageTalkTimeTrend}
                         />
                     </DashboardGridCell>
                 </DashboardSection>
@@ -121,7 +190,7 @@ function VoiceOverview() {
                         title={TOTAL_CALLS_METRIC_TITLE}
                         hint={TOTAL_CALLS_METRIC_HINT}
                         statsFilters={cleanStatsFilters}
-                        userTimezone={userTimezone}
+                        metricTrend={totalCallsCountTrend}
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
@@ -129,8 +198,7 @@ function VoiceOverview() {
                         title={OUTBOUND_CALLS_METRIC_TITLE}
                         hint={OUTBOUND_CALLS_METRIC_HINT}
                         statsFilters={cleanStatsFilters}
-                        userTimezone={userTimezone}
-                        segment={VoiceCallSegment.outboundCalls}
+                        metricTrend={outboundCallsCountTrend}
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
@@ -138,8 +206,7 @@ function VoiceOverview() {
                         title={INBOUND_CALLS_METRIC_TITLE}
                         hint={INBOUND_CALLS_METRIC_HINT}
                         statsFilters={cleanStatsFilters}
-                        userTimezone={userTimezone}
-                        segment={VoiceCallSegment.inboundCalls}
+                        metricTrend={inboundCallsCountTrend}
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
@@ -147,8 +214,7 @@ function VoiceOverview() {
                         title={MISSED_CALLS_METRIC_TITLE}
                         hint={MISSED_CALLS_METRIC_HINT}
                         statsFilters={cleanStatsFilters}
-                        userTimezone={userTimezone}
-                        segment={VoiceCallSegment.missedCalls}
+                        metricTrend={missedCallsCountTrend}
                         moreIsBetter={false}
                     />
                 </DashboardGridCell>

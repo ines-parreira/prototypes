@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -29,6 +29,10 @@ import {billingState} from 'fixtures/billing'
 import {agents} from 'fixtures/agents'
 import {StatsFilters} from 'models/stat/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {saveReport} from 'services/reporting/voiceOverviewReportingService'
+import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import {assumeMock} from 'utils/testing'
 import VoiceOverview from '../VoiceOverview'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
@@ -37,6 +41,21 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('services/reporting/voiceOverviewReportingService')
+jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
+jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
+assumeMock(useVoiceCallCountTrend).mockReturnValue({
+    data: {prevValue: 10, value: 15},
+    isFetching: false,
+    isError: false,
+})
+assumeMock(useVoiceCallAverageTimeTrend).mockReturnValue({
+    data: {prevValue: 1, value: 2},
+    isFetching: false,
+    isError: false,
+})
+const mockSaveReport = assumeMock(saveReport)
 
 describe('VoiceOverview', () => {
     beforeEach(() => {
@@ -94,6 +113,7 @@ describe('VoiceOverview', () => {
         expect(queryByText('All integrations')).toBeInTheDocument()
         expect(queryByText('1 agent')).toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
+        expect(queryByText('Download data')).toBeInTheDocument()
 
         // caller experience cards
         expect(queryByText(CALLER_EXPERIENCE_METRICS_TITLE)).toBeInTheDocument()
@@ -123,6 +143,13 @@ describe('VoiceOverview', () => {
         expect(
             queryByText('Analytics are using UTC timezone')
         ).toBeInTheDocument()
+    })
+
+    it('should trigger save report when clicking on download data', async () => {
+        const {getByRole} = renderVoiceOverview()
+
+        fireEvent.click(getByRole('button', {name: /Download data/i}))
+        await waitFor(() => expect(mockSaveReport).toHaveBeenCalled())
     })
 
     it('should render paywall page', () => {

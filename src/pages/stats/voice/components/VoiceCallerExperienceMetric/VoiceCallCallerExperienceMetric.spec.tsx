@@ -3,7 +3,6 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 import {StatsFilters} from 'models/stat/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock} from 'utils/testing'
-import {VoiceCallAverageTimeMetric} from 'pages/stats/voice/models/types'
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import VoiceCallCallerExperienceMetric from './VoiceCallCallerExperienceMetric'
 
@@ -13,10 +12,7 @@ const mockUseVoiceCallAverageTimeTrend = assumeMock(
 )
 
 describe('<VoiceCallCallerExperienceMetric />', () => {
-    const renderComponent = (
-        trendValue: MetricTrend,
-        metric = VoiceCallAverageTimeMetric.WaitTime
-    ) => {
+    const renderComponent = (trendValue: MetricTrend) => {
         const statsFilters: StatsFilters = {
             period: {
                 end_datetime: '2021-02-03T23:59:59.999Z',
@@ -26,11 +22,10 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
         mockUseVoiceCallAverageTimeTrend.mockReturnValue(trendValue)
         return render(
             <VoiceCallCallerExperienceMetric
-                metric={metric}
+                metricTrend={trendValue}
                 title={'Total duration'}
                 hint={'Total duration of the call'}
                 statsFilters={statsFilters}
-                userTimezone={'UTC'}
             />
         )
     }

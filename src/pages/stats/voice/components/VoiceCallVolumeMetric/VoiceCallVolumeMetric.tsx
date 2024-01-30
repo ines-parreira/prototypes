@@ -9,19 +9,16 @@ import {
     MetricTrendFormat,
 } from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
-import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {getPreviousPeriod} from 'utils/reporting'
 
 type VoiceCallVolumeMetricProps = {
     title: string
     hint: string
     statsFilters: StatsFilters
-    userTimezone: string
-    segment?: VoiceCallSegment
     moreIsBetter?: boolean
+    metricTrend: MetricTrend
 }
 const getTrendProps = (metricTrend: MetricTrend, moreIsBetter = true) => ({
     value: metricTrend.data?.value || 0,
@@ -35,18 +32,12 @@ const getTrendProps = (metricTrend: MetricTrend, moreIsBetter = true) => ({
 function VoiceCallVolumeMetric({
     title,
     hint,
+    metricTrend,
     statsFilters,
-    userTimezone,
-    segment,
     moreIsBetter = true,
 }: VoiceCallVolumeMetricProps) {
-    const voiceCallCountTrend = useVoiceCallCountTrend(
-        statsFilters,
-        userTimezone,
-        segment
-    )
-    const voiceCallsCount = voiceCallCountTrend.data?.value
-    const prevValue = voiceCallCountTrend.data?.prevValue
+    const voiceCallsCount = metricTrend.data?.value
+    const prevValue = metricTrend.data?.prevValue
     const previousPeriod = getPreviousPeriod(statsFilters.period)
 
     return (
@@ -55,10 +46,10 @@ function VoiceCallVolumeMetric({
             hint={{
                 title: hint,
             }}
-            isLoading={voiceCallCountTrend.isFetching}
+            isLoading={metricTrend.isFetching}
             trendBadge={
                 <TrendBadge
-                    {...getTrendProps(voiceCallCountTrend, moreIsBetter)}
+                    {...getTrendProps(metricTrend, moreIsBetter)}
                     tooltip={comparedPeriodString(
                         moment(previousPeriod.start_datetime),
                         moment(previousPeriod.end_datetime)
@@ -67,7 +58,7 @@ function VoiceCallVolumeMetric({
             }
         >
             <BigNumberMetric
-                isLoading={voiceCallCountTrend.isFetching}
+                isLoading={metricTrend.isFetching}
                 from={
                     prevValue !== undefined
                         ? formatMetricValue(prevValue)

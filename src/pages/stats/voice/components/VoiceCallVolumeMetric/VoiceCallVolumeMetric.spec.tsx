@@ -23,7 +23,7 @@ describe('<VoiceCallVolumeMetric />', () => {
                 title={'Total calls'}
                 hint={'Total number of inbound and outbound calls'}
                 statsFilters={statsFilters}
-                userTimezone={'UTC'}
+                metricTrend={trendValue}
                 moreIsBetter={moreIsBetter}
             />
         )
