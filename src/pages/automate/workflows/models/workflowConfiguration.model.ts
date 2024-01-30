@@ -16,7 +16,6 @@ import {
     HttpRequestNodeType,
     MultipleChoicesNodeType,
     OrderSelectionNodeType,
-    ShopperAuthenticationNodeType,
     TextReplyNodeType,
     TriggerButtonNodeType,
     VisualBuilderEdge,
@@ -240,16 +239,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[orderSelectionWorkflowCallStep.id] = n.id
             nodes.push(n)
-        } else if (
-            previousStep?.kind === 'shopper-authentication' &&
-            // check if this is as part of the order_selection node
-            nextSteps.some(
-                (s) =>
-                    s.kind === 'workflow_call' &&
-                    s.settings.configuration_id === NO_ORDERS_WORKFLOW_ID
-            ) &&
-            nextSteps.some((s) => s.kind === 'messages')
-        ) {
+        } else if (previousStep?.kind === 'shopper-authentication') {
             // already processed as part of the order_selection node
             return
         } else if (step.kind === 'messages') {
@@ -340,21 +330,6 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } else if (step.kind === 'shopper-authentication') {
-            const node: ShopperAuthenticationNodeType = {
-                ...buildNodeCommonProperties(),
-                id: step.id,
-                type: 'shopper_authentication',
-                data: {
-                    wfConfigurationRef: {
-                        wfConfigurationShopperAuthenticationStepId: step.id,
-                    },
-                    integrationId: step.settings.integration_id,
-                },
-            }
-
-            nodeIdByStepId[step.id] = node.id
-            nodes.push(node)
         } else {
             return
         }

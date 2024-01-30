@@ -6,7 +6,7 @@ export type WorkflowVariable = {
 }
 export type WorkflowVariableGroup = {
     name: string
-    nodeType: 'order_selection' | 'http_request' | 'shopper_authentication'
+    nodeType: 'order_selection' | 'http_request'
     variables: WorkflowVariable[]
 }
 

@@ -26,7 +26,6 @@ import TextReplyNode from './nodes/TextReplyNode'
 import FileUploadNode from './nodes/FileUploadNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
 import HttpRequestNode from './nodes/HttpRequestNode'
-import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
 
 import css from './WorkflowVisualBuilder.less'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
@@ -39,7 +38,6 @@ const nodeTypes = {
     file_upload: FileUploadNode,
     order_selection: OrderSelectionNode,
     http_request: HttpRequestNode,
-    shopper_authentication: ShopperAuthenticationNode,
     end: EndNode,
 }
 

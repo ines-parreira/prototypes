@@ -117,17 +117,6 @@ export type HttpRequestNodeType = Node<
     'http_request'
 >
 
-export type ShopperAuthenticationNodeType = Node<
-    {
-        wfConfigurationRef: {
-            wfConfigurationShopperAuthenticationStepId: string
-        }
-        integrationId: number
-        isGreyedOut?: boolean | null
-    },
-    'shopper_authentication'
->
-
 export type EndNodeType = Node<
     {
         wfConfigurationRef: {
@@ -151,7 +140,6 @@ export type VisualBuilderNode =
     | OrderSelectionNodeType
     | HttpRequestNodeType
     | EndNodeType
-    | ShopperAuthenticationNodeType
 
 export type VisualBuilderEdge = Edge<{
     event?: WorkflowTransition['event'] | null

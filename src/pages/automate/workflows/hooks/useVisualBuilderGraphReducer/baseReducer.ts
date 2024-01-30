@@ -19,7 +19,6 @@ import {
     buildFileUploadNode,
     buildHttpRequestNode,
     buildOrderSelectionNode,
-    buildShopperAuthenticationNode,
     buildTextReplyNode,
     computeNodesPositions,
     deleteBranch,
@@ -74,11 +73,6 @@ export type VisualBuilderBaseAction =
     | {
           type: 'INSERT_AUTOMATED_MESSAGE_NODE'
           beforeNodeId: string
-      }
-    | {
-          type: 'INSERT_SHOPPER_AUTHENTICATION_NODE'
-          beforeNodeId: string
-          storeIntegrationId: number
       }
     | {
           type: 'INSERT_TEXT_REPLY_NODE'
@@ -215,14 +209,6 @@ export function baseReducer(
                 insertNodeBefore(
                     graph,
                     buildFileUploadNode(),
-                    action.beforeNodeId
-                )
-            )
-        case 'INSERT_SHOPPER_AUTHENTICATION_NODE':
-            return computeNodesPositions(
-                insertNodeBefore(
-                    graph,
-                    buildShopperAuthenticationNode(action.storeIntegrationId),
                     action.beforeNodeId
                 )
             )

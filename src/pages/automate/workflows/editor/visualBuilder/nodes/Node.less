@@ -20,22 +20,6 @@
         }
     }
 
-    .shopperAuthenticationNode {
-        height: 80px;
-    }
-
-    .nodeGreyTitle {
-        color: var(--neutral-grey-5);
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        .caption-semibold();
-
-        i {
-            font-size: 16px;
-        }
-    }
-
     .nodeErrored {
         border-color: var(--feedback-error);
     }
@@ -60,11 +44,9 @@
 
     .notClickable {
         cursor: grab;
-
         * {
             cursor: grab !important;
         }
-
         &:hover {
             box-shadow: none;
         }

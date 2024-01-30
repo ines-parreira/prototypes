@@ -14,7 +14,6 @@ import {
     HttpRequestNodeType,
     MultipleChoicesNodeType,
     OrderSelectionNodeType,
-    ShopperAuthenticationNodeType,
     TextReplyNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
@@ -232,23 +231,6 @@ export const buildHttpRequestNode: () => HttpRequestNodeType = () => {
     }
 }
 
-export const buildShopperAuthenticationNode = (
-    storeIntegrationId: number
-): ShopperAuthenticationNodeType => {
-    const id = ulid()
-    return {
-        ...buildNodeCommonProperties(),
-        id,
-        type: 'shopper_authentication',
-        data: {
-            wfConfigurationRef: {
-                wfConfigurationShopperAuthenticationStepId: id,
-            },
-            integrationId: storeIntegrationId,
-        },
-    }
-}
-
 const nodeWidth = 300
 const nodeHeight = 98
 const nodeGap = 36
@@ -260,9 +242,7 @@ export function computeNodesPositions(
         // the node size configures the spacing between the nodes ([width, height])
         nodeSize: (node) => {
             const width = node.data.width || nodeWidth
-            const height =
-                node.data.height ||
-                (node.data.type === 'shopper_authentication' ? 80 : nodeHeight)
+            const height = node.data.height || nodeHeight
             return [width, height + nodeGap * 2]
         },
         // this is needed for creating equal space between all nodes horizontally

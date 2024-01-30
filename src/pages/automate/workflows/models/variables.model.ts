@@ -136,33 +136,6 @@ export const buildWorkflowVariableFromNode = (
                 },
             ],
         }
-    } else if (node.type === 'shopper_authentication') {
-        return {
-            nodeType: 'shopper_authentication',
-            name: 'Shopper authentication',
-            variables: [
-                {
-                    name: 'Customer first name',
-                    value: '{{customer.firstname}}',
-                },
-                {
-                    name: 'Customer last name',
-                    value: '{{customer.lastname}}',
-                },
-                {
-                    name: 'Customer full name',
-                    value: '{{customer.name}}',
-                },
-                {
-                    name: 'Customer email',
-                    value: '{{customer.email}}',
-                },
-                {
-                    name: 'Customer phone number',
-                    value: '{{customer.phone_number}}',
-                },
-            ],
-        }
     } else if (node.type === 'http_request' && node.data.variables.length) {
         const {
             data: {
