@@ -11,6 +11,13 @@ const storyConfig: Meta<typeof Button> = {
             control: {
                 type: 'select',
             },
+            options: ['fill', 'ghost'],
+        },
+        intent: {
+            control: {
+                type: 'select',
+            },
+            options: ['primary', 'secondary', 'destructive'],
         },
         isDisabled: {
             control: {
@@ -26,6 +33,7 @@ const storyConfig: Meta<typeof Button> = {
             control: {
                 type: 'select',
             },
+            options: ['medium', 'small'],
         },
         onClick: {
             action: 'clicked!',
@@ -42,6 +50,7 @@ const templateParameters = {
     controls: {
         include: [
             'fillStyle',
+            'intent',
             'isDisabled',
             'isLoading',
             'size',

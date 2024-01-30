@@ -17,12 +17,8 @@ const storyConfig: Meta = {
         intent: {
             control: {
                 type: 'select',
-                options: {
-                    Primary: 'primary',
-                    Secondary: 'secondary',
-                    Destructive: 'destructive',
-                },
             },
+            options: ['primary', 'secondary', 'destructive'],
         },
         isDisabled: {
             control: {
@@ -37,11 +33,8 @@ const storyConfig: Meta = {
         size: {
             control: {
                 type: 'select',
-                options: {
-                    Medium: 'medium',
-                    Small: 'small',
-                },
             },
+            options: ['medium', 'small'],
         },
         confirmationContent: {
             control: {
