@@ -42,13 +42,12 @@ import {isGorgiasSupportAddress, displayRestrictedSymbols} from 'utils'
 import {convertToHTML} from 'utils/editor'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {EmailProvider} from 'models/integration/constants'
 import settingsCss from 'pages/settings/settings.less'
 import warningIcon from 'assets/img/icons/warning2.svg'
 import Tooltip from 'pages/common/components/Tooltip'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import InputField from 'pages/common/forms/input/InputField'
-import {isOutboundDomainVerified} from '../helpers'
+import {canEnableEmailingViaInternalProvider} from 'pages/integrations/integration/components/email/helpers'
 
 import css from './EmailIntegrationUpdate.less'
 
@@ -460,10 +459,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isGmail = integration.get('type') === IntegrationType.Gmail
 
         const isGmailSendingCheckboxDisabled =
-            integration.getIn(['meta', 'provider']) === EmailProvider.Sendgrid
-                ? !isOutboundDomainVerified(integration.toJS())
-                : false
-
+            !canEnableEmailingViaInternalProvider(integration.toJS())
         const {
             errors,
             name,

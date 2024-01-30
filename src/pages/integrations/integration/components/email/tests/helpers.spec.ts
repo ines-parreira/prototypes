@@ -2,17 +2,19 @@ import {cloneDeep} from 'lodash'
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
 import {
     EmailIntegration,
+    GmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
 import {
+    canEnableEmailingViaInternalProvider,
     getDomainFromEmailAddress,
-    isOutboundDomainVerified,
-    isOutboundVerifiedSendgrid,
-    isSingleSenderVerificationInProgress,
-    isSingleSenderVerified,
     isBaseEmailAddress,
     isBaseEmailIntegration,
+    isOutboundDomainVerified,
+    isOutboundVerifiedSendgrid,
     isSendgridEmailIntegration,
+    isSingleSenderVerificationInProgress,
+    isSingleSenderVerified,
 } from '../helpers'
 
 const integration = {
@@ -24,6 +26,17 @@ const integration = {
         },
     },
 } as unknown as EmailIntegration
+
+const gmailIntegration = {
+    id: 1,
+    name: 'Gmail integration',
+    meta: {
+        address: 'support@gorgi.us',
+        outbound_verification_status: {
+            domain: OutboundVerificationStatusValue.Unverified,
+        },
+    },
+} as GmailIntegration
 
 describe('helpers', () => {
     describe('isSingleSenderVerificationInProgress', () => {
@@ -89,6 +102,34 @@ describe('helpers', () => {
                 OutboundVerificationStatusValue.Success
             expect(isOutboundDomainVerified(newIntegration)).toBe(true)
         })
+    })
+
+    describe('CanEnableEmailingViaInternalProvider', () => {
+        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
+            'should return false when domain is not verified [%s]',
+            (provider) => {
+                const gmailIntegrationClone = cloneDeep(gmailIntegration)
+                gmailIntegrationClone.meta.outbound_verification_status.domain =
+                    OutboundVerificationStatusValue.Unverified
+                gmailIntegrationClone.meta.provider = provider
+                expect(
+                    canEnableEmailingViaInternalProvider(gmailIntegrationClone)
+                ).toBe(false)
+            }
+        )
+
+        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
+            'should return true when domain is verified [%s]',
+            (provider) => {
+                const gmailIntegrationClone = cloneDeep(gmailIntegration)
+                gmailIntegrationClone.meta.outbound_verification_status.domain =
+                    OutboundVerificationStatusValue.Success
+                gmailIntegrationClone.meta.provider = provider
+                expect(
+                    canEnableEmailingViaInternalProvider(gmailIntegrationClone)
+                ).toBe(true)
+            }
+        )
     })
 
     describe('isSingleSenderVerified', () => {

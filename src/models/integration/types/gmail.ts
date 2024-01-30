@@ -3,6 +3,10 @@ import {IntegrationType} from '../constants'
 import type {EmailIntegrationMeta} from './email'
 import type {IntegrationBase} from './base'
 import type {OAuth2} from './misc'
+import {
+    OutboundVerificationStatusValue,
+    OutboundVerificationType,
+} from './email'
 import type {Integration} from './'
 
 export type GmailIntegration = IntegrationBase & {
@@ -20,6 +24,9 @@ export type GmailIntegrationMeta = EmailIntegrationMeta & {
     full_sync?: Maybe<Record<string, unknown>>
     oauth: OAuth2
     use_new_creds_version: boolean
+    outbound_verification_status?: {
+        [OutboundVerificationType.Domain]: OutboundVerificationStatusValue
+    }
 }
 
 export const isGmailIntegration = (

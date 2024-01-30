@@ -15,13 +15,17 @@ import {
     EMAIL_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {isBoolean} from 'pages/common/components/infobar/utils'
-import * as helpers from '../../helpers'
+import {
+    OutboundVerificationStatusValue,
+    OutboundVerificationType,
+} from 'models/integration/types'
+import * as helpers from 'pages/integrations/integration/components/email/helpers'
 
-import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate'
+import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
 
-const isOutboundDomainVerifiedSpy = jest.spyOn(
+const CanEnableEmailingViaInternalProviderSpy = jest.spyOn(
     helpers,
-    'isOutboundDomainVerified'
+    'canEnableEmailingViaInternalProvider'
 )
 
 const INTEGRATION_NAME = 'My Integration'
@@ -85,6 +89,10 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                         signature: {
                             text: '',
                             html: '<div><br></div>',
+                        },
+                        outbound_verification_status: {
+                            [OutboundVerificationType.Domain]:
+                                OutboundVerificationStatusValue.Success,
                         },
                         use_gmail_categories: false,
                         enable_gmail_sending: true,
@@ -265,55 +273,61 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         }
     )
 
-    it('disables gmail sending checkbox when domain is not verified [sendgrid]', () => {
-        isOutboundDomainVerifiedSpy.mockReturnValue(false)
+    it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid, 'unknownProvider'])(
+        'disable gmail sending checkbox when domain is not verified [%s]',
+        (emailProvider) => {
+            CanEnableEmailingViaInternalProviderSpy.mockReturnValue(false)
 
-        const props = {
-            integration: fromJS({
-                id: 1,
-                name: INTEGRATION_NAME,
-                type: GMAIL_INTEGRATION_TYPE,
-                meta: {
-                    address: 'myintegration@gorgias.io',
-                    use_gmail_categories: false,
-                    enable_gmail_sending: true,
-                    enable_gmail_threading: true,
-                    provider: EmailProvider.Sendgrid,
-                },
-            }),
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: GMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'myintegration@gorgias.io',
+                        use_gmail_categories: false,
+                        enable_gmail_sending: true,
+                        enable_gmail_threading: true,
+                        provider: emailProvider,
+                    },
+                }),
+            }
+
+            const {getAllByRole} = renderWithStore(props)
+            const gmailSendingToggle = getAllByRole('switch')[1]
+
+            expect(gmailSendingToggle).toBeChecked()
+            fireEvent.click(gmailSendingToggle)
+            expect(gmailSendingToggle).toBeChecked()
         }
+    )
 
-        const {getAllByRole} = renderWithStore(props)
-        const gmailSendingToggle = getAllByRole('switch')[1]
+    it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid, 'unknownProvider'])(
+        'do not disable gmail sending checkbox when domain is verified  [%s]',
+        (emailProvider) => {
+            CanEnableEmailingViaInternalProviderSpy.mockReturnValue(true)
 
-        expect(gmailSendingToggle).toBeChecked()
-        fireEvent.click(gmailSendingToggle)
-        expect(gmailSendingToggle).toBeChecked()
-    })
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: GMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'myintegration@gorgias.io',
+                        use_gmail_categories: false,
+                        enable_gmail_sending: true,
+                        enable_gmail_threading: true,
+                        provider: emailProvider,
+                    },
+                }),
+            }
 
-    it('does not disable gmail sending checkbox when domain is verified [sendgrid]', () => {
-        isOutboundDomainVerifiedSpy.mockReturnValue(true)
+            const {getAllByRole} = renderWithStore(props)
+            const gmailSendingToggle = getAllByRole('switch')[1]
 
-        const props = {
-            integration: fromJS({
-                id: 1,
-                name: INTEGRATION_NAME,
-                type: GMAIL_INTEGRATION_TYPE,
-                meta: {
-                    address: 'myintegration@gorgias.io',
-                    use_gmail_categories: false,
-                    enable_gmail_sending: true,
-                    enable_gmail_threading: true,
-                    provider: EmailProvider.Sendgrid,
-                },
-            }),
+            expect(gmailSendingToggle).toBeChecked()
+            fireEvent.click(gmailSendingToggle)
+            expect(gmailSendingToggle).not.toBeChecked()
         }
-
-        const {getAllByRole} = renderWithStore(props)
-        const gmailSendingToggle = getAllByRole('switch')[1]
-
-        expect(gmailSendingToggle).toBeChecked()
-        fireEvent.click(gmailSendingToggle)
-        expect(gmailSendingToggle).not.toBeChecked()
-    })
+    )
 })

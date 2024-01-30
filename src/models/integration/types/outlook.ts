@@ -3,6 +3,10 @@ import {IntegrationType} from '../constants'
 import type {IntegrationBase} from './base'
 import type {EmailSignature} from './email'
 import type {OAuth2} from './misc'
+import {
+    OutboundVerificationStatusValue,
+    OutboundVerificationType,
+} from './email'
 import type {Integration} from './'
 
 export type OutlookIntegration = IntegrationBase & {
@@ -27,6 +31,9 @@ export type OutlookIntegrationMeta = {
         ticket_count?: number
     }
     signature?: EmailSignature
+    outbound_verification_status?: {
+        [OutboundVerificationType.Domain]: OutboundVerificationStatusValue
+    }
 }
 
 export const isOutlookIntegration = (

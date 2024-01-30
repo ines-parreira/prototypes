@@ -21,7 +21,7 @@ export const isSingleSenderVerificationInProgress = (
 }
 
 export const isOutboundDomainVerified = (
-    integration: EmailIntegration
+    integration: EmailIntegration | GmailIntegration | OutlookIntegration
 ): boolean => {
     return (
         integration.meta?.outbound_verification_status?.domain ===
@@ -82,4 +82,10 @@ export const isBaseEmailIntegration = (
     emailIntegration: EmailIntegration | GmailIntegration | OutlookIntegration
 ): boolean => {
     return isBaseEmailAddress(emailIntegration.meta.address)
+}
+
+export const canEnableEmailingViaInternalProvider = (
+    emailIntegration: GmailIntegration | OutlookIntegration
+): boolean => {
+    return isOutboundDomainVerified(emailIntegration)
 }
