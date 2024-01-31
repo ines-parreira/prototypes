@@ -8,7 +8,6 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    IntegrationType,
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
     EmailProvider,
 } from 'models/integration/constants'
@@ -72,8 +71,6 @@ export default function EmailDomainVerification({
 
     const isBaseIntegration = isBaseEmailAddress(address)
 
-    const isGmail = integration.type === IntegrationType.Gmail
-    const isOutlook = integration.type === IntegrationType.Outlook
     const provider =
         (integration as EmailIntegration | GmailIntegration).meta?.provider ||
         ''
@@ -154,26 +151,6 @@ export default function EmailDomainVerification({
                     )}
                     {!isBaseIntegration && (
                         <>
-                            {(isGmail || isOutlook) && (
-                                <Alert className={settingsCss.mb16}>
-                                    Domain verification is <b>not required</b>{' '}
-                                    for <b>Gmail and Outlook</b> integrations{' '}
-                                    <i>
-                                        unless you have disabled the "email
-                                        sending" setting in Gorgias for a Gmail
-                                        integration.
-                                    </i>
-                                    <br />
-                                    <br />
-                                    While it is not required, you can verify the
-                                    domain of a Gmail or Outlook integration,
-                                    which may allow you to continue to send
-                                    emails in the event of an outage on either
-                                    platform, as we will be able to attempt to
-                                    route your emails through our system as a
-                                    backup.
-                                </Alert>
-                            )}
                             <p>
                                 No domain and DKIM configuration has been
                                 created yet.
