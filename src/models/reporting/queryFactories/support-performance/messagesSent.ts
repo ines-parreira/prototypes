@@ -19,6 +19,7 @@ import {
     formatReportingQueryDate,
     getFilterDateRange,
     HelpdeskMessagesStatsFiltersMembers,
+    NotSpamNorTrashedTicketsFilter,
     PublicHelpdeskAndApiMessagesFilter,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
@@ -47,6 +48,7 @@ export const messagesSentQueryFactory = (
             operator: ReportingFilterOperator.InDateRange,
             values: getFilterDateRange(filters),
         },
+        ...NotSpamNorTrashedTicketsFilter,
         ...PublicHelpdeskAndApiMessagesFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskMessagesStatsFiltersMembers,

@@ -23,6 +23,7 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
+    NotSpamNorTrashedTicketsFilter,
     PublicHelpdeskAndApiMessagesFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
@@ -60,6 +61,7 @@ describe('messagesSentQueryFactory', () => {
                     operator: ReportingFilterOperator.InDateRange,
                     values: [periodStart, periodEnd],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
                 ...PublicHelpdeskAndApiMessagesFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
@@ -115,6 +117,7 @@ describe('messagesSentTimeSeriesQueryFactory', () => {
                     operator: ReportingFilterOperator.InDateRange,
                     values: [periodStart, periodEnd],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
                 ...PublicHelpdeskAndApiMessagesFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
