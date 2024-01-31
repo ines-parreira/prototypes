@@ -12,6 +12,10 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--accessory-magenta-3)',
         backgroundColor: 'var(--accessory-magenta-1)',
     },
+    shopper_authentication: {
+        color: 'var(--accessory-violet-3)',
+        backgroundColor: 'var(--accessory-violet-1)',
+    },
     multiple_choices: {
         color: 'var(--main-primary-4)',
         backgroundColor: 'var(--accessory-blue-1)',
@@ -44,6 +48,7 @@ export const iconByVisualBuilderNodeType: Record<
     file_upload: <i className="material-icons">attach_file</i>,
     order_selection: <img src={orderSelectionIcon} alt="" />,
     http_request: <i className="material-icons">webhook</i>,
+    shopper_authentication: <i className="material-icons">person</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<
@@ -57,6 +62,7 @@ export const labelByVisualBuilderNodeType: Record<
     file_upload: 'Collect file upload',
     order_selection: 'Order selection',
     http_request: 'HTTP request',
+    shopper_authentication: 'Customer login',
     end: 'End flow',
 }
 

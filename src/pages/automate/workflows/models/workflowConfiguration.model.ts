@@ -16,6 +16,7 @@ import {
     HttpRequestNodeType,
     MultipleChoicesNodeType,
     OrderSelectionNodeType,
+    ShopperAuthenticationNodeType,
     TextReplyNodeType,
     TriggerButtonNodeType,
     VisualBuilderEdge,
@@ -107,6 +108,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
     const nodes: VisualBuilderNode[] = [triggerButtonNode]
     const edges: VisualBuilderEdge[] = []
     const nodeIdByStepId: Record<string, string> = {}
+    const orderSelectionStates = new Map()
+
     walkWorkflowConfigurationGraph(c, c.initial_step_id, (step, context) => {
         const {previousStep, nextSteps, incomingTransition} = context
         if (
@@ -182,6 +185,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             step.kind === 'shopper-authentication' &&
             nextSteps.length === 2
         ) {
+            orderSelectionStates.set(step.id, true)
             const noOrdersWorkflowCallStep = nextSteps.find(
                 (s) =>
                     s.kind === 'workflow_call' &&
@@ -239,7 +243,10 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[orderSelectionWorkflowCallStep.id] = n.id
             nodes.push(n)
-        } else if (previousStep?.kind === 'shopper-authentication') {
+        } else if (
+            previousStep?.kind === 'shopper-authentication' &&
+            orderSelectionStates.get(previousStep.id)
+        ) {
             // already processed as part of the order_selection node
             return
         } else if (step.kind === 'messages') {
@@ -330,6 +337,21 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
+        } else if (step.kind === 'shopper-authentication') {
+            const node: ShopperAuthenticationNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'shopper_authentication',
+                data: {
+                    wfConfigurationRef: {
+                        wfConfigurationShopperAuthenticationStepId: step.id,
+                    },
+                    integrationId: step.settings.integration_id,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
         } else {
             return
         }

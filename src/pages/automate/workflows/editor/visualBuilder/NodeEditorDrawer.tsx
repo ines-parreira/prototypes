@@ -20,6 +20,7 @@ import HttpRequestEditor from './editors/HttpRequestEditor'
 import NodeEditorDrawerContext, {
     NodeEditorDrawerContextType,
 } from './NodeEditorDrawerContext'
+import ShopperAuthenticationEditor from './editors/ShopperAuthenticationEditor/ShopperAuthenticationEditor'
 
 type Props = {
     nodeInEdition?: VisualBuilderNode | null
@@ -102,6 +103,12 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                     )}
                     {memoizedNodeInEdition?.type === 'order_selection' && (
                         <OrderSelectionEditor
+                            nodeInEdition={memoizedNodeInEdition}
+                        />
+                    )}
+                    {memoizedNodeInEdition?.type ===
+                        'shopper_authentication' && (
+                        <ShopperAuthenticationEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
                     )}

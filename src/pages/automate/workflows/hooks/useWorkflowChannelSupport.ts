@@ -25,6 +25,7 @@ export const optionalNodeTypes: NonNullable<VisualBuilderNode['type']>[] = [
     'text_reply',
     'file_upload',
     'order_selection',
+    'shopper_authentication',
     'http_request',
 ]
 
@@ -81,6 +82,7 @@ function useSupportedChannelsFromFeatureFlag(
     featureFlag:
         | FeatureFlagKey.FlowsStepsShopperInput
         | FeatureFlagKey.FlowsStepsOrderSelection
+        | FeatureFlagKey.FlowsStepsShopperAuthentication
         | FeatureFlagKey.FlowsStepsHttpRequest
 ): Set<SelfServiceChannelType> {
     const supportedChannelsRaw: string = useFlags()[featureFlag] ?? ''
@@ -109,6 +111,12 @@ function useShopperInputSupportedChannels(): Set<SelfServiceChannelType> {
 function useOrderSelectionSupportedChannels(): Set<SelfServiceChannelType> {
     return useSupportedChannelsFromFeatureFlag(
         FeatureFlagKey.FlowsStepsOrderSelection
+    )
+}
+
+function useShopperAuthenticationSupportedChannels(): Set<SelfServiceChannelType> {
+    return useSupportedChannelsFromFeatureFlag(
+        FeatureFlagKey.FlowsStepsShopperAuthentication
     )
 }
 
@@ -234,6 +242,8 @@ export default function useWorkflowChannelSupport(
 ): WorkflowChannelSupportContext {
     const shopperInputSupportedChannels = useShopperInputSupportedChannels()
     const orderSelectionSupportedChannels = useOrderSelectionSupportedChannels()
+    const shopperAuthenticationSupportedChannels =
+        useShopperAuthenticationSupportedChannels()
     const httpRequestSupportedChannels = useHttpRequestSupportedChannels()
     const getChannelTypesWhereWorkflowIsEnabled =
         useGetChannelTypesWhereWorkflowIsEnabled(shopType, shopName)
@@ -256,6 +266,13 @@ export default function useWorkflowChannelSupport(
                     (c) => !orderSelectionSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'shopper_authentication') {
+                return embeddingChannels.filter(
+                    (c) => !shopperAuthenticationSupportedChannels.has(c)
+                )
+            }
+
             if (nodeType === 'http_request') {
                 return embeddingChannels.filter(
                     (c) => !httpRequestSupportedChannels.has(c)
@@ -268,6 +285,7 @@ export default function useWorkflowChannelSupport(
             shopperInputSupportedChannels,
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
+            shopperAuthenticationSupportedChannels,
         ]
     )
 
@@ -283,6 +301,13 @@ export default function useWorkflowChannelSupport(
                     orderSelectionSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'shopper_authentication') {
+                return allChannels.filter((c) =>
+                    shopperAuthenticationSupportedChannels.has(c)
+                )
+            }
+
             if (nodeType === 'http_request') {
                 return allChannels.filter((c) =>
                     httpRequestSupportedChannels.has(c)
@@ -293,6 +318,7 @@ export default function useWorkflowChannelSupport(
         [
             shopperInputSupportedChannels,
             orderSelectionSupportedChannels,
+            shopperAuthenticationSupportedChannels,
             httpRequestSupportedChannels,
         ]
     )
@@ -309,6 +335,11 @@ export default function useWorkflowChannelSupport(
                     (c) => !orderSelectionSupportedChannels.has(c)
                 )
             }
+            if (nodeType === 'shopper_authentication') {
+                return allChannels.filter(
+                    (c) => !shopperAuthenticationSupportedChannels.has(c)
+                )
+            }
             if (nodeType === 'http_request') {
                 return allChannels.filter(
                     (c) => !httpRequestSupportedChannels.has(c)
@@ -320,6 +351,7 @@ export default function useWorkflowChannelSupport(
             shopperInputSupportedChannels,
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
+            shopperAuthenticationSupportedChannels,
         ]
     )
 
@@ -366,6 +398,7 @@ export default function useWorkflowChannelSupport(
                 nodeType === 'text_reply' ||
                 nodeType === 'file_upload' ||
                 nodeType === 'order_selection' ||
+                nodeType === 'shopper_authentication' ||
                 nodeType === 'http_request'
             ) {
                 const unsupportedChannels = getUnsupportedChannels(nodeType)
