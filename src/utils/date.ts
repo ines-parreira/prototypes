@@ -76,6 +76,17 @@ export const getDetailedFormattedDate = (date: string, locale?: string) => {
         DETAILED_FORMATTED_DATE_OPTIONS
     ).format(new Date(date))
 }
+
+/**
+ * Return the date subtracted by the given number of days.
+ */
+export const subtractDaysFromDate = (date: string, daysToSubtract: number) => {
+    return moment
+        .parseZone(date)
+        .utcOffset(0, true)
+        .subtract(daysToSubtract, 'days')
+}
+
 export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US = 'ddd, MMM D'
 export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD = 'ddd, D MMM'
 export const SHORT_DATE_FORMAT_US = 'MMM D'

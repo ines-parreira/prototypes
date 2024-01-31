@@ -1,9 +1,11 @@
 // bypassing mocked values in setup.js
+import moment from 'moment'
 import {
     DETAILED_FORMATTED_DATE_OPTIONS,
     getDetailedFormattedDate,
     getFormattedDate,
     getMomentTimezoneNames,
+    subtractDaysFromDate,
 } from '../date'
 
 const {getMomentTimezoneNames: getMomentTimezoneNamesActual} =
@@ -45,6 +47,30 @@ describe('date utils', () => {
             expect(() => getFormattedDate(invalidDate)).toThrowError(
                 'Invalid date'
             )
+        })
+    })
+
+    describe('subtractDaysFromDate', () => {
+        it('should return a correct date by subtracting x days ', () => {
+            const date = '2022-12-16T00:00:00Z'
+            const expectedResult = moment
+                .parseZone('2022-12-11T00:00:00Z')
+                .utcOffset(0, true)
+
+            const result = subtractDaysFromDate(date, 5)
+
+            expect(result.toISOString()).toEqual(expectedResult.toISOString())
+        })
+
+        it('should return the same date when subtracting 0 days', () => {
+            const date = '2022-12-16T00:00:00Z'
+            const expectedResult = moment
+                .parseZone('2022-12-16T00:00:00Z')
+                .utcOffset(0, true)
+
+            const result = subtractDaysFromDate(date, 0)
+
+            expect(result).toEqual(expectedResult)
         })
     })
 

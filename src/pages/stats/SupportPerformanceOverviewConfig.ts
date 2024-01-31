@@ -88,7 +88,7 @@ export const OverviewMetricConfig: Record<
     [OverviewMetric.OpenTickets]: {
         title: OPEN_TICKETS_LABEL,
         hint: {
-            title: 'Number of tickets with the status “open” at the end of the period',
+            title: 'Number of tickets with the status “open” at the end of the period. Only counts tickets that have been created during or within the 180 days preceding the start of the period.',
             link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#1-open-tickets',
         },
         interpretAs: 'neutral',

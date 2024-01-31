@@ -17,9 +17,14 @@ import {
     NotSpamNorTrashedTicketsFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
+import {subtractDaysFromDate} from 'utils/date'
 
 describe('openTicketsTrendQueryFactory', () => {
-    const periodStart = formatReportingQueryDate(moment())
+    const now = moment()
+    const periodStart = formatReportingQueryDate(now)
+    const hardPeriodStart = formatReportingQueryDate(
+        subtractDaysFromDate(formatReportingQueryDate(now), 180)
+    )
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
         period: {
@@ -43,9 +48,19 @@ describe('openTicketsTrendQueryFactory', () => {
                     values: ['open'],
                 },
                 {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [hardPeriodStart],
+                },
+                {
                     member: TicketMember.PeriodEnd,
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [periodEnd],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [hardPeriodStart],
                 },
             ],
             timezone,
