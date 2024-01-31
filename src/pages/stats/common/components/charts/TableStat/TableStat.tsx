@@ -74,7 +74,7 @@ export class TableStat extends Component<
             .replace(/%/g, 'percent')
             .replace(/ /g, '-')}-tooltip`
 
-    _getIsQuickResponseEnabled = (
+    _doesQuickResponseExist = (
         flowId: string,
         shopName: string,
         shopType: string
@@ -84,12 +84,11 @@ export class TableStat extends Component<
                 selfServiceConfiguration.shop_name === shopName &&
                 selfServiceConfiguration.type === shopType
         )?.quick_response_policies
-        const quickReponseDeactivatedDatetime = quickReponsePolicies?.find(
+        const quickReponse = quickReponsePolicies?.find(
             (quickReponsePolicy) => quickReponsePolicy.id === flowId
-        )?.deactivated_datetime
-        const isQuickResponseEnabled = quickReponseDeactivatedDatetime === null
+        )
 
-        return isQuickResponseEnabled
+        return !!quickReponse
     }
 
     _getShopTypeAndShopName = (shopIntegrationId: number) => {
@@ -337,7 +336,7 @@ export class TableStat extends Component<
                 }
 
                 const flowId = metric.get('flow_id') as string
-                const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
+                const isQuickResponseEnabled = this._doesQuickResponseExist(
                     flowId,
                     shopName,
                     shopType
@@ -522,7 +521,7 @@ export class TableStat extends Component<
                 }
 
                 const flowId = metric.get('flow_id') as string
-                const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
+                const isQuickResponseEnabled = this._doesQuickResponseExist(
                     flowId,
                     shopName,
                     shopType
