@@ -110,6 +110,7 @@ describe('<CategoriesViews />', () => {
                         renderArticleList={() => <div />}
                         onCreateArticle={jest.fn()}
                         onCreateCategory={jest.fn()}
+                        onCreateArticleWithTemplate={jest.fn()}
                     />
                 </SearchContextProvider>
             </Provider>
@@ -174,6 +175,7 @@ describe('<CategoriesViews />', () => {
                             renderArticleList={() => <div />}
                             onCreateArticle={jest.fn()}
                             onCreateCategory={jest.fn()}
+                            onCreateArticleWithTemplate={jest.fn()}
                         />
                     </DndProvider>
                 </SearchContextProvider>
@@ -225,6 +227,7 @@ describe('<CategoriesViews />', () => {
                             renderArticleList={() => <div />}
                             onCreateArticle={jest.fn()}
                             onCreateCategory={jest.fn()}
+                            onCreateArticleWithTemplate={jest.fn()}
                         />
                     </DndProvider>
                 </SearchContextProvider>

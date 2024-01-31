@@ -79,12 +79,22 @@ export const getArticleTemplates = async (
     return res.data
 }
 
+type ExtendedPathParameters = {
+    template_key: Paths.GetArticleTemplate.Parameters.TemplateKey | null
+}
+
 export const getArticleTemplate = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.GetArticleTemplate.PathParameters,
+    pathParameters: ExtendedPathParameters,
     queryParameters: Paths.GetArticleTemplate.QueryParameters
 ) => {
-    if (!client) return null
+    const isPathParameter = (
+        pathParameters: ExtendedPathParameters
+    ): pathParameters is Paths.GetArticleTemplate.PathParameters => {
+        return pathParameters.template_key !== null
+    }
+
+    if (!client || !isPathParameter(pathParameters)) return null
 
     const parameters = {
         ...pathParameters,

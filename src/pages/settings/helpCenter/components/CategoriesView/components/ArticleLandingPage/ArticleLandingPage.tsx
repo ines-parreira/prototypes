@@ -8,6 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
+import {ArticleTemplate} from 'models/helpCenter/types'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
@@ -17,11 +18,13 @@ import css from './ArticleLandingPage.less'
 
 export type ArticleLandingPageProps = {
     onCreateArticle: () => void
+    onCreateArticleWithTemplate: (template?: ArticleTemplate) => void
     canUpdateArticle: boolean | null
 }
 
 const ArticleLandingPage = ({
     onCreateArticle,
+    onCreateArticleWithTemplate,
     canUpdateArticle,
 }: ArticleLandingPageProps) => {
     const viewLanguage =
@@ -66,6 +69,10 @@ const ArticleLandingPage = ({
                         <ArticleTemplateCard
                             key={template.key}
                             template={template}
+                            onCreateArticleWithTemplate={
+                                onCreateArticleWithTemplate
+                            }
+                            canUpdateArticle={canUpdateArticle}
                         />
                     ))}
                 </div>

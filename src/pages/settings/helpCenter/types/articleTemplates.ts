@@ -1,11 +1,10 @@
-export enum ArticleTemplateKey {
-    ShippingPolicy = 'shippingPolicy',
-    HowToReturn = 'howToReturn',
-    HowToCancelOrder = 'howToCancelOrder',
-    HowToTrackOrder = 'howToTrackOrder',
-    RefundsOrExchanges = 'refundsOrExchanges',
-    PackageLostOrDamaged = 'packageLostOrDamaged',
-}
+export type ArticleTemplateKey =
+    | 'shippingPolicy'
+    | 'howToReturn'
+    | 'howToCancelOrder'
+    | 'howToTrackOrder'
+    | 'refundsOrExchanges'
+    | 'packageLostOrDamaged'
 
 export enum ArticleTemplateCategory {
     OrderManagement = 'orderManagement',

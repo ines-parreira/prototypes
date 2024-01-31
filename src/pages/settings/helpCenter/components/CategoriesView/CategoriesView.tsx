@@ -8,7 +8,7 @@ import standalonePreview from 'assets/img/presentationals/standalone-self-servic
 import Button from 'pages/common/components/button/Button'
 import {Banner} from 'pages/common/components/Banner'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import {ArticleTemplate, HelpCenter} from 'models/helpCenter/types'
 import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {
@@ -36,6 +36,7 @@ import ArticleLandingPage from './components/ArticleLandingPage'
 type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     helpCenter: HelpCenter
     onCreateArticle: () => void
+    onCreateArticleWithTemplate: (template?: ArticleTemplate) => void
     onCreateCategory: () => void
 }
 
@@ -43,6 +44,7 @@ export const CategoriesViews = ({
     helpCenter,
     renderArticleList,
     onCreateArticle,
+    onCreateArticleWithTemplate,
     onCreateCategory,
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
@@ -105,6 +107,9 @@ export const CategoriesViews = ({
                     <ArticleLandingPage
                         canUpdateArticle={canUpdateArticle}
                         onCreateArticle={onCreateArticle}
+                        onCreateArticleWithTemplate={
+                            onCreateArticleWithTemplate
+                        }
                     />
                 ) : (
                     <Container fluid className={settingsCss.pageContainer}>

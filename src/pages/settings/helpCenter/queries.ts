@@ -87,7 +87,7 @@ export const articleTemplateKeys = {
         [...articleTemplateKeys.list(locale), 'detail'] as const,
     detail: (
         locale: Paths.ListArticleTemplates.Parameters.Locale,
-        key: Paths.GetArticleTemplate.Parameters.TemplateKey
+        key: Paths.GetArticleTemplate.Parameters.TemplateKey | null
     ) => [...articleTemplateKeys.details(locale), key] as const,
 }
 
@@ -167,7 +167,7 @@ export const useGetArticleTemplates = <
 export const useGetArticleTemplate = <
     TData = Awaited<ReturnType<typeof getArticleTemplate>>
 >(
-    key: Paths.GetArticleTemplate.Parameters.TemplateKey,
+    key: Paths.GetArticleTemplate.Parameters.TemplateKey | null,
     locale: Paths.GetArticleTemplate.Parameters.Locale,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getArticleTemplate>>,

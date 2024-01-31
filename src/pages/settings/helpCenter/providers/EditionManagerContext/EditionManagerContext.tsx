@@ -19,6 +19,7 @@ import {changeViewLanguage} from 'state/ui/helpCenter'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import {ArticleTemplateKey} from '../../types/articleTemplates'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {
@@ -44,6 +45,9 @@ type EditionManagerContextValues = {
 
     isEditorCodeViewActive: boolean
     setIsEditorCodeViewActive: Dispatch<SetStateAction<boolean>>
+
+    selectedTemplateKey: ArticleTemplateKey | null
+    setSelectedTemplateKey: Dispatch<SetStateAction<ArticleTemplateKey | null>>
 }
 
 const EditionManagerContext = createContext<null | EditionManagerContextValues>(
@@ -78,6 +82,9 @@ export const EditionManagerContextProvider = (props: {
     const [isFullscreenEditModal, setIsFullscreenEditModal] = useState(false)
 
     const [isEditorCodeViewActive, setIsEditorCodeViewActive] = useState(false)
+
+    const [selectedTemplateKey, setSelectedTemplateKey] =
+        useState<ArticleTemplateKey | null>(null)
 
     // Make sure to exit fullscreen mode when modal view changes
     useEffect(() => {
@@ -122,6 +129,9 @@ export const EditionManagerContextProvider = (props: {
 
         isEditorCodeViewActive,
         setIsEditorCodeViewActive,
+
+        selectedTemplateKey,
+        setSelectedTemplateKey,
     }
 
     return (

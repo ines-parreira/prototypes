@@ -5,7 +5,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import {QueryClientProvider} from '@tanstack/react-query'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
@@ -85,6 +87,8 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterCategories')
     isLoading: false,
 })
 
+const queryClient = mockQueryClient()
+
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
@@ -113,17 +117,19 @@ const route = {
 describe('<HelpCenterArticlesView />', () => {
     it('should render the component', () => {
         const {container} = renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <EditionManagerContextProvider>
-                        <SearchContextProvider
-                            helpCenter={getSingleHelpCenterResponseFixture}
-                        >
-                            <HelpCenterArticlesView />
-                        </SearchContextProvider>
-                    </EditionManagerContextProvider>
-                </DndProvider>
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore(defaultState)}>
+                    <DndProvider backend={HTML5Backend}>
+                        <EditionManagerContextProvider>
+                            <SearchContextProvider
+                                helpCenter={getSingleHelpCenterResponseFixture}
+                            >
+                                <HelpCenterArticlesView />
+                            </SearchContextProvider>
+                        </EditionManagerContextProvider>
+                    </DndProvider>
+                </Provider>
+            </QueryClientProvider>,
             route
         )
 

@@ -28,11 +28,11 @@ jest.mock('../../../../Imports/components/ImportSection', () => ({
     },
 }))
 
+const queryClient = mockQueryClient()
+
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
-
-const queryClient = mockQueryClient()
 
 const initialState: Partial<RootState> = {
     entities: {
@@ -67,6 +67,7 @@ describe('<ArticleLandingPage />', () => {
                 <Provider store={mockedStore(initialState)}>
                     <ArticleLandingPage
                         onCreateArticle={jest.fn()}
+                        onCreateArticleWithTemplate={jest.fn()}
                         canUpdateArticle={true}
                     />
                 </Provider>
@@ -90,6 +91,7 @@ describe('<ArticleLandingPage />', () => {
                 <Provider store={mockedStore(initialState)}>
                     <ArticleLandingPage
                         onCreateArticle={onCreateArticle}
+                        onCreateArticleWithTemplate={jest.fn()}
                         canUpdateArticle={true}
                     />
                 </Provider>

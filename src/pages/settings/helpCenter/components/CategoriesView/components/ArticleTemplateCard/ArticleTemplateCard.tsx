@@ -10,9 +10,15 @@ import {ARTICLE_TEMPLATE_CATEGORIES} from './constants'
 
 type Props = {
     template: ArticleTemplate
+    canUpdateArticle: boolean | null
+    onCreateArticleWithTemplate: () => void
 }
 
-const ArticleTemplateCard = ({template}: Props) => {
+const ArticleTemplateCard = ({
+    template,
+    canUpdateArticle,
+    onCreateArticleWithTemplate,
+}: Props) => {
     const [isModalOpen, setModalOpen] = useState(false)
 
     const handleClick = () => {
@@ -49,6 +55,8 @@ const ArticleTemplateCard = ({template}: Props) => {
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
                 template={template}
+                canUpdateArticle={canUpdateArticle}
+                onCreateArticleWithTemplate={onCreateArticleWithTemplate}
             />
         </>
     )

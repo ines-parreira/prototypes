@@ -10,6 +10,7 @@ import {Event, useModalManager} from 'hooks/useModalManager'
 import usePrevious from 'hooks/usePrevious'
 import {
     Article,
+    ArticleTemplate,
     ArticleTranslationWithRating,
     CreateArticleDto,
     CreateArticleTranslationDto,
@@ -41,6 +42,7 @@ import {
     getHelpCenterDomain,
     getNewArticleTranslation,
     isExistingArticle,
+    slugify,
 } from '../utils/helpCenter.utils'
 import {ArticleMode, getArticleMode} from '../types/articleMode'
 
@@ -48,6 +50,7 @@ import {useEditionManager} from '../providers/EditionManagerContext'
 import {useSearchContext} from '../providers/SearchContext'
 
 import {getGenericMessageFromError} from '../utils'
+import {useGetArticleTemplate} from '../queries'
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'
 import {DiscardChangesModal} from './articles/DiscardChangesModal'
@@ -89,6 +92,8 @@ export const HelpCenterArticlesView: React.FC = () => {
         editModal,
         setEditModal,
         isEditorCodeViewActive,
+        selectedTemplateKey,
+        setSelectedTemplateKey,
     } = useEditionManager()
 
     const {searchResults} = useSearchContext()
@@ -126,6 +131,11 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     // editor states
     const [counters, setCounters] = useState<{charCount: number}>()
+
+    const {data: template} = useGetArticleTemplate(
+        selectedTemplateKey,
+        viewLanguage
+    )
 
     /**
      * Effects
@@ -217,6 +227,50 @@ export const HelpCenterArticlesView: React.FC = () => {
         dispatch,
     ])
 
+    // update the selected article translations when the view language
+    // or when the template changes
+    useEffect(() => {
+        if (!template) {
+            return
+        }
+
+        const content = (
+            selectedArticle?.translation.content ||
+            template?.html_content ||
+            ''
+        )?.replace(/\\n/g, '')
+        const title =
+            selectedArticle?.translation.title || template?.title || ''
+        const slug = slugify(title)
+
+        if (isExistingArticle(selectedArticle)) {
+            setSelectedArticle({
+                ...selectedArticle,
+                translation: {
+                    ...selectedArticle.translation,
+                    content,
+                    title,
+                    slug,
+                },
+            })
+        } else {
+            setSelectedArticle({
+                translation: {
+                    ...getNewArticleTranslation(
+                        selectedArticleLanguage,
+                        selectedCategoryId
+                    ),
+                    content,
+                    title,
+                    slug,
+                },
+            })
+        }
+
+        // we only need to update the selected article translations when the template or the view language changes
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [viewLanguage, template])
+
     /**
      * Handlers
      */
@@ -232,7 +286,9 @@ export const HelpCenterArticlesView: React.FC = () => {
             ...prevState,
             isOpened: false,
         }))
+
         // close modal to reset its parameters (category_id)
+        setSelectedTemplateKey(null)
         articleModal.closeModal()
     }
 
@@ -250,6 +306,24 @@ export const HelpCenterArticlesView: React.FC = () => {
                 categoryFromModalParams
             ),
         })
+
+        setSelectedCategoryId(categoryFromModalParams)
+    }
+
+    const onCreateArticleWithTemplate = (template?: ArticleTemplate) => {
+        setSelectedTemplateKey(null)
+        const categoryFromModalParams =
+            articleModal.getParams()?.categoryId ?? null
+
+        onArticleSelect(
+            {
+                translation: getNewArticleTranslation(
+                    selectedArticleLanguage,
+                    categoryFromModalParams
+                ),
+            },
+            template
+        )
 
         setSelectedCategoryId(categoryFromModalParams)
     }
@@ -300,9 +374,19 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
     }
 
-    const onArticleSelect = (article: Article | CreateArticleDto) => {
+    const onArticleSelect = (
+        article: Article | CreateArticleDto,
+        template?: ArticleTemplate
+    ) => {
         setSelectedArticleTranslations(null)
-        setSelectedArticle(article)
+
+        const templateKey = article.template_key || template?.key
+        setSelectedTemplateKey(templateKey ?? null)
+
+        setSelectedArticle({
+            ...article,
+            template_key: templateKey,
+        })
         setEditModal({
             isOpened: true,
             view: HelpCenterArticleModalView.BASIC,
@@ -352,10 +436,13 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
 
         try {
-            const newArticle = await articlesActions.createArticle({
-                ...article.translation,
-                is_current: isPublished,
-            })
+            const newArticle = await articlesActions.createArticle(
+                {
+                    ...article.translation,
+                    is_current: isPublished,
+                },
+                selectedTemplateKey
+            )
 
             reloadArticle(newArticle)
 
@@ -874,6 +961,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 <CategoriesViews
                     helpCenter={helpCenter}
                     onCreateArticle={onArticleCreate}
+                    onCreateArticleWithTemplate={onCreateArticleWithTemplate}
                     onCreateCategory={onCategoryCreate}
                     renderArticleList={(
                         categoryId,

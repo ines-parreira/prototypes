@@ -14,13 +14,27 @@ type Props = {
     isOpen: boolean
     onClose: () => void
     template: ArticleTemplate
+    canUpdateArticle: boolean | null
+    onCreateArticleWithTemplate: (template: ArticleTemplate) => void
 }
 
-export const ArticleTemplateModal = ({isOpen, onClose, template}: Props) => {
+export const ArticleTemplateModal = ({
+    isOpen,
+    onClose,
+    template,
+    canUpdateArticle,
+    onCreateArticleWithTemplate,
+}: Props) => {
     const sanitizedHtmlContent = (template.html_content || '')?.replace(
         /\\n/g,
         ''
     )
+
+    const handleUseTemplate = () => {
+        onCreateArticleWithTemplate(template)
+        onClose()
+    }
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} classNameDialog={css.dialog}>
             <ModalHeader title={template.title} />
@@ -43,9 +57,8 @@ export const ArticleTemplateModal = ({isOpen, onClose, template}: Props) => {
                     Cancel
                 </Button>
                 <Button
-                    onClick={() => {
-                        console.error('use template')
-                    }}
+                    onClick={handleUseTemplate}
+                    isDisabled={!canUpdateArticle}
                 >
                     Use template
                 </Button>

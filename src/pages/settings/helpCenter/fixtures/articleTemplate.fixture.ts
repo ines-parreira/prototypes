@@ -1,9 +1,8 @@
 import {ArticleTemplate} from 'models/helpCenter/types'
-import {ArticleTemplateKey} from '../types/articleTemplates'
 
 export const ArticleTemplatesListFixture: ArticleTemplate[] = [
     {
-        key: ArticleTemplateKey.ShippingPolicy,
+        key: 'shippingPolicy',
         title: 'Shipping policy',
         html_content: '<h1>Shipping policy</h1>',
         category: 'shippingAndDelivery',
@@ -12,7 +11,7 @@ export const ArticleTemplatesListFixture: ArticleTemplate[] = [
             'Our standard shipping time within [country/region] is [# of days] business days. Shipping charges, if applicable, will be calculated and displayed at checkout...',
     },
     {
-        key: ArticleTemplateKey.HowToReturn,
+        key: 'howToReturn',
         title: 'How to return',
         html_content: '<h1>How to return</h1>',
         category: 'shippingAndDelivery',
@@ -21,7 +20,7 @@ export const ArticleTemplatesListFixture: ArticleTemplate[] = [
             'Returns must be initiated within [x days] of receiving your order. Items must be unused and in the original packaging...',
     },
     {
-        key: ArticleTemplateKey.HowToCancelOrder,
+        key: 'howToCancelOrder',
         title: 'How to cancel order',
         html_content: '<h1>How to cancel order</h1>',
         category: 'orderManagement',

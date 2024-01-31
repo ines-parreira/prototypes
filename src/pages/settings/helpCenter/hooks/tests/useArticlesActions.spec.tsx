@@ -279,19 +279,22 @@ describe('useArticlesActions()', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.createArticle({
-                locale: 'en-US',
-                title: '',
-                excerpt: '',
-                content: '',
-                slug: '',
-                seo_meta: {
-                    title: null,
-                    description: null,
+            await result.current.createArticle(
+                {
+                    locale: 'en-US',
+                    title: '',
+                    excerpt: '',
+                    content: '',
+                    slug: '',
+                    seo_meta: {
+                        title: null,
+                        description: null,
+                    },
+                    category_id: null,
+                    visibility_status: 'PUBLIC',
                 },
-                category_id: null,
-                visibility_status: 'PUBLIC',
-            })
+                null
+            )
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(saveArticles).toHaveBeenCalled()
@@ -302,19 +305,22 @@ describe('useArticlesActions()', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.createArticle({
-                locale: 'en-US',
-                title: '',
-                excerpt: '',
-                content: '',
-                slug: '',
-                seo_meta: {
-                    title: null,
-                    description: null,
+            await result.current.createArticle(
+                {
+                    locale: 'en-US',
+                    title: '',
+                    excerpt: '',
+                    content: '',
+                    slug: '',
+                    seo_meta: {
+                        title: null,
+                        description: null,
+                    },
+                    category_id: 1,
+                    visibility_status: 'PUBLIC',
                 },
-                category_id: 1,
-                visibility_status: 'PUBLIC',
-            })
+                null
+            )
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(saveArticles).toHaveBeenCalled()

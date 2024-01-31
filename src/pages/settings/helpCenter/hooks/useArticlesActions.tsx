@@ -26,6 +26,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
 import {ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE} from '../constants'
+import {ArticleTemplateKey} from '../types/articleTemplates'
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 import {useCategoriesActions} from './useCategoriesActions'
@@ -175,7 +176,10 @@ export const useArticlesActions = () => {
     )
 
     const createArticle = useCallback(
-        async (translation: CreateArticleTranslationDto): Promise<Article> => {
+        async (
+            translation: CreateArticleTranslationDto,
+            templateKey: ArticleTemplateKey | null
+        ): Promise<Article> => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -185,7 +189,10 @@ export const useArticlesActions = () => {
                     {
                         help_center_id: helpCenterId,
                     },
-                    {translation}
+                    {
+                        translation,
+                        template_key: templateKey ?? undefined,
+                    }
                 )
 
                 const {data: positions} = translation.category_id
@@ -520,7 +527,7 @@ export const useArticlesActions = () => {
                     })
                     .then((response) => response.data.data)
 
-                const clonedArticle = await createArticle(translation)
+                const clonedArticle = await createArticle(translation, null)
 
                 await Promise.all(
                     translations
