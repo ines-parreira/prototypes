@@ -106,7 +106,7 @@ export const usePerformanceByArticleMetrics = ({
                                 helpCenterArticle.rating.down)) *
                         100
 
-                    ratingRate = isNaN(rate) ? null : rate
+                    ratingRate = isNaN(rate) ? null : Math.round(rate)
                 }
 
                 const rating = helpCenterArticle
