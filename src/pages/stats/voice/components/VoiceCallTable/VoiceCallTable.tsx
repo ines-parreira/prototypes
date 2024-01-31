@@ -79,13 +79,13 @@ export const VoiceCallTable = ({
                     ['activity', 407],
                     ['integration', 174],
                     ['date', 174],
-                    ['state', 74],
+                    ['state', 84],
                     ...(displayVoiceAnalyticsNiceToHave
                         ? [
-                              ['duration', 74],
-                              ['wait time', 74],
+                              ['duration', 84],
+                              ['wait time', 84],
                           ]
-                        : [['duration', 74]]),
+                        : [['duration', 84]]),
                     ['ticket', 94],
                 ].map(([key, width]) => (
                     <BodyCell
@@ -271,6 +271,7 @@ export const VoiceCallTable = ({
                                           {item.ticketId ? (
                                               <Link
                                                   to={`/app/ticket/${item.ticketId}`}
+                                                  target="_blank"
                                               >
                                                   View ticket
                                               </Link>
