@@ -3195,6 +3195,7 @@
     "flowNotAllowedTitle": "You're not allowed to view this page. Redirecting to Orders...",
     "flowOrderSelectionMustBeSignedIn": "To continue, you must be signed in to access your orders.",
     "flowOrderSelectionPleaseSignIn": "To continue, please sign in to access your orders",
+    "signInToContinue": "Sign in to continue",
     "fulfillmentNumber": "Fulfilment {{fulfillmentNumber}}",
     "fulfillmentStatus.attempted_delivery": "Attempted delivery",
     "fulfillmentStatus.cancelled": "Cancelled",

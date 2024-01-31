@@ -2,6 +2,7 @@ import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
 import classNames from 'classnames'
 import {produce, Draft} from 'immer'
 
+import {noop} from 'lodash'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -171,7 +172,7 @@ function useMenuItems(
             updateMenuItems((draft) => {
                 if (draft.type === 'shopper_authentication') {
                     draft.disabledText =
-                        'Only one shopper authentication node is allowed per path.'
+                        'This step can only be used once per path in a Flow.'
                 }
             })
         } else {
@@ -346,8 +347,8 @@ export default function EdgeBlock({
                                         label,
                                         value: label,
                                     }}
-                                    onClick={onClick}
-                                    shouldCloseOnSelect
+                                    onClick={disabledText ? noop : onClick}
+                                    shouldCloseOnSelect={!disabledText}
                                     className={classNames(
                                         css.menuItemContainer,
                                         {
