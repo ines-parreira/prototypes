@@ -17,6 +17,7 @@ import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
 import SupportPerformanceOverview, {
     AGENTS_REPORT_RELEASE_DATE,
+    DEPRECATE_BANNER_TEXT,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/SupportPerformanceOverview'
 
@@ -165,7 +166,7 @@ describe('<SupportPerformanceOverview />', () => {
             )
 
             expect(
-                getByText('Welcome to the new Statistics Overview!', {
+                getByText(DEPRECATE_BANNER_TEXT, {
                     exact: false,
                 })
             ).toBeInTheDocument()

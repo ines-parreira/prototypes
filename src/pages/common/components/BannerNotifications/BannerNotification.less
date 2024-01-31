@@ -103,6 +103,11 @@
         .@{class} {
             background: @@backgroundColor;
             border-bottom: 1px solid @@borderColor;
+
+            &.borderPositionTop {
+                border-bottom: 0;
+                border-top: 1px solid @@borderColor;
+            }
         }
 
         .color-variant(@i + 1);

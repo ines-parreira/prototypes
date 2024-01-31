@@ -38,6 +38,9 @@ export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
 export const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
 
+export const DEPRECATE_BANNER_TEXT =
+    'Starting in July 2024, only this version of the report will be available.The legacy version will be deprecated.'
+
 export default function SupportPerformanceOverview() {
     const accountCreatedDatetime = useAppSelector(
         getCurrentAccountCreatedDatetime
@@ -63,26 +66,6 @@ export default function SupportPerformanceOverview() {
 
     return (
         <div className="full-width">
-            {isVersionBannerVisible ? (
-                <BannerNotification
-                    actionHTML={
-                        <Link to="/app/stats/support-performance-overview-legacy">
-                            <i className="material-icons">refresh</i> Switch To
-                            Old Version
-                        </Link>
-                    }
-                    closable
-                    dismissible={false}
-                    message={
-                        <span>
-                            Welcome to the new Statistics Overview! Learn more
-                            about it <a href={LEARN_MORE_URL}>here</a>.
-                        </span>
-                    }
-                    onClose={() => setIsVersionBannerVisible(false)}
-                />
-            ) : null}
-
             <StatsPage
                 title={SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE}
                 filters={
@@ -258,6 +241,22 @@ export default function SupportPerformanceOverview() {
                 </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>
+
+            {isVersionBannerVisible ? (
+                <BannerNotification
+                    actionHTML={
+                        <Link to="/app/stats/support-performance-overview-legacy">
+                            <i className="material-icons">refresh</i> Switch To
+                            Legacy Version
+                        </Link>
+                    }
+                    closable
+                    dismissible={false}
+                    message={<span>{DEPRECATE_BANNER_TEXT}</span>}
+                    onClose={() => setIsVersionBannerVisible(false)}
+                    borderPosition={'top'}
+                />
+            ) : null}
         </div>
     )
 }

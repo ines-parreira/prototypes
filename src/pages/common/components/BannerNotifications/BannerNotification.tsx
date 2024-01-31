@@ -26,6 +26,7 @@ export type Props = {
     message: ReactElement | string
     status?: Exclude<NotificationStatus, NotificationStatus.Loading>
     borderless?: boolean
+    borderPosition?: 'top' | 'bottom'
 } & Pick<
     Notification,
     'allowHTML' | 'closable' | 'dismissible' | 'onClick' | 'showIcon'
@@ -36,6 +37,7 @@ const BannerNotification = ({
     closable = false,
     dismissible = true,
     borderless = false,
+    borderPosition = 'bottom',
     hide,
     id,
     message,
@@ -62,6 +64,7 @@ const BannerNotification = ({
         <div
             className={classNames(css.bannerNotification, css[status], {
                 [css.clickable]: onClick || dismissible,
+                [css.borderPositionTop]: borderPosition === 'top',
                 [css.borderless]: borderless,
             })}
         >

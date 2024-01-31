@@ -1,17 +1,5 @@
 import React, {ComponentProps, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
-
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import {
-    getMessagingIntegrationsStatsFilter,
-    getStatsFilters,
-    getStatsMessagingIntegrations,
-} from 'state/stats/selectors'
-import {
-    OneDimensionalChart,
-    StatsFilters,
-    TwoDimensionalChart,
-} from 'models/stat/types'
 import {
     FIRST_RESPONSE_TIME,
     MEDIAN_FIRST_RESPONSE_TIME,
@@ -28,21 +16,34 @@ import {
     TOTAL_TICKETS_CREATED,
     TOTAL_TICKETS_REPLIED,
 } from 'config/stats'
-import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import IntegrationsStatsFilter from './IntegrationsStatsFilter'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import PeriodStatsFilter from './PeriodStatsFilter'
-import StatsPage from './StatsPage'
-import TagsStatsFilter from './TagsStatsFilter'
+import useAppSelector from 'hooks/useAppSelector'
+import {
+    OneDimensionalChart,
+    StatsFilters,
+    TwoDimensionalChart,
+} from 'models/stat/types'
+
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {NotificationStatus} from 'state/notifications/types'
+import {
+    getMessagingIntegrationsStatsFilter,
+    getStatsFilters,
+    getStatsMessagingIntegrations,
+} from 'state/stats/selectors'
 import AgentsStatsFilter from './AgentsStatsFilter'
-import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
-import StatWrapper from './StatWrapper'
+import ChannelsStatsFilter from './ChannelsStatsFilter'
 import {BarStat} from './common/components/charts/BarStat'
+import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
 import LineStat from './common/components/charts/LineStat'
 import PerHourPerWeekTableStat from './common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat'
+import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
+import PeriodStatsFilter from './PeriodStatsFilter'
+import StatsPage from './StatsPage'
+import StatWrapper from './StatWrapper'
+import TagsStatsFilter from './TagsStatsFilter'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 
@@ -220,17 +221,18 @@ export default function DEPRECATED_SupportPerformanceOverview() {
                     actionHTML={
                         <Link to="/app/stats/support-performance-overview">
                             <i className="material-icons">refresh</i> Switch To
-                            New Version
+                            new version
                         </Link>
                     }
                     closable
                     dismissible={false}
-                    message="This is the old Statistics Overview, which uses our old method of computing metrics and may not fully represent your performance."
+                    message="Warning: The legacy overview page will be deprecated by the end of June 2024."
                     onClose={() => setIsVersionBannerVisible(false)}
+                    status={NotificationStatus.Warning}
                 />
             ) : null}
             <StatsPage
-                title="Performance overview"
+                title="Legacy overview"
                 description="Get an overview of the most important statistics about your customer service.
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
 providing excellent customer support."
