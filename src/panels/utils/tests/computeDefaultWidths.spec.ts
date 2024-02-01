@@ -46,6 +46,15 @@ describe('computeDefaultWidths', () => {
         expect(result).toEqual([200, 400, 400])
     })
 
+    it('should divide remaining width to the panels with no maximum width when no leftovers are present', () => {
+        const result = computeDefaultWidths({
+            config: [[200, 150, 200], [100], [100, 100, 100]],
+            totalWidth: 1000,
+        })
+
+        expect(result).toEqual([200, 700, 100])
+    })
+
     it('should respect minimum widths when dividing up the remaining width', () => {
         const result = computeDefaultWidths({
             config: [[200, 150, 200], [Infinity], [Infinity, 500]],
