@@ -68,7 +68,7 @@ const ContactFormMailtoReplacementSection = ({
 
     return (
         <>
-            <h2>Replace email links</h2>
+            <h2 className={css.title}>Replace email links</h2>
             <p className="mb-4">
                 Redirect email links (ie. mailto:support@gorgias.com) on your
                 website to your Contact Form link instead to easily collect
