@@ -2,6 +2,8 @@
 @import (reference) '~css/new/mixins.less';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
+@table-max-height: 744px;
+
 :local {
     .wrapper {
         display: grid;
@@ -10,11 +12,17 @@
     .container {
         width: 100%;
         max-height: calc(100vh - 300px);
+        @media (min-height: @table-max-height) {
+            max-height: calc(@table-max-height - 300px);
+        }
         overflow: auto;
         margin-bottom: @layout-spacing-m;
 
         &.withPagination {
-            max-height: calc(100vh - 372px);
+            max-height: calc(100vh - 412px);
+            @media (min-height: @table-max-height) {
+                max-height: calc(@table-max-height - 412px);
+            }
         }
     }
 
@@ -24,8 +32,8 @@
         @media @large-desktops {
             max-height: calc(100vh - 60px);
         }
-        @media @large-desktops and (min-height: 744px) {
-            max-height: 744px;
+        @media @large-desktops and (min-height: @table-max-height) {
+            max-height: @table-max-height;
         }
     }
 
@@ -155,8 +163,7 @@
     }
 
     .pagination {
-        margin-top: @layout-spacing-xs;
-        margin-left: @layout-spacing-xs;
-        margin-bottom: @layout-spacing-xs;
+        padding-left: @layout-spacing-xs;
+        padding-bottom: @layout-spacing-xs;
     }
 }
