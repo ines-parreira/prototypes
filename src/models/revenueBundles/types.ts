@@ -9,6 +9,11 @@ export enum RevenueBundleInstallationMethod {
     OneClick = '1-click',
 }
 
+export enum RevenueBundleInstallationMethodResponse {
+    Manual = 'manual',
+    OneClick = 'one_click',
+}
+
 export type RevenueBundle = {
     id: string
     account_id: number
@@ -17,6 +22,7 @@ export type RevenueBundle = {
     created_datetime: string
     deactivated_datetime?: string
     bundle_url?: string
+    method?: RevenueBundleInstallationMethodResponse
 }
 
 export type RevenueBundleActionResponse = {

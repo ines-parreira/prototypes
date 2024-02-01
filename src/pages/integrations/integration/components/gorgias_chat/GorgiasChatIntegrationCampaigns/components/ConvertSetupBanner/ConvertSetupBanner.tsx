@@ -68,7 +68,7 @@ export const ConvertSetupBanner = ({
             >
                 {isConvertSubscriber
                     ? 'Ensure proper campaign functionality by completing the Convert setup'
-                    : 'Install Convert on your store before January 1 for the campaigns to work correctly'}
+                    : 'To keep your campaigns visible for your visitors, please install the campaign bundle'}
             </Alert>
         </div>
     )

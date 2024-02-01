@@ -21,7 +21,8 @@ const store = createStore((state) => state as RootState, defaultState)
 
 const buttonText = 'Continue Setup'
 const subscribedMessageText = 'Ensure proper campaign functionality'
-const unsubscribedMessageText = 'Install Convert on your store before January 1'
+const unsubscribedMessageText =
+    'To keep your campaigns visible for your visitors, please install the campaign bundle'
 
 jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)

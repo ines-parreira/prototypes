@@ -8,9 +8,10 @@ import InstallationTab from './components/InstallationTab'
 
 type Props = {
     code?: string
+    alertMessage?: React.ReactNode
 }
 
-const ManualInstallationShopifyWebsiteTab = ({code}: Props) => {
+const ManualInstallationShopifyWebsiteTab = ({code, alertMessage}: Props) => {
     return (
         <InstallationTab>
             <InstallationStep index={1}>
@@ -29,12 +30,9 @@ const ManualInstallationShopifyWebsiteTab = ({code}: Props) => {
                 tag
             </InstallationStep>
             <InstallationCodeSnippet code={code} />
-            <Alert type={AlertType.Warning}>
-                Please note that by copying the code to your Shopify{' '}
-                <b>theme.liquid</b> files, the chat will also be shown on all
-                webpages. Make sure to copy the code to just specific pages if
-                needed.
-            </Alert>
+            {alertMessage && (
+                <Alert type={AlertType.Warning}>{alertMessage}</Alert>
+            )}
         </InstallationTab>
     )
 }

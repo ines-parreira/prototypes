@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
 
-import {useGetInstallationSnippet} from 'models/integration/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import ManualInstallationShopifyWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
-import ManualInstallationOtherWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
-import ManualInstallationGTMTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab'
 
-import css from './GorgiasChatIntegrationManualInstallationCard.less'
+import ManualInstallationShopifyWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
+import ManualInstallationOtherWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
+
+import css from './BundleManualInstallationCard.less'
 
 type Props = {
-    applicationId?: string
+    bundleCode?: string
     isConnected: boolean
     isConnectedToShopify: boolean
     isInstalledManually: boolean
@@ -20,20 +19,14 @@ type Props = {
 enum Tab {
     SHOPIFY = 1,
     OTHER,
-    GTM,
 }
 
-const GorgiasChatIntegrationManualInstallationCard = ({
-    applicationId,
+const BundleManualInstallationCard = ({
+    bundleCode,
     isConnected,
     isConnectedToShopify,
     isInstalledManually,
 }: Props) => {
-    const {data} = useGetInstallationSnippet(
-        {applicationId: applicationId!},
-        {enabled: !!applicationId}
-    )
-
     const [isOpen, setIsOpen] = useState(!isConnected || !isConnectedToShopify)
     const [activeTab, setActiveTab] = useState<Tab>(
         isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER
@@ -44,44 +37,29 @@ const GorgiasChatIntegrationManualInstallationCard = ({
         setActiveTab(isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER)
     }, [isConnected, isConnectedToShopify])
 
-    const {snippet, appKey} = data || {}
-
     const tabs = {
         [Tab.OTHER]: (
             <ManualInstallationOtherWebsiteTab
-                code={snippet}
+                code={bundleCode}
                 alertMessage={
                     <>
                         Please note that by inserting this snippet on your
-                        webpage, it will load the chat on that specific webpage
-                        only. Make sure to insert the snippet on all the pages
-                        for which you wish to display the chat widget.
-                    </>
-                }
-            />
-        ),
-        [Tab.GTM]: (
-            <ManualInstallationGTMTab
-                applicationId={applicationId}
-                appKey={appKey}
-                alertMessage={
-                    <>
-                        Please note that if you install chat through Google Tag
-                        Managers, customers using ad-blockers might not be able
-                        to see your chat widget.
+                        webpage, it will load the campaigns on that specific
+                        webpage only. Make sure to insert the snippet on all the
+                        pages for which you wish to display the campaigns.
                     </>
                 }
             />
         ),
         [Tab.SHOPIFY]: (
             <ManualInstallationShopifyWebsiteTab
-                code={snippet}
+                code={bundleCode}
                 alertMessage={
                     <>
                         Please note that by copying the code to your Shopify{' '}
-                        <b>theme.liquid</b> files, the chat will also be shown
-                        on all webpages. Make sure to copy the code to just
-                        specific pages if needed.
+                        <b>theme.liquid</b> files, the campaigns will also be
+                        shown on all webpages. Make sure to copy the code to
+                        just specific pages if needed.
                     </>
                 }
             />
@@ -92,7 +70,6 @@ const GorgiasChatIntegrationManualInstallationCard = ({
             ? [{id: Tab.SHOPIFY, title: 'Shopify Website'}]
             : []),
         {id: Tab.OTHER, title: 'Any Other Website'},
-        {id: Tab.GTM, title: 'Google Tag Manager'},
     ]
 
     return (
@@ -114,13 +91,13 @@ const GorgiasChatIntegrationManualInstallationCard = ({
                 <div>
                     <div className={css.title}>Manual installation</div>
                     <div>
-                        Add the chat widget to specific pages on a Shopify store
-                        and to other e-commerce platforms or website, follow the
-                        instructions below. For more details,{' '}
+                        Add the Campaign bundle to specific pages on a Shopify
+                        store and to other e-commerce platforms or website,
+                        follow the instructions below. For more details,{' '}
                         <a
                             target="_blank"
                             rel="noopener noreferrer"
-                            href="https://docs.gorgias.com/gorgias-chat/chat-getting-started"
+                            href="https://docs.gorgias.com/en-US/campaigns-81793"
                         >
                             see this article
                         </a>
@@ -160,4 +137,4 @@ const GorgiasChatIntegrationManualInstallationCard = ({
     )
 }
 
-export default GorgiasChatIntegrationManualInstallationCard
+export default BundleManualInstallationCard

@@ -120,7 +120,11 @@ export const BundleInstallView = () => {
                 )
             )
         }
-    }, [currentStoreIntegration, currentStoreIntegrationId])
+    }, [
+        currentInstallationMethod,
+        currentStoreIntegration,
+        currentStoreIntegrationId,
+    ])
 
     return (
         <div className="w-100">

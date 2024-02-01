@@ -11,9 +11,14 @@ import InstallationTab from './components/InstallationTab'
 type Props = {
     applicationId?: string
     appKey?: string
+    alertMessage?: React.ReactNode
 }
 
-const ManualInstallationGTMTab = ({applicationId, appKey}: Props) => {
+const ManualInstallationGTMTab = ({
+    applicationId,
+    appKey,
+    alertMessage,
+}: Props) => {
     const isChatSnippetV3DefaultManualEnabled =
         useFlags()[FeatureFlagKey.ChatSnippetV3DefaultManual]
 
@@ -45,11 +50,9 @@ const ManualInstallationGTMTab = ({applicationId, appKey}: Props) => {
                 section
             </InstallationStep>
             <InstallationStep index={6}>Save and publish</InstallationStep>
-            <Alert type={AlertType.Warning}>
-                Please note that if you install chat through Google Tag
-                Managers, customers using ad-blockers might not be able to see
-                your chat widget.
-            </Alert>
+            {alertMessage && (
+                <Alert type={AlertType.Warning}>{alertMessage}</Alert>
+            )}
         </InstallationTab>
     )
 }

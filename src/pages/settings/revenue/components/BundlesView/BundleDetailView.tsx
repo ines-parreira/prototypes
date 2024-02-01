@@ -1,7 +1,7 @@
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import React, {useEffect, useMemo, useState} from 'react'
 
-import {Link, useParams} from 'react-router-dom'
+import {Link, useHistory, useParams} from 'react-router-dom'
 import classnames from 'classnames'
 
 import _head from 'lodash/head'
@@ -21,15 +21,14 @@ import Button from 'pages/common/components/button/Button'
 import {
     RevenueBundle,
     RevenueBundleActionResponse,
+    RevenueBundleInstallationMethodResponse,
     RevenueBundleStatus,
 } from 'models/revenueBundles/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
 
 import client from 'models/api/resources'
-import IconButton from 'pages/common/components/button/IconButton'
-import Collapse from 'pages/common/components/Collapse/Collapse'
-import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import {getIconFromType} from 'state/integrations/helpers'
+import BundleManualInstallationCard from 'pages/settings/revenue/components/BundlesView/BundleManualInstallationCard'
 import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
 import Loader from '../../../../common/components/Loader/Loader'
 import {transformBundleError} from '../../utils/transformBundleError'
@@ -37,6 +36,7 @@ import pageCss from './BundlesView.less'
 
 export const BundleDetailView = () => {
     const dispatch = useAppDispatch()
+    const history = useHistory()
 
     const {bundleId} = useParams<{bundleId: string}>()
 
@@ -49,7 +49,6 @@ export const BundleDetailView = () => {
     const [bundle, setBundle] = useState<RevenueBundle>()
 
     const [loading, setLoading] = useState(true)
-    const [isOpen, setIsOpen] = useState(false)
     const [code, setCode] = useState('')
 
     const fetchBundle = () => {
@@ -101,6 +100,15 @@ export const BundleDetailView = () => {
             ),
         [bundle, storeIntegrations]
     )
+    const isConnected = Boolean(currentIntegration)
+    const isConnectedToShopify =
+        currentIntegration?.type === IntegrationType.Shopify
+    const isOneClickInstalled =
+        bundle?.status === RevenueBundleStatus.Installed &&
+        bundle?.method === RevenueBundleInstallationMethodResponse.OneClick
+    const isManuallyInstalled =
+        bundle?.status === RevenueBundleStatus.Installed &&
+        bundle?.method === RevenueBundleInstallationMethodResponse.Manual
 
     const [{loading: isUninstallSubmitting}, handleUninstall] =
         useAsyncFn(async () => {
@@ -114,7 +122,7 @@ export const BundleDetailView = () => {
                     {}
                 )
 
-                fetchBundle()
+                history.push('/app/settings/convert/installations')
 
                 void dispatch(
                     notify({
@@ -186,7 +194,7 @@ export const BundleDetailView = () => {
                 }
             ></PageHeader>
 
-            <Container fluid className={classnames(css.pageContainer, css.pb0)}>
+            <Container fluid className={css.pageContainer}>
                 <div className={pageCss.content}>
                     <div className={pageCss.sectionHeading}>Store</div>
 
@@ -211,7 +219,7 @@ export const BundleDetailView = () => {
                             pageCss.container
                         )}
                     >
-                        {bundle?.status === RevenueBundleStatus.Installed ? (
+                        {isOneClickInstalled ? (
                             <i
                                 className="material-icons text-success"
                                 style={{fontSize: 24}}
@@ -224,11 +232,11 @@ export const BundleDetailView = () => {
                                 1-click installation for Shopify
                             </div>
                             <div>
-                                Add the Convert bundle to your Shopify store in
+                                Add the Campaign bundle to your Shopify store in
                                 one click.
                             </div>
                         </div>
-                        {bundle?.status === RevenueBundleStatus.Installed ? (
+                        {isOneClickInstalled ? (
                             <Button
                                 intent="destructive"
                                 isLoading={isUninstallSubmitting}
@@ -248,36 +256,13 @@ export const BundleDetailView = () => {
                             </Button>
                         )}
                     </div>
-                    <div className={pageCss.container}>
-                        <div
-                            className={pageCss.header}
-                            onClick={() => {
-                                setIsOpen(!isOpen)
-                            }}
-                        >
-                            <div>
-                                <div className={pageCss.title}>
-                                    Manual installation
-                                </div>
-                                <div>
-                                    Add the Convert tracking to specific pages
-                                    on a Shopify store and to other e-commerce
-                                    platforms or website.
-                                </div>
-                            </div>
-                            <IconButton fillStyle="ghost" intent="secondary">
-                                {isOpen
-                                    ? 'keyboard_arrow_up'
-                                    : 'keyboard_arrow_down'}
-                            </IconButton>
-                        </div>
 
-                        <Collapse isOpen={isOpen}>
-                            <div className={pageCss.code}>
-                                <InstallationCodeSnippet code={code} />
-                            </div>
-                        </Collapse>
-                    </div>
+                    <BundleManualInstallationCard
+                        bundleCode={code}
+                        isConnected={isConnected}
+                        isConnectedToShopify={isConnectedToShopify}
+                        isInstalledManually={isManuallyInstalled}
+                    />
                 </div>
             </Container>
         </div>

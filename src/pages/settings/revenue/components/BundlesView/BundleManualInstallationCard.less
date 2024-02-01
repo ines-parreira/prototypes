@@ -1,0 +1,65 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+
+        .header {
+            cursor: pointer;
+            display: flex;
+            padding: 20px;
+            column-gap: @layout-spacing-s;
+            align-items: center;
+
+            .toggleCollapseButton {
+                color: var(--neutral-grey-4);
+                font-size: @layout-spacing-m;
+                width: @layout-spacing-m;
+                height: @layout-spacing-m;
+                padding: 0;
+            }
+        }
+    }
+
+    .title {
+        .body-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        padding: 4px 20px 20px;
+        row-gap: @layout-spacing-m;
+    }
+
+    .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .tabItem {
+        .component-button-medium();
+        padding: @layout-spacing-s;
+        color: var(--neutral-grey-5);
+        cursor: pointer;
+        position: relative;
+
+        &.isActive {
+            color: var(--neutral-grey-6);
+
+            &::after {
+                content: '';
+                display: block;
+                height: 2px;
+                border-radius: 50%;
+                background-color: var(--main-primary);
+                width: calc(~'100% - 32px');
+                bottom: -1px;
+                position: absolute;
+            }
+        }
+    }
+}
