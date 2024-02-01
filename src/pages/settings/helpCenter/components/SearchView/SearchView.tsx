@@ -1,5 +1,6 @@
 import React, {FC, useRef} from 'react'
 import _noop from 'lodash/noop'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {Article, HelpCenter} from 'models/helpCenter/types'
 
@@ -15,6 +16,7 @@ import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledD
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useSearchContext} from '../../providers/SearchContext'
 
 import {SearchBar} from '../SearchBar'
@@ -58,6 +60,8 @@ const Header: FC<HeaderProps> = ({
     canUpdateCategory,
 }) => {
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
+    const articleTemplatesFlag =
+        useFlags()[FeatureFlagKey.ObservabilityArticleTemplates]
 
     const handleArticleFromScratchClick = () => {
         onArticleCreate()
@@ -82,38 +86,51 @@ const Header: FC<HeaderProps> = ({
             >
                 Create Category
             </Button>
-            <DropdownButton
-                color="primary"
-                fillStyle="fill"
-                ref={dropdownTargetRef}
-                isDisabled={!canUpdateArticle}
-                onToggleClick={_noop}
-            >
-                Create Article
-            </DropdownButton>
-            <UncontrolledDropdown
-                target={dropdownTargetRef}
-                placement="bottom-end"
-            >
-                <DropdownBody>
-                    <DropdownItem
-                        option={{
-                            label: 'Use template',
-                            value: 'create_with_template',
-                        }}
-                        onClick={handleArticleFromTemplateClick}
-                        shouldCloseOnSelect
-                    />
-                    <DropdownItem
-                        option={{
-                            label: 'From scratch',
-                            value: 'create',
-                        }}
-                        onClick={handleArticleFromScratchClick}
-                        shouldCloseOnSelect
-                    />
-                </DropdownBody>
-            </UncontrolledDropdown>
+            {!articleTemplatesFlag ? (
+                <Button
+                    isDisabled={!canUpdateArticle}
+                    intent="primary"
+                    className={css.button}
+                    onClick={onArticleCreate}
+                >
+                    Create Article
+                </Button>
+            ) : (
+                <>
+                    <DropdownButton
+                        color="primary"
+                        fillStyle="fill"
+                        ref={dropdownTargetRef}
+                        isDisabled={!canUpdateArticle}
+                        onToggleClick={_noop}
+                    >
+                        Create Article
+                    </DropdownButton>
+                    <UncontrolledDropdown
+                        target={dropdownTargetRef}
+                        placement="bottom-end"
+                    >
+                        <DropdownBody>
+                            <DropdownItem
+                                option={{
+                                    label: 'Use template',
+                                    value: 'create_with_template',
+                                }}
+                                onClick={handleArticleFromTemplateClick}
+                                shouldCloseOnSelect
+                            />
+                            <DropdownItem
+                                option={{
+                                    label: 'From scratch',
+                                    value: 'create',
+                                }}
+                                onClick={handleArticleFromScratchClick}
+                                shouldCloseOnSelect
+                            />
+                        </DropdownBody>
+                    </UncontrolledDropdown>
+                </>
+            )}
         </div>
     )
 }
