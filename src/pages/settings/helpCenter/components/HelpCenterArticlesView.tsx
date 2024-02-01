@@ -137,6 +137,9 @@ export const HelpCenterArticlesView: React.FC = () => {
         viewLanguage
     )
 
+    // template states
+    const [showTemplates, setShowTemplates] = useState(false)
+
     /**
      * Effects
      */
@@ -445,6 +448,16 @@ export const HelpCenterArticlesView: React.FC = () => {
             )
 
             reloadArticle(newArticle)
+            setShowTemplates(false)
+
+            if (selectedTemplateKey) {
+                logEvent(
+                    SegmentEvent.HelpCenterTemplatesArticleFromTemplateCreated,
+                    {
+                        template_key: selectedTemplateKey,
+                    }
+                )
+            }
 
             void dispatch(
                 notify({
@@ -488,6 +501,7 @@ export const HelpCenterArticlesView: React.FC = () => {
             )
 
             reloadArticle(updatedArticle)
+            setShowTemplates(false)
 
             void dispatch(
                 notify({
@@ -828,6 +842,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
     }
 
+    const onShowTemplates = () => {
+        setShowTemplates((showTemplates) => !showTemplates)
+    }
+
     const canUpdateArticle = isPassingRulesCheck(({can}) =>
         can('update', 'ArticleEntity')
     )
@@ -944,18 +962,20 @@ export const HelpCenterArticlesView: React.FC = () => {
             <MaxArticleBanner
                 nbArticles={limitations.createArticle.currentNumber}
             />
-
-            <SearchView
-                helpCenter={helpCenter}
-                onArticleClick={onArticleSelect}
-                onArticleClickSettings={onArticleRowSettingsClick}
-                onArticleCreate={onArticleCreate}
-                onCategoryCreate={onCategoryCreate}
-                canUpdateArticle={
-                    canUpdateArticle && !limitations.createArticle.disabled
-                }
-                canUpdateCategory={canUpdateCategory}
-            />
+            {!showTemplates && (
+                <SearchView
+                    helpCenter={helpCenter}
+                    onArticleClick={onArticleSelect}
+                    onArticleClickSettings={onArticleRowSettingsClick}
+                    onArticleCreate={onArticleCreate}
+                    onShowTemplates={onShowTemplates}
+                    onCategoryCreate={onCategoryCreate}
+                    canUpdateArticle={
+                        canUpdateArticle && !limitations.createArticle.disabled
+                    }
+                    canUpdateCategory={canUpdateCategory}
+                />
+            )}
 
             {isReady && !isSearching && (
                 <CategoriesViews
@@ -963,6 +983,8 @@ export const HelpCenterArticlesView: React.FC = () => {
                     onCreateArticle={onArticleCreate}
                     onCreateArticleWithTemplate={onCreateArticleWithTemplate}
                     onCreateCategory={onCategoryCreate}
+                    showTemplates={showTemplates}
+                    onShowTemplates={onShowTemplates}
                     renderArticleList={(
                         categoryId,
                         articles,

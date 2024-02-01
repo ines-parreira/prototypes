@@ -23,6 +23,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import {getAccessToken} from 'rest_api/auth'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {CSV_MIGRATION_PROVIDER_TYPE} from '../CsvColumnMatching/utils'
 import {
     AutoOpenSessionLocationState,
@@ -590,6 +591,13 @@ export const ImportSection: React.FC<Props> = ({
         setMigrationStateModalOpen(true)
     }
 
+    const handleImportButtonClick = () => {
+        setImportArticlesModalState({
+            state: 'NO_FILE_SELECTED',
+        })
+        logEvent(SegmentEvent.HelpCenterTemplatesImportButtonClicked)
+    }
+
     return (
         <>
             {isButton ? (
@@ -602,11 +610,7 @@ export const ImportSection: React.FC<Props> = ({
                             currentMigrationSession.isFirstTimeLoading
                         }
                         intent="secondary"
-                        onClick={() =>
-                            setImportArticlesModalState({
-                                state: 'NO_FILE_SELECTED',
-                            })
-                        }
+                        onClick={handleImportButtonClick}
                         className={css.button}
                     >
                         {buttonLabel || (

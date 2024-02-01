@@ -1,4 +1,5 @@
-import React, {FC} from 'react'
+import React, {FC, useRef} from 'react'
+import _noop from 'lodash/noop'
 
 import {Article, HelpCenter} from 'models/helpCenter/types'
 
@@ -9,6 +10,11 @@ import {
     getRootCategory,
 } from 'state/entities/helpCenter/categories'
 import useAppSelector from 'hooks/useAppSelector'
+import DropdownButton from 'pages/common/components/button/DropdownButton'
+import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {useSearchContext} from '../../providers/SearchContext'
 
 import {SearchBar} from '../SearchBar'
@@ -29,6 +35,7 @@ type Props = {
         isArticleOrAncestorUnlisted: boolean
     ) => void
     onArticleCreate: () => void
+    onShowTemplates: () => void
     onCategoryCreate: () => void
     canUpdateArticle: boolean | null
     canUpdateCategory: boolean | null
@@ -38,6 +45,7 @@ type HeaderProps = Pick<
     Props,
     | 'onArticleCreate'
     | 'onCategoryCreate'
+    | 'onShowTemplates'
     | 'canUpdateArticle'
     | 'canUpdateCategory'
 >
@@ -45,9 +53,22 @@ type HeaderProps = Pick<
 const Header: FC<HeaderProps> = ({
     onArticleCreate,
     onCategoryCreate,
+    onShowTemplates,
     canUpdateArticle,
     canUpdateCategory,
 }) => {
+    const dropdownTargetRef = useRef<HTMLDivElement>(null)
+
+    const handleArticleFromScratchClick = () => {
+        onArticleCreate()
+        logEvent(SegmentEvent.HelpCenterTemplatesFromScratchButtonClicked)
+    }
+
+    const handleArticleFromTemplateClick = () => {
+        onShowTemplates()
+        logEvent(SegmentEvent.HelpCenterTemplatesUseTemplateButtonClicked)
+    }
+
     return (
         <div className={css.wrapper}>
             <SearchBar />
@@ -59,18 +80,40 @@ const Header: FC<HeaderProps> = ({
                 className={css.button}
                 onClick={onCategoryCreate}
             >
-                <i className="material-icons">add</i>
-                Category
+                Create Category
             </Button>
-            <Button
+            <DropdownButton
+                color="primary"
+                fillStyle="fill"
+                ref={dropdownTargetRef}
                 isDisabled={!canUpdateArticle}
-                intent="primary"
-                className={css.button}
-                onClick={onArticleCreate}
+                onToggleClick={_noop}
             >
-                <i className="material-icons">add</i>
-                Article
-            </Button>
+                Create Article
+            </DropdownButton>
+            <UncontrolledDropdown
+                target={dropdownTargetRef}
+                placement="bottom-end"
+            >
+                <DropdownBody>
+                    <DropdownItem
+                        option={{
+                            label: 'Use template',
+                            value: 'create_with_template',
+                        }}
+                        onClick={handleArticleFromTemplateClick}
+                        shouldCloseOnSelect
+                    />
+                    <DropdownItem
+                        option={{
+                            label: 'From scratch',
+                            value: 'create',
+                        }}
+                        onClick={handleArticleFromScratchClick}
+                        shouldCloseOnSelect
+                    />
+                </DropdownBody>
+            </UncontrolledDropdown>
         </div>
     )
 }
@@ -80,6 +123,7 @@ export const SearchView: FC<Props> = ({
     onArticleClick,
     onArticleClickSettings,
     onArticleCreate,
+    onShowTemplates,
     onCategoryCreate,
     canUpdateArticle,
     canUpdateCategory,
@@ -109,6 +153,7 @@ export const SearchView: FC<Props> = ({
             <Header
                 onArticleCreate={onArticleCreate}
                 onCategoryCreate={onCategoryCreate}
+                onShowTemplates={onShowTemplates}
                 canUpdateArticle={canUpdateArticle}
                 canUpdateCategory={canUpdateCategory}
             />
@@ -121,6 +166,7 @@ export const SearchView: FC<Props> = ({
                 <Header
                     onArticleCreate={onArticleCreate}
                     onCategoryCreate={onCategoryCreate}
+                    onShowTemplates={onShowTemplates}
                     canUpdateArticle={canUpdateArticle}
                     canUpdateCategory={canUpdateCategory}
                 />
@@ -135,6 +181,7 @@ export const SearchView: FC<Props> = ({
                 <Header
                     onArticleCreate={onArticleCreate}
                     onCategoryCreate={onCategoryCreate}
+                    onShowTemplates={onShowTemplates}
                     canUpdateArticle={canUpdateArticle}
                     canUpdateCategory={canUpdateCategory}
                 />
@@ -148,6 +195,7 @@ export const SearchView: FC<Props> = ({
             <Header
                 onArticleCreate={onArticleCreate}
                 onCategoryCreate={onCategoryCreate}
+                onShowTemplates={onShowTemplates}
                 canUpdateArticle={canUpdateArticle}
                 canUpdateCategory={canUpdateCategory}
             />

@@ -7,6 +7,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
 import {ArticleTemplate} from 'models/helpCenter/types'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 import css from './ArticleTemplateModal.less'
 
@@ -32,6 +33,12 @@ export const ArticleTemplateModal = ({
 
     const handleUseTemplate = () => {
         onCreateArticleWithTemplate(template)
+        logEvent(
+            SegmentEvent.HelpCenterTemplatesUseTemplateButtonInModalClicked,
+            {
+                template_key: template.key,
+            }
+        )
         onClose()
     }
 

@@ -69,6 +69,8 @@ describe('<ArticleLandingPage />', () => {
                         onCreateArticle={jest.fn()}
                         onCreateArticleWithTemplate={jest.fn()}
                         canUpdateArticle={true}
+                        showBackButton={false}
+                        onBackButtonClick={jest.fn()}
                     />
                 </Provider>
             </QueryClientProvider>
@@ -93,6 +95,8 @@ describe('<ArticleLandingPage />', () => {
                         onCreateArticle={onCreateArticle}
                         onCreateArticleWithTemplate={jest.fn()}
                         canUpdateArticle={true}
+                        showBackButton={false}
+                        onBackButtonClick={jest.fn()}
                     />
                 </Provider>
             </QueryClientProvider>

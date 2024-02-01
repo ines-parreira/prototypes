@@ -3,6 +3,7 @@ import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import {ArticleTemplate} from 'models/helpCenter/types'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {ArticleTemplateModal} from '../ArticleTemplateModal/ArticleTemplateModal'
 
 import css from './ArticleTemplateCard.less'
@@ -23,6 +24,9 @@ const ArticleTemplateCard = ({
 
     const handleClick = () => {
         setModalOpen(true)
+        logEvent(SegmentEvent.HelpCenterTemplatesModalViewed, {
+            template_key: template.key,
+        })
     }
     const handleModalClose = () => {
         setModalOpen(false)

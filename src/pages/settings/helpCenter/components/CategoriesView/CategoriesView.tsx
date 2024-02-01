@@ -38,6 +38,8 @@ type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     onCreateArticle: () => void
     onCreateArticleWithTemplate: (template?: ArticleTemplate) => void
     onCreateCategory: () => void
+    onShowTemplates: () => void
+    showTemplates?: boolean
 }
 
 export const CategoriesViews = ({
@@ -46,6 +48,8 @@ export const CategoriesViews = ({
     onCreateArticle,
     onCreateArticleWithTemplate,
     onCreateCategory,
+    onShowTemplates,
+    showTemplates = false,
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
     const uncategorizedArticles = useAppSelector(getUncategorizedArticles)
@@ -81,10 +85,11 @@ export const CategoriesViews = ({
     const baseURL = `/app/settings/help-center/${helpCenter.id}`
 
     const showCreateFirst =
-        !isLoading &&
-        categories.length === 1 &&
-        uncategorizedArticles.length === 0 &&
-        uncategorizedArticleCount === 0
+        showTemplates ||
+        (!isLoading &&
+            categories.length === 1 &&
+            uncategorizedArticles.length === 0 &&
+            uncategorizedArticleCount === 0)
 
     const showLandingPage = showCreateFirst && articleTemplatesFlag
 
@@ -110,6 +115,8 @@ export const CategoriesViews = ({
                         onCreateArticleWithTemplate={
                             onCreateArticleWithTemplate
                         }
+                        showBackButton={showTemplates}
+                        onBackButtonClick={onShowTemplates}
                     />
                 ) : (
                     <Container fluid className={settingsCss.pageContainer}>

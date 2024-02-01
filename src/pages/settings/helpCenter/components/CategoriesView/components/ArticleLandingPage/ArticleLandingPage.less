@@ -14,6 +14,25 @@
         gap: @layout-spacing-s;
     }
 
+    .topNav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row-reverse;
+    }
+
+    .backLink {
+        cursor: pointer;
+        color: var(--neutral-grey-5);
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+
+        i {
+            font-size: 20px;
+        }
+    }
+
     .buttons {
         display: flex;
         justify-content: flex-end;
