@@ -1,10 +1,12 @@
 import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
@@ -17,7 +19,7 @@ import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
 import SupportPerformanceOverview, {
     AGENTS_REPORT_RELEASE_DATE,
-    DEPRECATE_BANNER_TEXT,
+    BANNER_TEXT,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/SupportPerformanceOverview'
 
@@ -87,6 +89,9 @@ describe('<SupportPerformanceOverview />', () => {
         workloadPerChannelChartMock.mockImplementation(() => (
             <div>workloadPerChannelChartMock</div>
         ))
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsProductivityMetrics]: false,
+        }))
     })
 
     it.each([
@@ -159,6 +164,10 @@ describe('<SupportPerformanceOverview />', () => {
 
     describe('Switching to old version banner', () => {
         it('should render a banner that allows switching to the old version if user is registered before agents report release date', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsProductivityMetrics]: true,
+            }))
+
             const {getByText} = render(
                 <Provider store={mockStore(stateWithOldAccount)}>
                     <SupportPerformanceOverview />
@@ -166,7 +175,21 @@ describe('<SupportPerformanceOverview />', () => {
             )
 
             expect(
-                getByText(DEPRECATE_BANNER_TEXT, {
+                getByText(BANNER_TEXT, {
+                    exact: false,
+                })
+            ).toBeInTheDocument()
+        })
+
+        it('should render a banner that allows switching to the old version if user is registered before agents report release date', () => {
+            const {getByText} = render(
+                <Provider store={mockStore(stateWithOldAccount)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            expect(
+                getByText('Welcome to the new Statistics Overview!', {
                     exact: false,
                 })
             ).toBeInTheDocument()

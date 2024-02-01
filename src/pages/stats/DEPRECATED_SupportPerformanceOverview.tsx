@@ -1,5 +1,7 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FIRST_RESPONSE_TIME,
     MEDIAN_FIRST_RESPONSE_TIME,
@@ -46,9 +48,19 @@ import StatWrapper from './StatWrapper'
 import TagsStatsFilter from './TagsStatsFilter'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
+const PAGE_TITLE = 'Legacy overview'
+const PAGE_TITLE_DEPRECATED = 'Performance overview'
+const SWITCH_TO_NEW_VERSION = 'Switch To new version'
+const SWITCH_TO_NEW_VERSION_DEPRECATED = 'Switch To New Version'
+const BANNER_MESSAGE =
+    'Warning: The legacy overview page will be deprecated by the end of June 2024.'
+const BANNER_MESSAGE_DEPRECATED =
+    'This is the old Statistics Overview, which uses our old method of computing metrics and may not fully represent your performance.'
 
 export default function DEPRECATED_SupportPerformanceOverview() {
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
+    const iAnalyticsProductivityMetricsEnabled =
+        useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
@@ -220,19 +232,33 @@ export default function DEPRECATED_SupportPerformanceOverview() {
                 <BannerNotification
                     actionHTML={
                         <Link to="/app/stats/support-performance-overview">
-                            <i className="material-icons">refresh</i> Switch To
-                            new version
+                            <i className="material-icons">refresh</i>{' '}
+                            {iAnalyticsProductivityMetricsEnabled
+                                ? SWITCH_TO_NEW_VERSION
+                                : SWITCH_TO_NEW_VERSION_DEPRECATED}
                         </Link>
                     }
                     closable
                     dismissible={false}
-                    message="Warning: The legacy overview page will be deprecated by the end of June 2024."
+                    message={
+                        iAnalyticsProductivityMetricsEnabled
+                            ? BANNER_MESSAGE
+                            : BANNER_MESSAGE_DEPRECATED
+                    }
                     onClose={() => setIsVersionBannerVisible(false)}
-                    status={NotificationStatus.Warning}
+                    status={
+                        iAnalyticsProductivityMetricsEnabled
+                            ? NotificationStatus.Warning
+                            : NotificationStatus.Info
+                    }
                 />
             ) : null}
             <StatsPage
-                title="Legacy overview"
+                title={
+                    iAnalyticsProductivityMetricsEnabled
+                        ? PAGE_TITLE
+                        : PAGE_TITLE_DEPRECATED
+                }
                 description="Get an overview of the most important statistics about your customer service.
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
 providing excellent customer support."

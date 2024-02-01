@@ -3,6 +3,7 @@ export enum FeatureFlagKey {
     AgentActivityTracking = 'agent-activity-tracking',
     AnalyticsDrillDown = 'analytics-drill-down',
     AnalyticsDrillDownExport = 'analytics-drill-down-export',
+    AnalyticsProductivityMetrics = 'analytics-productivity-metrics',
     AnalyticsTimeBasedMetrics = 'analytics-time-based-metrics',
     AutomateLandingPage = 'automate-landing-page',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
