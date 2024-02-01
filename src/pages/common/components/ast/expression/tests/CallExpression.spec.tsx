@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {WrappedCallExpression} from '../CallExpression'
+import WrappedCallExpression from '../CallExpression'
 import {ObjectExpressionPropertyKey} from '../../../../../../state/rules/types'
 import {RuleItemActions} from '../../../../../settings/rules/types'
 
@@ -37,7 +37,6 @@ describe('CallExpression component', () => {
                     {...commonProps}
                     parent={fromJS(['body', 0, 'test'])}
                     callee={callee}
-                    hovered={true}
                 />
             )
 
@@ -69,7 +68,6 @@ describe('CallExpression component', () => {
                         {...commonProps}
                         parent={fromJS(['body', 0, 'test', 'left'])}
                         callee={callee}
-                        hovered={true}
                     />
                 )
 

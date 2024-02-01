@@ -3,7 +3,7 @@ import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
 
 import {toJS} from 'utils'
-import {AddLogicalCondition} from '../AddLogicalCondition'
+import AddLogicalCondition from '../AddLogicalCondition'
 
 describe('AddLogicalCondition component', () => {
     const commonProps = {

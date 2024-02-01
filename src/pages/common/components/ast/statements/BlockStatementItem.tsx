@@ -1,18 +1,16 @@
 import React from 'react'
 
-import Hoverable from '../../Hoverable'
-
 import {BlockStatementItemProps} from '../types'
 import {StatementProps, statementReference} from './statementReference'
 
-const BlockStatementItem = ({
+export default function BlockStatementItem({
     actions,
     body,
     rule,
     parent,
     schemas,
     depth,
-}: BlockStatementItemProps) => {
+}: BlockStatementItemProps) {
     const {Statement} = statementReference
 
     return (
@@ -28,4 +26,3 @@ const BlockStatementItem = ({
         </div>
     )
 }
-export default Hoverable(BlockStatementItem)

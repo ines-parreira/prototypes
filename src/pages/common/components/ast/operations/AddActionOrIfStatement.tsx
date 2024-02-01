@@ -1,5 +1,4 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import {List, Map} from 'immutable'
 import {
     UncontrolledButtonDropdown,
@@ -10,9 +9,9 @@ import {
 
 import {RuleOperation} from 'state/rules/types'
 import {RuleItemActions} from 'pages/settings/rules/types'
-import Hoverable from 'pages/common/components/Hoverable'
 import Errors from 'pages/common/components/ast/Errors'
 import {computeLeftPadding} from 'pages/common/components/ast/utils'
+import useHoverable from '../../../hooks/useHoverable'
 
 type Props = {
     rule: Map<any, any>
@@ -20,21 +19,23 @@ type Props = {
     parent: List<any>
     title: string
     depth: number
-    removable: boolean
+    removable?: boolean
     hoverableClassName?: string
     empty?: boolean
 }
 
-export class AddActionOrIfStatement extends Component<Props> {
-    static defaultProps: Pick<Props, 'removable'> = {
-        removable: false,
-    }
+export default function AddActionOrIfStatement({
+    title,
+    depth,
+    removable = false,
+    empty,
+    actions,
+    parent,
+    hoverableClassName,
+}: Props) {
+    const {setRef} = useHoverable()
 
-    static contextTypes = {
-        hovered: PropTypes.bool,
-    }
-
-    _addAction = () => {
+    const addAction = () => {
         const actionNode = {
             type: 'ExpressionStatement',
             expression: {
@@ -57,7 +58,6 @@ export class AddActionOrIfStatement extends Component<Props> {
             },
         }
 
-        const {actions, parent} = this.props
         actions.modifyCodeAST(
             parent.push('body'),
             actionNode,
@@ -65,7 +65,7 @@ export class AddActionOrIfStatement extends Component<Props> {
         )
     }
 
-    _addIfStatement = () => {
+    const addIfStatement = () => {
         const actionNode = {
             type: 'IfStatement',
             test: {
@@ -100,7 +100,6 @@ export class AddActionOrIfStatement extends Component<Props> {
             },
         }
 
-        const {actions, parent} = this.props
         actions.modifyCodeAST(
             parent.push('body'),
             actionNode,
@@ -108,19 +107,12 @@ export class AddActionOrIfStatement extends Component<Props> {
         )
     }
 
-    /**
-     * Delete the current statement.
-     * For now, only `else` blocks have the `removable` property and can use this method.
-     */
-    _deleteStatement = () => {
-        const {actions, parent} = this.props
+    const deleteStatement = () => {
         actions.modifyCodeAST(parent, null, RuleOperation.Delete)
     }
 
-    render() {
-        const {title, depth, removable, empty} = this.props
-
-        return (
+    return (
+        <span className={hoverableClassName || ''} ref={setRef}>
             <UncontrolledButtonDropdown
                 style={{paddingLeft: computeLeftPadding(depth)}}
                 className="AddActionOrIfStatement"
@@ -134,31 +126,20 @@ export class AddActionOrIfStatement extends Component<Props> {
                 </DropdownToggle>
                 {empty && <Errors inline>{title} cannot be empty</Errors>}
                 <DropdownMenu>
-                    <DropdownItem
-                        type="button"
-                        onClick={() => this._addAction()}
-                    >
+                    <DropdownItem type="button" onClick={addAction}>
                         Action
                     </DropdownItem>
-                    <DropdownItem
-                        type="button"
-                        onClick={() => this._addIfStatement()}
-                    >
+                    <DropdownItem type="button" onClick={addIfStatement}>
                         "IF" statement
                     </DropdownItem>
                     {removable ? (
-                        <DropdownItem
-                            type="button"
-                            onClick={() => this._deleteStatement()}
-                        >
+                        <DropdownItem type="button" onClick={deleteStatement}>
                             <i className="material-icons red mr-1">delete</i>
                             Delete node
                         </DropdownItem>
                     ) : null}
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
-        )
-    }
+        </span>
+    )
 }
-
-export default Hoverable(AddActionOrIfStatement)

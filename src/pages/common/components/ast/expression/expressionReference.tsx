@@ -12,6 +12,7 @@ export type ExpressionProps = {
     leftsiblings: Maybe<List<any>>
     type: string
     depth: number
+    elements?: React.ReactNode
 }
 
 // this is to a circular dependency while doing recursion

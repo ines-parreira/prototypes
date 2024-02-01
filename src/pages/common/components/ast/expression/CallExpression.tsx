@@ -5,13 +5,13 @@ import _upperFirst from 'lodash/upperFirst'
 import {ObjectExpressionPropertyKey} from 'state/rules/types'
 import {OBJECT_DEFINITIONS} from 'state/rules/constants'
 import {RuleItemActions} from 'pages/settings/rules/types'
-import Hoverable from 'pages/common/components/Hoverable'
 import Action from 'pages/common/components/ast/actions/Action'
 import {actionsConfig} from 'pages/common/components/ast/actions/config'
 import DeleteBinaryExpression from 'pages/common/components/ast/operations/DeleteBinaryExpression'
 
 import {getSyntaxTreeLeaves} from 'pages/common/components/ast/utils'
 
+import useHoverable from 'pages/common/hooks/useHoverable'
 import ObjectExpression from './ObjectExpression'
 import {expressionReference} from './expressionReference'
 
@@ -23,10 +23,9 @@ type Props = {
     parent: List<any>
     schemas: Map<any, any>
     depth: number
-    hovered?: boolean
 }
 
-export const WrappedCallExpression = ({
+export default function WrappedCallExpression({
     actions,
     callee,
     rule,
@@ -34,8 +33,8 @@ export const WrappedCallExpression = ({
     schemas,
     depth,
     arguments: funcArgs,
-    hovered = false,
-}: Props) => {
+}: Props) {
+    const {hovered, setRef} = useHoverable()
     const {Expression} = expressionReference
 
     const parentCallee = parent.push('callee')
@@ -91,7 +90,7 @@ export const WrappedCallExpression = ({
         }
 
         return (
-            <>
+            <span ref={setRef}>
                 <Expression
                     {...firstArg}
                     parent={parent.push('arguments', 0)}
@@ -124,7 +123,7 @@ export const WrappedCallExpression = ({
                     />
                 ) : null}
                 {hovered && deleteBinaryExpression}
-            </>
+            </span>
         )
     }
 
@@ -135,27 +134,27 @@ export const WrappedCallExpression = ({
     const actionRootLeftSiblings = List(['actions'])
 
     return (
-        <Action
-            value={actionName.value}
-            parent={parent.push('arguments', 0)}
-            rule={rule}
-            actions={actions}
-            schemas={schemas}
-            leftsiblings={actionRootLeftSiblings}
-            depth={depth}
-        >
-            <ObjectExpression
-                properties={actionArguments.properties}
-                actions={actions}
-                leftsiblings={actionRootLeftSiblings.push(actionName.value)}
+        <span ref={setRef}>
+            <Action
+                value={actionName.value}
+                parent={parent.push('arguments', 0)}
                 rule={rule}
+                actions={actions}
                 schemas={schemas}
-                parent={parent.push('arguments', 1)}
-                className="ActionWidget"
-                config={actionsConfig[actionName.value]}
-            />
-        </Action>
+                leftsiblings={actionRootLeftSiblings}
+                depth={depth}
+            >
+                <ObjectExpression
+                    properties={actionArguments.properties}
+                    actions={actions}
+                    leftsiblings={actionRootLeftSiblings.push(actionName.value)}
+                    rule={rule}
+                    schemas={schemas}
+                    parent={parent.push('arguments', 1)}
+                    className="ActionWidget"
+                    config={actionsConfig[actionName.value]}
+                />
+            </Action>
+        </span>
     )
 }
-
-export default Hoverable(WrappedCallExpression)

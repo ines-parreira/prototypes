@@ -4,8 +4,8 @@ import classnames from 'classnames'
 
 import {RuleItemActions} from '../../../../settings/rules/types'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
-import Hoverable from '../../Hoverable'
 import Expression from '../expression/Expression'
+import useHoverable from '../../../hooks/useHoverable'
 
 type Props = {
     rule: Map<any, any>
@@ -14,39 +14,37 @@ type Props = {
     actions: RuleItemActions
     schemas: Map<any, any>
     depth: number
-    hovered?: boolean
 }
 
-const ExpressionStatement = ({
+export default function ExpressionStatement({
     expression,
     rule,
     actions,
     parent,
     schemas,
     depth,
-    hovered = false,
-}: Props) => {
+}: Props) {
     const parentNew = parent.push('expression')
-
+    const {hovered, setRef} = useHoverable()
     return (
-        <div className={classnames('ExpressionStatement', {hovered})}>
-            <DeleteBlockStatementItem
-                parent={parent}
-                rule={rule}
-                actions={actions}
-                isDisplayed={hovered}
-                type="action"
-            />
-            <Expression
-                {...(expression as ComponentProps<typeof Expression>)}
-                parent={parentNew}
-                rule={rule}
-                actions={actions}
-                schemas={schemas}
-                depth={depth}
-            />
-        </div>
+        <span ref={setRef}>
+            <div className={classnames('ExpressionStatement', {hovered})}>
+                <DeleteBlockStatementItem
+                    parent={parent}
+                    rule={rule}
+                    actions={actions}
+                    isDisplayed={hovered}
+                    type="action"
+                />
+                <Expression
+                    {...(expression as ComponentProps<typeof Expression>)}
+                    parent={parentNew}
+                    rule={rule}
+                    actions={actions}
+                    schemas={schemas}
+                    depth={depth}
+                />
+            </div>
+        </span>
     )
 }
-
-export default Hoverable(ExpressionStatement)

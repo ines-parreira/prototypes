@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentType} from 'react'
 import {connect} from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -18,7 +18,8 @@ const types = {
 const Statement = (props: StatementProps) => {
     const {depth} = props
     const schemas = useAppSelector(getSchemas)
-    const Component = types[props.type as keyof typeof types] || UnknownSyntax
+    const Component = (types[props.type as keyof typeof types] ||
+        UnknownSyntax) as ComponentType<StatementProps>
 
     return <Component {...props} schemas={schemas} depth={depth} />
 }

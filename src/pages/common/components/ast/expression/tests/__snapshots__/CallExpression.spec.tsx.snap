@@ -1,41 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CallExpression component Action call should render 1`] = `
-<Action
-  actions={{}}
-  depth={0}
-  leftsiblings={
-    Immutable.List [
-      "actions",
-    ]
-  }
-  parent={
-    Immutable.List [
-      "body",
-      0,
-      "expression",
-      "arguments",
-      0,
-    ]
-  }
-  rule={
-    Immutable.Map {
-      "foo": "rule",
-    }
-  }
-  schemas={
-    Immutable.Map {
-      "foo": "schemas",
-    }
-  }
->
-  <ObjectExpression
+<span>
+  <Action
     actions={{}}
-    className="ActionWidget"
+    depth={0}
     leftsiblings={
       Immutable.List [
         "actions",
-        undefined,
       ]
     }
     parent={
@@ -44,7 +16,7 @@ exports[`CallExpression component Action call should render 1`] = `
         0,
         "expression",
         "arguments",
-        1,
+        0,
       ]
     }
     rule={
@@ -57,12 +29,42 @@ exports[`CallExpression component Action call should render 1`] = `
         "foo": "schemas",
       }
     }
-  />
-</Action>
+  >
+    <ObjectExpression
+      actions={{}}
+      className="ActionWidget"
+      leftsiblings={
+        Immutable.List [
+          "actions",
+          undefined,
+        ]
+      }
+      parent={
+        Immutable.List [
+          "body",
+          0,
+          "expression",
+          "arguments",
+          1,
+        ]
+      }
+      rule={
+        Immutable.Map {
+          "foo": "rule",
+        }
+      }
+      schemas={
+        Immutable.Map {
+          "foo": "schemas",
+        }
+      }
+    />
+  </Action>
+</span>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is not the only line of the test condition and the expression is not hovered 1`] = `
-<Fragment>
+<span>
   <Expression
     0="a"
     actions={{}}
@@ -163,11 +165,11 @@ exports[`CallExpression component test condition should not render delete widget
       }
     }
   />
-</Fragment>
+</span>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 1`] = `
-<Fragment>
+<span>
   <Expression
     0="a"
     actions={{}}
@@ -265,11 +267,11 @@ exports[`CallExpression component test condition should not render delete widget
       }
     }
   />
-</Fragment>
+</span>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 2`] = `
-<Fragment>
+<span>
   <Expression
     0="a"
     actions={{}}
@@ -367,11 +369,11 @@ exports[`CallExpression component test condition should not render delete widget
       }
     }
   />
-</Fragment>
+</span>
 `;
 
 exports[`CallExpression component test condition should render delete widget because the expression is not the only line of the test condition and the expression is hovered 1`] = `
-<Fragment>
+<span>
   <Expression
     0="a"
     actions={{}}
@@ -472,21 +474,5 @@ exports[`CallExpression component test condition should render delete widget bec
       }
     }
   />
-  <DeleteBinaryExpression
-    actions={{}}
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "left",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-  />
-</Fragment>
+</span>
 `;

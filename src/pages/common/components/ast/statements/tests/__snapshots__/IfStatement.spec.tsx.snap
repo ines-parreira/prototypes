@@ -19,16 +19,12 @@ exports[`IfStatement component should not render alternate because there is none
         close
       </i>
     </span>
-    <span
-      class="d-inline-flex"
+    <button
+      class="mr-1 btn btn-info"
+      type="button"
     >
-      <button
-        class="mr-1 btn btn-info"
-        type="button"
-      >
-        IF
-      </button>
-    </span>
+      IF
+    </button>
     <div
       class="badge unknownstatement"
     >
@@ -121,16 +117,12 @@ exports[`IfStatement component should render alternate because there is one 1`] 
         close
       </i>
     </span>
-    <span
-      class="d-inline-flex"
+    <button
+      class="mr-1 btn btn-info"
+      type="button"
     >
-      <button
-        class="mr-1 btn btn-info"
-        type="button"
-      >
-        IF
-      </button>
-    </span>
+      IF
+    </button>
     <div
       class="badge unknownstatement"
     >
