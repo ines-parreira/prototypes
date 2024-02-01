@@ -64,6 +64,10 @@ export default function SupportPerformanceOverview() {
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
+
+    const isAnalyticsProductivityMetricsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
+
     const surveySettings = useAppSelector(getSurveysSettingsJS)
     const hasSatisfactionSurveyEnabledAndConfigured =
         hasSatisfactionSurveyEnabled &&
@@ -252,24 +256,73 @@ export default function SupportPerformanceOverview() {
                             ]}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <OverviewChartCard
-                            {...OverviewChartConfig[
-                                OverviewMetric.TicketsReplied
-                            ]}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <OverviewChartCard
-                            {...OverviewChartConfig[
-                                OverviewMetric.MessagesSent
-                            ]}
-                        />
-                    </DashboardGridCell>
+                    {!isAnalyticsProductivityMetricsEnabled ? (
+                        <>
+                            <DashboardGridCell size={6}>
+                                <OverviewChartCard
+                                    {...OverviewChartConfig[
+                                        OverviewMetric.TicketsReplied
+                                    ]}
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={6}>
+                                <OverviewChartCard
+                                    {...OverviewChartConfig[
+                                        OverviewMetric.MessagesSent
+                                    ]}
+                                />
+                            </DashboardGridCell>
+                        </>
+                    ) : null}
                     <DashboardGridCell size={12}>
                         <WorkloadPerChannelChart />
                     </DashboardGridCell>
                 </DashboardSection>
+                {isAnalyticsProductivityMetricsEnabled ? (
+                    <DashboardSection title="Productivity">
+                        <DashboardGridCell size={3}>
+                            <TrendCard
+                                {...OverviewMetricConfig[
+                                    OverviewMetric.TicketsReplied
+                                ]}
+                                overviewMetric={OverviewMetric.TicketsReplied}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={3}>
+                            <TrendCard
+                                {...OverviewMetricConfig[
+                                    OverviewMetric.MessagesSent
+                                ]}
+                                overviewMetric={OverviewMetric.MessagesSent}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={3}>
+                            <div></div>
+                        </DashboardGridCell>
+                        <DashboardGridCell size={3}>
+                            <TrendCard
+                                {...OverviewMetricConfig[
+                                    OverviewMetric.OneTouchTickets
+                                ]}
+                                overviewMetric={OverviewMetric.OneTouchTickets}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={6}>
+                            <OverviewChartCard
+                                {...OverviewChartConfig[
+                                    OverviewMetric.TicketsReplied
+                                ]}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={6}>
+                            <OverviewChartCard
+                                {...OverviewChartConfig[
+                                    OverviewMetric.MessagesSent
+                                ]}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                ) : null}
                 <AnalyticsFooter />
             </StatsPage>
 

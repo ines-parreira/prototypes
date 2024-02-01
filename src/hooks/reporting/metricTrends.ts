@@ -12,6 +12,7 @@ import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/suppor
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
 import {decreaseInResolutionTimeQueryFactory} from 'models/reporting/queryFactories/automate/decreaseInResolutionTime'
+import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {resolutionTimeWithAutomateFeaturesQueryFactory} from '../../models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
 
 import {automationRateQueryFactory} from '../../models/reporting/queryFactories/automate/automationRate'
@@ -96,6 +97,21 @@ export const useClosedTicketsTrend = (
     useMetricTrend(
         closedTicketsQueryFactory(filters, timezone),
         closedTicketsQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone
+        )
+    )
+
+export const useOneTouchTicketsTrend = (
+    filters: StatsFilters,
+    timezone: string
+) =>
+    useMetricTrend(
+        oneTouchTicketsQueryFactory(filters, timezone),
+        oneTouchTicketsQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),

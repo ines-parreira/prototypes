@@ -25,6 +25,7 @@ import {
     useResolutionTimeWithAutomationTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
+    useOneTouchTicketsTrend,
 } from '../metricTrends'
 
 jest.mock('../useMetricTrend')
@@ -40,6 +41,7 @@ describe('metric trends', () => {
         ['useMedianResolutionTimeTrend', useMedianResolutionTimeTrend],
         ['useClosedTicketsTrend', useClosedTicketsTrend],
         ['useTicketsCreatedTrend', useTicketsCreatedTrend],
+        ['useOneTouchTicketsTrend', useOneTouchTicketsTrend],
     ])('%s', (_testName, useTrendFn) => {
         it('should create reporting filters', () => {
             const {result} = renderHook(() =>

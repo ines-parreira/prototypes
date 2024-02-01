@@ -30,6 +30,7 @@ type PerformanceOverviewMetrics = {
         | OverviewMetric.MedianResolutionTime
         | OverviewMetric.MedianFirstResponseTime
         | OverviewMetric.CustomerSatisfaction
+        | OverviewMetric.OneTouchTickets
 } & CommonMetrics
 
 export type AgentMetricColumn =
@@ -78,6 +79,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     OverviewMetric.TicketsCreated,
     OverviewMetric.TicketsReplied,
     OverviewMetric.MessagesSent,
+    OverviewMetric.OneTouchTickets,
     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     TableColumn.ClosedTickets,
     TableColumn.PercentageOfClosedTickets,

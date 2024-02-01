@@ -29,6 +29,7 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {useOneTouchTicketsPercentageMetric} from 'hooks/reporting/useOneTouchTicketsPercentageMetric'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -45,6 +46,7 @@ const trendBadgeMock = assumeMock(TrendBadge)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('hooks/reporting/metricTrends')
+jest.mock('hooks/reporting/useOneTouchTicketsPercentageMetric')
 
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend
@@ -61,6 +63,9 @@ const useClosedTicketsTrendMock = assumeMock(useClosedTicketsTrend)
 const useTicketsCreatedTrendMock = assumeMock(useTicketsCreatedTrend)
 const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(useMessagesSentTrend)
+const useOneTouchTicketTrendMock = assumeMock(
+    useOneTouchTicketsPercentageMetric
+)
 
 describe('<TrendCard />', () => {
     const defaultStatsFilters: StatsFilters = {
@@ -141,6 +146,14 @@ describe('<TrendCard />', () => {
     const messagesSentMetricTrend = {
         ...defaultMetricTrend,
     }
+    const oneTouchTicketsMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'more-is-better',
+            value,
+            prevValue,
+        },
+    }
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -161,6 +174,7 @@ describe('<TrendCard />', () => {
         useTicketsCreatedTrendMock.mockReturnValue(createdTicketsMetricTrend)
         useTicketsRepliedTrendMock.mockReturnValue(repliedTicketsMetricTrend)
         useMessagesSentTrendMock.mockReturnValue(messagesSentMetricTrend)
+        useOneTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
 
         trendBadgeMock.mockImplementation(() => null)
     })

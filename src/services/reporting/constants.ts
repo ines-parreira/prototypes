@@ -15,6 +15,7 @@ export const DATE_TIME_FORMAT = 'YYYY-MM-DD'
 export const EMPTY_LABEL = ' '
 export const CURRENT_PERIOD_LABEL = 'current period'
 export const PREVIOUS_PERIOD_LABEL = 'previous period'
+export const ONE_TOUCH_TICKETS_LABEL = 'One touch tickets'
 
 export enum MetricName {
     CustomerSatisfaction = 'customerSatisfaction',

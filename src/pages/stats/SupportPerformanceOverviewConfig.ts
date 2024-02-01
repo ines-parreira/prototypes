@@ -28,8 +28,10 @@ import {
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
+    ONE_TOUCH_TICKETS_LABEL,
 } from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
+import {useOneTouchTicketsPercentageMetric} from 'hooks/reporting/useOneTouchTicketsPercentageMetric'
 import {TooltipData} from './types'
 
 export const OverviewMetricConfig: Record<
@@ -134,6 +136,17 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'neutral',
         useTrend: useMessagesSentTrend,
         withFrom: true,
+    },
+    [OverviewMetric.OneTouchTickets]: {
+        title: ONE_TOUCH_TICKETS_LABEL,
+        hint: {
+            title: 'Percentage of tickets closed within the selected timeframe with exactly 1 message sent by an agent or rule.',
+            link: 'https://docs.gorgias.com/en-US/overview-226700#4-one-touch-tickets',
+        },
+        interpretAs: 'more-is-better',
+        useTrend: useOneTouchTicketsPercentageMetric,
+        withFrom: true,
+        metricFormat: 'percent',
     },
 }
 

@@ -59,7 +59,10 @@ export const TrendCard = ({
         >
             <BigNumberMetric
                 isLoading={!trend.data}
-                from={withFrom && formatMetricValue(trend.data?.prevValue)}
+                from={
+                    withFrom &&
+                    formatMetricValue(trend.data?.prevValue, metricFormat)
+                }
             >
                 <DrillDownModalTrigger
                     enabled={!!trend.data?.value}

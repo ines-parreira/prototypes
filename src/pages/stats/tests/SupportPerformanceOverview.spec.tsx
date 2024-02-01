@@ -77,6 +77,9 @@ describe('<SupportPerformanceOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsProductivityMetrics]: false,
+        }))
         trendCardMock.mockImplementation(({tip}) => (
             <div>TrendCardMock {tip}</div>
         ))
@@ -117,6 +120,25 @@ describe('<SupportPerformanceOverview />', () => {
             )
         }
     )
+
+    it('should render productivity section with OneTouchTickets TrendCard', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsProductivityMetrics]: true,
+        }))
+
+        render(
+            <Provider store={mockStore({})}>
+                <SupportPerformanceOverview />
+            </Provider>
+        )
+        expect(trendCardMock.mock.calls).toContainEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    overviewMetric: OverviewMetric.OneTouchTickets,
+                }),
+            ])
+        )
+    })
 
     describe('Performance Tips', () => {
         it('should show tips by default', () => {

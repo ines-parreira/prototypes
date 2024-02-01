@@ -33,6 +33,7 @@ export enum OverviewMetric {
     TicketsClosed = 'tickets_closed',
     TicketsCreated = 'tickets_created',
     TicketsReplied = 'tickets_replied',
+    OneTouchTickets = 'one_touch_tickets',
 }
 
 export enum TableColumn {

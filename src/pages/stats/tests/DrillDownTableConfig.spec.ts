@@ -39,6 +39,7 @@ describe('getDrillDownQuery', () => {
         {metricName: OverviewMetric.MedianResolutionTime},
         {metricName: OverviewMetric.MedianFirstResponseTime},
         {metricName: OverviewMetric.CustomerSatisfaction},
+        {metricName: OverviewMetric.OneTouchTickets},
     ]
 
     it.each([...supportedMetrics, ...agentsMetrics])(
