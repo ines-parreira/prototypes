@@ -11,6 +11,7 @@ import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationM
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import {useTheme} from 'theme'
 
+import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner'
 import useAppShortcuts from '../hooks/useAppShortcuts'
 import usePollingManager from '../hooks/usePollingManager'
 import useSharedLogic from '../hooks/useSharedLogic'
@@ -39,6 +40,7 @@ export default function App({children}: Props) {
             <BannerNotifications />
             <EmailMigrationBanner />
             <EmailDisconnectedBanner />
+            <EmailDomainVerificationBanner />
             <ScriptTagMigrationBanner />
             <ScriptTagMigrationModal />
             <Spotlight />
