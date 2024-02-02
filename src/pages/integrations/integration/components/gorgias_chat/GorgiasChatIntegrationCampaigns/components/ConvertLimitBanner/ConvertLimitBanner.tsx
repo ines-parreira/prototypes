@@ -38,6 +38,9 @@ export const ConvertLimitBanner = ({
     } = useMemo(() => {
         if (!status) return {}
 
+        const cycleStart = status.cycle_start && moment.utc(status.cycle_start)
+        const cycleEnd = status.cycle_start && moment.utc(status.cycle_end)
+
         return {
             isLimitReached:
                 status.usage_status === UsageStatus.LIMIT_REACHED &&
@@ -46,12 +49,13 @@ export const ConvertLimitBanner = ({
                 status.usage_status === UsageStatus.OK &&
                 status.bundle_status === BundleOnboardingStatus.INSTALLED &&
                 status.last_warning_100_at &&
-                status.cycle_start &&
-                status.cycle_end &&
-                moment.utc(status.cycle_start) <=
-                    moment.utc(status.last_warning_100_at) &&
-                moment.utc(status.last_warning_100_at) <=
-                    moment.utc(status.cycle_end),
+                status.estimated_reach_date &&
+                cycleStart &&
+                cycleEnd &&
+                cycleStart <= moment.utc(status.last_warning_100_at) &&
+                moment.utc(status.last_warning_100_at) <= cycleEnd &&
+                cycleStart <= moment.utc(status.estimated_reach_date) &&
+                moment.utc(status.estimated_reach_date) <= cycleEnd,
             isAutoUpgradeEnabled: status.auto_upgrade_enabled,
             estimatedReachDate:
                 status.estimated_reach_date &&

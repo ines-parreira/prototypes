@@ -13,7 +13,7 @@ export const convertStatusOkWarning = {
     last_warning_100_at: '2021-01-01T00:00:00.000Z',
     cycle_start: '2020-01-01T00:00:00.000Z',
     cycle_end: '2022-01-01T00:00:00.000Z',
-    estimated_reach_date: '2023-05-01T00:00:00.000Z',
+    estimated_reach_date: '2020-04-01T00:00:00.000Z',
     auto_upgrade_enabled: false,
 } as Components.Schemas.SubscriptionUsageAndBundleStatusSchema
 

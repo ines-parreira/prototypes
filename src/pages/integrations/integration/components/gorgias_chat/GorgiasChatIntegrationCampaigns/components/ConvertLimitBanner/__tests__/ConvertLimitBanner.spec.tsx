@@ -141,4 +141,24 @@ describe('ConvertLimitBanner', () => {
         ).toBeInTheDocument()
         expect(queryByText(warningAutoUpgradeButtonText)).toBeInTheDocument()
     })
+
+    it('should not render because estimation is outside of cycle', () => {
+        useGetConvertStatusMock.mockReturnValue({
+            ...convertStatusOkWarningUpgrade,
+            estimated_reach_date: '2023-04-01T00:00:00.000Z',
+        })
+
+        const {queryByText} = render(
+            <Provider store={store}>
+                <ConvertLimitBanner />
+            </Provider>
+        )
+
+        expect(
+            queryByText(warningAutoUpgradeMessageText)
+        ).not.toBeInTheDocument()
+        expect(
+            queryByText(warningAutoUpgradeButtonText)
+        ).not.toBeInTheDocument()
+    })
 })
