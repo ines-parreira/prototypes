@@ -9,15 +9,15 @@ import Button from 'pages/common/components/button/Button'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
-} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
-import {ChannelLanguage} from 'pages/automate/common/types'
+} from '../../workflows/hooks/useWorkflowChannelSupport'
+import {SelfServiceChannelType} from '../hooks/useSelfServiceChannels'
+import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
+import {ChannelLanguage} from '../types'
 
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import {WorkflowConfigurationShallow} from '../../workflows/models/workflowConfiguration.types'
 import WorkflowItem from './WorkflowItem'
 
-import css from './ConnectedChannelWorkflowsFeature.less'
+import css from './WorkflowsFeatureList.less'
 
 type Entrypoint = {
     workflow_id: string
@@ -33,9 +33,13 @@ type Props = {
     limitTooltipMessage: ReactNode
     maxActiveWorkflows: number
     onChange: (nextEntrypoints: Entrypoint[]) => void
+    workflowsUrl?: string
+    configurations: WorkflowConfigurationShallow[]
+    allEntrypoints: {workflow_id: string}[]
 }
 
-const ConnectedChannelWorkflowsFeature = ({
+/* This component required `WorkflowChannelSupportContext` */
+const WorkflowsFeatureList = ({
     channelType,
     channelId,
     integrationId,
@@ -44,12 +48,10 @@ const ConnectedChannelWorkflowsFeature = ({
     onChange,
     maxActiveWorkflows,
     limitTooltipMessage,
+    workflowsUrl,
+    configurations,
+    allEntrypoints,
 }: Props) => {
-    const {
-        workflowConfigurations: configurations,
-        workflowsEntrypoints: allEntrypoints,
-        workflowsUrl,
-    } = useConnectedChannelsViewContext()
     const {getUnsupportedNodeTypes, getSupportedChannels} =
         useWorkflowChannelSupportContext()
 
@@ -133,7 +135,7 @@ const ConnectedChannelWorkflowsFeature = ({
         <div className={css.container}>
             <div className={css.label}>
                 <Label>Flows</Label>
-                {!dirtyEntrypoints.length && (
+                {!dirtyEntrypoints.length && workflowsUrl && (
                     <Link to={workflowsUrl}>
                         <Button size="small">Add Flows</Button>
                     </Link>
@@ -198,4 +200,4 @@ const ConnectedChannelWorkflowsFeature = ({
     )
 }
 
-export default ConnectedChannelWorkflowsFeature
+export default WorkflowsFeatureList

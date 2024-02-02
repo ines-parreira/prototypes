@@ -12,7 +12,7 @@ import {
 } from '../../common/components/constants'
 import useAppSelector from '../../../../hooks/useAppSelector'
 import {getHasAutomate} from '../../../../state/billing/selectors'
-import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
+import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 
@@ -28,8 +28,10 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const {workflowsEntrypoints: availableWorkflowsEntrypoints} =
-        useConnectedChannelsViewContext()
+    const {
+        workflowsEntrypoints: availableWorkflowsEntrypoints,
+        workflowConfigurations,
+    } = useConnectedChannelsViewContext()
 
     const workflowsEntrypoints = useMemo(() => {
         const existingWorkflows: ContactFormAutomationSettings['workflows'] =
@@ -55,7 +57,9 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
 
     return (
         <>
-            <ConnectedChannelWorkflowsFeature
+            <WorkflowsFeatureList
+                configurations={workflowConfigurations}
+                allEntrypoints={availableWorkflowsEntrypoints}
                 channelType={TicketChannel.ContactForm}
                 channelId={`contact-form-${channel.value.id}`}
                 integrationId={channel.value.id}

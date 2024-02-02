@@ -18,9 +18,9 @@ import {
     MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
+import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
-import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 
 type Props = {
     channel: SelfServiceHelpCenterChannel
@@ -34,8 +34,10 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     const {automationSettings, handleHelpCenterAutomationSettingsUpdate} =
         useHelpCentersAutomationSettings(channel.value.id)
 
-    const {workflowsEntrypoints: availableWorkflowsEntrypoints} =
-        useConnectedChannelsViewContext()
+    const {
+        workflowsEntrypoints: availableWorkflowsEntrypoints,
+        workflowConfigurations: configurations,
+    } = useConnectedChannelsViewContext()
 
     const workflowsEntrypoints = useMemo(() => {
         const availableWorkflowsIds = availableWorkflowsEntrypoints.map(
@@ -99,8 +101,10 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
 
     return (
         <>
-            <ConnectedChannelWorkflowsFeature
+            <WorkflowsFeatureList
                 channelType={TicketChannel.HelpCenter}
+                configurations={configurations}
+                allEntrypoints={availableWorkflowsEntrypoints}
                 channelId={`contact-form-${channel.value.id}`}
                 integrationId={channel.value.id}
                 channelLanguages={channel.value.supported_locales}

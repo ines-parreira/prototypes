@@ -19,9 +19,9 @@ import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
 } from '../../common/components/constants'
+import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
-import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 
 import css from './ConnectedChannelAccordionBodyChat.less'
 
@@ -44,6 +44,8 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         articleRecommendationUrl,
         enabledQuickResponsesCount,
         quickResponsesUrl,
+        workflowConfigurations: configurations,
+        workflowsEntrypoints: allEntrypoints,
     } = useConnectedChannelsViewContext()
     const hasAutomate = useAppSelector(getHasAutomate)
 
@@ -113,13 +115,15 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
     return (
         <>
-            <ConnectedChannelWorkflowsFeature
+            <WorkflowsFeatureList
                 channelType={TicketChannel.Chat}
                 channelId={`chat-${applicationId}`}
                 integrationId={channel.value.id}
                 channelLanguages={channelLanguages}
                 entrypoints={workflows.entrypoints || []}
                 maxActiveWorkflows={maxActiveWorkflows}
+                configurations={configurations}
+                allEntrypoints={allEntrypoints}
                 limitTooltipMessage={
                     <>
                         You have reached the maximum number of enabled Flows in
