@@ -10,6 +10,7 @@ import {
 import {FeatureFlagKey} from 'config/featureFlags'
 import {compare} from 'utils'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {AutomateFeatures} from '../types'
 import useStoreIntegrations from '../hooks/useStoreIntegrations'
 
@@ -42,7 +43,16 @@ const AutomateRoute = () => {
     }
 
     if (isNewLandingPageVisible) {
-        return <AutomateLandingPage />
+        return (
+            <ErrorBoundary
+                sentryTags={{
+                    section: 'automate-landing-page',
+                    team: 'automate-obs',
+                }}
+            >
+                <AutomateLandingPage />
+            </ErrorBoundary>
+        )
     }
 
     const sortedStoreIntegrations = [...storeIntegrations].sort((a, b) =>

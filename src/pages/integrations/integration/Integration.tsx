@@ -41,6 +41,7 @@ import {
     resetChatInstallationStatus,
 } from 'state/entities/chatInstallationStatus/actions'
 import useAppSelector from 'hooks/useAppSelector'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -349,11 +350,18 @@ export const IntegrationDetail = ({
             if (!!integrationId) {
                 if (extra === Tab.CreateWizard) {
                     return (
-                        <GorgiasChatCreationWizard
-                            isUpdate={isUpdate}
-                            loading={loading}
-                            integration={integration}
-                        />
+                        <ErrorBoundary
+                            sentryTags={{
+                                section: 'chat-wizard',
+                                team: 'automate-obs',
+                            }}
+                        >
+                            <GorgiasChatCreationWizard
+                                isUpdate={isUpdate}
+                                loading={loading}
+                                integration={integration}
+                            />
+                        </ErrorBoundary>
                     )
                 }
 

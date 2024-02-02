@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
@@ -23,7 +24,7 @@ type Props = {
     isUpdate?: boolean
 }
 
-const HelpCenterCreationWizard = ({
+const HelpCenterCreationWizardComponent = ({
     helpCenter,
     isUpdate,
 }: Props): JSX.Element => {
@@ -113,5 +114,16 @@ const HelpCenterCreationWizard = ({
         </>
     )
 }
+
+const HelpCenterCreationWizard = (props: Props) => (
+    <ErrorBoundary
+        sentryTags={{
+            section: 'help-center-wizard',
+            team: 'automate-obs',
+        }}
+    >
+        <HelpCenterCreationWizardComponent {...props} />
+    </ErrorBoundary>
+)
 
 export default HelpCenterCreationWizard

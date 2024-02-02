@@ -11,6 +11,7 @@ import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {ArticleTemplate} from 'models/helpCenter/types'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
@@ -26,7 +27,7 @@ export type ArticleLandingPageProps = {
     onBackButtonClick: () => void
 }
 
-const ArticleLandingPage = ({
+const ArticleLandingPageComponent = ({
     onCreateArticle,
     onCreateArticleWithTemplate,
     canUpdateArticle,
@@ -106,5 +107,16 @@ const ArticleLandingPage = ({
         </Container>
     )
 }
+
+const ArticleLandingPage = (props: ArticleLandingPageProps) => (
+    <ErrorBoundary
+        sentryTags={{
+            section: 'article-template',
+            team: 'automate-obs',
+        }}
+    >
+        <ArticleLandingPageComponent {...props} />
+    </ErrorBoundary>
+)
 
 export default ArticleLandingPage
