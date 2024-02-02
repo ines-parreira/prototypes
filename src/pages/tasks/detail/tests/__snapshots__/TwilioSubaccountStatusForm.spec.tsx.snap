@@ -65,6 +65,7 @@ exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio 
                 >
                   <span
                     class="label"
+                    data-testid="selected-status"
                     style="min-width: 10px; opacity: 1;"
                   >
                     Suspended

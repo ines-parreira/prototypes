@@ -178,6 +178,7 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                             >
                               <span
                                 class="label"
+                                data-testid="selected-priceSelect"
                                 style="min-width: 10px; opacity: 1;"
                               >
                                 30
@@ -476,6 +477,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                             >
                               <span
                                 class="label"
+                                data-testid="selected-priceSelect"
                                 style="min-width: 10px; opacity: 1;"
                               >
                                 30

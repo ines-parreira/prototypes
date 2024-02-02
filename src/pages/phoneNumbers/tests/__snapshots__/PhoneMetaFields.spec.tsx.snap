@@ -31,6 +31,7 @@ exports[`<PhoneMetaFields /> should render 1`] = `
             >
               <span
                 class="label placeholder"
+                data-testid="selected-country"
                 style="min-width: 10px; opacity: 1;"
               >
                 Select an option
@@ -147,6 +148,7 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
             >
               <span
                 class="label"
+                data-testid="selected-country"
                 style="min-width: 10px; opacity: 1;"
               >
                 United States
@@ -241,6 +243,7 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
             >
               <span
                 class="label"
+                data-testid="selected-type"
                 style="min-width: 10px; opacity: 1;"
               >
                 Local
@@ -305,6 +308,7 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
             >
               <span
                 class="label placeholder"
+                data-testid="selected-state"
                 style="min-width: 10px; opacity: 1;"
               >
                 Select an option
@@ -829,6 +833,7 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
             >
               <span
                 class="label placeholder"
+                data-testid="selected-area-code"
                 style="min-width: 10px; opacity: 1;"
               >
                 Select an option
@@ -900,6 +905,7 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
             >
               <span
                 class="label"
+                data-testid="selected-country"
                 style="min-width: 10px; opacity: 1;"
               >
                 Canada
@@ -994,6 +1000,7 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
             >
               <span
                 class="label"
+                data-testid="selected-type"
                 style="min-width: 10px; opacity: 1;"
               >
                 Toll-free
@@ -1058,6 +1065,7 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
             >
               <span
                 class="label placeholder"
+                data-testid="selected-area-code"
                 style="min-width: 10px; opacity: 1;"
               >
                 Select an option

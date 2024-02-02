@@ -2,27 +2,48 @@ import {useCallback, useReducer} from 'react'
 
 type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean
+    articleRecommendationEnabled: boolean
+    chatIntegrationId: null | number
 }
 
 type OrderManagementUpdateAction = {
-    type: 'orderManagement'
+    type: 'orderManagementUpdate'
     payload: boolean
 }
 
-type UseHelpCenterAutomationFormActions = OrderManagementUpdateAction
+type ArticleRecommendationUpdateAction = {
+    type: 'articleRecommendationUpdate'
+    payload: boolean
+}
+
+type ChatIntegrationIdUpdateAction = {
+    type: 'chatIntegrationIdUpdate'
+    payload: null | number
+}
+
+type UseHelpCenterAutomationFormActions =
+    | OrderManagementUpdateAction
+    | ArticleRecommendationUpdateAction
+    | ChatIntegrationIdUpdateAction
 
 const reducer = (
     state: UseHelpCenterAutomationFormState,
     action: UseHelpCenterAutomationFormActions
 ): UseHelpCenterAutomationFormState => {
     switch (action.type) {
-        case 'orderManagement':
+        case 'orderManagementUpdate':
             return {...state, orderManagementEnabled: action.payload}
+        case 'articleRecommendationUpdate':
+            return {...state, articleRecommendationEnabled: action.payload}
+        case 'chatIntegrationIdUpdate':
+            return {...state, chatIntegrationId: action.payload}
     }
 }
 
 const defaultState: UseHelpCenterAutomationFormState = {
     orderManagementEnabled: true,
+    articleRecommendationEnabled: true,
+    chatIntegrationId: null,
 }
 
 export const useHelpCenterAutomationForm = (
@@ -34,8 +55,24 @@ export const useHelpCenterAutomationForm = (
     })
 
     const updateOrderManagementEnabled = useCallback((enabled: boolean) => {
-        dispatch({type: 'orderManagement', payload: enabled})
+        dispatch({type: 'orderManagementUpdate', payload: enabled})
     }, [])
 
-    return {state, updateOrderManagementEnabled}
+    const updateArticleRecommendationEnabled = useCallback(
+        (enabled: boolean) => {
+            dispatch({type: 'articleRecommendationUpdate', payload: enabled})
+        },
+        []
+    )
+
+    const updateChatIntegrationId = useCallback((chatId: null | number) => {
+        dispatch({type: 'chatIntegrationIdUpdate', payload: chatId})
+    }, [])
+
+    return {
+        state,
+        updateOrderManagementEnabled,
+        updateArticleRecommendationEnabled,
+        updateChatIntegrationId,
+    }
 }

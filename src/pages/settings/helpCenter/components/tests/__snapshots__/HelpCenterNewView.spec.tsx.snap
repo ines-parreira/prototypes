@@ -407,6 +407,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                   </i>
                   <span
                     class="label"
+                    data-testid="selected-contactForm"
                     style="min-width: 10px; opacity: 1;"
                   >
                     Acme Billing &lt;billing@acme.gorgias.io&gt;

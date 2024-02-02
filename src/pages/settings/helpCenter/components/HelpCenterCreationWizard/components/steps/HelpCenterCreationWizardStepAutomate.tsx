@@ -7,8 +7,12 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
 import {useHelpCenterAutomationForm} from '../../hooks/useHelpCenterAutomationForm'
+import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
 import css from './HelpCenterCreationWizardStepAutomate.less'
 
 type Props = {
@@ -19,10 +23,20 @@ type Props = {
 const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
     helpCenter,
 }) => {
-    const {state, updateOrderManagementEnabled} = useHelpCenterAutomationForm({
+    const {
+        state,
+        updateOrderManagementEnabled,
+        updateArticleRecommendationEnabled,
+        updateChatIntegrationId,
+    } = useHelpCenterAutomationForm({
         orderManagementEnabled:
             helpCenter.self_service_deactivated_datetime !== null,
     })
+    const chatIntegrations = useAppSelector(
+        getIntegrationsByType<GorgiasChatIntegration>(
+            IntegrationType.GorgiasChat
+        )
+    )
 
     return (
         <WizardStepSkeleton
@@ -36,6 +50,17 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
                 <HelpCenterWizardOrderManagement
                     onChange={updateOrderManagementEnabled}
                     enabled={state.orderManagementEnabled}
+                />
+                <HelpCenterWizardArticleRec
+                    articleRecommendationEnabled={
+                        state.articleRecommendationEnabled
+                    }
+                    chatIntegrations={chatIntegrations}
+                    onArticleRecommendationEnabledChange={
+                        updateArticleRecommendationEnabled
+                    }
+                    selectedChatId={state.chatIntegrationId}
+                    onChatApplicationIdChange={updateChatIntegrationId}
                 />
             </div>
         </WizardStepSkeleton>

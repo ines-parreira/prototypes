@@ -485,6 +485,9 @@ export default class SelectField extends Component<Props, State> {
                                         className={classnames(css.label, {
                                             [css.placeholder]: !label,
                                         })}
+                                        data-testid={
+                                            id ? `selected-${id}` : undefined
+                                        }
                                     >
                                         {label ||
                                             (isFocused && focusedPlaceholder

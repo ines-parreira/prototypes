@@ -1,38 +1,51 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {WizardContext} from 'pages/common/components/wizard/Wizard'
 import {HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
+import {RootState, StoreDispatch, StoreState} from 'state/types'
+import {chatIntegrationFixtures} from 'fixtures/chat'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 
 const helpCenterFixture = getHelpCentersResponseFixture.data[0]
+
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+const defaultStore = {
+    integrations: fromJS({integrations: chatIntegrationFixtures}),
+} as unknown as StoreState
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>
 ) => {
     render(
-        <WizardContext.Provider
-            value={{
-                steps: [HelpCenterCreationWizardStep.Automate],
-                activeStepIndex: 0,
-                setActiveStep: jest.fn(),
-                totalSteps: 1,
-                activeStep: HelpCenterCreationWizardStep.Automate,
-                nextStep: undefined,
-                previousStep: undefined,
-            }}
-        >
-            <WizardStep name={HelpCenterCreationWizardStep.Automate}>
-                <HelpCenterCreationWizardStepAutomate
-                    isUpdate={false}
-                    helpCenter={helpCenterFixture}
-                    {...props}
-                />
-            </WizardStep>
-        </WizardContext.Provider>
+        <Provider store={mockStore(defaultStore)}>
+            <WizardContext.Provider
+                value={{
+                    steps: [HelpCenterCreationWizardStep.Automate],
+                    activeStepIndex: 0,
+                    setActiveStep: jest.fn(),
+                    totalSteps: 1,
+                    activeStep: HelpCenterCreationWizardStep.Automate,
+                    nextStep: undefined,
+                    previousStep: undefined,
+                }}
+            >
+                <WizardStep name={HelpCenterCreationWizardStep.Automate}>
+                    <HelpCenterCreationWizardStepAutomate
+                        isUpdate={false}
+                        helpCenter={helpCenterFixture}
+                        {...props}
+                    />
+                </WizardStep>
+            </WizardContext.Provider>
+        </Provider>
     )
 }
 
@@ -91,6 +104,59 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                     'Allow customers to manage orders from my Help Center'
                 )
             ).toBeChecked()
+        })
+    })
+
+    describe('article recommendation', () => {
+        it('should be enabled by default and show chat integration', () => {
+            renderComponent({})
+
+            expect(
+                screen.getByLabelText(
+                    /Recommend articles from this Help Center in my Chat/i
+                )
+            ).toBeChecked()
+            expect(
+                screen.getByLabelText(/Connect a Chat integration/i)
+            ).toBeInTheDocument()
+        })
+
+        it('should toggle article recommendation and hide chat integration', () => {
+            renderComponent({})
+
+            fireEvent.click(
+                screen.getByLabelText(
+                    /Recommend articles from this Help Center in my Chat/i
+                )
+            )
+
+            expect(
+                screen.getByLabelText(
+                    /Recommend articles from this Help Center in my Chat/i
+                )
+            ).not.toBeChecked()
+            expect(
+                screen.queryByLabelText(/Connect a Chat integration/i)
+            ).not.toBeInTheDocument()
+        })
+
+        it('should select chat from dropdown', async () => {
+            const chatName = chatIntegrationFixtures[0].name
+            renderComponent({})
+
+            fireEvent.click(
+                screen.getByLabelText(/Connect a Chat integration/i)
+            )
+
+            await waitFor(() =>
+                expect(screen.getByText(chatName)).toBeInTheDocument()
+            )
+
+            fireEvent.click(screen.getByText(chatName))
+
+            expect(
+                screen.getByTestId('selected-chat-integration')
+            ).toHaveTextContent(chatName)
         })
     })
 })

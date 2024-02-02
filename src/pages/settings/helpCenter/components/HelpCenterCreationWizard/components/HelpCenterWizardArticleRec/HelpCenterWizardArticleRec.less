@@ -1,0 +1,43 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .AIIcon {
+        color: var(--accessory-magenta-3);
+    }
+
+    .iconTooltip {
+        display: inline-block;
+    }
+
+    .labelContainer {
+        display: inline-flex;
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .storeOption {
+        display: flex;
+        align-items: center;
+    }
+
+    .storeIcon {
+        width: 20px;
+        margin-right: 10px;
+    }
+
+    .chatOption {
+        display: flex;
+        align-items: center;
+    }
+
+    .chatIcon {
+        font-size: @heading-section-regular-font-size;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+}

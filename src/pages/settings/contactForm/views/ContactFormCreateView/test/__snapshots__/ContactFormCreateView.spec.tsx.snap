@@ -101,6 +101,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                 >
                   <span
                     class="label"
+                    data-testid="selected-locale-select"
                     style="min-width: 10px; opacity: 1;"
                   >
                     English - USA
@@ -266,6 +267,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                     </i>
                     <span
                       class="label placeholder"
+                      data-testid="selected-store-select"
                       style="min-width: 10px; opacity: 1;"
                     >
                       Select a store

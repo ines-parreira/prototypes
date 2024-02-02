@@ -100,6 +100,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
                   >
                     <span
@@ -331,6 +332,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
                   >
                     <span
@@ -533,6 +535,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
                   >
                     <span

@@ -260,6 +260,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                     >
                       <span
                         class="label placeholder"
+                        data-testid="selected-country"
                         style="min-width: 10px; opacity: 1;"
                       >
                         Select an option
@@ -3054,6 +3055,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                     >
                       <span
                         class="label"
+                        data-testid="selected-country"
                         style="min-width: 10px; opacity: 1;"
                       >
                         United States
@@ -5522,6 +5524,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                     >
                       <span
                         class="label placeholder"
+                        data-testid="selected-province"
                         style="min-width: 10px; opacity: 1;"
                       >
                         Select an option

@@ -98,6 +98,7 @@ exports[`UsageAndPlansView should render 1`] = `
                         >
                           <span
                             class="label"
+                            data-testid="selected-priceSelect"
                             style="min-width: 10px; opacity: 1;"
                           >
                             300

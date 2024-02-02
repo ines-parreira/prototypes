@@ -80,7 +80,7 @@ export enum GorgiasChatInstallationMethod {
     ScriptTag = 'script_tag',
 }
 
-enum GorgiasChatEmailCaptureType {
+export enum GorgiasChatEmailCaptureType {
     Optional = 'optional',
     RequiredOutsideBusinessHours = 'required-outside-business-hours',
     AlwaysRequired = 'always-required',

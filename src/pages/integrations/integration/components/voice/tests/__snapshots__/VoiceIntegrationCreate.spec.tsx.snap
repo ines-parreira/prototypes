@@ -100,6 +100,7 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
                   >
                     <span
@@ -235,6 +236,7 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneFunction"
                     style="min-width: 10px; opacity: 1;"
                   >
                     Standard number
@@ -417,6 +419,7 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
                   >
                     <span
@@ -552,6 +555,7 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneFunction"
                     style="min-width: 10px; opacity: 1;"
                   >
                     Standard number
@@ -705,6 +709,7 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
                   >
                     <span
@@ -840,6 +845,7 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
                 >
                   <span
                     class="label"
+                    data-testid="selected-phoneFunction"
                     style="min-width: 10px; opacity: 1;"
                   >
                     Standard number
