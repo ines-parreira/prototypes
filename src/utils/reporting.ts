@@ -65,7 +65,7 @@ export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
 export const AgentTimeTrackingStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: AgentTimeTrackingMember.PeriodStart,
     periodEnd: AgentTimeTrackingMember.PeriodEnd,
-    agents: TicketMember.AssigneeUserId,
+    agents: AgentTimeTrackingMember.UserId,
 }
 
 export const NotSpamNorTrashedTicketsFilter = [

@@ -1,16 +1,16 @@
 import moment from 'moment/moment'
+import {TicketChannel} from 'business/types/ticket'
+import {OrderDirection} from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
     AgentTimeTrackingMember,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
 import {
     onlineTimePerAgentQueryFactory,
     onlineTimeQueryFactory,
 } from 'models/reporting/queryFactories/agentxp/onlineTime'
+import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 
@@ -25,6 +25,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
         channels: [TicketChannel.Email, TicketChannel.Chat],
         integrations: [1],
         tags: [1, 2],
+        agents: [1],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -43,6 +44,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: AgentTimeTrackingMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [formatReportingQueryDate(periodEnd)],
+                    },
+                    {
+                        member: AgentTimeTrackingMember.UserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [String(statsFilters.agents)],
                     },
                 ],
                 measures: [AgentTimeTrackingMeasure.OnlineTime],
@@ -65,6 +71,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: AgentTimeTrackingMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [formatReportingQueryDate(periodEnd)],
+                    },
+                    {
+                        member: AgentTimeTrackingMember.UserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [String(statsFilters.agents)],
                     },
                 ],
                 measures: [AgentTimeTrackingMeasure.OnlineTime],
@@ -91,6 +102,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [formatReportingQueryDate(periodEnd)],
                     },
+                    {
+                        member: AgentTimeTrackingMember.UserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [String(statsFilters.agents)],
+                    },
                 ],
                 measures: [AgentTimeTrackingMeasure.OnlineTime],
                 timezone: timezone,
@@ -112,6 +128,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: AgentTimeTrackingMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [formatReportingQueryDate(periodEnd)],
+                    },
+                    {
+                        member: AgentTimeTrackingMember.UserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [String(statsFilters.agents)],
                     },
                 ],
                 measures: [AgentTimeTrackingMeasure.OnlineTime],
