@@ -33,6 +33,7 @@ import {MetricName} from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
 import DashboardGridCell from './DashboardGridCell'
 import DashboardSection from './DashboardSection'
+import {TicketsCreatedVsClosedChartCard} from './support-performance/components/TicketsCreatedVsClosedChartCard'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
@@ -58,8 +59,6 @@ export default function SupportPerformanceOverview() {
             moment(AGENTS_REPORT_RELEASE_DATE)
         )
     )
-    const iAnalyticsProductivityMetricsEnabled =
-        useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
 
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
@@ -80,7 +79,8 @@ export default function SupportPerformanceOverview() {
 
     return (
         <div className="full-width">
-            {!iAnalyticsProductivityMetricsEnabled && isVersionBannerVisible ? (
+            {!isAnalyticsProductivityMetricsEnabled &&
+            isVersionBannerVisible ? (
                 <BannerNotification
                     actionHTML={
                         <Link to="/app/stats/support-performance-overview-legacy">
@@ -92,7 +92,7 @@ export default function SupportPerformanceOverview() {
                     dismissible={false}
                     message={
                         <span>
-                            {iAnalyticsProductivityMetricsEnabled
+                            {isAnalyticsProductivityMetricsEnabled
                                 ? BANNER_TEXT
                                 : BANNER_TEXT_DEPRECATED}
                         </span>
@@ -202,60 +202,105 @@ export default function SupportPerformanceOverview() {
                 </DashboardSection>
 
                 <DashboardSection title="Workload">
-                    <DashboardGridCell size={6}>
-                        <TrendCard
-                            {...OverviewMetricConfig[
-                                OverviewMetric.OpenTickets
-                            ]}
-                            overviewMetric={OverviewMetric.OpenTickets}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <TrendCard
-                            {...OverviewMetricConfig[
-                                OverviewMetric.TicketsClosed
-                            ]}
-                            overviewMetric={OverviewMetric.TicketsClosed}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={4}>
-                        <TrendCard
-                            {...OverviewMetricConfig[
-                                OverviewMetric.TicketsCreated
-                            ]}
-                            overviewMetric={OverviewMetric.TicketsCreated}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={4}>
-                        <TrendCard
-                            {...OverviewMetricConfig[
-                                OverviewMetric.TicketsReplied
-                            ]}
-                            overviewMetric={OverviewMetric.TicketsReplied}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={4}>
-                        <TrendCard
-                            {...OverviewMetricConfig[
-                                OverviewMetric.MessagesSent
-                            ]}
-                            overviewMetric={OverviewMetric.MessagesSent}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <OverviewChartCard
-                            {...OverviewChartConfig[
-                                OverviewMetric.TicketsCreated
-                            ]}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <OverviewChartCard
-                            {...OverviewChartConfig[
-                                OverviewMetric.TicketsClosed
-                            ]}
-                        />
-                    </DashboardGridCell>
+                    {isAnalyticsProductivityMetricsEnabled ? (
+                        <>
+                            <DashboardGridCell size={4}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.TicketsCreated
+                                    ]}
+                                    overviewMetric={
+                                        OverviewMetric.TicketsCreated
+                                    }
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={4}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.TicketsClosed
+                                    ]}
+                                    overviewMetric={
+                                        OverviewMetric.TicketsClosed
+                                    }
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={4}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.OpenTickets
+                                    ]}
+                                    overviewMetric={OverviewMetric.OpenTickets}
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={12}>
+                                <TicketsCreatedVsClosedChartCard />
+                            </DashboardGridCell>
+                        </>
+                    ) : (
+                        <>
+                            <DashboardGridCell size={6}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.OpenTickets
+                                    ]}
+                                    overviewMetric={OverviewMetric.OpenTickets}
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={6}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.TicketsClosed
+                                    ]}
+                                    overviewMetric={
+                                        OverviewMetric.TicketsClosed
+                                    }
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={4}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.TicketsCreated
+                                    ]}
+                                    overviewMetric={
+                                        OverviewMetric.TicketsCreated
+                                    }
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={4}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.TicketsReplied
+                                    ]}
+                                    overviewMetric={
+                                        OverviewMetric.TicketsReplied
+                                    }
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={4}>
+                                <TrendCard
+                                    {...OverviewMetricConfig[
+                                        OverviewMetric.MessagesSent
+                                    ]}
+                                    overviewMetric={OverviewMetric.MessagesSent}
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={6}>
+                                <OverviewChartCard
+                                    {...OverviewChartConfig[
+                                        OverviewMetric.TicketsCreated
+                                    ]}
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={6}>
+                                <OverviewChartCard
+                                    {...OverviewChartConfig[
+                                        OverviewMetric.TicketsClosed
+                                    ]}
+                                />
+                            </DashboardGridCell>
+                        </>
+                    )}
+
                     {!isAnalyticsProductivityMetricsEnabled ? (
                         <>
                             <DashboardGridCell size={6}>
@@ -326,7 +371,7 @@ export default function SupportPerformanceOverview() {
                 <AnalyticsFooter />
             </StatsPage>
 
-            {iAnalyticsProductivityMetricsEnabled && isVersionBannerVisible ? (
+            {isAnalyticsProductivityMetricsEnabled && isVersionBannerVisible ? (
                 <BannerNotification
                     actionHTML={
                         <Link to="/app/stats/support-performance-overview-legacy">

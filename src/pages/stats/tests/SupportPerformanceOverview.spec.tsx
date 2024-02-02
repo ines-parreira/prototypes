@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment'
+import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
@@ -54,6 +55,13 @@ const supportPerformanceTipMock = assumeMock(SupportPerformanceTip)
 jest.mock('pages/stats/support-performance/components/OverviewChartCard')
 const overviewChartCardMock = assumeMock(OverviewChartCard)
 
+jest.mock(
+    'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard.tsx'
+)
+const ticketsCreatedVsClosedChartCardMock = assumeMock(
+    TicketsCreatedVsClosedChartCard
+)
+
 jest.mock('pages/stats/support-performance/components/WorkloadPerChannelChart')
 const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 
@@ -88,6 +96,9 @@ describe('<SupportPerformanceOverview />', () => {
         ))
         supportPerformanceTipMock.mockImplementation(() => (
             <div>{TIP_PLACEHOLDER}</div>
+        ))
+        ticketsCreatedVsClosedChartCardMock.mockImplementation(() => (
+            <div>TicketsCreatedVsClosedChartCardMock</div>
         ))
         workloadPerChannelChartMock.mockImplementation(() => (
             <div>workloadPerChannelChartMock</div>

@@ -1,10 +1,7 @@
-import {UseQueryResult} from '@tanstack/react-query'
 import React from 'react'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
 import ChartCard from 'pages/stats/ChartCard'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
@@ -21,11 +18,7 @@ export const OverviewChartCard = ({
 }: {
     title: string
     hint: string
-    useTimeSeries: (
-        filters: StatsFilters,
-        timezone: string,
-        granularity: ReportingGranularity
-    ) => UseQueryResult<TimeSeriesDataItem[][]>
+    useTimeSeries: TimeSeriesHook
 }) => {
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
