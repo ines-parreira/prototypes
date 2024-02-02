@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
-import moment from 'moment-timezone'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useGetConvertStatus, {
     BundleOnboardingStatus,
@@ -14,6 +13,7 @@ import {isEnterprisePrice} from 'models/billing/utils'
 import {ProductType} from 'models/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentConvertProduct} from 'state/billing/selectors'
+import {isExceedingPlanLimit} from 'pages/settings/revenue/utils/isExceedingPlanLimit'
 
 type Props = {
     classes?: string
@@ -38,24 +38,11 @@ export const ConvertLimitBanner = ({
     } = useMemo(() => {
         if (!status) return {}
 
-        const cycleStart = status.cycle_start && moment.utc(status.cycle_start)
-        const cycleEnd = status.cycle_start && moment.utc(status.cycle_end)
-
         return {
             isLimitReached:
                 status.usage_status === UsageStatus.LIMIT_REACHED &&
                 status.bundle_status === BundleOnboardingStatus.INSTALLED,
-            isExceedingUsage:
-                status.usage_status === UsageStatus.OK &&
-                status.bundle_status === BundleOnboardingStatus.INSTALLED &&
-                status.last_warning_100_at &&
-                status.estimated_reach_date &&
-                cycleStart &&
-                cycleEnd &&
-                cycleStart <= moment.utc(status.last_warning_100_at) &&
-                moment.utc(status.last_warning_100_at) <= cycleEnd &&
-                cycleStart <= moment.utc(status.estimated_reach_date) &&
-                moment.utc(status.estimated_reach_date) <= cycleEnd,
+            isExceedingUsage: isExceedingPlanLimit(status),
             isAutoUpgradeEnabled: status.auto_upgrade_enabled,
             estimatedReachDate:
                 status.estimated_reach_date &&

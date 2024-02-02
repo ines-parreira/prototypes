@@ -40,6 +40,7 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
 import {ProductType} from 'models/billing/types'
 import {isEnterprisePrice} from 'models/billing/utils'
+import {isExceedingPlanLimit} from 'pages/settings/revenue/utils/isExceedingPlanLimit'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -325,15 +326,8 @@ const BillingStartView = () => {
                     type: AlertType.Error,
                 })
             } else if (
-                convertStatus.usage_status === UsageStatus.OK &&
-                convertStatus.last_warning_100_at &&
-                convertStatus.cycle_start &&
-                convertStatus.cycle_end &&
-                moment.utc(convertStatus.cycle_start) <=
-                    moment.utc(convertStatus.last_warning_100_at) &&
-                moment.utc(convertStatus.last_warning_100_at) <=
-                    moment.utc(convertStatus.cycle_end) &&
-                convertStatus.estimated_reach_date
+                convertStatus.estimated_reach_date &&
+                isExceedingPlanLimit(convertStatus)
             ) {
                 const estimatedDate = formatDatetime(
                     convertStatus.estimated_reach_date,

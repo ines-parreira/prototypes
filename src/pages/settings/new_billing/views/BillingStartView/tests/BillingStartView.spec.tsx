@@ -120,5 +120,23 @@ describe('BillingStartView', () => {
 
             expect(queryByText(warningText, {exact: false})).toBeInTheDocument()
         })
+
+        it('should not render warming because estimation is outside of cycle', () => {
+            useGetConvertStatusMock.mockReturnValue({
+                ...convertStatusOkWarning,
+                estimated_reach_date: '2023-04-01T00:00:00.000Z',
+            })
+
+            const {queryByText} = renderWithRouter(
+                <WrappedBillingStartView />,
+                {
+                    route: BILLING_BASE_PATH,
+                }
+            )
+
+            expect(
+                queryByText(warningText, {exact: false})
+            ).not.toBeInTheDocument()
+        })
     })
 })

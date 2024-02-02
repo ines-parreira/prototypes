@@ -1,5 +1,5 @@
 import {AxiosError} from 'axios'
-import {transformBundleError} from './transformBundleError'
+import {transformBundleError} from '../transformBundleError'
 
 const integrationId = 1
 const operationError = 'Bundle install problem'
