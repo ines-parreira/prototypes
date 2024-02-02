@@ -13,18 +13,13 @@ import {AxiosError} from 'axios'
 import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
 import {UploadType} from 'common/types'
 import {uploadFiles} from 'common/utils'
-import {ConnectedAction} from '../../../../state/types'
-import {notify as notifyAction} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {
-    getFileTooLargeError,
-    getMaxAttachmentSize,
-} from '../../../../utils/file'
-import {
-    DEFAULT_IMAGE_WIDTH,
-    DEFAULT_VIDEO_WIDTH,
-} from '../../../../config/editor'
-import {getEntitySelectionState, linkify} from '../../../../utils/editor'
+import {DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH} from 'config/editor'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {ConnectedAction} from 'state/types'
+import {getEntitySelectionState} from 'utils/editor'
+import {getFileTooLargeError, getMaxAttachmentSize} from 'utils/file'
+import {linkify} from 'utils/linkify'
 
 import {PluginMethods} from './types'
 

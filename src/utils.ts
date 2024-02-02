@@ -48,7 +48,7 @@ import {UserRole} from './config/types/user'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
 import {envVars, isProduction, isStaging} from './utils/environment'
-import {linkify} from './utils/editor'
+import {linkify} from './utils/linkify'
 import {GorgiasApiResponseDataError} from './models/api/types'
 import {DateTimeResultFormatType} from './constants/datetime'
 
@@ -420,7 +420,18 @@ export function stripHTML(text: string): Maybe<string> {
     }
 }
 
-export const replaceAttachmentURL = (url: string, format?: string) => {
+export const replaceAttachmentURLToExternalSource = (url: string) => {
+    const regex = new RegExp(/(.*?)(?:[&?]format.*)?$/i)
+    const src = url.match(regex)?.[1] ?? url
+
+    return replaceAttachmentURL(src, undefined, true)
+}
+
+export const replaceAttachmentURL = (
+    url: string,
+    format?: string,
+    isInternalSource?: boolean
+) => {
     const ATTACHMENT_PATH = 'api/attachment/download'
     const accountDomain = window.GORGIAS_STATE.currentAccount.domain
 
@@ -437,29 +448,38 @@ export const replaceAttachmentURL = (url: string, format?: string) => {
         const hostnameTLD = location.hostname.split('.').pop()
         const tld = hostnameTLD === 'io' ? 'io' : 'com'
 
-        return (
-            url.replace(
-                '//uploads.gorgias.io',
-                `//${accountDomain}.gorgias.${tld}/${ATTACHMENT_PATH}`
-            ) + formatParam
-        )
+        return isInternalSource
+            ? url.replace(
+                  `//${accountDomain}.gorgias.${tld}/${ATTACHMENT_PATH}`,
+                  '//uploads.gorgias.io'
+              )
+            : url.replace(
+                  '//uploads.gorgias.io',
+                  `//${accountDomain}.gorgias.${tld}/${ATTACHMENT_PATH}`
+              ) + formatParam
     }
 
     if (isStaging()) {
-        return (
-            url.replace(
-                '//uploads.gorgias.xyz',
-                `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
-            ) + formatParam
-        )
+        return isInternalSource
+            ? url.replace(
+                  `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`,
+                  '//uploads.gorgias.xyz'
+              )
+            : url.replace(
+                  '//uploads.gorgias.xyz',
+                  `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
+              ) + formatParam
     }
 
-    return (
-        url.replace(
-            'https://uploads.gorgi.us/development',
-            `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
-        ) + formatParam
-    )
+    return isInternalSource
+        ? url.replace(
+              `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`,
+              'https://uploads.gorgi.us/development'
+          )
+        : url.replace(
+              'https://uploads.gorgi.us/development',
+              `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
+          ) + formatParam
 }
 
 const _proxyImageSignedURL = (url: string): string => {

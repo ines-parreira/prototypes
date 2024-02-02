@@ -4,17 +4,21 @@ import {connect, ConnectedProps} from 'react-redux'
 import ReactPlayer from 'react-player'
 
 import Button from 'pages/common/components/button/Button'
+import {
+    addVideo,
+    linkifyWithTemplate,
+    removeLink,
+} from 'pages/common/draftjs/plugins/utils'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
     focusToTheEndOfContent,
     getEntitySelectionState,
     getSelectedEntityKey,
     getSelectedText,
-    linkify,
 } from 'utils/editor'
 import {linkEditionEnded, linkEditionStarted} from 'state/ui/editor/actions'
+import {linkify} from 'utils/linkify'
 
-import {addVideo, linkifyWithTemplate, removeLink} from '../../utils'
 import {ActionInjectedProps} from '../types'
 import {ToolbarContextType, withToolbarContext} from '../ToolbarContext'
 import Popover from './ButtonPopover'

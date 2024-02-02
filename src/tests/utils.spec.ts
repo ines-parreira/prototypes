@@ -594,6 +594,16 @@ describe('global utils', () => {
                 'http://acme.gorgias.docker/api/attachment/download/foo/bar.pdf'
             )
         })
+
+        it('should replace attachment url from internal to external source', () => {
+            ;(isDevelopment as jest.Mock).mockReturnValueOnce(true)
+
+            expect(
+                utils.replaceAttachmentURLToExternalSource(
+                    'http://acme.gorgias.docker/api/attachment/download/foo/bar.pdf?format=1000x'
+                )
+            ).toBe('https://uploads.gorgi.us/development/foo/bar.pdf')
+        })
     })
 
     describe('parseMedia', () => {

@@ -6,7 +6,6 @@ import {
     convertFromHTML as _convertFromHTML,
     IConvertFromHTMLConfig,
 } from 'draft-convert'
-import linkifyIt from 'linkify-it'
 import {
     ContentBlock,
     ContentState,
@@ -22,6 +21,7 @@ import {
     getQuoteDepth,
     QUOTE_DEPTH_DATA_KEY,
 } from 'pages/common/draftjs/plugins/quotes/quotesEditorUtils'
+import {replaceAttachmentURLToExternalSource} from 'utils'
 
 import {DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH} from '../config/editor'
 import {availableVariables} from '../config/rules'
@@ -29,6 +29,7 @@ import {availableVariables} from '../config/rules'
 import {countWords, truncateWords} from './string'
 import {ComposedElements} from './react'
 import {parseHtml} from './html'
+import {linkify} from './linkify'
 
 const QUOTE_CLASS_NAME = 'gorgias_quote'
 const QUOTE_DEPTH_DATASET_KEY = 'gorgiasQuoteDepth'
@@ -133,13 +134,6 @@ const QUOTE_HTML_ELEMENT = (
         }}
     />
 )
-
-// note that 2 letters tlds are automatically interpreted
-const tlds =
-    'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(
-        ' '
-    )
-export const linkify = linkifyIt().tlds(tlds)
 
 /**
  * Temporarily adds an uid at the end of each {{variable}} (eg. {{variable}}123),
@@ -380,11 +374,15 @@ export function convertFromHTML(html: string): ContentState {
             }
 
             if (nodeName === 'img') {
+                const src = replaceAttachmentURLToExternalSource(
+                    (node as HTMLImageElement).src
+                )
+
                 return createEntity(
                     draftjsGorgiasCustomBlockRenderers.Img,
                     'MUTABLE',
                     {
-                        src: (node as HTMLImageElement).src,
+                        src,
                         width:
                             (node as HTMLImageElement).width ||
                             DEFAULT_IMAGE_WIDTH,

@@ -6,8 +6,9 @@ import {
     DecoratorStrategyCallback,
     DecoratorComponentProps,
     Decorator,
-} from '../../types'
-import {linkify} from '../../../../../../utils/editor'
+} from 'pages/common/draftjs/plugins/types'
+import {linkify} from 'utils/linkify'
+
 import LinkPopover from '../components/LinkPopover'
 
 const foundUrl = (): Decorator => ({
