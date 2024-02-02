@@ -96,16 +96,17 @@ const HelpCenterCreationWizard = ({
                                 automateType={automateType}
                             />
                         </WizardStep>
-                        {automateType === HelpCenterAutomateType.AUTOMATE && (
-                            <WizardStep
-                                name={HelpCenterCreationWizardStep.Automate}
-                            >
-                                <HelpCenterCreationWizardStepAutomate
-                                    helpCenter={helpCenter}
-                                    isUpdate={!!isUpdate}
-                                />
-                            </WizardStep>
-                        )}
+                        {automateType === HelpCenterAutomateType.AUTOMATE &&
+                            helpCenter && (
+                                <WizardStep
+                                    name={HelpCenterCreationWizardStep.Automate}
+                                >
+                                    <HelpCenterCreationWizardStepAutomate
+                                        helpCenter={helpCenter}
+                                        isUpdate={!!isUpdate}
+                                    />
+                                </WizardStep>
+                            )}
                     </Wizard>
                 </div>
             </div>
