@@ -23,6 +23,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isVoiceAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
+    const displayVoiceAnalyticsV1: boolean | undefined =
+        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
     const isConvertSubscriber = useIsConvertSubscriber()
 
@@ -241,6 +243,13 @@ export default function StatsNavbarView() {
                         title={'Overview'}
                         commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                     />
+                    {displayVoiceAnalyticsV1 && (
+                        <VoiceStatsNavbarItem
+                            to={'/app/stats/voice-agents'}
+                            title={'Agents'}
+                            commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                        />
+                    )}
                 </NavbarBlock>
             )}
         </>

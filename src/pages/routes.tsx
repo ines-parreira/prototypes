@@ -129,6 +129,7 @@ import {
 import CampaignStatsPaywallView from 'pages/stats/revenue/pages/CampaignsStats/CampaignStatsPaywallView'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
+import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import ClickTrackingSettingsView from 'pages/settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
 import {
@@ -496,6 +497,8 @@ export function StatsRoutes() {
 
     const displayVoiceAnalytics: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
+    const displayVoiceAnalyticsV1: boolean | undefined =
+        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -718,6 +721,18 @@ export function StatsRoutes() {
                             render={() => (
                                 <App
                                     content={VoiceOverview}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            )}
+                        />
+                    )}
+                    {displayVoiceAnalyticsV1 && (
+                        <Route
+                            exact
+                            path={`${path}/voice-agents`}
+                            render={() => (
+                                <App
+                                    content={VoiceAgents}
                                     navbar={StatsNavbarContainer}
                                 />
                             )}

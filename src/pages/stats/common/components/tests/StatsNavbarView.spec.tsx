@@ -129,6 +129,7 @@ describe('StatsNavbarView', () => {
     it('should render the link to the Voice Overview (FF on)', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.DisplayVoiceAnalytics]: true,
+            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
         }))
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
@@ -139,5 +140,6 @@ describe('StatsNavbarView', () => {
         )
 
         expect(screen.getByText('Voice')).toBeInTheDocument()
+        expect(screen.getAllByText('Agents')).toHaveLength(3)
     })
 })

@@ -43,6 +43,7 @@ export enum FeatureFlagKey {
     DecoupleContactForm = 'decouple-contact-form',
     DisplayVoiceAnalytics = 'display-voice-analytics',
     DisplayVoiceAnalyticsNiceToHave = 'display-voice-analytics-nice-to-have',
+    DisplayVoiceAnalyticsV1 = 'display-voice-analytics-v-1',
     EarlyAdopter = 'early-adopter',
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     EnableNewLanguages = 'enable-new-languages',

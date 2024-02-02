@@ -26,6 +26,9 @@ jest.mock(
 jest.mock('pages/stats/voice/pages/VoiceOverview', () => () => (
     <div>Voice Overview</div>
 ))
+jest.mock('pages/stats/voice/pages/VoiceAgents', () => () => (
+    <div>Voice Agents</div>
+))
 const mockHistory = createBrowserHistory()
 
 describe('<StatsRoutes/>', () => {
@@ -86,5 +89,29 @@ describe('<StatsRoutes/>', () => {
         act(() => mockHistory.push('/stats/voice-overview'))
 
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeNull()
+    })
+
+    it('should make Voice agents route available', async () => {
+        mockFlags({
+            [FeatureFlagKey.DisplayVoiceAnalytics]: true,
+            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
+        })
+        const {findByText} = renderStatsRoutes()
+
+        act(() => mockHistory.push('/stats/voice-agents'))
+
+        expect(await findByText('Voice Agents')).toBeInTheDocument()
+    })
+
+    it('should not make Voice agents route available (FF off)', () => {
+        mockFlags({
+            [FeatureFlagKey.DisplayVoiceAnalytics]: false,
+            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: false,
+        })
+        const {queryByText} = renderStatsRoutes()
+
+        act(() => mockHistory.push('/stats/voice-agents'))
+
+        expect(queryByText('Voice Agents')).toBeNull()
     })
 })

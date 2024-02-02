@@ -1,0 +1,101 @@
+import React from 'react'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+import {fromJS, Map} from 'immutable'
+import {fireEvent, render} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {user} from 'fixtures/users'
+import {account} from 'fixtures/account'
+import {AccountFeature} from 'state/currentAccount/types'
+import {StatsFilters} from 'models/stat/types'
+import {agents} from 'fixtures/agents'
+import {billingState} from 'fixtures/billing'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {VOICE_AGENTS_PAGE_TITLE} from 'pages/stats/voice/constants/voiceAgents'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {RootState, StoreDispatch} from 'state/types'
+import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
+import VoiceAgents from '../VoiceAgents'
+
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
+
+const queryClient = mockQueryClient()
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+describe('VoiceAgents', () => {
+    beforeEach(() => {
+        resetLDMocks()
+        mockFlags({[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true})
+    })
+
+    const renderVoiceAgents = (featureEnabled = true) => {
+        const statsFilters: StatsFilters = {
+            period: {
+                start_datetime: '2023-12-11T00:00:00.000Z',
+                end_datetime: '2023-12-11T23:59:59.999Z',
+            },
+            agents: [agents[0].id],
+        }
+        const state = {
+            currentUser: fromJS(user) as Map<any, any>,
+            currentAccount: fromJS({
+                current_subscription: account.current_subscription,
+                features: fromJS({
+                    [AccountFeature.PhoneNumber]: {
+                        enabled: featureEnabled,
+                    },
+                }),
+            }),
+            billing: fromJS(billingState),
+            stats: fromJS({
+                filters: statsFilters,
+            }),
+            integrations: fromJS({integrations: []}),
+            ui: {
+                stats: {
+                    cleanStatsFilters: statsFilters,
+                    isFilterDirty: false,
+                    fetchingMap: {},
+                },
+            },
+        } as RootState
+
+        return render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <VoiceAgents />
+                </Provider>
+            </QueryClientProvider>
+        )
+    }
+
+    it('should render page', () => {
+        const {queryByText} = renderVoiceAgents()
+
+        // title
+        expect(queryByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
+
+        // footer
+        expect(
+            queryByText('Analytics are using EST timezone')
+        ).toBeInTheDocument()
+    })
+
+    it('should render paywall page', () => {
+        const {getByText} = renderVoiceAgents(false)
+
+        expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
+        expect(getByText('Voice add-on features')).toBeInTheDocument()
+        expect(getByText('Learn more')).toBeInTheDocument()
+        fireEvent.click(getByText('Learn more'))
+        expect(window.open).toHaveBeenCalledWith(
+            VOICE_LEARN_MORE_URL,
+            '_blank',
+            'noopener noreferrer'
+        )
+    })
+})
