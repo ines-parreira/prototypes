@@ -75,7 +75,7 @@ import {
     SplitTicketViewToggle,
 } from 'split-ticket-view-toggle'
 
-import {hasRole} from 'utils'
+import {hasRole, isTicketPath} from 'utils'
 import {systemViewIcons} from 'utils/views'
 
 import DeleteSectionModal from './DeleteSectionModal'
@@ -125,6 +125,7 @@ export function TicketNavbarContainer({
 }: Props) {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
+
     const history = useHistory()
     const params = useParams<{viewId?: string}>()
     const {viewId} = useSearch<{viewId?: string}>()
@@ -454,7 +455,10 @@ export function TicketNavbarContainer({
                 disableResize={disableResize}
                 navbarContentRef={scrollableAreaRef}
                 splitTicketViewToggle={
-                    hasSplitTicketView ? <SplitTicketViewToggle /> : undefined
+                    hasSplitTicketView &&
+                    isTicketPath(window.location.pathname) ? (
+                        <SplitTicketViewToggle />
+                    ) : undefined
                 }
             >
                 <RecentChats />

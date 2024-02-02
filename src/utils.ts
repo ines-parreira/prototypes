@@ -771,6 +771,22 @@ export const isCurrentlyOnChatCampaignDetailsPage = (): boolean => {
     return regex.test(window.location.pathname)
 }
 
+/**
+ * Return true if user is currently on a ticket / views page.
+ * It will return true if user is on :
+ * - strictly '/app' with nothing after
+ * - strictly '/app/tickets' with nothing after
+ * - strictly '/app/views' with nothing after
+ * - any path starting with and containing '/app/ticket/' or '/app/tickets/'
+ * - any path starting with and containing '/app/views/'
+ * - it will exclude '/app/ticket/new'
+ */
+export const isTicketPath = (path: string) => {
+    const regex =
+        /^\/app(?:\/tickets)?(?:\/views)?(?:\/ticket(?:\/(?!new).*)?|\/tickets\/.*|\/views\/.*)?$/
+    return regex.test(path)
+}
+
 export const isCurrentlyOnCustomerPage = (customerId: string | number) => {
     return (
         window.location.pathname === `/app/customer/${customerId}` ||

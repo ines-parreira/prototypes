@@ -284,6 +284,23 @@ describe('global utils', () => {
         })
     })
 
+    describe('isTicketPath', () => {
+        it('should return true when the current location is a ticket / views page, or the start page', () => {
+            expect(utils.isTicketPath('/app')).toBe(true)
+            expect(utils.isTicketPath('/app/tickets')).toBe(true)
+            expect(utils.isTicketPath('/app/tickets/1')).toBe(true)
+            expect(utils.isTicketPath('/app/ticket/1')).toBe(true)
+            expect(utils.isTicketPath('/app/views')).toBe(true)
+            expect(utils.isTicketPath('/app/views/1')).toBe(true)
+        })
+        it('should not return true when the current location is not a ticket / views page', () => {
+            expect(utils.isTicketPath('/app/home')).toBe(false)
+        })
+        it('should exclude the new ticket page', () => {
+            expect(utils.isTicketPath('/app/ticket/new')).toBe(false)
+        })
+    })
+
     describe('isCurrentlyOnCustomerPage', () => {
         it("should return true when the current location is the customer's URL", () => {
             window.location.pathname = '/app/customer/1'
