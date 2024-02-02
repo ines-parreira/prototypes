@@ -1,5 +1,6 @@
 import React from 'react'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
+import {Language} from 'constants/languages'
 import {
     HelpCenterCreationWizardStep,
     LocaleCode,
@@ -247,3 +248,29 @@ export const HELP_CENTER_STEPS_DESCRIPTIONS: Partial<
     [HelpCenterCreationWizardStep.Automate]:
         'Start getting the most from Automate now.',
 }
+
+export enum PlatformType {
+    ECOMMERCE = 'ecommerce',
+    WEBSITE = 'website',
+}
+
+export type HelpCenterCreationWizard = {
+    name: string
+    subdomain: string
+    defaultLocale: LocaleCode
+    supportedLocales: LocaleCode[]
+    platformType: PlatformType
+    stepName: HelpCenterCreationWizardStep
+    shopName: string
+}
+
+export enum NEXT_ACTION {
+    BACK_HOME = 'back_home',
+    NEXT_STEP = 'next_step',
+    PREVIOUS_STEP = 'previous_step',
+    NEW_WIZARD = 'new_wizard',
+}
+
+export const HELP_CENTER_LANGUAGE_DEFAULT_UI = [
+    {value: Language.EnglishUs, label: 'English', isDefault: true},
+]

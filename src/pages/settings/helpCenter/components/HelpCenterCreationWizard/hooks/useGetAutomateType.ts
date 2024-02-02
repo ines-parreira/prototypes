@@ -1,20 +1,23 @@
 import useAppSelector from 'hooks/useAppSelector'
 import {HelpCenterAutomateType} from 'models/helpCenter/types'
-import {useShopifyStoreWithChatConnectionsOptions} from 'pages/settings/helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'
+import {IntegrationType} from 'models/integration/constants'
 import {getHasAutomate} from 'state/billing/selectors'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 
 const useGetAutomateType = (): HelpCenterAutomateType => {
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const shopifyShopsOptions = useShopifyStoreWithChatConnectionsOptions({
-        option: '',
-        icon: '',
-        connectedChatsCount: '',
-    })
+    const allStoreIntegrations = useAppSelector(
+        getIntegrationsByTypes([
+            IntegrationType.Shopify,
+            IntegrationType.BigCommerce,
+            IntegrationType.Magento2,
+        ])
+    )
 
     if (!hasAutomate) return HelpCenterAutomateType.NON_AUTOMATE
 
-    if (!shopifyShopsOptions?.length)
+    if (!allStoreIntegrations?.length)
         return HelpCenterAutomateType.AUTOMATE_NO_STORE
 
     return HelpCenterAutomateType.AUTOMATE

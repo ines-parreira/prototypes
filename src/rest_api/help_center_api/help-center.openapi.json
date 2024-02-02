@@ -4238,7 +4238,11 @@
             "WizardStepDataVo": {
                 "type": "object",
                 "properties": {
-                    "platform_type": {"type": "object", "example": "ecommerce"}
+                    "platform_type": {
+                        "type": "string",
+                        "example": "ecommerce",
+                        "enum": ["ecommerce", "website"]
+                    }
                 },
                 "required": ["platform_type"]
             },

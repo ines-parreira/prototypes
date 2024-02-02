@@ -60,6 +60,7 @@ type Props = {
     container?: ComponentProps<typeof DropdownMenu>['container']
     caption?: ReactNode
     showSelectedOption?: boolean
+    isSearchable?: boolean
 }
 
 type State = {
@@ -82,6 +83,7 @@ export default class SelectField extends Component<Props, State> {
         fixedWidth: false,
         fullWidth: false,
         required: false,
+        isSearchable: true,
     }
     inputRef: RefObject<HTMLInputElement>
 
@@ -386,6 +388,7 @@ export default class SelectField extends Component<Props, State> {
             customIcon,
             container,
             caption,
+            isSearchable,
         } = this.props
         const {
             filteredOptions,
@@ -488,26 +491,28 @@ export default class SelectField extends Component<Props, State> {
                                                 ? focusedPlaceholder
                                                 : placeholder)}
                                     </span>
-                                    {/* eslint-disable-next-line jsx-a11y/autocomplete-valid */}
-                                    <input
-                                        style={{
-                                            minWidth: selectMinWidth,
-                                        }}
-                                        id={id!}
-                                        className={classnames(css.input, {
-                                            [css.iconPadding]: !!icon,
-                                        })}
-                                        disabled={disabled}
-                                        ref={this.inputRef}
-                                        value={input}
-                                        required={required && !value}
-                                        onChange={this._onSearchChange}
-                                        onKeyDown={this._onSearchKeyDown}
-                                        onFocus={this._onFocus}
-                                        onBlur={this._onBlur}
-                                        type="text"
-                                        autoComplete="chrome-off"
-                                    />
+                                    {isSearchable && (
+                                        /* eslint-disable-next-line jsx-a11y/autocomplete-valid */
+                                        <input
+                                            style={{
+                                                minWidth: selectMinWidth,
+                                            }}
+                                            id={id!}
+                                            className={classnames(css.input, {
+                                                [css.iconPadding]: !!icon,
+                                            })}
+                                            disabled={disabled}
+                                            ref={this.inputRef}
+                                            value={input}
+                                            required={required && !value}
+                                            onChange={this._onSearchChange}
+                                            onKeyDown={this._onSearchKeyDown}
+                                            onFocus={this._onFocus}
+                                            onBlur={this._onBlur}
+                                            type="text"
+                                            autoComplete="chrome-off"
+                                        />
+                                    )}
                                     <i
                                         className={classnames(
                                             'material-icons',

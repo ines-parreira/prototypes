@@ -2,12 +2,29 @@
 @import (reference) '~css/typography';
 
 :local {
-    .inputLabel {
-        margin-bottom: @layout-spacing-xs;
+    .basicStepContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-l;
     }
 
-    .inputGroup {
-        margin-bottom: @layout-spacing-m;
+    .brandContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 16px;
+
+        .subdomainInput {
+            border: none;
+        }
+    }
+
+    .label {
+        display: inline-block;
+        padding-bottom: @layout-spacing-xs;
+    }
+
+    .iconTooltip {
+        display: inline-block;
     }
 
     .defaultLanguageGroup {
@@ -18,15 +35,13 @@
     }
 
     .connectStoreDescription {
+        margin-top: @layout-spacing-xxs;
         margin-bottom: @layout-spacing-s;
-    }
-
-    .section {
-        margin-bottom: @layout-spacing-xl;
     }
 
     .sectionHeading {
         .heading-section-semibold();
+        margin-top: @layout-spacing-s;
         margin-bottom: @layout-spacing-m;
     }
 
@@ -45,34 +60,16 @@
     .error {
         .caption-regular();
         color: var(--feedback-error);
-        margin-top: 4px;
+        margin-top: @layout-spacing-xxs;
     }
 
-    .info {
-        .caption-regular();
-        color: var(--neutral-grey-4);
-        margin-top: 4px;
+    .storeOption {
+        display: flex;
+        align-items: center;
     }
 
-    .languageSelect :global(.dropdown-toggle) {
-        justify-content: space-between;
-    }
-
-    .languageSelectDropdownMenu {
-        width: 100%;
-        max-width: none;
-    }
-
-    .label.languageLabel {
-        font-weight: 600;
-        color: var(--neutral-grey-6);
-    }
-
-    .tooltipIcon {
-        color: var(--neutral-grey-4);
-
-        &:hover {
-            color: var(--neutral-grey-5);
-        }
+    .storeIcon {
+        width: 20px;
+        margin-right: 10px;
     }
 }

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
+import {Language as LanguageEnum} from 'constants/languages'
 import DropdownButtonWithSearch from '../DropdownButtonWithSearch/DropdownButtonWithSearch'
 import css from './LanguagePicker.less'
 
@@ -19,7 +20,8 @@ export interface LanguagePicker {
 
 export const LanguagePicker: React.FC<LanguagePicker> = (props) => {
     const [defaultLanguage, setDefaultLanguage] = React.useState(
-        props.languages.find((language) => language.isDefault) as Language
+        (props.languages.find((language) => language.isDefault) as Language) ||
+            LanguageEnum.EnglishUs
     )
     const [selectedLanguages, setSelectedLanguages] = React.useState(
         props.languages.filter((language) => !language.isDefault)
@@ -96,19 +98,21 @@ export const LanguagePicker: React.FC<LanguagePicker> = (props) => {
                 )}
             </div>
 
-            <div className={css.languageList}>
-                {selectedLanguages.map((language) => (
-                    <BadgeItem
-                        key={language.value}
-                        id={language.value as any}
-                        isClosable
-                        label={language.label}
-                        onClose={(ev: React.MouseEvent) =>
-                            onRemoveLanguage(ev, language)
-                        }
-                    />
-                ))}
-            </div>
+            {!!selectedLanguages.length && (
+                <div className={css.languageList}>
+                    {selectedLanguages.map((language) => (
+                        <BadgeItem
+                            key={language.value}
+                            id={language.value as any}
+                            isClosable
+                            label={language.label}
+                            onClose={(ev: React.MouseEvent) =>
+                                onRemoveLanguage(ev, language)
+                            }
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     )
 }

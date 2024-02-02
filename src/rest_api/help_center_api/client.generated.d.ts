@@ -1264,8 +1264,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: {
-          };
+          platform_type: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -1528,8 +1527,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: {
-          };
+          platform_type: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -1610,8 +1608,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: {
-          };
+          platform_type: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -1702,8 +1699,7 @@ declare namespace Components {
          * example:
          * ecommerce
          */
-        platform_type: {
-        };
+        platform_type: "ecommerce" | "website";
       } | null;
       completed?: boolean | null;
     }
@@ -2383,8 +2379,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: {
-          };
+          platform_type: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -2534,8 +2529,7 @@ declare namespace Components {
        * example:
        * ecommerce
        */
-      platform_type: {
-      };
+      platform_type: "ecommerce" | "website";
     }
     export interface WorkflowHandoverDto {
       contact_form_uid?: string;

@@ -1,4 +1,5 @@
-import {useQuery, UseQueryOptions} from '@tanstack/react-query'
+import {useQuery, UseQueryOptions, useMutation} from '@tanstack/react-query'
+import {MutationOverrides} from 'types/query'
 import {Paths} from '../../rest_api/help_center_api/client.generated'
 import {useHelpCenterApi} from '../../pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
@@ -6,6 +7,11 @@ import {
     getCategoryTree,
     getHelpCenter,
     getHelpCenterArticle,
+    createHelpCenter,
+    updateHelpCenter,
+    createHelpCenterTranslation,
+    deleteHelpCenterTranslation,
+    checkHelpCenterWithSubdomainExists,
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
@@ -138,5 +144,70 @@ export const useGetHelpCenter = (
         staleTime: STALE_TIME,
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useCreateHelpCenter = (
+    overrides?: MutationOverrides<typeof createHelpCenter>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, data]) =>
+            createHelpCenter(client, data),
+        ...overrides,
+    })
+}
+
+export const useUpdateHelpCenter = (
+    overrides?: MutationOverrides<typeof updateHelpCenter>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            updateHelpCenter(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useCreateHelpCenterTranslation = (
+    overrides?: MutationOverrides<typeof createHelpCenterTranslation>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            createHelpCenterTranslation(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useDeleteHelpCenterTranslation = (
+    overrides?: MutationOverrides<typeof deleteHelpCenterTranslation>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams]) =>
+            deleteHelpCenterTranslation(client, pathParams),
+        ...overrides,
+    })
+}
+
+export const useCheckHelpCenterWithSubdomainExists = (
+    subdomain: string,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof checkHelpCenterWithSubdomainExists>>
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: ['help-center', 'check-subdomain', subdomain],
+        queryFn: async () =>
+            checkHelpCenterWithSubdomainExists(client, {subdomain}),
+        retry: false,
+        ...overrides,
     })
 }

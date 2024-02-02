@@ -438,6 +438,7 @@ exports[`SelectField should use custom props 1`] = `
   "fixedWidth": false,
   "fullWidth": false,
   "id": null,
+  "isSearchable": true,
   "onChange": [MockFunction],
   "onSearchChange": [Function],
   "options": [
@@ -468,6 +469,7 @@ exports[`SelectField should use default props 1`] = `
   "fixedWidth": false,
   "fullWidth": false,
   "id": null,
+  "isSearchable": true,
   "onChange": [MockFunction],
   "onSearchChange": [Function],
   "options": [],

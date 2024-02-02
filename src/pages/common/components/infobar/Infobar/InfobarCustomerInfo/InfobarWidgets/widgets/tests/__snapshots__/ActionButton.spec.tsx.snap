@@ -217,6 +217,7 @@ exports[`ActionButton component should display a single option with a select par
           fixedWidth={false}
           fullWidth={false}
           id={null}
+          isSearchable={true}
           key="param"
           label="Execute the action for real"
           name="param"
@@ -472,6 +473,7 @@ exports[`ActionButton component should display multiple options with a common pa
           fixedWidth={false}
           fullWidth={false}
           id={null}
+          isSearchable={true}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
@@ -594,6 +596,7 @@ exports[`ActionButton component should display multiple options with different p
           fixedWidth={false}
           fullWidth={false}
           id={null}
+          isSearchable={true}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
@@ -716,6 +719,7 @@ exports[`ActionButton component should display multiple options without paramete
           fixedWidth={false}
           fullWidth={false}
           id={null}
+          isSearchable={true}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}

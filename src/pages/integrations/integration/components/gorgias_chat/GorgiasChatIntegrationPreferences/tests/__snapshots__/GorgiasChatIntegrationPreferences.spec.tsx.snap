@@ -1423,6 +1423,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               fixedWidth={false}
               fullWidth={true}
               id={null}
+              isSearchable={true}
               onChange={[Function]}
               onSearchChange={[Function]}
               options={[]}
@@ -1948,6 +1949,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               fixedWidth={false}
               fullWidth={true}
               id={null}
+              isSearchable={true}
               onChange={[Function]}
               onSearchChange={[Function]}
               options={[]}

@@ -6,6 +6,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
   fixedWidth={false}
   fullWidth={false}
   id={null}
+  isSearchable={true}
   onChange={[Function]}
   onSearchChange={[Function]}
   options={
