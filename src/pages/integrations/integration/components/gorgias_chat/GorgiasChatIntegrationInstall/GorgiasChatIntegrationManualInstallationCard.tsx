@@ -114,9 +114,10 @@ const GorgiasChatIntegrationManualInstallationCard = ({
                 <div>
                     <div className={css.title}>Manual installation</div>
                     <div>
-                        Add the chat widget to specific pages on a Shopify store
-                        and to other e-commerce platforms or website, follow the
-                        instructions below. For more details,{' '}
+                        Add the chat widget to non-Shopify stores, Shopify
+                        Headless, specific pages on a Shopify store, or any
+                        other website by following the instructions below. For
+                        more details,{' '}
                         <a
                             target="_blank"
                             rel="noopener noreferrer"

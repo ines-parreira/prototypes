@@ -239,7 +239,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             <PreviewRadioButton
                                 isSelected={!isOneClickInstallation}
                                 label="Manual installation"
-                                caption="Add the chat widget to non-Shopify stores, specific pages on a Shopify store, or any other website."
+                                caption="Add the chat widget to non-Shopify stores, Shopify Headless, specific pages on a Shopify store, or any other website."
                                 value="false"
                                 onClick={() =>
                                     setCurrentInstallationMethod(
