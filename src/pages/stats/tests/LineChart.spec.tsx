@@ -4,6 +4,7 @@ import * as chartjs from 'chart.js'
 
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
+import {ThemeProvider} from 'theme'
 import {assumeMock} from 'utils/testing'
 
 import LineChart, {CHART_TOOLTIP_TARGET} from '../LineChart'
@@ -114,7 +115,11 @@ describe('<LineChart />', () => {
     })
 
     it('should render chart grid with right color', () => {
-        render(<LineChart data={[]} />)
+        render(
+            <ThemeProvider>
+                <LineChart data={[]} />
+            </ThemeProvider>
+        )
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const color = lastCall?.options?.scales?.y?.grid?.color as (
@@ -122,11 +127,11 @@ describe('<LineChart />', () => {
         ) => undefined
 
         expect(color({tick: {value: 0}})).toEqual(
-            colors['📺 Classic'].Main.Primary.value
+            colors['🖥 Modern'].Main.Primary.value
         )
 
         expect(color({tick: {value: 1}})).toEqual(
-            colors['📺 Classic'].Neutral.Grey_2.value
+            colors['🖥 Modern'].Neutral.Grey_2.value
         )
     })
 

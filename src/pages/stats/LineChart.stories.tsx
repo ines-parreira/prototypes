@@ -1,8 +1,9 @@
 import React, {ComponentProps} from 'react'
-import {Meta, Story} from '@storybook/react'
+import {Meta, StoryFn} from '@storybook/react'
 import moment from 'moment'
 
 import {ticketsCreatedDataItem} from 'fixtures/chart'
+import {ThemeProvider} from 'theme'
 
 import LineChart from './LineChart'
 
@@ -11,9 +12,13 @@ const storyConfig: Meta = {
     component: LineChart,
 }
 
-const Template: Story<ComponentProps<typeof LineChart>> = (props) => (
+const Template: StoryFn<ComponentProps<typeof LineChart>> = (
+    props: ComponentProps<typeof LineChart>
+) => (
     <div style={{height: '250px'}}>
-        <LineChart {...props} />
+        <ThemeProvider>
+            <LineChart {...props} />
+        </ThemeProvider>
     </div>
 )
 

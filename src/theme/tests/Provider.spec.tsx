@@ -24,6 +24,7 @@ describe('Provider', () => {
             savedTheme: 'modern light',
             theme: 'modern light',
             setTheme: expect.any(Function),
+            colorTokens: expect.any(Object),
         })
     })
 })

@@ -4,31 +4,46 @@ import {
     ChartData,
     ChartOptions,
     Scale,
-    TooltipItem,
     ScriptableScaleContext,
+    TooltipItem,
 } from 'chart.js'
-import React, {useEffect, useCallback, useMemo, useState} from 'react'
-import {Line} from 'react-chartjs-2'
-import {fromJS, Map} from 'immutable'
 
 import classNames from 'classnames'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import {fromJS, Map} from 'immutable'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {Line} from 'react-chartjs-2'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Legend from 'pages/stats/Legend'
-import css from './LineChart.less'
-import {TwoDimensionalDataItem} from './types'
-import {getGradient, renderTickLabelAsNumber} from './utils'
+import {withThemedColorTokens} from 'theme/withThemedColorTokens'
 import {GreyArea} from './ChartPluginGreyArea'
-import {useCustomTooltip} from './useCustomTooltip'
 import {ChartTooltip} from './ChartTooltip'
+import css from './LineChart.less'
 import {LineChartTooltip} from './LineChartTooltip'
+import {TwoDimensionalDataItem} from './types'
+import {useCustomTooltip} from './useCustomTooltip'
+import {getGradient, renderTickLabelAsNumber} from './utils'
 
-const STAT_COLORS = Object.freeze([
-    colors['📺 Classic'].Main.Primary.value,
-    colors['📺 Classic'].Feedback.Warning.value,
-    colors['📺 Classic'].Feedback.Success.value,
-    colors['📺 Classic'].Feedback.Error.value,
-])
+interface ChartColors {
+    Main: {
+        Primary: {
+            value: string
+        }
+    }
+    Feedback: {
+        Error: {value: string}
+        Success: {value: string}
+        Warning: {value: string}
+    }
+    Neutral: {
+        Grey_2: {
+            value: string
+        }
+        Grey_5: {
+            value: string
+        }
+    }
+}
 
 type Props = {
     data: TwoDimensionalDataItem[]
@@ -58,85 +73,110 @@ type Props = {
     }
     wrapperclassNames?: string
     skeletonHeight?: number
+    colorTokens?: ChartColors
 }
 
-const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = fromJS({
-    elements: {
-        point: {
-            pointStyle: 'circle',
-        },
-        line: {
-            borderWidth: 1,
-            cubicInterpolationMode: 'default',
-            tension: 0.5,
+const fallbackColorTokens = {
+    Main: {
+        Primary: {
+            value: colors['📺 Classic'].Main.Primary.value,
         },
     },
-    layout: {
-        padding: {
-            bottom: -8,
+    Feedback: {
+        Error: {value: colors['📺 Classic'].Feedback.Error.value},
+        Success: {value: colors['📺 Classic'].Feedback.Success.value},
+        Warning: {value: colors['📺 Classic'].Feedback.Warning.value},
+    },
+    Neutral: {
+        Grey_2: {
+            value: colors['📺 Classic'].Neutral.Grey_2.value,
+        },
+        Grey_5: {
+            value: colors['📺 Classic'].Neutral.Grey_5.value,
         },
     },
-    responsive: true,
-    scales: {
-        x: {
-            grid: {
-                display: false,
+}
+
+const LINE_OPTIONS = (
+    colorTokens: ChartColors
+): DeepPartial<ChartOptions<'line'>> =>
+    fromJS({
+        elements: {
+            point: {
+                pointStyle: 'circle',
             },
-            ticks: {
-                color: colors['📺 Classic'].Neutral.Grey_5.value,
-                font: {
-                    size: 12,
+            line: {
+                borderWidth: 1,
+                cubicInterpolationMode: 'default',
+                tension: 0.5,
+            },
+        },
+        layout: {
+            padding: {
+                bottom: -8,
+            },
+        },
+        responsive: true,
+        scales: {
+            x: {
+                grid: {
+                    display: false,
                 },
-                padding: 8,
-                autoSkipPadding: 24,
-                maxRotation: 0,
-                includeBounds: false,
-            },
-        },
-        y: {
-            title: {
-                display: false,
-            },
-            border: {
-                display: false,
-            },
-            grid: {
-                color: colors['📺 Classic'].Neutral.Grey_2.value,
-                tickColor: 'transparent',
-                tickLength: 16,
-            },
-            ticks: {
-                color: colors['📺 Classic'].Neutral.Grey_5.value,
-                font: {
-                    size: 12,
+                ticks: {
+                    color: colorTokens.Neutral.Grey_5.value,
+                    font: {
+                        size: 12,
+                    },
+                    padding: 8,
+                    autoSkipPadding: 24,
+                    maxRotation: 0,
+                    includeBounds: false,
                 },
-                maxTicksLimit: 10,
             },
-            suggestedMin: 0,
-            beginAtZero: true,
-        },
-    },
-    plugins: {
-        filler: {
-            propagate: false,
-        },
-        legend: {
-            display: false,
-        },
-        tooltip: {
-            enabled: false,
-            callbacks: {
-                title: () => undefined, // reset legacy tooltip title
+            y: {
+                title: {
+                    display: false,
+                },
+                border: {
+                    display: false,
+                },
+                grid: {
+                    color: colorTokens.Neutral.Grey_2.value,
+                    tickColor: 'transparent',
+                    tickLength: 16,
+                },
+                ticks: {
+                    color: colorTokens.Neutral.Grey_5.value,
+                    font: {
+                        size: 12,
+                    },
+                    maxTicksLimit: 10,
+                },
+                suggestedMin: 0,
+                beginAtZero: true,
             },
         },
-    },
-    maintainAspectRatio: false,
-    resizeDelay: 1000,
-})
+        plugins: {
+            filler: {
+                propagate: false,
+            },
+            legend: {
+                display: false,
+            },
+            tooltip: {
+                enabled: false,
+                callbacks: {
+                    title: () => undefined, // reset legacy tooltip title
+                },
+            },
+        },
+        maintainAspectRatio: false,
+        resizeDelay: 1000,
+    }) as DeepPartial<ChartOptions<'line'>>
 
 export const CHART_TOOLTIP_TARGET = 'lineChartTooltip'
 
-export default function LineChart({
+function LineChart({
     data,
     options,
     hasBackground,
@@ -157,15 +197,31 @@ export default function LineChart({
     wrapperclassNames,
     defaultDatasetVisibility = null,
     skeletonHeight = 250,
+    colorTokens = fallbackColorTokens,
 }: Props) {
     const [chart, setChart] = useState<Chart>()
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
     const {customTooltip, tooltipData, tooltipStyle} = useCustomTooltip()
 
+    const statColors: string[] = useMemo(
+        () => [
+            colorTokens.Main.Primary.value,
+            colorTokens.Feedback.Warning.value,
+            colorTokens.Feedback.Success.value,
+            colorTokens.Feedback.Error.value,
+        ],
+        [
+            colorTokens.Feedback.Error.value,
+            colorTokens.Feedback.Success.value,
+            colorTokens.Feedback.Warning.value,
+            colorTokens.Main.Primary.value,
+        ]
+    )
+
     const chartColors = useCallback(
-        (index: number) => customColors?.[index] || STAT_COLORS[index],
-        [customColors]
+        (index: number) => customColors?.[index] || statColors[index],
+        [customColors, statColors]
     )
     const [linesVisibility, setLinesVisibility] = useState<Record<
         number,
@@ -222,7 +278,7 @@ export default function LineChart({
 
     const lineOptions = useMemo(
         () =>
-            (LINE_OPTIONS as Map<any, any>).mergeDeep(
+            (LINE_OPTIONS(colorTokens) as Map<any, any>).mergeDeep(
                 {
                     scales: {
                         y: {
@@ -240,12 +296,10 @@ export default function LineChart({
                                         context.tick.value === 0 &&
                                         data.length === 0
                                     ) {
-                                        return colors['📺 Classic'].Main.Primary
-                                            .value
+                                        return colorTokens.Main.Primary.value
                                     }
 
-                                    return colors['📺 Classic'].Neutral.Grey_2
-                                        .value
+                                    return colorTokens.Neutral.Grey_2.value
                                 },
                             },
                             ...yAxisScale,
@@ -275,7 +329,8 @@ export default function LineChart({
                         line: {
                             tension: !isCurvedLine
                                 ? 0
-                                : LINE_OPTIONS.elements?.line?.tension,
+                                : LINE_OPTIONS(colorTokens).elements?.line
+                                      ?.tension,
                         },
                     },
                     onResize: (chart: Chart) => {
@@ -286,6 +341,7 @@ export default function LineChart({
                 fromJS(options)
             ),
         [
+            colorTokens,
             yLabel,
             renderYTickLabel,
             yAxisBeginAtZero,
@@ -362,3 +418,5 @@ export default function LineChart({
         </div>
     )
 }
+
+export default withThemedColorTokens<Props>(LineChart)

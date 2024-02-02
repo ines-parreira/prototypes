@@ -3,7 +3,7 @@ import {useEffect, useMemo} from 'react'
 import {usePersistedState} from 'common/hooks'
 import {tryLocalStorage} from 'services/common/utils'
 
-import {Theme} from './types'
+import {Theme, Themes} from './types'
 
 export default function useThemeContext() {
     const [savedTheme, setSavedTheme] = usePersistedState<Theme | 'modern'>(
@@ -41,5 +41,6 @@ export default function useThemeContext() {
         savedTheme: savedTheme as Theme,
         theme,
         setTheme: setSavedTheme,
+        colorTokens: Themes[theme].colorTokens,
     } as const
 }
