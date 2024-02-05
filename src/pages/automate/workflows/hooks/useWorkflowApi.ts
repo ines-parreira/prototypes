@@ -60,7 +60,8 @@ type WorkflowApi = {
         configurationInternalId: string
     ) => Promise<void>
     duplicateWorkflowConfiguration: (
-        configurationId: string
+        configurationId: string,
+        storeIntegrationId: number
     ) => Promise<WorkflowConfiguration>
     downloadWorkflowConfigurationStepLogs: (
         configurationInternalId: string,
@@ -139,11 +140,14 @@ export default function useWorkflowApi(): WorkflowApi {
         []
     )
     const duplicateWorkflowConfiguration = useCallback(
-        async (configurationId: string) => {
+        async (configurationId: string, integrationId: number) => {
             setIsUpdatePending(true)
             return apiClient
                 .post<WorkflowConfiguration>(
-                    `/configurations/${configurationId}/duplicate`
+                    `/configurations/${configurationId}/duplicate`,
+                    {
+                        integration_id: integrationId,
+                    }
                 )
                 .then((res) => {
                     setIsUpdatePending(false)

@@ -147,7 +147,8 @@ describe('useStoreWorkflowsApi', () => {
             )
 
             expect(duplicateWorkflowConfigurationMock).toHaveBeenCalledWith(
-                'workflow_id'
+                'workflow_id',
+                14
             )
             expect(fetchWorkflowsMock).toHaveBeenCalled()
             expect(handleUpdateMock).toHaveBeenCalled()

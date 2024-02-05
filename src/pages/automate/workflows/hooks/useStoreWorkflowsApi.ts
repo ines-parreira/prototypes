@@ -101,7 +101,8 @@ export const useStoreWorkflowsApi = (
                 isPending: true,
             })
             const duplicatedWorkflow = await duplicateWorkflowConfiguration(
-                workflowId
+                workflowId,
+                storeIntegrationId
             )
 
             await loadWorkflowsConfigurations()
