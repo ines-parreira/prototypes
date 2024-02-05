@@ -5,11 +5,6 @@ import {
     WorkflowTemplate,
     WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
-import {
-    NO_ORDERS_WORKFLOW_ID,
-    ORDER_SELECTION_WORKFLOW_ID,
-    WAS_THIS_HELPFUL_WORKFLOW_ID,
-} from '../constants'
 
 export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
     slug: 'show-loyalty-lion-point-balance',
@@ -37,22 +32,14 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
                 },
             },
         })
-        b.insertWorkflowCallStepAndSelect(NO_ORDERS_WORKFLOW_ID, {
-            '!': {var: 'customer.orders'},
-        })
-        b.selectParentStep()
-        b.insertMessagesStepAndSelect(
-            [
-                {
-                    content: {
-                        html: '<div>Please select an order associated with your account.</div>',
-                        text: 'Please select an order associated with your account.',
-                    },
+        b.insertOrderSelectionStepAndSelect({
+            message: {
+                content: {
+                    html: '<div>Please select an order associated with your account.</div>',
+                    text: 'Please select an order associated with your account.',
                 },
-            ],
-            {'!!': {var: 'customer.orders'}}
-        )
-        b.insertWorkflowCallStepAndSelect(ORDER_SELECTION_WORKFLOW_ID)
+            },
+        })
         const pointsApprovedVariableId = ulid()
         const pointsSpentVariableId = ulid()
         const rewardsClaimedVariableId = ulid()
@@ -95,18 +82,16 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
             ],
         })
         const httpRequestStepId = b.selection.id
-        b.insertMessagesStepAndSelect([
-            {
-                content: {
-                    html: `<div>Here&#x27;s your point balance:</div><div>- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} </div><div>- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} </div><div>- Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} </div>`,
-                    text: `Here's your point balance:
+        b.insertMessageStepAndSelect({
+            content: {
+                html: `<div>Here&#x27;s your point balance:</div><div>- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} </div><div>- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} </div><div>- Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} </div>`,
+                text: `Here's your point balance:
 - Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} 
 - Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} 
 - Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} `,
-                },
             },
-        ])
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        })
+        b.insertHelpfulPromptStepAndSelect()
         return b.build()
     },
 }

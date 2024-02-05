@@ -29,11 +29,14 @@ import {
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
     WorkflowStepHandover,
+    WorkflowStepMessage,
     WorkflowStepHttpRequest,
     WorkflowStepMessages,
     WorkflowStepTextInput,
-    WorkflowStepWorkflowCall,
     WorkflowTransition,
+    WorkflowStepHelpfulPrompt,
+    WorkflowStepOrderSelection,
+    WorkflowStepShopperAuthentication,
 } from './workflowConfiguration.types'
 
 export function walkWorkflowConfigurationGraph(
@@ -516,16 +519,15 @@ export class WorkflowConfigurationBuilder {
         this._selection = initialStep
     }
 
-    insertChoicesStepAndSelect() {
-        if (this._selection?.kind !== 'messages')
-            throw new Error(
-                'choices step can only be inserted after messages step'
-            )
+    insertChoicesStepAndSelect(
+        message?: WorkflowStepChoices['settings']['message']
+    ) {
         const step: WorkflowStepChoices = {
             id: ulid(),
             kind: 'choices',
             settings: {
                 choices: [],
+                message,
             },
         }
         this.data.steps.push(step)
@@ -563,16 +565,55 @@ export class WorkflowConfigurationBuilder {
         return choiceEventId
     }
 
-    insertChoiceAndMessagesStepAndSelect(
+    insertChoiceAndChoicesStepAndSelect(
         choiceLabel: string,
-        messages: WorkflowStepMessages['settings']['messages']
+        message: WorkflowStepChoices['settings']['message']
     ): ChoiceEventId {
-        const step: WorkflowStepMessages = {
+        const step: WorkflowStepChoices = {
             id: ulid(),
-            kind: 'messages',
+            kind: 'choices',
             settings: {
-                messages,
+                choices: [],
+                message,
             },
+        }
+        return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
+    }
+
+    insertChoiceAndMessageStepAndSelect(
+        choiceLabel: string,
+        message: WorkflowStepMessage['settings']['message']
+    ): ChoiceEventId {
+        const step: WorkflowStepMessage = {
+            id: ulid(),
+            kind: 'message',
+            settings: {
+                message,
+            },
+        }
+        return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
+    }
+
+    insertChoiceAndTextInputStepAndSelect(
+        choiceLabel: string,
+        settings?: WorkflowStepTextInput['settings']
+    ): ChoiceEventId {
+        const step: WorkflowStepTextInput = {
+            id: ulid(),
+            kind: 'text-input',
+            settings,
+        }
+        return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
+    }
+
+    insertChoiceAndAttachmentsInputStepAndSelect(
+        choiceLabel: string,
+        settings?: WorkflowStepAttachmentsInput['settings']
+    ): ChoiceEventId {
+        const step: WorkflowStepAttachmentsInput = {
+            id: ulid(),
+            kind: 'attachments-input',
+            settings,
         }
         return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
     }
@@ -589,31 +630,40 @@ export class WorkflowConfigurationBuilder {
         return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
     }
 
-    insertWorkflowCallStepAndSelect(
-        configuration_id: string,
-        conditions?: WorkflowTransition['conditions']
-    ) {
-        const step: WorkflowStepWorkflowCall = {
+    insertChoiceAndShopperAuthenticationStepAndSelect(
+        choiceLabel: string,
+        shopperAuthenticationSettings: WorkflowStepShopperAuthentication['settings']
+    ): ChoiceEventId {
+        const step: WorkflowStepShopperAuthentication = {
             id: ulid(),
-            kind: 'workflow_call',
-            settings: {
-                configuration_id,
-            },
+            kind: 'shopper-authentication',
+            settings: shopperAuthenticationSettings,
+        }
+        return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
+    }
+
+    insertShopperAuthenticationStepAndSelect(
+        settings: WorkflowStepShopperAuthentication['settings']
+    ) {
+        const step: WorkflowStepShopperAuthentication = {
+            id: ulid(),
+            kind: 'shopper-authentication',
+            settings,
         }
         this.data.steps.push(step)
         this.data.transitions.push({
             id: ulid(),
             from_step_id: this._selection.id,
             to_step_id: step.id,
-            conditions,
         })
         this._selection = step
     }
 
-    insertTextInputStepAndSelect() {
+    insertTextInputStepAndSelect(settings?: WorkflowStepTextInput['settings']) {
         const step: WorkflowStepTextInput = {
             id: ulid(),
             kind: 'text-input',
+            settings,
         }
         this.data.steps.push(step)
         this.data.transitions.push({
@@ -624,10 +674,13 @@ export class WorkflowConfigurationBuilder {
         this._selection = step
     }
 
-    insertAttachmentsInputStepAndSelect() {
+    insertAttachmentsInputStepAndSelect(
+        settings?: WorkflowStepAttachmentsInput['settings']
+    ) {
         const step: WorkflowStepAttachmentsInput = {
             id: ulid(),
             kind: 'attachments-input',
+            settings,
         }
         this.data.steps.push(step)
         this.data.transitions.push({
@@ -638,15 +691,15 @@ export class WorkflowConfigurationBuilder {
         this._selection = step
     }
 
-    insertMessagesStepAndSelect(
-        messages: WorkflowStepMessages['settings']['messages'],
+    insertMessageStepAndSelect(
+        message: WorkflowStepMessage['settings']['message'],
         conditions?: WorkflowTransition['conditions']
     ) {
-        const step: WorkflowStepMessages = {
+        const step: WorkflowStepMessage = {
             id: ulid(),
-            kind: 'messages',
+            kind: 'message',
             settings: {
-                messages,
+                message,
             },
         }
         this.data.steps.push(step)
@@ -659,11 +712,13 @@ export class WorkflowConfigurationBuilder {
         this._selection = step
     }
 
-    insertHandoverStepAndSelect() {
-        const step: WorkflowStepHandover = {
+    insertOrderSelectionStepAndSelect(
+        settings: WorkflowStepOrderSelection['settings']
+    ) {
+        const step: WorkflowStepOrderSelection = {
             id: ulid(),
-            kind: 'handover',
-            settings: {},
+            kind: 'order-selection',
+            settings,
         }
         this.data.steps.push(step)
         this.data.transitions.push({
@@ -681,6 +736,37 @@ export class WorkflowConfigurationBuilder {
             id: ulid(),
             kind: 'http-request',
             settings,
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    insertHandoverStepAndSelect(
+        settings: WorkflowStepHandover['settings'] = {}
+    ) {
+        const step: WorkflowStepHandover = {
+            id: ulid(),
+            kind: 'handover',
+            settings,
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    insertHelpfulPromptStepAndSelect() {
+        const step: WorkflowStepHelpfulPrompt = {
+            id: ulid(),
+            kind: 'helpful-prompt',
         }
         this.data.steps.push(step)
         this.data.transitions.push({

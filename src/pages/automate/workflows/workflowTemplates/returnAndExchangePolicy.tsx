@@ -5,7 +5,6 @@ import {
     WorkflowTemplate,
     WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
-import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
 export const RETURN_AND_EXCHANGE_POLICY: WorkflowTemplate = {
     slug: 'return-and-exchange-policy',
@@ -24,34 +23,36 @@ export const RETURN_AND_EXCHANGE_POLICY: WorkflowTemplate = {
                 label: `🔙 What's your return and exchange policy?`,
                 label_tkey: ulid(),
             },
-            initialMessage: {
-                content: {
-                    html: '<div>Our policies vary by location. Where are you located?</div>',
-                    text: 'Our policies vary by location. Where are you located?',
+            initialStep: {
+                id: ulid(),
+                kind: 'choices',
+                settings: {
+                    choices: [],
+                    message: {
+                        content: {
+                            html: '<div>Our policies vary by location. Where are you located?</div>',
+                            text: 'Our policies vary by location. Where are you located?',
+                        },
+                    },
                 },
             },
         })
-        b.insertChoicesStepAndSelect()
-        b.insertChoiceAndMessagesStepAndSelect('US', [
-            {
-                content: {
-                    html: '<div>We provide free returns and exchanges within 30 days for US customers.</div>',
-                    text: 'We provide free returns and exchanges within 30 days for US customers.',
-                },
+        b.insertChoiceAndMessageStepAndSelect('US', {
+            content: {
+                html: '<div>We provide free returns and exchanges within 30 days for US customers.</div>',
+                text: 'We provide free returns and exchanges within 30 days for US customers.',
             },
-        ])
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        })
+        b.insertHelpfulPromptStepAndSelect()
         b.selectParentStep()
         b.selectParentStep()
-        b.insertChoiceAndMessagesStepAndSelect('UK, Canada or Australia', [
-            {
-                content: {
-                    html: `<div>For international returns or exchanges, we allow returns and exchanges within 30 days of receipt. At this time, customers are responsible for all international shipping costs.</div>`,
-                    text: `For international returns or exchanges, we allow returns and exchanges within 30 days of receipt. At this time, customers are responsible for all international shipping costs.`,
-                },
+        b.insertChoiceAndMessageStepAndSelect('UK, Canada or Australia', {
+            content: {
+                html: `<div>For international returns or exchanges, we allow returns and exchanges within 30 days of receipt. At this time, customers are responsible for all international shipping costs.</div>`,
+                text: `For international returns or exchanges, we allow returns and exchanges within 30 days of receipt. At this time, customers are responsible for all international shipping costs.`,
             },
-        ])
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        })
+        b.insertHelpfulPromptStepAndSelect()
         return b.build()
     },
 }

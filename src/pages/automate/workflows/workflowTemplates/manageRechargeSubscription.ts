@@ -5,11 +5,6 @@ import {
     WorkflowTemplate,
     WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
-import {
-    NO_ORDERS_WORKFLOW_ID,
-    ORDER_SELECTION_WORKFLOW_ID,
-    WAS_THIS_HELPFUL_WORKFLOW_ID,
-} from '../constants'
 
 export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
     slug: 'manage-recharge-subscription',
@@ -37,22 +32,14 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                 },
             },
         })
-        b.insertWorkflowCallStepAndSelect(NO_ORDERS_WORKFLOW_ID, {
-            '!': {var: 'customer.orders'},
-        })
-        b.selectParentStep()
-        b.insertMessagesStepAndSelect(
-            [
-                {
-                    content: {
-                        html: '<div>Select an order associated with your subscription to continue.</div>',
-                        text: 'Select an order associated with your subscription to continue.',
-                    },
+        b.insertOrderSelectionStepAndSelect({
+            message: {
+                content: {
+                    html: '<div>Select an order associated with your subscription to continue.</div>',
+                    text: 'Select an order associated with your subscription to continue.',
                 },
-            ],
-            {'!!': {var: 'customer.orders'}}
-        )
-        b.insertWorkflowCallStepAndSelect(ORDER_SELECTION_WORKFLOW_ID)
+            },
+        })
         const rechargeCustomerIdVariableId = ulid()
         b.insertHttpRequestStepAndSelect({
             name: 'Get Recharge customer ID (make sure credentials are added)',
@@ -103,24 +90,20 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             ],
         })
         const rechargeSubscriptionHttpRequestStepId = b.selection.id
-        b.insertMessagesStepAndSelect([
-            {
-                content: {
-                    html: '<div>What would you like to do with your subscription?</div>',
-                    text: 'What would you like to do with your subscription?',
-                },
+        b.insertChoicesStepAndSelect({
+            content: {
+                html: '<div>What would you like to do with your subscription?</div>',
+                text: 'What would you like to do with your subscription?',
             },
-        ])
-        b.insertChoicesStepAndSelect()
-        b.insertChoiceAndMessagesStepAndSelect('Update email address', [
-            {
+        })
+        b.insertChoiceAndTextInputStepAndSelect('Update email address', {
+            message: {
                 content: {
                     html: '<div>What&#x27;s your new email address?</div>',
                     text: "What's your new email address?",
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const newEmailAddressTextInputStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: "Update customer's email address (make sure credentials are added)",
@@ -140,69 +123,61 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
 }`,
             variables: [],
         })
-        b.insertMessagesStepAndSelect([
-            {
-                content: {
-                    html: `<div>Your email has been updated to {{steps_state.${newEmailAddressTextInputStepId}.content.text}}!</div>`,
-                    text: `Your email has been updated to {{steps_state.${newEmailAddressTextInputStepId}.content.text}}!`,
-                },
+        b.insertMessageStepAndSelect({
+            content: {
+                html: `<div>Your email has been updated to {{steps_state.${newEmailAddressTextInputStepId}.content.text}}!</div>`,
+                text: `Your email has been updated to {{steps_state.${newEmailAddressTextInputStepId}.content.text}}!`,
             },
-        ])
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        })
+        b.insertHelpfulPromptStepAndSelect()
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
-        b.selectParentStep()
-        b.insertChoiceAndMessagesStepAndSelect('Update shipping address', [
-            {
+        b.insertChoiceAndTextInputStepAndSelect('Update shipping address', {
+            message: {
                 content: {
                     html: '<div>What&#x27;s your new street and address? (e.g. 123 Alphabet St.)</div>',
                     text: "What's your new street and address? (e.g. 123 Alphabet St.)",
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const address1TextInputStepId = b.selection.id
-        b.insertMessagesStepAndSelect([
-            {
+        b.insertTextInputStepAndSelect({
+            message: {
                 content: {
                     html: '<div>Any additional information about your street? (e.g. apartment #). If not applicable, simply add &quot;N/A&quot;.</div>',
                     text: 'Any additional information about your street? (e.g. apartment #). If not applicable, simply add "N/A".',
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const address2TextInputStepId = b.selection.id
-        b.insertMessagesStepAndSelect([
-            {
+        b.insertTextInputStepAndSelect({
+            message: {
                 content: {
                     html: '<div>What&#x27;s your ZIP code?</div>',
                     text: "What's your ZIP code?",
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const zipTextInputStepId = b.selection.id
-        b.insertMessagesStepAndSelect([
-            {
+        b.insertTextInputStepAndSelect({
+            message: {
                 content: {
                     html: '<div>What&#x27;s the city?</div>',
                     text: "What's the city?",
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const cityTextInputStepId = b.selection.id
-        b.insertMessagesStepAndSelect([
-            {
+        b.insertTextInputStepAndSelect({
+            message: {
                 content: {
                     html: '<div>What&#x27;s the state? (e.g. NY, CA)</div>',
                     text: "What's the state? (e.g. NY, CA)",
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const stateTextInputStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: "Update customer's shipping address",
@@ -226,20 +201,18 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         }`,
             variables: [],
         })
-        b.insertMessagesStepAndSelect([
-            {
-                content: {
-                    html: `<div>Your shipping address has been updated!</div><div>-Street and number: {{steps_state.${address1TextInputStepId}.content.text}} </div><div>-Additional info: {{steps_state.${address2TextInputStepId}.content.text}} </div><div>-ZIP code: {{steps_state.${zipTextInputStepId}.content.text}} </div><div>-City: {{steps_state.${cityTextInputStepId}.content.text}} </div><div>-State: {{steps_state.${stateTextInputStepId}.content.text}} </div>`,
-                    text: `Your shipping address has been updated!
+        b.insertMessageStepAndSelect({
+            content: {
+                html: `<div>Your shipping address has been updated!</div><div>-Street and number: {{steps_state.${address1TextInputStepId}.content.text}} </div><div>-Additional info: {{steps_state.${address2TextInputStepId}.content.text}} </div><div>-ZIP code: {{steps_state.${zipTextInputStepId}.content.text}} </div><div>-City: {{steps_state.${cityTextInputStepId}.content.text}} </div><div>-State: {{steps_state.${stateTextInputStepId}.content.text}} </div>`,
+                text: `Your shipping address has been updated!
 -Street and number: {{steps_state.${address1TextInputStepId}.content.text}} 
 -Additional info: {{steps_state.${address2TextInputStepId}.content.text}} 
 -ZIP code: {{steps_state.${zipTextInputStepId}.content.text}} 
 -City: {{steps_state.${cityTextInputStepId}.content.text}} 
 -State: {{steps_state.${stateTextInputStepId}.content.text}} `,
-                },
             },
-        ])
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        })
+        b.insertHelpfulPromptStepAndSelect()
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
@@ -248,20 +221,14 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
-        b.selectParentStep()
-        b.selectParentStep()
-        b.selectParentStep()
-        b.selectParentStep()
-        b.selectParentStep()
-        b.insertChoiceAndMessagesStepAndSelect('Cancel my subscription', [
-            {
+        b.insertChoiceAndTextInputStepAndSelect('Cancel my subscription', {
+            message: {
                 content: {
                     html: '<div>We&#x27;re sorry you&#x27;d like to cancel your subscription. Could you tell us why you want to cancel?</div>',
                     text: "We're sorry you'd like to cancel your subscription. Could you tell us why you want to cancel?",
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const cancellationReasonTextInputStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: 'Cancel subscription (make sure credentials are added)',
@@ -282,35 +249,31 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         }`,
             variables: [],
         })
-        b.insertMessagesStepAndSelect([
-            {
-                content: {
-                    html: `<div>Your subscription has been canceled and we sent a confirmation to {{customer.email}}.</div><div><br></div><div><strong>Note:</strong> you will not receive a confirmation email if any of the following apply:</div><div>- Your subscription was created today </div><div>- Your subscription is for a membership</div><div>- You received an email about this subscription in the last 24 hours</div><div>- You have other active subscriptions</div>`,
-                    text: `Your subscription has been canceled and we sent a confirmation to {{customer.email}}.
+        b.insertMessageStepAndSelect({
+            content: {
+                html: `<div>Your subscription has been canceled and we sent a confirmation to {{customer.email}}.</div><div><br></div><div><strong>Note:</strong> you will not receive a confirmation email if any of the following apply:</div><div>- Your subscription was created today </div><div>- Your subscription is for a membership</div><div>- You received an email about this subscription in the last 24 hours</div><div>- You have other active subscriptions</div>`,
+                text: `Your subscription has been canceled and we sent a confirmation to {{customer.email}}.
 
 Note: you will not receive a confirmation email if any of the following apply:
 - Your subscription was created today 
 - Your subscription is for a membership
 - You received an email about this subscription in the last 24 hours
 - You have other active subscriptions`,
-                },
             },
-        ])
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        })
+        b.insertHelpfulPromptStepAndSelect()
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
-        b.selectParentStep()
-        b.insertChoiceAndMessagesStepAndSelect('Something else', [
-            {
+        b.insertChoiceAndTextInputStepAndSelect('Something else', {
+            message: {
                 content: {
                     html: '<div>Let us know what we can help you with and our team will be in touch.</div>',
                     text: 'Let us know what we can help you with and our team will be in touch.',
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         b.insertHandoverStepAndSelect()
         return b.build()
     },

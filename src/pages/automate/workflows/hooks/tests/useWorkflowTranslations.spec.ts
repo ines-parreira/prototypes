@@ -9,7 +9,6 @@ import {
     WorkflowConfigurationBuilder,
 } from '../../models/workflowConfiguration.model'
 import {LanguageCode} from '../../models/workflowConfiguration.types'
-import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../../constants'
 
 let mockStore: Record<string, Record<string, string>> = {}
 
@@ -55,7 +54,7 @@ describe('useWorkflowTranslations', () => {
                 },
             },
         })
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        b.insertHelpfulPromptStepAndSelect()
         graph = transformWorkflowConfigurationIntoVisualBuilderGraph(b.build())
     })
 

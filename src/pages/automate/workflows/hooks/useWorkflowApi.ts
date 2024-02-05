@@ -3,7 +3,6 @@ import {ulid} from 'ulidx'
 import axios from 'axios'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {isProduction, isStaging} from 'utils/environment'
-import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 import {
     WorkflowConfiguration,
     WorkflowConfigurationShallow,
@@ -237,14 +236,14 @@ export const workflowConfigurationFactory = (
     accountId: number,
     workflowId: string
 ): WorkflowConfiguration => {
-    const workflowCallStepId = ulid()
+    const helpfulPromptStepId = ulid()
     return {
         id: workflowId,
         internal_id: ulid(),
         account_id: accountId,
         is_draft: true,
         name: '',
-        initial_step_id: workflowCallStepId,
+        initial_step_id: helpfulPromptStepId,
         available_languages: ['en-US'],
         entrypoint: {
             label: '',
@@ -252,11 +251,8 @@ export const workflowConfigurationFactory = (
         },
         steps: [
             {
-                id: workflowCallStepId,
-                kind: 'workflow_call',
-                settings: {
-                    configuration_id: WAS_THIS_HELPFUL_WORKFLOW_ID,
-                },
+                id: helpfulPromptStepId,
+                kind: 'helpful-prompt',
             },
         ],
         transitions: [],

@@ -5,7 +5,6 @@ import {
     WorkflowTemplate,
     WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
-import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
 export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
     slug: 'add-email-to-klaviyo-list',
@@ -24,24 +23,28 @@ export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
                 label: 'Keep me informed about updates and promotions',
                 label_tkey: ulid(),
             },
-            initialMessage: {
-                content: {
-                    html: '<div>What&#x27;s your first name?</div>',
-                    text: "What's your first name?",
+            initialStep: {
+                id: ulid(),
+                kind: 'text-input',
+                settings: {
+                    message: {
+                        content: {
+                            html: '<div>What&#x27;s your first name?</div>',
+                            text: "What's your first name?",
+                        },
+                    },
                 },
             },
         })
-        b.insertTextInputStepAndSelect()
         const firstNameStepId = b.selection.id
-        b.insertMessagesStepAndSelect([
-            {
+        b.insertTextInputStepAndSelect({
+            message: {
                 content: {
                     html: `<div>Thanks {{steps_state.${firstNameStepId}.content.text}}. What&#x27;s your email address?</div>`,
                     text: `Thanks {{steps_state.${firstNameStepId}.content.text}}. What's your email address?`,
                 },
             },
-        ])
-        b.insertTextInputStepAndSelect()
+        })
         const emailAddressStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: 'Add customer to Klaviyo list (make sure credentials are added)',
@@ -70,15 +73,13 @@ export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
 }`,
             variables: [],
         })
-        b.insertMessagesStepAndSelect([
-            {
-                content: {
-                    html: '<div>Thanks, you&#x27;re subscribed now! Keep an eye out for our upcoming announcements and special deals. Have a good day!</div>',
-                    text: "Thanks, you're subscribed now! Keep an eye out for our upcoming announcements and special deals. Have a good day!",
-                },
+        b.insertMessageStepAndSelect({
+            content: {
+                html: '<div>Thanks, you&#x27;re subscribed now! Keep an eye out for our upcoming announcements and special deals. Have a good day!</div>',
+                text: "Thanks, you're subscribed now! Keep an eye out for our upcoming announcements and special deals. Have a good day!",
             },
-        ])
-        b.insertWorkflowCallStepAndSelect(WAS_THIS_HELPFUL_WORKFLOW_ID)
+        })
+        b.insertHelpfulPromptStepAndSelect()
         return b.build()
     },
 }
