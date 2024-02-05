@@ -56,6 +56,30 @@ export const voiceCallCountQueryFactory = (
     filters: voiceCallDefaultFilters(filters),
 })
 
+export const voiceCallCountPerFilteringAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    segment?: VoiceCallSegment
+) => ({
+    measures: [VoiceCallMeasure.VoiceCallCount],
+    dimensions: [VoiceCallDimension.FilteringAgentId],
+    timezone,
+    segments: segment ? [segment] : [],
+    filters: voiceCallDefaultFilters(filters, true),
+})
+
+export const voiceCallCountPerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    segment?: VoiceCallSegment
+) => ({
+    measures: [VoiceCallMeasure.VoiceCallCount],
+    dimensions: [VoiceCallDimension.AgentId],
+    timezone,
+    segments: segment ? [segment] : [],
+    filters: voiceCallDefaultFilters(filters),
+})
+
 export const voiceCallListQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -94,6 +118,18 @@ export const voiceCallAverageTalkTimeQueryFactory = (
     dimensions: [],
     timezone,
     segments: [],
+    filters: voiceCallDefaultFilters(filters, true),
+})
+
+export const voiceCallAverageTalkTimePerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    segment?: VoiceCallSegment
+) => ({
+    measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
+    dimensions: [VoiceCallDimension.AgentId],
+    timezone,
+    segments: segment ? [segment] : [],
     filters: voiceCallDefaultFilters(filters, true),
 })
 

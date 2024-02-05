@@ -1,14 +1,53 @@
 import React from 'react'
+import moment from 'moment'
+
 import {PaywallConfig, paywallConfigs} from 'config/paywalls'
 import StatsPage from 'pages/stats/StatsPage'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {VOICE_AGENTS_PAGE_TITLE} from 'pages/stats/voice/constants/voiceAgents'
+import useAppSelector from 'hooks/useAppSelector'
+import {getPageStatsFilters} from 'state/stats/selectors'
+import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import DashboardSection from 'pages/stats/DashboardSection'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import ChartCard from 'pages/stats/ChartCard'
+import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import {
+    VOICE_AGENTS_PAGE_TITLE,
+    VOICE_CALL_ACTIVITY_TITLE,
+} from 'pages/stats/voice/constants/voiceAgents'
+import {VoiceAgentsTable} from 'pages/stats/voice/components/VoiceAgentsTable/VoiceAgentsTable'
+import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 
 function VoiceAgents() {
+    const pageStatsFilters = useAppSelector(getPageStatsFilters)
+    useCleanStatsFilters(pageStatsFilters)
+
     return (
-        <StatsPage title={VOICE_AGENTS_PAGE_TITLE} filters={<></>}>
+        <StatsPage
+            title={VOICE_AGENTS_PAGE_TITLE}
+            filters={
+                <PeriodStatsFilter
+                    initialSettings={{
+                        minDate: moment(
+                            MIN_DATE_FOR_ADVANCED_VOICE_STATS,
+                            'YYYY-MM-DD'
+                        ).toDate(),
+                        maxSpan: 365,
+                    }}
+                    value={pageStatsFilters.period}
+                    variant={'ghost'}
+                />
+            }
+        >
+            <DashboardSection>
+                <DashboardGridCell>
+                    <ChartCard title={VOICE_CALL_ACTIVITY_TITLE} noPadding>
+                        <VoiceAgentsTable />
+                    </ChartCard>
+                </DashboardGridCell>
+            </DashboardSection>
             <AnalyticsFooter />
         </StatsPage>
     )

@@ -4,15 +4,18 @@ import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {
-    VoiceCallSegment,
-    VoiceCallMember,
-    VoiceCallMeasure,
     VoiceCallDimension,
+    VoiceCallMeasure,
+    VoiceCallMember,
+    VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 import {
+    voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
+    voiceCallCountPerAgentQueryFactory,
+    voiceCallCountPerFilteringAgentQueryFactory,
     voiceCallCountQueryFactory,
     voiceCallListQueryFactory,
 } from '../voiceCall'
@@ -193,6 +196,93 @@ describe('voice queries factories', () => {
                     ],
                 },
             ])
+        }
+    )
+
+    it.each([undefined, VoiceCallSegment.inboundCalls])(
+        'voiceCallCountPerFilteringAgentQueryFactory should create a query',
+        (segment) => {
+            const query = voiceCallCountPerFilteringAgentQueryFactory(
+                statsFilters,
+                timezone,
+                segment
+            )
+            expect(query).toEqual({
+                dimensions: [VoiceCallDimension.FilteringAgentId],
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                segments: segment ? [segment] : [],
+                timezone,
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+            })
+        }
+    )
+
+    it.each([undefined, VoiceCallSegment.inboundCalls])(
+        'voiceCallCountPerAgentQueryFactory should create a query',
+        (segment) => {
+            const query = voiceCallCountPerAgentQueryFactory(
+                statsFilters,
+                timezone,
+                segment
+            )
+            expect(query).toEqual({
+                dimensions: [VoiceCallDimension.AgentId],
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                segments: segment ? [segment] : [],
+                timezone,
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+            })
+        }
+    )
+
+    it.each([undefined, VoiceCallSegment.inboundCalls])(
+        'voiceCallAverageTalkTimePerAgentQueryFactory should create a query',
+        (segment) => {
+            const query = voiceCallAverageTalkTimePerAgentQueryFactory(
+                statsFilters,
+                timezone,
+                segment
+            )
+            expect(query).toEqual({
+                dimensions: [VoiceCallDimension.AgentId],
+                measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
+                segments: segment ? [segment] : [],
+                timezone,
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+            })
         }
     )
 })

@@ -22,6 +22,7 @@ export enum VoiceCallDimension {
     WaitTime = 'VoiceCall.waitTimeSeconds',
     PhoneNumberSource = 'VoiceCall.phoneNumberSource',
     PhoneNumberDestination = 'VoiceCall.phoneNumberDestination',
+    FilteringAgentId = 'VoiceCall.filteringAgentId',
 }
 
 export enum VoiceCallMember {
@@ -35,6 +36,7 @@ export enum VoiceCallSegment {
     inboundCalls = 'VoiceCall.inboundCalls',
     outboundCalls = 'VoiceCall.outboundCalls',
     missedCalls = 'VoiceCall.missedCalls',
+    missedCallsByAgent = 'VoiceCall.missedCallsByAgent',
 }
 
 export const VoiceCallFiltersMembers: StatsFiltersMembers = {

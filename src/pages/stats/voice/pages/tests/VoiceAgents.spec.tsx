@@ -6,6 +6,7 @@ import {fireEvent, render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -13,10 +14,15 @@ import {StatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
 import {billingState} from 'fixtures/billing'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {VOICE_AGENTS_PAGE_TITLE} from 'pages/stats/voice/constants/voiceAgents'
+import {
+    VOICE_AGENTS_PAGE_TITLE,
+    VOICE_CALL_ACTIVITY_TITLE,
+} from 'pages/stats/voice/constants/voiceAgents'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
+
 import VoiceAgents from '../VoiceAgents'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
@@ -61,6 +67,7 @@ describe('VoiceAgents', () => {
                     isFilterDirty: false,
                     fetchingMap: {},
                 },
+                agentPerformance: agentPerformanceInitialState,
             },
         } as RootState
 
@@ -78,6 +85,7 @@ describe('VoiceAgents', () => {
 
         // title
         expect(queryByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
+        expect(queryByText(VOICE_CALL_ACTIVITY_TITLE)).toBeInTheDocument()
 
         // footer
         expect(
