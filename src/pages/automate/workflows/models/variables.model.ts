@@ -103,26 +103,6 @@ export const buildWorkflowVariableFromNode = (
             name: formatVariableName(text.length > 0 ? text : 'Message'),
             variables: [
                 {
-                    name: 'Customer first name',
-                    value: '{{customer.firstname}}',
-                },
-                {
-                    name: 'Customer last name',
-                    value: '{{customer.lastname}}',
-                },
-                {
-                    name: 'Customer full name',
-                    value: '{{customer.name}}',
-                },
-                {
-                    name: 'Customer email',
-                    value: '{{customer.email}}',
-                },
-                {
-                    name: 'Customer phone number',
-                    value: '{{customer.phone_number}}',
-                },
-                {
                     name: 'Order number',
                     value: '{{order.name}}',
                 },
@@ -139,7 +119,7 @@ export const buildWorkflowVariableFromNode = (
     } else if (node.type === 'shopper_authentication') {
         return {
             nodeType: 'shopper_authentication',
-            name: 'Shopper authentication',
+            name: 'Customer login',
             variables: [
                 {
                     name: 'Customer first name',

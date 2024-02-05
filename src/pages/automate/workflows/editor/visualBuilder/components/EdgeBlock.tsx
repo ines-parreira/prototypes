@@ -27,7 +27,10 @@ import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisual
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection.svg'
 
-import {isNodeUniquePerPath} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {
+    hasParentNodeInPath,
+    isNodeUniquePerPath,
+} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import EdgeIconButton from './EdgeIconButton'
 import EdgeLabel from './EdgeLabel'
 import css from './EdgeBlock.less'
@@ -118,7 +121,6 @@ function useMenuItems(
                 dispatch({
                     type: 'INSERT_ORDER_SELECTION_NODE',
                     beforeNodeId: nodeId,
-                    storeIntegrationId: storeIntegration.id,
                 })
             },
         },
@@ -181,6 +183,27 @@ function useMenuItems(
                     draft.type === 'shopper_authentication' &&
                     draft.disabledText
                 ) {
+                    draft.disabledText = ''
+                }
+            })
+        }
+
+        if (
+            !hasParentNodeInPath(
+                'shopper_authentication',
+                visualBuilderGraph,
+                nodeId
+            )
+        ) {
+            updateMenuItems((draft) => {
+                if (draft.type === 'order_selection') {
+                    draft.disabledText =
+                        'This step requires a parent "Customer login" step.'
+                }
+            })
+        } else {
+            updateMenuItems((draft) => {
+                if (draft.type === 'order_selection' && draft.disabledText) {
                     draft.disabledText = ''
                 }
             })

@@ -1,7 +1,6 @@
 import {ulid} from 'ulidx'
 import _omit from 'lodash/omit'
 import {
-    NO_ORDERS_WORKFLOW_ID,
     ORDER_SELECTION_WORKFLOW_ID,
     WAS_THIS_HELPFUL_WORKFLOW_ID,
 } from '../constants'
@@ -108,11 +107,117 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
     const nodes: VisualBuilderNode[] = [triggerButtonNode]
     const edges: VisualBuilderEdge[] = []
     const nodeIdByStepId: Record<string, string> = {}
-    const orderSelectionStates = new Map()
+
+    let isNewModel = false
 
     walkWorkflowConfigurationGraph(c, c.initial_step_id, (step, context) => {
         const {previousStep, nextSteps, incomingTransition} = context
-        if (
+
+        // 1:1 step <> node mapping (almost)
+        if (step.kind === 'message') {
+            isNewModel = true
+            const n: AutomatedMessageNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'automated_message',
+                data: {
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.message.content
+                    ),
+                    wfConfigurationRef: {
+                        wfConfigurationMessageStepId: step.id,
+                    },
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'choices' && step.settings.message) {
+            isNewModel = true
+            const n: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'multiple_choices',
+                data: {
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.message.content
+                    ),
+                    choices: injectTkeysInChoicesIfNotExist(
+                        step.settings.choices
+                    ),
+                    wfConfigurationRef: {
+                        wfConfigurationChoicesStepId: step.id,
+                    },
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'text-input' && step.settings) {
+            isNewModel = true
+            const n: TextReplyNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'text_reply',
+                data: {
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.message.content
+                    ),
+                    wfConfigurationRef: {
+                        wfConfigurationTextInputStepId: step.id,
+                    },
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'attachments-input' && step.settings) {
+            isNewModel = true
+            const n: FileUploadNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'file_upload',
+                data: {
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.message.content
+                    ),
+                    wfConfigurationRef: {
+                        wfConfigurationAttachmentsInputStepId: step.id,
+                    },
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'order-selection' && step.settings) {
+            isNewModel = true
+            const n: OrderSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'order_selection',
+                data: {
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.message.content
+                    ),
+                    wfConfigurationRef: {
+                        wfConfigurationOrderSelectionStepId: step.id,
+                    },
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'helpful-prompt') {
+            isNewModel = true
+            const n: EndNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'end',
+                data: {
+                    wfConfigurationRef: {
+                        wfConfigurationHelpfulPromptOrHandoverStepId: step.id,
+                    },
+                    withWasThisHelpfulPrompt: true,
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } /* DEPRECATED */ else if (
             step.kind === 'messages' &&
             nextSteps.length === 1 &&
             nextSteps[0].kind === 'choices'
@@ -137,7 +242,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
-        } else if (
+        } /* DEPRECATED */ else if (
             step.kind === 'messages' &&
             nextSteps.length === 1 &&
             nextSteps[0].kind === 'text-input'
@@ -159,7 +264,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
-        } else if (
+        } /* DEPRECATED */ else if (
             step.kind === 'messages' &&
             nextSteps.length === 1 &&
             nextSteps[0].kind === 'attachments-input'
@@ -181,75 +286,49 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
-        } else if (
-            step.kind === 'shopper-authentication' &&
-            nextSteps.length === 2
+        } /* DEPRECATED */ else if (
+            step.kind === 'messages' &&
+            previousStep &&
+            nextSteps.length === 1 &&
+            nextSteps[0].kind === 'workflow_call' &&
+            nextSteps[0].settings.configuration_id ===
+                ORDER_SELECTION_WORKFLOW_ID
         ) {
-            orderSelectionStates.set(step.id, true)
-            const noOrdersWorkflowCallStep = nextSteps.find(
-                (s) =>
-                    s.kind === 'workflow_call' &&
-                    s.settings.configuration_id === NO_ORDERS_WORKFLOW_ID
-            )
-            const messagesStep = nextSteps.find(
-                (s): s is WorkflowStepMessages => s.kind === 'messages'
-            )
-
-            if (!noOrdersWorkflowCallStep || !messagesStep) {
-                throw new Error(
-                    `order_selection node expects a "branching" shopper-authentication step:
-                    - workflow_call (no orders)
-                    - message -> workflow_call (order selection)`
-                )
-            }
-
-            const orderSelectionWorkflowCallStepId = c.transitions.find(
-                (t) => t.from_step_id === messagesStep.id
+            const noOrdersWorkflowCallStepId = c.transitions.find(
+                (t) =>
+                    t.from_step_id === previousStep.id &&
+                    t.to_step_id !== step.id
             )?.to_step_id
-            const orderSelectionWorkflowCallStep = c.steps.find(
-                (s) =>
-                    s.id === orderSelectionWorkflowCallStepId &&
-                    s.kind === 'workflow_call' &&
-                    s.settings.configuration_id === ORDER_SELECTION_WORKFLOW_ID
-            )
 
-            if (!orderSelectionWorkflowCallStep) {
+            if (!noOrdersWorkflowCallStepId) {
                 throw new Error(
-                    `order_selection node expects a "branching" shopper-authentication step:
+                    `order_selection node expects a "branching" step:
                     - workflow_call (no orders)
                     - message -> workflow_call (order selection)`
                 )
             }
 
-            // group branching shopper-authentication step (1) workflow-call, (2) message -> workflow_call steps into an order_selection node
+            // group branching step (1) workflow-call, (2) message -> workflow_call steps into an order_selection node
             const n: OrderSelectionNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
                 type: 'order_selection',
                 data: {
                     content: injectTkeysInContentIfNotExist(
-                        messagesStep.settings.messages[0].content
+                        step.settings.messages[0].content
                     ),
                     wfConfigurationRef: {
-                        wfConfigurationMessagesStepId: messagesStep.id,
-                        wfConfigurationShopperAuthenticationStepId: step.id,
+                        wfConfigurationMessagesStepId: step.id,
                         wfConfigurationOrderSelectionWorkflowCallStepId:
-                            orderSelectionWorkflowCallStep.id,
+                            nextSteps[0].id,
                         wfConfigurationNoOrdersWorkflowCallStepId:
-                            noOrdersWorkflowCallStep.id,
+                            noOrdersWorkflowCallStepId,
                     },
-                    integrationId: step.settings.integration_id,
                 },
             }
-            nodeIdByStepId[orderSelectionWorkflowCallStep.id] = n.id
+            nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
-        } else if (
-            previousStep?.kind === 'shopper-authentication' &&
-            orderSelectionStates.get(previousStep.id)
-        ) {
-            // already processed as part of the order_selection node
-            return
-        } else if (step.kind === 'messages') {
+        } /* DEPRECATED */ else if (step.kind === 'messages') {
             // single message step will become an automated_answer node
             const n: AutomatedMessageNodeType = {
                 ...buildNodeCommonProperties(),
@@ -266,7 +345,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } else if (
+        } /* DEPRECATED */ else if (
             step.kind === 'workflow_call' &&
             step.settings.configuration_id === WAS_THIS_HELPFUL_WORKFLOW_ID
         ) {
@@ -386,6 +465,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         nodes,
         edges,
         wfConfigurationOriginal: c,
+        isNewModel,
     }
 }
 

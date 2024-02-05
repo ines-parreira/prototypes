@@ -17,8 +17,11 @@ import {
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
     WorkflowStepHandover,
+    WorkflowStepHelpfulPrompt,
     WorkflowStepHttpRequest,
+    WorkflowStepMessage,
     WorkflowStepMessages,
+    WorkflowStepOrderSelection,
     WorkflowStepShopperAuthentication,
     WorkflowStepTextInput,
     WorkflowStepWorkflowCall,
@@ -95,7 +98,7 @@ export function areGraphsEqual(
                         )
                     ),
             },
-            ['wfConfigurationOriginal']
+            ['wfConfigurationOriginal', 'isNewModel']
         )
     return _isEqual(essentialGraph(g1), essentialGraph(g2))
 }
@@ -191,7 +194,10 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     }
                 }
                 return
-            } else if (node.type === 'automated_message') {
+            } /* DEPRECATED */ else if (
+                node.type === 'automated_message' &&
+                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
+            ) {
                 const stepId =
                     node.data.wfConfigurationRef.wfConfigurationMessagesStepId
                 const s: WorkflowStepMessages = {
@@ -217,7 +223,36 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = stepId
                 }
                 stepIdByNodeId[node.id] = stepId
-            } else if (node.type === 'text_reply') {
+            } else if (
+                node.type === 'automated_message' &&
+                'wfConfigurationMessageStepId' in node.data.wfConfigurationRef
+            ) {
+                const step: WorkflowStepMessage = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationMessageStepId,
+                    kind: 'message',
+                    settings: {
+                        message: {
+                            content: node.data.content,
+                        },
+                    },
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = step.id
+                }
+                stepIdByNodeId[node.id] = step.id
+            } /* DEPRECATED */ else if (
+                node.type === 'text_reply' &&
+                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
+            ) {
                 const messagesStepId =
                     node.data.wfConfigurationRef.wfConfigurationMessagesStepId
                 const textInputStepId =
@@ -254,7 +289,39 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = messagesStepId
                 }
                 stepIdByNodeId[node.id] = textInputStepId
-            } else if (node.type === 'file_upload') {
+            } else if (
+                node.type === 'text_reply' &&
+                !(
+                    'wfConfigurationMessagesStepId' in
+                    node.data.wfConfigurationRef
+                )
+            ) {
+                const step: WorkflowStepTextInput = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationTextInputStepId,
+                    kind: 'text-input',
+                    settings: {
+                        message: {
+                            content: node.data.content,
+                        },
+                    },
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = step.id
+                }
+                stepIdByNodeId[node.id] = step.id
+            } /* DEPRECATED */ else if (
+                node.type === 'file_upload' &&
+                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
+            ) {
                 const messagesStepId =
                     node.data.wfConfigurationRef.wfConfigurationMessagesStepId
                 const attachmentsInputStepId =
@@ -292,10 +359,41 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = messagesStepId
                 }
                 stepIdByNodeId[node.id] = attachmentsInputStepId
-            } else if (node.type === 'order_selection') {
-                const shopperAuthenticationStepId =
+            } else if (
+                node.type === 'file_upload' &&
+                !(
+                    'wfConfigurationMessagesStepId' in
                     node.data.wfConfigurationRef
-                        .wfConfigurationShopperAuthenticationStepId
+                )
+            ) {
+                const step: WorkflowStepAttachmentsInput = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationAttachmentsInputStepId,
+                    kind: 'attachments-input',
+                    settings: {
+                        message: {
+                            content: node.data.content,
+                        },
+                    },
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = step.id
+                }
+                stepIdByNodeId[node.id] = step.id
+            } /* DEPRECATED */ else if (
+                node.type === 'order_selection' &&
+                'wfConfigurationMessagesStepId' in
+                    node.data.wfConfigurationRef &&
+                previousNode
+            ) {
                 const noOrdersWorkflowCallStepId =
                     node.data.wfConfigurationRef
                         .wfConfigurationNoOrdersWorkflowCallStepId
@@ -304,14 +402,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 const orderSelectionWorkflowCallStepId =
                     node.data.wfConfigurationRef
                         .wfConfigurationOrderSelectionWorkflowCallStepId
-                const shopperAuthenticationStep: WorkflowStepShopperAuthentication =
-                    {
-                        id: shopperAuthenticationStepId,
-                        kind: 'shopper-authentication',
-                        settings: {
-                            integration_id: node.data.integrationId,
-                        },
-                    }
                 const noOrdersWorkflowCallStep: WorkflowStepWorkflowCall = {
                     id: noOrdersWorkflowCallStepId,
                     kind: 'workflow_call',
@@ -339,40 +429,61 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         },
                     }
                 c.steps.push(
-                    shopperAuthenticationStep,
                     noOrdersWorkflowCallStep,
                     messagesStep,
                     orderSelectionWorkflowCallStep
                 )
                 c.transitions.push({
                     id: ulid(),
-                    from_step_id: shopperAuthenticationStepId,
+                    from_step_id: stepIdByNodeId[previousNode.id],
                     to_step_id: noOrdersWorkflowCallStepId,
                     conditions: {'!': {var: 'customer.orders'}},
+                    event: incomingEdge?.data?.event,
                 })
                 c.transitions.push({
                     id: ulid(),
-                    from_step_id: shopperAuthenticationStepId,
+                    from_step_id: stepIdByNodeId[previousNode.id],
                     to_step_id: messagesStepId,
                     conditions: {'!!': {var: 'customer.orders'}},
+                    event: incomingEdge?.data?.event,
                 })
                 c.transitions.push({
                     id: ulid(),
                     from_step_id: messagesStepId,
                     to_step_id: orderSelectionWorkflowCallStepId,
                 })
+                stepIdByNodeId[node.id] = orderSelectionWorkflowCallStepId
+            } else if (
+                node.type === 'order_selection' &&
+                'wfConfigurationOrderSelectionStepId' in
+                    node.data.wfConfigurationRef
+            ) {
+                const step: WorkflowStepOrderSelection = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationOrderSelectionStepId,
+                    kind: 'order-selection',
+                    settings: {
+                        message: {
+                            content: node.data.content,
+                        },
+                    },
+                }
+                c.steps.push(step)
                 if (previousNode && stepIdByNodeId[previousNode.id]) {
                     c.transitions.push({
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: shopperAuthenticationStepId,
+                        to_step_id: step.id,
                         event: incomingEdge?.data?.event,
                     })
                 } else {
-                    c.initial_step_id = shopperAuthenticationStepId
+                    c.initial_step_id = step.id
                 }
-                stepIdByNodeId[node.id] = orderSelectionWorkflowCallStepId
-            } else if (node.type === 'multiple_choices') {
+                stepIdByNodeId[node.id] = step.id
+            } /* DEPRECATED */ else if (
+                node.type === 'multiple_choices' &&
+                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
+            ) {
                 const messagesStepId =
                     node.data.wfConfigurationRef.wfConfigurationMessagesStepId
                 const messagesStep: WorkflowStepMessages = {
@@ -414,8 +525,40 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 })
                 stepIdByNodeId[node.id] = choicesStepId
             } else if (
+                node.type === 'multiple_choices' &&
+                !(
+                    'wfConfigurationMessagesStepId' in
+                    node.data.wfConfigurationRef
+                )
+            ) {
+                const step: WorkflowStepChoices = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationChoicesStepId,
+                    kind: 'choices',
+                    settings: {
+                        choices: node.data.choices,
+                        message: {
+                            content: node.data.content,
+                        },
+                    },
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = step.id
+                }
+                stepIdByNodeId[node.id] = step.id
+            } /* DEPRECATED */ else if (
                 node.type === 'end' &&
-                node.data.withWasThisHelpfulPrompt
+                node.data.withWasThisHelpfulPrompt &&
+                'wfConfigurationWorkflowCallOrHandoverStepId' in
+                    node.data.wfConfigurationRef
             ) {
                 const workflowCallStepId =
                     node.data.wfConfigurationRef
@@ -440,7 +583,29 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
             } else if (
                 node.type === 'end' &&
-                !node.data.withWasThisHelpfulPrompt
+                node.data.withWasThisHelpfulPrompt &&
+                'wfConfigurationHelpfulPromptOrHandoverStepId' in
+                    node.data.wfConfigurationRef
+            ) {
+                const step: WorkflowStepHelpfulPrompt = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationHelpfulPromptOrHandoverStepId,
+                    kind: 'helpful-prompt',
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                    })
+                }
+            } /* DEPRECATED */ else if (
+                node.type === 'end' &&
+                !node.data.withWasThisHelpfulPrompt &&
+                'wfConfigurationWorkflowCallOrHandoverStepId' in
+                    node.data.wfConfigurationRef
             ) {
                 const handoverStepId =
                     node.data.wfConfigurationRef
@@ -465,11 +630,32 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 } else {
                     c.initial_step_id = handoverStepId
                 }
-            } else if (node.type === 'http_request') {
-                const stepId =
+            } else if (
+                node.type === 'end' &&
+                !node.data.withWasThisHelpfulPrompt &&
+                'wfConfigurationHelpfulPromptOrHandoverStepId' in
                     node.data.wfConfigurationRef
-                        .wfConfigurationHttpRequestStepId
-
+            ) {
+                const step: WorkflowStepHandover = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationHelpfulPromptOrHandoverStepId,
+                    kind: 'handover',
+                    settings: {
+                        ticket_tags: node.data.ticketTags,
+                        ticket_assignee_user_id: node.data.ticketAssigneeUserId,
+                        ticket_assignee_team_id: node.data.ticketAssigneeTeamId,
+                    },
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                    })
+                }
+            } else if (node.type === 'http_request') {
                 const headers = node.data.headers.reduce<
                     Record<string, string>
                 >((acc, header) => {
@@ -499,8 +685,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     }
                 }
 
-                const s: WorkflowStepHttpRequest = {
-                    id: stepId,
+                const step: WorkflowStepHttpRequest = {
+                    id: node.data.wfConfigurationRef
+                        .wfConfigurationHttpRequestStepId,
                     kind: 'http-request',
                     settings: {
                         name: node.data.name,
@@ -511,18 +698,18 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         variables: node.data.variables,
                     },
                 }
-                c.steps.push(s)
+                c.steps.push(step)
                 if (previousNode && stepIdByNodeId[previousNode.id]) {
                     c.transitions.push({
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: stepId,
+                        to_step_id: step.id,
                         event: incomingEdge?.data?.event,
                     })
                 } else {
-                    c.initial_step_id = stepId
+                    c.initial_step_id = step.id
                 }
-                stepIdByNodeId[node.id] = stepId
+                stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'shopper_authentication') {
                 const stepId =
                     node.data.wfConfigurationRef
@@ -614,4 +801,25 @@ export function isNodeUniquePerPath(
     return !Boolean(
         nodes.find((node) => childrenIds.has(node.id) && node.type === type)
     )
+}
+
+export function hasParentNodeInPath(
+    type: VisualBuilderNode['type'],
+    graph: VisualBuilderGraph,
+    nodeId: string
+) {
+    let hasParentNode = false
+
+    walkVisualBuilderGraph(
+        graph,
+        nodeId,
+        (node) => {
+            if (node.type === type && node.id !== nodeId) {
+                hasParentNode = true
+            }
+        },
+        'upwards'
+    )
+
+    return hasParentNode
 }

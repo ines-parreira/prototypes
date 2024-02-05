@@ -91,7 +91,6 @@ export type VisualBuilderBaseAction =
     | {
           type: 'INSERT_ORDER_SELECTION_NODE'
           beforeNodeId: string
-          storeIntegrationId: number
       }
     | {
           type: 'INSERT_HTTP_REQUEST_NODE'
@@ -198,7 +197,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildAutomatedMessageNode(),
+                    buildAutomatedMessageNode(graph.isNewModel ?? false),
                     action.beforeNodeId
                 )
             )
@@ -206,7 +205,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildTextReplyNode(),
+                    buildTextReplyNode(graph.isNewModel ?? false),
                     action.beforeNodeId
                 )
             )
@@ -214,7 +213,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildFileUploadNode(),
+                    buildFileUploadNode(graph.isNewModel ?? false),
                     action.beforeNodeId
                 )
             )
@@ -230,7 +229,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildOrderSelectionNode(action.storeIntegrationId),
+                    buildOrderSelectionNode(graph.isNewModel ?? false),
                     action.beforeNodeId
                 )
             )
@@ -278,7 +277,7 @@ export function baseReducer(
                         (e) => e.target === action.nodeId
                     )
                     if (!incomingEdge) return
-                    const endNode = buildEndNode()
+                    const endNode = buildEndNode(graph.isNewModel ?? false)
                     draft.nodes.push(endNode)
                     incomingEdge.target = endNode.id
                 })

@@ -77,7 +77,9 @@ export function deleteBranch(
     return nextGraph
 }
 
-export const buildAutomatedMessageNode: () => AutomatedMessageNodeType = () => {
+export const buildAutomatedMessageNode = (
+    isNewModel: boolean
+): AutomatedMessageNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
@@ -85,7 +87,9 @@ export const buildAutomatedMessageNode: () => AutomatedMessageNodeType = () => {
         type: 'automated_message',
         data: {
             wfConfigurationRef: {
-                wfConfigurationMessagesStepId: id,
+                ...(isNewModel
+                    ? {wfConfigurationMessageStepId: id}
+                    : {wfConfigurationMessagesStepId: id}),
             },
             content: {
                 html: '',
@@ -97,7 +101,7 @@ export const buildAutomatedMessageNode: () => AutomatedMessageNodeType = () => {
     }
 }
 
-export const buildTextReplyNode: () => TextReplyNodeType = () => {
+export const buildTextReplyNode = (isNewModel: boolean): TextReplyNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
@@ -105,8 +109,12 @@ export const buildTextReplyNode: () => TextReplyNodeType = () => {
         type: 'text_reply',
         data: {
             wfConfigurationRef: {
-                wfConfigurationMessagesStepId: id,
-                wfConfigurationTextInputStepId: ulid(),
+                ...(isNewModel
+                    ? {wfConfigurationTextInputStepId: id}
+                    : {
+                          wfConfigurationMessagesStepId: id,
+                          wfConfigurationTextInputStepId: ulid(),
+                      }),
             },
             content: {
                 html: '',
@@ -118,7 +126,9 @@ export const buildTextReplyNode: () => TextReplyNodeType = () => {
     }
 }
 
-export const buildFileUploadNode: () => FileUploadNodeType = () => {
+export const buildFileUploadNode = (
+    isNewModel: boolean
+): FileUploadNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
@@ -126,8 +136,12 @@ export const buildFileUploadNode: () => FileUploadNodeType = () => {
         type: 'file_upload',
         data: {
             wfConfigurationRef: {
-                wfConfigurationMessagesStepId: id,
-                wfConfigurationAttachmentsInputStepId: ulid(),
+                ...(isNewModel
+                    ? {wfConfigurationAttachmentsInputStepId: id}
+                    : {
+                          wfConfigurationMessagesStepId: id,
+                          wfConfigurationAttachmentsInputStepId: ulid(),
+                      }),
             },
             content: {
                 html: '',
@@ -139,7 +153,9 @@ export const buildFileUploadNode: () => FileUploadNodeType = () => {
     }
 }
 
-export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => {
+export const buildMultipleChoicesNode = (
+    isNewModel: boolean
+): MultipleChoicesNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
@@ -147,8 +163,12 @@ export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => {
         type: 'multiple_choices',
         data: {
             wfConfigurationRef: {
-                wfConfigurationMessagesStepId: id,
-                wfConfigurationChoicesStepId: ulid(),
+                ...(isNewModel
+                    ? {wfConfigurationChoicesStepId: id}
+                    : {
+                          wfConfigurationMessagesStepId: id,
+                          wfConfigurationChoicesStepId: ulid(),
+                      }),
             },
             content: {
                 html: '',
@@ -172,7 +192,7 @@ export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => {
     }
 }
 
-export const buildEndNode: () => EndNodeType = () => {
+export const buildEndNode = (isNewModel: boolean): EndNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
@@ -180,16 +200,18 @@ export const buildEndNode: () => EndNodeType = () => {
         type: 'end',
         data: {
             wfConfigurationRef: {
-                wfConfigurationWorkflowCallOrHandoverStepId: id,
+                ...(isNewModel
+                    ? {wfConfigurationHelpfulPromptOrHandoverStepId: id}
+                    : {wfConfigurationWorkflowCallOrHandoverStepId: id}),
             },
             withWasThisHelpfulPrompt: true,
         },
     }
 }
 
-export const buildOrderSelectionNode: (
-    storeIntegrationId: number
-) => OrderSelectionNodeType = (storeIntegrationId: number) => {
+export const buildOrderSelectionNode = (
+    isNewModel: boolean
+): OrderSelectionNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
@@ -197,10 +219,17 @@ export const buildOrderSelectionNode: (
         type: 'order_selection',
         data: {
             wfConfigurationRef: {
-                wfConfigurationMessagesStepId: ulid(),
-                wfConfigurationShopperAuthenticationStepId: id,
-                wfConfigurationOrderSelectionWorkflowCallStepId: ulid(),
-                wfConfigurationNoOrdersWorkflowCallStepId: ulid(),
+                ...(isNewModel
+                    ? {
+                          wfConfigurationOrderSelectionStepId: id,
+                      }
+                    : {
+                          wfConfigurationMessagesStepId: ulid(),
+                          wfConfigurationShopperAuthenticationStepId: id,
+                          wfConfigurationOrderSelectionWorkflowCallStepId:
+                              ulid(),
+                          wfConfigurationNoOrdersWorkflowCallStepId: ulid(),
+                      }),
             },
             content: {
                 html: '',
@@ -208,12 +237,11 @@ export const buildOrderSelectionNode: (
                 text: '',
                 text_tkey: ulid(),
             },
-            integrationId: storeIntegrationId,
         },
     }
 }
 
-export const buildHttpRequestNode: () => HttpRequestNodeType = () => {
+export const buildHttpRequestNode = (): HttpRequestNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),

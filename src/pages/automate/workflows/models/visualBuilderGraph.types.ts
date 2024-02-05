@@ -18,16 +18,20 @@ export type TriggerButtonNodeType = Node<
 
 export type MultipleChoicesNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationChoicesStepId: string
-            wfConfigurationMessagesStepId: string
-        }
+        wfConfigurationRef:
+            | {
+                  wfConfigurationChoicesStepId: string
+              }
+            | {
+                  wfConfigurationChoicesStepId: string
+                  wfConfigurationMessagesStepId: string
+              }
         content: MessageContent
-        choices: Array<{
+        choices: {
             event_id: string
             label: string
             label_tkey?: string
-        }>
+        }[]
         isGreyedOut?: boolean | null
     },
     'multiple_choices'
@@ -41,9 +45,13 @@ export function isMultipleChoicesNodeType(
 
 export type AutomatedMessageNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: string
-        }
+        wfConfigurationRef:
+            | {
+                  wfConfigurationMessageStepId: string
+              }
+            | {
+                  wfConfigurationMessagesStepId: string
+              }
         content: MessageContent
         isGreyedOut?: boolean | null
     },
@@ -52,10 +60,14 @@ export type AutomatedMessageNodeType = Node<
 
 export type TextReplyNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: string
-            wfConfigurationTextInputStepId: string
-        }
+        wfConfigurationRef:
+            | {
+                  wfConfigurationTextInputStepId: string
+              }
+            | {
+                  wfConfigurationMessagesStepId: string
+                  wfConfigurationTextInputStepId: string
+              }
         content: MessageContent
         isGreyedOut?: boolean | null
     },
@@ -64,10 +76,14 @@ export type TextReplyNodeType = Node<
 
 export type FileUploadNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: string
-            wfConfigurationAttachmentsInputStepId: string
-        }
+        wfConfigurationRef:
+            | {
+                  wfConfigurationAttachmentsInputStepId: string
+              }
+            | {
+                  wfConfigurationMessagesStepId: string
+                  wfConfigurationAttachmentsInputStepId: string
+              }
         content: MessageContent
         isGreyedOut?: boolean | null
     },
@@ -76,14 +92,16 @@ export type FileUploadNodeType = Node<
 
 export type OrderSelectionNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: string
-            wfConfigurationShopperAuthenticationStepId: string
-            wfConfigurationOrderSelectionWorkflowCallStepId: string
-            wfConfigurationNoOrdersWorkflowCallStepId: string
-        }
+        wfConfigurationRef:
+            | {
+                  wfConfigurationOrderSelectionStepId: string
+              }
+            | {
+                  wfConfigurationMessagesStepId: string
+                  wfConfigurationOrderSelectionWorkflowCallStepId: string
+                  wfConfigurationNoOrdersWorkflowCallStepId: string
+              }
         content: MessageContent
-        integrationId: number
         isGreyedOut?: boolean | null
     },
     'order_selection'
@@ -130,9 +148,13 @@ export type ShopperAuthenticationNodeType = Node<
 
 export type EndNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationWorkflowCallOrHandoverStepId: string
-        }
+        wfConfigurationRef:
+            | {
+                  wfConfigurationHelpfulPromptOrHandoverStepId: string
+              }
+            | {
+                  wfConfigurationWorkflowCallOrHandoverStepId: string
+              }
         withWasThisHelpfulPrompt: boolean
         ticketTags?: string[] | null
         ticketAssigneeUserId?: number | null
@@ -163,4 +185,5 @@ export type VisualBuilderGraph = {
     nodes: VisualBuilderNode[]
     edges: VisualBuilderEdge[]
     wfConfigurationOriginal: WorkflowConfiguration
+    isNewModel?: boolean
 }

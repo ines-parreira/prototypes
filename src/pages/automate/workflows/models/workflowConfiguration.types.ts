@@ -10,38 +10,57 @@ export type MessageContent = {
     attachments?: ProductCardAttachment[] | null
 }
 
+type Message = {
+    content: MessageContent
+}
+
+// DEPRECATED
 export type WorkflowStepMessages = {
     id: string
     kind: 'messages'
     settings: {
-        messages: Array<{
-            content: MessageContent
-        }>
+        messages: Message[]
+    }
+}
+
+export type WorkflowStepMessage = {
+    id: string
+    kind: 'message'
+    settings: {
+        message: Message
     }
 }
 
 export type WorkflowStepTextInput = {
     id: string
     kind: 'text-input'
+    settings?: {
+        message: Message
+    }
 }
 
 export type WorkflowStepAttachmentsInput = {
     id: string
     kind: 'attachments-input'
+    settings?: {
+        message: Message
+    }
 }
 
 export type WorkflowStepChoices = {
     id: string
     kind: 'choices'
     settings: {
-        choices: Array<{
+        choices: {
             event_id: string
             label: string
             label_tkey?: string
-        }>
+        }[]
+        message?: Message
     }
 }
 
+// DEPRECATED
 export type WorkflowStepWorkflowCall = {
     id: string
     kind: 'workflow_call'
@@ -66,6 +85,19 @@ export type WorkflowStepShopperAuthentication = {
     settings: {
         integration_id: number
     }
+}
+
+export type WorkflowStepOrderSelection = {
+    id: string
+    kind: 'order-selection'
+    settings?: {
+        message: Message
+    }
+}
+
+export type WorkflowStepHelpfulPrompt = {
+    id: string
+    kind: 'helpful-prompt'
 }
 
 export type WorkflowStepHttpRequest = {
@@ -94,6 +126,9 @@ export type WorkflowStep =
     | WorkflowStepHandover
     | WorkflowStepShopperAuthentication
     | WorkflowStepHttpRequest
+    | WorkflowStepMessage
+    | WorkflowStepOrderSelection
+    | WorkflowStepHelpfulPrompt
 
 export type WorkflowTransition = {
     id: string
