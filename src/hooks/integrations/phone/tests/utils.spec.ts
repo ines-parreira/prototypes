@@ -37,6 +37,7 @@ import * as utils from 'hooks/integrations/phone/utils'
 import * as api from 'hooks/integrations/phone/api'
 import * as LDUtils from 'utils/launchDarkly'
 import * as activityTracker from 'services/activityTracker'
+import * as envUtils from 'utils/environment'
 import {ActivityEvents} from 'services/activityTracker'
 
 jest.mock('utils/errors')
@@ -84,10 +85,11 @@ describe('connectDevice', () => {
         )
     })
 
-    it('should fail and report error if the proto is not HTTPs', async () => {
+    it('should fail and report error if the proto is not HTTPs and env is production', async () => {
         Object.defineProperty(window, 'location', {
             value: new URL('http://test'),
         })
+        jest.spyOn(envUtils, 'isProduction').mockReturnValueOnce(true)
 
         const expectedError = new VoiceAppError(
             VoiceAppErrorCode.HttpsProtoRequired

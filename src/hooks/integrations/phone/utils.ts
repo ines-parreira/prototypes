@@ -37,6 +37,7 @@ import {
 } from 'hooks/integrations/phone/api'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
+import {isProduction} from 'utils/environment'
 import {useConnectionParameters} from '../../../pages/common/components/PhoneIntegrationBar/hooks'
 import * as utils from './utils'
 
@@ -60,7 +61,7 @@ export async function connectDevice(
     dispatch(incrementReconnectAttempts())
 
     const isHttps = window.location.protocol.startsWith('https')
-    if (!isHttps) {
+    if (isProduction() && !isHttps) {
         const error = new VoiceAppError(VoiceAppErrorCode.HttpsProtoRequired)
         dispatch(setError(error))
         dispatch(setIsConnecting(false))
