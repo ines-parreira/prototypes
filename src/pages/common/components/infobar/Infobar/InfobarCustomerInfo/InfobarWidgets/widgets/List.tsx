@@ -1,19 +1,13 @@
-import React, {Component} from 'react'
-import classnames from 'classnames'
-import {Map, List} from 'immutable'
+import React, {useCallback, useMemo} from 'react'
+import {Map, List as ImmutableList, fromJS} from 'immutable'
 
-import {compare} from 'utils'
-
+import List from 'infobar/ui/List'
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
 import WidgetListContext from './WidgetListContext'
 
-import css from './List.less'
-
-const DEFAULT_LIST_LIMIT = 3
-
-type OwnProps = {
-    source: List<Map<string, unknown>>
+type Props = {
+    source: ImmutableList<Map<string, unknown>>
     widget: Map<string, unknown>
     template: Map<unknown, unknown>
     isEditing?: boolean
@@ -21,152 +15,114 @@ type OwnProps = {
     removeBorderTop?: boolean
 }
 
-class ListInfobarWidget extends Component<OwnProps> {
-    state = {
-        showMoreTimes: 0, // how many times the agent asked to show more of the list
-    }
+function ListInfobarWidget({
+    isEditing = false,
+    source,
+    widget,
+    template,
+    isParentList,
+    removeBorderTop = false,
+}: Props) {
+    const InfobarWidget = widgetReference.Widget
 
-    render() {
-        const {
-            isEditing = false,
-            source,
-            widget,
-            template,
-            isParentList,
-            removeBorderTop = false,
-        } = this.props
+    const updatedTemplate = template.set(
+        'absolutePath',
+        (template.get('absolutePath', '') as ImmutableList<string>).concat([
+            '[]',
+        ])
+    )
 
-        if (
-            !List.isList(source) ||
-            !source.size ||
-            !template.getIn(['widgets', '0'])
-        )
-            return null
+    const passedTemplate = (
+        updatedTemplate.getIn(['widgets', '0'], fromJS([])) as Map<
+            unknown,
+            unknown
+        >
+    ).set(
+        'templatePath',
+        `${updatedTemplate.get('templatePath', '') as string}.widgets.0`
+    )
 
-        const InfobarWidget = widgetReference.Widget
-        const updatedTemplate = template.set(
-            'absolutePath',
-            (template.get('absolutePath') as List<string>).concat(['[]'])
-        )
+    const isParentOfCard =
+        updatedTemplate.getIn(['widgets', 0, 'type'], '') === 'card'
 
-        const passedTemplate = (
-            updatedTemplate.getIn(['widgets', '0']) as Map<unknown, unknown>
-        ).set(
-            'templatePath',
-            `${updatedTemplate.get('templatePath', '') as string}.widgets.0`
-        )
+    const hasOnlyContent =
+        isParentOfCard &&
+        passedTemplate.getIn(['meta', 'displayCard'], true) === false
 
-        const isParentOfCard =
-            updatedTemplate.getIn(['widgets', 0, 'type'], '') === 'card'
+    const limit = template.getIn(['meta', 'limit']) as
+        | number
+        | string
+        | undefined
 
-        const hasOnlyContent =
-            isParentOfCard &&
-            passedTemplate.getIn(['meta', 'displayCard'], true) === false
+    const orderByString = template.getIn(['meta', 'orderBy']) as
+        | string
+        | undefined
 
-        let orderedSource = source
-        // order source
-        const orderByConfig = template.getIn(['meta', 'orderBy']) as string
+    const orderBy = useMemo(
+        () =>
+            orderByString
+                ? ({
+                      key: orderByString.slice(1),
+                      direction: orderByString[0] === '-' ? 'DESC' : 'ASC',
+                  } as const)
+                : undefined,
+        [orderByString]
+    )
 
-        if (!isEditing && orderByConfig) {
-            // format of config : "-name" would tell order by 'name' DESC
-            const orderByProperty = orderByConfig.slice(1)
-            orderedSource = orderedSource.sort((a, b) =>
-                compare(a.get(orderByProperty), b.get(orderByProperty))
-            ) as List<Map<string, unknown>>
+    // if the header of the children template is hidden
+    // we only display one children. Same if first children is a list
+    const trimmedSource = useMemo(() => {
+        if (hasOnlyContent || !isParentOfCard) {
+            return source.setSize(1).toJS() as Record<string, unknown>[]
+        }
+        return source.toJS() as Record<string, unknown>[]
+    }, [source, hasOnlyContent, isParentOfCard])
 
-            const orderByDirection = orderByConfig.slice(0, 1)
-            if (orderByDirection === '-') {
-                orderedSource = orderedSource.reverse() as List<
-                    Map<string, unknown>
+    const children = useCallback(
+        (childrenSources: Record<string, unknown>[]) =>
+            childrenSources.map((childSource, index) => (
+                <WidgetListContext.Provider
+                    value={{currentListIndex: index}}
+                    key={index}
                 >
-            }
-        }
+                    <InfobarWidget
+                        source={fromJS(childSource)}
+                        parent={updatedTemplate}
+                        widget={widget}
+                        template={passedTemplate}
+                        open={index === 0}
+                        removeBorderTop={index === 0 && removeBorderTop}
+                    />
+                </WidgetListContext.Provider>
+            )),
+        [
+            InfobarWidget,
+            updatedTemplate,
+            widget,
+            passedTemplate,
+            removeBorderTop,
+        ]
+    )
 
-        let limit = template.getIn(['meta', 'limit']) || DEFAULT_LIST_LIMIT
-        let sourceList = orderedSource
-        let remainingListItemsMessage = null
+    if (
+        !ImmutableList.isList(source) ||
+        !source.size ||
+        !template.getIn(['widgets', '0'])
+    )
+        return null
 
-        // display only 1 element of the list if editing widgets
-        if (isEditing) {
-            limit = 1
-        }
-
-        // use limit only if we display cards in the list (display 1 element if list of lists)
-        if (!isParentOfCard) {
-            limit = 1
-        }
-
-        if (limit) {
-            // calculate limit of cards displayed in this array
-            limit = limit * (this.state.showMoreTimes + 1)
-            // limit displayed source data
-            sourceList = orderedSource.take(limit) as List<Map<string, unknown>>
-
-            // if there is a limit, explain it under the card
-            const excludedItems = source.size - limit
-            const hasExcludedItems = excludedItems > 0
-
-            if (hasExcludedItems) {
-                remainingListItemsMessage = isEditing ? (
-                    <div
-                        className={css.hiddenItems}
-                    >{`${excludedItems} more`}</div>
-                ) : (
-                    <div>
-                        <button
-                            className={css.showMore}
-                            type="button"
-                            onClick={() =>
-                                this.setState({
-                                    showMoreTimes: this.state.showMoreTimes + 1,
-                                })
-                            }
-                        >
-                            <i className="material-icons">unfold_more</i>
-                            {excludedItems}&nbsp;more
-                        </button>
-                    </div>
-                )
-            }
-        }
-
-        // if the header of the children template is hidden
-        // we only display one card open
-        if (hasOnlyContent) {
-            sourceList = sourceList.setSize(1)
-        }
-
-        return (
-            <div
-                className={classnames({
-                    draggable: !isParentList,
-                })}
-                data-key={`${template.get('path') as string}[]`}
-            >
-                {sourceList.map((d, i) => (
-                    <WidgetListContext.Provider
-                        value={{currentListIndex: i as number}}
-                        key={i as number}
-                    >
-                        <InfobarWidget
-                            source={d}
-                            parent={updatedTemplate}
-                            widget={widget}
-                            template={passedTemplate}
-                            open={i === 0}
-                            removeBorderTop={i === 0 && removeBorderTop}
-                        />
-                    </WidgetListContext.Provider>
-                ))}
-                {!hasOnlyContent &&
-                    !sourceList.isEmpty() &&
-                    isParentOfCard &&
-                    remainingListItemsMessage && (
-                        <div>{remainingListItemsMessage}</div>
-                    )}
-            </div>
-        )
-    }
+    return (
+        <List
+            isDraggable={!isParentList}
+            dataKey={`${template.get('path') as string}[]`}
+            isEditing={isEditing}
+            listItems={trimmedSource}
+            initialItemDisplayedNumber={limit ? Number(limit) : undefined}
+            orderBy={orderBy}
+        >
+            {children}
+        </List>
+    )
 }
 
 export default ListInfobarWidget

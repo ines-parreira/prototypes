@@ -1,13 +1,43 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
-import {fromJS, Map, List} from 'immutable'
+import {render} from '@testing-library/react'
+import {fromJS, Map, List as ImmutableList} from 'immutable'
 
 import * as widgetsFixtures from 'fixtures/widgets'
 import * as ticketFixtures from 'fixtures/ticket'
+import {assumeMock} from 'utils/testing'
+import UIList from 'infobar/ui/List'
+
+import {widgetReference} from '../../widgetReference'
 
 import ListInfobarWidget from '../List'
 
+jest.mock('../../widgetReference', () => {
+    const Widget = jest.fn(() => <></>)
+
+    return {
+        widgetReference: {
+            Widget,
+        },
+    }
+})
+
+jest.mock('infobar/ui/List')
+
+const InfobarWidget = assumeMock(widgetReference.Widget)
+const mockedList = assumeMock(UIList)
+
 describe('Infobar::Widgets::List', () => {
+    beforeEach(() => {
+        mockedList.mockImplementation(
+            ({
+                children,
+                listItems = [],
+            }: Partial<ComponentProps<typeof UIList>>) => (
+                <>List {children?.(listItems)}</>
+            )
+        )
+    })
+
     const source = fromJS(
         (
             ticketFixtures.ticket.customer!.integrations as Record<
@@ -15,7 +45,7 @@ describe('Infobar::Widgets::List', () => {
                 {orders: unknown}
             >
         )['5'].orders
-    ) as List<Map<string, unknown>>
+    ) as ImmutableList<Map<string, unknown>>
 
     const widget = fromJS(widgetsFixtures.shopifyWidget) as Map<string, unknown>
     const template = (
@@ -36,48 +66,115 @@ describe('Infobar::Widgets::List', () => {
         source,
         widget,
         template,
+        removeBorderTop: true,
     }
 
-    it('should not render if list template has no widget inside', () => {
-        const component = shallow(
+    it('should return null', () => {
+        const {container, rerender} = render(
+            <ListInfobarWidget {...minProps} template={fromJS({widgets: []})} />
+        )
+        expect(container.firstChild).toBeNull()
+
+        rerender(<ListInfobarWidget {...minProps} source={fromJS([])} />)
+        expect(container.firstChild).toBeNull()
+
+        rerender(<ListInfobarWidget {...minProps} source={fromJS({})} />)
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should call InfobarWidget with the correct props', () => {
+        render(<ListInfobarWidget {...minProps} />)
+
+        expect(InfobarWidget).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                open: true,
+                source: source.get(0),
+                removeBorderTop: true,
+            }),
+            {}
+        )
+        expect(InfobarWidget).toHaveBeenNthCalledWith(
+            2,
+            expect.objectContaining({
+                open: false,
+                source: source.get(1),
+                removeBorderTop: false,
+            }),
+            {}
+        )
+
+        const updatedTemplate = minProps.template.set(
+            'absolutePath',
+            (template.get('absolutePath') as ImmutableList<string>).concat([
+                '[]',
+            ])
+        )
+
+        const passedTemplate = (
+            updatedTemplate.getIn(['widgets', '0']) as Map<unknown, unknown>
+        ).set(
+            'templatePath',
+            `${updatedTemplate.get('templatePath', '') as string}.widgets.0`
+        )
+
+        expect(InfobarWidget).toHaveBeenCalledWith(
+            expect.objectContaining({
+                widget: minProps.widget,
+                parent: updatedTemplate,
+                template: passedTemplate,
+            }),
+            {}
+        )
+    })
+
+    it('should call List with the correct props', () => {
+        const {rerender} = render(<ListInfobarWidget {...minProps} />)
+
+        expect(mockedList).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                isDraggable: !minProps.isParentList,
+                dataKey: `${template.get('path') as string}[]`,
+                listItems: minProps.source.toJS(),
+                initialItemDisplayedNumber: Number(
+                    template.getIn(['meta', 'limit'])
+                ),
+                orderBy: undefined,
+                isEditing: minProps.isEditing,
+            }),
+            {}
+        )
+
+        let templateVariation = minProps.template.setIn(
+            ['widgets', '0', 'meta', 'displayCard'],
+            false
+        )
+
+        templateVariation = templateVariation.setIn(
+            ['meta', 'orderBy'],
+            '+name'
+        )
+
+        rerender(
             <ListInfobarWidget
-                {...{...minProps, template: template.set('widgets', [])}}
+                {...minProps}
+                isEditing={true}
+                template={templateVariation}
             />
         )
-        expect(component.isEmptyRender()).toBe(true)
-    })
 
-    it('used fixtures are correct', () => {
-        expect(minProps.source.size).toBe(2)
-        expect(template.getIn(['meta', 'limit'])).toBe('2')
-    })
-
-    describe('do not display show more button', () => {
-        it('higher limit config than source size', () => {
-            const component = shallow(<ListInfobarWidget {...minProps} />)
-            expect(component.find('.footer').exists()).toBe(false)
-        })
-
-        it('no limit config', () => {
-            const component = shallow(
-                <ListInfobarWidget
-                    {...minProps}
-                    template={template.removeIn(['meta', 'limit'])}
-                />
-            )
-            expect(component.find('button').exists()).toBe(false)
-        })
-    })
-
-    describe('display show more button', () => {
-        it('shorter limit config than source size', () => {
-            const component = shallow(
-                <ListInfobarWidget
-                    {...minProps}
-                    template={template.setIn(['meta', 'limit'], 1)}
-                />
-            )
-            expect(component.find('button').exists()).toBe(true)
-        })
+        expect(mockedList).toHaveBeenNthCalledWith(
+            2,
+            expect.objectContaining({
+                isEditing: true,
+                listItems: minProps.source.setSize(1).toJS(),
+                orderBy: {
+                    key: 'name',
+                    direction: 'ASC',
+                },
+            }),
+            {}
+        )
     })
 })
