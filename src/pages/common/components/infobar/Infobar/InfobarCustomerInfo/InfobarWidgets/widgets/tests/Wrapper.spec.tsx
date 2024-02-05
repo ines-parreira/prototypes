@@ -1,5 +1,5 @@
 import React, {ComponentProps, ReactNode} from 'react'
-import {render, fireEvent, screen, waitFor} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -15,14 +15,10 @@ import {
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import WrapperEditForm, {FormData} from 'infobar/ui/WrapperEditForm'
 import {assumeMock} from 'utils/testing'
+import WrapperEditActions, {FormData} from 'infobar/ui/WrapperEditActions'
 
-import Wrapper, {
-    CUSTOMIZE_WIDGET_BUTTON_TEXT,
-    DELETE_WIDGET_BUTTON_TEXT,
-    useIntegration,
-} from '../Wrapper'
+import Wrapper, {CUSTOMIZABLE_WIDGET_TYPES, useIntegration} from '../Wrapper'
 
 jest.spyOn(actions, 'removeEditedWidget')
 
@@ -113,18 +109,18 @@ const woocommerceDataSource = fromJS({
 })
 
 const MOCK_EDIT_FORM_COLOR_ID = 'edit-form-color'
-jest.mock('infobar/ui/WrapperEditForm', () =>
-    jest.fn((props: ComponentProps<typeof WrapperEditForm>) => (
+jest.mock('infobar/ui/WrapperEditActions', () =>
+    jest.fn((props: ComponentProps<typeof WrapperEditActions>) => (
         <div>
             <span data-testid={MOCK_EDIT_FORM_COLOR_ID}>
-                {props.initialData.color}
+                {props.initialData?.color}
             </span>
         </div>
     ))
 )
-const WrapperEditFormMock = assumeMock(WrapperEditForm)
+const WrapperEditActionsMock = assumeMock(WrapperEditActions)
 
-describe('InfobarWidgets component', () => {
+describe('Wrapper', () => {
     const defaultTemplatePath = 'templatePath'
     const defaultAbsolutePath = ['absolute', 'path']
 
@@ -152,7 +148,7 @@ describe('InfobarWidgets component', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should call the appropriate callback when clicking remove icon in edit mode', () => {
+    it('should call the removeEditedWidget action on delete edit action', () => {
         render(
             <Provider store={store}>
                 <EditionContext.Provider value={{isEditing: true}}>
@@ -169,57 +165,67 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
 
-        expect(screen.queryByText('edit')).toBeNull()
-        fireEvent.click(screen.getAllByText(DELETE_WIDGET_BUTTON_TEXT)[0])
-        expect(removeEditedWidget.mock.calls).toMatchSnapshot()
-    })
+        WrapperEditActionsMock.mock.calls.slice(-1)[0][0].onDelete()
 
-    it('should open and close the edit modal correctly', async () => {
-        render(
-            <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <Wrapper
-                        template={fromJS({
-                            ...httpWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        })}
-                        widget={fromJS(httpWidget)}
-                        source={shopifySource}
-                    />
-                </EditionContext.Provider>
-            </Provider>
+        expect(store.getActions()).toContainEqual(
+            removeEditedWidget(defaultTemplatePath, fromJS(defaultAbsolutePath))
         )
-
-        fireEvent.click(screen.getAllByText('edit')[0])
-        expect(screen.findByText('Border color'))
-        WrapperEditFormMock.mock.calls.slice(-1)[0][0].onCancel()
-        await waitFor(() => {
-            expect(screen.queryByText('Border color')).toBeNull()
-        })
     })
 
-    it('should have the proper color set', () => {
-        const {container} = render(
+    it.each(CUSTOMIZABLE_WIDGET_TYPES)(
+        'should render color for customizable "%s" widget type',
+        (type) => {
+            const color = '#fff'
+            const {getByTestId} = render(
+                <Provider store={store}>
+                    <EditionContext.Provider value={{isEditing: true}}>
+                        <Wrapper
+                            template={fromJS({
+                                ...httpWidget.template,
+                                type,
+                                meta: {
+                                    color,
+                                },
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            })}
+                            widget={fromJS(httpWidget)}
+                            source={shopifySource}
+                        />
+                    </EditionContext.Provider>
+                </Provider>
+            )
+
+            expect(getByTestId(MOCK_EDIT_FORM_COLOR_ID)).toHaveTextContent(
+                color
+            )
+        }
+    )
+
+    it('should not render color for not-customizable widget type', () => {
+        const color = '#fff'
+        const {getByTestId} = render(
             <Provider store={store}>
                 <EditionContext.Provider value={{isEditing: true}}>
                     <Wrapper
                         template={fromJS({
-                            ...httpWidget.template,
+                            ...shopifyWidget.template,
                             meta: {
-                                color: '#fff',
+                                color,
                             },
                             templatePath: defaultTemplatePath,
                             absolutePath: defaultAbsolutePath,
                         })}
-                        widget={fromJS(httpWidget)}
+                        widget={fromJS(shopifyWidget)}
                         source={shopifySource}
                     />
                 </EditionContext.Provider>
             </Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(getByTestId(MOCK_EDIT_FORM_COLOR_ID)).not.toHaveTextContent(
+            color
+        )
     })
 
     it('should render customer external data widget with the proper id', () => {
@@ -262,8 +268,8 @@ describe('InfobarWidgets component', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should start widget edit on customize widget button click', () => {
-        const {getByText} = render(
+    it('should start widget edit on edit start', () => {
+        render(
             <Provider store={store}>
                 <EditionContext.Provider value={{isEditing: true}}>
                     <Wrapper
@@ -279,41 +285,15 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
+        WrapperEditActionsMock.mock.calls.slice(-1)[0][0].onEditStart()
 
         expect(store.getActions()).toContainEqual(
             actions.startWidgetEdition(defaultTemplatePath)
         )
     })
 
-    it('should pass the template color to edit form', () => {
-        const color = '#ff0000'
-        const {getByText, getByTestId} = render(
-            <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <Wrapper
-                        template={fromJS({
-                            ...woocommerceDataWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                            meta: {
-                                color,
-                            },
-                        })}
-                        widget={fromJS(woocommerceDataWidget)}
-                        source={woocommerceDataSource}
-                    />
-                </EditionContext.Provider>
-            </Provider>
-        )
-
-        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
-
-        expect(getByTestId(MOCK_EDIT_FORM_COLOR_ID)).toHaveTextContent(color)
-    })
-
-    it('should stop widget edit on form edit cancel', () => {
-        const {getByText} = render(
+    it('should stop widget edit on edit cancel', () => {
+        render(
             <Provider store={store}>
                 <EditionContext.Provider value={{isEditing: true}}>
                     <Wrapper
@@ -329,8 +309,7 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
-        WrapperEditFormMock.mock.calls.slice(-1)[0][0].onCancel()
+        WrapperEditActionsMock.mock.calls.slice(-1)[0][0].onEditCancel()
 
         expect(store.getActions()).toContainEqual(actions.stopWidgetEdition())
     })
@@ -339,7 +318,7 @@ describe('InfobarWidgets component', () => {
         const expectedData: FormData = {
             color: '#abcdef',
         }
-        const {getByText} = render(
+        render(
             <Provider store={store}>
                 <EditionContext.Provider value={{isEditing: true}}>
                     <Wrapper
@@ -355,8 +334,9 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(CUSTOMIZE_WIDGET_BUTTON_TEXT))
-        WrapperEditFormMock.mock.calls.slice(-1)[0][0].onSubmit(expectedData)
+        WrapperEditActionsMock.mock.calls
+            .slice(-1)[0][0]
+            .onEditSubmit(expectedData)
 
         const storeActions = store.getActions()
         const stopEditAction = actions.stopWidgetEdition()

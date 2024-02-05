@@ -1,10 +1,8 @@
-import React, {useCallback, useState, useContext} from 'react'
+import React, {useContext} from 'react'
 import {Map, fromJS} from 'immutable'
 import _last from 'lodash/last'
 import classnames from 'classnames'
-import {Popover, PopoverBody} from 'reactstrap'
 
-import useId from 'hooks/useId'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {Integration} from 'models/integration/types'
@@ -27,17 +25,12 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
-import {useAppNode} from 'appNode'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {
     getWidgetId,
     getWidgetTitle,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
-import WrapperEditForm from 'infobar/ui/WrapperEditForm'
-import {PartialTemplate} from 'models/widget/types'
+import WrapperEditActions from 'infobar/ui/WrapperEditActions'
 import WidgetPanel from 'infobar/features/WidgetPanel'
 
 // This is to avoid circular dependencies while doing recursion
@@ -47,6 +40,13 @@ import css from './Wrapper.less'
 
 export const CUSTOMIZE_WIDGET_BUTTON_TEXT = 'Customize Widget'
 export const DELETE_WIDGET_BUTTON_TEXT = 'Delete Widget'
+export const CUSTOMIZABLE_WIDGET_TYPES = [
+    HTTP_WIDGET_TYPE,
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
+]
 
 type Props = {
     source: Maybe<Map<string, unknown>>
@@ -57,14 +57,6 @@ type Props = {
 export default function Wrapper({widget, template, source}: Props) {
     const dispatch = useAppDispatch()
     const {isEditing} = useContext(EditionContext)
-    const id = useId()
-    const uniqueId = 'card-wrapper-' + id
-    const [isPopupOpen, setPopupOpen] = useState(false)
-    const appNode = useAppNode()
-
-    const handleClosePopover = useCallback(() => {
-        setPopupOpen(false)
-    }, [])
 
     const InfobarWidget = widgetReference.Widget
     const absolutePath = template.get('absolutePath', []) as string[]
@@ -108,90 +100,13 @@ export default function Wrapper({widget, template, source}: Props) {
                             <div id={widgetId} className={css.anchor} />
                         )}
                         {isEditing && (
-                            <div
-                                className={css.widgetWrapperTools}
-                                id={uniqueId}
-                            >
-                                {[
-                                    HTTP_WIDGET_TYPE,
-                                    CUSTOM_WIDGET_TYPE,
-                                    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-                                    STANDALONE_WIDGET_TYPE,
-                                    WOOCOMMERCE_WIDGET_TYPE,
-                                ].includes(widgetType) && (
-                                    <Button
-                                        type="button"
-                                        intent="primary"
-                                        fillStyle="ghost"
-                                        size="small"
-                                        onClick={() => {
-                                            dispatch(
-                                                startWidgetEdition(templatePath)
-                                            )
-                                            setPopupOpen(true)
-                                        }}
-                                    >
-                                        <ButtonIconLabel icon="edit">
-                                            {CUSTOMIZE_WIDGET_BUTTON_TEXT}
-                                            <Popover
-                                                placement="left"
-                                                isOpen={isPopupOpen}
-                                                target={uniqueId}
-                                                toggle={() => {
-                                                    dispatch(
-                                                        stopWidgetEdition()
-                                                    )
-                                                    setPopupOpen(false)
-                                                }}
-                                                trigger="legacy"
-                                                container={appNode ?? undefined}
-                                            >
-                                                <PopoverBody>
-                                                    <WrapperEditForm
-                                                        initialData={{
-                                                            color: template.getIn(
-                                                                [
-                                                                    'meta',
-                                                                    'color',
-                                                                ],
-                                                                ''
-                                                            ),
-                                                        }}
-                                                        onCancel={() => {
-                                                            dispatch(
-                                                                stopWidgetEdition()
-                                                            )
-                                                            handleClosePopover()
-                                                        }}
-                                                        onSubmit={(data) => {
-                                                            const wrapper: PartialTemplate =
-                                                                {
-                                                                    type: 'wrapper',
-                                                                    meta: {
-                                                                        color: data.color,
-                                                                    },
-                                                                }
-                                                            dispatch(
-                                                                updateEditedWidget(
-                                                                    wrapper
-                                                                )
-                                                            )
-                                                            dispatch(
-                                                                stopWidgetEdition()
-                                                            )
-                                                            handleClosePopover()
-                                                        }}
-                                                    />
-                                                </PopoverBody>
-                                            </Popover>
-                                        </ButtonIconLabel>
-                                    </Button>
-                                )}
-                                <Button
-                                    intent="destructive"
-                                    fillStyle="ghost"
-                                    size="small"
-                                    onClick={() => {
+                            <div className={css.widgetWrapperTools}>
+                                <WrapperEditActions
+                                    deleteButtonText={DELETE_WIDGET_BUTTON_TEXT}
+                                    editButtonText={
+                                        CUSTOMIZE_WIDGET_BUTTON_TEXT
+                                    }
+                                    onDelete={() => {
                                         dispatch(
                                             removeEditedWidget(
                                                 templatePath,
@@ -199,11 +114,38 @@ export default function Wrapper({widget, template, source}: Props) {
                                             )
                                         )
                                     }}
-                                >
-                                    <ButtonIconLabel icon="delete">
-                                        {DELETE_WIDGET_BUTTON_TEXT}
-                                    </ButtonIconLabel>
-                                </Button>
+                                    initialData={
+                                        CUSTOMIZABLE_WIDGET_TYPES.includes(
+                                            widgetType
+                                        )
+                                            ? {
+                                                  color: template.getIn(
+                                                      ['meta', 'color'],
+                                                      ''
+                                                  ),
+                                              }
+                                            : undefined
+                                    }
+                                    onEditStart={() => {
+                                        dispatch(
+                                            startWidgetEdition(templatePath)
+                                        )
+                                    }}
+                                    onEditCancel={() => {
+                                        dispatch(stopWidgetEdition())
+                                    }}
+                                    onEditSubmit={({color}) => {
+                                        dispatch(
+                                            updateEditedWidget({
+                                                type: 'wrapper',
+                                                meta: {
+                                                    color,
+                                                },
+                                            })
+                                        )
+                                        dispatch(stopWidgetEdition())
+                                    }}
+                                />
                             </div>
                         )}
 
