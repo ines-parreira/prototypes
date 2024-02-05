@@ -2,7 +2,6 @@ import React, {ReactElement} from 'react'
 
 import {SpotlightProvider} from 'providers/ui/SpotlightProvider'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
 import {ThemeProvider} from 'theme'
 
 import App from './App'
@@ -16,9 +15,7 @@ export default function Core({children}: Props) {
         <ErrorBoundary>
             <ThemeProvider>
                 <SpotlightProvider>
-                    <SplitTicketViewProvider>
-                        <App>{children}</App>
-                    </SplitTicketViewProvider>
+                    <App>{children}</App>
                 </SpotlightProvider>
             </ThemeProvider>
         </ErrorBoundary>
