@@ -451,14 +451,14 @@ export const TicketDetailContainer = ({
 
     // if the ticket in the reducer is not the one asked, we fetch it and display it
     useEffect(() => {
-        if ((ticket.get('id', '') as number).toString() !== ticketIdParam) {
+        if ((ticketId || 0).toString() !== ticketIdParam) {
             clearTicket()
             void fetchTicket(ticketIdParam || '', {isCurrentlyOnTicket: true})
         }
 
         showTicket()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ticketIdParam])
+    }, [ticketId, ticketIdParam])
 
     useEffect(() => {
         if (prevCustomer) {

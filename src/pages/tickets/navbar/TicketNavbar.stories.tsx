@@ -11,6 +11,7 @@ import {billingState} from 'fixtures/billing'
 import {newViews} from 'models/view/mocks'
 import {account} from 'fixtures/account'
 import {TicketNavbarContainer} from 'pages/tickets/navbar/TicketNavbar'
+import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
 import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {ThemeProvider, useTheme} from 'theme'
@@ -66,13 +67,15 @@ const storyConfig: Meta = {
         (Component) => (
             <ThemeProvider>
                 <Provider store={configureMockStore([thunk])(defaultState)}>
-                    <DndProvider backend={HTML5Backend}>
-                        <MemoryRouter>
-                            <div>
-                                <Component />
-                            </div>
-                        </MemoryRouter>
-                    </DndProvider>
+                    <SplitTicketViewProvider>
+                        <DndProvider backend={HTML5Backend}>
+                            <MemoryRouter>
+                                <div>
+                                    <Component />
+                                </div>
+                            </MemoryRouter>
+                        </DndProvider>
+                    </SplitTicketViewProvider>
                 </Provider>
             </ThemeProvider>
         ),
