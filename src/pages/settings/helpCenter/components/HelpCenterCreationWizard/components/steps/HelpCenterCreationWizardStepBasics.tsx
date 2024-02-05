@@ -96,10 +96,10 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
     const [shouldDisplayFormErrors, setShouldDisplayFormErrors] =
         useState(false)
 
-    const {isError: isSubdomainAvailable, refetch} =
-        useCheckHelpCenterWithSubdomainExists(newHelpCenter.subdomain, {
-            enabled: false,
-        })
+    const {
+        mutateAsync: checkHepCenterMutateAsync,
+        isError: isSubdomainAvailable,
+    } = useCheckHelpCenterWithSubdomainExists()
 
     const isAutomate = automateType === HelpCenterAutomateType.AUTOMATE
 
@@ -118,7 +118,10 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                 return
             }
 
-            void refetch()
+            void checkHepCenterMutateAsync([
+                undefined,
+                {subdomain: newHelpCenter.subdomain},
+            ])
         },
         500,
         [newHelpCenter.subdomain, shouldDisplayFormErrors]

@@ -196,17 +196,13 @@ export const useDeleteHelpCenterTranslation = (
 }
 
 export const useCheckHelpCenterWithSubdomainExists = (
-    subdomain: string,
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof checkHelpCenterWithSubdomainExists>>
-    >
+    overrides?: MutationOverrides<typeof checkHelpCenterWithSubdomainExists>
 ) => {
-    const {client} = useHelpCenterApi()
+    const {client: helpCenterClient} = useHelpCenterApi()
 
-    return useQuery({
-        queryKey: ['help-center', 'check-subdomain', subdomain],
-        queryFn: async () =>
-            checkHelpCenterWithSubdomainExists(client, {subdomain}),
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams]) =>
+            checkHelpCenterWithSubdomainExists(client, pathParams),
         retry: false,
         ...overrides,
     })

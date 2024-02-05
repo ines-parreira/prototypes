@@ -43,11 +43,11 @@ jest.mock(
 const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
 const mockOnSave = jest.fn()
 const mockUpdateData = jest.fn()
-const mockRefetch = jest.fn()
+const mockMutateAsync = jest.fn()
 
 jest.mock('models/helpCenter/queries', () => ({
     useCheckHelpCenterWithSubdomainExists: () => ({
-        refetch: mockRefetch,
+        mutateAsync: mockMutateAsync,
         isError: true,
     }),
 }))
@@ -206,7 +206,7 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
         })
 
         await waitFor(() => {
-            expect(mockRefetch).toHaveBeenCalled()
+            expect(mockMutateAsync).toHaveBeenCalled()
         })
     })
 })
