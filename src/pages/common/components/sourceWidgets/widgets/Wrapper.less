@@ -1,13 +1,11 @@
 :local {
     .sourceWrapper {
         margin-bottom: 12px;
+        // even though parent doesn't display: flex,
+        // we need to define flex to do be displayed
+        // correctly in the drag&drop parent (sidebar wrapper)
         flex: 1 0 auto;
         max-width: 100%;
-        padding: 1px 12px 12px 12px;
-        background-color: var(--neutral-grey-1);
-        border-top: 1px solid var(--neutral-grey-3);
-        border-right: 1px solid var(--neutral-grey-3);
-        border-bottom: 1px solid var(--neutral-grey-3);
     }
 
     .sourceWrapperHeader {

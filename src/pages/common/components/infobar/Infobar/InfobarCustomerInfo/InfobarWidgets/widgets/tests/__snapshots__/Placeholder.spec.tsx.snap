@@ -3,21 +3,26 @@
 exports[`PlaceholderWidget component should display the integration name if the widget is for an HTTP integration 1`] = `
 <div>
   <div
-    class="widgetWrapper wrapper http draggable"
+    class="wrapper draggable"
   >
     <div
-      class="card"
+      class="wrapper"
+      style="box-shadow: inset 3px 0 0 var(--httpMagenta);"
     >
-      <h5
-        class="title"
+      <div
+        class="card"
       >
-        Widget for my little integration http data
-      </h5>
-      <i
-        class="delete material-icons text-danger"
-      >
-        delete
-      </i>
+        <h5
+          class="title"
+        >
+          Widget for my little integration http data
+        </h5>
+        <i
+          class="delete material-icons text-danger"
+        >
+          delete
+        </i>
+      </div>
     </div>
   </div>
 </div>
@@ -26,21 +31,26 @@ exports[`PlaceholderWidget component should display the integration name if the 
 exports[`PlaceholderWidget component should display the integration type if the widget is not for an HTTP integration 1`] = `
 <div>
   <div
-    class="widgetWrapper wrapper shopify draggable"
+    class="wrapper draggable"
   >
     <div
-      class="card"
+      class="wrapper"
+      style="box-shadow: inset 3px 0 0 var(--shopifyGreen);"
     >
-      <h5
-        class="title"
+      <div
+        class="card"
       >
-        Widget for Shopify data
-      </h5>
-      <i
-        class="delete material-icons text-danger"
-      >
-        delete
-      </i>
+        <h5
+          class="title"
+        >
+          Widget for Shopify data
+        </h5>
+        <i
+          class="delete material-icons text-danger"
+        >
+          delete
+        </i>
+      </div>
     </div>
   </div>
 </div>

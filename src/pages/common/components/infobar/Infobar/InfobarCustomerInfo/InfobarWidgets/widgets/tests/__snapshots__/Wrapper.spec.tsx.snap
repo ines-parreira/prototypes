@@ -15,12 +15,17 @@ exports[`InfobarWidgets component should call the appropriate callback when clic
 exports[`InfobarWidgets component should display (without an edit or a remove icon) 1`] = `
 <div>
   <div
-    class="draggable widgetWrapper shopify adjustedPadding"
+    class="draggable widgetWrapper"
   >
     <div
-      class="anchor"
-      id="shopify"
-    />
+      class="wrapper"
+      style="box-shadow: inset 3px 0 0 var(--shopifyGreen);"
+    >
+      <div
+        class="anchor"
+        id="shopify"
+      />
+    </div>
   </div>
 </div>
 `;
@@ -28,47 +33,51 @@ exports[`InfobarWidgets component should display (without an edit or a remove ic
 exports[`InfobarWidgets component should have the proper color set 1`] = `
 <div>
   <div
-    class="draggable widgetWrapper http adjustedPadding widgetWrapperEditing"
-    style="box-shadow: inset 3px 0 0 #fff;"
+    class="draggable widgetWrapper widgetWrapperEditing"
   >
     <div
-      class="widgetWrapperTools"
-      id="card-wrapper-4"
+      class="wrapper"
+      style="box-shadow: inset 3px 0 0 #fff;"
     >
-      <button
-        aria-disabled="false"
-        class="wrapper ghost primary small"
-        type="button"
+      <div
+        class="widgetWrapperTools"
+        id="card-wrapper-4"
       >
-        <span
-          class="wrapper"
+        <button
+          aria-disabled="false"
+          class="wrapper ghost primary small"
+          type="button"
         >
-          <i
-            class="material-icons icon isLeft small"
+          <span
+            class="wrapper"
           >
-            edit
-          </i>
-          Customize Widget
-        </span>
-      </button>
-      <button
-        aria-disabled="false"
-        class="wrapper ghost destructive small"
-        type="button"
-      >
-        <span
-          class="wrapper"
+            <i
+              class="material-icons icon isLeft small"
+            >
+              edit
+            </i>
+            Customize Widget
+          </span>
+        </button>
+        <button
+          aria-disabled="false"
+          class="wrapper ghost destructive small"
+          type="button"
         >
-          <i
-            class="material-icons icon isLeft small"
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete Widget
-        </span>
-      </button>
+            <i
+              class="material-icons icon isLeft small"
+            >
+              delete
+            </i>
+            Delete Widget
+          </span>
+        </button>
+      </div>
+      <div />
     </div>
-    <div />
   </div>
 </div>
 `;
@@ -76,12 +85,17 @@ exports[`InfobarWidgets component should have the proper color set 1`] = `
 exports[`InfobarWidgets component should render customer external data widget with the proper id 1`] = `
 <div>
   <div
-    class="draggable widgetWrapper customer_external_data adjustedPadding"
+    class="draggable widgetWrapper"
   >
     <div
-      class="anchor"
-      id="my_wonderful_app_name"
-    />
+      class="wrapper"
+      style="box-shadow: inset 3px 0 0 var(--customerExternalDataGray);"
+    >
+      <div
+        class="anchor"
+        id="my_wonderful_app_name"
+      />
+    </div>
   </div>
 </div>
 `;
@@ -89,12 +103,17 @@ exports[`InfobarWidgets component should render customer external data widget wi
 exports[`InfobarWidgets component should render woocommerce widget with the proper id 1`] = `
 <div>
   <div
-    class="draggable widgetWrapper woocommerce adjustedPadding"
+    class="draggable widgetWrapper"
   >
     <div
-      class="anchor"
-      id="woo_commerce"
-    />
+      class="wrapper"
+      style="box-shadow: inset 3px 0 0 var(--woocommercePurple);"
+    >
+      <div
+        class="anchor"
+        id="woo_commerce"
+      />
+    </div>
   </div>
 </div>
 `;

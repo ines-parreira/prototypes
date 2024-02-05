@@ -10,10 +10,8 @@ import {
 import {getIntegrationById} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
-import infobarWidgetCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Wrapper.less'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-
+import WidgetPanel from 'infobar/features/WidgetPanel'
 import {WidgetType} from 'state/widgets/types'
 
 // This is to avoid circular dependencies while doing recursion
@@ -59,57 +57,52 @@ export default function Wrapper({widget, template, source, parent}: Props) {
         integration: integration?.toJS(),
     })
 
-    const type = parent.get('type') as string
-    const colorClassNames = []
-    if (WIDGET_COLOR_SUPPORTED_TYPES.includes(type))
-        colorClassNames.push(infobarWidgetCss[type])
+    const type = parent.get('type') as WidgetType
 
     return (
         <div
-            className={classnames(
-                'draggable',
-                css.sourceWrapper,
-                ...colorClassNames
-            )}
+            className={classnames('draggable', css.sourceWrapper)}
             data-key={(template.get('path') as string[]).join('.')}
         >
-            <div className={css.sourceWrapperHeader}>
-                <i className="material-icons">drag_indicator</i>
-                {displayName}
-            </div>
-            {widget.get('type') !== STANDALONE_WIDGET_TYPE && (
-                <div>
-                    <DragWrapper
-                        group={{
-                            name: absolutePath.join('.'),
-                            pull: true,
-                            put: false,
-                        }}
-                        isEditing
-                    >
-                        {children.map((childWidget, index) => {
-                            if (!childWidget || typeof index !== 'number')
-                                return null
-                            const passedTemplate = childWidget.set(
-                                'templatePath',
-                                `${templatePath}.widgets.${index}`
-                            )
-
-                            return (
-                                <SourceWidget
-                                    key={`${
-                                        passedTemplate.get('path') as string
-                                    }-${index}`}
-                                    source={source}
-                                    parent={template}
-                                    template={passedTemplate}
-                                    widget={widget}
-                                />
-                            )
-                        })}
-                    </DragWrapper>
+            <WidgetPanel widgetType={type}>
+                <div className={css.sourceWrapperHeader}>
+                    <i className="material-icons">drag_indicator</i>
+                    {displayName}
                 </div>
-            )}
+                {widget.get('type') !== STANDALONE_WIDGET_TYPE && (
+                    <div>
+                        <DragWrapper
+                            group={{
+                                name: absolutePath.join('.'),
+                                pull: true,
+                                put: false,
+                            }}
+                            isEditing
+                        >
+                            {children.map((childWidget, index) => {
+                                if (!childWidget || typeof index !== 'number')
+                                    return null
+                                const passedTemplate = childWidget.set(
+                                    'templatePath',
+                                    `${templatePath}.widgets.${index}`
+                                )
+
+                                return (
+                                    <SourceWidget
+                                        key={`${
+                                            passedTemplate.get('path') as string
+                                        }-${index}`}
+                                        source={source}
+                                        parent={template}
+                                        template={passedTemplate}
+                                        widget={widget}
+                                    />
+                                )
+                            })}
+                        </DragWrapper>
+                    </div>
+                )}
+            </WidgetPanel>
         </div>
     )
 }

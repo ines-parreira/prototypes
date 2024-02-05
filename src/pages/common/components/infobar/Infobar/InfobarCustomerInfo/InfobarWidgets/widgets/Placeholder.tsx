@@ -6,11 +6,12 @@ import {Map} from 'immutable'
 import {getIntegrationById} from 'state/integrations/selectors'
 import {removeEditedWidget} from 'state/widgets/actions'
 import {RootState} from 'state/types'
-import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import WidgetPanel from 'infobar/features/WidgetPanel'
 
-import cssWrapper from './Wrapper.less'
 import css from './Placeholder.less'
+
+const PLACEHOLDER_ACCENT_COLOR = 'var(--neutral-grey-4)'
 
 type OwnProps = {
     source: Map<any, any>
@@ -56,35 +57,26 @@ export class Placeholder extends Component<
     render() {
         const {widget} = this.props
 
-        const widgetType = widget.get('type') as string
-        const colorClassNames = []
-        if (WIDGET_COLOR_SUPPORTED_TYPES.includes(widgetType))
-            colorClassNames.push(cssWrapper[widgetType])
-        if (!colorClassNames.length)
-            colorClassNames.push(cssWrapper.placeholder)
-
         return (
-            <div
-                className={classnames(
-                    cssWrapper.widgetWrapper,
-                    css.wrapper,
-                    [colorClassNames],
-                    'draggable'
-                )}
-            >
-                <div className={css.card}>
-                    <h5 className={css.title}>{this._renderWidgetFor()}</h5>
-                    <i
-                        className={classnames(
-                            css.delete,
-                            'material-icons',
-                            'text-danger'
-                        )}
-                        onClick={this._deleteWidget}
-                    >
-                        delete
-                    </i>
-                </div>
+            <div className={classnames(css.wrapper, 'draggable')}>
+                <WidgetPanel
+                    widgetType={widget.get('type')}
+                    fallbackColor={PLACEHOLDER_ACCENT_COLOR}
+                >
+                    <div className={css.card}>
+                        <h5 className={css.title}>{this._renderWidgetFor()}</h5>
+                        <i
+                            className={classnames(
+                                css.delete,
+                                'material-icons',
+                                'text-danger'
+                            )}
+                            onClick={this._deleteWidget}
+                        >
+                            delete
+                        </i>
+                    </div>
+                </WidgetPanel>
             </div>
         )
     }

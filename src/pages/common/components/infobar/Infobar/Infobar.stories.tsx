@@ -21,7 +21,7 @@ const defaultState = {
 }
 
 const storyConfig: Meta = {
-    title: 'Tickets/InfoBar',
+    title: 'Infobar/Infobar',
     component: Infobar,
     parameters: {
         chromatic: {disableSnapshot: false},

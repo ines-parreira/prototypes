@@ -29,7 +29,6 @@ import {
 
 import {useAppNode} from 'appNode'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
 import {
     getWidgetId,
     getWidgetTitle,
@@ -39,6 +38,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import WrapperEditForm from 'infobar/ui/WrapperEditForm'
 import {PartialTemplate} from 'models/widget/types'
+import WidgetPanel from 'infobar/features/WidgetPanel'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
@@ -83,20 +83,6 @@ export default function Wrapper({widget, template, source}: Props) {
     })
     const widgetId = getWidgetId(widgetName)
 
-    const customColor = template.getIn(['meta', 'color'], '') as string
-    const borderColor = customColor
-        ? {
-              boxShadow: `inset 3px 0 0 ${customColor}`,
-          }
-        : undefined
-
-    const colorClassNames = []
-    if (WIDGET_COLOR_SUPPORTED_TYPES.includes(widgetType))
-        colorClassNames.push(css[widgetType])
-
-    if (borderColor || colorClassNames.length)
-        colorClassNames.push(css.adjustedPadding)
-
     return (
         <AppContext.Provider
             value={{
@@ -110,146 +96,155 @@ export default function Wrapper({widget, template, source}: Props) {
                 }}
             >
                 <div
-                    className={classnames(
-                        'draggable',
-                        css.widgetWrapper,
-                        ...colorClassNames,
-                        {
-                            [css.widgetWrapperEditing]: isEditing,
-                        }
-                    )}
-                    style={borderColor}
+                    className={classnames('draggable', css.widgetWrapper, {
+                        [css.widgetWrapperEditing]: isEditing,
+                    })}
                 >
-                    {!isEditing && <div id={widgetId} className={css.anchor} />}
-                    {isEditing && (
-                        <div className={css.widgetWrapperTools} id={uniqueId}>
-                            {[
-                                HTTP_WIDGET_TYPE,
-                                CUSTOM_WIDGET_TYPE,
-                                CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-                                STANDALONE_WIDGET_TYPE,
-                                WOOCOMMERCE_WIDGET_TYPE,
-                            ].includes(widgetType) && (
+                    <WidgetPanel
+                        widgetType={widgetType}
+                        customColor={template.getIn(['meta', 'color'])}
+                    >
+                        {!isEditing && (
+                            <div id={widgetId} className={css.anchor} />
+                        )}
+                        {isEditing && (
+                            <div
+                                className={css.widgetWrapperTools}
+                                id={uniqueId}
+                            >
+                                {[
+                                    HTTP_WIDGET_TYPE,
+                                    CUSTOM_WIDGET_TYPE,
+                                    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                                    STANDALONE_WIDGET_TYPE,
+                                    WOOCOMMERCE_WIDGET_TYPE,
+                                ].includes(widgetType) && (
+                                    <Button
+                                        type="button"
+                                        intent="primary"
+                                        fillStyle="ghost"
+                                        size="small"
+                                        onClick={() => {
+                                            dispatch(
+                                                startWidgetEdition(templatePath)
+                                            )
+                                            setPopupOpen(true)
+                                        }}
+                                    >
+                                        <ButtonIconLabel icon="edit">
+                                            {CUSTOMIZE_WIDGET_BUTTON_TEXT}
+                                            <Popover
+                                                placement="left"
+                                                isOpen={isPopupOpen}
+                                                target={uniqueId}
+                                                toggle={() => {
+                                                    dispatch(
+                                                        stopWidgetEdition()
+                                                    )
+                                                    setPopupOpen(false)
+                                                }}
+                                                trigger="legacy"
+                                                container={appNode ?? undefined}
+                                            >
+                                                <PopoverBody>
+                                                    <WrapperEditForm
+                                                        initialData={{
+                                                            color: template.getIn(
+                                                                [
+                                                                    'meta',
+                                                                    'color',
+                                                                ],
+                                                                ''
+                                                            ),
+                                                        }}
+                                                        onCancel={() => {
+                                                            dispatch(
+                                                                stopWidgetEdition()
+                                                            )
+                                                            handleClosePopover()
+                                                        }}
+                                                        onSubmit={(data) => {
+                                                            const wrapper: PartialTemplate =
+                                                                {
+                                                                    type: 'wrapper',
+                                                                    meta: {
+                                                                        color: data.color,
+                                                                    },
+                                                                }
+                                                            dispatch(
+                                                                updateEditedWidget(
+                                                                    wrapper
+                                                                )
+                                                            )
+                                                            dispatch(
+                                                                stopWidgetEdition()
+                                                            )
+                                                            handleClosePopover()
+                                                        }}
+                                                    />
+                                                </PopoverBody>
+                                            </Popover>
+                                        </ButtonIconLabel>
+                                    </Button>
+                                )}
                                 <Button
-                                    type="button"
-                                    intent="primary"
+                                    intent="destructive"
                                     fillStyle="ghost"
                                     size="small"
                                     onClick={() => {
                                         dispatch(
-                                            startWidgetEdition(templatePath)
+                                            removeEditedWidget(
+                                                templatePath,
+                                                absolutePath
+                                            )
                                         )
-                                        setPopupOpen(true)
                                     }}
                                 >
-                                    <ButtonIconLabel icon="edit">
-                                        {CUSTOMIZE_WIDGET_BUTTON_TEXT}
-                                        <Popover
-                                            placement="left"
-                                            isOpen={isPopupOpen}
-                                            target={uniqueId}
-                                            toggle={() => {
-                                                dispatch(stopWidgetEdition())
-                                                setPopupOpen(false)
-                                            }}
-                                            trigger="legacy"
-                                            container={appNode ?? undefined}
-                                        >
-                                            <PopoverBody>
-                                                <WrapperEditForm
-                                                    initialData={{
-                                                        color: template.getIn(
-                                                            ['meta', 'color'],
-                                                            ''
-                                                        ),
-                                                    }}
-                                                    onCancel={() => {
-                                                        dispatch(
-                                                            stopWidgetEdition()
-                                                        )
-                                                        handleClosePopover()
-                                                    }}
-                                                    onSubmit={(data) => {
-                                                        const wrapper: PartialTemplate =
-                                                            {
-                                                                type: 'wrapper',
-                                                                meta: {
-                                                                    color: data.color,
-                                                                },
-                                                            }
-                                                        dispatch(
-                                                            updateEditedWidget(
-                                                                wrapper
-                                                            )
-                                                        )
-                                                        dispatch(
-                                                            stopWidgetEdition()
-                                                        )
-                                                        handleClosePopover()
-                                                    }}
-                                                />
-                                            </PopoverBody>
-                                        </Popover>
+                                    <ButtonIconLabel icon="delete">
+                                        {DELETE_WIDGET_BUTTON_TEXT}
                                     </ButtonIconLabel>
                                 </Button>
-                            )}
-                            <Button
-                                intent="destructive"
-                                fillStyle="ghost"
-                                size="small"
-                                onClick={() => {
-                                    dispatch(
-                                        removeEditedWidget(
-                                            templatePath,
-                                            absolutePath
-                                        )
-                                    )
-                                }}
-                            >
-                                <ButtonIconLabel icon="delete">
-                                    {DELETE_WIDGET_BUTTON_TEXT}
-                                </ButtonIconLabel>
-                            </Button>
-                        </div>
-                    )}
+                            </div>
+                        )}
 
-                    <DragWrapper
-                        sort
-                        group={{
-                            name: absolutePath.join('.'),
-                            pull: false,
-                            put: true,
-                        }}
-                        templatePath={templatePath}
-                        isEditing={isEditing}
-                        watchDrop
-                    >
-                        {(
-                            template.get('widgets', fromJS([])) as Map<
-                                number,
-                                unknown
-                            >
-                        ).map((mappedWidget, index = 0) => {
-                            const passedTemplate = (
-                                mappedWidget as Map<string, unknown>
-                            ).set(
-                                'templatePath',
-                                `${templatePath}.widgets.${index}`
-                            )
+                        <DragWrapper
+                            sort
+                            group={{
+                                name: absolutePath.join('.'),
+                                pull: false,
+                                put: true,
+                            }}
+                            templatePath={templatePath}
+                            isEditing={isEditing}
+                            watchDrop
+                        >
+                            {(
+                                template.get('widgets', fromJS([])) as Map<
+                                    number,
+                                    unknown
+                                >
+                            ).map((mappedWidget, index = 0) => {
+                                const passedTemplate = (
+                                    mappedWidget as Map<string, unknown>
+                                ).set(
+                                    'templatePath',
+                                    `${templatePath}.widgets.${index}`
+                                )
 
-                            return (
-                                <InfobarWidget
-                                    key={`${
-                                        passedTemplate.get('path') as string
-                                    }-${index}`}
-                                    source={source}
-                                    parent={template}
-                                    widget={widget}
-                                    template={passedTemplate}
-                                />
-                            )
-                        })}
-                    </DragWrapper>
+                                return (
+                                    <InfobarWidget
+                                        key={`${
+                                            passedTemplate.get('path') as string
+                                        }-${index}`}
+                                        source={source}
+                                        parent={template}
+                                        widget={widget}
+                                        template={passedTemplate}
+                                    />
+                                )
+                            })}
+                        </DragWrapper>
+                    </WidgetPanel>
                 </div>
             </IntegrationContext.Provider>
         </AppContext.Provider>
