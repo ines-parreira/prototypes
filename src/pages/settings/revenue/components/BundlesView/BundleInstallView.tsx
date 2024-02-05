@@ -1,5 +1,5 @@
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import React, {useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
@@ -30,6 +30,7 @@ import client from 'models/api/resources'
 import history from 'pages/history'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import warningIcon from 'assets/img/icons/warning.svg'
+import {ALLOWED_INTEGRATION_TYPES} from 'pages/settings/revenue/components/BundlesView/constants'
 import {transformBundleError} from '../../utils/transformBundleError'
 import pageCss from './BundlesView.less'
 
@@ -37,10 +38,18 @@ export const BundleInstallView = () => {
     const dispatch = useAppDispatch()
 
     const allStoreIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes([IntegrationType.Shopify])
-    )
+        DEPRECATED_getIntegrationsByTypes(ALLOWED_INTEGRATION_TYPES)
+    ) as List<Map<any, any>>
 
-    const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
+    const storeIntegrations = useMemo(() => {
+        return allStoreIntegrations.filter(
+            // display only chat integrations without shop linked
+            (storeIntegration) =>
+                storeIntegration?.get('type') !== IntegrationType.GorgiasChat ||
+                !storeIntegration?.getIn(['meta', 'shop_type'], false) ||
+                !storeIntegration?.getIn(['meta', 'shop_name'], false)
+        )
+    }, [allStoreIntegrations]) as List<Map<any, any>>
 
     const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
         Map<any, any> | false
@@ -59,6 +68,23 @@ export const BundleInstallView = () => {
         }
         return currentStoreIntegration?.get('id') as number
     }, [currentStoreIntegration])
+
+    const isManualMethodRequired = useMemo(() => {
+        return (
+            currentStoreIntegration &&
+            currentStoreIntegration.get('type') !== IntegrationType.Shopify
+        )
+    }, [currentStoreIntegration])
+
+    useEffect(() => {
+        if (isManualMethodRequired) {
+            setCurrentInstallationMethod(RevenueBundleInstallationMethod.Manual)
+        } else {
+            setCurrentInstallationMethod(
+                RevenueBundleInstallationMethod.OneClick
+            )
+        }
+    }, [isManualMethodRequired])
 
     const showUpdatePermissionsBanner = useMemo(() => {
         if (
@@ -151,7 +177,7 @@ export const BundleInstallView = () => {
                             Connect a store
                         </Label>
                         <div className={pageCss.connectStoreDescription}>
-                            Connect a store to use Convert tracking features.
+                            Connect a store or chat to use Convert campaigns.
                         </div>
                         <StoreNameDropdown
                             gorgiasChatIntegrations={
@@ -217,6 +243,7 @@ export const BundleInstallView = () => {
                                     currentInstallationMethod ===
                                     RevenueBundleInstallationMethod.OneClick
                                 }
+                                isDisabled={isManualMethodRequired}
                                 label="1-click install"
                                 caption="Shopify non headless stores"
                                 onClick={() => {

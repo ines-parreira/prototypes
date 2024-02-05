@@ -27,8 +27,8 @@ import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import NoIntegration from 'pages/integrations/integration/components/NoIntegration'
 import history from 'pages/history'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
 import {getIconFromType} from 'state/integrations/helpers'
+import {ALLOWED_INTEGRATION_TYPES} from 'pages/settings/revenue/components/BundlesView/constants'
 import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
 import pageCss from './BundlesView.less'
 
@@ -37,7 +37,7 @@ export const BundlesView = () => {
     const dispatch = useAppDispatch()
 
     const storeIntegrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByTypes([IntegrationType.Shopify])
+        integrationsSelectors.getIntegrationsByTypes(ALLOWED_INTEGRATION_TYPES)
     )
 
     const [bundleList, setBundleList] = useState<RevenueBundle[]>([])
@@ -120,15 +120,19 @@ export const BundlesView = () => {
                                     <BodyCell innerClassName={css.chatName}>
                                         {!!store ? (
                                             <>
-                                                <img
-                                                    className={
-                                                        pageCss.storeIcon
-                                                    }
-                                                    alt="logo"
-                                                    src={getIconFromType(
-                                                        store.type
-                                                    )}
-                                                />
+                                                {getIconFromType(
+                                                    store.type
+                                                ) && (
+                                                    <img
+                                                        className={
+                                                            pageCss.storeIcon
+                                                        }
+                                                        alt="logo"
+                                                        src={getIconFromType(
+                                                            store.type
+                                                        )}
+                                                    />
+                                                )}
                                                 <b>{store.name}</b>
                                             </>
                                         ) : (

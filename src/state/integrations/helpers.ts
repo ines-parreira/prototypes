@@ -34,9 +34,9 @@ export const getIntegrationConfig = (
 
 export const getIconFromType = (type: IntegrationType): string => {
     const config = getIntegrationConfig(type)
-    return assetsUrl(
+    const filePath =
         (config && typeof config === 'object' && config.image) || ''
-    )
+    return filePath === '' ? '' : assetsUrl(filePath)
 }
 
 /**

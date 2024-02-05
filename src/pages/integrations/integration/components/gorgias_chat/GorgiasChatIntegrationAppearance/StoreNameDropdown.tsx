@@ -80,13 +80,15 @@ export const StoreNameDropdown = ({
                 >
                     {storeIntegration ? (
                         <span className={css.dropdownValue}>
-                            <img
-                                src={getIconFromType(
-                                    storeIntegration.get('type')
-                                )}
-                                className={css.dropdownLogo}
-                                alt="logo"
-                            />
+                            {getIconFromType(storeIntegration.get('type')) && (
+                                <img
+                                    src={getIconFromType(
+                                        storeIntegration.get('type')
+                                    )}
+                                    className={css.dropdownLogo}
+                                    alt="logo"
+                                />
+                            )}
                             {storeIntegration.get('name')}
                         </span>
                     ) : (
@@ -111,11 +113,13 @@ export const StoreNameDropdown = ({
                             key={option?.get('id')}
                             value={option?.get('id')}
                         >
-                            <img
-                                src={getIconFromType(option?.get('type'))}
-                                className={css.dropdownLogo}
-                                alt="logo"
-                            />
+                            {getIconFromType(option?.get('type')) && (
+                                <img
+                                    src={getIconFromType(option?.get('type'))}
+                                    className={css.dropdownLogo}
+                                    alt="logo"
+                                />
+                            )}
                             <span>{option?.get('name')}</span>
                             <span className={css.dropdownInfo}>
                                 {!option?.get('deactivated_datetime') ? (

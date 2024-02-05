@@ -29,6 +29,7 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import client from 'models/api/resources'
 import {getIconFromType} from 'state/integrations/helpers'
 import BundleManualInstallationCard from 'pages/settings/revenue/components/BundlesView/BundleManualInstallationCard'
+import {ALLOWED_INTEGRATION_TYPES} from 'pages/settings/revenue/components/BundlesView/constants'
 import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
 import Loader from '../../../../common/components/Loader/Loader'
 import {transformBundleError} from '../../utils/transformBundleError'
@@ -41,7 +42,7 @@ export const BundleDetailView = () => {
     const {bundleId} = useParams<{bundleId: string}>()
 
     const storeIntegrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByTypes([IntegrationType.Shopify])
+        integrationsSelectors.getIntegrationsByTypes(ALLOWED_INTEGRATION_TYPES)
     )
 
     const {client: revenueClient} = useRevenueAddonApi()
@@ -200,11 +201,15 @@ export const BundleDetailView = () => {
 
                     {!!currentIntegration && (
                         <div className={pageCss.store}>
-                            <img
-                                className={pageCss.storeIcon}
-                                alt="logo"
-                                src={getIconFromType(currentIntegration.type)}
-                            />
+                            {getIconFromType(currentIntegration.type) && (
+                                <img
+                                    className={pageCss.storeIcon}
+                                    alt="logo"
+                                    src={getIconFromType(
+                                        currentIntegration.type
+                                    )}
+                                />
+                            )}
                             {currentIntegration.name}
                         </div>
                     )}
@@ -213,49 +218,51 @@ export const BundleDetailView = () => {
                         Installation method
                     </div>
 
-                    <div
-                        className={classnames(
-                            pageCss.containerFlex,
-                            pageCss.container
-                        )}
-                    >
-                        {isOneClickInstalled ? (
-                            <i
-                                className="material-icons text-success"
-                                style={{fontSize: 24}}
-                            >
-                                check_circle
-                            </i>
-                        ) : null}
-                        <div>
-                            <div className={pageCss.title}>
-                                1-click installation for Shopify
-                            </div>
+                    {isConnectedToShopify && (
+                        <div
+                            className={classnames(
+                                pageCss.containerFlex,
+                                pageCss.container
+                            )}
+                        >
+                            {isOneClickInstalled ? (
+                                <i
+                                    className="material-icons text-success"
+                                    style={{fontSize: 24}}
+                                >
+                                    check_circle
+                                </i>
+                            ) : null}
                             <div>
-                                Add the Campaign bundle to your Shopify store in
-                                one click.
+                                <div className={pageCss.title}>
+                                    1-click installation for Shopify
+                                </div>
+                                <div>
+                                    Add the Campaign bundle to your Shopify
+                                    store in one click.
+                                </div>
                             </div>
+                            {isOneClickInstalled ? (
+                                <Button
+                                    intent="destructive"
+                                    isLoading={isUninstallSubmitting}
+                                    onClick={handleUninstall}
+                                    className={pageCss.actionButton}
+                                >
+                                    Uninstall
+                                </Button>
+                            ) : (
+                                <Button
+                                    intent="secondary"
+                                    isLoading={isInstallSubmitting}
+                                    onClick={handleInstall}
+                                    className={pageCss.actionButton}
+                                >
+                                    Install
+                                </Button>
+                            )}
                         </div>
-                        {isOneClickInstalled ? (
-                            <Button
-                                intent="destructive"
-                                isLoading={isUninstallSubmitting}
-                                onClick={handleUninstall}
-                                className={pageCss.actionButton}
-                            >
-                                Uninstall
-                            </Button>
-                        ) : (
-                            <Button
-                                intent="secondary"
-                                isLoading={isInstallSubmitting}
-                                onClick={handleInstall}
-                                className={pageCss.actionButton}
-                            >
-                                Install
-                            </Button>
-                        )}
-                    </div>
+                    )}
 
                     <BundleManualInstallationCard
                         bundleCode={code}

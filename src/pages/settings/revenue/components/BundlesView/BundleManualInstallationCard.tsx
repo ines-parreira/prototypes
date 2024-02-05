@@ -38,31 +38,9 @@ const BundleManualInstallationCard = ({
     }, [isConnected, isConnectedToShopify])
 
     const tabs = {
-        [Tab.OTHER]: (
-            <ManualInstallationOtherWebsiteTab
-                code={bundleCode}
-                alertMessage={
-                    <>
-                        Please note that by inserting this snippet on your
-                        webpage, it will load the campaigns on that specific
-                        webpage only. Make sure to insert the snippet on all the
-                        pages for which you wish to display the campaigns.
-                    </>
-                }
-            />
-        ),
+        [Tab.OTHER]: <ManualInstallationOtherWebsiteTab code={bundleCode} />,
         [Tab.SHOPIFY]: (
-            <ManualInstallationShopifyWebsiteTab
-                code={bundleCode}
-                alertMessage={
-                    <>
-                        Please note that by copying the code to your Shopify{' '}
-                        <b>theme.liquid</b> files, the campaigns will also be
-                        shown on all webpages. Make sure to copy the code to
-                        just specific pages if needed.
-                    </>
-                }
-            />
+            <ManualInstallationShopifyWebsiteTab code={bundleCode} />
         ),
     }
     const tabItems = [
@@ -91,9 +69,9 @@ const BundleManualInstallationCard = ({
                 <div>
                     <div className={css.title}>Manual installation</div>
                     <div>
-                        Add the Campaign bundle to specific pages on a Shopify
-                        store and to other e-commerce platforms or website,
-                        follow the instructions below. For more details,{' '}
+                        To add the Campaign bundle on a Shopify store and to
+                        other e-commerce platforms or website, follow the
+                        instructions below. For more details,{' '}
                         <a
                             target="_blank"
                             rel="noopener noreferrer"
