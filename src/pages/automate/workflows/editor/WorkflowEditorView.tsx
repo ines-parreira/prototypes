@@ -127,7 +127,7 @@ function WorkflowEditorViewWrapped({
         ) {
             if (canShowSizeLimitWarning.current) {
                 notifyMerchant({
-                    message: `You've reached 75% of storage capacity for this flow. To avoid errors when saving and to keep things running smoothly, try removing unnecessary steps`,
+                    message: `You've reached 90% of storage capacity for this flow. To avoid errors when saving and to keep things running smoothly, try removing unnecessary steps`,
                     status: NotificationStatus.Warning,
                 })
                 canShowSizeLimitWarning.current = false
@@ -138,7 +138,7 @@ function WorkflowEditorViewWrapped({
         ) {
             if (canShowSizeLimitWarning.current) {
                 notifyMerchant({
-                    message: `You've reached 75% of storage capacity for this flow. To avoid errors when saving and to keep things running smoothly, try keeping response text concise and removing unnecessary steps`,
+                    message: `You've reached 90% of storage capacity for this flow. To avoid errors when saving and to keep things running smoothly, try keeping response text concise and removing unnecessary steps`,
                     status: NotificationStatus.Warning,
                 })
                 canShowSizeLimitWarning.current = false

@@ -1,9 +1,10 @@
-const MAX_SIZE_IN_BYTES = 1024 * 1024
-
-export const getPayloadSizeToLimitRate = (value: unknown): number => {
-    return new Blob([JSON.stringify(value)]).size / MAX_SIZE_IN_BYTES
+export const getPayloadSizeToLimitRate = (
+    value: unknown,
+    limit: number
+): number => {
+    return new Blob([JSON.stringify(value)]).size / limit
 }
 
-export const isPayloadTooLarge = (value: unknown): boolean => {
-    return getPayloadSizeToLimitRate(value) > 1
+export const isPayloadTooLarge = (value: unknown, limit: number): boolean => {
+    return getPayloadSizeToLimitRate(value, limit) > 1
 }

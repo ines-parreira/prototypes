@@ -41,6 +41,7 @@ import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
+import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -268,7 +269,8 @@ export function useWorkflowEditor(
             getPayloadSizeToLimitRate(
                 emptyTranslatedTexts(
                     transformVisualBuilderGraphIntoWfConfiguration(graph)
-                )
+                ),
+                MAX_CONFIGURATION_SIZE_IN_BYTES
             ),
         [visualBuilderGraphDirty],
         500
@@ -698,7 +700,12 @@ function validate(
     if (headerNameInvalid) {
         return 'Invalid header name in HTTP request'
     }
-    if (isPayloadTooLarge(emptyTranslatedTexts(conf))) {
+    if (
+        isPayloadTooLarge(
+            emptyTranslatedTexts(conf),
+            MAX_CONFIGURATION_SIZE_IN_BYTES
+        )
+    ) {
         return 'This Flow is too large to save. Please remove steps and try again.'
     }
 }

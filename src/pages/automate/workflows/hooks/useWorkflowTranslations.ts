@@ -23,6 +23,7 @@ import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
+import {MAX_TRANSLATIONS_SIZE_IN_BYTES} from '../constants'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -96,7 +97,10 @@ export default function useWorkflowTranslations(
                 currentLanguage,
                 translationsByLangDirty
             )[currentLanguage]
-            return getPayloadSizeToLimitRate(translations)
+            return getPayloadSizeToLimitRate(
+                translations,
+                MAX_TRANSLATIONS_SIZE_IN_BYTES
+            )
         },
         [currentLanguage, translationsByLangDirty]
     )
@@ -265,7 +269,12 @@ export default function useWorkflowTranslations(
             const tooLargeLangs: LanguageCode[] = []
             Object.entries(nextTranslationsByLangDirty).forEach(
                 ([lang, translations]) => {
-                    if (isPayloadTooLarge(translations)) {
+                    if (
+                        isPayloadTooLarge(
+                            translations,
+                            MAX_TRANSLATIONS_SIZE_IN_BYTES
+                        )
+                    ) {
                         tooLargeLangs.push(lang as LanguageCode)
                     }
                 }
