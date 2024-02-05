@@ -409,6 +409,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -445,6 +446,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -1635,6 +1637,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -1671,6 +1674,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -3098,6 +3102,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -3134,6 +3139,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -4532,6 +4538,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -4568,6 +4575,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -5966,6 +5974,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -6002,6 +6011,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -7400,6 +7410,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -7436,6 +7447,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -8930,6 +8942,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -8966,6 +8979,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -10119,6 +10133,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -10155,6 +10170,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -11455,6 +11471,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -11491,6 +11508,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -13090,6 +13108,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -13126,6 +13145,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -14316,6 +14336,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"
@@ -14352,6 +14373,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         </button>
                         <input
                           class="input form-control"
+                          data-testid="color-picker-input"
                           placeholder="ex: #eeeeee"
                           type="text"
                           value="#115cb5"

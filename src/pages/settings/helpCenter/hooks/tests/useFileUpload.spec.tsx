@@ -71,4 +71,27 @@ describe('useFileUpload()', () => {
             expect(uploadFilesSpy).toHaveBeenCalled()
         })
     })
+
+    it('returns the file upload URL', () => {
+        const uploadFilesSpy = jest
+            .spyOn(utils, 'uploadFiles')
+            .mockResolvedValueOnce([
+                {
+                    content_type: 'text/plain',
+                    name: 'foo.txt',
+                    size: 100,
+                    url: 'http://example.com/foo.text',
+                    type: 'txt',
+                },
+            ])
+
+        const {result} = renderHook(useFileUpload, renderOptions)
+
+        void act(async () => {
+            result.current.changeFile(dummyFile)
+            const url = await result.current.getFileUploadURL()
+            expect(uploadFilesSpy).toHaveBeenCalled()
+            expect(url).toEqual('http://example.com/foo.text')
+        })
+    })
 })

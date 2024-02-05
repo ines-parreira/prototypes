@@ -23,7 +23,7 @@ export type ImageUploadProps = Pick<
     file?: File
     isTouched?: boolean
     info?: string
-    title: string
+    title?: string
     onChangeFile: (file: File | undefined) => void
 }
 
@@ -107,9 +107,11 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
 
     return (
         <div className={css.container}>
-            <Title help={info} Tooltip={{style: {width: 180}}}>
-                {title}
-            </Title>
+            {title && (
+                <Title help={info} Tooltip={{style: {width: 180}}}>
+                    {title}
+                </Title>
+            )}
             <DropZone
                 id={id}
                 accept={accept}

@@ -103,6 +103,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
         </button>
         <input
           class="input form-control"
+          data-testid="color-picker-input"
           placeholder="ex: #eeeeee"
           type="text"
           value="#4A8DF9"

@@ -10,6 +10,7 @@ export type FileUpload = {
     uploadFile: () => Promise<Attachment | null>
     changeFile: (payload: File | undefined) => void
     discardFile: () => void
+    getFileUploadURL: () => Promise<string | null | undefined>
 }
 
 export function useFileUpload(): FileUpload {
@@ -40,11 +41,20 @@ export function useFileUpload(): FileUpload {
         return null
     }
 
+    const getFileUploadURL = async () => {
+        if (localFile) {
+            const uploadedFile = await uploadFile()
+            return uploadedFile?.url
+        }
+        return isTouched ? null : undefined
+    }
+
     return {
         isTouched,
         payload: localFile,
         uploadFile,
         changeFile: handleOnChangeFile,
         discardFile: handleOnDiscard,
+        getFileUploadURL,
     }
 }

@@ -40,6 +40,9 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     platformType: PlatformType.ECOMMERCE,
     stepName: HelpCenterCreationWizardStep.Basics,
     shopName: '',
+    brandLogoUrl: '',
+    primaryColor: '#4A8DF9',
+    primaryFontFamily: 'Inter',
 }
 
 type HelpCenterWizardOutput = {

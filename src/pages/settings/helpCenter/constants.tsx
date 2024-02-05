@@ -262,6 +262,9 @@ export type HelpCenterCreationWizard = {
     platformType: PlatformType
     stepName: HelpCenterCreationWizardStep
     shopName: string
+    brandLogoUrl: string | null
+    primaryColor: string
+    primaryFontFamily: string
 }
 
 export enum NEXT_ACTION {

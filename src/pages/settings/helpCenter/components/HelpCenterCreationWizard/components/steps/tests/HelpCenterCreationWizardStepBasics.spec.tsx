@@ -64,6 +64,9 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     platformType: PlatformType.ECOMMERCE,
     stepName: HelpCenterCreationWizardStep.Basics,
     shopName: 'shop-test',
+    brandLogoUrl: null,
+    primaryColor: '',
+    primaryFontFamily: '',
 }
 
 const storeIntegrations = [

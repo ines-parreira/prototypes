@@ -69,6 +69,9 @@ export const mapApiHelpCenterToUIHelpCenter = (
             ? stepName
             : HelpCenterCreationWizardStep.Basics,
         shopName: helpCenter?.shop_name || integration?.name || '',
+        brandLogoUrl: helpCenter?.brand_logo_url || null,
+        primaryColor: helpCenter?.primary_color || '',
+        primaryFontFamily: helpCenter?.primary_font_family || '',
     }
 }
 
@@ -89,6 +92,9 @@ export const mapUIHelpCenterToApiHelpCenter = (
             },
         },
         shop_name: data.shopName,
+        brand_logo_url: data.brandLogoUrl,
+        primary_color: data.primaryColor,
+        primary_font_family: data.primaryFontFamily,
     }
 }
 

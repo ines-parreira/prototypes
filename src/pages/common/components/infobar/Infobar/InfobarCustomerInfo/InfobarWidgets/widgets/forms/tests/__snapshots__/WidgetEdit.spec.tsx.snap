@@ -181,6 +181,7 @@ exports[`<WidgetEdit/> should render 1`] = `
             </button>
             <input
               class="input form-control"
+              data-testid="color-picker-input"
               placeholder="ex: #eeeeee"
               type="text"
               value=""

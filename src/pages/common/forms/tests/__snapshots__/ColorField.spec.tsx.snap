@@ -30,6 +30,7 @@ exports[`ColorField should render with minimal props 1`] = `
       </button>
       <input
         class="input form-control"
+        data-testid="color-picker-input"
         placeholder="ex: #eeeeee"
         type="text"
         value="#fff"

@@ -79,9 +79,11 @@ export const RepositionableImageUpload: FunctionComponent<RepositionableImageUpl
 
         return (
             <div className={imageUploadCss.container}>
-                <Title help={info} Tooltip={{style: {width: 180}}}>
-                    {title}
-                </Title>
+                {title && (
+                    <Title help={info} Tooltip={{style: {width: 180}}}>
+                        {title}
+                    </Title>
+                )}
                 {repositioningInProgress ? (
                     <>{content}</>
                 ) : (

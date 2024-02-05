@@ -84,8 +84,6 @@ const HelpCenterCreationWizardComponent = ({
                         >
                             <HelpCenterCreationWizardStepBranding
                                 helpCenter={helpCenter}
-                                isUpdate={!!isUpdate}
-                                automateType={automateType}
                             />
                         </WizardStep>
                         <WizardStep

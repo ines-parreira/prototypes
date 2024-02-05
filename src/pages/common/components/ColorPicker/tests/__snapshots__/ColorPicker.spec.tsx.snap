@@ -20,6 +20,7 @@ exports[`<ColorPicker /> should display popup on button click with default color
     </button>
     <input
       class="input form-control"
+      data-testid="color-picker-input"
       placeholder="ex: #eeeeee"
       type="text"
       value="#fff"
@@ -181,6 +182,7 @@ exports[`<ColorPicker /> should render with background color matching defaultVal
   </button>
   <input
     class="input form-control"
+    data-testid="color-picker-input"
     placeholder="ex: #eeeeee"
     type="text"
     value=""
@@ -205,6 +207,7 @@ exports[`<ColorPicker /> should render with background color matching value 1`] 
   </button>
   <input
     class="input form-control"
+    data-testid="color-picker-input"
     placeholder="ex: #eeeeee"
     type="text"
     value="#fff"
@@ -226,6 +229,7 @@ exports[`<ColorPicker /> should render with minimal props 1`] = `
   </button>
   <input
     class="input form-control"
+    data-testid="color-picker-input"
     placeholder="ex: #eeeeee"
     type="text"
     value=""

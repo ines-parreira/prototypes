@@ -32,6 +32,9 @@ const defaultApiHelpCenter = {
         },
     },
     shop_name: 'test',
+    brand_logo_url: null,
+    primary_color: '#4A8DF9',
+    primary_font_family: 'Inter',
 } as HelpCenter
 
 const emptyUIHelpCenter: HelpCenterCreationWizard = {
@@ -42,6 +45,9 @@ const emptyUIHelpCenter: HelpCenterCreationWizard = {
     platformType: PlatformType.ECOMMERCE,
     stepName: HelpCenterCreationWizardStep.Basics,
     shopName: '',
+    brandLogoUrl: null,
+    primaryColor: '',
+    primaryFontFamily: '',
 }
 
 const defaultUIHelpCenter = {
@@ -52,6 +58,9 @@ const defaultUIHelpCenter = {
     platformType: PlatformType.ECOMMERCE,
     stepName: HelpCenterCreationWizardStep.Basics,
     shopName: 'test',
+    brandLogoUrl: null,
+    primaryColor: '#4A8DF9',
+    primaryFontFamily: 'Inter',
 }
 
 describe('helpCenterCreationWizardUtils', () => {

@@ -1,2 +1,34 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography';
+
+:local {
+    .brandingStepContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-l;
+    }
+
+    .brandingLogoDescription {
+        margin-top: @layout-spacing-xxs;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .brandingColorFontGroup {
+        display: flex;
+        gap: @layout-spacing-m;
+
+        > * {
+            flex: 1;
+        }
+    }
+
+    .imageUpload {
+        font-size: 14px;
+
+        :global(.hd-help-text-text),
+        :global(.hd-help-text-actions),
+        :global(.hd-help-text-actions) div {
+            display: inline;
+        }
+    }
+}

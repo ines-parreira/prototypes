@@ -83,6 +83,7 @@ export default function ColorPicker({
                 )}
             </Button>
             <Input
+                data-testId="color-picker-input"
                 className={css.input}
                 value={value}
                 onChange={(evt) => {
