@@ -226,45 +226,47 @@ const ContactFormSettingsView = (): JSX.Element => {
                 ))}
                 {changeAutomateSettingButtomPosition &&
                     (hasAutomate ? (
-                        contactForm.shop_name ? (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                onClick={() => {
-                                    logContactFormEvent('Setting')
-                                    history.push(
-                                        `/app/automation/shopify/${
-                                            contactForm.shop_name as string
-                                        }/connected-channels?type=${
-                                            TicketChannel.ContactForm
-                                        }&id=${contactForm.id}`,
-                                        {from: 'contact-form-settings'}
-                                    )
-                                }}
-                            >
-                                <ButtonIconLabel icon="bolt">
-                                    Automate Settings
-                                </ButtonIconLabel>
-                            </Button>
-                        ) : (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                onClick={() => {
-                                    logContactFormEvent('Store')
-                                    history.push(
-                                        `/app/settings/contact-form/${contactForm.id}/preferences`
-                                    )
-                                }}
-                            >
-                                <ButtonIconLabel
-                                    icon="warning"
-                                    className={css.connectStoreWarning}
+                        <>
+                            {contactForm.shop_name ? (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        logContactFormEvent('Setting')
+                                        history.push(
+                                            `/app/automation/shopify/${
+                                                contactForm.shop_name as string
+                                            }/connected-channels?type=${
+                                                TicketChannel.ContactForm
+                                            }&id=${contactForm.id}`,
+                                            {from: 'contact-form-settings'}
+                                        )
+                                    }}
                                 >
-                                    Connect Store
-                                </ButtonIconLabel>
-                            </Button>
-                        )
+                                    <ButtonIconLabel icon="bolt">
+                                        Automate Settings
+                                    </ButtonIconLabel>
+                                </Button>
+                            ) : (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        logContactFormEvent('Store')
+                                        history.push(
+                                            `/app/settings/contact-form/${contactForm.id}/preferences`
+                                        )
+                                    }}
+                                >
+                                    <ButtonIconLabel
+                                        icon="warning"
+                                        className={css.connectStoreWarning}
+                                    >
+                                        Connect Store
+                                    </ButtonIconLabel>
+                                </Button>
+                            )}
+                        </>
                     ) : (
                         <>
                             <AutomateSubscriptionButton

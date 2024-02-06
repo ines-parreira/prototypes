@@ -66,43 +66,46 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
             {changeAutomateSettingButtomPosition &&
                 (hasAutomate ? (
-                    helpCenterShopName ? (
-                        <Button
-                            fillStyle="ghost"
-                            intent="primary"
-                            onClick={() => {
-                                logHelpCenterEvent('Setting')
-                                history.push(
-                                    `/app/automation/shopify/${helpCenterShopName}/connected-channels?type=${TicketChannel.HelpCenter}&id=${helpCenterId}`,
-                                    {from: 'help-center-settings'}
-                                )
-                            }}
-                        >
-                            <ButtonIconLabel icon="bolt">
-                                Automate Settings
-                            </ButtonIconLabel>
-                        </Button>
-                    ) : (
-                        <Button
-                            fillStyle="ghost"
-                            intent="primary"
-                            onClick={() => {
-                                logHelpCenterEvent('Store')
-                                if (isConnectStoreLinkEnabled) {
+                    <>
+                        {helpCenterShopName ? (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                className={css.automateSettingsButton}
+                                onClick={() => {
+                                    logHelpCenterEvent('Setting')
                                     history.push(
-                                        `/app/settings/help-center/${helpCenterId}/publish-track`
+                                        `/app/automation/shopify/${helpCenterShopName}/connected-channels?type=${TicketChannel.HelpCenter}&id=${helpCenterId}`,
+                                        {from: 'help-center-settings'}
                                     )
-                                }
-                            }}
-                        >
-                            <ButtonIconLabel
-                                icon="warning"
-                                className={css.connectStoreWarning}
+                                }}
                             >
-                                Connect to Automate
-                            </ButtonIconLabel>
-                        </Button>
-                    )
+                                <ButtonIconLabel icon="bolt">
+                                    Automate Settings
+                                </ButtonIconLabel>
+                            </Button>
+                        ) : (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                onClick={() => {
+                                    logHelpCenterEvent('Store')
+                                    if (isConnectStoreLinkEnabled) {
+                                        history.push(
+                                            `/app/settings/help-center/${helpCenterId}/publish-track`
+                                        )
+                                    }
+                                }}
+                            >
+                                <ButtonIconLabel
+                                    icon="warning"
+                                    className={css.connectStoreWarning}
+                                >
+                                    Connect to Automate
+                                </ButtonIconLabel>
+                            </Button>
+                        )}
+                    </>
                 ) : (
                     <>
                         <AutomateSubscriptionButton
