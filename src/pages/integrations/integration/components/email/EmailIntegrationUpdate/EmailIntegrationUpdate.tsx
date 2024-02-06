@@ -6,13 +6,13 @@ import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {EditorState} from 'draft-js'
 import {
+    Col,
     Container,
     Form,
+    FormGroup,
+    Input,
     InputGroup,
     InputGroupAddon,
-    Input,
-    FormGroup,
-    Col,
 } from 'reactstrap'
 import copy from 'copy-to-clipboard'
 
@@ -38,18 +38,18 @@ import {
     getRedirectUri,
 } from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {isGorgiasSupportAddress, displayRestrictedSymbols} from 'utils'
+import {displayRestrictedSymbols, isGorgiasSupportAddress} from 'utils'
 import {convertToHTML} from 'utils/editor'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import settingsCss from 'pages/settings/settings.less'
-import warningIcon from 'assets/img/icons/warning2.svg'
-import Tooltip from 'pages/common/components/Tooltip'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import InputField from 'pages/common/forms/input/InputField'
-import {canEnableEmailingViaInternalProvider} from 'pages/integrations/integration/components/email/helpers'
+import getOutboundEmailProviderSettingKey from 'pages/integrations/integration/components/email/helpers'
 
+import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
 import css from './EmailIntegrationUpdate.less'
+import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'
 
 type Props = {
     integration: Map<any, any>
@@ -63,6 +63,7 @@ type State = {
     name: string
     use_gmail_categories: boolean
     enable_gmail_sending: boolean
+    enable_outlook_sending: boolean
     enable_gmail_threading: boolean
     signature_text: string
     signature_html: string
@@ -78,6 +79,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         name: '',
         use_gmail_categories: false,
         enable_gmail_sending: true,
+        enable_outlook_sending: true,
         enable_gmail_threading: true,
         signature_text: '',
         signature_html: '',
@@ -120,6 +122,15 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     _getIntegrationValues = (integration: Map<any, any>) => {
         return {
             name: integration.get('name', ''),
+            enable_outlook_sending:
+                integration.get('type') === IntegrationType.Outlook &&
+                integration.getIn(
+                    [
+                        'meta',
+                        EmailIntegrationDefaultProviderSetting.SendViaOutlook,
+                    ],
+                    true
+                ),
             enable_gmail_sending:
                 integration.get('type') === IntegrationType.Gmail
                     ? integration.getIn(['meta', 'enable_gmail_sending'], true)
@@ -175,6 +186,11 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     ['meta', 'enable_gmail_threading'],
                     this.state.enable_gmail_threading
                 )
+        } else if (integration.get('type') === IntegrationType.Outlook) {
+            form = form.setIn(
+                ['meta', EmailIntegrationDefaultProviderSetting.SendViaOutlook],
+                this.state.enable_outlook_sending
+            )
         }
 
         return form
@@ -457,37 +473,15 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === IntegrationType.Gmail
-
-        const isGmailSendingCheckboxDisabled =
-            !canEnableEmailingViaInternalProvider(integration.toJS())
-        const {
-            errors,
-            name,
-            use_gmail_categories,
-            enable_gmail_sending,
-            enable_gmail_threading,
-        } = this.state
+        const isOutlook = integration.get('type') === IntegrationType.Outlook
+        const {errors, name, use_gmail_categories, enable_gmail_threading} =
+            this.state
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
         const nameHelp = `The display name appears on outgoing emails. It cannot contain the following characters: ${displayRestrictedSymbols(
             EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
         )}`
-
-        const enableGmailSendingHelp = (
-            <div>
-                Outbound emails will be sent through Gmail and appear in Gmail’s
-                “Sent” folder. Make sure to verify your domain before disabling
-                this option.{' '}
-                <a
-                    href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn more
-                </a>
-            </div>
-        )
 
         return (
             <div className="mt-4">
@@ -541,56 +535,6 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             >
                                 Tag tickets with Gmail categories
                             </ToggleInput>
-
-                            <ToggleInput
-                                name="enable_gmail_sending"
-                                caption={enableGmailSendingHelp}
-                                isToggled={enable_gmail_sending}
-                                isDisabled={isGmailSendingCheckboxDisabled}
-                                onClick={(value: boolean) =>
-                                    this.setState({
-                                        enable_gmail_sending: value,
-                                    })
-                                }
-                            >
-                                <div
-                                    id="enable-gmail-sending-wrapper"
-                                    className={classNames(css.checkboxLabel, {
-                                        [css.disabled]:
-                                            isGmailSendingCheckboxDisabled,
-                                    })}
-                                >
-                                    <span className={css.labelText}>
-                                        Send emails from Gorgias with Gmail
-                                    </span>
-                                    {isGmailSendingCheckboxDisabled && (
-                                        <img
-                                            src={warningIcon}
-                                            className={css.infoIcon}
-                                            alt="icon"
-                                        />
-                                    )}
-                                </div>
-                                {isGmailSendingCheckboxDisabled && (
-                                    <Tooltip
-                                        target="enable-gmail-sending-wrapper"
-                                        autohide={false}
-                                    >
-                                        To send emails through our internal
-                                        email provider, you must first{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/en-US/spf-dkim-support-81757#setup-instructions"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            verify your domain
-                                        </a>
-                                        . Once verified, you can deactivate
-                                        Sending with Gmail.
-                                    </Tooltip>
-                                )}
-                            </ToggleInput>
-
                             <ToggleInput
                                 isToggled={enable_gmail_threading}
                                 onClick={(value: boolean) =>
@@ -603,6 +547,21 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             >
                                 Group emails into conversations
                             </ToggleInput>
+                        </FormGroup>
+                    )}
+                    {(isGmail || isOutlook) && (
+                        <FormGroup className={css.emailDeliverabilitySettings}>
+                            <EmailIntegrationDeliverabilitySettings
+                                integration={integration.toJS()}
+                                onChange={(newValue: boolean) =>
+                                    this.setState({
+                                        ...this.state,
+                                        [getOutboundEmailProviderSettingKey(
+                                            integration.get('type')
+                                        )]: newValue,
+                                    })
+                                }
+                            ></EmailIntegrationDeliverabilitySettings>
                         </FormGroup>
                     )}
                     <div className={css.buttonsWrapper}>

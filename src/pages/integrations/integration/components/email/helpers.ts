@@ -1,5 +1,8 @@
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {EmailProvider} from 'models/integration/constants'
+import {
+    EmailIntegrationDefaultProviderSetting,
+    EmailProvider,
+} from 'models/integration/constants'
 import {
     EmailIntegration,
     GmailIntegration,
@@ -88,4 +91,17 @@ export const canEnableEmailingViaInternalProvider = (
     emailIntegration: GmailIntegration | OutlookIntegration
 ): boolean => {
     return isOutboundDomainVerified(emailIntegration)
+}
+
+export const outboundEmailProviderSettingByIntegrationType = {
+    [IntegrationType.Gmail]:
+        EmailIntegrationDefaultProviderSetting.SendViaGmail,
+    [IntegrationType.Outlook]:
+        EmailIntegrationDefaultProviderSetting.SendViaOutlook,
+}
+
+export default function getOutboundEmailProviderSettingKey(
+    integrationType: IntegrationType.Gmail | IntegrationType.Outlook
+) {
+    return outboundEmailProviderSettingByIntegrationType[integrationType]
 }

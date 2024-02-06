@@ -94,6 +94,11 @@ export enum EmailProvider {
     Sendgrid = 'sendgrid',
 }
 
+export enum EmailIntegrationDefaultProviderSetting {
+    SendViaGmail = 'enable_gmail_sending',
+    SendViaOutlook = 'enable_outlook_sending',
+}
+
 export const TAGS_LIMIT = 30
 
 export const TEXT_TO_SPEECH_MAX_LENGTH = 1000

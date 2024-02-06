@@ -22,6 +22,7 @@ export type OutlookIntegrationMeta = {
         expiration_datetime: string
     }
     oauth: OAuth2
+    provider: string
     import_state: {
         enabled?: boolean
         is_over?: boolean
@@ -31,6 +32,7 @@ export type OutlookIntegrationMeta = {
         ticket_count?: number
     }
     signature?: EmailSignature
+    enable_outlook_sending: boolean
     outbound_verification_status?: {
         [OutboundVerificationType.Domain]: OutboundVerificationStatusValue
     }

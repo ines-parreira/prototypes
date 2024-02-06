@@ -19,6 +19,7 @@ export type GmailIntegrationMeta = EmailIntegrationMeta & {
     use_gmail_categories: boolean
     enable_gmail_sending: boolean
     enable_gmail_threading: boolean
+    provider: string
     importation: Record<string, unknown>
     sync: Record<string, unknown>
     full_sync?: Maybe<Record<string, unknown>>

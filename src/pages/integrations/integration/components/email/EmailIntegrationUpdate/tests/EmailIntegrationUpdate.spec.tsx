@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 
 import {integrationsState} from 'fixtures/integrations'
 
-import {EmailProvider} from 'models/integration/constants'
+import {IntegrationType} from 'models/integration/constants'
 
 import {
     GMAIL_INTEGRATION_TYPE,
@@ -19,14 +19,9 @@ import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from 'models/integration/types'
-import * as helpers from 'pages/integrations/integration/components/email/helpers'
 
 import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
-
-const CanEnableEmailingViaInternalProviderSpy = jest.spyOn(
-    helpers,
-    'canEnableEmailingViaInternalProvider'
-)
+import getOutboundEmailProviderSettingKey from 'pages/integrations/integration/components/email/helpers'
 
 const INTEGRATION_NAME = 'My Integration'
 const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {
@@ -69,12 +64,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 container.querySelector('#use_gmail_categories')!,
             newValue: true,
             finalValue: false,
-        },
-        {
-            selector: ({container}: RenderResult) =>
-                container.querySelector('#enable_gmail_sending')!,
-            newValue: false,
-            finalValue: true,
         },
     ])(
         'should enable the submit button only if form values changed [gmail]',
@@ -125,6 +114,46 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+        }
+    )
+    it.each([IntegrationType.Gmail, IntegrationType.Outlook])(
+        'should enable the submit button only if email deliverability setting changed [%s]',
+        (integrationType) => {
+            const props = {
+                integration: fromJS({
+                    id: 100,
+                    name: INTEGRATION_NAME,
+                    type: integrationType,
+                    meta: {
+                        address: 'test123@gorgias.com',
+                        outbound_verification_status: {
+                            [OutboundVerificationType.Domain]:
+                                OutboundVerificationStatusValue.Success,
+                        },
+                        use_gmail_categories: true,
+                        enable_gmail_threading: true,
+                        [getOutboundEmailProviderSettingKey(
+                            integrationType as
+                                | IntegrationType.Gmail
+                                | IntegrationType.Outlook
+                        )]: true,
+                    },
+                }),
+            }
+
+            const helpers = renderWithStore(props)
+            const {getByText, getAllByRole} = helpers
+            const saveButton = getByText('Save changes')
+            const deliverabilitySettingsRadioButtons = getAllByRole('radio')
+            const useDefaultProviderRadioButton =
+                deliverabilitySettingsRadioButtons[0]
+            const useInternalProviderRadioButton =
+                deliverabilitySettingsRadioButtons[1]
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            fireEvent.click(useInternalProviderRadioButton)
+            expect(saveButton).toHaveAttribute('aria-disabled', 'false')
+            fireEvent.click(useDefaultProviderRadioButton)
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         }
     )
@@ -250,7 +279,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                             html: '<div><br></div>',
                         },
                         use_gmail_categories: false,
-                        enable_gmail_sending: true,
+                        enable_outlook_sending: true,
                     },
                 }),
             }
@@ -270,64 +299,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 target: {value: selector.finalValue},
             })
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
-        }
-    )
-
-    it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid, 'unknownProvider'])(
-        'disable gmail sending checkbox when domain is not verified [%s]',
-        (emailProvider) => {
-            CanEnableEmailingViaInternalProviderSpy.mockReturnValue(false)
-
-            const props = {
-                integration: fromJS({
-                    id: 1,
-                    name: INTEGRATION_NAME,
-                    type: GMAIL_INTEGRATION_TYPE,
-                    meta: {
-                        address: 'myintegration@gorgias.io',
-                        use_gmail_categories: false,
-                        enable_gmail_sending: true,
-                        enable_gmail_threading: true,
-                        provider: emailProvider,
-                    },
-                }),
-            }
-
-            const {getAllByRole} = renderWithStore(props)
-            const gmailSendingToggle = getAllByRole('switch')[1]
-
-            expect(gmailSendingToggle).toBeChecked()
-            fireEvent.click(gmailSendingToggle)
-            expect(gmailSendingToggle).toBeChecked()
-        }
-    )
-
-    it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid, 'unknownProvider'])(
-        'do not disable gmail sending checkbox when domain is verified  [%s]',
-        (emailProvider) => {
-            CanEnableEmailingViaInternalProviderSpy.mockReturnValue(true)
-
-            const props = {
-                integration: fromJS({
-                    id: 1,
-                    name: INTEGRATION_NAME,
-                    type: GMAIL_INTEGRATION_TYPE,
-                    meta: {
-                        address: 'myintegration@gorgias.io',
-                        use_gmail_categories: false,
-                        enable_gmail_sending: true,
-                        enable_gmail_threading: true,
-                        provider: emailProvider,
-                    },
-                }),
-            }
-
-            const {getAllByRole} = renderWithStore(props)
-            const gmailSendingToggle = getAllByRole('switch')[1]
-
-            expect(gmailSendingToggle).toBeChecked()
-            fireEvent.click(gmailSendingToggle)
-            expect(gmailSendingToggle).not.toBeChecked()
         }
     )
 })
