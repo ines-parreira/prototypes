@@ -364,6 +364,8 @@ export const CampaignDetailsForm = ({
             },
         }
 
+        delete duplicate['tracking_tag_id']
+
         await createCampaign(fromJS(duplicate), integration).then(() =>
             setActionInProgress('')
         )

@@ -18,6 +18,7 @@ import GorgiasChatIntegrationCampaigns, {
 } from '../GorgiasChatIntegrationCampaigns'
 import {createTrigger} from '../utils/createTrigger'
 import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
+import {ChatCampaign} from '../types/Campaign'
 
 jest.mock('utils/launchDarkly')
 jest.mock('hooks/useSearch')
@@ -60,6 +61,11 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                 search: '',
             }
         })
+        jest.useFakeTimers().setSystemTime(1680109831299)
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     const minProps: ComponentProps<
@@ -369,6 +375,17 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
         })
 
         it('should call the duplicate callback', async () => {
+            const campaign = {
+                id: '156a4d-fg68h40-sd6f4',
+                name: 'Super campaign',
+                deactivated_datetime: null,
+                triggers: [createTrigger(CampaignTriggerKey.BusinessHours)],
+                message: {
+                    text: 'Hello world',
+                    html: '<p>Hello world</p>',
+                },
+                tracking_tag_id: 1,
+            } as unknown as ChatCampaign
             const {getByTestId} = render(
                 <Provider store={store}>
                     <GorgiasChatIntegrationCampaignsComponent
@@ -378,22 +395,7 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                             type: 'gorgias_chat',
                             name: 'My new chat',
                             meta: {
-                                campaigns: [
-                                    {
-                                        id: '156a4d-fg68h40-sd6f4',
-                                        name: 'Super campaign',
-                                        deactivated_datetime: null,
-                                        triggers: [
-                                            createTrigger(
-                                                CampaignTriggerKey.BusinessHours
-                                            ),
-                                        ],
-                                        message: {
-                                            text: 'Hello world',
-                                            html: '<p>Hello world</p>',
-                                        },
-                                    },
-                                ],
+                                campaigns: [campaign],
                             },
                         })}
                     />
@@ -403,7 +405,18 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
             fireEvent.click(getByTestId('duplicate-icon-button'))
 
             await waitFor(() => {
-                expect(minProps.createCampaign).toHaveBeenCalled()
+                const duplicate = {
+                    ...campaign,
+                    id: '',
+                    name: '(Copy) Super campaign',
+                    deactivated_datetime: '2023-03-29T17:10:31.299Z',
+                }
+                delete duplicate.tracking_tag_id
+
+                expect(minProps.createCampaign).toHaveBeenCalledWith(
+                    fromJS(duplicate),
+                    expect.anything()
+                )
             })
         })
 

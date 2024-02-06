@@ -55,19 +55,20 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
         async (event: MouseEvent, campaign: ChatCampaign) => {
             event.stopPropagation()
 
-            await createCampaign(
-                fromJS({
-                    ...campaign,
-                    id: '',
-                    name: `(Copy) ${campaign.name}`,
-                    deactivated_datetime: new Date().toISOString(),
-                    message: {
-                        text: campaign.message.text ?? '',
-                        html: removeLinksFromHtml(campaign.message.html) ?? '',
-                    },
-                }),
-                integration
-            )
+            const duplicate = {
+                ...campaign,
+                id: '',
+                name: `(Copy) ${campaign.name}`,
+                deactivated_datetime: new Date().toISOString(),
+                message: {
+                    text: campaign.message.text ?? '',
+                    html: removeLinksFromHtml(campaign.message.html) ?? '',
+                },
+            }
+
+            delete duplicate['tracking_tag_id']
+
+            await createCampaign(fromJS(duplicate), integration)
         },
         [createCampaign, integration]
     )

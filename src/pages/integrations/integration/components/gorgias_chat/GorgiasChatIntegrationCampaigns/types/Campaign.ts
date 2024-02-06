@@ -19,4 +19,5 @@ export interface ChatCampaign {
     triggers: CampaignTrigger[]
     deactivated_datetime?: string
     created_datetime?: string | null
+    tracking_tag_id?: number
 }
