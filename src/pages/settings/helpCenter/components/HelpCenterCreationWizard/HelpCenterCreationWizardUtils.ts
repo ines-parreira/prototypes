@@ -81,7 +81,7 @@ export const mapApiHelpCenterToUIHelpCenter = (
 export const mapUIHelpCenterToApiHelpCenter = (
     data: HelpCenterCreationWizard
 ) => {
-    return {
+    const result = {
         name: data.name,
         subdomain: data.subdomain,
         default_locale: data.defaultLocale,
@@ -96,6 +96,15 @@ export const mapUIHelpCenterToApiHelpCenter = (
         primary_color: data.primaryColor,
         primary_font_family: data.primaryFontFamily,
     }
+
+    Object.keys(result).forEach((key) => {
+        const typedKey = key as keyof typeof result
+        if (result[typedKey] === '') {
+            delete result[typedKey]
+        }
+    })
+
+    return result
 }
 
 /**

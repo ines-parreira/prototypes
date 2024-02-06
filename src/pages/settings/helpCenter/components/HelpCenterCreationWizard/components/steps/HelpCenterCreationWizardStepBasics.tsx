@@ -65,8 +65,8 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
     const {
         helpCenter: newHelpCenter,
         allStoreIntegrations,
-        updateData: updateBasicsData,
-        onSave,
+        handleFormUpdate,
+        handleSave,
         isLoading: isLoading,
     } = useHelpCenterCreationWizard(
         helpCenter,
@@ -181,29 +181,29 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
             !isUpdate && (isPristineSubdomain || !newHelpCenter.subdomain)
                 ? slugify(name)
                 : newHelpCenter.subdomain
-        updateBasicsData({name, subdomain})
+        handleFormUpdate({name, subdomain})
     }
 
     const handleSubdomainChange = (subdomain: string) => {
         setIsPristine(false)
         setPristineSubdomain(subdomain === helpCenter?.subdomain)
-        updateBasicsData({subdomain})
+        handleFormUpdate({subdomain})
     }
 
     const handleLanguageChange = (languages: Language[]) => {
         const {defaultLocale, supportedLocales} =
             mapLanguagePickerToHelpCenterLanguages(languages)
-        updateBasicsData({defaultLocale, supportedLocales})
+        handleFormUpdate({defaultLocale, supportedLocales})
     }
 
     const handlePlatformTypeChange = (platformType: PlatformType) => {
         setIsPristine(false)
-        updateBasicsData({platformType})
+        handleFormUpdate({platformType})
     }
 
     const handleStoreChange = (storeIntegrationName: string) => {
         setIsPristine(false)
-        updateBasicsData({
+        handleFormUpdate({
             shopName: storeIntegrationName,
         })
     }
@@ -219,21 +219,21 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                 break
             case FOOTER_BUTTONS.CREATE_AND_CUSTOMIZE:
                 !isInvalidForm &&
-                    onSave(
+                    handleSave(
                         NEXT_ACTION.NEW_WIZARD,
                         HelpCenterCreationWizardStep.Branding
                     )
                 break
             case FOOTER_BUTTONS.NEXT:
                 !isInvalidForm &&
-                    onSave(
+                    handleSave(
                         NEXT_ACTION.NEXT_STEP,
                         HelpCenterCreationWizardStep.Branding
                     )
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
                 !isInvalidForm &&
-                    onSave(
+                    handleSave(
                         NEXT_ACTION.BACK_HOME,
                         HelpCenterCreationWizardStep.Basics
                     )

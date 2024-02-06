@@ -120,9 +120,9 @@ describe('useHelpCenterCreationWizard', () => {
         )
         expect(result.current.helpCenter).toMatchObject({name: 'test'})
 
-        const {updateData} = result.current
+        const {handleFormUpdate} = result.current
         act(() => {
-            updateData({name: 'test-updated'})
+            handleFormUpdate({name: 'test-updated'})
         })
 
         expect(result.current.helpCenter).toMatchObject({name: 'test-updated'})
@@ -138,14 +138,14 @@ describe('useHelpCenterCreationWizard', () => {
             {wrapper}
         )
 
-        const {onSave} = result.current
+        const {handleSave} = result.current
 
         createHelpCenter.mockResolvedValueOnce({
             data: {...helpCenterData, id: 2},
         } as any)
 
         act(() => {
-            onSave(NEXT_ACTION.NEW_WIZARD)
+            handleSave(NEXT_ACTION.NEW_WIZARD)
         })
 
         await waitFor(() => {
@@ -165,14 +165,14 @@ describe('useHelpCenterCreationWizard', () => {
             {wrapper}
         )
 
-        const {onSave} = result.current
+        const {handleSave} = result.current
 
         updateHelpCenter.mockResolvedValueOnce({
             data: helpCenterData,
         } as any)
 
         act(() => {
-            onSave(NEXT_ACTION.BACK_HOME)
+            handleSave(NEXT_ACTION.BACK_HOME)
         })
 
         await waitFor(() => {

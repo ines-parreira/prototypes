@@ -79,8 +79,9 @@ const storeIntegrations = [
 const mockedHook = {
     helpCenter: defaultHelpCenter,
     allStoreIntegrations: storeIntegrations,
-    updateData: mockUpdateData,
-    onSave: mockOnSave,
+    handleFormUpdate: mockUpdateData,
+    handleSave: mockOnSave,
+    handleAction: jest.fn(),
     isLoading: false,
 }
 

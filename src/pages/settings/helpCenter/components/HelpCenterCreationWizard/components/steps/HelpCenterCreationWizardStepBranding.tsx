@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
@@ -8,6 +7,7 @@ import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
     HELP_CENTER_STEPS_TITLES,
+    NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
 import WizardFooter, {
     FOOTER_BUTTONS,
@@ -32,8 +32,9 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
 }) => {
     const {
         helpCenter: newHelpCenter,
-        updateData: updateBrandingData,
-        onSave,
+        handleFormUpdate,
+        handleAction,
+        handleSave,
         isLoading: isLoading,
     } = useHelpCenterCreationWizard(
         helpCenter,
@@ -42,28 +43,41 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
     const brandLogo = useFileUpload()
 
     const handlePrimaryColorChange = (primaryColor: string) => {
-        updateBrandingData({primaryColor})
+        handleFormUpdate({primaryColor})
     }
 
     const handlePrimaryFontFamilyChange = (primaryFontFamily: string) => {
-        updateBrandingData({primaryFontFamily})
+        handleFormUpdate({primaryFontFamily})
     }
 
     const handleBrandLogoChange = async () => {
         if (!brandLogo.isTouched) return
         const brandLogoUrl = await brandLogo.getFileUploadURL()
-        updateBrandingData({brandLogoUrl})
+        handleFormUpdate({brandLogoUrl})
+        return brandLogoUrl
     }
 
     const onFooterAction = async (buttonClicked: FOOTER_BUTTONS) => {
-        await handleBrandLogoChange()
+        const url = await handleBrandLogoChange()
+        const payload = url !== undefined ? {brandLogoUrl: url} : {}
 
         switch (buttonClicked) {
             case FOOTER_BUTTONS.BACK:
+                handleAction(NEXT_ACTION.PREVIOUS_STEP)
                 break
             case FOOTER_BUTTONS.NEXT:
+                handleSave(
+                    NEXT_ACTION.NEXT_STEP,
+                    HelpCenterCreationWizardStep.Articles,
+                    payload
+                )
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
+                handleSave(
+                    NEXT_ACTION.BACK_HOME,
+                    HelpCenterCreationWizardStep.Branding,
+                    payload
+                )
                 break
             default:
                 break

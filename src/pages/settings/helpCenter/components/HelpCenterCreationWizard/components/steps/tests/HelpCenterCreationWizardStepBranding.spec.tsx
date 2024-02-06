@@ -23,8 +23,9 @@ const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
 const mockedHook = {
     helpCenter: helpCenterFixtureUI,
     allStoreIntegrations: [],
-    updateData: jest.fn(),
-    onSave: jest.fn(),
+    handleFormUpdate: jest.fn(),
+    handleSave: jest.fn(),
+    handleAction: jest.fn(),
     isLoading: false,
 }
 
@@ -95,7 +96,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
         const colorPickerInput = screen.getByTestId('color-picker-input')
         fireEvent.change(colorPickerInput, {target: {value: '#000000'}})
 
-        expect(mockedHook.updateData).toHaveBeenCalledWith({
+        expect(mockedHook.handleFormUpdate).toHaveBeenCalledWith({
             primaryColor: '#000000',
         })
     })
@@ -109,7 +110,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
 
         fireEvent.click(screen.getByText('Verdana'))
 
-        expect(mockedHook.updateData).toHaveBeenCalledWith({
+        expect(mockedHook.handleFormUpdate).toHaveBeenCalledWith({
             primaryFontFamily: 'Verdana',
         })
     })

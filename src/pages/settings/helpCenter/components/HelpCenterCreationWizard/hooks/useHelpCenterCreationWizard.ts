@@ -48,11 +48,13 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
 type HelpCenterWizardOutput = {
     helpCenter: HelpCenterCreationWizard
     allStoreIntegrations: Integration[]
-    updateData: (payload: Partial<HelpCenterCreationWizard>) => void
-    onSave: (
+    handleFormUpdate: (payload: Partial<HelpCenterCreationWizard>) => void
+    handleAction: (redirectTo: NEXT_ACTION, id?: number) => void
+    handleSave: (
         redirectTo?: NEXT_ACTION,
-        stepName?: HelpCenterCreationWizardStep
-    ) => any
+        stepName?: HelpCenterCreationWizardStep,
+        payload?: Partial<HelpCenterCreationWizard>
+    ) => void
     isLoading: boolean
 }
 
@@ -99,7 +101,7 @@ export const useHelpCenterCreationWizard = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const handleNextAction = (redirectTo: NEXT_ACTION, id?: number) => {
+    const handleAction = (redirectTo: NEXT_ACTION, id?: number) => {
         switch (redirectTo) {
             case NEXT_ACTION.BACK_HOME:
                 history.replace('/app/settings/help-center')
@@ -117,7 +119,7 @@ export const useHelpCenterCreationWizard = (
         }
     }
 
-    const handleOnUpdate = useCallback(
+    const handleFormUpdate = useCallback(
         (payload: Partial<HelpCenterCreationWizard>) => {
             setNewHelpCenter((prevHelpCenter) => ({
                 ...prevHelpCenter,
@@ -127,53 +129,65 @@ export const useHelpCenterCreationWizard = (
         [setNewHelpCenter]
     )
 
-    const handleOnSave = (
+    const handleSave = (
         redirectTo?: NEXT_ACTION,
-        stepName?: HelpCenterCreationWizardStep
+        stepName?: HelpCenterCreationWizardStep,
+        payload?: Partial<HelpCenterCreationWizard>
     ) => {
         const tempHelpCenterData = mapUIHelpCenterToApiHelpCenter({
             ...newHelpCenter,
+            ...payload,
             stepName: stepName ?? newHelpCenter.stepName,
         })
 
-        if (isUpdate && helpCenter) {
-            const fieldsToUpdate = getUpdatedFields(
-                tempHelpCenterData,
-                helpCenter
-            )
+        return isUpdate
+            ? handleUpdateHelpCenter(tempHelpCenterData, redirectTo)
+            : handleCreateHelpCenter(tempHelpCenterData, redirectTo)
+    }
 
-            updateHelpCenterMutate(
-                [undefined, {help_center_id: helpCenter.id}, fieldsToUpdate],
-                {
-                    onSuccess: async (response) => {
-                        if (!response) return
-                        await handleOnSaveCallback(response.data, redirectTo)
-                    },
-                    onError: (error) =>
-                        handleOnError(
-                            error,
-                            'Help center not successfully updated.',
-                            dispatch
-                        ),
-                }
-            )
-        } else {
-            createHelpCenterMutate([undefined, tempHelpCenterData], {
+    const handleCreateHelpCenter = (
+        payload: Partial<HelpCenter>,
+        redirectTo?: NEXT_ACTION
+    ) => {
+        createHelpCenterMutate([undefined, payload as HelpCenter], {
+            onSuccess: async (response) => {
+                if (!response) return
+                dispatch(helpCenterCreated(response.data))
+                void enableArticleRecommendation(response.data)
+                await handleSaveCallback(response.data, redirectTo)
+            },
+            onError: (error) =>
+                handleOnError(
+                    error,
+                    'Help center not successfully created.',
+                    dispatch
+                ),
+        })
+    }
+
+    const handleUpdateHelpCenter = (
+        payload: Partial<HelpCenter>,
+        redirectTo?: NEXT_ACTION
+    ) => {
+        if (!helpCenter) return
+
+        const fieldsToUpdate = getUpdatedFields(payload, helpCenter)
+
+        updateHelpCenterMutate(
+            [undefined, {help_center_id: helpCenter.id}, fieldsToUpdate],
+            {
                 onSuccess: async (response) => {
                     if (!response) return
-                    dispatch(helpCenterCreated(response.data))
-                    void enableArticleRecommendation(response.data)
-
-                    await handleOnSaveCallback(response.data, redirectTo)
+                    await handleSaveCallback(response.data, redirectTo)
                 },
                 onError: (error) =>
                     handleOnError(
                         error,
-                        'Help center not successfully created.',
+                        'Help center not successfully updated.',
                         dispatch
                     ),
-            })
-        }
+            }
+        )
     }
 
     const handleTranslations = async (helpCenterId: number) => {
@@ -222,7 +236,7 @@ export const useHelpCenterCreationWizard = (
         }
     }
 
-    const handleOnSaveCallback = async (
+    const handleSaveCallback = async (
         payload: HelpCenter,
         redirectTo?: NEXT_ACTION
     ) => {
@@ -236,20 +250,28 @@ export const useHelpCenterCreationWizard = (
                     })
                 )
                 break
+            case HelpCenterCreationWizardStep.Branding:
+                dispatch(
+                    helpCenterUpdated({
+                        ...payload,
+                    })
+                )
+                break
             default:
                 break
         }
 
         if (redirectTo) {
-            handleNextAction(redirectTo, payload.id)
+            handleAction(redirectTo, payload.id)
         }
     }
 
     return {
         helpCenter: newHelpCenter,
         allStoreIntegrations,
-        updateData: handleOnUpdate,
-        onSave: handleOnSave,
+        handleFormUpdate,
+        handleAction,
+        handleSave,
         isLoading:
             isCreating ||
             isUpdating ||
