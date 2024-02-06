@@ -216,6 +216,11 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                         wfConfigurationHelpfulPromptOrHandoverStepId: step.id,
                     },
                     withWasThisHelpfulPrompt: true,
+                    ticketTags: step.settings?.ticket_tags,
+                    ticketAssigneeUserId:
+                        step.settings?.ticket_assignee_user_id,
+                    ticketAssigneeTeamId:
+                        step.settings?.ticket_assignee_team_id,
                 },
             }
             nodeIdByStepId[step.id] = n.id

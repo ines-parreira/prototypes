@@ -98,6 +98,11 @@ export type WorkflowStepOrderSelection = {
 export type WorkflowStepHelpfulPrompt = {
     id: string
     kind: 'helpful-prompt'
+    settings?: {
+        ticket_tags?: string[] | null
+        ticket_assignee_user_id?: number | null
+        ticket_assignee_team_id?: number | null
+    }
 }
 
 export type WorkflowStepHttpRequest = {

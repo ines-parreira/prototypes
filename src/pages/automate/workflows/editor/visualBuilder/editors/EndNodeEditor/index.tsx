@@ -109,7 +109,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                         className={css.formField}
                         ref={onDropdownContainerRefChange}
                     >
-                        {nodeInEdition.data.withWasThisHelpfulPrompt ? (
+                        {nodeInEdition.data.withWasThisHelpfulPrompt && (
                             <div className={css.withDescription}>
                                 <WasThisHelpfulCard />
                                 <div className={css.description}>
@@ -120,68 +120,68 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                                     channel language.
                                 </div>
                             </div>
-                        ) : (
-                            <>
-                                <Label className={css.label}>
-                                    When ticket is created
-                                </Label>
-                                <TicketTags
-                                    ticketTags={Immutable.fromJS(
-                                        (
-                                            nodeInEdition.data.ticketTags ?? []
-                                        ).map((tag) => ({
-                                            name: tag,
-                                        }))
-                                    )}
-                                    addTag={handleAddTag}
-                                    removeTag={handleDeleteTag}
-                                    transparent
-                                    dropdownContainer={
-                                        dropdownContainerRef ?? undefined
-                                    }
-                                />
-                                <TicketAssignee
-                                    currentAssigneeUser={ticketAssigneeUser}
-                                    currentAssigneeTeam={ticketAssigneeTeam}
-                                    handleTeams={true}
-                                    handleUsers={true}
-                                    setUser={(user) => {
-                                        const {
-                                            ticketTags,
-                                            ticketAssigneeTeamId,
-                                            withWasThisHelpfulPrompt,
-                                        } = nodeInEdition.data
-                                        dispatch({
-                                            type: 'SET_END_NODE_SETTINGS',
-                                            endNodeId: nodeInEdition.id,
-                                            settings: {
-                                                ticketTags,
-                                                ticketAssigneeUserId: user?.id,
-                                                ticketAssigneeTeamId,
-                                                withWasThisHelpfulPrompt,
-                                            },
-                                        })
-                                    }}
-                                    setTeam={(team) => {
-                                        const {
-                                            ticketTags,
-                                            ticketAssigneeUserId,
-                                            withWasThisHelpfulPrompt,
-                                        } = nodeInEdition.data
-                                        dispatch({
-                                            type: 'SET_END_NODE_SETTINGS',
-                                            endNodeId: nodeInEdition.id,
-                                            settings: {
-                                                ticketTags,
-                                                ticketAssigneeUserId,
-                                                ticketAssigneeTeamId: team?.id,
-                                                withWasThisHelpfulPrompt,
-                                            },
-                                        })
-                                    }}
-                                />
-                            </>
                         )}
+                        <Label className={css.label}>
+                            {nodeInEdition.data.withWasThisHelpfulPrompt
+                                ? 'If'
+                                : 'When'}{' '}
+                            ticket is created
+                        </Label>
+                        <TicketTags
+                            ticketTags={Immutable.fromJS(
+                                (nodeInEdition.data.ticketTags ?? []).map(
+                                    (tag) => ({
+                                        name: tag,
+                                    })
+                                )
+                            )}
+                            addTag={handleAddTag}
+                            removeTag={handleDeleteTag}
+                            transparent
+                            dropdownContainer={
+                                dropdownContainerRef ?? undefined
+                            }
+                        />
+                        <TicketAssignee
+                            currentAssigneeUser={ticketAssigneeUser}
+                            currentAssigneeTeam={ticketAssigneeTeam}
+                            handleTeams={true}
+                            handleUsers={true}
+                            setUser={(user) => {
+                                const {
+                                    ticketTags,
+                                    ticketAssigneeTeamId,
+                                    withWasThisHelpfulPrompt,
+                                } = nodeInEdition.data
+                                dispatch({
+                                    type: 'SET_END_NODE_SETTINGS',
+                                    endNodeId: nodeInEdition.id,
+                                    settings: {
+                                        ticketTags,
+                                        ticketAssigneeUserId: user?.id,
+                                        ticketAssigneeTeamId,
+                                        withWasThisHelpfulPrompt,
+                                    },
+                                })
+                            }}
+                            setTeam={(team) => {
+                                const {
+                                    ticketTags,
+                                    ticketAssigneeUserId,
+                                    withWasThisHelpfulPrompt,
+                                } = nodeInEdition.data
+                                dispatch({
+                                    type: 'SET_END_NODE_SETTINGS',
+                                    endNodeId: nodeInEdition.id,
+                                    settings: {
+                                        ticketTags,
+                                        ticketAssigneeUserId,
+                                        ticketAssigneeTeamId: team?.id,
+                                        withWasThisHelpfulPrompt,
+                                    },
+                                })
+                            }}
+                        />
                     </div>
                 </div>
             </Drawer.Content>

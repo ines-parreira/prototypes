@@ -591,6 +591,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     id: node.data.wfConfigurationRef
                         .wfConfigurationHelpfulPromptOrHandoverStepId,
                     kind: 'helpful-prompt',
+                    settings: {
+                        ticket_tags: node.data.ticketTags,
+                        ticket_assignee_user_id: node.data.ticketAssigneeUserId,
+                        ticket_assignee_team_id: node.data.ticketAssigneeTeamId,
+                    },
                 }
                 c.steps.push(step)
                 if (previousNode && stepIdByNodeId[previousNode.id]) {
