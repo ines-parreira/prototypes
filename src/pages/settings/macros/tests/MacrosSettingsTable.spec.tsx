@@ -1,14 +1,11 @@
-import {mount, shallow} from 'enzyme'
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
+import {act, render, screen} from '@testing-library/react'
 import {createMacro, deleteMacro} from 'models/macro/resources'
 import {Macro, MacroSortableProperties} from 'models/macro/types'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {MacrosState} from 'state/entities/macros/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import history from 'pages/history'
 import {OrderDirection} from 'models/api/types'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -66,10 +63,6 @@ describe('<MacrosSettingsTable/>', () => {
             orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
         },
     } as any as ComponentProps<typeof MacrosSettingsTableContainer>
-    const mockClickEvent = {
-        preventDefault: jest.fn(),
-        stopPropagation: jest.fn(),
-    }
 
     mockCreateMacro.mockResolvedValue({
         ...macrosState['1'],
@@ -78,17 +71,21 @@ describe('<MacrosSettingsTable/>', () => {
     mockDeleteMacro.mockResolvedValue(undefined)
 
     it('should display a loading when fetching macros', () => {
-        const component = shallow(
+        const {rerender} = render(
             <MacrosSettingsTableContainer {...minProps} isLoading={true} />
         )
 
-        expect(component.find(Loader)).toHaveLength(1)
-        component.setProps({isLoading: false})
-        expect(component.find(Loader)).toHaveLength(0)
+        expect(document.getElementsByClassName('md-spin')).toHaveLength(1)
+
+        rerender(
+            <MacrosSettingsTableContainer {...minProps} isLoading={false} />
+        )
+
+        expect(document.getElementsByClassName('md-spin')).toHaveLength(0)
     })
 
     it('should display a list of macros', () => {
-        const component = shallow(
+        const {container} = render(
             <MacrosSettingsTableContainer
                 {...minProps}
                 macroIds={[1, 2]}
@@ -96,11 +93,11 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should duplicate a macro', (done) => {
-        const component = shallow(
+        render(
             <MacrosSettingsTableContainer
                 {...minProps}
                 macroIds={[1, 2]}
@@ -108,7 +105,8 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(IconButton).at(0).simulate('click', mockClickEvent)
+        userEvent.click(screen.getAllByTitle('Duplicate macro')[0])
+
         const {actions, name} = macrosState['1']
         expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
             actions,
@@ -130,7 +128,7 @@ describe('<MacrosSettingsTable/>', () => {
 
     it('should notify when failing to duplicate macro', (done) => {
         mockCreateMacro.mockRejectedValue('error')
-        const component = shallow(
+        render(
             <MacrosSettingsTableContainer
                 {...minProps}
                 macroIds={[1, 2]}
@@ -138,7 +136,8 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(IconButton).at(0).simulate('click', mockClickEvent)
+        userEvent.click(screen.getAllByTitle('Duplicate macro')[0])
+
         setImmediate(() => {
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
                 message: 'Failed to duplicate macro',
@@ -149,7 +148,7 @@ describe('<MacrosSettingsTable/>', () => {
     })
 
     it('should delete macro', (done) => {
-        const component = mount(
+        render(
             <MacrosSettingsTableContainer
                 {...minProps}
                 macroIds={[1, 2]}
@@ -157,8 +156,13 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(IconButton).at(1).simulate('click', mockClickEvent)
-        component.find(Button).at(2).simulate('click')
+        act(() => {
+            userEvent.click(screen.getAllByTitle('Delete macro')[0])
+        })
+        act(() => {
+            userEvent.click(screen.getByText('Confirm', {exact: false}))
+        })
+
         setImmediate(() => {
             expect(mockMacroDeleted).toHaveBeenNthCalledWith(1, 1)
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
@@ -182,7 +186,7 @@ describe('<MacrosSettingsTable/>', () => {
                 },
             },
         })
-        const component = mount(
+        render(
             <MacrosSettingsTableContainer
                 {...minProps}
                 macroIds={[1, 2]}
@@ -190,8 +194,13 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(IconButton).at(1).simulate('click', mockClickEvent)
-        component.find(Button).at(2).simulate('click')
+        act(() => {
+            userEvent.click(screen.getAllByTitle('Delete macro')[0])
+        })
+        act(() => {
+            userEvent.click(screen.getByText('Confirm', {exact: false}))
+        })
+
         setImmediate(() => {
             expect(mockNotify.mock.calls[0]).toMatchSnapshot()
             done()
@@ -199,11 +208,10 @@ describe('<MacrosSettingsTable/>', () => {
     })
 
     it('should change sort column when clicking header cell', () => {
-        const component = shallow(
-            <MacrosSettingsTableContainer {...minProps} />
-        )
+        render(<MacrosSettingsTableContainer {...minProps} />)
 
-        component.find(HeaderCellProperty).at(0).simulate('click')
+        userEvent.click(document.getElementsByTagName('td')[0])
+
         expect(mockOnSortOptionsChange).toHaveBeenNthCalledWith(
             1,
             MacroSortableProperties.Name,

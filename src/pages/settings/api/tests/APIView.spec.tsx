@@ -1,7 +1,7 @@
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {act, render, screen} from '@testing-library/react'
 
-import IconButton from 'pages/common/components/button/IconButton'
 import {APIViewContainer} from '../APIView'
 
 jest.mock('copy-to-clipboard')
@@ -18,49 +18,54 @@ describe('<APIView/>', () => {
 
     describe('render()', () => {
         it('should render a Reset Button', () => {
-            const component = shallow(
+            const {container} = render(
                 <APIViewContainer
                     {...minProps}
                     apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a Create API Key Button', () => {
-            const component = shallow(<APIViewContainer {...minProps} />)
+            const {container} = render(<APIViewContainer {...minProps} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it("should change apiKeyType's value when clicking the visibility icon", () => {
-            const component = shallow(
+            render(
                 <APIViewContainer
                     {...minProps}
                     apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
                 />
             )
-            expect(component.state('apiKeyType')).toEqual('password')
 
-            component.find(IconButton).at(0).simulate('click')
+            act(() => {
+                userEvent.click(
+                    screen.getByRole('button', {name: 'visibility'})
+                )
+            })
 
-            expect(component.state('apiKeyType')).toEqual('text')
+            expect(
+                screen.getByRole('textbox', {name: /Password/})
+            ).toHaveAttribute('type', 'text')
         })
 
         it('should copy the apiKey content to clipboard when clicking the copy button', () => {
-            const component = shallow(
+            render(
                 <APIViewContainer
                     {...minProps}
                     apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
                 />
             )
 
-            expect(component.state('isCopiedApiKey')).toEqual(false)
+            act(() => {
+                userEvent.click(document.getElementsByClassName('copyBtn')[0])
+            })
 
-            component.find('.copyBtn').at(2).simulate('click')
-
-            expect(component.state('isCopiedApiKey')).toEqual(true)
+            expect(screen.getByText('Copied!')).toBeInTheDocument()
         })
     })
 })

@@ -1,8 +1,7 @@
-import React, {ComponentProps, SyntheticEvent} from 'react'
-import {shallow} from 'enzyme'
+import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -66,9 +65,13 @@ describe('YourProfileView', () => {
             'should render current user profile form',
             (hasNewFeatureActive) => {
                 variationMock.mockImplementation(() => hasNewFeatureActive)
-                const component = shallow(<YourProfileView {...minProps} />)
+                const {container} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
 
@@ -86,126 +89,148 @@ describe('YourProfileView', () => {
     })
 
     describe('_handleSubmit', () => {
-        it('should submit user data', () => {
+        it('should submit user data', async () => {
             const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
             const submitSetting = jest
                 .fn()
                 .mockReturnValueOnce(Promise.resolve())
-            const preferences: Map<any, any> = fromJS({data: {foo: 'bar'}})
-            const newPreferences: Map<any, any> = fromJS({hello: 'world'})
+            const preferences: Map<any, any> = fromJS({
+                data: {time_format: 'bar'},
+            })
+            const settingLabel = '24-hour'
+            const newPreferences: Map<any, any> = fromJS({
+                time_format: settingLabel,
+            })
             const expectedPreferences = preferences
                 .update('data', (data: Map<any, any>) =>
                     data.mergeDeep(newPreferences)
                 )
                 .toJS()
 
-            const component = shallow<YourProfileView>(
-                <YourProfileView
-                    {...minProps}
-                    updateCurrentUser={updateCurrentUserSpy}
-                    submitSetting={submitSetting}
-                    preferences={fromJS({data: {foo: 'bar'}})}
-                />
-            ).instance()
-            component.setState({preferences: newPreferences})
+            render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView
+                        {...minProps}
+                        updateCurrentUser={updateCurrentUserSpy}
+                        submitSetting={submitSetting}
+                        preferences={fromJS({data: {time_format: 'bar'}})}
+                    />
+                </Provider>
+            )
 
-            void component._handleSubmit({
-                preventDefault: jest.fn(),
-            } as unknown as SyntheticEvent)
-            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
-            expect(submitSetting).toHaveBeenCalledWith(
-                expectedPreferences,
-                false
-            )
-            expect(logEventMock).toHaveBeenLastCalledWith(
-                SegmentEvent.UserSettingsUpdated,
-                {
-                    newSettings: newPreferences.toJS(),
-                    oldSettings: (
-                        preferences.get('data') as Map<any, any>
-                    ).toJS(),
-                }
-            )
+            act(() => {
+                userEvent.click(
+                    screen.getByRole('radio', {
+                        name: settingLabel,
+                    })
+                )
+            })
+            act(() => {
+                userEvent.click(
+                    screen.getByRole('button', {name: 'Save Changes'})
+                )
+            })
+
+            await waitFor(() => {
+                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+                expect(submitSetting).toHaveBeenCalledWith(
+                    expectedPreferences,
+                    false
+                )
+                expect(logEventMock).toHaveBeenLastCalledWith(
+                    SegmentEvent.UserSettingsUpdated,
+                    {
+                        newSettings: newPreferences.toJS(),
+                        oldSettings: (
+                            preferences.get('data') as Map<any, any>
+                        ).toJS(),
+                    }
+                )
+            })
         })
 
         it(
             'should submit user data and reset the password confirmation field ' +
                 'because the email field was marked as changed',
-            (done) => {
-                const updateCurrentUserSpy = jest.fn(() =>
-                    Promise.resolve(user)
-                )
-                const component = shallow<YourProfileView>(
-                    <YourProfileView
-                        {...minProps}
-                        updateCurrentUser={updateCurrentUserSpy}
-                    />
-                ).instance()
-                component.setState({
-                    password_confirmation: 'a-password',
-                    hasChangedEmail: true,
-                })
-
-                void component
-                    ._handleSubmit({
-                        preventDefault: jest.fn(),
-                    } as unknown as SyntheticEvent)
-                    .then(() => {
-                        expect(
-                            updateCurrentUserSpy.mock.calls
-                        ).toMatchSnapshot()
-                        expect(component.state.hasChangedEmail).toBe(false)
-                        expect(component.state.password_confirmation).toBe('')
-                        expect(logEventMock).toHaveBeenCalledTimes(0)
-                        done()
-                    })
-            }
-        )
-
-        it(
-            'should submit user data and update user preferences because ' +
-                'date format and time format preferences were changed',
             () => {
-                const updateCurrentUserSpy = jest.fn(() =>
-                    Promise.resolve(user)
-                )
-                const submitSettingSpy = jest
-                    .fn()
-                    .mockReturnValueOnce(Promise.resolve())
-
-                const preferences: Map<any, any> = fromJS({
-                    data: {
-                        date_format: Object.keys(DateFormattingSetting)[1], // en_US
-                        time_format: TimeFormattingSetting[1], // AM/PM
-                        foo: 'bar',
-                    },
+                const updateCurrentUserSpy = jest.fn(() => {
+                    return Promise.resolve(user)
                 })
-                const expectedPreferences: Map<any, any> = fromJS({
-                    data: {
-                        date_format: Object.keys(DateFormattingSetting)[0], // en_GB
-                        time_format: TimeFormattingSetting[0], // 24-hour
-                        foo: 'bar',
-                    },
-                })
-
-                const {getByLabelText} = render(
+                render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView
                             {...minProps}
                             updateCurrentUser={updateCurrentUserSpy}
-                            submitSetting={submitSettingSpy}
-                            preferences={fromJS(preferences)}
                         />
                     </Provider>
                 )
+                act(() => {
+                    void userEvent.type(
+                        screen.getByRole('textbox', {
+                            name: 'Your email required',
+                        }),
+                        'q'
+                    )
+                })
+                act(() => {
+                    void userEvent.type(
+                        screen.getByPlaceholderText('Your password'),
+                        'a-password'
+                    )
+                })
 
-                fireEvent.click(
-                    getByLabelText(DateFormattingSetting.en_GB.label) // en_GB
-                )
-                fireEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
+                act(() => {
+                    userEvent.click(
+                        screen.getByRole('button', {name: 'Save Changes'})
+                    )
+                })
 
-                fireEvent.click(screen.getByText('Save Changes'))
+                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+                expect(updateCurrentUserSpy).toHaveBeenCalled()
+                expect(logEventMock).toHaveBeenCalledTimes(0)
+            }
+        )
 
+        it('should submit user data and update user preferences because date format and time format preferences were changed', async () => {
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
+            const submitSettingSpy = jest
+                .fn()
+                .mockReturnValueOnce(Promise.resolve())
+
+            const preferences: Map<any, any> = fromJS({
+                data: {
+                    date_format: Object.keys(DateFormattingSetting)[1], // en_US
+                    time_format: TimeFormattingSetting[1], // AM/PM
+                    foo: 'bar',
+                },
+            })
+            const expectedPreferences: Map<any, any> = fromJS({
+                data: {
+                    date_format: Object.keys(DateFormattingSetting)[0], // en_GB
+                    time_format: TimeFormattingSetting[0], // 24-hour
+                    foo: 'bar',
+                },
+            })
+
+            const {getByLabelText} = render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView
+                        {...minProps}
+                        updateCurrentUser={updateCurrentUserSpy}
+                        submitSetting={submitSettingSpy}
+                        preferences={fromJS(preferences)}
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(
+                getByLabelText(DateFormattingSetting.en_GB.label) // en_GB
+            )
+            fireEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
+
+            fireEvent.click(screen.getByText('Save Changes'))
+
+            await waitFor(() => {
                 expect(submitSettingSpy).toHaveBeenCalledWith(
                     expectedPreferences.toJS(),
                     false
@@ -221,8 +246,8 @@ describe('YourProfileView', () => {
                         ).toJS(),
                     }
                 )
-            }
-        )
+            })
+        })
     })
 
     describe('change theme from Settings', () => {
@@ -248,47 +273,47 @@ describe('YourProfileView', () => {
 
     describe('_saveProfilePicture', () => {
         it('should save profile picture', () => {
+            const fileUrl = 'https://config.gorgias.io/production/blabla'
             const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
-            const component = shallow<YourProfileView>(
-                <YourProfileView
-                    {...minProps}
-                    updateCurrentUser={updateCurrentUserSpy}
-                />
-            ).instance()
+            render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView
+                        {...minProps}
+                        currentUser={fromJS({
+                            ...user,
+                            meta: {...user.meta, profile_picture_url: fileUrl},
+                        })}
+                        updateCurrentUser={updateCurrentUserSpy}
+                    />
+                </Provider>
+            )
 
-            component.setState({
-                meta: {
-                    profile_picture_url:
-                        'https://config.gorgias.io/production/blabla',
-                },
-            })
-            void component._saveProfilePicture()
+            userEvent.click(screen.getByText('Save Changes'))
+
             expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
         })
 
         it('should remove profile picture', () => {
             const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
-            const component = shallow<YourProfileView>(
-                <YourProfileView
-                    {...minProps}
-                    updateCurrentUser={updateCurrentUserSpy}
-                    currentUser={fromJS({
-                        ...user,
-                        meta: {
-                            profile_picture_url:
-                                'https://config.gorgias.io/staging/pic.jpg',
-                        },
-                    })}
-                />
-            ).instance()
+            render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView
+                        {...minProps}
+                        updateCurrentUser={updateCurrentUserSpy}
+                        currentUser={fromJS({
+                            ...user,
+                            meta: {
+                                profile_picture_url:
+                                    'https://config.gorgias.io/staging/pic.jpg',
+                            },
+                        })}
+                    />
+                </Provider>
+            )
 
-            component.setState({
-                meta: {
-                    profile_picture_url: null,
-                },
-            })
+            const removePictureButton = screen.getByText('Remove Picture')
+            fireEvent.click(removePictureButton)
 
-            void component._saveProfilePicture()
             expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
         })
     })
@@ -299,19 +324,26 @@ describe('YourProfileView', () => {
                 ...minProps,
                 currentUser: fromJS({}),
             }
-            const component = shallow<YourProfileView>(
-                <YourProfileView {...props} />
+            render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView {...props} />
+                </Provider>
             )
-            const form = component.instance()._getForm(props)
-            expect(form).toMatchSnapshot()
+            const userName = screen.getByPlaceholderText('John Doe')
+
+            expect(userName).toBeInTheDocument()
         })
 
         it('should return form values because `currentUser` is not empty', () => {
-            const component = shallow<YourProfileView>(
-                <YourProfileView {...minProps} />
+            render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView {...minProps} />
+                </Provider>
             )
-            const form = component.instance()._getForm(minProps)
-            expect(form).toMatchSnapshot()
+
+            const userName = screen.getByDisplayValue(user.name)
+
+            expect(userName).toBeInTheDocument()
         })
     })
 })

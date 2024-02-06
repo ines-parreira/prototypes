@@ -1,273 +1,374 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
-<TableWrapper>
-  <TableHead
-    className="tableHead"
+<table
+  class="table"
+>
+  <thead
+    class="tableHead"
   >
-    <HeaderCellProperty
-      direction="asc"
-      isOrderedBy={false}
-      onClick={[Function]}
-      title="Macro"
-    />
-    <HeaderCellProperty
-      title="Tags"
-    />
-    <HeaderCellProperty
-      direction="asc"
-      isOrderedBy={false}
-      onClick={[Function]}
-      title="Language"
-    />
-    <HeaderCellProperty
-      direction="asc"
-      isOrderedBy={false}
-      onClick={[Function]}
-      title="Usage count"
-    />
-    <HeaderCellProperty
-      direction="asc"
-      isOrderedBy={false}
-      onClick={[Function]}
-      title="Last updated"
-    />
-    <HeaderCell />
-  </TableHead>
-  <ForwardRef(TableBody)>
-    <ForwardRef(TableBodyRow)
-      className="tableBodyRow"
-      key="1"
+    <tr
+      class="headerRow"
     >
       <td
-        className="macroTitle wrapper"
+        class="wrapper is-clickable normal"
       >
-        <Link
-          to="/app/settings/macros/1"
+        <div
+          class="content"
         >
-          <BodyCellContent>
-            Waive Fee
-          </BodyCellContent>
-        </Link>
+          <div
+            class="cell"
+          >
+            <span
+              class="title"
+            >
+              Macro
+            </span>
+            <i
+              class="material-icons md-1 directionIcon"
+            >
+              arrow_downward
+            </i>
+          </div>
+        </div>
       </td>
       <td
-        className="wrapper"
+        class="wrapper normal"
       >
-        <Link
-          tabIndex={-1}
+        <div
+          class="content"
+        >
+          <div
+            class="cell"
+          >
+            <span
+              class="title"
+            >
+              Tags
+            </span>
+            <i
+              class="material-icons md-1 directionIcon"
+            >
+              arrow_upward
+            </i>
+          </div>
+        </div>
+      </td>
+      <td
+        class="wrapper is-clickable normal"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="cell"
+          >
+            <span
+              class="title"
+            >
+              Language
+            </span>
+            <i
+              class="material-icons md-1 directionIcon"
+            >
+              arrow_downward
+            </i>
+          </div>
+        </div>
+      </td>
+      <td
+        class="wrapper is-clickable normal"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="cell"
+          >
+            <span
+              class="title"
+            >
+              Usage count
+            </span>
+            <i
+              class="material-icons md-1 directionIcon"
+            >
+              arrow_downward
+            </i>
+          </div>
+        </div>
+      </td>
+      <td
+        class="wrapper is-clickable normal"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="cell"
+          >
+            <span
+              class="title"
+            >
+              Last updated
+            </span>
+            <i
+              class="material-icons md-1 directionIcon"
+            >
+              arrow_downward
+            </i>
+          </div>
+        </div>
+      </td>
+      <td
+        class="wrapper normal"
+      />
+    </tr>
+  </thead>
+  <tbody
+    class="tableBody"
+  >
+    <tr
+      class="row tableBodyRow"
+    >
+      <td
+        class="macroTitle wrapper"
+      >
+        <a
           to="/app/settings/macros/1"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
+            Waive Fee
+          </div>
+        </a>
+      </td>
+      <td
+        class="wrapper"
+      >
+        <a
+          tabindex="-1"
+          to="/app/settings/macros/1"
+        >
+          <div
+            class="cellContent"
+          >
             <div
-              className="flex"
+              class="flex"
               id="tags-1"
             >
-              <TagLabel>
-                refund
-              </TagLabel>
-              <Component
-                target="tags-1"
+              <span
+                class="badge-tag badge badge-secondary"
               >
-                refund, refund accepted
-              </Component>
-              <TagLabel
-                className="text-info"
+                refund
+              </span>
+              <div>
+                Tooltip
+              </div>
+              <span
+                class="badge-tag text-info badge badge-secondary"
               >
                 +
                 1
-              </TagLabel>
+              </span>
             </div>
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper"
+        class="wrapper"
       >
-        <Link
-          tabIndex={-1}
+        <a
+          tabindex="-1"
           to="/app/settings/macros/1"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             -
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper"
+        class="wrapper"
       >
-        <Link
-          tabIndex={-1}
+        <a
+          tabindex="-1"
           to="/app/settings/macros/1"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             1
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper dateCell"
+        class="wrapper dateCell"
       >
-        <Link
-          tabIndex={-1}
+        <a
+          tabindex="-1"
           to="/app/settings/macros/1"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             01/08/2017
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper smallest actions"
+        class="wrapper smallest actions"
       >
-        <BodyCellContent>
-          <ForwardRef(IconButton)
-            className="mr-1"
-            fillStyle="ghost"
-            intent="secondary"
-            isDisabled={false}
-            onClick={[Function]}
+        <div
+          class="cellContent"
+        >
+          <button
+            aria-disabled="false"
+            class="wrapper mr-1 wrapper ghost ghost secondary medium"
             title="Duplicate macro"
+            type="button"
           >
-            file_copy
-          </ForwardRef(IconButton)>
-          <ConfirmationPopover
-            buttonProps={
-              {
-                "intent": "destructive",
-              }
-            }
-            content={
-              <React.Fragment>
-                You are about to delete
-                 
-                <b>
-                  Waive Fee
-                </b>
-                 
-                macro.
-              </React.Fragment>
-            }
+            <i
+              class="material-icons icon"
+            >
+              file_copy
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper mr-1 wrapper ghost ghost destructive medium"
             id="delete-button-1"
-            onConfirm={[Function]}
-            placement="left"
+            title="Delete macro"
+            type="button"
           >
-            <Component />
-          </ConfirmationPopover>
-        </BodyCellContent>
+            <i
+              class="material-icons icon"
+            >
+              delete
+            </i>
+          </button>
+        </div>
       </td>
-    </ForwardRef(TableBodyRow)>
-    <ForwardRef(TableBodyRow)
-      className="tableBodyRow"
-      key="2"
+    </tr>
+    <tr
+      class="row tableBodyRow"
     >
       <td
-        className="macroTitle wrapper"
+        class="macroTitle wrapper"
       >
-        <Link
+        <a
           to="/app/settings/macros/2"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             Do Not Waive Fee
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper"
+        class="wrapper"
       >
-        <Link
-          tabIndex={-1}
+        <a
+          tabindex="-1"
           to="/app/settings/macros/2"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             <div
-              className="flex"
+              class="flex"
               id="tags-2"
             >
-              <TagLabel>
+              <span
+                class="badge-tag badge badge-secondary"
+              >
                 rejectedTag
-              </TagLabel>
+              </span>
             </div>
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper"
+        class="wrapper"
       >
-        <Link
-          tabIndex={-1}
+        <a
+          tabindex="-1"
           to="/app/settings/macros/2"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             -
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper"
+        class="wrapper"
       >
-        <Link
-          tabIndex={-1}
+        <a
+          tabindex="-1"
           to="/app/settings/macros/2"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             3
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper dateCell"
+        class="wrapper dateCell"
       >
-        <Link
-          tabIndex={-1}
+        <a
+          tabindex="-1"
           to="/app/settings/macros/2"
         >
-          <BodyCellContent>
+          <div
+            class="cellContent"
+          >
             01/08/2017
-          </BodyCellContent>
-        </Link>
+          </div>
+        </a>
       </td>
       <td
-        className="wrapper smallest actions"
+        class="wrapper smallest actions"
       >
-        <BodyCellContent>
-          <ForwardRef(IconButton)
-            className="mr-1"
-            fillStyle="ghost"
-            intent="secondary"
-            isDisabled={false}
-            onClick={[Function]}
+        <div
+          class="cellContent"
+        >
+          <button
+            aria-disabled="false"
+            class="wrapper mr-1 wrapper ghost ghost secondary medium"
             title="Duplicate macro"
+            type="button"
           >
-            file_copy
-          </ForwardRef(IconButton)>
-          <ConfirmationPopover
-            buttonProps={
-              {
-                "intent": "destructive",
-              }
-            }
-            content={
-              <React.Fragment>
-                You are about to delete
-                 
-                <b>
-                  Do Not Waive Fee
-                </b>
-                 
-                macro.
-              </React.Fragment>
-            }
+            <i
+              class="material-icons icon"
+            >
+              file_copy
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper mr-1 wrapper ghost ghost destructive medium"
             id="delete-button-2"
-            onConfirm={[Function]}
-            placement="left"
+            title="Delete macro"
+            type="button"
           >
-            <Component />
-          </ConfirmationPopover>
-        </BodyCellContent>
+            <i
+              class="material-icons icon"
+            >
+              delete
+            </i>
+          </button>
+        </div>
       </td>
-    </ForwardRef(TableBodyRow)>
-  </ForwardRef(TableBody)>
-</TableWrapper>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`<MacrosSettingsTable/> should notify when failing to delete macro 1`] = `

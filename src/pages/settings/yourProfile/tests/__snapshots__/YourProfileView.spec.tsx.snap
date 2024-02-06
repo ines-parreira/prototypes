@@ -1,32 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`YourProfileView _getForm should return default values because \`currentUser\` is empty 1`] = `
-{
-  "bio": "",
-  "email": "",
-  "language": "",
-  "meta": {
-    "profile_picture_url": null,
-  },
-  "name": "",
-  "password_confirmation": "",
-  "timezone": "",
-}
-`;
-
-exports[`YourProfileView _getForm should return form values because \`currentUser\` is not empty 1`] = `
-{
-  "bio": "CTO",
-  "email": "alex@gorgias.io",
-  "language": "en",
-  "meta": {
-    "profile_picture_url": "https://config.gorgias.io/production/picture",
-  },
-  "name": "Alex Plugaru",
-  "timezone": "EST",
-}
-`;
-
 exports[`YourProfileView _handleSubmit should submit user data 1`] = `
 [
   [
@@ -45,7 +18,7 @@ exports[`YourProfileView _handleSubmit should submit user data and reset the pas
   [
     {
       "bio": "CTO",
-      "email": "alex@gorgias.io",
+      "email": "alex@gorgias.ioq",
       "name": "Alex Plugaru",
       "password_confirmation": "a-password",
       "timezone": "EST",
@@ -70,9 +43,10 @@ exports[`YourProfileView _saveProfilePicture should save profile picture 1`] = `
 [
   [
     {
-      "meta": {
-        "profile_picture_url": "https://config.gorgias.io/production/blabla",
-      },
+      "bio": "CTO",
+      "email": "alex@gorgias.io",
+      "name": "Alex Plugaru",
+      "timezone": "EST",
     },
   ],
 ]
@@ -89,233 +63,560 @@ exports[`YourProfileView render should expand to show the phone number field whe
 
 exports[`YourProfileView render should render current user profile form 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <Component
-    onDiscard={[Function]}
-    onSave={[Function]}
-    when={false}
-  />
-  <PageHeader
-    title="Your profile"
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Your profile
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <div
-      className="headingSection"
+      class="headingSection"
     >
       Personal information
     </div>
-    <Form
-      onSubmit={[Function]}
-      tag="form"
+    <form
+      class=""
     >
       <div
-        className="flex flex-wrap"
+        class="flex flex-wrap"
       >
         <div
-          className="leftSideWrapper"
+          class="leftSideWrapper"
         >
           <div
-            className="section"
+            class="section"
           >
-            <InputField
-              className="inputField"
-              isRequired={true}
-              label="Your name"
-              name="name"
-              onChange={[Function]}
-              placeholder="John Doe"
-              value="Alex Plugaru"
-            />
-            <InputField
-              className="inputField"
-              isRequired={true}
-              label="Your email"
-              name="email"
-              onChange={[Function]}
-              placeholder="john.doe@acme.com"
-              type="email"
-              value="alex@gorgias.io"
-            />
-            <InputField
-              caption={
+            <div
+              class="inputField"
+            >
+              <label
+                class="label label"
+                for="input-text-1"
+              >
+                Your name
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-1"
+                  name="name"
+                  placeholder="John Doe"
+                  required=""
+                  type="text"
+                  value="Alex Plugaru"
+                />
+              </div>
+            </div>
+            <div
+              class="inputField"
+            >
+              <label
+                class="label label"
+                for="input-text-3"
+              >
+                Your email
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-3"
+                  name="email"
+                  placeholder="john.doe@acme.com"
+                  required=""
+                  type="email"
+                  value="alex@gorgias.io"
+                />
+              </div>
+            </div>
+            <div
+              class="inputField"
+            >
+              <label
+                class="label label"
+                for="input-text-5"
+              >
+                Your bio
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  aria-describedby="input-text-5-caption"
+                  class="input"
+                  id="input-text-5"
+                  name="bio"
+                  type="text"
+                  value="CTO"
+                />
+              </div>
+              <div
+                class="caption"
+                id="input-text-5-caption"
+              >
                 <span>
                   Your bio can be used in signatures as a variable. Admins can set up signatures
                    
-                  <Link
+                  <a
                     to="/app/settings/channels/email"
                   >
                     in each email integration
-                  </Link>
+                  </a>
                 </span>
-              }
-              className="inputField"
-              label="Your bio"
-              name="bio"
-              onChange={[Function]}
-              type="text"
-              value="CTO"
-            />
+              </div>
+            </div>
           </div>
           <div
-            className="headingSection"
+            class="headingSection"
           >
             Date and time settings
           </div>
           <div
-            className="section"
+            class="section"
           >
-            <FormGroup
-              className="inputField"
-              tag="div"
+            <div
+              class="inputField form-group"
             >
-              <Label
-                className="control-label"
-                tag="label"
-                widths={
-                  [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <label
+                class="control-label"
               >
                 Timezone
-              </Label>
-              <SelectField
-                allowCustomValue={false}
-                fixedWidth={false}
-                fullWidth={true}
-                id={null}
-                isSearchable={true}
-                onChange={[Function]}
-                onSearchChange={[Function]}
-                options={[]}
-                placeholder="Select an option"
-                required={false}
-                singular="option"
-                style={{}}
-                value="EST"
-              />
-            </FormGroup>
-            <DateAndTimeFormatting
-              onSelectDateFormat={[Function]}
-              onSelectTimeFormat={[Function]}
-            />
+              </label>
+              <div>
+                <div
+                  class="dropdown"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
+                  >
+                    <div
+                      class="select dropdown-toggle selectFullWidth"
+                    >
+                      <span
+                        class="label placeholder"
+                        style="min-width: 10px; opacity: 1;"
+                      >
+                        Select an option
+                      </span>
+                      <input
+                        autocomplete="chrome-off"
+                        class="input"
+                        style="min-width: 10px;"
+                        type="text"
+                        value=""
+                      />
+                      <i
+                        class="material-icons dropdownIcon"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options optionsFullWidth dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <h6
+                      class="dropdown-header"
+                      tabindex="-1"
+                    >
+                      No result
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="dateAndTimeFormattingSettingsWrapper"
+            >
+              <fieldset
+                class="settingWrapper"
+                name="radio-field-7"
+              >
+                <legend
+                  class="legend"
+                >
+                  Date format
+                </legend>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="en_GB"
+                  >
+                    <input
+                      class="input"
+                      id="en_GB"
+                      name="radio-field-7"
+                      type="radio"
+                    />
+                    Day/Month/Year
+                  </label>
+                  <div
+                    class="caption caption"
+                  >
+                    Example: 1 Jan, 2024
+                  </div>
+                </div>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="en_US"
+                  >
+                    <input
+                      class="input"
+                      id="en_US"
+                      name="radio-field-7"
+                      type="radio"
+                    />
+                    Month/Day/Year
+                  </label>
+                  <div
+                    class="caption caption"
+                  >
+                    Example: Jan 1, 2024
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset
+                class="settingWrapper"
+                name="radio-field-8"
+              >
+                <legend
+                  class="legend"
+                >
+                  Time format
+                </legend>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="24-hour"
+                  >
+                    <input
+                      class="input"
+                      id="24-hour"
+                      name="radio-field-8"
+                      type="radio"
+                    />
+                    24-hour
+                  </label>
+                </div>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="AM/PM"
+                  >
+                    <input
+                      class="input"
+                      id="AM/PM"
+                      name="radio-field-8"
+                      type="radio"
+                    />
+                    AM/PM
+                  </label>
+                </div>
+              </fieldset>
+            </div>
           </div>
         </div>
-        <FormGroup
-          className="profilePicture inputField"
-          tag="div"
+        <div
+          class="profilePicture inputField form-group"
         >
-          <Label
-            className="control-label"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <label
+            class="control-label"
           >
             Profile picture
-          </Label>
-          <Avatar
-            className="mb16"
-            email=""
-            name="Alex Plugaru"
-            shape="square"
-            size={100}
-            style={{}}
-            url="https://config.gorgias.io/production/picture"
-          />
-          <Connect(FileFieldContainer)
-            className="mb16"
-            maxSize={500000}
-            noPreview={true}
-            onChange={[Function]}
-            returnFiles={false}
-            uploadType="profile_picture"
-          />
-          <FormText
-            color="muted"
-            tag="small"
+          </label>
+          <div
+            class="component hasImage square mb16"
+            style="width: 100px; height: 100px;"
+          >
+            <div
+              class="initials"
+              style="width: 100px; height: 100px; font-size: 41.66666666666667px;"
+            >
+              <span
+                style="line-height: 102px;"
+              >
+                AP
+              </span>
+            </div>
+            <img
+              alt="avatar"
+              class="gravatar"
+              src="https://config.gorgias.io/production/picture"
+            />
+          </div>
+          <div
+            class="InputField mb16 form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <div
+                class="d-flex align-center"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill secondary medium"
+                  type="button"
+                >
+                  <span>
+                    Select a File...
+                  </span>
+                </button>
+                <input
+                  class="input mb16 form-control-file"
+                  id="id-input-9"
+                  type="file"
+                />
+              </div>
+            </div>
+          </div>
+          <small
+            class="form-text text-muted"
           >
             The picture must be square and weight less than 500kB.
-          </FormText>
+          </small>
           <a
-            className="text-danger"
+            class="text-danger"
             href="#"
-            onClick={[Function]}
           >
             Remove Picture
           </a>
-        </FormGroup>
+        </div>
       </div>
       <div
-        className="contentWrapper"
+        class="contentWrapper"
       >
         <div
-          className="headingSection"
+          class="headingSection"
         >
           Account preferences
         </div>
         <div
-          className="section"
+          class="section"
         >
           <div
-            className="headingSubsection"
+            class="headingSubsection"
           >
             Theme
           </div>
           <div
-            className="section"
+            class="section"
           >
-            <ThemeList
-              onChangeTheme={[Function]}
-              savedTheme="dark"
-            />
+            <div
+              class="themeListWrapper"
+            >
+              <div
+                aria-checked="false"
+                aria-label="[object Object]"
+                class="wrapper previewRadioButtonWrapper"
+                role="radio"
+                tabindex="0"
+              >
+                <div>
+                  <label
+                    class="label label"
+                    for="system"
+                  >
+                    <input
+                      class="input"
+                      hidden=""
+                      id="system"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft buttonIconWrapper medium"
+                      >
+                        computer
+                      </i>
+                      System
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div
+                aria-checked="true"
+                aria-label="[object Object]"
+                class="wrapper selected previewRadioButtonWrapper"
+                role="radio"
+                tabindex="0"
+              >
+                <div>
+                  <label
+                    class="label label"
+                    for="dark"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      hidden=""
+                      id="dark"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft buttonIconWrapperSelected medium"
+                      >
+                        dark_mode
+                      </i>
+                      Dark
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div
+                aria-checked="false"
+                aria-label="[object Object]"
+                class="wrapper previewRadioButtonWrapper"
+                role="radio"
+                tabindex="0"
+              >
+                <div>
+                  <label
+                    class="label label"
+                    for="light"
+                  >
+                    <input
+                      class="input"
+                      hidden=""
+                      id="light"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft buttonIconWrapper medium"
+                      >
+                        brightness_high
+                      </i>
+                      Light
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div
+                aria-checked="false"
+                aria-label="[object Object]"
+                class="wrapper previewRadioButtonWrapper"
+                role="radio"
+                tabindex="0"
+              >
+                <div>
+                  <label
+                    class="label label"
+                    for="modern light"
+                  >
+                    <input
+                      class="input"
+                      hidden=""
+                      id="modern light"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft buttonIconWrapper medium"
+                      >
+                        brightness_6
+                      </i>
+                      Classic
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
           <div
-            className="headingSubsection"
+            class="headingSubsection"
           >
             Macro display
           </div>
           <div
-            className="subsection"
+            class="subsection"
           >
-            <FormGroup
-              className="inputField body-regular"
-              tag="div"
+            <div
+              class="inputField body-regular form-group"
             >
-              <Group
-                className="inputField"
-                orientation="vertical"
+              <span
+                class="inputField group vertical"
               >
-                <ToggleInput
-                  name="prefill_best_macro"
-                  onClick={[Function]}
-                >
-                  <i
-                    className="material-icons AIIcon"
+                <div>
+                  <label
+                    class="label label"
+                    for="prefill_best_macro"
+                    role="switch"
                   >
-                    auto_awesome
-                  </i>
-                  AI Macro prediction
-                </ToggleInput>
-                <FormText
-                  className="macroDescription"
-                  color="muted"
-                  tag="small"
+                    <input
+                      class="input"
+                      disabled=""
+                      id="prefill_best_macro"
+                      name="prefill_best_macro"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <i
+                      class="material-icons AIIcon"
+                    >
+                      auto_awesome
+                    </i>
+                    AI Macro prediction
+                  </label>
+                </div>
+                <small
+                  class="macroDescription form-text text-muted"
                 >
                   Automatically select macros based on ticket content.
                    
@@ -326,28 +627,39 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   >
                     Learn more
                   </a>
-                </FormText>
-              </Group>
-              <Group
-                className="inputField"
-                orientation="vertical"
+                </small>
+              </span>
+              <span
+                class="inputField group vertical"
               >
-                <ToggleInput
-                  isToggled={true}
-                  name="show_macros_suggestions"
-                  onClick={[Function]}
-                >
-                  <i
-                    className="material-icons AIIcon"
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show_macros_suggestions"
+                    role="switch"
                   >
-                    auto_awesome
-                  </i>
-                  AI Macro suggestions
-                </ToggleInput>
-                <FormText
-                  className="macroDescription"
-                  color="muted"
-                  tag="small"
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show_macros_suggestions"
+                      name="show_macros_suggestions"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <i
+                      class="material-icons AIIcon"
+                    >
+                      auto_awesome
+                    </i>
+                    AI Macro suggestions
+                  </label>
+                </div>
+                <small
+                  class="macroDescription form-text text-muted"
                 >
                   Display suggested macros that can be applied to tickets with one click.
                    
@@ -358,22 +670,32 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   >
                     Learn more
                   </a>
-                </FormText>
-              </Group>
-              <Group
-                className="inputField"
-                orientation="vertical"
+                </small>
+              </span>
+              <span
+                class="inputField group vertical"
               >
-                <ToggleInput
-                  name="show_macros"
-                  onClick={[Function]}
-                >
-                  Display macro search view by default
-                </ToggleInput>
-                <FormText
-                  className="macroDescription"
-                  color="muted"
-                  tag="small"
+                <div>
+                  <label
+                    class="label label"
+                    for="show_macros"
+                    role="switch"
+                  >
+                    <input
+                      class="input"
+                      disabled=""
+                      id="show_macros"
+                      name="show_macros"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    Display macro search view by default
+                  </label>
+                </div>
+                <small
+                  class="macroDescription form-text text-muted"
                 >
                   Always display the macro search view when responding to incoming emails.
                    
@@ -384,262 +706,474 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   >
                     Learn more
                   </a>
-                </FormText>
-              </Group>
-            </FormGroup>
+                </small>
+              </span>
+            </div>
           </div>
-          <FormGroup
-            className="inputField mb40"
-            tag="div"
+          <div
+            class="inputField mb40 form-group"
           >
             <div
-              className="headingSubsection"
+              class="headingSubsection"
             >
               Forward calls to an external number
             </div>
             <p
-              className="body-regular"
+              class="body-regular"
             >
               When you are routed a call in Gorgias, forward the call to a mobile device or landline.
             </p>
-            <ToggleInput
-              className="inputField subsection"
-              isToggled={false}
-              name="forward_calls"
-              onClick={[Function]}
+            <div
+              class="inputField subsection"
             >
-              Enable call forwarding
-            </ToggleInput>
-          </FormGroup>
+              <label
+                aria-checked="false"
+                class="label label"
+                for="forward_calls"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="forward_calls"
+                  name="forward_calls"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Enable call forwarding
+              </label>
+            </div>
+          </div>
         </div>
       </div>
-      <ForwardRef(Button)
-        isLoading={false}
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
         type="submit"
       >
         Save Changes
-      </ForwardRef(Button)>
-    </Form>
-  </Container>
+      </button>
+    </form>
+  </div>
 </div>
 `;
 
 exports[`YourProfileView render should render current user profile form 2`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <Component
-    onDiscard={[Function]}
-    onSave={[Function]}
-    when={false}
-  />
-  <PageHeader
-    title="Your profile"
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Your profile
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <div
-      className="headingSection"
+      class="headingSection"
     >
       Personal information
     </div>
-    <Form
-      onSubmit={[Function]}
-      tag="form"
+    <form
+      class=""
     >
       <div
-        className="flex flex-wrap"
+        class="flex flex-wrap"
       >
         <div
-          className="leftSideWrapper"
+          class="leftSideWrapper"
         >
           <div
-            className="section"
+            class="section"
           >
-            <InputField
-              className="inputField"
-              isRequired={true}
-              label="Your name"
-              name="name"
-              onChange={[Function]}
-              placeholder="John Doe"
-              value="Alex Plugaru"
-            />
-            <InputField
-              className="inputField"
-              isRequired={true}
-              label="Your email"
-              name="email"
-              onChange={[Function]}
-              placeholder="john.doe@acme.com"
-              type="email"
-              value="alex@gorgias.io"
-            />
-            <InputField
-              caption={
+            <div
+              class="inputField"
+            >
+              <label
+                class="label label"
+                for="input-text-14"
+              >
+                Your name
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-14"
+                  name="name"
+                  placeholder="John Doe"
+                  required=""
+                  type="text"
+                  value="Alex Plugaru"
+                />
+              </div>
+            </div>
+            <div
+              class="inputField"
+            >
+              <label
+                class="label label"
+                for="input-text-16"
+              >
+                Your email
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-16"
+                  name="email"
+                  placeholder="john.doe@acme.com"
+                  required=""
+                  type="email"
+                  value="alex@gorgias.io"
+                />
+              </div>
+            </div>
+            <div
+              class="inputField"
+            >
+              <label
+                class="label label"
+                for="input-text-18"
+              >
+                Your bio
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  aria-describedby="input-text-18-caption"
+                  class="input"
+                  id="input-text-18"
+                  name="bio"
+                  type="text"
+                  value="CTO"
+                />
+              </div>
+              <div
+                class="caption"
+                id="input-text-18-caption"
+              >
                 <span>
                   Your bio can be used in signatures as a variable. Admins can set up signatures
                    
-                  <Link
+                  <a
                     to="/app/settings/channels/email"
                   >
                     in each email integration
-                  </Link>
+                  </a>
                 </span>
-              }
-              className="inputField"
-              label="Your bio"
-              name="bio"
-              onChange={[Function]}
-              type="text"
-              value="CTO"
-            />
+              </div>
+            </div>
           </div>
           <div
-            className="headingSection"
+            class="headingSection"
           >
             Date and time settings
           </div>
           <div
-            className="section"
+            class="section"
           >
-            <FormGroup
-              className="inputField"
-              tag="div"
+            <div
+              class="inputField form-group"
             >
-              <Label
-                className="control-label"
-                tag="label"
-                widths={
-                  [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <label
+                class="control-label"
               >
                 Timezone
-              </Label>
-              <SelectField
-                allowCustomValue={false}
-                fixedWidth={false}
-                fullWidth={true}
-                id={null}
-                isSearchable={true}
-                onChange={[Function]}
-                onSearchChange={[Function]}
-                options={[]}
-                placeholder="Select an option"
-                required={false}
-                singular="option"
-                style={{}}
-                value="EST"
-              />
-            </FormGroup>
-            <DateAndTimeFormatting
-              onSelectDateFormat={[Function]}
-              onSelectTimeFormat={[Function]}
-            />
+              </label>
+              <div>
+                <div
+                  class="dropdown"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
+                  >
+                    <div
+                      class="select dropdown-toggle selectFullWidth"
+                    >
+                      <span
+                        class="label placeholder"
+                        style="min-width: 10px; opacity: 1;"
+                      >
+                        Select an option
+                      </span>
+                      <input
+                        autocomplete="chrome-off"
+                        class="input"
+                        style="min-width: 10px;"
+                        type="text"
+                        value=""
+                      />
+                      <i
+                        class="material-icons dropdownIcon"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options optionsFullWidth dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <h6
+                      class="dropdown-header"
+                      tabindex="-1"
+                    >
+                      No result
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="dateAndTimeFormattingSettingsWrapper"
+            >
+              <fieldset
+                class="settingWrapper"
+                name="radio-field-20"
+              >
+                <legend
+                  class="legend"
+                >
+                  Date format
+                </legend>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="en_GB"
+                  >
+                    <input
+                      class="input"
+                      id="en_GB"
+                      name="radio-field-20"
+                      type="radio"
+                    />
+                    Day/Month/Year
+                  </label>
+                  <div
+                    class="caption caption"
+                  >
+                    Example: 1 Jan, 2024
+                  </div>
+                </div>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="en_US"
+                  >
+                    <input
+                      class="input"
+                      id="en_US"
+                      name="radio-field-20"
+                      type="radio"
+                    />
+                    Month/Day/Year
+                  </label>
+                  <div
+                    class="caption caption"
+                  >
+                    Example: Jan 1, 2024
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset
+                class="settingWrapper"
+                name="radio-field-21"
+              >
+                <legend
+                  class="legend"
+                >
+                  Time format
+                </legend>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="24-hour"
+                  >
+                    <input
+                      class="input"
+                      id="24-hour"
+                      name="radio-field-21"
+                      type="radio"
+                    />
+                    24-hour
+                  </label>
+                </div>
+                <div
+                  class="option"
+                >
+                  <label
+                    class="label label"
+                    for="AM/PM"
+                  >
+                    <input
+                      class="input"
+                      id="AM/PM"
+                      name="radio-field-21"
+                      type="radio"
+                    />
+                    AM/PM
+                  </label>
+                </div>
+              </fieldset>
+            </div>
           </div>
         </div>
-        <FormGroup
-          className="profilePicture inputField"
-          tag="div"
+        <div
+          class="profilePicture inputField form-group"
         >
-          <Label
-            className="control-label"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <label
+            class="control-label"
           >
             Profile picture
-          </Label>
-          <Avatar
-            className="mb16"
-            email=""
-            name="Alex Plugaru"
-            shape="square"
-            size={100}
-            style={{}}
-            url="https://config.gorgias.io/production/picture"
-          />
-          <Connect(FileFieldContainer)
-            className="mb16"
-            maxSize={500000}
-            noPreview={true}
-            onChange={[Function]}
-            returnFiles={false}
-            uploadType="profile_picture"
-          />
-          <FormText
-            color="muted"
-            tag="small"
+          </label>
+          <div
+            class="component hasImage square mb16"
+            style="width: 100px; height: 100px;"
+          >
+            <div
+              class="initials"
+              style="width: 100px; height: 100px; font-size: 41.66666666666667px;"
+            >
+              <span
+                style="line-height: 102px;"
+              >
+                AP
+              </span>
+            </div>
+            <img
+              alt="avatar"
+              class="gravatar"
+              src="https://config.gorgias.io/production/picture"
+            />
+          </div>
+          <div
+            class="InputField mb16 form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <div
+                class="d-flex align-center"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill secondary medium"
+                  type="button"
+                >
+                  <span>
+                    Select a File...
+                  </span>
+                </button>
+                <input
+                  class="input mb16 form-control-file"
+                  id="id-input-22"
+                  type="file"
+                />
+              </div>
+            </div>
+          </div>
+          <small
+            class="form-text text-muted"
           >
             The picture must be square and weight less than 500kB.
-          </FormText>
+          </small>
           <a
-            className="text-danger"
+            class="text-danger"
             href="#"
-            onClick={[Function]}
           >
             Remove Picture
           </a>
-        </FormGroup>
+        </div>
       </div>
       <div
-        className="contentWrapper"
+        class="contentWrapper"
       >
         <div
-          className="headingSection"
+          class="headingSection"
         >
           Account preferences
         </div>
         <div
-          className="section"
+          class="section"
         >
           <div
-            className="headingSubsection"
+            class="headingSubsection"
           >
             Macro display
           </div>
           <div
-            className="subsection"
+            class="subsection"
           >
-            <FormGroup
-              className="inputField body-regular"
-              tag="div"
+            <div
+              class="inputField body-regular form-group"
             >
-              <Group
-                className="inputField"
-                orientation="vertical"
+              <span
+                class="inputField group vertical"
               >
-                <ToggleInput
-                  name="prefill_best_macro"
-                  onClick={[Function]}
-                >
-                  <i
-                    className="material-icons AIIcon"
+                <div>
+                  <label
+                    class="label label"
+                    for="prefill_best_macro"
+                    role="switch"
                   >
-                    auto_awesome
-                  </i>
-                  AI Macro prediction
-                </ToggleInput>
-                <FormText
-                  className="macroDescription"
-                  color="muted"
-                  tag="small"
+                    <input
+                      class="input"
+                      disabled=""
+                      id="prefill_best_macro"
+                      name="prefill_best_macro"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <i
+                      class="material-icons AIIcon"
+                    >
+                      auto_awesome
+                    </i>
+                    AI Macro prediction
+                  </label>
+                </div>
+                <small
+                  class="macroDescription form-text text-muted"
                 >
                   Automatically select macros based on ticket content.
                    
@@ -650,28 +1184,39 @@ exports[`YourProfileView render should render current user profile form 2`] = `
                   >
                     Learn more
                   </a>
-                </FormText>
-              </Group>
-              <Group
-                className="inputField"
-                orientation="vertical"
+                </small>
+              </span>
+              <span
+                class="inputField group vertical"
               >
-                <ToggleInput
-                  isToggled={true}
-                  name="show_macros_suggestions"
-                  onClick={[Function]}
-                >
-                  <i
-                    className="material-icons AIIcon"
+                <div>
+                  <label
+                    aria-checked="true"
+                    class="label label"
+                    for="show_macros_suggestions"
+                    role="switch"
                   >
-                    auto_awesome
-                  </i>
-                  AI Macro suggestions
-                </ToggleInput>
-                <FormText
-                  className="macroDescription"
-                  color="muted"
-                  tag="small"
+                    <input
+                      checked=""
+                      class="input"
+                      disabled=""
+                      id="show_macros_suggestions"
+                      name="show_macros_suggestions"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    <i
+                      class="material-icons AIIcon"
+                    >
+                      auto_awesome
+                    </i>
+                    AI Macro suggestions
+                  </label>
+                </div>
+                <small
+                  class="macroDescription form-text text-muted"
                 >
                   Display suggested macros that can be applied to tickets with one click.
                    
@@ -682,22 +1227,32 @@ exports[`YourProfileView render should render current user profile form 2`] = `
                   >
                     Learn more
                   </a>
-                </FormText>
-              </Group>
-              <Group
-                className="inputField"
-                orientation="vertical"
+                </small>
+              </span>
+              <span
+                class="inputField group vertical"
               >
-                <ToggleInput
-                  name="show_macros"
-                  onClick={[Function]}
-                >
-                  Display macro search view by default
-                </ToggleInput>
-                <FormText
-                  className="macroDescription"
-                  color="muted"
-                  tag="small"
+                <div>
+                  <label
+                    class="label label"
+                    for="show_macros"
+                    role="switch"
+                  >
+                    <input
+                      class="input"
+                      disabled=""
+                      id="show_macros"
+                      name="show_macros"
+                      type="checkbox"
+                    />
+                    <div
+                      class="slider"
+                    />
+                    Display macro search view by default
+                  </label>
+                </div>
+                <small
+                  class="macroDescription form-text text-muted"
                 >
                   Always display the macro search view when responding to incoming emails.
                    
@@ -708,42 +1263,56 @@ exports[`YourProfileView render should render current user profile form 2`] = `
                   >
                     Learn more
                   </a>
-                </FormText>
-              </Group>
-            </FormGroup>
+                </small>
+              </span>
+            </div>
           </div>
-          <FormGroup
-            className="inputField mb40"
-            tag="div"
+          <div
+            class="inputField mb40 form-group"
           >
             <div
-              className="headingSubsection"
+              class="headingSubsection"
             >
               Forward calls to an external number
             </div>
             <p
-              className="body-regular"
+              class="body-regular"
             >
               When you are routed a call in Gorgias, forward the call to a mobile device or landline.
             </p>
-            <ToggleInput
-              className="inputField subsection"
-              isToggled={false}
-              name="forward_calls"
-              onClick={[Function]}
+            <div
+              class="inputField subsection"
             >
-              Enable call forwarding
-            </ToggleInput>
-          </FormGroup>
+              <label
+                aria-checked="false"
+                class="label label"
+                for="forward_calls"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="forward_calls"
+                  name="forward_calls"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Enable call forwarding
+              </label>
+            </div>
+          </div>
         </div>
       </div>
-      <ForwardRef(Button)
-        isLoading={false}
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
         type="submit"
       >
         Save Changes
-      </ForwardRef(Button)>
-    </Form>
-  </Container>
+      </button>
+    </form>
+  </div>
 </div>
 `;

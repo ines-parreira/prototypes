@@ -1,19 +1,26 @@
+import {render} from '@testing-library/react'
 import React from 'react'
+import {Provider} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import {shallow} from 'enzyme'
 
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {
     ticketInputFieldDefinition,
     managedTicketInputFieldDefinition,
 } from 'fixtures/customField'
 import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import EditTicketField from '../../EditTicketField'
 
 jest.mock('react-router')
 jest.mock('hooks/customField/useCustomFieldDefinition')
 
+const mockedStore = configureMockStore([thunk])
 const useParamsMock = useParams as jest.Mock
 const useCustomFieldDefinitionMock = useCustomFieldDefinition as jest.Mock
+const queryClient = mockQueryClient()
 
 describe('<EditTicketField/>', () => {
     it('should render a loader', () => {
@@ -23,8 +30,9 @@ describe('<EditTicketField/>', () => {
             isLoading: true,
         })
 
-        const component = shallow(<EditTicketField />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<EditTicketField />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render no info alert and the edit form because it is not a managed ticket field', () => {
@@ -34,8 +42,15 @@ describe('<EditTicketField/>', () => {
             isLoading: false,
         })
 
-        const component = shallow(<EditTicketField />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <Provider store={mockedStore({})}>
+                <QueryClientProvider client={queryClient}>
+                    <EditTicketField />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render an info alert and the edit form because it is a "Contact reason" managed ticket field', () => {
@@ -47,7 +62,14 @@ describe('<EditTicketField/>', () => {
             isLoading: false,
         })
 
-        const component = shallow(<EditTicketField />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <Provider store={mockedStore({})}>
+                <QueryClientProvider client={queryClient}>
+                    <EditTicketField />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })
