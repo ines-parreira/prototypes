@@ -12,10 +12,12 @@ import {
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {declinedVoiceCallsCountPerAgentQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
 
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
+    useDeclinedCallsMetricPerAgent,
     useMissedCallsMetricPerAgent,
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
@@ -91,6 +93,17 @@ describe('metricsPerDimension', () => {
 
         expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
             voiceCallAverageTalkTimePerAgentQueryFactory(statsFilters, 'UTC'),
+            '1',
+        ])
+    })
+
+    it('useDeclinedCallsMetricPerAgent', () => {
+        renderHook(() =>
+            useDeclinedCallsMetricPerAgent(statsFilters, 'UTC', '1')
+        )
+
+        expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            declinedVoiceCallsCountPerAgentQueryFactory(statsFilters, 'UTC'),
             '1',
         ])
     })

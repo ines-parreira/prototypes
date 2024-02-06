@@ -1,7 +1,7 @@
 import React from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
 import {User} from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {

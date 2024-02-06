@@ -3,6 +3,7 @@ import {AutomationBillingEventCubeWithJoins} from 'models/reporting/cubes/Automa
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {HelpCenterTrackingEventCube} from './HelpCenterTrackingEventCube'
 import {VoiceCallCube} from './VoiceCallCube'
+import {VoiceEventsByAgentCube} from './VoiceEventsByAgent'
 
 export type Cubes =
     | AgentTimeTrackingCube
@@ -10,3 +11,4 @@ export type Cubes =
     | AutomationBillingEventCubeWithJoins
     | HelpCenterTrackingEventCube
     | VoiceCallCube
+    | VoiceEventsByAgentCube

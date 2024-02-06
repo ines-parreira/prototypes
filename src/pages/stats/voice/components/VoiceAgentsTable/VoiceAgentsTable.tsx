@@ -26,6 +26,7 @@ import {
     useMissedCallsMetricPerAgent,
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
+    useDeclinedCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
 
 import AverageTalkTimeCell from './AverageTalkTimeCell'
@@ -154,11 +155,10 @@ export const VoiceAgentsTable = () => {
                                         useMissedCallsMetricPerAgent
                                     }
                                 />
-                                {/* to update this later */}
                                 <CallsCountCell
                                     agent={agent}
                                     useMetricPerAgent={
-                                        useTotalCallsMetricPerAgent
+                                        useDeclinedCallsMetricPerAgent
                                     }
                                 />
                                 <CallsCountCell

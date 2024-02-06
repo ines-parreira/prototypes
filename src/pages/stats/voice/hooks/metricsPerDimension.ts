@@ -6,6 +6,7 @@ import {
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {declinedVoiceCallsCountPerAgentQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
 
 export const useTotalCallsMetricPerAgent = (
     statsFilters: StatsFilters,
@@ -66,5 +67,15 @@ export const useAverageTalkTimeMetricPerAgent = (
 ) =>
     useMetricPerDimension(
         voiceCallAverageTalkTimePerAgentQueryFactory(statsFilters, timezone),
+        agentAssigneeId
+    )
+
+export const useDeclinedCallsMetricPerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    agentAssigneeId?: string
+) =>
+    useMetricPerDimension(
+        declinedVoiceCallsCountPerAgentQueryFactory(statsFilters, timezone),
         agentAssigneeId
     )
