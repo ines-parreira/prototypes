@@ -1,12 +1,13 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     forwardRef,
-    useRef,
     ForwardedRef,
     useImperativeHandle,
+    useMemo,
+    useRef,
 } from 'react'
 import classnames from 'classnames'
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import navbarCss from 'assets/css/navbar.less'
@@ -18,6 +19,7 @@ import ViewName from 'pages/common/components/ViewName/ViewName'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import {isTicketPath} from 'utils'
 
 import css from './TicketNavbarViewLink.less'
 
@@ -35,13 +37,15 @@ const TicketNavbarViewLink = (
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
     const [splitTicketViewEnabled] = useSplitTicketView()
+    const {pathname: path} = useLocation()
 
     const viewId = useViewId()
+    const isTicketUrl = useMemo(() => isTicketPath(path), [path])
 
     const ref = useRef<HTMLDivElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
 
-    const isActiveView = view.id === viewId
+    const isActiveView = isTicketUrl && view.id === viewId
 
     const dispatch = useAppDispatch()
     const ticketNavbarId = `ticket-navbar-view-${view.id}`

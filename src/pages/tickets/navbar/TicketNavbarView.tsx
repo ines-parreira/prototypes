@@ -5,7 +5,6 @@ import {useDrag} from 'react-dnd'
 import navbarCss from 'assets/css/navbar.less'
 import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import useViewId from 'hooks/useViewId'
 import {View, ViewVisibility} from 'models/view/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
@@ -42,9 +41,6 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
             isDragging: monitor.isDragging(),
         }),
     })
-
-    const viewId = useViewId()
-    const isActiveView = view.id === viewId
 
     drag(wrapperRef)
 
@@ -85,14 +81,13 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
                 view.section_id != null ? css.nestedViewIndicator : undefined
             }
         >
-            {(isOver) => {
+            {() => {
                 return (
                     <TicketNavbarViewLink
                         ref={wrapperRef}
                         view={view}
                         viewCount={viewCount}
                         className={classnames({
-                            active: isActiveView && !isOver,
                             [navbarCss.isDragged]: isDragging,
                         })}
                     />
