@@ -2,6 +2,7 @@ import {fireEvent} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import _noop from 'lodash/noop'
 import React, {ComponentProps, ReactNode} from 'react'
 import {createBrowserHistory} from 'history'
 import {DndProvider} from 'react-dnd'
@@ -16,6 +17,7 @@ import {view} from 'fixtures/views'
 import client from 'models/api/resources'
 import {View, ViewType, ViewVisibility} from 'models/view/types'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
+import {useSplitTicketViewSwitcher} from 'split-ticket-view-toggle'
 import {NotificationStatus} from 'state/notifications/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {mockStore, renderWithRouter} from 'utils/testing'
@@ -58,6 +60,10 @@ jest.mock(
                 </div>
             )
 )
+
+jest.mock('split-ticket-view-toggle')
+const useSplitTicketViewSwitcherMock = useSplitTicketViewSwitcher as jest.Mock
+
 jest.mock('../TicketNavbarViewLink', () => ({view}: {view: View}) => (
     <span>{view.name}</span>
 ))
@@ -220,6 +226,7 @@ describe('<TicketNavbar/>', () => {
         mockedServer.onPut(/\/api\/view-sections\/\d+\//).reply(200, section)
         mockedServer.onDelete(/\/api\/view-sections\/\d+\//).reply(200)
 
+        useSplitTicketViewSwitcherMock.mockImplementation(_noop)
         useFlagsMock.mockReturnValue({[FeatureFlagKey.SplitTicketView]: true})
     })
 
