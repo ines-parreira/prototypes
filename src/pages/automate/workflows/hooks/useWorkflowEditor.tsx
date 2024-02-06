@@ -669,6 +669,19 @@ function validate(
         ) ||
         conf.steps.find(
             (s) =>
+                s.kind === 'message' && !s.settings.message.content.text.trim()
+        ) ||
+        conf.steps.find(
+            (s) =>
+                (s.kind === 'text-input' ||
+                    s.kind === 'attachments-input' ||
+                    s.kind === 'order-selection' ||
+                    s.kind === 'choices') &&
+                s.settings?.message &&
+                !s.settings.message.content.text.trim()
+        ) ||
+        conf.steps.find(
+            (s) =>
                 s.kind === 'choices' &&
                 s.settings.choices.find((c) => !c.label.trim())
         ) ||

@@ -31,7 +31,6 @@ import {
     WorkflowStepHandover,
     WorkflowStepMessage,
     WorkflowStepHttpRequest,
-    WorkflowStepMessages,
     WorkflowStepTextInput,
     WorkflowTransition,
     WorkflowStepHelpfulPrompt,
@@ -377,7 +376,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 type: 'end',
                 data: {
                     wfConfigurationRef: {
-                        wfConfigurationWorkflowCallOrHandoverStepId: step.id,
+                        wfConfigurationHelpfulPromptOrHandoverStepId: step.id,
                     },
                     withWasThisHelpfulPrompt: false,
                     ticketTags: step.settings.ticket_tags,
@@ -491,7 +490,7 @@ export class WorkflowConfigurationBuilder {
         | (
               | {
                     initialStep?: never
-                    initialMessage: WorkflowStepMessages['settings']['messages'][number]
+                    initialMessage: WorkflowStepMessage['settings']['message']
                 }
               | {
                     initialStep: WorkflowStep
@@ -506,11 +505,11 @@ export class WorkflowConfigurationBuilder {
             ? initialStepArg
             : ({
                   id: ulid(),
-                  kind: 'messages',
+                  kind: 'message',
                   settings: {
-                      messages: [initialMessage],
+                      message: initialMessage,
                   },
-              } as WorkflowStepMessages)
+              } as WorkflowStepMessage)
         this.data = {
             internal_id: ulid(),
             name,
