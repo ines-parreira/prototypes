@@ -20,8 +20,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import Navbar from 'pages/common/components/Navbar'
 
 import useGetConvertLinks from 'pages/settings/revenue/hooks/useGetConvertLinks'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {useIsConvertCampaignBundleWarningEnabled} from 'pages/settings/revenue/hooks/useIsConvertCampaignBundleWarningEnabled'
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
 import SettingsNavbarLink from './SettingsNavbarLink'
@@ -235,8 +233,6 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
-    const isConvertSubscriber = useIsConvertSubscriber()
-    const isConvertBundlePublic = useIsConvertCampaignBundleWarningEnabled()
     const convertLinks = useGetConvertLinks()
 
     const categoriesInUse = React.useMemo<Category[]>(() => {
@@ -250,10 +246,7 @@ const SettingsNavbar = () => {
                         ),
                     },
                 ]
-            } else if (
-                (isConvertBundlePublic || isConvertSubscriber) &&
-                category.name === 'Convert'
-            ) {
+            } else if (category.name === 'Convert') {
                 return [
                     {
                         ...category,
@@ -264,12 +257,7 @@ const SettingsNavbar = () => {
 
             return [category]
         })
-    }, [
-        convertLinks,
-        isConvertSubscriber,
-        isConvertBundlePublic,
-        isDecoupleContactFormEnabled,
-    ])
+    }, [convertLinks, isDecoupleContactFormEnabled])
 
     return (
         <Navbar activeContent="settings">
