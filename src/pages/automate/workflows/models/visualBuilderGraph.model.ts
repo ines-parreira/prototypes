@@ -605,7 +605,10 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         to_step_id: step.id,
                         event: incomingEdge?.data?.event,
                     })
+                } else {
+                    c.initial_step_id = step.id
                 }
+                stepIdByNodeId[node.id] = step.id
             } /* DEPRECATED */ else if (
                 node.type === 'end' &&
                 !node.data.withWasThisHelpfulPrompt &&
@@ -659,7 +662,10 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         to_step_id: step.id,
                         event: incomingEdge?.data?.event,
                     })
+                } else {
+                    c.initial_step_id = step.id
                 }
+                stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'http_request') {
                 const headers = node.data.headers.reduce<
                     Record<string, string>
