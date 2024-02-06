@@ -5,51 +5,85 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {WizardContext} from 'pages/common/components/wizard/Wizard'
-import {HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import {RootState, StoreDispatch, StoreState} from 'state/types'
 import {chatIntegrationFixtures} from 'fixtures/chat'
+import {shopifyIntegration} from 'fixtures/integrations'
+import {Integration} from 'models/integration/types'
+import {proMonthlyHelpdeskPrice as mockedProMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
+
+jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
+    jest.fn()
+)
 
 const helpCenterFixture = getHelpCentersResponseFixture.data[0]
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
-
-const defaultStore = {
-    integrations: fromJS({integrations: chatIntegrationFixtures}),
-} as unknown as StoreState
+const mockedUseWorkflowConfigurations = jest.mocked(useWorkflowConfigurations)
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>
+    props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>,
+    fixtures?: {integrations?: Integration[]; helpCenter?: HelpCenter}
 ) => {
+    const {
+        integrations = chatIntegrationFixtures,
+        helpCenter = helpCenterFixture,
+    } = fixtures ?? {}
+    const defaultStore = {
+        billing: fromJS({products: [mockedProMonthlyHelpdeskPrice]}),
+        integrations: fromJS({integrations}),
+        entities: {
+            contactForm: {contactForms: {contactFormById: {}}},
+            helpCenter: {
+                helpCenters: {helpCentersById: {[helpCenter.id]: helpCenter}},
+                helpCentersAutomationSettings: {
+                    automationSettingsByHelpCenterId: {},
+                },
+            },
+            selfServiceConfigurations: {},
+        },
+    } as unknown as StoreState
+
     render(
         <Provider store={mockStore(defaultStore)}>
-            <WizardContext.Provider
-                value={{
-                    steps: [HelpCenterCreationWizardStep.Automate],
-                    activeStepIndex: 0,
-                    setActiveStep: jest.fn(),
-                    totalSteps: 1,
-                    activeStep: HelpCenterCreationWizardStep.Automate,
-                    nextStep: undefined,
-                    previousStep: undefined,
-                }}
-            >
-                <WizardStep name={HelpCenterCreationWizardStep.Automate}>
-                    <HelpCenterCreationWizardStepAutomate
-                        isUpdate={false}
-                        helpCenter={helpCenterFixture}
-                        {...props}
-                    />
-                </WizardStep>
-            </WizardContext.Provider>
+            <SupportedLocalesProvider>
+                <WizardContext.Provider
+                    value={{
+                        steps: [HelpCenterCreationWizardStep.Automate],
+                        activeStepIndex: 0,
+                        setActiveStep: jest.fn(),
+                        totalSteps: 1,
+                        activeStep: HelpCenterCreationWizardStep.Automate,
+                        nextStep: undefined,
+                        previousStep: undefined,
+                    }}
+                >
+                    <WizardStep name={HelpCenterCreationWizardStep.Automate}>
+                        <HelpCenterCreationWizardStepAutomate
+                            isUpdate={false}
+                            helpCenter={helpCenter}
+                            {...props}
+                        />
+                    </WizardStep>
+                </WizardContext.Provider>
+            </SupportedLocalesProvider>
         </Provider>
     )
 }
 
 describe('<HelpCenterCreationWizardStepAutomate />', () => {
+    beforeEach(() => {
+        mockedUseWorkflowConfigurations.mockReturnValue({
+            isFetchPending: false,
+            workflowConfigurations: [],
+        })
+    })
     it('should render', () => {
         renderComponent({})
 
@@ -157,6 +191,38 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             expect(
                 screen.getByTestId('selected-chat-integration')
             ).toHaveTextContent(chatName)
+        })
+    })
+
+    describe('flows', () => {
+        it('should not render flows section when no shopify integration', () => {
+            renderComponent(
+                {},
+                {
+                    integrations: chatIntegrationFixtures,
+                }
+            )
+
+            expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        })
+
+        it('should not render show more when available flow is 0', () => {
+            renderComponent(
+                {},
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                    helpCenter: {
+                        ...helpCenterFixture,
+                        shop_name: shopifyIntegration.name,
+                    },
+                }
+            )
+
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(screen.queryByText('Show More')).not.toBeInTheDocument()
         })
     })
 })

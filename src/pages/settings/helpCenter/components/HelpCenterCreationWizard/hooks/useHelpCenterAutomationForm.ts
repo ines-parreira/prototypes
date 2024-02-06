@@ -1,14 +1,21 @@
 import {useCallback, useReducer} from 'react'
+import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 
 type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean
     articleRecommendationEnabled: boolean
     chatIntegrationId: null | number
+    flows: Entrypoint[]
 }
 
 type OrderManagementUpdateAction = {
     type: 'orderManagementUpdate'
     payload: boolean
+}
+
+type FlowsUpdateAction = {
+    type: 'flowsUpdate'
+    payload: Entrypoint[]
 }
 
 type ArticleRecommendationUpdateAction = {
@@ -25,6 +32,7 @@ type UseHelpCenterAutomationFormActions =
     | OrderManagementUpdateAction
     | ArticleRecommendationUpdateAction
     | ChatIntegrationIdUpdateAction
+    | FlowsUpdateAction
 
 const reducer = (
     state: UseHelpCenterAutomationFormState,
@@ -37,6 +45,8 @@ const reducer = (
             return {...state, articleRecommendationEnabled: action.payload}
         case 'chatIntegrationIdUpdate':
             return {...state, chatIntegrationId: action.payload}
+        case 'flowsUpdate':
+            return {...state, flows: action.payload}
     }
 }
 
@@ -44,6 +54,7 @@ const defaultState: UseHelpCenterAutomationFormState = {
     orderManagementEnabled: true,
     articleRecommendationEnabled: true,
     chatIntegrationId: null,
+    flows: [],
 }
 
 export const useHelpCenterAutomationForm = (
@@ -69,10 +80,15 @@ export const useHelpCenterAutomationForm = (
         dispatch({type: 'chatIntegrationIdUpdate', payload: chatId})
     }, [])
 
+    const updateFlows = useCallback((flows: Entrypoint[]) => {
+        dispatch({type: 'flowsUpdate', payload: flows})
+    }, [])
+
     return {
         state,
         updateOrderManagementEnabled,
         updateArticleRecommendationEnabled,
         updateChatIntegrationId,
+        updateFlows,
     }
 }

@@ -1,0 +1,132 @@
+import React, {useState} from 'react'
+
+import {TicketChannel} from 'business/types/ticket'
+import useWorkflowChannelSupport, {
+    WorkflowChannelSupportContext,
+} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+import WorkflowsFeatureList, {
+    Entrypoint,
+} from 'pages/automate/common/components/WorkflowsFeatureList'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {ChannelLanguage} from 'pages/automate/common/types'
+
+import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
+import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'
+import css from './HelpCenterWizardFlows.less'
+
+type HelpCenterWizardFlowsProps = {
+    shopName: string
+    shopType: string
+    helpCenterId: number
+    flowLimits: number
+    supportedLocales: ChannelLanguage[]
+    flows: Entrypoint[]
+    onChange: (entrypoints: Entrypoint[]) => void
+    isLoading: boolean
+}
+
+const HelpCenterWizardFlows = ({
+    shopName,
+    shopType,
+    helpCenterId,
+    flowLimits,
+    supportedLocales,
+    onChange,
+    flows,
+    isLoading,
+}: HelpCenterWizardFlowsProps) => {
+    const [isShowMore, setIsShowMore] = useState(false)
+
+    const {
+        entrypoints,
+        isLoading: isWorkflowLoading,
+        workflowConfigurations,
+        storeIntegration,
+        workflowsEntrypoints,
+    } = useHelpCenterFlows({
+        shopType,
+        shopName,
+        supportedLocales,
+        flows,
+    })
+
+    const workflowChannelSupportContext = useWorkflowChannelSupport(
+        shopType,
+        shopName
+    )
+
+    const onShowMore = () => {
+        setIsShowMore(true)
+    }
+
+    const shouldDisplayShowMoreButton =
+        !isShowMore && entrypoints.length > flowLimits
+
+    return (
+        <div>
+            <div className="heading-page-semibold mb-1">Flows</div>
+            <div className="mb-4">
+                Enable up to 6 flows on your Help Center. Only flows matching
+                the Help Center language are displayed.
+            </div>
+
+            {storeIntegration && (
+                <WorkflowChannelSupportContext.Provider
+                    value={workflowChannelSupportContext}
+                >
+                    <AnimatedFadeInOut isLoading={isWorkflowLoading}>
+                        {isWorkflowLoading || isLoading ? (
+                            <div className={css.loadingContainer}>
+                                {Array(flowLimits)
+                                    .fill(null)
+                                    .map((_, index) => (
+                                        <Skeleton key={index} height={32} />
+                                    ))}
+                            </div>
+                        ) : entrypoints.length === 0 ? (
+                            <div className={css.noFlowsText}>
+                                No flows available.
+                            </div>
+                        ) : (
+                            <WorkflowsFeatureList
+                                withLabel={false}
+                                configurations={workflowConfigurations}
+                                allEntrypoints={entrypoints}
+                                channelType={TicketChannel.HelpCenter}
+                                channelId={helpCenterId.toString()}
+                                integrationId={storeIntegration.id}
+                                channelLanguages={supportedLocales}
+                                entrypoints={workflowsEntrypoints}
+                                maxActiveWorkflows={10}
+                                itemLimit={isShowMore ? undefined : flowLimits}
+                                onChange={onChange}
+                                limitTooltipMessage="You’ve reached the maximum number of enabled flows. Disable another flow in order to enable this flow."
+                            />
+                        )}
+                    </AnimatedFadeInOut>
+
+                    {shouldDisplayShowMoreButton && (
+                        <div className={css.showMoreContainer}>
+                            <Button
+                                fillStyle="ghost"
+                                size="medium"
+                                onClick={onShowMore}
+                            >
+                                <ButtonIconLabel
+                                    icon="double_arrow_down"
+                                    iconClassName={css.shopMoreIcon}
+                                >
+                                    Show More
+                                </ButtonIconLabel>
+                            </Button>
+                        </div>
+                    )}
+                </WorkflowChannelSupportContext.Provider>
+            )}
+        </div>
+    )
+}
+
+export default HelpCenterWizardFlows

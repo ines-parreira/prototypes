@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
@@ -9,11 +9,19 @@ import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleto
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import {
+    getIntegrationsByType,
+    getIntegrationsByTypes,
+} from 'state/integrations/selectors'
+import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
 import {useHelpCenterAutomationForm} from '../../hooks/useHelpCenterAutomationForm'
 import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
+import HelpCenterWizardFlows from '../HelpCenterWizardFlows/HelpCenterWizardFlows'
 import css from './HelpCenterCreationWizardStepAutomate.less'
+
+const FLOWS_SMALL_LIMIT = 2
+const FLOWS_BIG_LIMIT = 8
 
 type Props = {
     helpCenter: HelpCenter
@@ -28,6 +36,7 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
         updateOrderManagementEnabled,
         updateArticleRecommendationEnabled,
         updateChatIntegrationId,
+        updateFlows,
     } = useHelpCenterAutomationForm({
         orderManagementEnabled:
             helpCenter.self_service_deactivated_datetime !== null,
@@ -37,6 +46,33 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
             IntegrationType.GorgiasChat
         )
     )
+    const {automationSettings, isFetchPending} =
+        useHelpCenterAutomationSettings(helpCenter.id)
+
+    useEffect(() => {
+        const helpCenterFlows = automationSettings.workflows
+        if (!isFetchPending && helpCenterFlows) {
+            updateFlows(
+                helpCenterFlows.map((flow) => ({
+                    workflow_id: flow.id,
+                    enabled: flow.enabled,
+                }))
+            )
+        }
+    }, [automationSettings.workflows, isFetchPending, updateFlows])
+
+    const integrations = useAppSelector(
+        getIntegrationsByTypes([
+            IntegrationType.Shopify,
+            IntegrationType.BigCommerce,
+            IntegrationType.Magento2,
+        ])
+    )
+    const helpCenterShopIntegration = integrations.find(
+        (integration) => integration.name === helpCenter.shop_name
+    )
+
+    const isArticleRecommendationEnabled = chatIntegrations.length > 0
 
     return (
         <WizardStepSkeleton
@@ -51,17 +87,36 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
                     onChange={updateOrderManagementEnabled}
                     enabled={state.orderManagementEnabled}
                 />
-                <HelpCenterWizardArticleRec
-                    articleRecommendationEnabled={
-                        state.articleRecommendationEnabled
-                    }
-                    chatIntegrations={chatIntegrations}
-                    onArticleRecommendationEnabledChange={
-                        updateArticleRecommendationEnabled
-                    }
-                    selectedChatId={state.chatIntegrationId}
-                    onChatApplicationIdChange={updateChatIntegrationId}
-                />
+                {isArticleRecommendationEnabled && (
+                    <HelpCenterWizardArticleRec
+                        articleRecommendationEnabled={
+                            state.articleRecommendationEnabled
+                        }
+                        chatIntegrations={chatIntegrations}
+                        onArticleRecommendationEnabledChange={
+                            updateArticleRecommendationEnabled
+                        }
+                        selectedChatId={state.chatIntegrationId}
+                        onChatApplicationIdChange={updateChatIntegrationId}
+                    />
+                )}
+
+                {helpCenterShopIntegration && (
+                    <HelpCenterWizardFlows
+                        helpCenterId={helpCenter.id}
+                        shopType={helpCenterShopIntegration.type}
+                        shopName={helpCenterShopIntegration.name}
+                        supportedLocales={helpCenter.supported_locales}
+                        flows={state.flows}
+                        onChange={updateFlows}
+                        isLoading={isFetchPending}
+                        flowLimits={
+                            isArticleRecommendationEnabled
+                                ? FLOWS_SMALL_LIMIT
+                                : FLOWS_BIG_LIMIT
+                        }
+                    />
+                )}
             </div>
         </WizardStepSkeleton>
     )

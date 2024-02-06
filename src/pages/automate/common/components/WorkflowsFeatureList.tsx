@@ -19,7 +19,7 @@ import WorkflowItem from './WorkflowItem'
 
 import css from './WorkflowsFeatureList.less'
 
-type Entrypoint = {
+export type Entrypoint = {
     workflow_id: string
     enabled: boolean
 }
@@ -36,6 +36,8 @@ type Props = {
     workflowsUrl?: string
     configurations: WorkflowConfigurationShallow[]
     allEntrypoints: {workflow_id: string}[]
+    withLabel?: boolean
+    itemLimit?: number
 }
 
 /* This component required `WorkflowChannelSupportContext` */
@@ -51,6 +53,8 @@ const WorkflowsFeatureList = ({
     workflowsUrl,
     configurations,
     allEntrypoints,
+    withLabel = true,
+    itemLimit,
 }: Props) => {
     const {getUnsupportedNodeTypes, getSupportedChannels} =
         useWorkflowChannelSupportContext()
@@ -72,7 +76,7 @@ const WorkflowsFeatureList = ({
                 enabled: false,
             }))
 
-        return entrypointsProp
+        const entrypoints = entrypointsProp
             .filter(
                 (entrypoint) =>
                     entrypoint.workflow_id in allEntrypointsByWorkflowId
@@ -81,7 +85,9 @@ const WorkflowsFeatureList = ({
             .filter(
                 (entrypoint) => entrypoint.workflow_id in configurationsById
             )
-    }, [entrypointsProp, allEntrypoints, configurationsById])
+
+        return entrypoints.slice(0, itemLimit ?? entrypoints.length)
+    }, [entrypointsProp, allEntrypoints, configurationsById, itemLimit])
     const enabledEntrypointsCount = useMemo(
         () => entrypoints.filter((entrypoint) => entrypoint.enabled).length,
         [entrypoints]
@@ -133,14 +139,16 @@ const WorkflowsFeatureList = ({
 
     return (
         <div className={css.container}>
-            <div className={css.label}>
-                <Label>Flows</Label>
-                {!dirtyEntrypoints.length && workflowsUrl && (
-                    <Link to={workflowsUrl}>
-                        <Button size="small">Add Flows</Button>
-                    </Link>
-                )}
-            </div>
+            {withLabel && (
+                <div className={css.label}>
+                    <Label>Flows</Label>
+                    {!dirtyEntrypoints.length && workflowsUrl && (
+                        <Link to={workflowsUrl}>
+                            <Button size="small">Add Flows</Button>
+                        </Link>
+                    )}
+                </div>
+            )}
             {dirtyEntrypoints.map((entrypoint, index) => {
                 const unsupportedNodeTypes = getUnsupportedNodeTypes(
                     channelType,

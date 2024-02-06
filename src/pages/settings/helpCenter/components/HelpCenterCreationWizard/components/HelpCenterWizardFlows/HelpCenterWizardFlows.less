@@ -1,0 +1,26 @@
+@import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .shopMoreIcon {
+        transform: rotate(90deg);
+        font-size: @heading-section-regular-font-size;
+
+        // Issue of using icon in Button made it take a lot of space
+        width: 20px;
+    }
+
+    .showMoreContainer {
+        margin-top: @layout-spacing-s;
+    }
+
+    .loadingContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .noFlowsText {
+        color: var(--neutral-grey-4);
+    }
+}
