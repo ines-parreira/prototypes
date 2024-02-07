@@ -5,7 +5,6 @@ type ConnectionParameters = {
     ticketId: number | null
     customerName: string
     customerPhoneNumber: string
-    rejectCallOnDecline: boolean
 }
 
 export function useConnectionParameters(call: Call): ConnectionParameters {
@@ -22,15 +21,10 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
             ? call.parameters.From
             : (call.customParameters.get('To') as string)
 
-    const rejectCallOnDecline =
-        (call.customParameters.get('reject_call_on_decline') as string) ===
-        'true'
-
     return {
         integrationId,
         ticketId,
         customerName,
         customerPhoneNumber,
-        rejectCallOnDecline,
     }
 }

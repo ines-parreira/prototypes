@@ -34,12 +34,8 @@ export default function IncomingPhoneCall({
         }
     }, [history, ticketId, location])
 
-    const {
-        integrationId,
-        customerName,
-        customerPhoneNumber,
-        rejectCallOnDecline,
-    } = useConnectionParameters(call)
+    const {integrationId, customerName, customerPhoneNumber} =
+        useConnectionParameters(call)
 
     return (
         <div
@@ -69,12 +65,7 @@ export default function IncomingPhoneCall({
                     onClick={(event: SyntheticEvent<HTMLButtonElement>) => {
                         event.stopPropagation()
 
-                        if (rejectCallOnDecline) {
-                            call.reject()
-                        } else {
-                            call.ignore()
-                        }
-
+                        call.reject()
                         call.emit('cancel')
                         void declineCall(call)
                     }}

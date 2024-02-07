@@ -76,29 +76,8 @@ describe('<IncomingPhoneCall/>', () => {
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
     })
 
-    it('should decline call', (done) => {
-        const call = mockIncomingCall(integrationId, ticketId) as Call
-
-        mockedServer.onPost('/integrations/phone/call/declined').reply(201)
-        mockedServer.onPost('/integrations/phone/call/cancelled').reply(201)
-
-        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
-            wrapper,
-        })
-
-        fireEvent.click(getByTestId('decline-call-button'))
-        expect(call.ignore).toHaveBeenCalled()
-        expect(call.emit).toHaveBeenCalledWith('cancel')
-        expect(history.push).not.toHaveBeenCalled()
-
-        process.nextTick(() => {
-            expect(mockedServer.history).toMatchSnapshot()
-            done()
-        })
-    })
-
     it('should reject call on decline', (done) => {
-        const call = mockIncomingCall(integrationId, ticketId, true) as Call
+        const call = mockIncomingCall(integrationId, ticketId) as Call
 
         mockedServer.onPost('/integrations/phone/call/declined').reply(201)
         mockedServer.onPost('/integrations/phone/call/cancelled').reply(201)

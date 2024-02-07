@@ -38,7 +38,6 @@ import {
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
 import {isProduction} from 'utils/environment'
-import {useConnectionParameters} from '../../../pages/common/components/PhoneIntegrationBar/hooks'
 import * as utils from './utils'
 
 export async function refreshToken(device: Device) {
@@ -154,19 +153,12 @@ export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
 
     device.on(Device.EventName.Incoming, (call: Call) => {
         if (device.isBusy) {
-            const {rejectCallOnDecline} = useConnectionParameters(call)
-
             reportError(
                 new Error('Incoming call for agent already in a call'),
                 {extra: call}
             )
 
-            if (rejectCallOnDecline) {
-                call.reject()
-            } else {
-                call.ignore()
-            }
-
+            call.reject()
             call.emit('cancel')
 
             void declineCall(call)

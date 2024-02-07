@@ -323,7 +323,7 @@ describe('handleDeviceEvents', () => {
             expect(handleCallEvents).toHaveBeenCalledWith(call, dispatch)
         })
 
-        it('should handle Device.EventName.Incoming event when the device is busy and reject_call_on_decline is false', () => {
+        it('should handle Device.EventName.Incoming event when the device is busy', () => {
             const call = {
                 direction: Call.CallDirection.Incoming,
                 parameters: {
@@ -331,38 +331,6 @@ describe('handleDeviceEvents', () => {
                 },
                 customParameters: fromJS({
                     call_sid: '123',
-                    reject_call_on_decline: 'false',
-                }),
-                on: jest.fn(),
-                reject: jest.fn(),
-                ignore: jest.fn(),
-                emit: jest.fn(),
-            } as unknown as Call
-
-            ;(device as EventEmitter & {isBusy: boolean}).isBusy = true
-            jest.spyOn(api, 'declineCall')
-            device.emit(Device.EventName.Incoming, call)
-
-            expect(call.ignore).toHaveBeenCalled()
-            expect(call.emit).toHaveBeenCalledWith('cancel')
-            expect(api.declineCall).toHaveBeenCalledWith(call)
-            expect(reportError).toHaveBeenCalledTimes(1)
-
-            expect(call.reject).not.toHaveBeenCalled()
-            expect(dispatch).not.toHaveBeenCalledWith(setIsRinging(true))
-            expect(dispatch).not.toHaveBeenCalledWith(setCall(call))
-            expect(handleCallEvents).not.toHaveBeenCalledWith(call, dispatch)
-        })
-
-        it('should handle Device.EventName.Incoming event when the device is busy and reject_call_on_decline is true', () => {
-            const call = {
-                direction: Call.CallDirection.Incoming,
-                parameters: {
-                    From: '123',
-                },
-                customParameters: fromJS({
-                    call_sid: '123',
-                    reject_call_on_decline: 'true',
                 }),
                 on: jest.fn(),
                 reject: jest.fn(),

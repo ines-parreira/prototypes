@@ -5,7 +5,6 @@ exports[`useConnectionParameters() should return parameters for an incoming call
   "customerName": "Bob",
   "customerPhoneNumber": "+14158880101",
   "integrationId": 1,
-  "rejectCallOnDecline": false,
   "ticketId": 2,
 }
 `;
@@ -15,7 +14,6 @@ exports[`useConnectionParameters() should return parameters for an outgoing call
   "customerName": "Bob",
   "customerPhoneNumber": "+14158880101",
   "integrationId": 1,
-  "rejectCallOnDecline": false,
   "ticketId": null,
 }
 `;
