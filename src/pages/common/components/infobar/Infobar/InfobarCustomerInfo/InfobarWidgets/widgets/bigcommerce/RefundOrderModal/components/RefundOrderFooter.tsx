@@ -11,7 +11,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import Button from 'pages/common/components/button/Button'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
@@ -37,15 +37,15 @@ export function RefundOrderFooter({
     const floatingSelectRef = useRef(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             dispatchRefundOrderState({
                 type: BigCommerceRefundActionType.SetRefundReason,
                 refundReason: reasonForRefund,
             })
         },
-        300,
-        [reasonForRefund]
+        [reasonForRefund],
+        300
     )
 
     return (

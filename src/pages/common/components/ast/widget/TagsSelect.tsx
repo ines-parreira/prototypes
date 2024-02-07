@@ -11,7 +11,7 @@ import {createTag, fetchTags} from 'models/tag/resources'
 import {tagsFetched, tagCreated} from 'state/entities/tags/actions'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import SelectField from '../../../forms/SelectField/SelectField'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
@@ -118,7 +118,7 @@ export const TagsSelectContainer = ({
         onChange(newTag)
     }
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (!searchTerm) return
             const matchingTags = existingTagNames.filter(
@@ -128,8 +128,8 @@ export const TagsSelectContainer = ({
                 void handleSearchTags(searchTerm)
             }
         },
-        200,
-        [searchTerm]
+        [searchTerm],
+        200
     )
 
     const values = useMemo(() => {

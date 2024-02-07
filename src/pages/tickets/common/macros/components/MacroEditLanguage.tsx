@@ -4,7 +4,7 @@ import {detectLanguage} from 'models/language/resources'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {ISO639English} from 'constants/languages'
 import {Value} from 'pages/common/forms/SelectField/types'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import css from './MacroEdit.less'
 
@@ -20,7 +20,7 @@ const NO_LANGUAGE = 'null'
 const MacroEditLanguage = ({text, language, setLanguage}: Props) => {
     const [autoDetect, setAutoDetect] = useState(false)
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (
                 !text ||
@@ -34,8 +34,8 @@ const MacroEditLanguage = ({text, language, setLanguage}: Props) => {
                 if (language) setLanguage(language)
             })
         },
-        1000,
-        [text, autoDetect]
+        [text, autoDetect],
+        1000
     )
 
     const decorate = (text: string) => (

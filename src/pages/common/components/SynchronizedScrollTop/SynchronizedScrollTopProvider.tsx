@@ -1,6 +1,6 @@
 import React, {ReactNode, useEffect, useMemo, useState} from 'react'
 
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useWindowSize from 'hooks/useWindowSize'
 
 import SynchronizedScrollTopContext, {
@@ -31,7 +31,7 @@ export default function SynchronizedScrollTopProvider({children}: Props) {
         setScrollHeight(0)
     }
 
-    useDebounce(reset, 300, [windowWidth])
+    useDebouncedEffect(reset, [windowWidth], 300)
 
     useEffect(() => {
         window.addEventListener('load', reset)

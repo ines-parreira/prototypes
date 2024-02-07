@@ -33,7 +33,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import settingsCss from 'pages/settings/settings.less'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -129,7 +129,11 @@ export function RulesLibraryContainer() {
         }
     }, [location, history, rules])
 
-    useDebounce(() => setDebouncedSearchTerm(searchTerm), 200, [searchTerm])
+    useDebouncedEffect(
+        () => setDebouncedSearchTerm(searchTerm),
+        [searchTerm],
+        200
+    )
 
     useEffectOnce(() => {
         void handleFetchRules()

@@ -12,7 +12,7 @@ import classnames from 'classnames'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import css from './Search.less'
 
@@ -62,14 +62,14 @@ const Search = (
         }
     }
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (value !== internalValue) {
                 onChange?.(internalValue)
             }
         },
-        searchDebounceTime,
-        [internalValue]
+        [internalValue],
+        searchDebounceTime
     )
 
     return (

@@ -26,7 +26,7 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 import useAppSelector from 'hooks/useAppSelector'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import Modal from 'pages/common/components/modal/Modal'
 
 import Button from './Button'
@@ -101,7 +101,7 @@ function ButtonsGroup({buttons, source}: Props) {
             }
         }
     }, [])
-    useDebounce(
+    useDebouncedEffect(
         () => {
             setNbButtonDisplayed(
                 computeNbButtonDisplayed(
@@ -111,8 +111,8 @@ function ButtonsGroup({buttons, source}: Props) {
                 )
             )
         },
-        200,
-        [buttons, availableSpace]
+        [buttons, availableSpace],
+        200
     )
 
     // dropdown management

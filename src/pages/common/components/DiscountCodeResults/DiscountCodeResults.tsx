@@ -15,7 +15,7 @@ import DiscountCodeCreateModal from 'pages/common/components/DiscountCodeCreateM
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -126,7 +126,7 @@ export default function DiscountCodeResults({
         [discountCodes, discountModal, currentAccount, ticket]
     )
 
-    useDebounce(handleFetchResults, 300, [filter])
+    useDebouncedEffect(handleFetchResults, [filter], 300)
 
     return (
         <div className={css.discountLineContainer}>

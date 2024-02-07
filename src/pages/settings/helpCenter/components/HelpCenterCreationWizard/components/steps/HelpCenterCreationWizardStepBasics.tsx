@@ -41,7 +41,7 @@ import {useCheckHelpCenterWithSubdomainExists} from 'models/helpCenter/queries'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
 import store from 'assets/img/icons/store.svg'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import DiscardNewHelpCenterPrompt from '../DiscardNewHelpCenterPrompt'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
 import {
@@ -109,7 +109,7 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
         setIsStoreRequired(isStoreRequired)
     }, [isAutomate, newHelpCenter.platformType])
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (
                 !newHelpCenter.subdomain ||
@@ -123,8 +123,8 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                 {subdomain: newHelpCenter.subdomain},
             ])
         },
-        500,
-        [newHelpCenter.subdomain, shouldDisplayFormErrors]
+        [newHelpCenter.subdomain, shouldDisplayFormErrors],
+        500
     )
 
     const subdomainError = useMemo(() => {

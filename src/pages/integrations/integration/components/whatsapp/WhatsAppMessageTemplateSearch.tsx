@@ -6,7 +6,7 @@ import IconInput from 'pages/common/forms/input/IconInput'
 import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
 import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
 import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import useWhatsAppEditor from './useWhatsAppEditor'
 
@@ -35,12 +35,12 @@ export default function WhatsAppMessageTemplateSearch() {
         isWhatsAppWindowOpen,
     } = useWhatsAppEditor()
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             setSearchFilter(filters)
         },
-        SEARCH_DEBOUNCE_DELAY,
-        [filters]
+        [filters],
+        SEARCH_DEBOUNCE_DELAY
     )
 
     const handleInputFocus = () => {

@@ -14,7 +14,7 @@ import {notify} from 'state/notifications/actions'
 import {getIconFromType} from 'state/integrations/helpers'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {IntegrationType} from 'models/integration/constants'
 import {Product, Variant} from 'constants/integrations/types/shopify'
 import Button from 'pages/common/components/button/Button'
@@ -181,7 +181,7 @@ export default function ShopifyProductLine({
         setClickedResult(null)
     }, [setSubResults, setClickedResult])
 
-    useDebounce(fetchResults, 300, [filter])
+    useDebouncedEffect(fetchResults, [filter], 300)
     useEffect(() => {
         if (onOpen) {
             setIsLoading(true)

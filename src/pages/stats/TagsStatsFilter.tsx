@@ -5,7 +5,7 @@ import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScrol
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
@@ -107,12 +107,12 @@ export default function TagsStatsFilter({value = [], variant = 'fill'}: Props) {
         [setDebouncedTagSearch, tagSearch]
     )
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             void handleFetchTags(debouncedTagSearch)
         },
-        300,
-        [debouncedTagSearch]
+        [debouncedTagSearch],
+        300
     )
 
     const onLoad = useCallback(async () => {

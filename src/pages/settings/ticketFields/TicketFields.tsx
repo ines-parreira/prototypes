@@ -15,8 +15,8 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/types'
-import useDebounce from 'hooks/useDebounce'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import useCallbackRef from 'hooks/useCallbackRef'
 import css from './TicketFields.less'
@@ -36,7 +36,7 @@ export default function TicketFields() {
 
     const [search, setSearch] = useState('')
     const [debouncedSearch, setDebouncedSearch] = useState('')
-    useDebounce(() => setDebouncedSearch(search), 1000, [search])
+    useDebouncedEffect(() => setDebouncedSearch(search), [search], 1000)
 
     const activeParams: ListParams = {
         archived: false,

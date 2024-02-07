@@ -22,7 +22,7 @@ import {
 } from 'models/integration/resources/whatsapp'
 
 import useEffectOnce from './useEffectOnce'
-import useDebounce from './useDebounce'
+import useDebouncedEffect from './useDebouncedEffect'
 import useLocalStorage from './useLocalStorage'
 
 type Target = {
@@ -183,7 +183,7 @@ function useMigration(): Migration {
         verification?.codeVerificationMethod ??
         DEFAULT_VERIFICATION.codeVerificationMethod
 
-    useDebounce(
+    useDebouncedEffect(
         async () => {
             if (!target) {
                 return
@@ -191,8 +191,8 @@ function useMigration(): Migration {
 
             await fetchProgress(target)
         },
-        1000,
-        [target]
+        [target],
+        1000
     )
 
     const status = useMemo(

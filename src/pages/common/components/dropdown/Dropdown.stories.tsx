@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
 import usePrevious from 'hooks/usePrevious'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import Button from 'pages/common/components/button/Button'
 
 import Dropdown, {DropdownContext} from './Dropdown'
@@ -146,14 +146,14 @@ const AsyncTemplate: Story<
         0
     )
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (previousQuery !== query) {
                 void handleSearch(query)
             }
         },
-        300,
-        [handleSearch, previousQuery, query]
+        [handleSearch, previousQuery, query],
+        300
     )
 
     const handleChange = useCallback((value: string) => {

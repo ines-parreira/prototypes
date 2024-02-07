@@ -30,7 +30,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import {getMoment} from 'utils/date'
 import {humanizeString} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import css from '../settings.less'
 import {DATETIME_LABEL_FORMAT} from './constants'
@@ -138,14 +138,14 @@ const UserAuditList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (!_isEqual(previousFetchOptions, fetchOptions)) {
                 void fetchUsersAudit()
             }
         },
-        1000,
-        [fetchOptions]
+        [fetchOptions],
+        1000
     )
 
     return (

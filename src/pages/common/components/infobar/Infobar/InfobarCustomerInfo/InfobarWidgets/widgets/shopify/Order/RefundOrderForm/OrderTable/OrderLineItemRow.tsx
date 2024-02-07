@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
@@ -64,14 +64,14 @@ function OrderLineItemRow({
         setQuantity((previousQuantity) => previousQuantity - 1)
     }, [])
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (quantity !== lineItem.get('quantity')) {
                 onChange(lineItem.set('quantity', quantity), index)
             }
         },
-        250,
-        [quantity, lineItem, onChange, index]
+        [quantity, lineItem, onChange, index],
+        250
     )
 
     const renderTitle = useCallback(() => {

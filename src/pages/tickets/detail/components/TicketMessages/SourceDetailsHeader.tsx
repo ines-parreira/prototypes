@@ -3,7 +3,7 @@ import React, {ReactNode, useState, useMemo} from 'react'
 
 import {TicketMessage} from 'models/ticket/types'
 import {DatetimeLabel} from 'pages/common/utils/labels'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedValue from 'hooks/useDebouncedValue'
 import useMeasure from 'hooks/useMeasure'
 
 import SeenIndicator from './SeenIndicator'
@@ -42,9 +42,7 @@ export default function SourceDetailsHeader({
     const [focus, setFocus] = useState(false)
 
     const [ref, {width}] = useMeasure()
-    const [debouncedWidth, setDebouncedWidth] = useState(width)
-
-    useDebounce(() => setDebouncedWidth(width), 300, [width])
+    const debouncedWidth = useDebouncedValue(width, 300)
 
     const actionHeader = useMemo(() => {
         const collapseActions = debouncedWidth < 400

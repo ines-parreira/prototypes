@@ -15,7 +15,7 @@ import {StatsState as StatsUIState} from 'state/ui/stats/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 export const DEFAULT_ERROR_MESSAGE =
     'Failed to retrieve statistic. Please retry in a few seconds.'
@@ -102,15 +102,15 @@ export default function useStatResource<T>({
         void handleFetchStat()
     }, [handleFetchStat])
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (cleanStatsFilters && !_isEqual(cleanStatsFilters, filters)) {
                 setFilters(cleanStatsFilters)
                 setCursor(undefined)
             }
         },
-        fetchDebounceDelay,
-        [cleanStatsFilters, filters]
+        [cleanStatsFilters, filters],
+        fetchDebounceDelay
     )
 
     const fetchPage = useCallback((cursor: string) => {

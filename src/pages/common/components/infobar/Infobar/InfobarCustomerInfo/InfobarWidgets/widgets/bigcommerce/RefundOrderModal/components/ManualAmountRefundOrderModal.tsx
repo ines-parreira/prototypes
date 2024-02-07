@@ -8,7 +8,7 @@ import {
 } from 'models/integration/types'
 import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import useDebounce from 'hooks/useDebounce'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
@@ -97,7 +97,7 @@ export function ManualAmountRefundOrderModal({
         })
     }, [dispatchRefundOrderState])
 
-    useDebounce(
+    useDebouncedEffect(
         () => {
             if (!isFirstRender) {
                 handleOnSubmitAmountToRefund()
@@ -105,8 +105,8 @@ export function ManualAmountRefundOrderModal({
                 setIsFirstRender(false)
             }
         },
-        1000,
-        [amountToRefund]
+        [amountToRefund],
+        1000
     )
 
     return (
