@@ -48,6 +48,12 @@ jest.mock(
         )
     }
 )
+jest.mock('utils', () => {
+    return {
+        ...jest.requireActual('utils'),
+        hasRole: () => true,
+    } as Record<string, unknown>
+})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -61,7 +67,10 @@ describe('VoiceCallTable', () => {
 
     beforeEach(() => {
         resetLDMocks()
-        mockFlags({[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true})
+        mockFlags({
+            [FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true,
+            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
+        })
     })
 
     const renderComponent = (filterOption = VoiceCallFilterOptions.All) => {
@@ -121,6 +130,7 @@ describe('VoiceCallTable', () => {
         expect(getByText('Integration')).toBeInTheDocument()
         expect(getByText('Date')).toBeInTheDocument()
         expect(getByText('State')).toBeInTheDocument()
+        expect(getByText('Recording')).toBeInTheDocument()
         expect(getByText('Length')).toBeInTheDocument()
         expect(getByText('Wait time')).toBeInTheDocument()
         expect(getByText('Ticket')).toBeInTheDocument()
@@ -154,6 +164,10 @@ describe('VoiceCallTable', () => {
                     phoneNumberSource: '+112',
                     talkTime: 100,
                     waitTime: 12,
+                    voicemailAvailable: null,
+                    voicemailUrl: null,
+                    callRecordingAvailable: true,
+                    callRecordingUrl: 'callRecordingUrl',
                 },
                 {
                     agentId: 2,
@@ -168,6 +182,10 @@ describe('VoiceCallTable', () => {
                     phoneNumberSource: '+112',
                     talkTime: 101,
                     waitTime: 13,
+                    voicemailAvailable: true,
+                    voicemailUrl: 'voicemailUrl',
+                    callRecordingAvailable: null,
+                    callRecordingUrl: null,
                 },
             ],
             isFetching: false,

@@ -1,5 +1,5 @@
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
@@ -33,6 +33,7 @@ import {saveReport} from 'services/reporting/voiceOverviewReportingService'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {assumeMock} from 'utils/testing'
+import {user} from 'fixtures/users'
 import VoiceOverview from '../VoiceOverview'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
@@ -72,6 +73,7 @@ describe('VoiceOverview', () => {
             agents: [agents[0].id],
         }
         const state = {
+            currentUser: fromJS(user) as Map<any, any>,
             currentAccount: fromJS({
                 current_subscription: account.current_subscription,
                 features: fromJS({
@@ -141,7 +143,7 @@ describe('VoiceOverview', () => {
 
         // footer
         expect(
-            queryByText('Analytics are using UTC timezone')
+            queryByText('Analytics are using EST timezone')
         ).toBeInTheDocument()
     })
 

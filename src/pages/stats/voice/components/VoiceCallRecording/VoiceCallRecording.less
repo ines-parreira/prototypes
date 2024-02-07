@@ -1,0 +1,34 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .recordingButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .recordingButton {
+        font-size: 20px;
+        // use important to overwrite ghost button styling
+        padding: 0 6px !important;
+        color: black !important;
+    }
+
+    .backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 50;
+        background-color: fade(black, 50%);
+    }
+
+    .modal {
+        border-color: transparent;
+        box-shadow: unset;
+        font-family: inherit;
+        background: none;
+        display: flex;
+        align-items: center;
+    }
+}

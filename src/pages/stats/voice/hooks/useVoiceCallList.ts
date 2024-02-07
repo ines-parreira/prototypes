@@ -59,5 +59,9 @@ export const selectVoiceCallData = (
         phoneNumberSource: row[VoiceCallDimension.PhoneNumberSource],
         talkTime: parseNullableInteger(row[VoiceCallDimension.TalkTime]),
         waitTime: parseNullableInteger(row[VoiceCallDimension.WaitTime]),
+        voicemailAvailable: row[VoiceCallDimension.VoicemailAvailable],
+        voicemailUrl: row[VoiceCallDimension.VoicemailUrl],
+        callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
+        callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
     }))
 }

@@ -23,6 +23,10 @@ export enum VoiceCallDimension {
     PhoneNumberSource = 'VoiceCall.phoneNumberSource',
     PhoneNumberDestination = 'VoiceCall.phoneNumberDestination',
     FilteringAgentId = 'VoiceCall.filteringAgentId',
+    VoicemailAvailable = 'VoiceCall.voicemailAvailable',
+    VoicemailUrl = 'VoiceCall.voicemailUrl',
+    CallRecordingAvailable = 'VoiceCall.callRecordingAvailable',
+    CallRecordingUrl = 'VoiceCall.callRecordingUrl',
 }
 
 export enum VoiceCallMember {

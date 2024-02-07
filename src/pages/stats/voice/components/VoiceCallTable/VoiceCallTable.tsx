@@ -27,6 +27,7 @@ import {
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
 import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
+import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording'
 
 import css from './VoiceCallTable.less'
 
@@ -43,6 +44,8 @@ export const VoiceCallTable = ({
 }: VoiceCallTableProps) => {
     const displayVoiceAnalyticsNiceToHave: boolean =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave] || false
+    const displayVoiceAnalyticsV1: boolean =
+        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1] || false
 
     const [currentPage, setCurrentPage] = useState(1)
     const [ref, {width}] = useMeasure<HTMLDivElement>()
@@ -80,6 +83,7 @@ export const VoiceCallTable = ({
                     ['integration', 174],
                     ['date', 174],
                     ['state', 84],
+                    ...(displayVoiceAnalyticsV1 ? [['recording', 84]] : []),
                     ...(displayVoiceAnalyticsNiceToHave
                         ? [
                               ['duration', 84],
@@ -105,7 +109,11 @@ export const VoiceCallTable = ({
                 ))}
             </TableBodyRow>
         ))
-    }, [isTableScrolled, displayVoiceAnalyticsNiceToHave])
+    }, [
+        isTableScrolled,
+        displayVoiceAnalyticsNiceToHave,
+        displayVoiceAnalyticsV1,
+    ])
 
     if (!isFetching && data?.length === 0) {
         return (
@@ -143,6 +151,15 @@ export const VoiceCallTable = ({
                             className={css.smallCell}
                             tooltip={'The status of the phone call.'}
                         />
+                        {displayVoiceAnalyticsV1 && (
+                            <HeaderCellProperty
+                                title={'Recording'}
+                                className={css.smallCell}
+                                tooltip={
+                                    'Call recording or voicemail left by customer.'
+                                }
+                            />
+                        )}
                         {displayVoiceAnalyticsNiceToHave ? (
                             <>
                                 <HeaderCellProperty
@@ -232,6 +249,13 @@ export const VoiceCallTable = ({
                                               direction={item.direction}
                                           />
                                       </BodyCell>
+                                      {displayVoiceAnalyticsV1 && (
+                                          <BodyCell className={css.smallCell}>
+                                              <VoiceCallRecording
+                                                  voiceCall={item}
+                                              />
+                                          </BodyCell>
+                                      )}
                                       {displayVoiceAnalyticsNiceToHave ? (
                                           <>
                                               <BodyCell

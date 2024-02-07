@@ -93,6 +93,10 @@ describe('voice queries factories', () => {
                     VoiceCallDimension.PhoneNumberDestination,
                     VoiceCallDimension.TalkTime,
                     VoiceCallDimension.WaitTime,
+                    VoiceCallDimension.VoicemailAvailable,
+                    VoiceCallDimension.VoicemailUrl,
+                    VoiceCallDimension.CallRecordingAvailable,
+                    VoiceCallDimension.CallRecordingUrl,
                 ],
                 filters: [
                     {

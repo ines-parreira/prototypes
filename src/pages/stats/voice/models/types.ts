@@ -19,6 +19,10 @@ export type VoiceCallStatListItem = {
     [VoiceCallMeasure.VoiceCallCount]: string
     [VoiceCallDimension.TalkTime]: string | null
     [VoiceCallDimension.WaitTime]: string | null
+    [VoiceCallDimension.VoicemailAvailable]: boolean | null
+    [VoiceCallDimension.VoicemailUrl]: string | null
+    [VoiceCallDimension.CallRecordingAvailable]: boolean | null
+    [VoiceCallDimension.CallRecordingUrl]: string | null
 }
 
 export type VoiceCallSummary = {
@@ -34,6 +38,10 @@ export type VoiceCallSummary = {
     phoneNumberSource: string
     talkTime: number | null
     waitTime: number | null
+    voicemailAvailable: boolean | null
+    voicemailUrl: string | null
+    callRecordingAvailable: boolean | null
+    callRecordingUrl: string | null
 }
 
 export enum VoiceCallFilterOptions {

@@ -74,7 +74,7 @@ function useDeleteRecording(url: string, callId?: number) {
     }
 }
 
-function useDownloadRecording(url: string) {
+export function useDownloadRecording(url: string) {
     const [isRequestPending, setIsRequestPending] = useState(false)
     const dispatch = useAppDispatch()
 
@@ -89,10 +89,27 @@ function useDownloadRecording(url: string) {
                     headers: Record<string, unknown>
                 ) => {
                     // We need this in order to prevent CORS policy error.
-                    delete headers['X-CSRF-Token'] // @ts-ignore
-                    delete headers['X-Gorgias-User-Client'] // @ts-ignore
-                    delete headers.common['X-CSRF-Token'] // @ts-ignore
-                    delete headers.common['X-Gorgias-User-Client'] // @ts-ignore
+                    if (headers['X-CSRF-Token']) {
+                        delete headers['X-CSRF-Token']
+                    }
+                    if (headers['X-Gorgias-User-Client']) {
+                        delete headers['X-Gorgias-User-Client']
+                    }
+                    if (headers['X-Gorgias-User-Client']) {
+                        delete headers['X-Gorgias-User-Client']
+                    }
+                    if (headers.common) {
+                        // @ts-ignore
+                        if (headers.common['X-CSRF-Token']) {
+                            // @ts-ignore
+                            delete headers.common['X-CSRF-Token']
+                        }
+                        // @ts-ignore
+                        if (headers.common['X-Gorgias-User-Client']) {
+                            // @ts-ignore
+                            delete headers.common['X-Gorgias-User-Client']
+                        }
+                    }
                     return data
                 },
             })

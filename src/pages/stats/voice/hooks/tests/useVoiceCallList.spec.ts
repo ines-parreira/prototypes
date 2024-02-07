@@ -77,6 +77,10 @@ describe('useVoiceCallList', () => {
                         [VoiceCallMeasure.VoiceCallCount]: '1',
                         [VoiceCallDimension.TalkTime]: '12',
                         [VoiceCallDimension.WaitTime]: '65',
+                        [VoiceCallDimension.VoicemailAvailable]: true,
+                        [VoiceCallDimension.VoicemailUrl]: 'test-voicemail',
+                        [VoiceCallDimension.CallRecordingAvailable]: true,
+                        [VoiceCallDimension.CallRecordingUrl]: 'test-recording',
                     },
                 ],
             },
@@ -97,6 +101,10 @@ describe('useVoiceCallList', () => {
                 phoneNumberSource: '+123456788',
                 talkTime: 12,
                 waitTime: 65,
+                voicemailAvailable: true,
+                voicemailUrl: 'test-voicemail',
+                callRecordingAvailable: true,
+                callRecordingUrl: 'test-recording',
             },
         ])
     })
@@ -119,6 +127,10 @@ describe('useVoiceCallList', () => {
                         [VoiceCallMeasure.VoiceCallCount]: '1',
                         [VoiceCallDimension.TalkTime]: null,
                         [VoiceCallDimension.WaitTime]: null,
+                        [VoiceCallDimension.VoicemailAvailable]: null,
+                        [VoiceCallDimension.VoicemailUrl]: null,
+                        [VoiceCallDimension.CallRecordingAvailable]: null,
+                        [VoiceCallDimension.CallRecordingUrl]: null,
                     },
                 ],
             },
@@ -139,6 +151,10 @@ describe('useVoiceCallList', () => {
                 phoneNumberSource: 'test',
                 talkTime: null,
                 waitTime: null,
+                voicemailAvailable: null,
+                voicemailUrl: null,
+                callRecordingAvailable: null,
+                callRecordingUrl: null,
             },
         ])
     })
