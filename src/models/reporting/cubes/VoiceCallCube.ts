@@ -34,6 +34,7 @@ export enum VoiceCallMember {
     PeriodEnd = 'VoiceCall.periodEnd',
     IntegrationId = 'VoiceCall.integrationId',
     AgentId = 'VoiceCall.filteringAgentId',
+    AssignedAgentId = 'VoiceCall.agentId',
 }
 
 export enum VoiceCallSegment {

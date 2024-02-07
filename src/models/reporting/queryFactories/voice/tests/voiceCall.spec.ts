@@ -119,7 +119,7 @@ describe('voice queries factories', () => {
         }
     )
 
-    it('voiceCallAverageTalkTimeQueryFactory should create a query', () => {
+    it('voiceCallTotalTalkTimeQueryFactory should create a query', () => {
         const query = voiceCallAverageTalkTimeQueryFactory(statsFilters, 'UTC')
 
         expect(query).toEqual({

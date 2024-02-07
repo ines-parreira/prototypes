@@ -8,7 +8,11 @@ import {
     VoiceEventsByAgentSegment,
     VoiceEventsByAgentDimension,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {declinedVoiceCallsCountPerAgentQueryFactory} from '../voiceEventsByAgent'
+
+import {
+    declinedVoiceCallsCountPerAgentQueryFactory,
+    declinedVoiceCallsCountQueryFactory,
+} from '../voiceEventsByAgent'
 
 describe('voice events by agent factories', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -19,7 +23,8 @@ describe('voice events by agent factories', () => {
             start_datetime: periodStart,
         },
     }
-    it('voiceCallAverageWaitTimeQueryFactory should create a query', () => {
+
+    it('declinedVoiceCallsCountPerAgentQueryFactory should create a query', () => {
         const query = declinedVoiceCallsCountPerAgentQueryFactory(
             statsFilters,
             'UTC'
@@ -28,6 +33,29 @@ describe('voice events by agent factories', () => {
         expect(query).toEqual({
             measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             dimensions: [VoiceEventsByAgentDimension.AgentId],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [VoiceEventsByAgentSegment.declinedCalls],
+        })
+    })
+
+    it('declinedVoiceCallsCountQueryFactory should create a query', () => {
+        const query = declinedVoiceCallsCountQueryFactory(statsFilters, 'UTC')
+
+        expect(query).toEqual({
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [],
             filters: [
                 {
                     member: VoiceEventsByAgentMember.PeriodStart,

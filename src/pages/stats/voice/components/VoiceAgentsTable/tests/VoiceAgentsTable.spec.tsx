@@ -13,7 +13,6 @@ import {
     getSortedAgents,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 
 import {VoiceAgentsTable} from '../VoiceAgentsTable'
 
@@ -28,6 +27,14 @@ jest.mock(
     () =>
         ({agentId}: {agentId: number}) =>
             <div>CallsCountCell {agentId}</div>
+)
+jest.mock(
+    'pages/stats/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell',
+    () => () => <div>TeamAverageTalkTimeCell</div>
+)
+jest.mock(
+    'pages/stats/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell',
+    () => () => <div>TeamAverageCallsCountCell</div>
 )
 jest.mock(
     'state/ui/stats/agentPerformanceSlice',
@@ -49,7 +56,6 @@ jest.mock(
 
 const getSortedAgentsMock = assumeMock(getSortedAgents)
 const getPaginatedAgentsMock = assumeMock(getPaginatedAgents)
-const getCleanStatsFiltersMock = assumeMock(getCleanStatsFilters)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceCallTable', () => {
@@ -61,12 +67,6 @@ describe('VoiceCallTable', () => {
         currentPage,
         perPage: 1,
     })
-    getCleanStatsFiltersMock.mockReturnValue({
-        period: {
-            start_datetime: '2021-02-03T00:00:00.000Z',
-            end_datetime: '2021-02-03T23:59:59.999Z',
-        },
-    } as any)
 
     const renderComponent = (store = mockStore({})) => {
         return render(
@@ -86,6 +86,10 @@ describe('VoiceCallTable', () => {
         expect(getByText('Declined')).toBeInTheDocument()
         expect(getByText('Outbound')).toBeInTheDocument()
         expect(getByText('Avg. Talk Time')).toBeInTheDocument()
+
+        expect(getByText('Team average')).toBeInTheDocument()
+        expect(getAllByText('TeamAverageCallsCountCell')).toHaveLength(5)
+        expect(getByText('TeamAverageTalkTimeCell')).toBeInTheDocument()
 
         expect(getByText('Bob Smith')).toBeInTheDocument()
         expect(getAllByText('CallsCountCell')).toHaveLength(5)

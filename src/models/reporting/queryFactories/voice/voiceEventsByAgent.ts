@@ -24,3 +24,14 @@ export const declinedVoiceCallsCountPerAgentQueryFactory = (
     segments: [VoiceEventsByAgentSegment.declinedCalls],
     filters: voiceEventsByAgentDefaultFilters(filters),
 })
+
+export const declinedVoiceCallsCountQueryFactory = (
+    filters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+    dimensions: [],
+    timezone,
+    segments: [VoiceEventsByAgentSegment.declinedCalls],
+    filters: voiceEventsByAgentDefaultFilters(filters),
+})

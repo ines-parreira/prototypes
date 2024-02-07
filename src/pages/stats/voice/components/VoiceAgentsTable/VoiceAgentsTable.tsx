@@ -28,9 +28,18 @@ import {
     useTotalCallsMetricPerAgent,
     useDeclinedCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
+import {
+    useAnsweredCallsMetric,
+    useDeclinedCallsMetric,
+    useMissedCallsMetric,
+    useOutboundCallsMetric,
+    useTotalCallsMetric,
+} from 'pages/stats/voice/hooks/agentMetrics'
 
 import AverageTalkTimeCell from './AverageTalkTimeCell'
 import CallsCountCell from './CallsCountCell'
+import TeamAverageCallsCountCell from './TeamAverageCallsCountCell'
+import TeamAverageTalkTimeCell from './TeamAverageTalkTimeCell'
 import css from './VoiceAgentsTable.less'
 
 export const VoiceAgentsTable = () => {
@@ -117,6 +126,38 @@ export const VoiceAgentsTable = () => {
                         </HeaderCellProperty>
                     </TableHead>
                     <TableBody>
+                        <TableBodyRow
+                            className={classNames(css.tableRow, css.summaryRow)}
+                        >
+                            <BodyCell
+                                className={classNames(css.agentsCell, {
+                                    [css.withShadow]: isTableScrolled,
+                                })}
+                            >
+                                Team average
+                            </BodyCell>
+                            <TeamAverageCallsCountCell
+                                agentsCount={agents.length}
+                                useMetric={useTotalCallsMetric}
+                            />
+                            <TeamAverageCallsCountCell
+                                agentsCount={agents.length}
+                                useMetric={useAnsweredCallsMetric}
+                            />
+                            <TeamAverageCallsCountCell
+                                agentsCount={agents.length}
+                                useMetric={useMissedCallsMetric}
+                            />
+                            <TeamAverageCallsCountCell
+                                agentsCount={agents.length}
+                                useMetric={useDeclinedCallsMetric}
+                            />
+                            <TeamAverageCallsCountCell
+                                agentsCount={agents.length}
+                                useMetric={useOutboundCallsMetric}
+                            />
+                            <TeamAverageTalkTimeCell />
+                        </TableBodyRow>
                         {paginatedAgents.map((agent) => (
                             <TableBodyRow
                                 key={agent.id}
