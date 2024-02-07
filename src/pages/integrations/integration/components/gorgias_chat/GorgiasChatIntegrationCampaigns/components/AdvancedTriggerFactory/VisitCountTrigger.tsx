@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
+import toInteger from 'lodash/toInteger'
 import Button from 'pages/common/components/button/Button'
 import {Value} from 'pages/common/forms/SelectField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -13,6 +14,7 @@ import {
     isVisitCountOperators,
 } from '../../types/enums/VisitCountOperators.enum'
 
+import {isTriggerValueNonNegative} from '../../utils/isTriggerValueNonNegative'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps
@@ -25,8 +27,8 @@ export const VisitCountTrigger = ({
     const [innerOperator, setInnerOperator] = useState<VisitCountOperators>(
         trigger.operator as VisitCountOperators
     )
-    const [innerValue, setInnerValue] = useState<string>(
-        trigger.value as string
+    const [innerValue, setInnerValue] = useState<number | undefined>(
+        toInteger(trigger.value)
     )
 
     const handleChangeOperator = (operator: Value) => {
@@ -37,7 +39,13 @@ export const VisitCountTrigger = ({
     }
 
     const handleChangeValue = (value: string) => {
-        setInnerValue(value)
+        if (value === '') {
+            setInnerValue(undefined)
+        } else if (!isTriggerValueNonNegative(value)) {
+            setInnerValue(0)
+        } else {
+            setInnerValue(toInteger(value))
+        }
     }
 
     const handleBlurValue = () => {
@@ -48,7 +56,7 @@ export const VisitCountTrigger = ({
 
     useEffect(() => {
         setInnerOperator(trigger.operator as VisitCountOperators)
-        setInnerValue(trigger.value as string)
+        setInnerValue(toInteger(trigger.value))
     }, [trigger.operator, trigger.value])
 
     return (
@@ -75,6 +83,8 @@ export const VisitCountTrigger = ({
                 <InputField
                     className={css.fullWidth}
                     value={innerValue}
+                    type="number"
+                    min={0}
                     onChange={handleChangeValue}
                     onBlur={handleBlurValue}
                 />

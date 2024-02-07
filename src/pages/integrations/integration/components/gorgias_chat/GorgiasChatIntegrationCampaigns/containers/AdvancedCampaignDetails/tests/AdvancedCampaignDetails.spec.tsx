@@ -526,7 +526,7 @@ describe('<AdvancedCampaignDetails />', () => {
                 'visit-count-value'
             )
             const value = within(visitCountValueEl)
-                .getByRole('textbox')
+                .getByRole('spinbutton')
                 .getAttribute('value')
 
             expect(value).toEqual('0')

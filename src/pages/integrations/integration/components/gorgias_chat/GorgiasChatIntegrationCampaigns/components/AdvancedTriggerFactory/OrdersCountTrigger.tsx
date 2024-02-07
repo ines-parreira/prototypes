@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
+import toInteger from 'lodash/toInteger'
 import Button from 'pages/common/components/button/Button'
 import {Value} from 'pages/common/forms/SelectField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -27,8 +28,8 @@ export const OrdersCountTrigger = ({
     const [innerOperator, setInnerOperator] = useState<OrdersCountOperators>(
         trigger.operator as OrdersCountOperators
     )
-    const [innerValue, setInnerValue] = useState<string>(
-        trigger.value as string
+    const [innerValue, setInnerValue] = useState<number | undefined>(
+        toInteger(trigger.value)
     )
 
     const handleChangeOperator = (operator: Value) => {
@@ -40,9 +41,14 @@ export const OrdersCountTrigger = ({
 
     const handleChangeValue = (value: string) => {
         if (!isAllowedToEdit) return
-        if (value !== '' && !isTriggerValueNonNegative(value)) return
 
-        setInnerValue(value)
+        if (value === '') {
+            setInnerValue(undefined)
+        } else if (!isTriggerValueNonNegative(value)) {
+            setInnerValue(0)
+        } else {
+            setInnerValue(toInteger(value))
+        }
     }
 
     const handleBlurValue = () => {
@@ -53,7 +59,7 @@ export const OrdersCountTrigger = ({
 
     useEffect(() => {
         setInnerOperator(trigger.operator as OrdersCountOperators)
-        setInnerValue(trigger.value as string)
+        setInnerValue(toInteger(trigger.value))
     }, [trigger.operator, trigger.value])
 
     return (
