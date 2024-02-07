@@ -184,3 +184,13 @@ export enum HelpCenterAutomateType {
     AUTOMATE_NO_STORE = 'automate-no-store',
     AUTOMATE = 'automate',
 }
+
+export type ArticleTemplateCategory =
+    | 'orderManagement'
+    | 'returnsAndRefunds'
+    | 'shippingAndDelivery'
+
+export type HelpCenterArticleItem = ArticleTemplate & {
+    id?: number
+    isSelected?: boolean
+}

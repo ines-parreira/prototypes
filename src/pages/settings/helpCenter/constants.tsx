@@ -2,6 +2,7 @@ import React from 'react'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 import {Language} from 'constants/languages'
 import {
+    HelpCenterArticleItem,
     HelpCenterCreationWizardStep,
     LocaleCode,
     LocalSocialNavigationLink,
@@ -277,3 +278,5 @@ export enum NEXT_ACTION {
 export const HELP_CENTER_LANGUAGE_DEFAULT_UI = [
     {value: Language.EnglishUs, label: 'English', isDefault: true},
 ]
+
+export const DEFAULT_ARTICLE_GROUP: Record<string, HelpCenterArticleItem[]> = {}

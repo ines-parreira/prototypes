@@ -1,0 +1,36 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .articleSection {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .articleCategory {
+        .caption-allcaps();
+        color: var(--neutral-grey-5);
+        padding: 20px @layout-spacing-m;
+    }
+
+    .articleDelimiter {
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+
+    .article {
+        padding: @layout-spacing-s @layout-spacing-m;
+    }
+
+    .articleCheckboxContent {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        margin-left: @layout-spacing-xs;
+    }
+
+    .articleEditButton {
+        i {
+            color: var(--neutral-grey-5);
+        }
+    }
+}

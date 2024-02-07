@@ -1,5 +1,7 @@
 import {
+    ArticleWithLocalTranslationAndRating,
     HelpCenter,
+    HelpCenterArticleItem,
     HelpCenterCreationWizardStep,
     LocaleCode,
 } from 'models/helpCenter/types'
@@ -13,8 +15,10 @@ import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
 import {
     getUpdatedFields,
+    groupArticlesByCategory,
     isErrorRecord,
     mapApiHelpCenterToUIHelpCenter,
+    mapHelpCenterArticleData,
     mapHelpCenterLanguagesToLanguagePicker,
     mapHelpCenterLocalesToLanguagePicker,
     mapUIHelpCenterToApiHelpCenter,
@@ -167,6 +171,70 @@ describe('helpCenterCreationWizardUtils', () => {
             )
 
             expect(result).toEqual(expected)
+        })
+
+        it('should group articles by category', () => {
+            const articles = [
+                {
+                    category: 'orderManagement',
+                    title: 'Article 1',
+                },
+                {
+                    category: 'orderManagement',
+                    title: 'Article 2',
+                },
+                {
+                    category: 'returnsAndRefunds',
+                    title: 'Article 3',
+                },
+            ]
+
+            const expected = {
+                orderManagement: [
+                    {category: 'orderManagement', title: 'Article 1'},
+                    {category: 'orderManagement', title: 'Article 2'},
+                ],
+                returnsAndRefunds: [
+                    {category: 'returnsAndRefunds', title: 'Article 3'},
+                ],
+            }
+
+            expect(
+                groupArticlesByCategory(articles as HelpCenterArticleItem[])
+            ).toEqual(expected)
+        })
+
+        it('should map article data correctly', () => {
+            const articleTemplates = [
+                {key: 'template1', title: 'Template 1'},
+                {key: 'template2', title: 'Template 2'},
+            ]
+
+            const articleListData = [
+                {
+                    id: 1,
+                    template_key: 'template1',
+                    translation: {title: 'Article 1', content: 'Content 1'},
+                },
+            ]
+
+            const expected = [
+                {
+                    key: 'template1',
+                    title: 'Article 1',
+                    id: 1,
+                    html_content: 'Content 1',
+                    isSelected: true,
+                },
+                {key: 'template2', title: 'Template 2'},
+            ]
+
+            expect(
+                mapHelpCenterArticleData(
+                    articleTemplates as HelpCenterArticleItem[],
+                    articleListData as ArticleWithLocalTranslationAndRating[]
+                )
+            ).toEqual(expected)
         })
     })
 

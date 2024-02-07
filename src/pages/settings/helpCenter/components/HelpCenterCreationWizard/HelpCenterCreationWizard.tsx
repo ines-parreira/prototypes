@@ -86,15 +86,16 @@ const HelpCenterCreationWizardComponent = ({
                                 helpCenter={helpCenter}
                             />
                         </WizardStep>
-                        <WizardStep
-                            name={HelpCenterCreationWizardStep.Articles}
-                        >
-                            <HelpCenterCreationWizardStepArticles
-                                helpCenter={helpCenter}
-                                isUpdate={!!isUpdate}
-                                automateType={automateType}
-                            />
-                        </WizardStep>
+                        {helpCenter && (
+                            <WizardStep
+                                name={HelpCenterCreationWizardStep.Articles}
+                            >
+                                <HelpCenterCreationWizardStepArticles
+                                    helpCenter={helpCenter}
+                                    automateType={automateType}
+                                />
+                            </WizardStep>
+                        )}
                         {automateType === HelpCenterAutomateType.AUTOMATE &&
                             helpCenter && (
                                 <WizardStep

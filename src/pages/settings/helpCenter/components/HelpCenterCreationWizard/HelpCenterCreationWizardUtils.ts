@@ -1,12 +1,16 @@
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 import {
+    ArticleTemplate,
+    ArticleWithLocalTranslationAndRating,
     HelpCenter,
+    HelpCenterArticleItem,
     HelpCenterCreationWizardStep,
     Locale,
     LocaleCode,
 } from 'models/helpCenter/types'
 import {
+    DEFAULT_ARTICLE_GROUP,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_LANGUAGE_DEFAULT_UI,
     HelpCenterCreationWizard,
@@ -210,4 +214,42 @@ export const handleOnError = (
             message,
         })
     )
+}
+
+export const groupArticlesByCategory = (
+    articles: HelpCenterArticleItem[]
+): Record<string, HelpCenterArticleItem[]> => {
+    return articles.reduce((groups, item) => {
+        const category = item.category
+        return {...groups, [category]: [...(groups[category] || []), item]}
+    }, DEFAULT_ARTICLE_GROUP)
+}
+
+/**
+ * This is going to be expanded in the next PR to include more data (e.g. id of the article)
+ * it depends on the data needed by the article editor
+ * for now, initial data of template and updated title / content are enough
+ */
+export const mapHelpCenterArticleData = (
+    articleTemplates: ArticleTemplate[],
+    articleListData: ArticleWithLocalTranslationAndRating[]
+): HelpCenterArticleItem[] => {
+    return articleTemplates.map((template) => {
+        const matchingData = articleListData.find(
+            (data) => data.template_key === template.key
+        )
+
+        if (matchingData) {
+            return {
+                ...template,
+                id: matchingData.id,
+                key: template.key,
+                title: matchingData.translation.title,
+                html_content: matchingData.translation.content,
+                isSelected: true,
+            }
+        }
+
+        return template
+    })
 }
