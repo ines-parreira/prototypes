@@ -16,11 +16,12 @@ import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
 import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'
 import css from './HelpCenterWizardFlows.less'
 
+const FLOWS_LIMIT = 4
+
 type HelpCenterWizardFlowsProps = {
     shopName: string
     shopType: string
     helpCenterId: number
-    flowLimits: number
     supportedLocales: ChannelLanguage[]
     flows: Entrypoint[]
     onChange: (entrypoints: Entrypoint[]) => void
@@ -31,7 +32,6 @@ const HelpCenterWizardFlows = ({
     shopName,
     shopType,
     helpCenterId,
-    flowLimits,
     supportedLocales,
     onChange,
     flows,
@@ -62,7 +62,7 @@ const HelpCenterWizardFlows = ({
     }
 
     const shouldDisplayShowMoreButton =
-        !isShowMore && entrypoints.length > flowLimits
+        !isShowMore && entrypoints.length > FLOWS_LIMIT
 
     return (
         <div>
@@ -79,7 +79,7 @@ const HelpCenterWizardFlows = ({
                     <AnimatedFadeInOut isLoading={isWorkflowLoading}>
                         {isWorkflowLoading || isLoading ? (
                             <div className={css.loadingContainer}>
-                                {Array(flowLimits)
+                                {Array(FLOWS_LIMIT)
                                     .fill(null)
                                     .map((_, index) => (
                                         <Skeleton key={index} height={32} />
@@ -100,7 +100,7 @@ const HelpCenterWizardFlows = ({
                                 channelLanguages={supportedLocales}
                                 entrypoints={workflowsEntrypoints}
                                 maxActiveWorkflows={10}
-                                itemLimit={isShowMore ? undefined : flowLimits}
+                                itemLimit={isShowMore ? undefined : FLOWS_LIMIT}
                                 onChange={onChange}
                                 limitTooltipMessage="You’ve reached the maximum number of enabled flows. Disable another flow in order to enable this flow."
                             />

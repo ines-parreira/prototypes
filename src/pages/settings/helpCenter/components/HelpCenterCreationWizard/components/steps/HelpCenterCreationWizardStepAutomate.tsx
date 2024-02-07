@@ -7,12 +7,9 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getIntegrationsByType,
-    getIntegrationsByTypes,
-} from 'state/integrations/selectors'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
 import {useHelpCenterAutomationForm} from '../../hooks/useHelpCenterAutomationForm'
@@ -20,9 +17,6 @@ import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenter
 import HelpCenterWizardFlows from '../HelpCenterWizardFlows/HelpCenterWizardFlows'
 import HelpCenterWizardAutomationPreview from '../HelpCenterWizardAutomationPreview/HelpCenterWizardAutomationPreview'
 import css from './HelpCenterCreationWizardStepAutomate.less'
-
-const FLOWS_SMALL_LIMIT = 2
-const FLOWS_BIG_LIMIT = 8
 
 type Props = {
     helpCenter: HelpCenter
@@ -36,17 +30,11 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
         state,
         updateOrderManagementEnabled,
         updateArticleRecommendationEnabled,
-        updateChatIntegrationId,
         updateFlows,
     } = useHelpCenterAutomationForm({
         orderManagementEnabled:
             helpCenter.self_service_deactivated_datetime !== null,
     })
-    const chatIntegrations = useAppSelector(
-        getIntegrationsByType<GorgiasChatIntegration>(
-            IntegrationType.GorgiasChat
-        )
-    )
     const {automationSettings, isFetchPending} =
         useHelpCenterAutomationSettings(helpCenter.id)
 
@@ -73,8 +61,6 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
         (integration) => integration.name === helpCenter.shop_name
     )
 
-    const isArticleRecommendationEnabled = chatIntegrations.length > 0
-
     return (
         <WizardStepSkeleton
             step={HelpCenterCreationWizardStep.Automate}
@@ -99,19 +85,14 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
                     onChange={updateOrderManagementEnabled}
                     enabled={state.orderManagementEnabled}
                 />
-                {isArticleRecommendationEnabled && (
-                    <HelpCenterWizardArticleRec
-                        articleRecommendationEnabled={
-                            state.articleRecommendationEnabled
-                        }
-                        chatIntegrations={chatIntegrations}
-                        onArticleRecommendationEnabledChange={
-                            updateArticleRecommendationEnabled
-                        }
-                        selectedChatId={state.chatIntegrationId}
-                        onChatApplicationIdChange={updateChatIntegrationId}
-                    />
-                )}
+                <HelpCenterWizardArticleRec
+                    articleRecommendationEnabled={
+                        state.articleRecommendationEnabled
+                    }
+                    onArticleRecommendationEnabledChange={
+                        updateArticleRecommendationEnabled
+                    }
+                />
 
                 {helpCenterShopIntegration && (
                     <HelpCenterWizardFlows
@@ -122,11 +103,6 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
                         flows={state.flows}
                         onChange={updateFlows}
                         isLoading={isFetchPending}
-                        flowLimits={
-                            isArticleRecommendationEnabled
-                                ? FLOWS_SMALL_LIMIT
-                                : FLOWS_BIG_LIMIT
-                        }
                     />
                 )}
             </div>

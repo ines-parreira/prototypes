@@ -4,7 +4,6 @@ import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean
     articleRecommendationEnabled: boolean
-    chatIntegrationId: null | number
     flows: Entrypoint[]
 }
 
@@ -23,15 +22,9 @@ type ArticleRecommendationUpdateAction = {
     payload: boolean
 }
 
-type ChatIntegrationIdUpdateAction = {
-    type: 'chatIntegrationIdUpdate'
-    payload: null | number
-}
-
 type UseHelpCenterAutomationFormActions =
     | OrderManagementUpdateAction
     | ArticleRecommendationUpdateAction
-    | ChatIntegrationIdUpdateAction
     | FlowsUpdateAction
 
 const reducer = (
@@ -43,8 +36,6 @@ const reducer = (
             return {...state, orderManagementEnabled: action.payload}
         case 'articleRecommendationUpdate':
             return {...state, articleRecommendationEnabled: action.payload}
-        case 'chatIntegrationIdUpdate':
-            return {...state, chatIntegrationId: action.payload}
         case 'flowsUpdate':
             return {...state, flows: action.payload}
     }
@@ -53,7 +44,6 @@ const reducer = (
 const defaultState: UseHelpCenterAutomationFormState = {
     orderManagementEnabled: true,
     articleRecommendationEnabled: true,
-    chatIntegrationId: null,
     flows: [],
 }
 
@@ -76,10 +66,6 @@ export const useHelpCenterAutomationForm = (
         []
     )
 
-    const updateChatIntegrationId = useCallback((chatId: null | number) => {
-        dispatch({type: 'chatIntegrationIdUpdate', payload: chatId})
-    }, [])
-
     const updateFlows = useCallback((flows: Entrypoint[]) => {
         dispatch({type: 'flowsUpdate', payload: flows})
     }, [])
@@ -88,7 +74,6 @@ export const useHelpCenterAutomationForm = (
         state,
         updateOrderManagementEnabled,
         updateArticleRecommendationEnabled,
-        updateChatIntegrationId,
         updateFlows,
     }
 }

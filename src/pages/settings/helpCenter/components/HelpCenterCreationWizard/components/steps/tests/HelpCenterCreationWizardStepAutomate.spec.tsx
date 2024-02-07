@@ -1,7 +1,7 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -22,7 +22,10 @@ jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
     jest.fn()
 )
 
-const helpCenterFixture = getHelpCentersResponseFixture.data[0]
+const helpCenterFixture = {
+    ...getHelpCentersResponseFixture.data[0],
+    shop_name: shopifyIntegration.name,
+}
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const mockedUseWorkflowConfigurations = jest.mocked(useWorkflowConfigurations)
@@ -32,7 +35,7 @@ const renderComponent = (
     fixtures?: {integrations?: Integration[]; helpCenter?: HelpCenter}
 ) => {
     const {
-        integrations = chatIntegrationFixtures,
+        integrations = [shopifyIntegration],
         helpCenter = helpCenterFixture,
     } = fixtures ?? {}
     const defaultStore = {
@@ -142,7 +145,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
     })
 
     describe('article recommendation', () => {
-        it('should be enabled by default and show chat integration', () => {
+        it('should be enabled by default', () => {
             renderComponent({})
 
             expect(
@@ -150,9 +153,6 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                     /Recommend articles from this Help Center in my Chat/i
                 )
             ).toBeChecked()
-            expect(
-                screen.getByLabelText(/Connect a Chat integration/i)
-            ).toBeInTheDocument()
         })
 
         it('should toggle article recommendation and hide chat integration', () => {
@@ -172,25 +172,6 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             expect(
                 screen.queryByLabelText(/Connect a Chat integration/i)
             ).not.toBeInTheDocument()
-        })
-
-        it('should select chat from dropdown', async () => {
-            const chatName = chatIntegrationFixtures[0].name
-            renderComponent({})
-
-            fireEvent.click(
-                screen.getByLabelText(/Connect a Chat integration/i)
-            )
-
-            await waitFor(() =>
-                expect(screen.getByText(chatName)).toBeInTheDocument()
-            )
-
-            fireEvent.click(screen.getByText(chatName))
-
-            expect(
-                screen.getByTestId('selected-chat-integration')
-            ).toHaveTextContent(chatName)
         })
     })
 
