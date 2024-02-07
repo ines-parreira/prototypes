@@ -1010,6 +1010,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 portalRootId="app-root"
                 onBackdropClick={onCloseModalAttempt}
                 transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
+                containerZIndices={[100, -1]}
             >
                 {renderArticleEditModalContent(
                     getArticleMode(selectedArticle, articleModified, {

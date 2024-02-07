@@ -42,11 +42,20 @@
     .sectionWrapper {
         display: flex;
         justify-content: space-between;
+        margin-top: @layout-spacing-l;
+
+        &.emptyState {
+            margin-top: 0px;
+        }
     }
 
     .title {
         font-size: @heading-section-medium-font-size;
         font-weight: 600;
+    }
+
+    .description {
+        padding-top: @layout-spacing-xs;
     }
 
     .templatesContainer {

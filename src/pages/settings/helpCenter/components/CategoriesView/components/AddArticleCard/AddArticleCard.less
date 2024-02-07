@@ -1,0 +1,25 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        border-radius: 4px;
+        border: 1px dashed var(--neutral-grey-3);
+        background: var(--neutral-grey-1);
+        padding: @layout-spacing-s;
+        cursor: pointer;
+        transition: ease-in-out 0.2s;
+        order: 100001; // Orders for static article templates can be from 1 to 100000. This is to make sure that the Add Article Card is always at the end.
+
+        &:hover {
+            box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        }
+    }
+
+    .header {
+        display: flex;
+        margin-bottom: @layout-spacing-xs;
+        font-size: 32px;
+        color: var(--neutral-grey-3);
+    }
+}
