@@ -103,7 +103,7 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
                 preview={
                     <HelpCenterPreview
                         name={newHelpCenter.name}
-                        logoUrl={newHelpCenter.brandLogoUrl!}
+                        logoUrl={newHelpCenter.brandLogoUrl}
                     >
                         <HelpCenterPreviewHomePage
                             primaryColor={newHelpCenter.primaryColor}

@@ -43,7 +43,10 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
 
     return (
         <HelpCenterPreviewAutomation
-            flows={workflowsEntrypoints.map((entrypoint) => entrypoint.label)}
+            flows={workflowsEntrypoints.map((entrypoint) => ({
+                name: entrypoint.label,
+                id: entrypoint.workflow_id,
+            }))}
             orderManagement={[
                 ...(selfServiceConfiguration?.track_order_policy.enabled
                     ? (['track_order_policy'] as const)

@@ -32,8 +32,11 @@ export const AutomationPreview: Story = {
             <HelpCenterPreviewAutomation
                 primaryColor="#E03997"
                 flows={[
-                    'Submit a product idea',
-                    'Get replacement parts with long name included in this string',
+                    {name: 'Submit a product idea', id: '1'},
+                    {
+                        name: 'Get replacement parts with long name included in this string',
+                        id: '2',
+                    },
                 ]}
                 orderManagement={[
                     'track_order_policy',

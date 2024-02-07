@@ -5,7 +5,7 @@ import css from './HelpCenterPreview.less'
 type Props = {
     children: ReactNode
     name: string
-    logoUrl?: string
+    logoUrl?: string | null
 }
 
 const HelpCenterPreview = ({children, name, logoUrl}: Props) => {

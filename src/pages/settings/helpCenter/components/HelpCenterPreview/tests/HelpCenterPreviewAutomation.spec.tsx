@@ -11,8 +11,11 @@ const renderComponent = (
 describe('<HelpCenterPreviewAutomation />', () => {
     it('should render flows and order management', () => {
         const flows = [
-            'Submit a product idea',
-            'Get replacement parts with long name included in this string',
+            {name: 'Submit a product idea', id: '1'},
+            {
+                name: 'Get replacement parts with long name included in this string',
+                id: '2',
+            },
         ]
         const orderManagement = [
             'report_issue_policy',
@@ -24,7 +27,7 @@ describe('<HelpCenterPreviewAutomation />', () => {
         renderComponent({flows, orderManagement})
 
         flows.forEach((flow) => {
-            expect(screen.getByText(flow)).toBeInTheDocument()
+            expect(screen.getByText(flow.name)).toBeInTheDocument()
         })
 
         expect(screen.getByText('Return')).toBeInTheDocument()

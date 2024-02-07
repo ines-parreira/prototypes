@@ -18,6 +18,7 @@ import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/
 import {useHelpCenterAutomationForm} from '../../hooks/useHelpCenterAutomationForm'
 import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
 import HelpCenterWizardFlows from '../HelpCenterWizardFlows/HelpCenterWizardFlows'
+import HelpCenterWizardAutomationPreview from '../HelpCenterWizardAutomationPreview/HelpCenterWizardAutomationPreview'
 import css from './HelpCenterCreationWizardStepAutomate.less'
 
 const FLOWS_SMALL_LIMIT = 2
@@ -81,6 +82,17 @@ const HelpCenterCreationWizardStepAutomate: React.FC<Props> = ({
             titles={HELP_CENTER_STEPS_TITLES}
             descriptions={HELP_CENTER_STEPS_DESCRIPTIONS}
             footer={<div>Footer</div>}
+            preview={
+                helpCenterShopIntegration && (
+                    <HelpCenterWizardAutomationPreview
+                        shopType={helpCenterShopIntegration.type}
+                        shopName={helpCenterShopIntegration.name}
+                        helpCenter={helpCenter}
+                        flows={state.flows}
+                        orderManagementEnabled={state.orderManagementEnabled}
+                    />
+                )
+            }
         >
             <div className={css.container}>
                 <HelpCenterWizardOrderManagement

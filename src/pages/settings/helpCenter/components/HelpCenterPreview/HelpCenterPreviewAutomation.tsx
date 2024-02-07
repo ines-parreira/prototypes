@@ -40,7 +40,7 @@ const getOrderManagementLabel = (orderManagement: PolicyKey) => {
 }
 
 type HelpCenterPreviewAutomationProps = {
-    flows: string[]
+    flows: {name: string; id: string}[]
     // Readonly is used to simplify type casting and using `as const`
     orderManagement: Readonly<PolicyKey[]>
     highlightedOrderManagement?: Maybe<PolicyKey>
@@ -67,8 +67,8 @@ const HelpCenterPreviewAutomation = ({
             }
         >
             {flows.map((flow) => (
-                <div key={flow} className={css.flowItem}>
-                    <span className={css.flowName}>{flow}</span>
+                <div key={flow.id} className={css.flowItem}>
+                    <span className={css.flowName}>{flow.name}</span>
                     <span className={css.flowIcon}>
                         <i className="material-icons">chevron_right</i>
                     </span>
