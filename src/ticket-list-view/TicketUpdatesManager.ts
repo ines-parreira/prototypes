@@ -17,12 +17,12 @@ const PAGE_LIMIT = 25
 const POLLING_INTERVAL = 5000
 
 export default class TicketUpdatesManager {
-    private initialLoaded = false
     private latestIndex = 0
     private latestTimestamp = 0
     private listener: Listener | null = null
     private loading = false
     private nextCursor: CursorMeta['next_cursor'] = null
+    private pollTimeout: ReturnType<typeof setTimeout> | null = null
     private sortOrder: SortOrder
     private tickets: TicketPartial[] = []
     private viewId: number
@@ -33,7 +33,16 @@ export default class TicketUpdatesManager {
     }
 
     async loadMore() {
-        await this.getPage()
+        if (!this.listener || this.loading) return
+
+        this.loading = true
+
+        const {data, meta} = await this.getPage(this.sortOrder, this.nextCursor)
+        this.nextCursor = meta.next_cursor
+        this.tickets = [...this.tickets, ...data.map(transformApiTicketPartial)]
+        this.listener(this.tickets, this.nextCursor)
+
+        this.loading = false
     }
 
     setLatest = (index: number, timestamp: number) => {
@@ -48,76 +57,90 @@ export default class TicketUpdatesManager {
 
         return () => {
             this.listener = null
+            if (this.pollTimeout) {
+                clearTimeout(this.pollTimeout)
+            }
         }
     }
 
-    private async getPage() {
+    private async getPage(
+        sortOrder: SortOrder,
+        cursor: CursorMeta['next_cursor']
+    ) {
+        const response = await appQueryClient.fetchQuery({
+            queryFn: () =>
+                getViewTicketUpdates(this.viewId, {
+                    cursor,
+                    limit: PAGE_LIMIT,
+                    order_by: sortOrder,
+                }),
+            queryKey: viewItemsDefinitionKeys.updates(this.viewId),
+        })
+
+        return response.data
+    }
+
+    private async getTicketsUpTo(sortOrder: SortOrder, timestamp: number) {
+        const response = await appQueryClient.fetchQuery({
+            queryFn: () =>
+                getViewTicketUpdates(this.viewId, {
+                    order_by: sortOrder,
+                    up_to_timestamp: timestamp,
+                }),
+            queryKey: viewItemsDefinitionKeys.updates(this.viewId),
+        })
+
+        return response.data
+    }
+
+    private async poll() {
+        if (!this.listener || this.loading) return
+
+        // we want to get the full first page if:
+        // - the amount of tickets in the view is lower than the PAGE_LIMIT, OR
+        // - if the amount of tickets is equal to the PAGE_LIMIT and there is no cursor
+        // in this case, we simply replace the full tickets array that we know about
         if (
-            !this.listener ||
-            this.loading ||
-            (this.initialLoaded && !this.nextCursor)
+            this.tickets.length < PAGE_LIMIT ||
+            (this.tickets.length === PAGE_LIMIT && !this.nextCursor)
         ) {
+            this.loading = true
+
+            const {data, meta} = await this.getPage(this.sortOrder, null)
+            this.nextCursor = meta.next_cursor
+            this.tickets = data.map(transformApiTicketPartial)
+            this.listener(this.tickets, this.nextCursor)
+
+            this.loading = false
             return
         }
 
+        // if the latest timestamp is not known yet (since this comes from the data
+        // request), we just skip this polling attempt
+        if (this.latestTimestamp === 0) return
+
         this.loading = true
 
-        const response = await appQueryClient.fetchQuery({
-            queryFn: () =>
-                getViewTicketUpdates(this.viewId, {
-                    cursor: this.nextCursor,
-                    limit: PAGE_LIMIT,
-                    order_by: this.sortOrder,
-                }),
-            queryKey: viewItemsDefinitionKeys.updates(this.viewId),
-        })
-
-        const {data, meta} = response.data
-        this.nextCursor = meta.next_cursor
-        this.tickets = [...this.tickets, ...data.map(transformApiTicketPartial)]
+        const {data} = await this.getTicketsUpTo(
+            this.sortOrder,
+            this.latestTimestamp
+        )
+        this.tickets.splice(
+            0,
+            this.latestIndex + 1,
+            ...data.map(transformApiTicketPartial)
+        )
         this.listener(this.tickets, this.nextCursor)
 
         this.loading = false
-        if (this.tickets.length) {
-            this.initialLoaded = true
-        }
     }
 
-    private poll = async () => {
-        if (!this.listener) return
-
-        if (!this.tickets.length) {
-            return await this.getPage()
-        }
-
-        const response = await appQueryClient.fetchQuery({
-            queryFn: () =>
-                getViewTicketUpdates(this.viewId, {
-                    order_by: this.sortOrder,
-                    up_to_timestamp: this.latestTimestamp,
-                }),
-            queryKey: viewItemsDefinitionKeys.updates(this.viewId),
-        })
-
-        const {data} = response.data
-        const newTickets = [...this.tickets]
-        newTickets.splice(
-            0,
-            this.latestIndex,
-            ...data.map(transformApiTicketPartial)
-        )
-
-        this.tickets = newTickets
-        this.listener(this.tickets, this.nextCursor)
-    }
-
-    private async start() {
-        await this.getPage()
-
+    private start() {
         const next = () => {
             void this.poll()
-            setTimeout(next, POLLING_INTERVAL)
+            this.pollTimeout = setTimeout(next, POLLING_INTERVAL)
         }
-        setTimeout(next, POLLING_INTERVAL)
+
+        next()
     }
 }

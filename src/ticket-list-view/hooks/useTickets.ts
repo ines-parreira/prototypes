@@ -49,11 +49,12 @@ export default function useTickets(
         [debouncedOffset]
     )
     const endIndex = useMemo(
-        () => Math.ceil((debouncedOffset + debouncedHeight) / TICKET_HEIGHT),
+        () =>
+            Math.ceil((debouncedOffset + debouncedHeight) / TICKET_HEIGHT) - 1,
         [debouncedHeight, debouncedOffset]
     )
     const visiblePartials = useMemo(
-        () => partials.slice(startIndex, endIndex),
+        () => partials.slice(startIndex, endIndex + 1),
         [endIndex, partials, startIndex]
     )
     const visiblePartialsMap = useMemo(
