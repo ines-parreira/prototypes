@@ -7,9 +7,10 @@ import React, {
     ReactElement,
     useCallback,
     useMemo,
+    useRef,
 } from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
-import {Components, Virtuoso} from 'react-virtuoso'
+import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getViewPlainJS} from 'state/views/selectors'
@@ -17,6 +18,7 @@ import {getViewPlainJS} from 'state/views/selectors'
 import {TICKET_HEIGHT} from '../constants'
 import useSortOrder from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
+import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import {TicketSummary} from '../types'
 
 import SortOrderDropdown from './SortOrderDropdown'
@@ -98,6 +100,14 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
         [ticketIds]
     )
 
+    const virtuosoRef = useRef<VirtuosoHandle>(null)
+    useScrollActiveTicketIntoView(
+        activeTicketId,
+        tickets,
+        ticketIds,
+        virtuosoRef
+    )
+
     return (
         <div className={css.wrapper}>
             <div className={css.titleWrapper}>
@@ -106,6 +116,7 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
             </div>
             <div className={css.list}>
                 <Virtuoso
+                    ref={virtuosoRef}
                     atBottomThreshold={TICKET_HEIGHT * 2}
                     className={css.scroller}
                     data={tickets}
