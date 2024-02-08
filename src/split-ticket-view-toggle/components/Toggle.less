@@ -1,3 +1,5 @@
+@import (reference) '~css/new/mixins';
+
 :local {
     .toggle {
         width: 60px;
@@ -14,6 +16,10 @@
 
         &:focus {
             outline: 0;
+        }
+
+        @media @mobiles {
+            display: none;
         }
     }
 

@@ -2,6 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useEffect, useMemo, useRef} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
 
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getActiveView} from 'state/views/selectors'
@@ -15,8 +16,15 @@ export default function useSplitTicketViewSwitcher() {
     const history = useHistory()
     const {pathname: path} = useLocation()
     const [enabled] = useSplitTicketView()
-    const prevEnabled = useRef<boolean | undefined>(undefined)
     const activeView = useAppSelector(getActiveView)
+    const isMobileResolution = useIsMobileResolution()
+    const isSplitTicketViewEnabled = useMemo(
+        () => enabled && !isMobileResolution,
+        [enabled, isMobileResolution]
+    )
+    const previousIsSplitTicketViewEnabled = useRef<boolean | undefined>(
+        undefined
+    )
 
     const activeViewId = useMemo(
         () => activeView.get('id') as number,
@@ -30,13 +38,16 @@ export default function useSplitTicketViewSwitcher() {
             return
         }
 
-        if (enabled === prevEnabled.current) {
+        if (
+            isSplitTicketViewEnabled ===
+            previousIsSplitTicketViewEnabled.current
+        ) {
             return
         }
 
-        prevEnabled.current = enabled
+        previousIsSplitTicketViewEnabled.current = isSplitTicketViewEnabled
 
-        if (!enabled) {
+        if (!isSplitTicketViewEnabled) {
             if (ticketId) {
                 history.push(`/app/ticket/${ticketId}`)
                 return
@@ -72,7 +83,8 @@ export default function useSplitTicketViewSwitcher() {
         }
     }, [
         activeViewId,
-        enabled,
+        isSplitTicketViewEnabled,
+        previousIsSplitTicketViewEnabled,
         hasSplitTicketView,
         history,
         path,

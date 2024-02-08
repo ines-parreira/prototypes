@@ -1,0 +1,2 @@
+export const MOBILE_BREAKPOINT = 768
+export const UPDATE_DEBOUNCE_TIME = 200
