@@ -529,7 +529,6 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         screenshots: [
             '/img/integrations/screenshots/recharge-1.jpeg',
             '/img/integrations/screenshots/recharge-2.jpeg',
-            '/img/integrations/screenshots/recharge-3.jpeg',
         ],
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails:

@@ -150,15 +150,6 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
             src="/assets/img/integrations/screenshots/recharge-2.jpeg"
           />
         </li>
-        <li
-          class="screenshotListItem"
-        >
-          <img
-            alt="Screenshot number 3 of things this products allows you to do in Gorgias"
-            class="screenshot"
-            src="/assets/img/integrations/screenshots/recharge-3.jpeg"
-          />
-        </li>
       </ul>
     </section>
     <div
