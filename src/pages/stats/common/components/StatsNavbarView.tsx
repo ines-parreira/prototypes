@@ -20,8 +20,6 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
 export default function StatsNavbarView() {
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
-    const isVoiceAnalyticsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
@@ -229,22 +227,20 @@ export default function StatsNavbarView() {
                     </div>
                 </NavbarBlock>
             )}
-            {isVoiceAnalyticsEnabled && (
-                <NavbarBlock title={'Voice'} icon={'phone'}>
+            <NavbarBlock title={'Voice'} icon={'phone'}>
+                <VoiceStatsNavbarItem
+                    to={'/app/stats/voice-overview'}
+                    title={'Overview'}
+                    commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                />
+                {displayVoiceAnalyticsV1 && (
                     <VoiceStatsNavbarItem
-                        to={'/app/stats/voice-overview'}
-                        title={'Overview'}
+                        to={'/app/stats/voice-agents'}
+                        title={'Agents'}
                         commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                     />
-                    {displayVoiceAnalyticsV1 && (
-                        <VoiceStatsNavbarItem
-                            to={'/app/stats/voice-agents'}
-                            title={'Agents'}
-                            commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                        />
-                    )}
-                </NavbarBlock>
-            )}
+                )}
+            </NavbarBlock>
         </>
     )
 }

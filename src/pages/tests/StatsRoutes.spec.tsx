@@ -71,7 +71,7 @@ describe('<StatsRoutes/>', () => {
 
     it('should make Voice analytics route available', async () => {
         mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalytics]: true,
+            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: false,
         })
         const {findByText} = renderStatsRoutes()
 
@@ -80,20 +80,8 @@ describe('<StatsRoutes/>', () => {
         expect(await findByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
     })
 
-    it('should not make Voice analytics route available (FF off)', () => {
-        mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalytics]: false,
-        })
-        const {queryByText} = renderStatsRoutes()
-
-        act(() => mockHistory.push('/stats/voice-overview'))
-
-        expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeNull()
-    })
-
     it('should make Voice agents route available', async () => {
         mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalytics]: true,
             [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
         })
         const {findByText} = renderStatsRoutes()
@@ -105,7 +93,6 @@ describe('<StatsRoutes/>', () => {
 
     it('should not make Voice agents route available (FF off)', () => {
         mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalytics]: false,
             [FeatureFlagKey.DisplayVoiceAnalyticsV1]: false,
         })
         const {queryByText} = renderStatsRoutes()

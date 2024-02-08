@@ -41,7 +41,6 @@ export enum FeatureFlagKey {
     ConvertCampaignBundleWarning = 'convert-campaign-bundle-warning',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
-    DisplayVoiceAnalytics = 'display-voice-analytics',
     DisplayVoiceAnalyticsNiceToHave = 'display-voice-analytics-nice-to-have',
     DisplayVoiceAnalyticsV1 = 'display-voice-analytics-v-1',
     EarlyAdopter = 'early-adopter',

@@ -495,8 +495,6 @@ export function StatsRoutes() {
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
-    const displayVoiceAnalytics: boolean | undefined =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
@@ -714,18 +712,16 @@ export function StatsRoutes() {
                         path={`${path}/help-center`}
                         render={HelpCenterStatsRoutes}
                     />
-                    {displayVoiceAnalytics && (
-                        <Route
-                            exact
-                            path={`${path}/voice-overview`}
-                            render={() => (
-                                <App
-                                    content={VoiceOverview}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            )}
-                        />
-                    )}
+                    <Route
+                        exact
+                        path={`${path}/voice-overview`}
+                        render={() => (
+                            <App
+                                content={VoiceOverview}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
                     {displayVoiceAnalyticsV1 && (
                         <Route
                             exact
