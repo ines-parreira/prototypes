@@ -6,7 +6,6 @@ import ChartCard from 'pages/stats/ChartCard'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
 import LineChart from 'pages/stats/LineChart'
-import {MESSAGES_SENT_LABEL} from 'services/reporting/constants'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {periodToReportingGranularity} from 'utils/reporting'
@@ -38,11 +37,7 @@ export const OverviewChartCard = ({
         <ChartCard title={title} hint={hint}>
             <LineChart
                 isLoading={!timeSeries.data}
-                data={formatTimeSeriesData(
-                    timeSeries.data,
-                    MESSAGES_SENT_LABEL,
-                    granularity
-                )}
+                data={formatTimeSeriesData(timeSeries.data, title, granularity)}
                 hasBackground
                 _displayLegacyTooltip
             />
