@@ -19,8 +19,12 @@ import {
 } from 'pages/stats/voice/constants/voiceAgents'
 import {VoiceAgentsTable} from 'pages/stats/voice/components/VoiceAgentsTable/VoiceAgentsTable'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
+import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
+import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 
 function VoiceAgents() {
+    const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     useCleanStatsFilters(pageStatsFilters)
 
@@ -28,17 +32,29 @@ function VoiceAgents() {
         <StatsPage
             title={VOICE_AGENTS_PAGE_TITLE}
             filters={
-                <PeriodStatsFilter
-                    initialSettings={{
-                        minDate: moment(
-                            MIN_DATE_FOR_ADVANCED_VOICE_STATS,
-                            'YYYY-MM-DD'
-                        ).toDate(),
-                        maxSpan: 365,
-                    }}
-                    value={pageStatsFilters.period}
-                    variant={'ghost'}
-                />
+                <>
+                    <IntegrationsStatsFilter
+                        value={pageStatsFilters.integrations}
+                        integrations={phoneIntegrations}
+                        isMultiple
+                        variant={'ghost'}
+                    />
+                    <AgentsStatsFilter
+                        value={pageStatsFilters.agents}
+                        variant={'ghost'}
+                    />
+                    <PeriodStatsFilter
+                        initialSettings={{
+                            minDate: moment(
+                                MIN_DATE_FOR_ADVANCED_VOICE_STATS,
+                                'YYYY-MM-DD'
+                            ).toDate(),
+                            maxSpan: 365,
+                        }}
+                        value={pageStatsFilters.period}
+                        variant={'ghost'}
+                    />
+                </>
             }
         >
             <DashboardSection>
