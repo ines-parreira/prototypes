@@ -25,6 +25,7 @@ import ListItem from 'gorgias-design-system/List/ListItem'
 import Card from 'gorgias-design-system/Cards/Card'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
 import ConversationAvatars from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationAvatars'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../constants'
 import css from './SelfServiceChatIntegrationHomePage.less'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
@@ -139,6 +140,10 @@ const SelfServiceChatIntegrationHomePage = ({
             />
         )
     }
+    const maxActiveWorkflows = Math.max(
+        MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS - quickResponses.length,
+        0
+    )
 
     return (
         <div
@@ -150,13 +155,15 @@ const SelfServiceChatIntegrationHomePage = ({
                 {(quickResponses.length > 0 ||
                     workflowsEntrypoints.length > 0) && (
                     <List>
-                        {workflowsEntrypoints.map((entrypoint) => (
-                            <ListItem
-                                key={entrypoint.workflow_id}
-                                label={entrypoint.label}
-                                trailIcon={<ChevronRightIcon />}
-                            />
-                        ))}
+                        {workflowsEntrypoints
+                            .slice(0, maxActiveWorkflows)
+                            .map((entrypoint) => (
+                                <ListItem
+                                    key={entrypoint.workflow_id}
+                                    label={entrypoint.label}
+                                    trailIcon={<ChevronRightIcon />}
+                                />
+                            ))}
                         {quickResponses.map((quickResponse) => (
                             <ListItem
                                 key={quickResponse.id}

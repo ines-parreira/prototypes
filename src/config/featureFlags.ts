@@ -62,6 +62,7 @@ export enum FeatureFlagKey {
     ObservabilityArticleTemplates = 'observability-article-templates',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MLFeaturesKillswitch = 'ml-features-killswitch',
+    MLFlowsRecommendation = 'ml-flows-recommendation',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     NavbarImprovements = 'navbar-improvements',

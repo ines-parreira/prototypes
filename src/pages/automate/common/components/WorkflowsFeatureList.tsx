@@ -4,8 +4,10 @@ import _isEqual from 'lodash/isEqual'
 import _uniq from 'lodash/uniq'
 import {Link} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
@@ -135,7 +137,12 @@ const WorkflowsFeatureList = ({
         channelLanguages
     )
 
-    const isLimitReached = enabledEntrypointsCount >= maxActiveWorkflows
+    const isMLFlowRecommendationEnabled =
+        useFlags()[FeatureFlagKey.MLFlowsRecommendation]
+
+    const isLimitReached = isMLFlowRecommendationEnabled
+        ? false
+        : enabledEntrypointsCount >= maxActiveWorkflows
 
     return (
         <div className={css.container}>

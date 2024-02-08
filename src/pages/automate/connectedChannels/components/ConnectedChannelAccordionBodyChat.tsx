@@ -2,6 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
@@ -12,6 +13,7 @@ import {ChannelLanguage} from 'pages/automate/common/types'
 import {TicketChannel} from 'business/types/ticket'
 
 import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
     ARTICLE_RECOMMENDATION,
@@ -31,6 +33,9 @@ type Props = {
 
 const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const applicationId = channel.value.meta.app_id!
+
+    const isMLFlowRecommendationEnabled =
+        useFlags()[FeatureFlagKey.MLFlowsRecommendation]
 
     const {
         applicationsAutomationSettings,
@@ -96,18 +101,23 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         }
     }
 
-    const maxActiveWorkflows = Math.max(
-        MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS -
-            enabledQuickResponsesCount * Number(quickResponses.enabled),
-        0
-    )
+    const maxActiveWorkflows =
+        isMLFlowRecommendationEnabled && workflows?.entrypoints?.length
+            ? workflows.entrypoints.length
+            : Math.max(
+                  MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS -
+                      enabledQuickResponsesCount *
+                          Number(quickResponses.enabled),
+                  0
+              )
 
     const enabledEntrypointsCount =
         workflows.entrypoints?.filter((entrypoint) => entrypoint.enabled)
             .length ?? 0
-    const cantReactivateQuickResponses =
-        enabledEntrypointsCount + enabledQuickResponsesCount >
-            MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS && !quickResponses.enabled
+    const cantReactivateQuickResponses = isMLFlowRecommendationEnabled
+        ? false
+        : enabledEntrypointsCount + enabledQuickResponsesCount >
+              MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS && !quickResponses.enabled
 
     const channelLanguages = getLanguagesFromChatConfig(
         channel.value.meta
