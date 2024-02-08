@@ -149,7 +149,19 @@ export const VoiceCallTable = ({
                         <HeaderCellProperty
                             title={'State'}
                             className={css.smallCell}
-                            tooltip={'The status of the phone call.'}
+                            tooltip={
+                                <>
+                                    The status of the phone call.
+                                    <br />
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/voice-statistics-384475#activity"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Learn about the call states
+                                    </a>
+                                </>
+                            }
                         />
                         {displayVoiceAnalyticsV1 && (
                             <HeaderCellProperty

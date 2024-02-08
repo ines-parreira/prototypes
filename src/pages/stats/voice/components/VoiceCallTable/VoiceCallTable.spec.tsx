@@ -136,6 +136,51 @@ describe('VoiceCallTable', () => {
         expect(getByText('Ticket')).toBeInTheDocument()
     })
 
+    it('should render table tooltips', async () => {
+        useVoiceCallListMock.mockReturnValue({
+            data: [{}],
+            isFetching: false,
+        } as UseQueryResult<VoiceCallSummary[], unknown>)
+        useVoiceCallCountMock.mockReturnValue({total: 100, totalPages: 10})
+
+        const {getAllByText, getByText} = renderComponent()
+        const helpIcons = getAllByText('info_outline')
+
+        // State tooltip
+        fireEvent.mouseOver(helpIcons[0])
+        await waitFor(() =>
+            expect(getByText('Learn about the call states')).toBeInTheDocument()
+        )
+
+        // Recording tooltip
+        fireEvent.mouseOver(helpIcons[1])
+        await waitFor(() =>
+            expect(
+                getByText('Call recording or voicemail left by customer.')
+            ).toBeInTheDocument()
+        )
+
+        // Length tooltip
+        fireEvent.mouseOver(helpIcons[2])
+        await waitFor(() =>
+            expect(
+                getByText(
+                    'Total duration from the moment the agent accepts the call.'
+                )
+            ).toBeInTheDocument()
+        )
+
+        // Wait time tooltip
+        fireEvent.mouseOver(helpIcons[3])
+        await waitFor(() =>
+            expect(
+                getByText(
+                    'Time a customer spent waiting to be connected to an agent or sent to voicemail.'
+                )
+            ).toBeInTheDocument()
+        )
+    })
+
     it('should render loading state rows', () => {
         useVoiceCallListMock.mockReturnValue({
             data: [{}],
