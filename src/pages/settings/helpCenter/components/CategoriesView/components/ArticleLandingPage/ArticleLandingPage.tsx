@@ -14,6 +14,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
@@ -44,12 +45,15 @@ const ArticleLandingPageComponent = ({
     const helpCenter = useCurrentHelpCenter()
     const supportedLocales = helpCenter.supported_locales
 
+    const {setSelectedArticleLanguage} = useEditionManager()
+
     const dispatch = useAppDispatch()
 
     const isEmptyStateMode = !showBackButton
 
     const handleOnChangeLocale = (value: React.ReactText) => {
         dispatch(changeViewLanguage(validLocaleCode(value)))
+        setSelectedArticleLanguage(validLocaleCode(value))
     }
 
     const {data, isLoading: isArticleTemplatesLoading} =

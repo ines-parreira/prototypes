@@ -12,6 +12,7 @@ import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCate
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import ArticleLandingPage from '../ArticleLandingPage'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -65,13 +66,15 @@ describe('<ArticleLandingPage />', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore(initialState)}>
-                    <ArticleLandingPage
-                        onCreateArticle={jest.fn()}
-                        onCreateArticleWithTemplate={jest.fn()}
-                        canUpdateArticle={true}
-                        showBackButton={false}
-                        onBackButtonClick={jest.fn()}
-                    />
+                    <EditionManagerContextProvider>
+                        <ArticleLandingPage
+                            onCreateArticle={jest.fn()}
+                            onCreateArticleWithTemplate={jest.fn()}
+                            canUpdateArticle={true}
+                            showBackButton={false}
+                            onBackButtonClick={jest.fn()}
+                        />
+                    </EditionManagerContextProvider>
                 </Provider>
             </QueryClientProvider>
         )
@@ -91,13 +94,15 @@ describe('<ArticleLandingPage />', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore(initialState)}>
-                    <ArticleLandingPage
-                        onCreateArticle={onCreateArticle}
-                        onCreateArticleWithTemplate={jest.fn()}
-                        canUpdateArticle={true}
-                        showBackButton={false}
-                        onBackButtonClick={jest.fn()}
-                    />
+                    <EditionManagerContextProvider>
+                        <ArticleLandingPage
+                            onCreateArticle={onCreateArticle}
+                            onCreateArticleWithTemplate={jest.fn()}
+                            canUpdateArticle={true}
+                            showBackButton={false}
+                            onBackButtonClick={jest.fn()}
+                        />
+                    </EditionManagerContextProvider>
                 </Provider>
             </QueryClientProvider>
         )
