@@ -4,7 +4,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import GaugeChart from 'pages/stats/GaugeChart'
-import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
+import {
+    TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
+    WORKLOAD_BY_CHANNEL_HINT_MESSAGE,
+} from 'services/reporting/constants'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export const WorkloadPerChannelChart = () => {
@@ -19,7 +22,7 @@ export const WorkloadPerChannelChart = () => {
     return (
         <ChartCard
             title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
-            hint="Distribution of all tickets of the period (both “open” and “closed”) by channel"
+            hint={WORKLOAD_BY_CHANNEL_HINT_MESSAGE}
         >
             {workloadPerChannel.data ? (
                 <GaugeChart data={workloadPerChannel.data} />

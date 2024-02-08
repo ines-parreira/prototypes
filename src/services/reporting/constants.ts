@@ -23,3 +23,6 @@ export enum MetricName {
     MedianResolutionTime = 'medianResolutionTime',
     MessagesPerTicket = 'messagesPerTicket',
 }
+
+export const WORKLOAD_BY_CHANNEL_HINT_MESSAGE =
+    'Total number of tickets that had to be handled during the selected timeframe(all closed tickets plus tickets that are still open at the end of the period) broken down by channel.\n\nFor open tickets, only counts tickets that have been created during or within the 180 days preceding the start of the period.'

@@ -36,7 +36,10 @@ export default function ChartCard({
                     <span>{title}</span>
                     {hint && (
                         <IconTooltip
-                            tooltipProps={tooltipProps}
+                            tooltipProps={{
+                                innerClassName: css.innerTooltip,
+                                ...tooltipProps,
+                            }}
                             className={css.tooltip}
                         >
                             {hint}
