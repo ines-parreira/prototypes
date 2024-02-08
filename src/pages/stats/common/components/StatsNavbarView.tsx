@@ -4,7 +4,6 @@ import classNames from 'classnames'
 
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import NavbarLink, {
     NavbarLinkProps,
@@ -155,12 +154,6 @@ export default function StatsNavbarView() {
                                 to="/app/stats/help-center"
                             >
                                 Help Center
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    NEW
-                                </Badge>
                             </NavbarLink>
                         </div>
                     )}
