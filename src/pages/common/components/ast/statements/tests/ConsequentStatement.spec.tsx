@@ -3,11 +3,12 @@ import {render} from '@testing-library/react'
 import {List, Map} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {ConsequentStatement} from '../ConsequentStatement'
-import {statementReference} from '../statementReference'
-import Statement from '../Statement'
 
-statementReference.Statement = Statement
+import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
+import {ConsequentStatement} from '../ConsequentStatement'
+import Statement from '../Statement'
+import Expression from '../../expression/Expression'
+
 const mockStore = configureMockStore()
 const defaultStore = {
     schemas: Map(),
@@ -29,7 +30,9 @@ describe('<ConsequentStatement/> component', () => {
     it('should render', () => {
         const {container} = render(
             <Provider store={mockStore(defaultStore)}>
-                <ConsequentStatement {...minProps} />
+                <RuleContext.Provider value={{Expression, Statement}}>
+                    <ConsequentStatement {...minProps} />
+                </RuleContext.Provider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

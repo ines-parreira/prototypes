@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {Button} from 'reactstrap'
 import {Map, List} from 'immutable'
 
@@ -8,9 +8,10 @@ import {
     SyntaxTree,
 } from 'pages/common/components/ast/utils'
 
-import {ExpressionProps, expressionReference} from './expressionReference'
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
 
-type Props = {
+type LogicalExpressionProps = {
     rule: Map<any, any>
     actions: RuleItemActions
     left: Partial<ExpressionProps> & SyntaxTree
@@ -21,60 +22,56 @@ type Props = {
     schemas: Map<any, any>
 }
 
-export default class LogicalExpression extends React.Component<Props> {
-    render() {
-        const {
-            operator,
-            left,
-            right,
-            rule,
-            parent,
-            actions,
-            leftsiblings,
-            schemas,
-        } = this.props
+export default function LogicalExpression({
+    operator,
+    left,
+    right,
+    rule,
+    parent,
+    actions,
+    leftsiblings,
+    schemas,
+}: LogicalExpressionProps) {
+    const {Expression} = useRuleContext()
 
-        const {Expression} = expressionReference
+    let leftsiblings2
+    let leftsiblings3
 
-        let leftsiblings2
-        let leftsiblings3
+    if (leftsiblings) {
+        leftsiblings2 = leftsiblings.concat(
+            getSyntaxTreeLeaves(left)
+        ) as List<any>
+        leftsiblings3 = leftsiblings2.push('operator')
+    }
 
-        if (leftsiblings) {
-            leftsiblings2 = leftsiblings.concat(
-                getSyntaxTreeLeaves(left)
-            ) as List<any>
-            leftsiblings3 = leftsiblings2.push('operator')
-        }
-
-        return (
-            <>
+    return (
+        <>
+            <Expression
+                {...(left as ExpressionProps)}
+                parent={parent.push('left')}
+                rule={rule}
+                actions={actions}
+                schemas={schemas}
+                leftsiblings={leftsiblings}
+                className="IdentifierDropdown"
+            />
+            <div className="d-flex align-items-baseline mt-1 ml-3">
+                <Button
+                    className="LogicalOperator btn-frozen mr-1"
+                    type="button"
+                >
+                    {operator === '&&' ? 'AND' : 'OR'}
+                </Button>
                 <Expression
-                    {...(left as ComponentProps<typeof Expression>)}
-                    parent={parent.push('left')}
+                    {...(right as ExpressionProps)}
+                    parent={parent.push('right')}
                     rule={rule}
                     actions={actions}
                     schemas={schemas}
-                    leftsiblings={leftsiblings}
+                    leftsiblings={leftsiblings3}
                     className="IdentifierDropdown"
                 />
-                <div className="d-flex align-items-baseline mt-1 ml-3">
-                    <Button
-                        className="LogicalOperator btn-frozen mr-1"
-                        type="button"
-                    >
-                        {operator === '&&' ? 'AND' : 'OR'}
-                    </Button>
-                    <Expression
-                        {...(right as ComponentProps<typeof Expression>)}
-                        parent={parent.push('right')}
-                        rule={rule}
-                        actions={actions}
-                        schemas={schemas}
-                        leftsiblings={leftsiblings3}
-                        className="IdentifierDropdown"
-                    />
-                </div>
-            </>
-        )
-    }
+            </div>
+        </>
+    )
 }

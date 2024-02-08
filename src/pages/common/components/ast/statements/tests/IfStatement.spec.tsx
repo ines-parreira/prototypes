@@ -5,12 +5,10 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {rule} from 'fixtures/rule'
 
-import Statement from '../Statement'
-import {statementReference} from '../statementReference'
-
+import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
 import IfStatement from '../IfStatement'
-
-statementReference.Statement = Statement
+import Expression from '../../expression/Expression'
+import Statement from '../Statement'
 
 const mockStore = configureMockStore()
 const defaultStore = {
@@ -34,7 +32,9 @@ describe('IfStatement component', () => {
     it('should not render alternate because there is none', () => {
         const {container} = render(
             <Provider store={mockStore(defaultStore)}>
-                <IfStatement {...minProps} />
+                <RuleContext.Provider value={{Expression, Statement}}>
+                    <IfStatement {...minProps} />
+                </RuleContext.Provider>
             </Provider>
         )
 
@@ -44,12 +44,14 @@ describe('IfStatement component', () => {
     it('should render alternate because there is one', () => {
         const {container} = render(
             <Provider store={mockStore(defaultStore)}>
-                <IfStatement
-                    {...minProps}
-                    alternate={{
-                        parent: fromJS(['body', 0, 'expression']),
-                    }}
-                />
+                <RuleContext.Provider value={{Expression, Statement}}>
+                    <IfStatement
+                        {...minProps}
+                        alternate={{
+                            parent: fromJS(['body', 0, 'expression']),
+                        }}
+                    />
+                </RuleContext.Provider>
             </Provider>
         )
 

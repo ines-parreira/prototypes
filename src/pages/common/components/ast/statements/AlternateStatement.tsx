@@ -6,8 +6,9 @@ import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddAc
 
 import Foldable from 'pages/common/components/ast/Foldable/Foldable'
 
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
 import BlockStatement from './BlockStatement'
-import {StatementProps, statementReference} from './statementReference'
 
 type AlternateStatementProps = {
     rule: Map<any, any>
@@ -26,7 +27,7 @@ export default function AlternateStatement({
     schemas,
     depth,
 }: AlternateStatementProps) {
-    const {Statement} = statementReference
+    const {Statement} = useRuleContext()
 
     return (
         <div className="alternate">

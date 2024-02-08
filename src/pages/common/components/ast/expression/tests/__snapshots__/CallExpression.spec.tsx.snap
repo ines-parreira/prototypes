@@ -1,478 +1,183 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CallExpression component Action call should render 1`] = `
-<span>
-  <Action
-    actions={{}}
-    depth={0}
-    leftsiblings={
-      Immutable.List [
-        "actions",
-      ]
+<WrappedCallExpression
+  actions={{}}
+  arguments={
+    [
+      "a",
+      1,
+    ]
+  }
+  callee={
+    {
+      "name": "Action",
+      "type": "Identifier",
     }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "expression",
-        "arguments",
-        0,
-      ]
+  }
+  depth={0}
+  parent={
+    Immutable.List [
+      "body",
+      0,
+      "expression",
+    ]
+  }
+  rule={
+    Immutable.Map {
+      "foo": "rule",
     }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
+  }
+  schemas={
+    Immutable.Map {
+      "foo": "schemas",
     }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  >
-    <ObjectExpression
-      actions={{}}
-      className="ActionWidget"
-      leftsiblings={
-        Immutable.List [
-          "actions",
-          undefined,
-        ]
-      }
-      parent={
-        Immutable.List [
-          "body",
-          0,
-          "expression",
-          "arguments",
-          1,
-        ]
-      }
-      rule={
-        Immutable.Map {
-          "foo": "rule",
-        }
-      }
-      schemas={
-        Immutable.Map {
-          "foo": "schemas",
-        }
-      }
-    />
-  </Action>
-</span>
+  }
+/>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is not the only line of the test condition and the expression is not hovered 1`] = `
-<span>
-  <Expression
-    0="a"
-    actions={{}}
-    className="IdentifierDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-      ]
+<WrappedCallExpression
+  actions={{}}
+  arguments={
+    [
+      "a",
+      1,
+    ]
+  }
+  callee={
+    {
+      "name": "eq",
+      "type": "Identifier",
     }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "left",
-        "arguments",
-        0,
-      ]
+  }
+  depth={0}
+  parent={
+    Immutable.List [
+      "body",
+      0,
+      "test",
+      "left",
+    ]
+  }
+  rule={
+    Immutable.Map {
+      "foo": "rule",
     }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
+  }
+  schemas={
+    Immutable.Map {
+      "foo": "schemas",
     }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-  <Expression
-    actions={{}}
-    className="OperatorDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-        "meta",
-        "operators",
-      ]
-    }
-    name="eq"
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "left",
-        "callee",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    type="Identifier"
-  />
-  <Expression
-    actions={{}}
-    callee={
-      {
-        "name": "eq",
-        "type": "Identifier",
-      }
-    }
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-      ]
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "left",
-        "arguments",
-        1,
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-</span>
+  }
+/>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 1`] = `
-<span>
-  <Expression
-    0="a"
-    actions={{}}
-    className="IdentifierDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-      ]
+<WrappedCallExpression
+  actions={{}}
+  arguments={
+    [
+      "a",
+      1,
+    ]
+  }
+  callee={
+    {
+      "name": "eq",
+      "type": "Identifier",
     }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "arguments",
-        0,
-      ]
+  }
+  depth={0}
+  parent={
+    Immutable.List [
+      "body",
+      0,
+      "test",
+    ]
+  }
+  rule={
+    Immutable.Map {
+      "foo": "rule",
     }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
+  }
+  schemas={
+    Immutable.Map {
+      "foo": "schemas",
     }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-  <Expression
-    actions={{}}
-    className="OperatorDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-        "meta",
-        "operators",
-      ]
-    }
-    name="eq"
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "callee",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    type="Identifier"
-  />
-  <Expression
-    actions={{}}
-    callee={
-      {
-        "name": "eq",
-        "type": "Identifier",
-      }
-    }
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-      ]
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "arguments",
-        1,
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-</span>
+  }
+/>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 2`] = `
-<span>
-  <Expression
-    0="a"
-    actions={{}}
-    className="IdentifierDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-      ]
+<WrappedCallExpression
+  actions={{}}
+  arguments={
+    [
+      "a",
+      1,
+    ]
+  }
+  callee={
+    {
+      "name": "eq",
+      "type": "Identifier",
     }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "arguments",
-        0,
-      ]
+  }
+  depth={0}
+  parent={
+    Immutable.List [
+      "body",
+      0,
+      "test",
+    ]
+  }
+  rule={
+    Immutable.Map {
+      "foo": "rule",
     }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
+  }
+  schemas={
+    Immutable.Map {
+      "foo": "schemas",
     }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-  <Expression
-    actions={{}}
-    className="OperatorDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-        "meta",
-        "operators",
-      ]
-    }
-    name="eq"
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "callee",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    type="Identifier"
-  />
-  <Expression
-    actions={{}}
-    callee={
-      {
-        "name": "eq",
-        "type": "Identifier",
-      }
-    }
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-      ]
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "arguments",
-        1,
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-</span>
+  }
+/>
 `;
 
 exports[`CallExpression component test condition should render delete widget because the expression is not the only line of the test condition and the expression is hovered 1`] = `
-<span>
-  <Expression
-    0="a"
-    actions={{}}
-    className="IdentifierDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-      ]
+<WrappedCallExpression
+  actions={{}}
+  arguments={
+    [
+      "a",
+      1,
+    ]
+  }
+  callee={
+    {
+      "name": "eq",
+      "type": "Identifier",
     }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "left",
-        "arguments",
-        0,
-      ]
+  }
+  depth={0}
+  parent={
+    Immutable.List [
+      "body",
+      0,
+      "test",
+      "left",
+    ]
+  }
+  rule={
+    Immutable.Map {
+      "foo": "rule",
     }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
+  }
+  schemas={
+    Immutable.Map {
+      "foo": "schemas",
     }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-  <Expression
-    actions={{}}
-    className="OperatorDropdown"
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-        "meta",
-        "operators",
-      ]
-    }
-    name="eq"
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "left",
-        "callee",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    type="Identifier"
-  />
-  <Expression
-    actions={{}}
-    callee={
-      {
-        "name": "eq",
-        "type": "Identifier",
-      }
-    }
-    leftsiblings={
-      Immutable.List [
-        "definitions",
-        "",
-        "properties",
-      ]
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "left",
-        "arguments",
-        1,
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-  />
-</span>
+  }
+/>
 `;

@@ -2,9 +2,12 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
+import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
 import WrappedCallExpression from '../CallExpression'
 import {ObjectExpressionPropertyKey} from '../../../../../../state/rules/types'
 import {RuleItemActions} from '../../../../../settings/rules/types'
+import Expression from '../Expression'
+import Statement from '../../statements/Statement'
 
 const commonProps = {
     rule: fromJS({foo: 'rule'}),
@@ -23,21 +26,25 @@ describe('CallExpression component', () => {
 
         it('should not render delete widget because the expression is the only line of the test condition', () => {
             const nonHoveredComponent = shallow(
-                <WrappedCallExpression
-                    {...commonProps}
-                    parent={fromJS(['body', 0, 'test'])}
-                    callee={callee}
-                />
+                <RuleContext.Provider value={{Expression, Statement}}>
+                    <WrappedCallExpression
+                        {...commonProps}
+                        parent={fromJS(['body', 0, 'test'])}
+                        callee={callee}
+                    />
+                </RuleContext.Provider>
             )
 
             expect(nonHoveredComponent).toMatchSnapshot()
 
             const hoveredComponent = shallow(
-                <WrappedCallExpression
-                    {...commonProps}
-                    parent={fromJS(['body', 0, 'test'])}
-                    callee={callee}
-                />
+                <RuleContext.Provider value={{Expression, Statement}}>
+                    <WrappedCallExpression
+                        {...commonProps}
+                        parent={fromJS(['body', 0, 'test'])}
+                        callee={callee}
+                    />
+                </RuleContext.Provider>
             )
 
             expect(hoveredComponent).toMatchSnapshot()
@@ -48,11 +55,13 @@ describe('CallExpression component', () => {
                 'expression is not hovered',
             () => {
                 const component = shallow(
-                    <WrappedCallExpression
-                        {...commonProps}
-                        parent={fromJS(['body', 0, 'test', 'left'])}
-                        callee={callee}
-                    />
+                    <RuleContext.Provider value={{Expression, Statement}}>
+                        <WrappedCallExpression
+                            {...commonProps}
+                            parent={fromJS(['body', 0, 'test', 'left'])}
+                            callee={callee}
+                        />
+                    </RuleContext.Provider>
                 )
 
                 expect(component).toMatchSnapshot()
@@ -64,11 +73,13 @@ describe('CallExpression component', () => {
                 'expression is hovered',
             () => {
                 const component = shallow(
-                    <WrappedCallExpression
-                        {...commonProps}
-                        parent={fromJS(['body', 0, 'test', 'left'])}
-                        callee={callee}
-                    />
+                    <RuleContext.Provider value={{Expression, Statement}}>
+                        <WrappedCallExpression
+                            {...commonProps}
+                            parent={fromJS(['body', 0, 'test', 'left'])}
+                            callee={callee}
+                        />
+                    </RuleContext.Provider>
                 )
 
                 expect(component).toMatchSnapshot()
@@ -84,11 +95,13 @@ describe('CallExpression component', () => {
 
         it('should render', () => {
             const component = shallow(
-                <WrappedCallExpression
-                    {...commonProps}
-                    parent={fromJS(['body', 0, 'expression'])}
-                    callee={callee}
-                />
+                <RuleContext.Provider value={{Expression, Statement}}>
+                    <WrappedCallExpression
+                        {...commonProps}
+                        parent={fromJS(['body', 0, 'expression'])}
+                        callee={callee}
+                    />
+                </RuleContext.Provider>
             )
 
             expect(component).toMatchSnapshot()

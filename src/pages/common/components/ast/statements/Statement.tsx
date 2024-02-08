@@ -3,9 +3,9 @@ import {connect} from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getSchemas} from 'state/schemas/selectors'
+import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
 import UnknownSyntax from '../UnknownSyntax'
 
-import {StatementProps} from './statementReference'
 import BlockStatement from './BlockStatement'
 import ExpressionStatement from './ExpressionStatement'
 import IfStatement from './IfStatement'

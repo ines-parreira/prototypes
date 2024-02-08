@@ -12,8 +12,8 @@ import DeleteBinaryExpression from 'pages/common/components/ast/operations/Delet
 import {getSyntaxTreeLeaves} from 'pages/common/components/ast/utils'
 
 import useHoverable from 'pages/common/hooks/useHoverable'
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
 import ObjectExpression from './ObjectExpression'
-import {expressionReference} from './expressionReference'
 
 type Props = {
     rule: Map<any, any>
@@ -35,7 +35,7 @@ export default function WrappedCallExpression({
     arguments: funcArgs,
 }: Props) {
     const {hovered, setRef} = useHoverable()
-    const {Expression} = expressionReference
+    const {Expression} = useRuleContext()
 
     const parentCallee = parent.push('callee')
 

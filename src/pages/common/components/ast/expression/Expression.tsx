@@ -1,4 +1,5 @@
 import React, {ComponentType} from 'react'
+import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
 import Literal from '../Literal'
 import Identifier from '../Identifier'
 
@@ -9,7 +10,6 @@ import MemberExpression from './MemberExpression'
 import CallExpression from './CallExpression'
 import ArrayExpression from './ArrayExpression'
 import ObjectExpression from './ObjectExpression'
-import {ExpressionProps} from './expressionReference'
 
 const types = {
     BinaryExpression,

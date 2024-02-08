@@ -8,7 +8,8 @@ import {
 import {RuleItemActions} from 'pages/settings/rules/types'
 import Widget from 'pages/common/components/ast/Widget'
 
-import {ExpressionProps, expressionReference} from './expressionReference'
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
 
 type Props = {
     operator: string
@@ -31,7 +32,7 @@ const BinaryExpression = ({
     parent,
     leftsiblings,
 }: Props) => {
-    const {Expression} = expressionReference
+    const {Expression} = useRuleContext()
     const parentLeft = parent.push('left')
     const parentRight = parent.push('right')
     const parentOperator = parent.push('operator')

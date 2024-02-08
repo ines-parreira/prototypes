@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {RuleItemActions} from 'pages/settings/rules/types'
 import Expression from 'pages/common/components/ast/expression/Expression'
 
-import {StatementProps} from './statementReference'
+import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
 import TestExpression from './TestExpression'
 import {ConsequentStatement} from './ConsequentStatement'
 import AlternateStatement from './AlternateStatement'

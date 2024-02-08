@@ -1,7 +1,8 @@
 import React from 'react'
 
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
 import {BlockStatementItemProps} from '../types'
-import {StatementProps, statementReference} from './statementReference'
 
 export default function BlockStatementItem({
     actions,
@@ -11,7 +12,7 @@ export default function BlockStatementItem({
     schemas,
     depth,
 }: BlockStatementItemProps) {
-    const {Statement} = statementReference
+    const {Statement} = useRuleContext()
 
     return (
         <div className="BlockStatementItem">

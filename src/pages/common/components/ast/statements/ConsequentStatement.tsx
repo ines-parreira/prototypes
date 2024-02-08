@@ -3,8 +3,9 @@ import React from 'react'
 import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
 import Foldable from 'pages/common/components/ast/Foldable/Foldable'
 
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
 import {ConsequentStatementProps} from '../types'
-import {StatementProps, statementReference} from './statementReference'
 
 export const ConsequentStatement = ({
     actions,
@@ -14,7 +15,7 @@ export const ConsequentStatement = ({
     schemas,
     depth,
 }: ConsequentStatementProps) => {
-    const {Statement} = statementReference
+    const {Statement} = useRuleContext()
 
     return (
         <div className="consequent">
