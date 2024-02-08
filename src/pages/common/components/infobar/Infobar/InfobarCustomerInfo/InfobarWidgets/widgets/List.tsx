@@ -69,10 +69,13 @@ function ListInfobarWidget({
         [orderByString]
     )
 
-    // if the header of the children template is hidden
-    // we only display one children. Same if first children is a list
+    // If the header of the children template is hidden
+    // we only display one child. Same if first child is a list
     const trimmedSource = useMemo(() => {
-        if (hasOnlyContent || !isParentOfCard) {
+        if (
+            ImmutableList.isList(source) &&
+            (hasOnlyContent || !isParentOfCard)
+        ) {
             return source.setSize(1).toJS() as Record<string, unknown>[]
         }
         return source.toJS() as Record<string, unknown>[]

@@ -6,6 +6,7 @@ import * as widgetsFixtures from 'fixtures/widgets'
 import * as ticketFixtures from 'fixtures/ticket'
 import {assumeMock} from 'utils/testing'
 import UIList from 'infobar/ui/List'
+import {Card, List} from 'models/widget/types'
 
 import {widgetReference} from '../../widgetReference'
 
@@ -69,16 +70,57 @@ describe('Infobar::Widgets::List', () => {
         removeBorderTop: true,
     }
 
-    it('should return null', () => {
-        const {container, rerender} = render(
+    it('should return null when template widgets are an empty array', () => {
+        const {container} = render(
             <ListInfobarWidget {...minProps} template={fromJS({widgets: []})} />
         )
-        expect(container.firstChild).toBeNull()
 
-        rerender(<ListInfobarWidget {...minProps} source={fromJS([])} />)
         expect(container.firstChild).toBeNull()
+    })
 
-        rerender(<ListInfobarWidget {...minProps} source={fromJS({})} />)
+    it('should return null when source is an empty list', () => {
+        const {container} = render(
+            <ListInfobarWidget {...minProps} source={fromJS([])} />
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should return null when source is not a list', () => {
+        const {container} = render(
+            <ListInfobarWidget {...minProps} source={fromJS({})} />
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    // Regression: https://linear.app/gorgias/issue/CRM-2864/typeerror-rsetsize-is-not-a-function
+    it('should return null when source is not a list and has only content', () => {
+        const card: Card = {
+            type: 'card',
+            path: '3.template.widgets.0.card',
+            widgets: [
+                {
+                    type: 'text',
+                    path: '3.template.widgets.0.card.widgets.0',
+                    title: 'bar',
+                },
+            ],
+        }
+        const list: List = {
+            type: 'list',
+            path: '3.template',
+            widgets: [card],
+        }
+
+        const {container} = render(
+            <ListInfobarWidget
+                {...minProps}
+                template={fromJS(list)}
+                source={fromJS({})}
+            />
+        )
+
         expect(container.firstChild).toBeNull()
     })
 
