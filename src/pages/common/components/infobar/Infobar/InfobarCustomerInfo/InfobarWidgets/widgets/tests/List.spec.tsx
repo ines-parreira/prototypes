@@ -124,6 +124,15 @@ describe('Infobar::Widgets::List', () => {
         expect(container.firstChild).toBeNull()
     })
 
+    // Regression: https://linear.app/gorgias/issue/CRM-2865/typeerror-rtojs-is-not-a-function
+    it('should return null when source is a string', () => {
+        const {container} = render(
+            <ListInfobarWidget {...minProps} source="foo" />
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
     it('should call InfobarWidget with the correct props', () => {
         render(<ListInfobarWidget {...minProps} />)
 
@@ -178,7 +187,7 @@ describe('Infobar::Widgets::List', () => {
             expect.objectContaining({
                 isDraggable: !minProps.isParentList,
                 dataKey: `${template.get('path') as string}[]`,
-                listItems: minProps.source.toJS(),
+                listItems: source.toJS(),
                 initialItemDisplayedNumber: Number(
                     template.getIn(['meta', 'limit'])
                 ),
@@ -210,7 +219,7 @@ describe('Infobar::Widgets::List', () => {
             2,
             expect.objectContaining({
                 isEditing: true,
-                listItems: minProps.source.setSize(1).toJS(),
+                listItems: source.setSize(1).toJS(),
                 orderBy: {
                     key: 'name',
                     direction: 'ASC',

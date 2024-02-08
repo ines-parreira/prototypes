@@ -1,5 +1,5 @@
 import React from 'react'
-import {fromJS, Map, List, Iterable} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
 import _get from 'lodash/get'
@@ -645,7 +645,7 @@ export function guessFieldValueFromRawData(
     const fallbackValue = '-'
     const data = (
         isImmutable(potentiallyImmutableData)
-            ? (potentiallyImmutableData as Iterable<unknown, unknown>).toJS()
+            ? potentiallyImmutableData.toJS()
             : potentiallyImmutableData
     ) as unknown
 

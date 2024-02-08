@@ -180,7 +180,7 @@ export function getSourceTypeOfResponse(
     ticketId: string | number
 ) {
     const immutableMessages: List<any> = isImmutable(messages)
-        ? (messages as List<any>)
+        ? messages
         : toImmutable(messages)
     if (ticketId) {
         const cachedSourceType = responseUtils.getSourceTypeCache(

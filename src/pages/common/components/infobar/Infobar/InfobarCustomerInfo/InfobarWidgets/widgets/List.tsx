@@ -2,12 +2,14 @@ import React, {useCallback, useMemo} from 'react'
 import {Map, List as ImmutableList, fromJS} from 'immutable'
 
 import List from 'infobar/ui/List'
+import {isImmutable, isImmutableList} from 'common/utils'
+
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
 import WidgetListContext from './WidgetListContext'
 
 type Props = {
-    source: ImmutableList<Map<string, unknown>>
+    source: unknown
     widget: Map<string, unknown>
     template: Map<unknown, unknown>
     isEditing?: boolean
@@ -72,13 +74,12 @@ function ListInfobarWidget({
     // If the header of the children template is hidden
     // we only display one child. Same if first child is a list
     const trimmedSource = useMemo(() => {
-        if (
-            ImmutableList.isList(source) &&
-            (hasOnlyContent || !isParentOfCard)
-        ) {
+        if (isImmutableList(source) && (hasOnlyContent || !isParentOfCard)) {
             return source.setSize(1).toJS() as Record<string, unknown>[]
         }
-        return source.toJS() as Record<string, unknown>[]
+        return isImmutable(source)
+            ? (source.toJS() as Record<string, unknown>[])
+            : []
     }, [source, hasOnlyContent, isParentOfCard])
 
     const children = useCallback(
@@ -108,7 +109,7 @@ function ListInfobarWidget({
     )
 
     if (
-        !ImmutableList.isList(source) ||
+        !isImmutableList(source) ||
         !source.size ||
         !template.getIn(['widgets', '0'])
     )

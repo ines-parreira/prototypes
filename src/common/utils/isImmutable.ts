@@ -1,8 +1,7 @@
-import Immutable from 'immutable'
+import {Iterable} from 'immutable'
 
-/**
- * Return true if passed object is immutable (from Immutable JS)
- */
-export default function isImmutable(value: any): boolean {
-    return Immutable.Iterable.isIterable(value)
+export default function isImmutable(
+    value: any
+): value is Iterable<unknown, unknown> {
+    return Iterable.isIterable(value)
 }
