@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react'
+import {useCallback, useState} from 'react'
 import {
     useCreateHelpCenter,
     useCreateHelpCenterTranslation,
@@ -25,6 +25,7 @@ import {Integration} from 'models/integration/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
 import {getNewHelpCenterTranslation} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     getUpdatedFields,
     mapUIHelpCenterToApiHelpCenter,
@@ -92,14 +93,13 @@ export const useHelpCenterCreationWizard = (
 
     const isUpdate = !!helpCenter?.id
 
-    useEffect(() => {
+    useEffectOnce(() => {
         const newHelpCenter = mapApiHelpCenterToUIHelpCenter(
             helpCenter,
             allStoreIntegrations
         )
         setNewHelpCenter(newHelpCenter)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    })
 
     const handleAction = (redirectTo: NEXT_ACTION, id?: number) => {
         switch (redirectTo) {
@@ -115,6 +115,10 @@ export const useHelpCenterCreationWizard = (
             case NEXT_ACTION.NEW_WIZARD:
                 if (!id) return
                 history.replace(`/app/settings/help-center/${id}/new`)
+                break
+            case NEXT_ACTION.NEW_HELP_CENTER:
+                if (!id) return
+                history.replace(`/app/settings/help-center/${id}/articles`) // Article is default path for the HC
                 break
         }
     }

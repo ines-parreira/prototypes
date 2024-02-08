@@ -25,6 +25,8 @@ import {StoreDispatch} from 'state/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
+import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import {Components} from 'rest_api/help_center_api/client.generated'
 
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
@@ -95,11 +97,13 @@ export const mapUIHelpCenterToApiHelpCenter = (
             step_data: {
                 platform_type: data.platformType,
             },
+            completed: data.wizardCompleted,
         },
         shop_name: data.shopName,
         brand_logo_url: data.brandLogoUrl,
         primary_color: data.primaryColor,
         primary_font_family: data.primaryFontFamily,
+        self_service_deactivated: !data.orderManagementEnabled,
     }
 
     Object.keys(result).forEach((key) => {
@@ -173,6 +177,19 @@ export const mapLanguagePickerToHelpCenterLanguages = (
     )
 
     return {defaultLocale, supportedLocales: helpCenterLanguages}
+}
+
+/**
+ * Map entrypoints from workflow list to help center automation settings
+ */
+export const mapEntrypointsToAutomationSettings = (
+    entrypoints: Entrypoint[]
+): Components.Schemas.UpsertAutomationSettingsDto => {
+    const workflows = entrypoints.map((entrypoint) => ({
+        id: entrypoint.workflow_id,
+        enabled: entrypoint.enabled,
+    }))
+    return {workflows}
 }
 
 /**

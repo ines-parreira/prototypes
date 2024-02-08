@@ -1,34 +1,85 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import thunk from 'redux-thunk'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {WizardContext} from 'pages/common/components/wizard/Wizard'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import {RootState, StoreDispatch, StoreState} from 'state/types'
+import {StoreState} from 'state/types'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {shopifyIntegration} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
 import {proMonthlyHelpdeskPrice as mockedProMonthlyHelpdeskPrice} from 'fixtures/productPrices'
 import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
+import {
+    HELP_CENTER_DEFAULT_LOCALE,
+    HelpCenterCreationWizard,
+    NEXT_ACTION,
+    PlatformType,
+} from 'pages/settings/helpCenter/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
+import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
 
 jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
     jest.fn()
 )
+jest.mock('pages/automate/common/hooks/useHelpCenterAutomationSettings')
+jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn(() => () => undefined),
+}))
+jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
+    useHelpCenterCreationWizard: jest.fn(),
+}))
 
 const helpCenterFixture = {
     ...getHelpCentersResponseFixture.data[0],
     shop_name: shopifyIntegration.name,
 }
+const mockOnSave = jest.fn()
+const mockOnAction = jest.fn()
+const mockOnAutomationSettingsUpdate = jest.fn()
+const mockSelfServiceConfigUpdate = jest.fn()
+const defaultHelpCenter: HelpCenterCreationWizard = {
+    name: 'My brand',
+    subdomain: 'my-brand',
+    defaultLocale: HELP_CENTER_DEFAULT_LOCALE,
+    supportedLocales: [HELP_CENTER_DEFAULT_LOCALE],
+    platformType: PlatformType.ECOMMERCE,
+    stepName: HelpCenterCreationWizardStep.Basics,
+    shopName: 'shop-test',
+    brandLogoUrl: null,
+    primaryColor: '',
+    primaryFontFamily: '',
+}
+const mockedUseHelpCenterWizardHook = {
+    helpCenter: defaultHelpCenter,
+    handleFormUpdate: jest.fn(),
+    handleSave: mockOnSave,
+    handleAction: mockOnAction,
+    isLoading: false,
+    allStoreIntegrations: [],
+}
 
-const mockStore = configureMockStore<RootState, StoreDispatch>()
+const mockStore = configureMockStore([thunk])
 const mockedUseWorkflowConfigurations = jest.mocked(useWorkflowConfigurations)
+const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
+const mockUseHelpCenterAutomationSettings = jest.mocked(
+    useHelpCenterAutomationSettings
+)
+const mockedUseSelfServiceConfiguration = jest.mocked(
+    useSelfServiceConfiguration
+)
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>,
@@ -86,12 +137,48 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             isFetchPending: false,
             workflowConfigurations: [],
         })
+        mockUseHelpCenterCreationWizard.mockReturnValue(
+            mockedUseHelpCenterWizardHook
+        )
+        mockUseHelpCenterAutomationSettings.mockReturnValue({
+            isFetchPending: false,
+            automationSettings: {
+                order_management: {enabled: false},
+                workflows: [],
+            },
+            handleHelpCenterAutomationSettingsUpdate:
+                mockOnAutomationSettingsUpdate,
+            isUpdatePending: false,
+            handleHelpCenterAutomationSettingsFetch: jest.fn(),
+        })
+        mockedUseSelfServiceConfiguration.mockReturnValue({
+            isFetchPending: false,
+            isUpdatePending: false,
+            handleSelfServiceConfigurationUpdate: mockSelfServiceConfigUpdate,
+            storeIntegration: undefined,
+            selfServiceConfiguration: undefined,
+        })
     })
     it('should render', () => {
         renderComponent({})
 
         expect(screen.getAllByText('Automate')[0]).toBeInTheDocument()
         expect(screen.getByText('Order management')).toBeInTheDocument()
+    })
+
+    it('should show error state when no store integration', () => {
+        const helpCenter = {
+            ...helpCenterFixture,
+            shop_name: null,
+        }
+        renderComponent({}, {helpCenter})
+
+        expect(screen.queryByText('Order management')).not.toBeInTheDocument()
+
+        expect(notify).toHaveBeenNthCalledWith(1, {
+            status: NotificationStatus.Error,
+            message: 'No integration found for shop ',
+        })
     })
 
     describe('order management', () => {
@@ -106,7 +193,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 screen.getByLabelText(
                     'Allow customers to manage orders from my Help Center'
                 )
-            ).not.toBeChecked()
+            ).toBeChecked()
         })
         it('should render enabled order management when order management is enabled', () => {
             const helpCenter = {
@@ -119,7 +206,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 screen.getByLabelText(
                     'Allow customers to manage orders from my Help Center'
                 )
-            ).toBeChecked()
+            ).not.toBeChecked()
         })
 
         it('should enabled order management when toggle from disabled', () => {
@@ -140,7 +227,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 screen.getByLabelText(
                     'Allow customers to manage orders from my Help Center'
                 )
-            ).toBeChecked()
+            ).not.toBeChecked()
         })
     })
 
@@ -204,6 +291,77 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
             expect(screen.getByText('Flows')).toBeInTheDocument()
             expect(screen.queryByText('Show More')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('on save', () => {
+        it('should call handleSave when clicked finished', async () => {
+            const draft = {}
+
+            renderComponent({})
+
+            fireEvent.click(screen.getByText('Finish'))
+
+            await waitFor(() => expect(mockOnSave).toBeCalled())
+            expect(mockOnSave).toHaveBeenCalledWith(
+                NEXT_ACTION.NEW_HELP_CENTER,
+                undefined,
+                {orderManagementEnabled: false, wizardCompleted: true}
+            )
+            expect(mockOnAutomationSettingsUpdate).toHaveBeenCalledWith({
+                workflows: [],
+            })
+            expect(mockSelfServiceConfigUpdate).toHaveBeenCalled()
+
+            // Hack to check what is being passed to the draft function
+            const draftFunction = (
+                mockSelfServiceConfigUpdate.mock.calls[0] as [
+                    (draft: unknown) => void
+                ]
+            )[0]
+            draftFunction(draft)
+            expect(draft).toEqual({
+                article_recommendation_help_center_id: helpCenterFixture.id,
+            })
+        })
+
+        it('should call handleSave when clicked save and continue later', async () => {
+            const draft = {}
+
+            renderComponent({})
+
+            fireEvent.click(screen.getByText('Save & Customize Later'))
+
+            await waitFor(() => expect(mockOnSave).toBeCalled())
+            expect(mockOnSave).toHaveBeenCalledWith(
+                NEXT_ACTION.BACK_HOME,
+                HelpCenterCreationWizardStep.Automate,
+                {orderManagementEnabled: false}
+            )
+            expect(mockOnAutomationSettingsUpdate).toHaveBeenCalledWith({
+                workflows: [],
+            })
+            expect(mockSelfServiceConfigUpdate).toHaveBeenCalled()
+
+            // Hack to check what is being passed to the draft function
+            const draftFunction = (
+                mockSelfServiceConfigUpdate.mock.calls[0] as [
+                    (draft: unknown) => void
+                ]
+            )[0]
+            draftFunction(draft)
+            expect(draft).toEqual({
+                article_recommendation_help_center_id: helpCenterFixture.id,
+            })
+        })
+
+        it('should not call handleSave when clicked back', () => {
+            renderComponent({})
+
+            fireEvent.click(screen.getByText('Back'))
+
+            expect(mockOnSave).not.toBeCalled()
+            expect(mockOnAction).toHaveBeenCalledWith(NEXT_ACTION.PREVIOUS_STEP)
         })
     })
 })

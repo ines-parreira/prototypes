@@ -266,6 +266,8 @@ export type HelpCenterCreationWizard = {
     brandLogoUrl: string | null
     primaryColor: string
     primaryFontFamily: string
+    wizardCompleted?: boolean
+    orderManagementEnabled?: boolean
 }
 
 export enum NEXT_ACTION {
@@ -273,6 +275,7 @@ export enum NEXT_ACTION {
     NEXT_STEP = 'next_step',
     PREVIOUS_STEP = 'previous_step',
     NEW_WIZARD = 'new_wizard',
+    NEW_HELP_CENTER = 'new_help_center',
 }
 
 export const HELP_CENTER_LANGUAGE_DEFAULT_UI = [

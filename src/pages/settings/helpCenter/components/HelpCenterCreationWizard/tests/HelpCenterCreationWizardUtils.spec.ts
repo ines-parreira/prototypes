@@ -20,6 +20,7 @@ import {
     groupArticlesByCategory,
     isErrorRecord,
     mapApiHelpCenterToUIHelpCenter,
+    mapEntrypointsToAutomationSettings,
     mapHelpCenterArticleData,
     mapHelpCenterLanguagesToLanguagePicker,
     mapHelpCenterLocalesToLanguagePicker,
@@ -332,6 +333,23 @@ describe('helpCenterCreationWizardUtils', () => {
         it('should return false for non-object types', () => {
             const error = 'An error occurred'
             expect(isErrorRecord(error)).toBe(false)
+        })
+    })
+
+    describe('mapEntrypointsToAutomationSettings', () => {
+        it('should correctly map entrypoints to automation settings', () => {
+            const entrypoints = [
+                {workflow_id: '1', enabled: true},
+                {workflow_id: '2', enabled: false},
+            ]
+            const result = mapEntrypointsToAutomationSettings(entrypoints)
+
+            expect(result).toEqual({
+                workflows: [
+                    {enabled: true, id: '1'},
+                    {enabled: false, id: '2'},
+                ],
+            })
         })
     })
 })

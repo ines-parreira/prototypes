@@ -16,7 +16,10 @@ import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi
 import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
 import {reportError} from 'utils/errors'
 
-const useHelpCentersAutomationSettings = (helpCenterId: number) => {
+const useHelpCentersAutomationSettings = (
+    helpCenterId: number,
+    withNotifications = true
+) => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
 
@@ -64,7 +67,7 @@ const useHelpCentersAutomationSettings = (helpCenterId: number) => {
 
                 void dispatch(
                     notify({
-                        message: 'Failed to fetch',
+                        message: 'Failed to fetch automation settings',
                         status: NotificationStatus.Error,
                     })
                 )
@@ -94,12 +97,14 @@ const useHelpCentersAutomationSettings = (helpCenterId: number) => {
                     })
                 )
 
-                void dispatch(
-                    notify({
-                        message: 'Successfully updated',
-                        status: NotificationStatus.Success,
-                    })
-                )
+                if (withNotifications) {
+                    void dispatch(
+                        notify({
+                            message: 'Successfully updated',
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                }
             } catch (error) {
                 if (error instanceof Error) {
                     reportError(error)
@@ -107,7 +112,7 @@ const useHelpCentersAutomationSettings = (helpCenterId: number) => {
 
                 void dispatch(
                     notify({
-                        message: 'Failed to update',
+                        message: 'Failed to update automation settings',
                         status: NotificationStatus.Error,
                     })
                 )
