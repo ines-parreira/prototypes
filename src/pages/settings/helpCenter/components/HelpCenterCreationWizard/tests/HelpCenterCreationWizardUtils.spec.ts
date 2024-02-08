@@ -1,4 +1,5 @@
 import {
+    ArticleTemplate,
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
     HelpCenterArticleItem,
@@ -14,6 +15,7 @@ import {
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
 import {
+    findArticleByKey,
     getUpdatedFields,
     groupArticlesByCategory,
     isErrorRecord,
@@ -223,7 +225,7 @@ describe('helpCenterCreationWizardUtils', () => {
                     key: 'template1',
                     title: 'Article 1',
                     id: 1,
-                    html_content: 'Content 1',
+                    content: 'Content 1',
                     isSelected: true,
                 },
                 {key: 'template2', title: 'Template 2'},
@@ -231,10 +233,37 @@ describe('helpCenterCreationWizardUtils', () => {
 
             expect(
                 mapHelpCenterArticleData(
-                    articleTemplates as HelpCenterArticleItem[],
+                    articleTemplates as ArticleTemplate[],
                     articleListData as ArticleWithLocalTranslationAndRating[]
                 )
             ).toEqual(expected)
+        })
+
+        it('should return the correct article when the key exists', () => {
+            const articles = {
+                orderManagement: [
+                    {
+                        key: 'howToOrder',
+                        category: 'orderManagement',
+                        title: 'Article 1',
+                    },
+                ],
+                returnsAndRefunds: [
+                    {
+                        key: 'howToReturn',
+                        category: 'returnsAndRefunds',
+                        title: 'Article 2',
+                    },
+                ],
+            }
+
+            const article = findArticleByKey(articles as any, 'howToReturn')
+
+            expect(article).toEqual({
+                key: 'howToReturn',
+                category: 'returnsAndRefunds',
+                title: 'Article 2',
+            })
         })
     })
 

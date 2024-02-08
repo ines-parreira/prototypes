@@ -14,7 +14,7 @@ type Props = {
     articles: HelpCenterArticleItem[]
     category: ArticleTemplateCategory
     onEdit: (key: string) => void
-    onSelect: (category: ArticleTemplateCategory, key: string) => void
+    onSelect: (key: string) => void
 }
 
 const ArticleSection: React.FC<Props> = ({
@@ -34,7 +34,7 @@ const ArticleSection: React.FC<Props> = ({
                         <CheckBox
                             value={item.key}
                             isChecked={item.isSelected}
-                            onChange={() => onSelect(category, item.key)}
+                            onChange={() => onSelect(item.key)}
                         >
                             <div className={css.articleCheckboxContent}>
                                 <span>{item.title}</span>

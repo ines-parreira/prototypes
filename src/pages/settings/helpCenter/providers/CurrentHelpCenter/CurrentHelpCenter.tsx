@@ -187,10 +187,12 @@ const CurrentHelpCenter: React.FC = () => {
                         path={`${path}/new`}
                         exact
                         render={() => (
-                            <HelpCenterCreationWizard
-                                helpCenter={helpCenter}
-                                isUpdate
-                            />
+                            <EditionManagerContextProvider>
+                                <HelpCenterCreationWizard
+                                    helpCenter={helpCenter}
+                                    isUpdate
+                                />
+                            </EditionManagerContextProvider>
                         )}
                     />
                 )}

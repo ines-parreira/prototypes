@@ -1,0 +1,55 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .modalForm {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        flex: 1;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: @layout-spacing-xs;
+        padding: @layout-spacing-s;
+    }
+
+    .titleInput {
+        .heading-section-semibold();
+        text-overflow: ellipsis;
+        width: 100%;
+        max-width: 100%;
+        color: var(--neutral-grey-6);
+        font-weight: 600;
+        border: 0;
+        background-color: var(--neutral-grey-0);
+        padding: 6px @layout-spacing-xs;
+        outline-color: var(--main-primary);
+    }
+
+    .footer {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        background-color: var(--neutral-grey-2);
+        padding: @layout-spacing-s;
+        align-items: center;
+    }
+
+    .actions {
+        display: flex;
+        gap: 4px;
+    }
+
+    .counter {
+        .body-regular();
+        color: var(--neutral-grey-4);
+    }
+
+    .editor {
+        height: calc(100% - 135px);
+    }
+}

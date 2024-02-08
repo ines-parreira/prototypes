@@ -1,5 +1,6 @@
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
+import {chain} from 'lodash'
 import {
     ArticleTemplate,
     ArticleWithLocalTranslationAndRating,
@@ -220,7 +221,7 @@ export const groupArticlesByCategory = (
     articles: HelpCenterArticleItem[]
 ): Record<string, HelpCenterArticleItem[]> => {
     return articles.reduce((groups, item) => {
-        const category = item.category
+        const category = item.category || 'other'
         return {...groups, [category]: [...(groups[category] || []), item]}
     }, DEFAULT_ARTICLE_GROUP)
 }
@@ -240,16 +241,31 @@ export const mapHelpCenterArticleData = (
         )
 
         if (matchingData) {
+            const content = matchingData.translation?.content
             return {
-                ...template,
+                ...matchingData.translation,
                 id: matchingData.id,
-                key: template.key,
-                title: matchingData.translation.title,
-                html_content: matchingData.translation.content,
+                content: content?.replace(/\\n/g, ''),
                 isSelected: true,
+                key: template.key,
+                category: template.category,
             }
         }
 
-        return template
+        return {
+            ...template,
+            content: template.html_content?.replace(/\\n/g, ''),
+        }
     })
+}
+
+export const findArticleByKey = (
+    data: Record<string, HelpCenterArticleItem[]>,
+    key: string
+): HelpCenterArticleItem | undefined => {
+    return chain(data)
+        .values()
+        .flatten()
+        .find((item) => item.key === key)
+        .value() as HelpCenterArticleItem | undefined
 }

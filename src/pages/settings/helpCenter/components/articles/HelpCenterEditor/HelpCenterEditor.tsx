@@ -6,6 +6,7 @@ import FroalaEditorComponentType from 'react-froala-wysiwyg'
 import bytes from 'bytes'
 import {zip} from 'lodash'
 
+import classnames from 'classnames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {LocaleCode} from 'models/helpCenter/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -29,6 +30,7 @@ type Props = {
     articleId?: number
     locale: LocaleCode
     value?: string
+    className?: string
     onChange: (value: string, charCount?: number) => void
     onEditorReady: (content: string) => void
 }
@@ -41,6 +43,7 @@ type FroalaEditorInstance = FroalaEditorComponentType & {
 const HelpCenterEditor = ({
     locale,
     value = '',
+    className,
     onChange,
     onEditorReady,
 }: Props) => {
@@ -95,6 +98,7 @@ const HelpCenterEditor = ({
             tag="textarea"
             config={{
                 ...config,
+                editorClass: classnames(config.editorClass, className),
                 events: {
                     'file.beforeUpload': function (fileList: FileList): false {
                         const files = Array.from(fileList)

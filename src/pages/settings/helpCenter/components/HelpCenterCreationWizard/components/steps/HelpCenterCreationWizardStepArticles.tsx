@@ -1,16 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
-import {map} from 'lodash'
 import {
     ArticleTemplateCategory,
     HelpCenter,
-    HelpCenterArticleItem,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {
-    DEFAULT_ARTICLE_GROUP,
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
     HELP_CENTER_STEPS_TITLES,
@@ -18,10 +15,11 @@ import {
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
-import {useHelpCenterArticles} from '../../hooks/useHelpCenterArticles'
-import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import {useGetHelpCenterArticles} from '../../hooks/useGetHelpCenterArticles'
 
 import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
+import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
+import {useHelpCenterArticlesForm} from '../../hooks/useHelpCenterArticlesForm'
 
 type Props = {
     helpCenter: HelpCenter
@@ -32,25 +30,22 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     helpCenter,
     automateType,
 }) => {
-    const [articles, setArticles] = useState<
-        Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
-    >(DEFAULT_ARTICLE_GROUP)
-
-    const {helpCenter: newHelpCenter} = useHelpCenterCreationWizard(
-        helpCenter,
-        HelpCenterCreationWizardStep.Articles
-    )
-
-    const {articles: fetchedArticles, isLoading} = useHelpCenterArticles(
+    const {articles: fetchedArticles, isLoading} = useGetHelpCenterArticles(
         helpCenter.id,
-        newHelpCenter.defaultLocale
+        helpCenter.default_locale
     )
+
+    const {
+        articles,
+        selectedArticle,
+        handleArticleSelect,
+        handleArticleEdit,
+        handleEditorReady,
+        handleEditorSave,
+        handleEditorClose,
+    } = useHelpCenterArticlesForm(fetchedArticles)
 
     const isAutomate = automateType === HelpCenterAutomateType.AUTOMATE
-
-    useEffect(() => {
-        setArticles(fetchedArticles)
-    }, [fetchedArticles])
 
     const onFooterAction = (buttonClicked: FOOTER_BUTTONS) => {
         switch (buttonClicked) {
@@ -65,21 +60,6 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
             default:
                 break
         }
-    }
-
-    const onEdit = () => {
-        // TODO: Implement edit article
-    }
-
-    const onSelect = (category: ArticleTemplateCategory, key: string) => {
-        setArticles((prevState) => ({
-            ...prevState,
-            [category]: map(prevState[category], (article) =>
-                article.key === key
-                    ? {...article, isSelected: !article.isSelected}
-                    : article
-            ),
-        }))
     }
 
     return (
@@ -107,11 +87,19 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                                 key={category}
                                 articles={articleItems}
                                 category={category as ArticleTemplateCategory}
-                                onEdit={onEdit}
-                                onSelect={onSelect}
+                                onEdit={handleArticleEdit}
+                                onSelect={handleArticleSelect}
                             />
                         )
                     )}
+                    <ArticleEditor
+                        article={selectedArticle}
+                        locale={helpCenter.default_locale}
+                        isLoading={isLoading}
+                        onEditorSave={handleEditorSave}
+                        onEditorClose={handleEditorClose}
+                        onEditorReady={handleEditorReady}
+                    />
                 </div>
             </WizardStepSkeleton>
         </>

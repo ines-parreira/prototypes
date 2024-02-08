@@ -190,7 +190,9 @@ export type ArticleTemplateCategory =
     | 'returnsAndRefunds'
     | 'shippingAndDelivery'
 
-export type HelpCenterArticleItem = ArticleTemplate & {
+export type HelpCenterArticleItem = Partial<LocalArticleTranslation> & {
+    key: string
     id?: number
     isSelected?: boolean
+    category?: ArticleTemplateCategory
 }

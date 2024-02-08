@@ -12,6 +12,7 @@ import {
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
+import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
 import css from './HelpCenterCreationWizard.less'
 import HelpCenterCreationWizardStepBasics from './components/steps/HelpCenterCreationWizardStepBasics'
 import useGetAutomateType from './hooks/useGetAutomateType'
@@ -90,10 +91,12 @@ const HelpCenterCreationWizardComponent = ({
                             <WizardStep
                                 name={HelpCenterCreationWizardStep.Articles}
                             >
-                                <HelpCenterCreationWizardStepArticles
-                                    helpCenter={helpCenter}
-                                    automateType={automateType}
-                                />
+                                <EditionManagerContextProvider>
+                                    <HelpCenterCreationWizardStepArticles
+                                        helpCenter={helpCenter}
+                                        automateType={automateType}
+                                    />
+                                </EditionManagerContextProvider>
                             </WizardStep>
                         )}
                         {automateType === HelpCenterAutomateType.AUTOMATE &&

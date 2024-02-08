@@ -16,7 +16,7 @@ export type HelpCenterArticlesOutput = {
     articles: Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
     isLoading: boolean
 }
-export const useHelpCenterArticles = (
+export const useGetHelpCenterArticles = (
     helpCenterId: number,
     locale: LocaleCode
 ): HelpCenterArticlesOutput => {
