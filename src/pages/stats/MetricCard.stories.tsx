@@ -8,6 +8,9 @@ import PerformanceTip from './PerformanceTip'
 const storyConfig: Meta = {
     title: 'Stats/MetricCard',
     component: MetricCard,
+    parameters: {
+        chromatic: {disableSnapshot: false},
+    },
 }
 
 const Template: Story<ComponentProps<typeof MetricCard>> = (props) => (
