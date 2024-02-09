@@ -71,10 +71,8 @@ export default function EmailIntegrationDeliverabilitySettings({
                 target={`${DeliverabilityProviderSetting.UseInternalProvider}-info-icon`}
                 autohide={false}
             >
-                To enable this setting, you must{' '}
-                <Link to={domainVerificationPageLink}>
-                    verify your domain first.
-                </Link>
+                To enable this setting, you must first{' '}
+                <Link to={domainVerificationPageLink}>verify your domain</Link>.
             </Tooltip>
         </>
     )
@@ -90,20 +88,9 @@ export default function EmailIntegrationDeliverabilitySettings({
     )
 
     const useDefaultProviderCaption =
-        'Emails are sent through ' + capitalizedIntegrationType
-    const enableInternalProviderCaption = (
-        <div>
-            {'Once activated, Emails will be sent through our internal email provider. ' +
-                'Ensure your domain verification is complete to activate this feature. '}
-            <a
-                href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                View Step-by-Step Guide
-            </a>
-        </div>
-    )
+        'Send lower volume of emails through ' + capitalizedIntegrationType
+    const useInternalProviderCaption =
+        'Send higher volume of emails through our internal email provider.'
 
     return (
         <RadioFieldSet
@@ -118,7 +105,7 @@ export default function EmailIntegrationDeliverabilitySettings({
                     value: DeliverabilityProviderSetting.UseInternalProvider,
                     label: useInternalProviderLabel,
                     disabled: isUseInternalProviderOptionDisabled,
-                    caption: enableInternalProviderCaption,
+                    caption: useInternalProviderCaption,
                 },
             ]}
             selectedValue={currentProvider}
