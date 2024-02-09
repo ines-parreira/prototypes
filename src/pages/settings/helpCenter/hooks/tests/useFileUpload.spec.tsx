@@ -18,6 +18,10 @@ const renderOptions = {
     ),
 }
 
+jest.mock('utils/file', () => ({
+    getBase64: jest.fn().mockResolvedValue('base64String'),
+}))
+
 describe('useFileUpload()', () => {
     const dummyFile = new File(['foo'], 'foo.txt', {
         type: 'text/plain',
@@ -92,6 +96,32 @@ describe('useFileUpload()', () => {
             const url = await result.current.getFileUploadURL()
             expect(uploadFilesSpy).toHaveBeenCalled()
             expect(url).toEqual('http://example.com/foo.text')
+        })
+    })
+
+    it('serializes file and sets serialized file when file is provided', async () => {
+        const {result, waitFor} = renderHook(useFileUpload, renderOptions)
+
+        void act(() => {
+            expect(result.current.serializedFile).toEqual('')
+            result.current.changeFile(dummyFile)
+        })
+
+        await waitFor(() => {
+            expect(result.current.serializedFile).toEqual('base64String')
+        })
+    })
+
+    it('sets serialized file to empty string when no file is provided', async () => {
+        const {result, waitFor} = renderHook(useFileUpload, renderOptions)
+
+        void act(() => {
+            expect(result.current.serializedFile).toEqual('')
+            result.current.changeFile(undefined)
+        })
+
+        await waitFor(() => {
+            expect(result.current.serializedFile).toEqual('')
         })
     })
 })

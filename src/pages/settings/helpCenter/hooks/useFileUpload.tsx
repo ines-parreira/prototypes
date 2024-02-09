@@ -2,11 +2,13 @@ import {useState} from 'react'
 
 import {Attachment} from 'common/types'
 import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
+import {getBase64} from 'utils/file'
 import useCurrentHelpCenter from './useCurrentHelpCenter'
 
 export type FileUpload = {
     isTouched: boolean
     payload: File | undefined
+    serializedFile: string
     uploadFile: () => Promise<Attachment | null>
     changeFile: (payload: File | undefined) => void
     discardFile: () => void
@@ -19,10 +21,12 @@ export function useFileUpload(): FileUpload {
 
     const [isTouched, setIsTouched] = useState(false)
     const [localFile, setLocalFile] = useState<File>()
+    const [serializedFile, setSerializedFile] = useState<string>('')
 
     const handleOnChangeFile = (payload: File | undefined) => {
         setLocalFile(payload)
         setIsTouched(true)
+        void serializeFile(payload)
     }
 
     const handleOnDiscard = () => {
@@ -49,6 +53,16 @@ export function useFileUpload(): FileUpload {
         return isTouched ? null : undefined
     }
 
+    const serializeFile = (payload: File | undefined) => {
+        if (!payload) {
+            setSerializedFile('')
+            return
+        }
+        return getBase64(payload).then((serializedFile) =>
+            setSerializedFile(serializedFile)
+        )
+    }
+
     return {
         isTouched,
         payload: localFile,
@@ -56,5 +70,6 @@ export function useFileUpload(): FileUpload {
         changeFile: handleOnChangeFile,
         discardFile: handleOnDiscard,
         getFileUploadURL,
+        serializedFile,
     }
 }

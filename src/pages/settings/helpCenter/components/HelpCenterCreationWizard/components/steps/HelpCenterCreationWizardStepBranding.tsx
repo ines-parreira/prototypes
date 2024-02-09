@@ -84,6 +84,10 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
         }
     }
 
+    const logoUrl = brandLogo.isTouched
+        ? brandLogo.serializedFile
+        : newHelpCenter.brandLogoUrl
+
     return (
         <>
             <WizardStepSkeleton
@@ -103,7 +107,7 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
                 preview={
                     <HelpCenterPreview
                         name={newHelpCenter.name}
-                        logoUrl={newHelpCenter.brandLogoUrl}
+                        logoUrl={logoUrl}
                     >
                         <HelpCenterPreviewHomePage
                             primaryColor={newHelpCenter.primaryColor}
