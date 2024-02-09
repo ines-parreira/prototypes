@@ -32,7 +32,6 @@ export const useGetHelpCenterArticles = (
         helpCenterId,
         {
             version_status: 'latest_draft',
-            locale,
         },
         {
             refetchOnWindowFocus: false,
@@ -47,15 +46,20 @@ export const useGetHelpCenterArticles = (
 
         const mappedArticles = mapHelpCenterArticleData(
             articleTemplates,
-            helpCenterArticles
+            helpCenterArticles,
+            locale
         )
 
-        if (mappedArticles.length && !helpCenterArticles.length) {
+        const isAnyArticleSelected = mappedArticles.some(
+            (article) => article.isSelected
+        )
+
+        if (mappedArticles.length && !isAnyArticleSelected) {
             mappedArticles[0].isSelected = true
         }
 
         return groupArticlesByCategory(mappedArticles)
-    }, [articleTemplates, helpCenterArticles])
+    }, [articleTemplates, helpCenterArticles, locale])
 
     return {
         articles,

@@ -22,6 +22,7 @@ import {
     mapApiHelpCenterToUIHelpCenter,
     mapEntrypointsToAutomationSettings,
     mapHelpCenterArticleData,
+    mapHelpCenterArticleItemToArticle,
     mapHelpCenterLanguagesToLanguagePicker,
     mapHelpCenterLocalesToLanguagePicker,
     mapUIHelpCenterToApiHelpCenter,
@@ -217,7 +218,12 @@ describe('helpCenterCreationWizardUtils', () => {
                 {
                     id: 1,
                     template_key: 'template1',
-                    translation: {title: 'Article 1', content: 'Content 1'},
+                    translation: {
+                        title: 'Article 1',
+                        content: 'Content 1',
+                        locale: 'en-US',
+                    },
+                    available_locales: ['en-US'],
                 },
             ]
 
@@ -228,14 +234,17 @@ describe('helpCenterCreationWizardUtils', () => {
                     id: 1,
                     content: 'Content 1',
                     isSelected: true,
+                    availableLocales: ['en-US'],
+                    locale: 'en-US',
                 },
-                {key: 'template2', title: 'Template 2'},
+                {key: 'template2', title: 'Template 2', isSelected: false},
             ]
 
             expect(
                 mapHelpCenterArticleData(
                     articleTemplates as ArticleTemplate[],
-                    articleListData as ArticleWithLocalTranslationAndRating[]
+                    articleListData as ArticleWithLocalTranslationAndRating[],
+                    'en-US'
                 )
             ).toEqual(expected)
         })
@@ -350,6 +359,55 @@ describe('helpCenterCreationWizardUtils', () => {
                     {enabled: false, id: '2'},
                 ],
             })
+        })
+    })
+
+    describe('mapHelpCenterArticleItemToArticle', () => {
+        it('returns null if title or content is missing', () => {
+            const articleItem: HelpCenterArticleItem = {
+                title: '',
+                content: 'content',
+                key: 'key',
+                seo_meta: {title: 'seo title', description: 'seo description'},
+            }
+            const locale: LocaleCode = 'en-US'
+            expect(
+                mapHelpCenterArticleItemToArticle(articleItem, locale)
+            ).toBeNull()
+        })
+
+        it('returns article with translation and template_key if title and content are present', () => {
+            const articleItem: HelpCenterArticleItem = {
+                title: 'title',
+                content: 'content',
+                key: 'shippingPolicy',
+                seo_meta: {title: 'seo title', description: 'seo description'},
+            }
+            const locale: LocaleCode = 'en-US'
+            const result = mapHelpCenterArticleItemToArticle(
+                articleItem,
+                locale
+            )
+            expect(result).toHaveProperty('translation')
+            expect(result).toHaveProperty('template_key')
+            expect(result?.template_key).toBe(articleItem.key)
+        })
+
+        it('returns article with undefined template_key if key is not an ArticleTemplateKey', () => {
+            const articleItem: HelpCenterArticleItem = {
+                title: 'title',
+                content: 'content',
+                key: 'customKey',
+                seo_meta: {title: 'seo title', description: 'seo description'},
+            }
+            const locale: LocaleCode = 'en-US'
+            const result = mapHelpCenterArticleItemToArticle(
+                articleItem,
+                locale
+            )
+            expect(result).toHaveProperty('translation')
+            expect(result).toHaveProperty('template_key')
+            expect(result?.template_key).toBeUndefined()
         })
     })
 })

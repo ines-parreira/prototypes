@@ -12,6 +12,11 @@ import {
     createHelpCenterTranslation,
     deleteHelpCenterTranslation,
     checkHelpCenterWithSubdomainExists,
+    createArticle,
+    createArticleTranslation,
+    updateArticleTranslation,
+    deleteArticle,
+    deleteArticleTranslation,
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
@@ -204,6 +209,66 @@ export const useCheckHelpCenterWithSubdomainExists = (
         mutationFn: ([client = helpCenterClient, pathParams]) =>
             checkHelpCenterWithSubdomainExists(client, pathParams),
         retry: false,
+        ...overrides,
+    })
+}
+
+export const useCreateArticle = (
+    overrides?: MutationOverrides<typeof createArticle>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            createArticle(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useDeleteArticle = (
+    overrides?: MutationOverrides<typeof deleteArticle>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams]) =>
+            deleteArticle(client, pathParams),
+        ...overrides,
+    })
+}
+
+export const useCreateArticleTranslation = (
+    overrides?: MutationOverrides<typeof createArticleTranslation>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            createArticleTranslation(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useUpdateArticleTranslation = (
+    overrides?: MutationOverrides<typeof updateArticleTranslation>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            updateArticleTranslation(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useDeleteArticleTranslation = (
+    overrides?: MutationOverrides<typeof deleteArticleTranslation>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams]) =>
+            deleteArticleTranslation(client, pathParams),
         ...overrides,
     })
 }

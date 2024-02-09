@@ -107,7 +107,9 @@ describe('useGetHelpCenterArticles', () => {
                             translation: {
                                 title: 'How do I make a return from my account?',
                                 content: 'Updated content',
+                                locale: 'en-US',
                             },
+                            available_languages: ['en-US'],
                         },
                     ],
                 },
@@ -150,14 +152,18 @@ describe('useGetHelpCenterArticles', () => {
                             translation: {
                                 title: 'How do I make a return from my account?',
                                 content: 'Updated content',
+                                locale: 'en-US',
                             },
+                            available_languages: ['en-US'],
                         },
                         {
                             id: 2,
                             translation: {
                                 title: 'Custom article',
                                 content: 'content for custom article',
+                                locale: 'en-US',
                             },
+                            available_languages: ['en-US'],
                         },
                     ],
                 },
@@ -174,6 +180,7 @@ describe('useGetHelpCenterArticles', () => {
                     title: 'How do I cancel my order?',
                     category: 'orderManagement',
                     content: 'content',
+                    isSelected: false,
                 },
             ],
             returnsAndRefunds: [

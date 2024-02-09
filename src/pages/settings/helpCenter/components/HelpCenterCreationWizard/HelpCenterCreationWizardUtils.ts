@@ -3,6 +3,7 @@ import _pickBy from 'lodash/pickBy'
 import {chain} from 'lodash'
 import {
     ArticleTemplate,
+    ArticleTemplateKey,
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
     HelpCenterArticleItem,
@@ -27,9 +28,23 @@ import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 import {Components} from 'rest_api/help_center_api/client.generated'
+import {slugify} from '../../utils/helpCenter.utils'
 
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
+}
+
+function isArticleTemplateKey(key: any): key is ArticleTemplateKey {
+    const keys: ArticleTemplateKey[] = [
+        'shippingPolicy',
+        'howToReturn',
+        'howToCancelOrder',
+        'howToTrackOrder',
+        'refundsOrExchanges',
+        'packageLostOrDamaged',
+    ]
+
+    return keys.includes(key)
 }
 
 export const isHelpCenterCreationWizardStep = (
@@ -210,6 +225,15 @@ export const isErrorRecord = (
     return typeof error === 'object' && error !== null && !Array.isArray(error)
 }
 
+export const handleOnSuccess = (message: string, dispatch: StoreDispatch) => {
+    void dispatch(
+        notify({
+            status: NotificationStatus.Success,
+            message,
+        })
+    )
+}
+
 export const handleOnError = (
     error: Record<string, unknown> | Error | unknown,
     message: string,
@@ -243,21 +267,27 @@ export const groupArticlesByCategory = (
     }, DEFAULT_ARTICLE_GROUP)
 }
 
-/**
- * This is going to be expanded in the next PR to include more data (e.g. id of the article)
- * it depends on the data needed by the article editor
- * for now, initial data of template and updated title / content are enough
- */
 export const mapHelpCenterArticleData = (
     articleTemplates: ArticleTemplate[],
-    articleListData: ArticleWithLocalTranslationAndRating[]
+    articleListData: ArticleWithLocalTranslationAndRating[],
+    locale: LocaleCode
 ): HelpCenterArticleItem[] => {
     return articleTemplates.map((template) => {
         const matchingData = articleListData.find(
             (data) => data.template_key === template.key
         )
 
-        if (matchingData) {
+        // If there is no matching data, it means that there are no articles for this template
+        if (!matchingData) {
+            return {
+                ...template,
+                content: template.html_content?.replace(/\\n/g, ''),
+                isSelected: false,
+            }
+        }
+
+        // If there is matching data, check if there is a translation for the current locale
+        if (matchingData.translation?.locale === locale) {
             const content = matchingData.translation?.content
             return {
                 ...matchingData.translation,
@@ -266,12 +296,18 @@ export const mapHelpCenterArticleData = (
                 isSelected: true,
                 key: template.key,
                 category: template.category,
+                availableLocales: matchingData.available_locales,
             }
         }
 
+        // If there is no translation for the current locale, then add id of the article so we can create a new translation later
         return {
             ...template,
             content: template.html_content?.replace(/\\n/g, ''),
+            id: matchingData.id,
+            availableLocales: matchingData.available_locales,
+            isSelected: false,
+            shouldCreateTranslation: true,
         }
     })
 }
@@ -285,4 +321,32 @@ export const findArticleByKey = (
         .flatten()
         .find((item) => item.key === key)
         .value() as HelpCenterArticleItem | undefined
+}
+
+export const mapHelpCenterArticleItemToArticle = (
+    articleItem: HelpCenterArticleItem,
+    locale: LocaleCode
+) => {
+    if (!articleItem.title || !articleItem.content) return null
+
+    const article = {
+        translation: {
+            title: articleItem.title,
+            content: articleItem.content,
+            seo_meta: articleItem.seo_meta || {
+                title: null,
+                description: null,
+            },
+            excerpt: '',
+            slug: slugify(articleItem.title),
+            locale,
+        },
+    }
+
+    return {
+        ...article,
+        template_key: isArticleTemplateKey(articleItem.key)
+            ? articleItem.key
+            : undefined,
+    }
 }

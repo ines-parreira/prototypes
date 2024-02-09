@@ -11,6 +11,7 @@ import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
     HELP_CENTER_STEPS_TITLES,
+    NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
 import WizardFooter, {
     FOOTER_BUTTONS,
@@ -20,6 +21,7 @@ import {useGetHelpCenterArticles} from '../../hooks/useGetHelpCenterArticles'
 import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
 import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
 import {useHelpCenterArticlesForm} from '../../hooks/useHelpCenterArticlesForm'
+import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
 
 type Props = {
     helpCenter: HelpCenter
@@ -30,6 +32,11 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     helpCenter,
     automateType,
 }) => {
+    const {handleSave, handleAction} = useHelpCenterCreationWizard(
+        helpCenter,
+        HelpCenterCreationWizardStep.Articles
+    )
+
     const {articles: fetchedArticles, isLoading} = useGetHelpCenterArticles(
         helpCenter.id,
         helpCenter.default_locale
@@ -43,19 +50,35 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         handleEditorReady,
         handleEditorSave,
         handleEditorClose,
-    } = useHelpCenterArticlesForm(fetchedArticles)
+        handleNavigationSave,
+    } = useHelpCenterArticlesForm(helpCenter, fetchedArticles)
 
     const isAutomate = automateType === HelpCenterAutomateType.AUTOMATE
 
-    const onFooterAction = (buttonClicked: FOOTER_BUTTONS) => {
+    const onFooterAction = async (buttonClicked: FOOTER_BUTTONS) => {
         switch (buttonClicked) {
             case FOOTER_BUTTONS.FINISH:
+                await handleNavigationSave()
+                handleSave(NEXT_ACTION.NEW_HELP_CENTER, undefined, {
+                    wizardCompleted: true,
+                })
                 break
             case FOOTER_BUTTONS.BACK:
+                handleAction(NEXT_ACTION.PREVIOUS_STEP)
                 break
             case FOOTER_BUTTONS.NEXT:
+                await handleNavigationSave()
+                handleSave(
+                    NEXT_ACTION.NEXT_STEP,
+                    HelpCenterCreationWizardStep.Automate
+                )
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
+                await handleNavigationSave()
+                handleSave(
+                    NEXT_ACTION.BACK_HOME,
+                    HelpCenterCreationWizardStep.Articles
+                )
                 break
             default:
                 break

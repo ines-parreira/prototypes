@@ -190,9 +190,20 @@ export type ArticleTemplateCategory =
     | 'returnsAndRefunds'
     | 'shippingAndDelivery'
 
+export type ArticleTemplateKey =
+    | 'shippingPolicy'
+    | 'howToReturn'
+    | 'howToCancelOrder'
+    | 'howToTrackOrder'
+    | 'refundsOrExchanges'
+    | 'packageLostOrDamaged'
+    | undefined
+
 export type HelpCenterArticleItem = Partial<LocalArticleTranslation> & {
     key: string
     id?: number
     isSelected?: boolean
     category?: ArticleTemplateCategory
+    availableLocales?: LocaleCode[]
+    shouldCreateTranslation?: boolean
 }

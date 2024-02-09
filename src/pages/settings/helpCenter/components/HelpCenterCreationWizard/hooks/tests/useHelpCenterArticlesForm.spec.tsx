@@ -1,6 +1,62 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import {HelpCenterArticleItem} from 'models/helpCenter/types'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useHelpCenterArticlesForm} from '../useHelpCenterArticlesForm'
+
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppSelector')
+
+jest.mock('models/helpCenter/queries', () => ({
+    useCreateArticle: () => ({
+        mutateAsync: mockedCreateArticleMutateAsync,
+    }),
+    useDeleteArticle: () => ({
+        mutateAsync: mockedDeleteArticleMutateAsync,
+    }),
+    useCreateArticleTranslation: () => ({
+        mutateAsync: mockedCreateArticleTranslationMutateAsync,
+    }),
+    useUpdateArticleTranslation: () => ({
+        mutate: mockedUpdateArticleTranslationMutate,
+    }),
+    useDeleteArticleTranslation: () => ({
+        mutateAsync: mockedDeleteArticleTranslationMutateAsync,
+    }),
+}))
+
+const mockedCreateArticleMutateAsync = jest.fn().mockReturnValue({
+    data: {
+        id: 1,
+        translation: {
+            title: 'How do I cancel my order?',
+            content: '<p>><strong>Test</strong></p>',
+            slug: 'how-to-cancel-order',
+            locale: 'en-US',
+        },
+    },
+})
+const mockedDeleteArticleMutateAsync = jest.fn()
+const mockedDeleteArticleTranslationMutateAsync = jest.fn()
+const mockedCreateArticleTranslationMutateAsync = jest.fn().mockReturnValue({
+    data: {
+        translation: {
+            title: 'How do I cancel my order?',
+            content: '<p>><strong>Test</strong></p>',
+            slug: 'how-to-cancel-order',
+            locale: 'en-US',
+        },
+    },
+})
+const mockedUpdateArticleTranslationMutate = jest.fn().mockReturnValue({
+    data: {
+        translation: {
+            title: 'How do I cancel my order <updated>?',
+            content: '<p>><strong>Test</strong></p>',
+            slug: 'how-to-cancel-order-updated',
+            locale: 'en-US',
+        },
+    },
+})
 
 const mockedSetEditModal = jest.fn()
 
@@ -21,6 +77,8 @@ jest.mock('pages/settings/helpCenter/providers/EditionManagerContext', () => {
         useEditionManager: () => mockedUseEditionManager,
     }
 })
+
+const helpCenterFixture = getHelpCentersResponseFixture.data[0]
 
 const articles = {
     orderManagement: [
@@ -44,8 +102,13 @@ const articles = {
 }
 
 describe('useHelpCenterArticlesForm', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
     it('should initialize with default values', () => {
-        const {result} = renderHook(() => useHelpCenterArticlesForm(articles))
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(helpCenterFixture, articles)
+        )
 
         expect(result.current.articles).toEqual(articles)
         expect(result.current.selectedArticle).toBeNull()
@@ -53,7 +116,7 @@ describe('useHelpCenterArticlesForm', () => {
 
     it('should update articles when the input changes', () => {
         const {result, rerender} = renderHook(
-            (props) => useHelpCenterArticlesForm(props),
+            (props) => useHelpCenterArticlesForm(helpCenterFixture, props),
             {
                 initialProps: articles,
             }
@@ -75,7 +138,9 @@ describe('useHelpCenterArticlesForm', () => {
     })
 
     it('should handle article selection', () => {
-        const {result} = renderHook(() => useHelpCenterArticlesForm(articles))
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(helpCenterFixture, articles)
+        )
 
         act(() => {
             result.current.handleArticleSelect('howToCancelOrder')
@@ -85,7 +150,9 @@ describe('useHelpCenterArticlesForm', () => {
     })
 
     it('should handle article edit', () => {
-        const {result} = renderHook(() => useHelpCenterArticlesForm(articles))
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(helpCenterFixture, articles)
+        )
 
         act(() => {
             result.current.handleArticleEdit('howToCancelOrder')
@@ -102,7 +169,9 @@ describe('useHelpCenterArticlesForm', () => {
     })
 
     it('should handle editor close', () => {
-        const {result} = renderHook(() => useHelpCenterArticlesForm(articles))
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(helpCenterFixture, articles)
+        )
 
         act(() => {
             result.current.handleEditorClose()
@@ -113,7 +182,9 @@ describe('useHelpCenterArticlesForm', () => {
     })
 
     it('should handle editor ready', () => {
-        const {result} = renderHook(() => useHelpCenterArticlesForm(articles))
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(helpCenterFixture, articles)
+        )
 
         const content = '<p>><strong>Test</strong></p>'
 
@@ -133,8 +204,10 @@ describe('useHelpCenterArticlesForm', () => {
         expect(result.current.selectedArticle?.content).toBe(content)
     })
 
-    it('should handle editor save', () => {
-        const {result} = renderHook(() => useHelpCenterArticlesForm(articles))
+    it('should handle editor save and create an article', () => {
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(helpCenterFixture, articles)
+        )
 
         act(() => {
             result.current.handleArticleEdit('howToCancelOrder')
@@ -152,18 +225,97 @@ describe('useHelpCenterArticlesForm', () => {
             )
         })
 
-        const updatedArticle = result.current.articles.orderManagement[0]
+        expect(mockedCreateArticleMutateAsync).toHaveBeenCalled()
+        expect(mockedSetEditModal).toHaveBeenCalled()
+    })
 
-        expect(updatedArticle).toMatchObject({
-            key: 'howToCancelOrder',
-            title: 'How do I cancel my order <updated>?',
-            content: '<p>><strong>Test</strong></p>',
+    it('should handle editor save and create an article translation', () => {
+        const articlesWithTranslations = {
+            ...articles,
+            orderManagement: [
+                {
+                    key: 'howToCancelOrder',
+                    title: 'How do I cancel my order?',
+                    id: 1,
+                    content: '<p>><strong>Test</strong></p>',
+                    isSelected: true,
+                    availableLocales: ['en-US'],
+                    shouldCreateTranslation: true,
+                } as HelpCenterArticleItem,
+            ],
+        }
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(
+                helpCenterFixture,
+                articlesWithTranslations
+            )
+        )
+
+        act(() => {
+            result.current.handleArticleEdit('howToCancelOrder')
         })
+
+        expect(result.current.selectedArticle).toMatchObject({
+            key: 'howToCancelOrder',
+            title: 'How do I cancel my order?',
+        })
+
+        act(() => {
+            result.current.handleEditorSave(
+                'How do I cancel my order <updated>?',
+                '<p>><strong>Test</strong></p>'
+            )
+        })
+
+        expect(mockedCreateArticleTranslationMutateAsync).toHaveBeenCalled()
+        expect(mockedSetEditModal).toHaveBeenCalled()
+    })
+
+    it('should handle editor save and update an article translation', () => {
+        const articlesWithTranslations = {
+            ...articles,
+            orderManagement: [
+                {
+                    key: 'howToCancelOrder',
+                    title: 'How do I cancel my order?',
+                    id: 1,
+                    content: '<p>><strong>Test</strong></p>',
+                    isSelected: true,
+                    availableLocales: ['en-US'],
+                } as HelpCenterArticleItem,
+            ],
+        }
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(
+                helpCenterFixture,
+                articlesWithTranslations
+            )
+        )
+
+        act(() => {
+            result.current.handleArticleEdit('howToCancelOrder')
+        })
+
+        expect(result.current.selectedArticle).toMatchObject({
+            key: 'howToCancelOrder',
+            title: 'How do I cancel my order?',
+        })
+
+        act(() => {
+            result.current.handleEditorSave(
+                'How do I cancel my order <updated>?',
+                '<p>><strong>Test</strong></p>'
+            )
+        })
+
+        expect(mockedUpdateArticleTranslationMutate).toHaveBeenCalled()
         expect(mockedSetEditModal).toHaveBeenCalled()
     })
 
     it('should not update articles if key not found', () => {
-        const {result} = renderHook(() => useHelpCenterArticlesForm(articles))
+        const {result} = renderHook(() =>
+            useHelpCenterArticlesForm(helpCenterFixture, articles)
+        )
 
         result.current.selectedArticle = null
 

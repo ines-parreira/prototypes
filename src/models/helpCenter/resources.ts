@@ -114,3 +114,51 @@ export const checkHelpCenterWithSubdomainExists = async (
     const response = await client.checkHelpCenterWithSubdomainExists(data)
     return response
 }
+
+export const createArticle = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.CreateArticle.PathParameters,
+    data: Paths.CreateArticle.RequestBody
+) => {
+    if (!client) return null
+    const response = await client.createArticle(pathParams, data)
+    return response
+}
+
+export const deleteArticle = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.DeleteArticle.PathParameters
+) => {
+    if (!client) return null
+    const response = await client.deleteArticle(pathParams)
+    return response
+}
+
+export const updateArticleTranslation = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.UpdateArticleTranslation.PathParameters,
+    data: Paths.UpdateArticleTranslation.RequestBody
+) => {
+    if (!client) return null
+    const response = await client.updateArticleTranslation(pathParams, data)
+    return response
+}
+
+export const createArticleTranslation = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.CreateArticleTranslation.PathParameters,
+    data: Paths.CreateArticleTranslation.RequestBody
+) => {
+    if (!client) return null
+    const response = await client.createArticleTranslation(pathParams, data)
+    return response
+}
+
+export const deleteArticleTranslation = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.DeleteArticleTranslation.PathParameters
+) => {
+    if (!client) return null
+    const response = await client.deleteArticleTranslation(pathParams)
+    return response
+}

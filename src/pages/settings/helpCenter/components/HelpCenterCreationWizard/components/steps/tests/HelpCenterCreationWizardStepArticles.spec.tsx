@@ -5,6 +5,7 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import {
@@ -18,11 +19,21 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useGetHelpCenterArticles} from '../../../hooks/useGetHelpCenterArticles'
 import HelpCenterCreationWizardStepArticles from '../HelpCenterCreationWizardStepArticles'
+import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import {mapApiHelpCenterToUIHelpCenter} from '../../../HelpCenterCreationWizardUtils'
 
 const helpCenterFixture = getHelpCentersResponseFixture.data[0]
+const helpCenterFixtureUI = mapApiHelpCenterToUIHelpCenter(
+    helpCenterFixture,
+    []
+)
 
+jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
+    useHelpCenterCreationWizard: jest.fn(),
+}))
 jest.mock('../../../hooks/useGetHelpCenterArticles', () => ({
     useGetHelpCenterArticles: jest.fn(),
 }))
@@ -32,6 +43,18 @@ const mockedUseGetHelpCenterArticles = jest.mocked(useGetHelpCenterArticles)
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
+
+const queryClient = mockQueryClient()
+
+const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
+const mockedUseHelpCenterCreationWizard = {
+    helpCenter: helpCenterFixtureUI,
+    allStoreIntegrations: [],
+    handleSave: jest.fn(),
+    handleAction: jest.fn(),
+    handleFormUpdate: jest.fn(),
+    isLoading: false,
+}
 
 const defaultState: Partial<RootState> = {
     entities: {
@@ -50,23 +73,28 @@ const defaultState: Partial<RootState> = {
 
 const renderComponent = () => {
     render(
-        <Provider store={mockedStore(defaultState)}>
-            <CurrentHelpCenterContext.Provider value={helpCenterFixture}>
-                <Wizard steps={[HelpCenterCreationWizardStep.Articles]}>
-                    <EditionManagerContextProvider>
-                        <HelpCenterCreationWizardStepArticles
-                            helpCenter={helpCenterFixture}
-                            automateType={HelpCenterAutomateType.AUTOMATE}
-                        />
-                    </EditionManagerContextProvider>
-                </Wizard>
-            </CurrentHelpCenterContext.Provider>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockedStore(defaultState)}>
+                <CurrentHelpCenterContext.Provider value={helpCenterFixture}>
+                    <Wizard steps={[HelpCenterCreationWizardStep.Articles]}>
+                        <EditionManagerContextProvider>
+                            <HelpCenterCreationWizardStepArticles
+                                helpCenter={helpCenterFixture}
+                                automateType={HelpCenterAutomateType.AUTOMATE}
+                            />
+                        </EditionManagerContextProvider>
+                    </Wizard>
+                </CurrentHelpCenterContext.Provider>
+            </Provider>
+        </QueryClientProvider>
     )
 }
 
 describe('<HelpCenterCreationWizardStepAutomate />', () => {
     beforeEach(() => {
+        mockUseHelpCenterCreationWizard.mockReturnValue(
+            mockedUseHelpCenterCreationWizard
+        )
         mockedUseGetHelpCenterArticles.mockReturnValue({
             articles: {
                 orderManagement: [
