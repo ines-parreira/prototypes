@@ -93,8 +93,6 @@ describe('ConvertStatsNavbar', () => {
 
         const links = document.getElementsByClassName('link-wrapper')
         expect(links.length).toBe(2)
-
-        expect(screen.getByText('NEW')).toBeInTheDocument()
     })
 
     it('should render links with subscription upgrade icon and modal', () => {

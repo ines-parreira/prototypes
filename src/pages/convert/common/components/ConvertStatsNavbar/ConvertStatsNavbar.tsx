@@ -10,7 +10,6 @@ import {AccountFeature} from 'state/currentAccount/types'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import useAppSelector from 'hooks/useAppSelector'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ConvertNavbarAddOnPaywallNavbarLink from '../ConvertNavbarAddOnPaywallNavbarLink'
 
 export type ConvertNavbarLink = {
@@ -49,11 +48,6 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
                 isPaywalled: !isConvertSubscriber,
                 hasModal: !isConvertSubscriber,
                 requiresSubscriptionToBeSeen: false,
-                extra: (
-                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
-                        NEW
-                    </Badge>
-                ),
             },
         ]
     }, [hasRevenueStatisticsFeature, isConvertSubscriber])
