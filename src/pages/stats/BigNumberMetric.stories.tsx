@@ -6,6 +6,9 @@ import BigNumberMetric from './BigNumberMetric'
 const storyConfig: Meta = {
     title: 'Stats/BigNumberMetric',
     component: BigNumberMetric,
+    parameters: {
+        chromatic: {disableSnapshot: false},
+    },
 }
 
 const Template: Story<ComponentProps<typeof BigNumberMetric>> = (props) => (
