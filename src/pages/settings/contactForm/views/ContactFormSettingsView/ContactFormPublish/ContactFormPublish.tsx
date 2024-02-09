@@ -10,7 +10,6 @@ import {
 } from 'reactstrap'
 import {Route, Switch} from 'react-router-dom'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Label from 'pages/common/forms/Label/Label'
@@ -29,7 +28,6 @@ import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettin
 import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
-import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 import ContactFormMailtoReplacementSection from '../../../components/ContactFormMailtoReplacementSection/ContactFormMailtoReplacementSection'
 
 const ContactFormPublish = (): JSX.Element => {
@@ -38,8 +36,6 @@ const ContactFormPublish = (): JSX.Element => {
         enabled: Boolean(contactForm.shop_name),
     })
     const {copyButtonText} = useClipboard('#copy-shareable-link')
-    const isHelpCenterReplaceMailtoLinkEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.HelpCenterReplaceMailtoLink]
 
     const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
 
@@ -113,7 +109,6 @@ const ContactFormPublish = (): JSX.Element => {
                                 </InputGroup>
                             </FormGroup>
                         </section>
-
                         <section>
                             <ContactFormAutoEmbedPublishSection
                                 isDisabled={
@@ -136,15 +131,12 @@ const ContactFormPublish = (): JSX.Element => {
                                 shopName={contactForm.shop_name}
                             />
                         </section>
-
-                        {isHelpCenterReplaceMailtoLinkEnabled &&
-                            contactForm.shop_name && (
-                                <section>
-                                    <ContactFormMailtoReplacementSection
-                                        contactFormId={contactForm.id}
-                                    />
-                                </section>
-                            )}
+                        contactForm.shop_name && (
+                        <section>
+                            <ContactFormMailtoReplacementSection
+                                contactFormId={contactForm.id}
+                            />
+                        </section>
                     </div>
                 </Route>
             </Switch>
