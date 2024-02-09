@@ -283,3 +283,18 @@ export const HELP_CENTER_LANGUAGE_DEFAULT_UI = [
 ]
 
 export const DEFAULT_ARTICLE_GROUP: Record<string, HelpCenterArticleItem[]> = {}
+
+export const HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY = 'with_wizard_completed'
+export enum HELP_CENTER_WIZARD_COMPLETED_STATE {
+    AllSet = 'all-set',
+    AlmostDone = 'almost-done',
+}
+
+export const isHelpCenterWizardCompletedState = (
+    value: string | undefined | null
+): value is HELP_CENTER_WIZARD_COMPLETED_STATE => {
+    return (
+        value === HELP_CENTER_WIZARD_COMPLETED_STATE.AllSet ||
+        value === HELP_CENTER_WIZARD_COMPLETED_STATE.AlmostDone
+    )
+}

@@ -67,6 +67,7 @@ import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArt
 import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
 import {HelpCenterArticleModalView} from './articles/HelpCenterEditArticleModalContent/types'
 import {SearchView} from './SearchView'
+import HelpCenterWizardCompletedModal from './HelpCenterWizardCompletedModal/HelpCenterWizardCompletedModal'
 
 export const HelpCenterArticlesView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -1077,6 +1078,8 @@ export const HelpCenterArticlesView: React.FC = () => {
                     </span>
                 </ConfirmationModal>
             )}
+
+            <HelpCenterWizardCompletedModal />
         </HelpCenterPageWrapper>
     )
 }
