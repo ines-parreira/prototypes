@@ -601,9 +601,10 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             onConfirm={() => deleteIntegration(integration)}
                             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                             intent="destructive"
+                            fillStyle="ghost"
                         >
                             <ButtonIconLabel icon="delete">
-                                Delete email address
+                                Delete Integration
                             </ButtonIconLabel>
                         </ConfirmButton>
                     </div>
