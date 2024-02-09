@@ -46,8 +46,8 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
             </div>
 
             <ColorField
-                label="Primary Color"
-                help="This color will be used for hyperlinks, section titles, pagination buttons and icons."
+                label="Accent color"
+                help="This color will be used for icons and hover states."
                 value={currentColor}
                 onChange={onColorChange}
             />

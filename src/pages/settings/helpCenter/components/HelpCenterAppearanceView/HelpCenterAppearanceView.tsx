@@ -465,13 +465,13 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             className="control-label"
                             htmlFor={'primary-font'}
                         >
-                            Primary Font
+                            Main font
                         </label>
                         <div id="primary-font">
                             <FontSelectField
                                 value={currentPrimaryFont}
                                 defaultFonts={HELP_CENTER_AVAILABLE_FONTS}
-                                placeholder="Select a primary font"
+                                placeholder="Select a main font"
                                 onChange={(value) => {
                                     setCurrentPrimaryFont(value)
                                 }}

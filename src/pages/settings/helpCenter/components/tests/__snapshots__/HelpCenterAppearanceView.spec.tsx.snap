@@ -504,7 +504,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 class="control-label"
                 for="id-input-3"
               >
-                Primary Color
+                Accent color
               </label>
               <div
                 class=""
@@ -535,7 +535,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               <small
                 class="form-text text-muted"
               >
-                This color will be used for hyperlinks, section titles, pagination buttons and icons.
+                This color will be used for icons and hover states.
               </small>
             </div>
           </div>
@@ -546,7 +546,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="control-label"
               for="primary-font"
             >
-              Primary Font
+              Main font
             </label>
             <div
               id="primary-font"
