@@ -301,11 +301,13 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               >
                 <div
                   class="dialog"
+                  data-testid="previewHeader"
                   style="background-color: rgb(18, 52, 86);"
                 >
                   <div
                     class="css-cad7de"
                     color="#123456"
+                    data-testid="gradientColor"
                   />
                   <div
                     class="css-1vo7hu9"
@@ -742,11 +744,13 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               >
                 <div
                   class="dialog"
+                  data-testid="previewHeader"
                   style="background-color: rgb(18, 52, 86);"
                 >
                   <div
                     class="css-cad7de"
                     color="#123456"
+                    data-testid="gradientColor"
                   />
                   <div
                     class="css-1vo7hu9"

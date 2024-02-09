@@ -91,11 +91,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -376,11 +378,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -582,11 +586,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -767,11 +773,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -1092,11 +1100,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -1364,11 +1374,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -1617,11 +1629,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(235, 235, 235);"
     >
       <div
         class="css-1nuwqqr"
         color="#EBEBEB"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -1881,11 +1895,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -2134,11 +2150,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -2408,11 +2426,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -2625,11 +2645,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -2842,11 +2864,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -3059,11 +3083,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"
@@ -3174,11 +3200,13 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <div
       class="dialog"
+      data-testid="previewHeader"
       style="background-color: rgb(18, 52, 86);"
     >
       <div
         class="css-cad7de"
         color="#123456"
+        data-testid="gradientColor"
       />
       <div
         class="css-1vo7hu9"

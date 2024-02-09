@@ -304,13 +304,17 @@ const ChatIntegrationPreview = (props: Props) => {
                 >
                     <div
                         className={css.dialog}
+                        data-testId={'previewHeader'}
                         style={{
                             backgroundColor: currentColor,
                         }}
                     >
                         {backgroundColorStyle ===
                             GorgiasChatBackgroundColorStyle.Gradient && (
-                            <Gradient color={currentColor}></Gradient>
+                            <Gradient
+                                data-testId={'gradientColor'}
+                                color={currentColor}
+                            ></Gradient>
                         )}
                         <NoiseEffect></NoiseEffect>
                         <div className={css.noise}></div>
