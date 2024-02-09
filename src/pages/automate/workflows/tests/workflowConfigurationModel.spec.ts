@@ -4,35 +4,33 @@ import {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStepChoices,
-    WorkflowStepMessages,
-    WorkflowStepWorkflowCall,
+    WorkflowStepHelpfulPrompt,
+    WorkflowStepMessage,
     WorkflowTransition,
 } from '../models/workflowConfiguration.types'
-import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
-const genStepMessages = (
+const genStepMessage = (
     id: string,
     content: MessageContent
-): WorkflowStepMessages => ({
+): WorkflowStepMessage => ({
     id,
-    kind: 'messages',
+    kind: 'message',
     settings: {
-        messages: [
-            {
-                content: {
-                    html: content.html,
-                    text: content.text,
-                    html_tkey: content.html,
-                    text_tkey: content.text,
-                },
+        message: {
+            content: {
+                html: content.html,
+                text: content.text,
+                html_tkey: content.html,
+                text_tkey: content.text,
             },
-        ],
+        },
     },
 })
 
 const genStepChoices = (
     id: string,
-    choices: WorkflowStepChoices['settings']['choices']
+    choices: WorkflowStepChoices['settings']['choices'],
+    content: MessageContent
 ): WorkflowStepChoices => ({
     id,
     kind: 'choices',
@@ -41,15 +39,20 @@ const genStepChoices = (
             ...choice,
             label_tkey: choice.label,
         })),
+        message: {
+            content: {
+                html: content.html,
+                text: content.text,
+                html_tkey: content.html,
+                text_tkey: content.text,
+            },
+        },
     },
 })
 
-const genStepWorkflowCall = (id: string): WorkflowStepWorkflowCall => ({
+const genStepHelpfulPrompt = (id: string): WorkflowStepHelpfulPrompt => ({
     id,
-    kind: 'workflow_call',
-    settings: {
-        configuration_id: WAS_THIS_HELPFUL_WORKFLOW_ID,
-    },
+    kind: 'helpful-prompt',
 })
 
 const genTransition = (
@@ -71,34 +74,36 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             is_draft: false,
             account_id: 1,
             name: 'test',
-            initial_step_id: 'messages1',
+            initial_step_id: 'choices1',
             entrypoint: {
                 label: 'entrypoint',
                 label_tkey: 'entrypoint_tkey',
             },
             steps: [
-                genStepMessages('messages1', {html: 'html', text: 'text'}),
-                genStepChoices('choices1', [
-                    {
-                        label: 'choice1',
-                        event_id: 'eventId1',
-                    },
-                    {
-                        label: 'choice2',
-                        event_id: 'eventId2',
-                    },
-                ]),
-                genStepMessages('messages2', {html: 'html', text: 'text'}),
-                genStepMessages('messages3', {html: 'html', text: 'text'}),
-                genStepWorkflowCall('workflowCall1'),
-                genStepWorkflowCall('workflowCall2'),
+                genStepChoices(
+                    'choices1',
+                    [
+                        {
+                            label: 'choice1',
+                            event_id: 'eventId1',
+                        },
+                        {
+                            label: 'choice2',
+                            event_id: 'eventId2',
+                        },
+                    ],
+                    {html: 'html', text: 'text'}
+                ),
+                genStepMessage('messages2', {html: 'html', text: 'text'}),
+                genStepMessage('messages3', {html: 'html', text: 'text'}),
+                genStepHelpfulPrompt('helpfulPrompt1'),
+                genStepHelpfulPrompt('helpfulPrompt2'),
             ],
             transitions: [
-                genTransition('messages1', 'choices1'),
                 genTransition('choices1', 'messages2', 'eventId1'),
                 genTransition('choices1', 'messages3', 'eventId2'),
-                genTransition('messages2', 'workflowCall1'),
-                genTransition('messages3', 'workflowCall2'),
+                genTransition('messages2', 'helpfulPrompt1'),
+                genTransition('messages3', 'helpfulPrompt2'),
             ],
             available_languages: ['en-US'],
         }
@@ -121,7 +126,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     }),
                 }),
                 expect.objectContaining({
-                    id: expect.any(String),
+                    id: 'choices1',
                     type: 'multiple_choices',
                     data: expect.objectContaining({
                         content: expect.objectContaining({
@@ -138,57 +143,39 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                                 event_id: 'eventId2',
                             }),
                         ]),
-                        wfConfigurationRef: {
-                            wfConfigurationMessagesStepId: 'messages1',
-                            wfConfigurationChoicesStepId: 'choices1',
-                        },
                     }),
                 }),
                 expect.objectContaining({
-                    id: expect.any(String),
+                    id: 'messages2',
                     type: 'automated_message',
                     data: expect.objectContaining({
                         content: expect.objectContaining({
                             html: 'html',
                             text: 'text',
                         }),
-                        wfConfigurationRef: {
-                            wfConfigurationMessagesStepId: 'messages2',
-                        },
                     }),
                 }),
                 expect.objectContaining({
-                    id: expect.any(String),
+                    id: 'helpfulPrompt1',
                     type: 'end',
                     data: expect.objectContaining({
-                        wfConfigurationRef: {
-                            wfConfigurationWorkflowCallOrHandoverStepId:
-                                'workflowCall1',
-                        },
                         withWasThisHelpfulPrompt: true,
                     }),
                 }),
                 expect.objectContaining({
-                    id: expect.any(String),
+                    id: 'messages3',
                     type: 'automated_message',
                     data: expect.objectContaining({
                         content: expect.objectContaining({
                             html: 'html',
                             text: 'text',
                         }),
-                        wfConfigurationRef: {
-                            wfConfigurationMessagesStepId: 'messages3',
-                        },
                     }),
                 }),
                 expect.objectContaining({
-                    id: expect.any(String),
+                    id: 'helpfulPrompt2',
                     type: 'end',
                     data: {
-                        wfConfigurationRef: {
-                            wfConfigurationWorkflowCallOrHandoverStepId:
-                                'workflowCall2',
-                        },
                         withWasThisHelpfulPrompt: true,
                     },
                 }),

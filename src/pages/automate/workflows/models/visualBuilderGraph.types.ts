@@ -18,14 +18,6 @@ export type TriggerButtonNodeType = Node<
 
 export type MultipleChoicesNodeType = Node<
     {
-        wfConfigurationRef:
-            | {
-                  wfConfigurationChoicesStepId: string
-              }
-            | {
-                  wfConfigurationChoicesStepId: string
-                  wfConfigurationMessagesStepId: string
-              }
         content: MessageContent
         choices: {
             event_id: string
@@ -45,13 +37,6 @@ export function isMultipleChoicesNodeType(
 
 export type AutomatedMessageNodeType = Node<
     {
-        wfConfigurationRef:
-            | {
-                  wfConfigurationMessageStepId: string
-              }
-            | {
-                  wfConfigurationMessagesStepId: string
-              }
         content: MessageContent
         isGreyedOut?: boolean | null
     },
@@ -60,14 +45,6 @@ export type AutomatedMessageNodeType = Node<
 
 export type TextReplyNodeType = Node<
     {
-        wfConfigurationRef:
-            | {
-                  wfConfigurationTextInputStepId: string
-              }
-            | {
-                  wfConfigurationMessagesStepId: string
-                  wfConfigurationTextInputStepId: string
-              }
         content: MessageContent
         isGreyedOut?: boolean | null
     },
@@ -76,14 +53,6 @@ export type TextReplyNodeType = Node<
 
 export type FileUploadNodeType = Node<
     {
-        wfConfigurationRef:
-            | {
-                  wfConfigurationAttachmentsInputStepId: string
-              }
-            | {
-                  wfConfigurationMessagesStepId: string
-                  wfConfigurationAttachmentsInputStepId: string
-              }
         content: MessageContent
         isGreyedOut?: boolean | null
     },
@@ -92,15 +61,6 @@ export type FileUploadNodeType = Node<
 
 export type OrderSelectionNodeType = Node<
     {
-        wfConfigurationRef:
-            | {
-                  wfConfigurationOrderSelectionStepId: string
-              }
-            | {
-                  wfConfigurationMessagesStepId: string
-                  wfConfigurationOrderSelectionWorkflowCallStepId: string
-                  wfConfigurationNoOrdersWorkflowCallStepId: string
-              }
         content: MessageContent
         isGreyedOut?: boolean | null
     },
@@ -109,9 +69,6 @@ export type OrderSelectionNodeType = Node<
 
 export type HttpRequestNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationHttpRequestStepId: string
-        }
         name: string
         url: string
         method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
@@ -137,9 +94,6 @@ export type HttpRequestNodeType = Node<
 
 export type ShopperAuthenticationNodeType = Node<
     {
-        wfConfigurationRef: {
-            wfConfigurationShopperAuthenticationStepId: string
-        }
         integrationId: number
         isGreyedOut?: boolean | null
     },
@@ -148,13 +102,6 @@ export type ShopperAuthenticationNodeType = Node<
 
 export type EndNodeType = Node<
     {
-        wfConfigurationRef:
-            | {
-                  wfConfigurationHelpfulPromptOrHandoverStepId: string
-              }
-            | {
-                  wfConfigurationWorkflowCallOrHandoverStepId: string
-              }
         withWasThisHelpfulPrompt: boolean
         ticketTags?: string[] | null
         ticketAssigneeUserId?: number | null
@@ -185,5 +132,4 @@ export type VisualBuilderGraph = {
     nodes: VisualBuilderNode[]
     edges: VisualBuilderEdge[]
     wfConfigurationOriginal: WorkflowConfiguration
-    isNewModel?: boolean
 }

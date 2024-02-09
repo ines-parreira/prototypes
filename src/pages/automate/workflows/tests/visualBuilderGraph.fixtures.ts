@@ -39,10 +39,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
                         event_id: 'eventId3',
                     },
                 ],
-                wfConfigurationRef: {
-                    wfConfigurationMessagesStepId: 'messages1',
-                    wfConfigurationChoicesStepId: 'choices1',
-                },
             },
         },
         {
@@ -53,9 +49,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
                 content: {
                     html: 'html',
                     text: 'text',
-                },
-                wfConfigurationRef: {
-                    wfConfigurationMessagesStepId: 'messages2',
                 },
             },
         },
@@ -68,9 +61,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
                     html: 'html',
                     text: 'text',
                 },
-                wfConfigurationRef: {
-                    wfConfigurationMessagesStepId: 'messages3',
-                },
             },
         },
         {
@@ -81,10 +71,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
                 content: {
                     html: 'Text reply html',
                     text: 'Text reply text',
-                },
-                wfConfigurationRef: {
-                    wfConfigurationMessagesStepId: 'messages4',
-                    wfConfigurationTextInputStepId: 'textInput1',
                 },
             },
         },
@@ -97,10 +83,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
                     html: 'html',
                     text: 'text',
                 },
-                wfConfigurationRef: {
-                    wfConfigurationMessagesStepId: 'messages5',
-                    wfConfigurationAttachmentsInputStepId: 'attachmentsInput1',
-                },
             },
         },
         {
@@ -108,10 +90,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'end1',
             type: 'end',
             data: {
-                wfConfigurationRef: {
-                    wfConfigurationWorkflowCallOrHandoverStepId:
-                        'workflowCall1',
-                },
                 withWasThisHelpfulPrompt: true,
             },
         },
@@ -120,10 +98,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'end2',
             type: 'end',
             data: {
-                wfConfigurationRef: {
-                    wfConfigurationWorkflowCallOrHandoverStepId:
-                        'workflowCall2',
-                },
                 withWasThisHelpfulPrompt: true,
             },
         },
@@ -132,10 +106,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'end3',
             type: 'end',
             data: {
-                wfConfigurationRef: {
-                    wfConfigurationWorkflowCallOrHandoverStepId:
-                        'workflowCall3',
-                },
                 withWasThisHelpfulPrompt: true,
             },
         },
@@ -219,8 +189,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         steps: [
             {
                 id: 'messages1',
-                kind: 'messages',
-                settings: {messages: [{content: {html: '', text: ''}}]},
+                kind: 'message',
+                settings: {message: {content: {html: '', text: ''}}},
             },
         ],
         transitions: [],

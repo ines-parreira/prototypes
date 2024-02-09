@@ -14,15 +14,6 @@ type Message = {
     content: MessageContent
 }
 
-// DEPRECATED
-export type WorkflowStepMessages = {
-    id: string
-    kind: 'messages'
-    settings: {
-        messages: Message[]
-    }
-}
-
 export type WorkflowStepMessage = {
     id: string
     kind: 'message'
@@ -34,7 +25,7 @@ export type WorkflowStepMessage = {
 export type WorkflowStepTextInput = {
     id: string
     kind: 'text-input'
-    settings?: {
+    settings: {
         message: Message
     }
 }
@@ -42,7 +33,7 @@ export type WorkflowStepTextInput = {
 export type WorkflowStepAttachmentsInput = {
     id: string
     kind: 'attachments-input'
-    settings?: {
+    settings: {
         message: Message
     }
 }
@@ -56,16 +47,7 @@ export type WorkflowStepChoices = {
             label: string
             label_tkey?: string
         }[]
-        message?: Message
-    }
-}
-
-// DEPRECATED
-export type WorkflowStepWorkflowCall = {
-    id: string
-    kind: 'workflow_call'
-    settings: {
-        configuration_id: string
+        message: Message
     }
 }
 
@@ -90,7 +72,7 @@ export type WorkflowStepShopperAuthentication = {
 export type WorkflowStepOrderSelection = {
     id: string
     kind: 'order-selection'
-    settings?: {
+    settings: {
         message: Message
     }
 }
@@ -123,11 +105,9 @@ export type WorkflowStepHttpRequest = {
 }
 
 export type WorkflowStep =
-    | WorkflowStepMessages
     | WorkflowStepTextInput
     | WorkflowStepAttachmentsInput
     | WorkflowStepChoices
-    | WorkflowStepWorkflowCall
     | WorkflowStepHandover
     | WorkflowStepShopperAuthentication
     | WorkflowStepHttpRequest

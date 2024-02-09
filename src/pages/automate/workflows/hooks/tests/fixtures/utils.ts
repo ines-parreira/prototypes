@@ -2,7 +2,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {
     WorkflowConfiguration,
     WorkflowConfigurationShallow,
-    WorkflowStepMessages,
+    WorkflowStepMessage,
     WorkflowTransition,
 } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
@@ -14,7 +14,7 @@ export function mockWorkflowConfiguration(uid: string): WorkflowConfiguration {
         name: uid,
         is_draft: false,
         initial_step_id: 's1',
-        steps: [] as WorkflowStepMessages[],
+        steps: [] as WorkflowStepMessage[],
         transitions: [] as WorkflowTransition[],
         available_languages: [],
     }

@@ -130,7 +130,7 @@ export function choicesReducer(
                         label_tkey: ulid(),
                         label: '',
                     })
-                    draft.nodes.push(buildEndNode(graph.isNewModel ?? false))
+                    draft.nodes.push(buildEndNode())
                     draft.edges.push({
                         ...buildEdgeCommonProperties(),
                         source: action.multipleChoicesNodeId,
@@ -218,10 +218,8 @@ function insertMultipleChoices(
     return produce(graph, (draft) => {
         const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
         if (!edge) return
-        const multipleChoicesNode = buildMultipleChoicesNode(
-            graph.isNewModel ?? false
-        )
-        const endNode = buildEndNode(graph.isNewModel ?? false)
+        const multipleChoicesNode = buildMultipleChoicesNode()
+        const endNode = buildEndNode()
         draft.nodes.push(multipleChoicesNode, endNode)
         edge.target = multipleChoicesNode.id
         draft.edges.push(

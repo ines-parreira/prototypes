@@ -1,10 +1,6 @@
 import {ulid} from 'ulidx'
 import _omit from 'lodash/omit'
 import {
-    ORDER_SELECTION_WORKFLOW_ID,
-    WAS_THIS_HELPFUL_WORKFLOW_ID,
-} from '../constants'
-import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from './visualBuilderGraph.model'
@@ -110,14 +106,10 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
     const edges: VisualBuilderEdge[] = []
     const nodeIdByStepId: Record<string, string> = {}
 
-    let isNewModel = false
-
     walkWorkflowConfigurationGraph(c, c.initial_step_id, (step, context) => {
-        const {previousStep, nextSteps, incomingTransition} = context
+        const {previousStep, incomingTransition} = context
 
-        // 1:1 step <> node mapping (almost)
         if (step.kind === 'message') {
-            isNewModel = true
             const n: AutomatedMessageNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
@@ -126,15 +118,11 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     content: injectTkeysInContentIfNotExist(
                         step.settings.message.content
                     ),
-                    wfConfigurationRef: {
-                        wfConfigurationMessageStepId: step.id,
-                    },
                 },
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } else if (step.kind === 'choices' && step.settings.message) {
-            isNewModel = true
+        } else if (step.kind === 'choices') {
             const n: MultipleChoicesNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
@@ -146,15 +134,11 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     choices: injectTkeysInChoicesIfNotExist(
                         step.settings.choices
                     ),
-                    wfConfigurationRef: {
-                        wfConfigurationChoicesStepId: step.id,
-                    },
                 },
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } else if (step.kind === 'text-input' && step.settings) {
-            isNewModel = true
+        } else if (step.kind === 'text-input') {
             const n: TextReplyNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
@@ -163,15 +147,11 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     content: injectTkeysInContentIfNotExist(
                         step.settings.message.content
                     ),
-                    wfConfigurationRef: {
-                        wfConfigurationTextInputStepId: step.id,
-                    },
                 },
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } else if (step.kind === 'attachments-input' && step.settings) {
-            isNewModel = true
+        } else if (step.kind === 'attachments-input') {
             const n: FileUploadNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
@@ -180,15 +160,11 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     content: injectTkeysInContentIfNotExist(
                         step.settings.message.content
                     ),
-                    wfConfigurationRef: {
-                        wfConfigurationAttachmentsInputStepId: step.id,
-                    },
                 },
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } else if (step.kind === 'order-selection' && step.settings) {
-            isNewModel = true
+        } else if (step.kind === 'order-selection') {
             const n: OrderSelectionNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
@@ -197,23 +173,16 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     content: injectTkeysInContentIfNotExist(
                         step.settings.message.content
                     ),
-                    wfConfigurationRef: {
-                        wfConfigurationOrderSelectionStepId: step.id,
-                    },
                 },
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
         } else if (step.kind === 'helpful-prompt') {
-            isNewModel = true
             const n: EndNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
                 type: 'end',
                 data: {
-                    wfConfigurationRef: {
-                        wfConfigurationHelpfulPromptOrHandoverStepId: step.id,
-                    },
                     withWasThisHelpfulPrompt: true,
                     ticketTags: step.settings?.ticket_tags,
                     ticketAssigneeUserId:
@@ -224,160 +193,12 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } /* DEPRECATED */ else if (
-            step.kind === 'messages' &&
-            nextSteps.length === 1 &&
-            nextSteps[0].kind === 'choices'
-        ) {
-            // group message step followed by a choice step into a multiple_choices node
-            const n: MultipleChoicesNodeType = {
-                ...buildNodeCommonProperties(),
-                id: step.id,
-                type: 'multiple_choices',
-                data: {
-                    content: injectTkeysInContentIfNotExist(
-                        step.settings.messages[0].content
-                    ),
-                    choices: injectTkeysInChoicesIfNotExist(
-                        nextSteps[0].settings.choices
-                    ),
-                    wfConfigurationRef: {
-                        wfConfigurationChoicesStepId: nextSteps[0].id,
-                        wfConfigurationMessagesStepId: step.id,
-                    },
-                },
-            }
-            nodeIdByStepId[nextSteps[0].id] = n.id
-            nodes.push(n)
-        } /* DEPRECATED */ else if (
-            step.kind === 'messages' &&
-            nextSteps.length === 1 &&
-            nextSteps[0].kind === 'text-input'
-        ) {
-            // group message step followed by a text-input step into a text_reply node
-            const n: TextReplyNodeType = {
-                ...buildNodeCommonProperties(),
-                id: step.id,
-                type: 'text_reply',
-                data: {
-                    content: injectTkeysInContentIfNotExist(
-                        step.settings.messages[0].content
-                    ),
-                    wfConfigurationRef: {
-                        wfConfigurationMessagesStepId: step.id,
-                        wfConfigurationTextInputStepId: nextSteps[0].id,
-                    },
-                },
-            }
-            nodeIdByStepId[nextSteps[0].id] = n.id
-            nodes.push(n)
-        } /* DEPRECATED */ else if (
-            step.kind === 'messages' &&
-            nextSteps.length === 1 &&
-            nextSteps[0].kind === 'attachments-input'
-        ) {
-            // group message step followed by an attachments-input step into a file_upload node
-            const n: FileUploadNodeType = {
-                ...buildNodeCommonProperties(),
-                id: step.id,
-                type: 'file_upload',
-                data: {
-                    content: injectTkeysInContentIfNotExist(
-                        step.settings.messages[0].content
-                    ),
-                    wfConfigurationRef: {
-                        wfConfigurationMessagesStepId: step.id,
-                        wfConfigurationAttachmentsInputStepId: nextSteps[0].id,
-                    },
-                },
-            }
-            nodeIdByStepId[nextSteps[0].id] = n.id
-            nodes.push(n)
-        } /* DEPRECATED */ else if (
-            step.kind === 'messages' &&
-            previousStep &&
-            nextSteps.length === 1 &&
-            nextSteps[0].kind === 'workflow_call' &&
-            nextSteps[0].settings.configuration_id ===
-                ORDER_SELECTION_WORKFLOW_ID
-        ) {
-            const noOrdersWorkflowCallStepId = c.transitions.find(
-                (t) =>
-                    t.from_step_id === previousStep.id &&
-                    t.to_step_id !== step.id
-            )?.to_step_id
-
-            if (!noOrdersWorkflowCallStepId) {
-                throw new Error(
-                    `order_selection node expects a "branching" step:
-                    - workflow_call (no orders)
-                    - message -> workflow_call (order selection)`
-                )
-            }
-
-            // group branching step (1) workflow-call, (2) message -> workflow_call steps into an order_selection node
-            const n: OrderSelectionNodeType = {
-                ...buildNodeCommonProperties(),
-                id: step.id,
-                type: 'order_selection',
-                data: {
-                    content: injectTkeysInContentIfNotExist(
-                        step.settings.messages[0].content
-                    ),
-                    wfConfigurationRef: {
-                        wfConfigurationMessagesStepId: step.id,
-                        wfConfigurationOrderSelectionWorkflowCallStepId:
-                            nextSteps[0].id,
-                        wfConfigurationNoOrdersWorkflowCallStepId:
-                            noOrdersWorkflowCallStepId,
-                    },
-                },
-            }
-            nodeIdByStepId[nextSteps[0].id] = n.id
-            nodes.push(n)
-        } /* DEPRECATED */ else if (step.kind === 'messages') {
-            // single message step will become an automated_answer node
-            const n: AutomatedMessageNodeType = {
-                ...buildNodeCommonProperties(),
-                id: step.id,
-                type: 'automated_message',
-                data: {
-                    content: injectTkeysInContentIfNotExist(
-                        step.settings.messages[0].content
-                    ),
-                    wfConfigurationRef: {
-                        wfConfigurationMessagesStepId: step.id,
-                    },
-                },
-            }
-            nodeIdByStepId[step.id] = n.id
-            nodes.push(n)
-        } /* DEPRECATED */ else if (
-            step.kind === 'workflow_call' &&
-            step.settings.configuration_id === WAS_THIS_HELPFUL_WORKFLOW_ID
-        ) {
-            const n: EndNodeType = {
-                ...buildNodeCommonProperties(),
-                id: step.id,
-                type: 'end',
-                data: {
-                    wfConfigurationRef: {
-                        wfConfigurationWorkflowCallOrHandoverStepId: step.id,
-                    },
-                    withWasThisHelpfulPrompt: true,
-                },
-            }
-            nodeIdByStepId[step.id] = n.id
-            nodes.push(n)
         } else if (step.kind === 'handover') {
             const n: EndNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
                 type: 'end',
                 data: {
-                    wfConfigurationRef: {
-                        wfConfigurationHelpfulPromptOrHandoverStepId: step.id,
-                    },
                     withWasThisHelpfulPrompt: false,
                     ticketTags: step.settings.ticket_tags,
                     ticketAssigneeUserId: step.settings.ticket_assignee_user_id,
@@ -396,9 +217,6 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'http_request',
                 data: {
-                    wfConfigurationRef: {
-                        wfConfigurationHttpRequestStepId: step.id,
-                    },
                     name: step.settings.name,
                     url: step.settings.url,
                     method: step.settings.method,
@@ -429,9 +247,6 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'shopper_authentication',
                 data: {
-                    wfConfigurationRef: {
-                        wfConfigurationShopperAuthenticationStepId: step.id,
-                    },
                     integrationId: step.settings.integration_id,
                 },
             }
@@ -472,7 +287,6 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         nodes,
         edges,
         wfConfigurationOriginal: c,
-        isNewModel,
     }
 }
 
@@ -524,7 +338,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertChoicesStepAndSelect(
-        message?: WorkflowStepChoices['settings']['message']
+        message: WorkflowStepChoices['settings']['message']
     ) {
         const step: WorkflowStepChoices = {
             id: ulid(),
@@ -600,7 +414,7 @@ export class WorkflowConfigurationBuilder {
 
     insertChoiceAndTextInputStepAndSelect(
         choiceLabel: string,
-        settings?: WorkflowStepTextInput['settings']
+        settings: WorkflowStepTextInput['settings']
     ): ChoiceEventId {
         const step: WorkflowStepTextInput = {
             id: ulid(),
@@ -612,7 +426,7 @@ export class WorkflowConfigurationBuilder {
 
     insertChoiceAndAttachmentsInputStepAndSelect(
         choiceLabel: string,
-        settings?: WorkflowStepAttachmentsInput['settings']
+        settings: WorkflowStepAttachmentsInput['settings']
     ): ChoiceEventId {
         const step: WorkflowStepAttachmentsInput = {
             id: ulid(),
@@ -663,7 +477,7 @@ export class WorkflowConfigurationBuilder {
         this._selection = step
     }
 
-    insertTextInputStepAndSelect(settings?: WorkflowStepTextInput['settings']) {
+    insertTextInputStepAndSelect(settings: WorkflowStepTextInput['settings']) {
         const step: WorkflowStepTextInput = {
             id: ulid(),
             kind: 'text-input',
@@ -679,7 +493,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertAttachmentsInputStepAndSelect(
-        settings?: WorkflowStepAttachmentsInput['settings']
+        settings: WorkflowStepAttachmentsInput['settings']
     ) {
         const step: WorkflowStepAttachmentsInput = {
             id: ulid(),

@@ -45,8 +45,7 @@ const ShopperAuthenticationNode = memo(function ShopperAuthenticationNode({
                         <i className="material-icons">check_circle</i>
                         Confirm customer identity
                     </Label>
-                    {/* TODO: remove hardcoded `hasMultipleChildren` after migrating to a new model */}
-                    <NodeDeleteIcon {...deleteProps} hasMultipleChildren />
+                    <NodeDeleteIcon {...deleteProps} />
                 </div>
                 <Handle
                     type="source"

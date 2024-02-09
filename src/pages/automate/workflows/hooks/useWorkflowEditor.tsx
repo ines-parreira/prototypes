@@ -539,8 +539,7 @@ export function useWorkflowEditor(
             try {
                 const data = await downloadWorkflowConfigurationStepLogs(
                     visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
-                    node.data.wfConfigurationRef
-                        .wfConfigurationHttpRequestStepId
+                    node.id
                 )
 
                 saveFileAsDownloaded(
@@ -664,20 +663,11 @@ function validate(
         conf.entrypoint?.label.trim().length === 0 ||
         conf.steps.find(
             (s) =>
-                s.kind === 'messages' &&
-                !s.settings.messages[0].content.text.trim()
-        ) ||
-        conf.steps.find(
-            (s) =>
-                s.kind === 'message' && !s.settings.message.content.text.trim()
-        ) ||
-        conf.steps.find(
-            (s) =>
-                (s.kind === 'text-input' ||
+                (s.kind === 'message' ||
+                    s.kind === 'text-input' ||
                     s.kind === 'attachments-input' ||
                     s.kind === 'order-selection' ||
                     s.kind === 'choices') &&
-                s.settings?.message &&
                 !s.settings.message.content.text.trim()
         ) ||
         conf.steps.find(

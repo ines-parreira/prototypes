@@ -72,24 +72,22 @@ export const buildWorkflowVariableFromNode = (
         const {
             data: {
                 content: {text},
-                wfConfigurationRef: {wfConfigurationTextInputStepId},
             },
         } = node
         return {
             name: formatVariableName(text.length > 0 ? text : 'Message'),
-            value: `{{steps_state.${wfConfigurationTextInputStepId}.content.text}}`,
+            value: `{{steps_state.${node.id}.content.text}}`,
             nodeType: 'text_reply',
         }
     } else if (node.type === 'multiple_choices') {
         const {
             data: {
                 content: {text},
-                wfConfigurationRef: {wfConfigurationChoicesStepId},
             },
         } = node
         return {
             name: formatVariableName(text.length > 0 ? text : 'Question'),
-            value: `{{steps_state.${wfConfigurationChoicesStepId}.selected_choice.label}}`,
+            value: `{{steps_state.${node.id}.selected_choice.label}}`,
             nodeType: 'multiple_choices',
         }
     } else if (node.type === 'order_selection') {
@@ -145,18 +143,14 @@ export const buildWorkflowVariableFromNode = (
         }
     } else if (node.type === 'http_request' && node.data.variables.length) {
         const {
-            data: {
-                name,
-                variables,
-                wfConfigurationRef: {wfConfigurationHttpRequestStepId},
-            },
+            data: {name, variables},
         } = node
         return {
             nodeType: 'http_request',
             name: formatVariableName(name.length > 0 ? name : 'Request name'),
             variables: variables.map((variable) => ({
                 name: variable.name,
-                value: `{{steps_state.${wfConfigurationHttpRequestStepId}.content.${variable.id}}}`,
+                value: `{{steps_state.${node.id}.content.${variable.id}}}`,
             })),
         }
     }

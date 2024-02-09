@@ -77,20 +77,13 @@ export function deleteBranch(
     return nextGraph
 }
 
-export const buildAutomatedMessageNode = (
-    isNewModel: boolean
-): AutomatedMessageNodeType => {
+export const buildAutomatedMessageNode = (): AutomatedMessageNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
         id,
         type: 'automated_message',
         data: {
-            wfConfigurationRef: {
-                ...(isNewModel
-                    ? {wfConfigurationMessageStepId: id}
-                    : {wfConfigurationMessagesStepId: id}),
-            },
             content: {
                 html: '',
                 html_tkey: ulid(),
@@ -101,21 +94,13 @@ export const buildAutomatedMessageNode = (
     }
 }
 
-export const buildTextReplyNode = (isNewModel: boolean): TextReplyNodeType => {
+export const buildTextReplyNode = (): TextReplyNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
         id,
         type: 'text_reply',
         data: {
-            wfConfigurationRef: {
-                ...(isNewModel
-                    ? {wfConfigurationTextInputStepId: id}
-                    : {
-                          wfConfigurationMessagesStepId: id,
-                          wfConfigurationTextInputStepId: ulid(),
-                      }),
-            },
             content: {
                 html: '',
                 html_tkey: ulid(),
@@ -126,23 +111,13 @@ export const buildTextReplyNode = (isNewModel: boolean): TextReplyNodeType => {
     }
 }
 
-export const buildFileUploadNode = (
-    isNewModel: boolean
-): FileUploadNodeType => {
+export const buildFileUploadNode = (): FileUploadNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
         id,
         type: 'file_upload',
         data: {
-            wfConfigurationRef: {
-                ...(isNewModel
-                    ? {wfConfigurationAttachmentsInputStepId: id}
-                    : {
-                          wfConfigurationMessagesStepId: id,
-                          wfConfigurationAttachmentsInputStepId: ulid(),
-                      }),
-            },
             content: {
                 html: '',
                 html_tkey: ulid(),
@@ -153,23 +128,13 @@ export const buildFileUploadNode = (
     }
 }
 
-export const buildMultipleChoicesNode = (
-    isNewModel: boolean
-): MultipleChoicesNodeType => {
+export const buildMultipleChoicesNode = (): MultipleChoicesNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
         id,
         type: 'multiple_choices',
         data: {
-            wfConfigurationRef: {
-                ...(isNewModel
-                    ? {wfConfigurationChoicesStepId: id}
-                    : {
-                          wfConfigurationMessagesStepId: id,
-                          wfConfigurationChoicesStepId: ulid(),
-                      }),
-            },
             content: {
                 html: '',
                 html_tkey: ulid(),
@@ -192,45 +157,25 @@ export const buildMultipleChoicesNode = (
     }
 }
 
-export const buildEndNode = (isNewModel: boolean): EndNodeType => {
+export const buildEndNode = (): EndNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
         id,
         type: 'end',
         data: {
-            wfConfigurationRef: {
-                ...(isNewModel
-                    ? {wfConfigurationHelpfulPromptOrHandoverStepId: id}
-                    : {wfConfigurationWorkflowCallOrHandoverStepId: id}),
-            },
             withWasThisHelpfulPrompt: true,
         },
     }
 }
 
-export const buildOrderSelectionNode = (
-    isNewModel: boolean
-): OrderSelectionNodeType => {
+export const buildOrderSelectionNode = (): OrderSelectionNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
         id,
         type: 'order_selection',
         data: {
-            wfConfigurationRef: {
-                ...(isNewModel
-                    ? {
-                          wfConfigurationOrderSelectionStepId: id,
-                      }
-                    : {
-                          wfConfigurationMessagesStepId: ulid(),
-                          wfConfigurationShopperAuthenticationStepId: id,
-                          wfConfigurationOrderSelectionWorkflowCallStepId:
-                              ulid(),
-                          wfConfigurationNoOrdersWorkflowCallStepId: ulid(),
-                      }),
-            },
             content: {
                 html: '',
                 html_tkey: ulid(),
@@ -248,9 +193,6 @@ export const buildHttpRequestNode = (): HttpRequestNodeType => {
         id,
         type: 'http_request',
         data: {
-            wfConfigurationRef: {
-                wfConfigurationHttpRequestStepId: id,
-            },
             name: '',
             url: '',
             method: 'GET',
@@ -269,9 +211,6 @@ export const buildShopperAuthenticationNode = (
         id,
         type: 'shopper_authentication',
         data: {
-            wfConfigurationRef: {
-                wfConfigurationShopperAuthenticationStepId: id,
-            },
             integrationId: storeIntegrationId,
         },
     }

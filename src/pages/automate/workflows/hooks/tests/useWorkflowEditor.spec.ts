@@ -84,26 +84,24 @@ describe('useWorkflowEditor', () => {
                     account_id: 1,
                     is_draft: true,
                     name: 'remote name',
-                    initial_step_id: 'messages1',
+                    initial_step_id: 'message1',
                     entrypoint: {
                         label: 'entrypoint',
                         label_tkey: 'entrypoint',
                     },
                     steps: [
                         {
-                            id: 'messages1',
-                            kind: 'messages',
+                            id: 'message1',
+                            kind: 'message',
                             settings: {
-                                messages: [
-                                    {
-                                        content: {
-                                            text: 'Hello',
-                                            html: '<p>Hello</p>',
-                                            text_tkey: 'Hello',
-                                            html_tkey: '<p>Hello</p>',
-                                        },
+                                message: {
+                                    content: {
+                                        text: 'Hello',
+                                        html: '<p>Hello</p>',
+                                        text_tkey: 'Hello',
+                                        html_tkey: '<p>Hello</p>',
                                     },
-                                ],
+                                },
                             },
                         },
                         {
@@ -114,8 +112,8 @@ describe('useWorkflowEditor', () => {
                     ],
                     transitions: [
                         {
-                            id: 'messages1-handover1',
-                            from_step_id: 'messages1',
+                            id: 'message1-handover1',
+                            from_step_id: 'message1',
                             to_step_id: 'handover1',
                         },
                     ],
@@ -147,26 +145,24 @@ describe('useWorkflowEditor', () => {
                     account_id: 1,
                     is_draft: false,
                     name: 'remote name',
-                    initial_step_id: 'messages1',
+                    initial_step_id: 'message1',
                     entrypoint: {
                         label: 'entrypoint',
                         label_tkey: 'entrypoint',
                     },
                     steps: [
                         {
-                            id: 'messages1',
-                            kind: 'messages',
+                            id: 'message1',
+                            kind: 'message',
                             settings: {
-                                messages: [
-                                    {
-                                        content: {
-                                            text: 'Hello',
-                                            html: '<p>Hello</p>',
-                                            text_tkey: 'Hello',
-                                            html_tkey: '<p>Hello</p>',
-                                        },
+                                message: {
+                                    content: {
+                                        text: 'Hello',
+                                        html: '<p>Hello</p>',
+                                        text_tkey: 'Hello',
+                                        html_tkey: '<p>Hello</p>',
                                     },
-                                ],
+                                },
                             },
                         },
                         {
@@ -177,8 +173,8 @@ describe('useWorkflowEditor', () => {
                     ],
                     transitions: [
                         {
-                            id: 'messages1-handover1',
-                            from_step_id: 'messages1',
+                            id: 'message1-handover1',
+                            from_step_id: 'message1',
                             to_step_id: 'handover1',
                         },
                     ],

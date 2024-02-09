@@ -11,17 +11,17 @@ describe('parseWorkflowVariable', () => {
             {
                 nodeType: 'text_reply',
                 name: 'My text reply',
-                value: '{{steps_state.textInput1.content.text}}',
+                value: '{{steps_state.text_reply1.content.text}}',
             },
         ]
         const parsed = parseWorkflowVariable(
-            '{{steps_state.textInput1.content.text}}',
+            '{{steps_state.text_reply1.content.text}}',
             availableVariables
         )
         expect(parsed).toEqual({
             nodeType: 'text_reply',
             name: 'My text reply',
-            value: '{{steps_state.textInput1.content.text}}',
+            value: '{{steps_state.text_reply1.content.text}}',
         })
     })
 
@@ -75,12 +75,12 @@ describe('getAvailableFlowVariables', () => {
             {
                 nodeType: 'multiple_choices',
                 name: 'Choices text',
-                value: '{{steps_state.choices1.selected_choice.label}}',
+                value: '{{steps_state.multiple_choices1.selected_choice.label}}',
             },
             {
                 nodeType: 'text_reply',
                 name: 'Text reply text',
-                value: '{{steps_state.textInput1.content.text}}',
+                value: '{{steps_state.text_reply1.content.text}}',
             },
         ])
     })
@@ -91,7 +91,7 @@ describe('getAvailableFlowVariables', () => {
                 {
                     nodeType: 'multiple_choices',
                     name: 'Choices text',
-                    value: '{{steps_state.choices1.selected_choice.label}}',
+                    value: '{{steps_state.multiple_choices1.selected_choice.label}}',
                 },
             ]
         )

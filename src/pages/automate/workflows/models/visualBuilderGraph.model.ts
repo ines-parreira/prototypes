@@ -8,11 +8,6 @@ import _groupBy from 'lodash/groupBy'
 import _omitBy from 'lodash/omitBy'
 
 import {
-    NO_ORDERS_WORKFLOW_ID,
-    ORDER_SELECTION_WORKFLOW_ID,
-    WAS_THIS_HELPFUL_WORKFLOW_ID,
-} from '../constants'
-import {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
@@ -20,11 +15,9 @@ import {
     WorkflowStepHelpfulPrompt,
     WorkflowStepHttpRequest,
     WorkflowStepMessage,
-    WorkflowStepMessages,
     WorkflowStepOrderSelection,
     WorkflowStepShopperAuthentication,
     WorkflowStepTextInput,
-    WorkflowStepWorkflowCall,
 } from './workflowConfiguration.types'
 import {
     VisualBuilderEdge,
@@ -98,7 +91,7 @@ export function areGraphsEqual(
                         )
                     ),
             },
-            ['wfConfigurationOriginal', 'isNewModel']
+            ['wfConfigurationOriginal']
         )
     return _isEqual(essentialGraph(g1), essentialGraph(g2))
 }
@@ -194,42 +187,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     }
                 }
                 return
-            } /* DEPRECATED */ else if (
-                node.type === 'automated_message' &&
-                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
-            ) {
-                const stepId =
-                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
-                const s: WorkflowStepMessages = {
-                    id: stepId,
-                    kind: 'messages',
-                    settings: {
-                        messages: [
-                            {
-                                content: node.data.content,
-                            },
-                        ],
-                    },
-                }
-                c.steps.push(s)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: stepId,
-                        event: incomingEdge?.data?.event,
-                    })
-                } else {
-                    c.initial_step_id = stepId
-                }
-                stepIdByNodeId[node.id] = stepId
-            } else if (
-                node.type === 'automated_message' &&
-                'wfConfigurationMessageStepId' in node.data.wfConfigurationRef
-            ) {
+            } else if (node.type === 'automated_message') {
                 const step: WorkflowStepMessage = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationMessageStepId,
+                    id: node.id,
                     kind: 'message',
                     settings: {
                         message: {
@@ -249,56 +209,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = step.id
                 }
                 stepIdByNodeId[node.id] = step.id
-            } /* DEPRECATED */ else if (
-                node.type === 'text_reply' &&
-                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
-            ) {
-                const messagesStepId =
-                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
-                const textInputStepId =
-                    node.data.wfConfigurationRef.wfConfigurationTextInputStepId
-                const messagesStep: WorkflowStepMessages = {
-                    id: messagesStepId,
-                    kind: 'messages',
-                    settings: {
-                        messages: [
-                            {
-                                content: node.data.content,
-                            },
-                        ],
-                    },
-                }
-                const textInputStep: WorkflowStepTextInput = {
-                    id: textInputStepId,
-                    kind: 'text-input',
-                }
-                c.steps.push(messagesStep, textInputStep)
-                c.transitions.push({
-                    id: ulid(),
-                    from_step_id: messagesStepId,
-                    to_step_id: textInputStepId,
-                })
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: messagesStepId,
-                        event: incomingEdge?.data?.event,
-                    })
-                } else {
-                    c.initial_step_id = messagesStepId
-                }
-                stepIdByNodeId[node.id] = textInputStepId
-            } else if (
-                node.type === 'text_reply' &&
-                !(
-                    'wfConfigurationMessagesStepId' in
-                    node.data.wfConfigurationRef
-                )
-            ) {
+            } else if (node.type === 'text_reply') {
                 const step: WorkflowStepTextInput = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationTextInputStepId,
+                    id: node.id,
                     kind: 'text-input',
                     settings: {
                         message: {
@@ -318,57 +231,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = step.id
                 }
                 stepIdByNodeId[node.id] = step.id
-            } /* DEPRECATED */ else if (
-                node.type === 'file_upload' &&
-                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
-            ) {
-                const messagesStepId =
-                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
-                const attachmentsInputStepId =
-                    node.data.wfConfigurationRef
-                        .wfConfigurationAttachmentsInputStepId
-                const messagesStep: WorkflowStepMessages = {
-                    id: messagesStepId,
-                    kind: 'messages',
-                    settings: {
-                        messages: [
-                            {
-                                content: node.data.content,
-                            },
-                        ],
-                    },
-                }
-                const attachmentsInputStep: WorkflowStepAttachmentsInput = {
-                    id: attachmentsInputStepId,
-                    kind: 'attachments-input',
-                }
-                c.steps.push(messagesStep, attachmentsInputStep)
-                c.transitions.push({
-                    id: ulid(),
-                    from_step_id: messagesStepId,
-                    to_step_id: attachmentsInputStepId,
-                })
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: messagesStepId,
-                        event: incomingEdge?.data?.event,
-                    })
-                } else {
-                    c.initial_step_id = messagesStepId
-                }
-                stepIdByNodeId[node.id] = attachmentsInputStepId
-            } else if (
-                node.type === 'file_upload' &&
-                !(
-                    'wfConfigurationMessagesStepId' in
-                    node.data.wfConfigurationRef
-                )
-            ) {
+            } else if (node.type === 'file_upload') {
                 const step: WorkflowStepAttachmentsInput = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationAttachmentsInputStepId,
+                    id: node.id,
                     kind: 'attachments-input',
                     settings: {
                         message: {
@@ -388,79 +253,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = step.id
                 }
                 stepIdByNodeId[node.id] = step.id
-            } /* DEPRECATED */ else if (
-                node.type === 'order_selection' &&
-                'wfConfigurationMessagesStepId' in
-                    node.data.wfConfigurationRef &&
-                previousNode
-            ) {
-                const noOrdersWorkflowCallStepId =
-                    node.data.wfConfigurationRef
-                        .wfConfigurationNoOrdersWorkflowCallStepId
-                const messagesStepId =
-                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
-                const orderSelectionWorkflowCallStepId =
-                    node.data.wfConfigurationRef
-                        .wfConfigurationOrderSelectionWorkflowCallStepId
-                const noOrdersWorkflowCallStep: WorkflowStepWorkflowCall = {
-                    id: noOrdersWorkflowCallStepId,
-                    kind: 'workflow_call',
-                    settings: {
-                        configuration_id: NO_ORDERS_WORKFLOW_ID,
-                    },
-                }
-                const messagesStep: WorkflowStepMessages = {
-                    id: messagesStepId,
-                    kind: 'messages',
-                    settings: {
-                        messages: [
-                            {
-                                content: node.data.content,
-                            },
-                        ],
-                    },
-                }
-                const orderSelectionWorkflowCallStep: WorkflowStepWorkflowCall =
-                    {
-                        id: orderSelectionWorkflowCallStepId,
-                        kind: 'workflow_call',
-                        settings: {
-                            configuration_id: ORDER_SELECTION_WORKFLOW_ID,
-                        },
-                    }
-                c.steps.push(
-                    noOrdersWorkflowCallStep,
-                    messagesStep,
-                    orderSelectionWorkflowCallStep
-                )
-                c.transitions.push({
-                    id: ulid(),
-                    from_step_id: stepIdByNodeId[previousNode.id],
-                    to_step_id: noOrdersWorkflowCallStepId,
-                    conditions: {'!': {var: 'customer.orders'}},
-                    event: incomingEdge?.data?.event,
-                })
-                c.transitions.push({
-                    id: ulid(),
-                    from_step_id: stepIdByNodeId[previousNode.id],
-                    to_step_id: messagesStepId,
-                    conditions: {'!!': {var: 'customer.orders'}},
-                    event: incomingEdge?.data?.event,
-                })
-                c.transitions.push({
-                    id: ulid(),
-                    from_step_id: messagesStepId,
-                    to_step_id: orderSelectionWorkflowCallStepId,
-                })
-                stepIdByNodeId[node.id] = orderSelectionWorkflowCallStepId
-            } else if (
-                node.type === 'order_selection' &&
-                'wfConfigurationOrderSelectionStepId' in
-                    node.data.wfConfigurationRef
-            ) {
+            } else if (node.type === 'order_selection') {
                 const step: WorkflowStepOrderSelection = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationOrderSelectionStepId,
+                    id: node.id,
                     kind: 'order-selection',
                     settings: {
                         message: {
@@ -480,60 +275,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = step.id
                 }
                 stepIdByNodeId[node.id] = step.id
-            } /* DEPRECATED */ else if (
-                node.type === 'multiple_choices' &&
-                'wfConfigurationMessagesStepId' in node.data.wfConfigurationRef
-            ) {
-                const messagesStepId =
-                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
-                const messagesStep: WorkflowStepMessages = {
-                    id: messagesStepId,
-                    kind: 'messages',
-                    settings: {
-                        messages: [
-                            {
-                                content: node.data.content,
-                            },
-                        ],
-                    },
-                }
-                const choicesStepId =
-                    node.data.wfConfigurationRef.wfConfigurationChoicesStepId
-                const choicesStep: WorkflowStepChoices = {
-                    id: choicesStepId,
-                    kind: 'choices',
-                    settings: {
-                        choices: node.data.choices,
-                    },
-                }
-                c.steps.push(messagesStep)
-                c.steps.push(choicesStep)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: messagesStepId,
-                        event: incomingEdge?.data?.event,
-                    })
-                } else {
-                    c.initial_step_id = messagesStepId
-                }
-                c.transitions.push({
-                    id: ulid(),
-                    from_step_id: messagesStepId,
-                    to_step_id: choicesStepId,
-                })
-                stepIdByNodeId[node.id] = choicesStepId
-            } else if (
-                node.type === 'multiple_choices' &&
-                !(
-                    'wfConfigurationMessagesStepId' in
-                    node.data.wfConfigurationRef
-                )
-            ) {
+            } else if (node.type === 'multiple_choices') {
                 const step: WorkflowStepChoices = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationChoicesStepId,
+                    id: node.id,
                     kind: 'choices',
                     settings: {
                         choices: node.data.choices,
@@ -554,42 +298,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = step.id
                 }
                 stepIdByNodeId[node.id] = step.id
-            } /* DEPRECATED */ else if (
-                node.type === 'end' &&
-                node.data.withWasThisHelpfulPrompt &&
-                'wfConfigurationWorkflowCallOrHandoverStepId' in
-                    node.data.wfConfigurationRef
-            ) {
-                const workflowCallStepId =
-                    node.data.wfConfigurationRef
-                        .wfConfigurationWorkflowCallOrHandoverStepId
-                const workflowCallStep: WorkflowStepWorkflowCall = {
-                    id: workflowCallStepId,
-                    kind: 'workflow_call',
-                    settings: {
-                        configuration_id: WAS_THIS_HELPFUL_WORKFLOW_ID,
-                    },
-                }
-                c.steps.push(workflowCallStep)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: workflowCallStepId,
-                        event: incomingEdge?.data?.event,
-                    })
-                } else {
-                    c.initial_step_id = workflowCallStepId
-                }
             } else if (
                 node.type === 'end' &&
-                node.data.withWasThisHelpfulPrompt &&
-                'wfConfigurationHelpfulPromptOrHandoverStepId' in
-                    node.data.wfConfigurationRef
+                node.data.withWasThisHelpfulPrompt
             ) {
                 const step: WorkflowStepHelpfulPrompt = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationHelpfulPromptOrHandoverStepId,
+                    id: node.id,
                     kind: 'helpful-prompt',
                     settings: {
                         ticket_tags: node.data.ticketTags,
@@ -609,44 +323,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = step.id
                 }
                 stepIdByNodeId[node.id] = step.id
-            } /* DEPRECATED */ else if (
-                node.type === 'end' &&
-                !node.data.withWasThisHelpfulPrompt &&
-                'wfConfigurationWorkflowCallOrHandoverStepId' in
-                    node.data.wfConfigurationRef
-            ) {
-                const handoverStepId =
-                    node.data.wfConfigurationRef
-                        .wfConfigurationWorkflowCallOrHandoverStepId
-                const workflowCallStep: WorkflowStepHandover = {
-                    id: handoverStepId,
-                    kind: 'handover',
-                    settings: {
-                        ticket_tags: node.data.ticketTags,
-                        ticket_assignee_user_id: node.data.ticketAssigneeUserId,
-                        ticket_assignee_team_id: node.data.ticketAssigneeTeamId,
-                    },
-                }
-                c.steps.push(workflowCallStep)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: handoverStepId,
-                        event: incomingEdge?.data?.event,
-                    })
-                } else {
-                    c.initial_step_id = handoverStepId
-                }
             } else if (
                 node.type === 'end' &&
-                !node.data.withWasThisHelpfulPrompt &&
-                'wfConfigurationHelpfulPromptOrHandoverStepId' in
-                    node.data.wfConfigurationRef
+                !node.data.withWasThisHelpfulPrompt
             ) {
                 const step: WorkflowStepHandover = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationHelpfulPromptOrHandoverStepId,
+                    id: node.id,
                     kind: 'handover',
                     settings: {
                         ticket_tags: node.data.ticketTags,
@@ -697,8 +379,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
 
                 const step: WorkflowStepHttpRequest = {
-                    id: node.data.wfConfigurationRef
-                        .wfConfigurationHttpRequestStepId,
+                    id: node.id,
                     kind: 'http-request',
                     settings: {
                         name: node.data.name,
@@ -722,30 +403,25 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'shopper_authentication') {
-                const stepId =
-                    node.data.wfConfigurationRef
-                        .wfConfigurationShopperAuthenticationStepId
-
-                const s: WorkflowStepShopperAuthentication = {
-                    id: stepId,
+                const step: WorkflowStepShopperAuthentication = {
+                    id: node.id,
                     kind: 'shopper-authentication',
                     settings: {
                         integration_id: node.data.integrationId,
                     },
                 }
-                c.steps.push(s)
+                c.steps.push(step)
                 if (previousNode && stepIdByNodeId[previousNode.id]) {
                     c.transitions.push({
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: stepId,
+                        to_step_id: step.id,
                         event: incomingEdge?.data?.event,
                     })
                 } else {
-                    c.initial_step_id = stepId
+                    c.initial_step_id = step.id
                 }
-
-                stepIdByNodeId[node.id] = stepId
+                stepIdByNodeId[node.id] = step.id
             }
         }
     )

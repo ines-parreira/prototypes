@@ -197,7 +197,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildAutomatedMessageNode(graph.isNewModel ?? false),
+                    buildAutomatedMessageNode(),
                     action.beforeNodeId
                 )
             )
@@ -205,7 +205,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildTextReplyNode(graph.isNewModel ?? false),
+                    buildTextReplyNode(),
                     action.beforeNodeId
                 )
             )
@@ -213,7 +213,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildFileUploadNode(graph.isNewModel ?? false),
+                    buildFileUploadNode(),
                     action.beforeNodeId
                 )
             )
@@ -229,7 +229,7 @@ export function baseReducer(
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
-                    buildOrderSelectionNode(graph.isNewModel ?? false),
+                    buildOrderSelectionNode(),
                     action.beforeNodeId
                 )
             )
@@ -277,7 +277,7 @@ export function baseReducer(
                         (e) => e.target === action.nodeId
                     )
                     if (!incomingEdge) return
-                    const endNode = buildEndNode(graph.isNewModel ?? false)
+                    const endNode = buildEndNode()
                     draft.nodes.push(endNode)
                     incomingEdge.target = endNode.id
                 })
