@@ -425,7 +425,7 @@ export class YourProfileView extends Component<Props, State> {
                                 />
 
                                 <FormText color="muted">
-                                    The picture must be square and weight less
+                                    The picture must be square and weigh less
                                     than 500kB.
                                 </FormText>
 

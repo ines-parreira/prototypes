@@ -400,7 +400,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   type="button"
                 >
                   <span>
-                    Select a File...
+                    Select a file
                   </span>
                 </button>
                 <input
@@ -414,7 +414,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           <small
             class="form-text text-muted"
           >
-            The picture must be square and weight less than 500kB.
+            The picture must be square and weigh less than 500kB.
           </small>
           <a
             class="text-danger"
@@ -1099,7 +1099,7 @@ exports[`YourProfileView render should render current user profile form 2`] = `
                   type="button"
                 >
                   <span>
-                    Select a File...
+                    Select a file
                   </span>
                 </button>
                 <input
@@ -1113,7 +1113,7 @@ exports[`YourProfileView render should render current user profile form 2`] = `
           <small
             class="form-text text-muted"
           >
-            The picture must be square and weight less than 500kB.
+            The picture must be square and weigh less than 500kB.
           </small>
           <a
             class="text-danger"

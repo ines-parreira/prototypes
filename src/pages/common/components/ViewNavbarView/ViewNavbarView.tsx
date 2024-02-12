@@ -8,24 +8,24 @@ import {Map, List} from 'immutable'
 
 import navbarCss from 'assets/css/navbar.less'
 
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
-import {getPluralObjectName} from '../../../../utils'
-import Tooltip from '../Tooltip'
-import shortcutManager from '../../../../services/shortcutManager/index'
-import {moveIndex, MoveIndexDirection} from '../../utils/keyboard'
+import {UserSettingType} from 'config/types/user'
+import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
+import {ViewType} from 'models/view/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import ViewCount from 'pages/common/components/ViewCount/ViewCount'
+import ViewName from 'pages/common/components/ViewName/ViewName'
+import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import history from 'pages/history'
+import shortcutManager from 'services/shortcutManager/index'
+import {makeGetSettingsByType} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
 import {
     getActiveView,
     makeGetView,
     makeGetViewCount,
     makeGetViewsByType,
-} from '../../../../state/views/selectors'
-import {makeGetSettingsByType} from '../../../../state/currentUser/selectors'
-import ViewName from '../ViewName/ViewName'
-import ViewCount from '../ViewCount/ViewCount'
-import history from '../../../history'
-import {RootState} from '../../../../state/types'
-import {ViewType} from '../../../../models/view/types'
-import {UserSettingType} from '../../../../config/types/user'
+} from 'state/views/selectors'
+import {getPluralObjectName} from 'utils'
 
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 import css from './ViewNavbarView.less'
@@ -141,7 +141,7 @@ class ViewNavbarView extends Component<Props, State> {
         const {activeView, viewType, settings, isLoading} = this.props
         const {hasEditMode} = this.state
         // we use this to build urls
-        const objectName: string = getPluralObjectName(viewType)
+        const objectName = getPluralObjectName(viewType)
 
         const settingButtonClass = classnames(css.settingButton, {
             [css.active]: hasEditMode,
@@ -272,6 +272,7 @@ class ViewNavbarView extends Component<Props, State> {
                                                     viewCount={viewCount}
                                                     viewId={view.get('id')}
                                                     isDeactivated={false}
+                                                    objectName={objectName}
                                                 />
                                             </span>
                                         </Link>

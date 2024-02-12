@@ -8,20 +8,26 @@ import {compactInteger} from 'utils'
 import css from './ViewCount.less'
 
 type OwnProps = {
-    viewId: number
     isDeactivated: boolean
+    objectName?: string
     viewCount: number | undefined
+    viewId: number
 }
 
 type Props = OwnProps
 
-export function ViewCount({viewId, isDeactivated, viewCount}: Props) {
+export function ViewCount({
+    isDeactivated,
+    objectName = 'tickets',
+    viewCount,
+    viewId,
+}: Props) {
     const title = useMemo(
         () =>
             viewCount && viewCount > 999
-                ? `${viewCount.toString()} tickets`
+                ? `${viewCount.toString()} ${objectName}`
                 : undefined,
-        [viewCount]
+        [objectName, viewCount]
     )
 
     if (isDeactivated) {

@@ -50,7 +50,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
         | 'isRemovable'
     > = {
         noPreview: false,
-        placeholder: 'Select a File...',
+        placeholder: 'Select a file',
         returnFiles: false, // return urls of files only by default
         isRemovable: false,
         type: 'file',
