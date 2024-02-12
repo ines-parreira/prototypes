@@ -192,7 +192,6 @@
         "@babel/preset-env": "7.10.2",
         "@babel/preset-react": "7.10.1",
         "@babel/preset-typescript": "7.10.1",
-        "@gorgias/api-queries": "^0.1",
         "@gorgias/javascript-shared-config": "0.1.0",
         "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
         "@redux-devtools/extension": "3.1.0",
