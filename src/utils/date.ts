@@ -87,6 +87,25 @@ export const subtractDaysFromDate = (date: string, daysToSubtract: number) => {
         .subtract(daysToSubtract, 'days')
 }
 
+export const shortenRelativeDurationLabel = (duration: string | null) => {
+    if (duration) {
+        if (duration.includes('second')) {
+            return `now`
+        }
+        const split = duration.split(' ')
+        const isFuture = split[0] === 'in'
+        const number = isFuture ? split[1] : split[0]
+        const formattedNumber = number.startsWith('a') ? '1' : number
+        const entity = isFuture ? split[2] : split[1]
+        const shortenEntity = entity.startsWith('month') ? 'mo' : entity[0]
+        if (isFuture) {
+            return `in ${formattedNumber}${shortenEntity}`
+        }
+        return `${formattedNumber}${shortenEntity} ago`
+    }
+    return duration
+}
+
 export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US = 'ddd, MMM D'
 export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD = 'ddd, D MMM'
 export const SHORT_DATE_FORMAT_US = 'MMM D'

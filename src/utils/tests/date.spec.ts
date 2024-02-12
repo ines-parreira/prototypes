@@ -6,12 +6,25 @@ import {
     getFormattedDate,
     getMomentTimezoneNames,
     subtractDaysFromDate,
+    shortenRelativeDurationLabel,
 } from '../date'
 
 const {getMomentTimezoneNames: getMomentTimezoneNamesActual} =
     jest.requireActual('../date')
 
+let dateNowSpy: jest.SpiedFunction<typeof Date.now>
+const defaultDateNowValue = 1707346800000 //  Feb 07 2024 23:00:00 GMT
+
 describe('date utils', () => {
+    beforeEach(() => {
+        dateNowSpy = jest
+            .spyOn(Date, 'now')
+            .mockImplementation(() => defaultDateNowValue)
+    })
+    afterEach(() => {
+        dateNowSpy.mockRestore()
+    })
+
     describe('getMomentTimezoneNames', () => {
         it('should return timezone names', () => {
             expect(
@@ -104,6 +117,41 @@ describe('date utils', () => {
             const invalidDate = 'invalid date'
             expect(() => getFormattedDate(invalidDate)).toThrowError(
                 'Invalid date'
+            )
+        })
+    })
+
+    describe('shortenRelativeDurationLabel', () => {
+        it('should return abbreviated label for one unit', () => {
+            const date = '2024-02-07T00:00:00Z'
+            expect(
+                shortenRelativeDurationLabel(moment(date).fromNow())
+            ).toEqual('1d ago')
+        })
+
+        it('should return abbreviated label for multiple unit', () => {
+            const date = '2024-02-05T00:00:00Z'
+            expect(
+                shortenRelativeDurationLabel(moment(date).fromNow())
+            ).toEqual('3d ago')
+        })
+
+        it("should return 'now' for duration in seconds", () => {
+            const date = '2024-02-07T23:00:10Z'
+            expect(
+                shortenRelativeDurationLabel(moment(date).fromNow())
+            ).toEqual('now')
+        })
+
+        it('should return the input when null', () => {
+            expect(shortenRelativeDurationLabel(null)).toBeNull()
+        })
+
+        it('should handle duration in the future', () => {
+            const date = '2024-02-07T23:59:10Z'
+
+            expect(shortenRelativeDurationLabel(moment(date).fromNow())).toBe(
+                'in 1h'
             )
         })
     })

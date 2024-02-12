@@ -7,6 +7,7 @@ import {Components} from 'react-virtuoso'
 
 import {TicketStatus} from 'business/types/ticket'
 import TicketIcon from 'pages/common/components/TicketIcon'
+import {shortenRelativeDurationLabel} from 'utils/date'
 
 import {TicketPartial, TicketSummary} from '../types'
 import TicketSkeleton from './TicketSkeleton'
@@ -97,7 +98,9 @@ export default function Ticket({
                                     <div className={css.excerpt}>
                                         {ticket.excerpt}
                                     </div>
-                                    <div className={css.time}>{datetime}</div>
+                                    <div className={css.time}>
+                                        {shortenRelativeDurationLabel(datetime)}
+                                    </div>
                                 </div>
                             </div>
                         </>
