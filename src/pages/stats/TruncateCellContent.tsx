@@ -6,7 +6,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import css from './TruncateCellContent.less'
 
 type Props = {
-    content: string
+    content: string | React.ReactNode
     className?: string
 }
 export const TruncateCellContent = ({content, className}: Props) => {

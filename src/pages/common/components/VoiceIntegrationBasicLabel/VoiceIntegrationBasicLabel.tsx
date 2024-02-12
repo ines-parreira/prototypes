@@ -14,9 +14,9 @@ function VoiceIntegrationBasicLabel({integrationId, phoneNumber}: Props) {
     const integrationName = integration?.get('name')
 
     if (!integrationName) {
-        return <div>{formattedPhoneNumber || 'Unknown integration'}</div>
+        return <>{formattedPhoneNumber || 'Unknown integration'}</>
     }
-    return <div>{integrationName}</div>
+    return <>{integrationName}</>
 }
 
 export default VoiceIntegrationBasicLabel

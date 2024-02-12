@@ -39,7 +39,7 @@ const VoiceCallRecording = ({voiceCall}: Props) => {
         useDownloadRecording(recordingUrl)
 
     const togglePopover = () => {
-        setOpen(!isOpen)
+        setOpen((isOpen) => !isOpen)
     }
 
     if (!recordingUrl || !isAvailable) {

@@ -26,6 +26,7 @@ import {
     isInboundVoiceCallSummary,
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
+import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
 import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording'
 
@@ -79,18 +80,18 @@ export const VoiceCallTable = ({
         return new Array(CALL_LIST_PAGE_SIZE).fill(null).map((_, rowIndex) => (
             <TableBodyRow key={rowIndex} className={css.tableRow}>
                 {[
-                    ['activity', 407],
+                    ['activity', 364],
                     ['integration', 174],
-                    ['date', 174],
-                    ['state', 84],
+                    ['date', 154],
+                    ['state', 74],
                     ...(displayVoiceAnalyticsV1 ? [['recording', 84]] : []),
                     ...(displayVoiceAnalyticsNiceToHave
                         ? [
-                              ['duration', 84],
+                              ['duration', 74],
                               ['wait time', 84],
                           ]
-                        : [['duration', 84]]),
-                    ['ticket', 94],
+                        : [['duration', 74]]),
+                    ['ticket', 82],
                 ].map(([key, width]) => (
                     <BodyCell
                         key={key}
@@ -148,7 +149,7 @@ export const VoiceCallTable = ({
                         />
                         <HeaderCellProperty
                             title={'State'}
-                            className={css.smallCell}
+                            className={css.tinyCell}
                             tooltip={
                                 <>
                                     The status of the phone call.
@@ -178,7 +179,7 @@ export const VoiceCallTable = ({
                                     title={'Length'}
                                     justifyContent={'right'}
                                     wrapContent={true}
-                                    className={css.smallCell}
+                                    className={css.tinyCell}
                                     tooltip={
                                         'Total duration from the moment the agent accepts the call.'
                                     }
@@ -229,22 +230,27 @@ export const VoiceCallTable = ({
                                           <VoiceCallActivity voiceCall={item} />
                                       </BodyCell>
                                       <BodyCell className={css.integrationCell}>
-                                          {item.integrationId ? (
-                                              <VoiceIntegrationBasicLabel
-                                                  integrationId={
-                                                      item.integrationId
-                                                  }
-                                                  phoneNumber={
-                                                      isInboundVoiceCallSummary(
-                                                          item
-                                                      )
-                                                          ? item.phoneNumberDestination
-                                                          : item.phoneNumberSource
-                                                  }
-                                              />
-                                          ) : (
-                                              '-'
-                                          )}
+                                          <TruncateCellContent
+                                              content={
+                                                  item.integrationId ? (
+                                                      <VoiceIntegrationBasicLabel
+                                                          integrationId={
+                                                              item.integrationId
+                                                          }
+                                                          phoneNumber={
+                                                              isInboundVoiceCallSummary(
+                                                                  item
+                                                              )
+                                                                  ? item.phoneNumberDestination
+                                                                  : item.phoneNumberSource
+                                                          }
+                                                      />
+                                                  ) : (
+                                                      '-'
+                                                  )
+                                              }
+                                              className={css.truncateContent}
+                                          />
                                       </BodyCell>
                                       <BodyCell className={css.dateCell}>
                                           <DatetimeLabel
@@ -255,7 +261,7 @@ export const VoiceCallTable = ({
                                               breakDate
                                           />
                                       </BodyCell>
-                                      <BodyCell className={css.smallCell}>
+                                      <BodyCell className={css.tinyCell}>
                                           <VoiceCallStatusLabel
                                               voiceCallStatus={item.status}
                                               direction={item.direction}
@@ -271,7 +277,7 @@ export const VoiceCallTable = ({
                                       {displayVoiceAnalyticsNiceToHave ? (
                                           <>
                                               <BodyCell
-                                                  className={css.smallCell}
+                                                  className={css.tinyCell}
                                                   justifyContent={'right'}
                                               >
                                                   {!!item.talkTime
