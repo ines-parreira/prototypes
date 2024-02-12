@@ -302,7 +302,7 @@ export default function HttpRequestEditor({
                     </Button>
                     <div className={css.formField}>
                         <div className={css.withDescription}>
-                            <Label>Flow variables</Label>
+                            <Label>Output variables</Label>
                             <div>
                                 Create variables from the request response which
                                 can be used in subsequent steps

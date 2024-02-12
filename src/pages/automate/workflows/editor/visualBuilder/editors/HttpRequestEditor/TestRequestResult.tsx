@@ -168,7 +168,7 @@ const TestRequestResult = ({
                 </div>
                 <div className={css.field}>
                     <div>
-                        <Label>Flow variables</Label>
+                        <Label>Output variables</Label>
                         <div className={css.description}>
                             Create variables from the request response which can
                             be used in subsequent steps
