@@ -78,6 +78,10 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         isFetchPending,
     } = useHelpCenterAutomationSettings(helpCenter.id, false)
 
+    const chatIntegrations = useAppSelector(
+        getIntegrationsByTypes([IntegrationType.GorgiasChat])
+    )
+
     useEffect(() => {
         const helpCenterFlows = automationSettings.workflows
         if (!isFetchPending && helpCenterFlows) {
@@ -164,14 +168,16 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
                     onChange={updateOrderManagementEnabled}
                     enabled={state.orderManagementEnabled}
                 />
-                <HelpCenterWizardArticleRec
-                    articleRecommendationEnabled={
-                        state.articleRecommendationEnabled
-                    }
-                    onArticleRecommendationEnabledChange={
-                        updateArticleRecommendationEnabled
-                    }
-                />
+                {chatIntegrations.length > 0 && (
+                    <HelpCenterWizardArticleRec
+                        articleRecommendationEnabled={
+                            state.articleRecommendationEnabled
+                        }
+                        onArticleRecommendationEnabledChange={
+                            updateArticleRecommendationEnabled
+                        }
+                    />
+                )}
 
                 {helpCenterShopIntegration && (
                     <HelpCenterWizardFlows

@@ -233,31 +233,31 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
     describe('article recommendation', () => {
         it('should be enabled by default', () => {
-            renderComponent({})
-
-            expect(
-                screen.getByLabelText(
-                    /Recommend articles from this Help Center in my Chat/i
-                )
-            ).toBeChecked()
-        })
-
-        it('should toggle article recommendation and hide chat integration', () => {
-            renderComponent({})
-
-            fireEvent.click(
-                screen.getByLabelText(
-                    /Recommend articles from this Help Center in my Chat/i
-                )
+            renderComponent(
+                {},
+                {integrations: [shopifyIntegration, ...chatIntegrationFixtures]}
             )
 
             expect(
                 screen.getByLabelText(
                     /Recommend articles from this Help Center in my Chat/i
                 )
-            ).not.toBeChecked()
+            ).toBeChecked()
             expect(
-                screen.queryByLabelText(/Connect a Chat integration/i)
+                screen.getByText('Article Recommendation')
+            ).toBeInTheDocument()
+        })
+
+        it('should hide article recommendation whe no chat integrations', () => {
+            renderComponent(
+                {},
+                {
+                    integrations: [shopifyIntegration],
+                }
+            )
+
+            expect(
+                screen.queryByLabelText(/Article Recommendation/i)
             ).not.toBeInTheDocument()
         })
     })

@@ -16,7 +16,7 @@ import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
 import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'
 import css from './HelpCenterWizardFlows.less'
 
-const FLOWS_LIMIT = 4
+const FLOWS_LIMIT = 5
 
 type HelpCenterWizardFlowsProps = {
     shopName: string
