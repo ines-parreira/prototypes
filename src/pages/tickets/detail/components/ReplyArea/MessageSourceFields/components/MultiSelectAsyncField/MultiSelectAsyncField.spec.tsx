@@ -1,8 +1,8 @@
+import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {shallow} from 'enzyme'
 import _debounce from 'lodash/debounce'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {act, render, screen} from '@testing-library/react'
 import {ReceiverValue} from 'state/ticket/utils'
 import {isEmail} from 'utils'
 
@@ -24,9 +24,9 @@ describe('MultiSelectAsyncField component', () => {
     }
 
     it('empty items', () => {
-        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+        render(<MultiSelectAsyncField {...minProps} />)
 
-        expect(component.children().first().find('div > div').length).toEqual(0)
+        expect(document.querySelectorAll('.item').length).toEqual(0)
     })
 
     it('multiple items correct amount', () => {
@@ -43,11 +43,9 @@ describe('MultiSelectAsyncField component', () => {
             },
         ]
 
-        const component = shallow(
-            <MultiSelectAsyncField {...minProps} value={values} />
-        )
+        render(<MultiSelectAsyncField {...minProps} value={values} />)
 
-        expect(component.children().first().find('div > div').length).toEqual(2)
+        expect(document.querySelectorAll('.item').length).toEqual(2)
     })
 
     it('multiple items correct content', () => {
@@ -64,19 +62,11 @@ describe('MultiSelectAsyncField component', () => {
             },
         ]
 
-        const component = shallow(
-            <MultiSelectAsyncField {...minProps} value={values} />
-        )
+        render(<MultiSelectAsyncField {...minProps} value={values} />)
 
-        component
-            .children()
-            .first()
-            .find('div > div')
-            .forEach((item, index) => {
-                expect(item.find('span').first()).toHaveText(
-                    values[index].label
-                )
-            })
+        values.forEach((item) => {
+            expect(screen.getByText(item.label)).toBeInTheDocument()
+        })
     })
 
     it('search for recipients on change input', () => {
@@ -101,17 +91,14 @@ describe('MultiSelectAsyncField component', () => {
                 }
             )
 
-        const component = shallow(
+        render(
             <MultiSelectAsyncField {...minProps} loadOptions={loadOptions} />
         )
+        act(() => {
+            userEvent.paste(screen.getByRole('textbox'), 'Something')
+        })
 
-        component
-            .children()
-            .first()
-            .find('div > input')
-            .simulate('change', {target: {value: 'Something'}})
         expect(loadOptions).toBeCalled()
-        expect(component.state('options')).toEqual(options)
     })
 
     it('add recipients on change input with multiple addresses', () => {
@@ -124,7 +111,7 @@ describe('MultiSelectAsyncField component', () => {
             },
         ]
 
-        const component = shallow(
+        render(
             <MultiSelectAsyncField
                 {...minProps}
                 value={value}
@@ -132,17 +119,13 @@ describe('MultiSelectAsyncField component', () => {
             />
         )
 
-        component
-            .children()
-            .first()
-            .find('div > input')
-            .simulate('change', {
-                preventDefault: jest.fn(),
-                stopPropagation: jest.fn(),
-                target: {
-                    value: 'alex@gorgias.io, Romain <romain@gorgias.io>, wrongaddress',
-                },
-            })
+        act(() => {
+            userEvent.paste(
+                screen.getByRole('textbox'),
+                'alex@gorgias.io, Romain <romain@gorgias.io>, wrongaddress'
+            )
+        })
+
         expect(onChange).toBeCalledWith([
             value[0],
             {value: 'alex@gorgias.io'},
@@ -159,30 +142,29 @@ describe('MultiSelectAsyncField component', () => {
         minProps.loadOptions.mockImplementation(
             (value, cb: (receivers: ReceiverValue[]) => void) => cb([receiver])
         )
-        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+        render(<MultiSelectAsyncField {...minProps} />)
 
-        component
-            .children()
-            .first()
-            .find('div > input')
-            .simulate('change', {
-                preventDefault: jest.fn(),
-                stopPropagation: jest.fn(),
-                target: {
-                    value: 'john',
-                },
-            })
-        component.find('.suggestion').simulate('click')
+        act(() => {
+            userEvent.paste(screen.getByRole('textbox'), receiver.label)
+        })
+        act(() => {
+            const suggestion = document.querySelector('.suggestion')
+            if (suggestion) {
+                userEvent.click(suggestion)
+            }
+        })
 
         expect(minProps.onOptionSelect).toHaveBeenLastCalledWith(receiver, 0)
     })
 
-    it('should render a placeholder when opening the input', () => {
-        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+    it('should render a placeholder when opening the input', async () => {
+        render(<MultiSelectAsyncField {...minProps} />)
 
-        component.find('.input').simulate('focus')
+        await act(async () => {
+            await userEvent.type(screen.getByRole('textbox'), '')
+        })
 
-        expect(component.find('.emptySuggestions').text()).toBe(
+        expect(document.querySelector('.emptySuggestions')).toHaveTextContent(
             'Type to search'
         )
     })
@@ -193,33 +175,27 @@ describe('MultiSelectAsyncField component', () => {
         ).mockImplementationOnce((() => (fn: (...args: any[]) => void) => {
             setTimeout(fn)
         }) as any)
-        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+        render(<MultiSelectAsyncField {...minProps} />)
 
-        component.find('.input').simulate('focus')
-        component.find('.input').simulate('change', {
-            target: {
-                value: 'john',
-            },
+        act(() => {
+            userEvent.paste(screen.getByRole('textbox'), 'john')
         })
 
-        expect(component.find(Skeleton).props().count).toBe(3)
+        expect(document.getElementsByClassName('skeleton').length).toEqual(3)
     })
 
-    it('should render no results when the query returns no result', (done) => {
+    it('should render no results when the query returns no result', () => {
         minProps.loadOptions.mockImplementation(
             (value, cb: (receivers: ReceiverValue[]) => void) => cb([])
         )
-        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+        render(<MultiSelectAsyncField {...minProps} />)
 
-        component
-            .find('.input')
-            .simulate('change', {target: {value: 'Something'}})
-
-        setImmediate(() => {
-            expect(component.find('.emptySuggestions').text()).toBe(
-                'No results'
-            )
-            done()
+        act(() => {
+            userEvent.paste(screen.getByRole('textbox'), 'Something')
         })
+
+        expect(document.querySelector('.emptySuggestions')).toHaveTextContent(
+            'No results'
+        )
     })
 })

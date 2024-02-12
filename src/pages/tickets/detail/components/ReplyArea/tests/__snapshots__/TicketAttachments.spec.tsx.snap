@@ -2,13 +2,13 @@
 
 exports[`TicketAttachments component private should display an error message if there's private attachments 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="mb-2"
+    class="mb-2"
   >
     <i
-      className="material-icons mr-1"
+      class="material-icons mr-1"
     >
       warning
     </i>
@@ -17,56 +17,18 @@ exports[`TicketAttachments component private should display an error message if 
     3
      attachment(s) to this message which we couldn't download.
   </div>
-  <Lightbox
-    backdropClosesModal={true}
-    closeButtonTitle="Close (Esc)"
-    currentImage={0}
-    enableKeyboardInput={true}
-    imageCountSeparator=" of "
-    images={
-      [
-        {
-          "caption": "foo",
-          "src": "https://uploads.gorgi.us/bar",
-        },
-        {
-          "caption": "bar",
-          "src": "https://uploads.gorgi.us/baz",
-        },
-        {
-          "caption": "baz",
-          "src": "https://uploads.gorgi.us/foo",
-        },
-      ]
-    }
-    isOpen={false}
-    leftArrowTitle="Previous (Left arrow key)"
-    onClickNext={[Function]}
-    onClickPrev={[Function]}
-    onClickShowNextImage={true}
-    onClickThumbnail={[Function]}
-    onClose={[Function]}
-    preloadNextImage={true}
-    rightArrowTitle="Next (Right arrow key)"
-    showCloseButton={true}
-    showImageCount={true}
-    showThumbnails={true}
-    theme={{}}
-    thumbnailOffset={2}
-    width={1024}
-  />
 </div>
 `;
 
 exports[`TicketAttachments component private should display both an error message and attachments 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="mb-2"
+    class="mb-2"
   >
     <i
-      className="material-icons mr-1"
+      class="material-icons mr-1"
     >
       warning
     </i>
@@ -76,34 +38,28 @@ exports[`TicketAttachments component private should display both an error messag
      attachment(s) to this message which we couldn't download.
   </div>
   <div
-    className="attachmentContainer"
-    key="0"
+    class="attachmentContainer"
   >
     <a
-      className="item hasPreview"
+      class="item hasPreview"
       href="https://uploads.gorgi.us/bar"
-      onClick={[Function]}
       rel="noopener noreferrer"
-      style={
-        {
-          "backgroundImage": "url(https://uploads.gorgi.us/bar?format=120x80)",
-        }
-      }
+      style="background-image: url(https://uploads.gorgi.us/bar?format=120x80);"
       target="_blank"
     >
       <div
-        className="itemMeta"
+        class="itemMeta"
       >
         <div
-          className="metaName"
+          class="metaName"
         >
           foo
         </div>
         <div
-          className="metaType"
+          class="metaType"
         >
           <i
-            className="material-icons md-2"
+            class="material-icons md-2"
           >
             photo_library
           </i>
@@ -112,34 +68,28 @@ exports[`TicketAttachments component private should display both an error messag
     </a>
   </div>
   <div
-    className="attachmentContainer"
-    key="1"
+    class="attachmentContainer"
   >
     <a
-      className="item hasPreview"
+      class="item hasPreview"
       href="https://uploads.gorgi.us/foo"
-      onClick={[Function]}
       rel="noopener noreferrer"
-      style={
-        {
-          "backgroundImage": "url(https://uploads.gorgi.us/foo?format=120x80)",
-        }
-      }
+      style="background-image: url(https://uploads.gorgi.us/foo?format=120x80);"
       target="_blank"
     >
       <div
-        className="itemMeta"
+        class="itemMeta"
       >
         <div
-          className="metaName"
+          class="metaName"
         >
           baz
         </div>
         <div
-          className="metaType"
+          class="metaType"
         >
           <i
-            className="material-icons md-2"
+            class="material-icons md-2"
           >
             photo_library
           </i>
@@ -148,14 +98,13 @@ exports[`TicketAttachments component private should display both an error messag
     </a>
   </div>
   <div
-    className="attachmentContainer"
-    key="2"
+    class="attachmentContainer"
   >
     <div
-      className="productCard"
+      class="productCard"
     >
       <div
-        className="productImageContainer"
+        class="productImageContainer"
       >
         <img
           alt="qux"
@@ -163,47 +112,44 @@ exports[`TicketAttachments component private should display both an error messag
         />
       </div>
       <div
-        className="productDetail"
+        class="productDetail"
       >
         <p
-          className="productName"
+          class="productName"
         >
           qux
         </p>
         <p
-          className="variantName"
+          class="variantName"
         >
           quux
         </p>
         <div
-          className="productPrice"
+          class="productPrice"
         >
-          <MoneyAmount
-            amount={2}
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
+          <span>
+            $2.00
+          </span>
         </div>
       </div>
       <a
-        className="productMeta"
+        class="productMeta"
         href="http://gorgias.io/bar"
         rel="noopener noreferrer"
         target="_blank"
       >
         <div
-          className="metaName"
+          class="metaName"
         >
           qux
           <br />
           quux
         </div>
         <div
-          className="metaType"
+          class="metaType"
         >
           <i
-            className="material-icons md-2"
+            class="material-icons md-2"
           >
             shopify
           </i>
@@ -211,80 +157,36 @@ exports[`TicketAttachments component private should display both an error messag
       </a>
     </div>
   </div>
-  <Lightbox
-    backdropClosesModal={true}
-    closeButtonTitle="Close (Esc)"
-    currentImage={0}
-    enableKeyboardInput={true}
-    imageCountSeparator=" of "
-    images={
-      [
-        {
-          "caption": "foo",
-          "src": "https://uploads.gorgi.us/bar",
-        },
-        {
-          "caption": "bar",
-          "src": "https://uploads.gorgi.us/baz",
-        },
-        {
-          "caption": "baz",
-          "src": "https://uploads.gorgi.us/foo",
-        },
-      ]
-    }
-    isOpen={false}
-    leftArrowTitle="Previous (Left arrow key)"
-    onClickNext={[Function]}
-    onClickPrev={[Function]}
-    onClickShowNextImage={true}
-    onClickThumbnail={[Function]}
-    onClose={[Function]}
-    preloadNextImage={true}
-    rightArrowTitle="Next (Right arrow key)"
-    showCloseButton={true}
-    showImageCount={true}
-    showThumbnails={true}
-    theme={{}}
-    thumbnailOffset={2}
-    width={1024}
-  />
 </div>
 `;
 
 exports[`TicketAttachments component read-only should match snapshot 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="attachmentContainer"
-    key="0"
+    class="attachmentContainer"
   >
     <a
-      className="item hasPreview"
+      class="item hasPreview"
       href="https://uploads.gorgi.us/bar"
-      onClick={[Function]}
       rel="noopener noreferrer"
-      style={
-        {
-          "backgroundImage": "url(https://uploads.gorgi.us/bar?format=120x80)",
-        }
-      }
+      style="background-image: url(https://uploads.gorgi.us/bar?format=120x80);"
       target="_blank"
     >
       <div
-        className="itemMeta"
+        class="itemMeta"
       >
         <div
-          className="metaName"
+          class="metaName"
         >
           foo
         </div>
         <div
-          className="metaType"
+          class="metaType"
         >
           <i
-            className="material-icons md-2"
+            class="material-icons md-2"
           >
             photo_library
           </i>
@@ -293,29 +195,27 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     </a>
   </div>
   <div
-    className="attachmentContainer"
-    key="1"
+    class="attachmentContainer"
   >
     <a
-      className="item"
+      class="item"
       href="foo"
-      onClick={[Function]}
       rel="noopener noreferrer"
       target="_blank"
     >
       <div
-        className="itemMeta"
+        class="itemMeta"
       >
         <div
-          className="metaName"
+          class="metaName"
         >
           bar
         </div>
         <div
-          className="metaType"
+          class="metaType"
         >
           <i
-            className="material-icons md-2"
+            class="material-icons md-2"
           >
             library_books
           </i>
@@ -324,14 +224,13 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     </a>
   </div>
   <div
-    className="attachmentContainer"
-    key="2"
+    class="attachmentContainer"
   >
     <div
-      className="productCard"
+      class="productCard"
     >
       <div
-        className="productImageContainer"
+        class="productImageContainer"
       >
         <img
           alt="qux"
@@ -339,47 +238,44 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
         />
       </div>
       <div
-        className="productDetail"
+        class="productDetail"
       >
         <p
-          className="productName"
+          class="productName"
         >
           qux
         </p>
         <p
-          className="variantName"
+          class="variantName"
         >
           quux
         </p>
         <div
-          className="productPrice"
+          class="productPrice"
         >
-          <MoneyAmount
-            amount={2}
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
+          <span>
+            $2.00
+          </span>
         </div>
       </div>
       <a
-        className="productMeta"
+        class="productMeta"
         href="http://gorgias.io/bar"
         rel="noopener noreferrer"
         target="_blank"
       >
         <div
-          className="metaName"
+          class="metaName"
         >
           qux
           <br />
           quux
         </div>
         <div
-          className="metaType"
+          class="metaType"
         >
           <i
-            className="material-icons md-2"
+            class="material-icons md-2"
           >
             shopify
           </i>
@@ -387,35 +283,5 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
       </a>
     </div>
   </div>
-  <Lightbox
-    backdropClosesModal={true}
-    closeButtonTitle="Close (Esc)"
-    currentImage={0}
-    enableKeyboardInput={true}
-    imageCountSeparator=" of "
-    images={
-      [
-        {
-          "caption": "foo",
-          "src": "https://uploads.gorgi.us/bar",
-        },
-      ]
-    }
-    isOpen={false}
-    leftArrowTitle="Previous (Left arrow key)"
-    onClickNext={[Function]}
-    onClickPrev={[Function]}
-    onClickShowNextImage={true}
-    onClickThumbnail={[Function]}
-    onClose={[Function]}
-    preloadNextImage={true}
-    rightArrowTitle="Next (Right arrow key)"
-    showCloseButton={true}
-    showImageCount={true}
-    showThumbnails={true}
-    theme={{}}
-    thumbnailOffset={2}
-    width={1024}
-  />
 </div>
 `;

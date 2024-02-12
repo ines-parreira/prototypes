@@ -13,7 +13,7 @@ import IconButton from 'pages/common/components/button/IconButton'
 import {Actor, Meta, Source} from 'models/ticket/types'
 import {AgentLabel, DatetimeLabel} from 'pages/common/utils/labels'
 
-import {renderDetails} from '../Event'
+import {renderDetails} from 'pages/tickets/detail/components/Event'
 import css from './PrivateReplyEvent.less'
 import {
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,

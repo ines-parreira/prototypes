@@ -1,6 +1,12 @@
-import {shallow} from 'enzyme'
 import React from 'react'
 import {fromJS, Map} from 'immutable'
+import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {AgentLabel} from 'pages/common/utils/labels'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
 import PrivateReplyEvent from '../PrivateReplyEvent'
 import {
@@ -9,6 +15,11 @@ import {
     INSTAGRAM_PRIVATE_REPLY_ACTION,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
 } from '../constants'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('pages/common/utils/labels')
+const MockAgentLabel = assumeMock(AgentLabel)
 
 const event = {
     id: 743,
@@ -71,20 +82,34 @@ const defaultProps = {
 }
 
 describe('<PrivateReplyEvent/>', () => {
+    beforeEach(() => {
+        MockAgentLabel.mockImplementation(() => <div>AgentLabel</div>)
+    })
+
+    const state: RootState = {
+        entities: {
+            rules: {},
+        },
+    } as any
+
     describe('render', () => {
         it('should render a `Responded via Facebook Messenger` event', () => {
             defaultProps.event = defaultProps.event.setIn(
                 ['data', 'payload', 'private_reply_event_type'],
                 COMMENT_TICKET_PRIVATE_REPLY_EVENT
             )
-
             defaultProps.event = defaultProps.event.setIn(
                 ['data', 'action_name'],
                 FACEBOOK_PRIVATE_REPLY_ACTION
             )
 
-            const component = shallow(<PrivateReplyEvent {...defaultProps} />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <PrivateReplyEvent {...defaultProps} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a `Responding to a Facebook comment` event', () => {
@@ -98,8 +123,13 @@ describe('<PrivateReplyEvent/>', () => {
                 FACEBOOK_PRIVATE_REPLY_ACTION
             )
 
-            const component = shallow(<PrivateReplyEvent {...defaultProps} />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(
+                <Provider store={mockStore(state)}>
+                    <PrivateReplyEvent {...defaultProps} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a `Responded via Instagram Direct Message` event', () => {
@@ -107,13 +137,18 @@ describe('<PrivateReplyEvent/>', () => {
                 ['data', 'payload', 'private_reply_event_type'],
                 COMMENT_TICKET_PRIVATE_REPLY_EVENT
             )
-
             defaultProps.event = defaultProps.event.setIn(
                 ['data', 'action_name'],
                 INSTAGRAM_PRIVATE_REPLY_ACTION
             )
-            const component = shallow(<PrivateReplyEvent {...defaultProps} />)
-            expect(component).toMatchSnapshot()
+
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <PrivateReplyEvent {...defaultProps} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a `Responding to an Instagram comment` event', () => {
@@ -121,13 +156,18 @@ describe('<PrivateReplyEvent/>', () => {
                 ['data', 'payload', 'private_reply_event_type'],
                 MESSAGING_TICKET_PRIVATE_REPLY_EVENT
             )
-
             defaultProps.event = defaultProps.event.setIn(
                 ['data', 'action_name'],
                 INSTAGRAM_PRIVATE_REPLY_ACTION
             )
-            const component = shallow(<PrivateReplyEvent {...defaultProps} />)
-            expect(component).toMatchSnapshot()
+
+            const {container} = render(
+                <Provider store={mockStore(state)}>
+                    <PrivateReplyEvent {...defaultProps} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a `Responded via Facebook Messenger` event even if the payload is missing source, sender and meta data', () => {
@@ -135,20 +175,23 @@ describe('<PrivateReplyEvent/>', () => {
                 ['data', 'action_name'],
                 FACEBOOK_PRIVATE_REPLY_ACTION
             )
-
             const payload = {
                 facebook_comment: 'Nice post!',
                 from_ticket_message_id: 326,
                 messenger_reply: 'thanks for your comment!',
             }
-
             defaultProps.event = defaultProps.event.setIn(
                 ['data', 'payload'],
                 fromJS(payload)
             )
 
-            const component = shallow(<PrivateReplyEvent {...defaultProps} />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <PrivateReplyEvent {...defaultProps} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a `Responding to a Facebook comment` event even if the payload is missing source, sender and meta data', () => {
@@ -156,21 +199,24 @@ describe('<PrivateReplyEvent/>', () => {
                 ['data', 'action_name'],
                 FACEBOOK_PRIVATE_REPLY_ACTION
             )
-
             const payload = {
                 facebook_comment: 'Nice post!',
                 from_ticket_message_id: 326,
                 messenger_reply: 'thanks for your comment!',
                 private_reply_event_type: MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
             }
-
             defaultProps.event = defaultProps.event.setIn(
                 ['data', 'payload'],
                 fromJS(payload)
             )
 
-            const component = shallow(<PrivateReplyEvent {...defaultProps} />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(
+                <Provider store={mockStore(state)}>
+                    <PrivateReplyEvent {...defaultProps} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

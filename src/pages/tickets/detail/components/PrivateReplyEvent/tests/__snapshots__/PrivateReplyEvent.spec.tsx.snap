@@ -2,44 +2,43 @@
 
 exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Messenger\` event 1`] = `
 <div
-  className="component last"
+  class="component last"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="privateReplyEventIcon"
+        class="privateReplyEventIcon"
       >
         <img
           alt="private reply event"
-          key="private-reply-event"
           src="test-file-stub"
         />
       </div>
       <span
-        className="actionName"
+        class="actionName"
       >
         Responded via Facebook Messenger
       </span>
       <span
-        className="filler"
+        class="filler"
       >
         by
       </span>
-      <AgentLabel
-        name="Alex Plugaru"
-      />
+      <div>
+        AgentLabel
+      </div>
       <div>
         <span
-          className="separator"
+          class="separator"
         >
           -
         </span>
         <span
-          className="ticketLink"
+          class="ticketLink"
         >
           <a
             href="184"
@@ -51,54 +50,49 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         </span>
       </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2021-04-27T01:50:16.832898+00:00"
-    />
   </div>
 </div>
 `;
 
 exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Messenger\` event even if the payload is missing source, sender and meta data 1`] = `
 <div
-  className="component last"
+  class="component last"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="privateReplyEventIcon"
+        class="privateReplyEventIcon"
       >
         <img
           alt="private reply event"
-          key="private-reply-event"
           src="test-file-stub"
         />
       </div>
       <span
-        className="actionName"
+        class="actionName"
       >
         Responded via Facebook Messenger
       </span>
       <span
-        className="filler"
+        class="filler"
       >
         by
       </span>
-      <AgentLabel
-        name="Alex Plugaru"
-      />
+      <div>
+        AgentLabel
+      </div>
       <div>
         <span
-          className="separator"
+          class="separator"
         >
           -
         </span>
         <span
-          className="ticketLink"
+          class="ticketLink"
         >
           <a
             href="184"
@@ -110,273 +104,441 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         </span>
       </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2021-04-27T01:50:16.832898+00:00"
-    />
   </div>
 </div>
 `;
 
 exports[`<PrivateReplyEvent/> render should render a \`Responded via Instagram Direct Message\` event 1`] = `
 <div
-  className="component last"
+  class="component last"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="privateReplyEventIcon"
+        class="privateReplyEventIcon"
       >
         <img
           alt="private reply event"
-          key="private-reply-event"
           src="test-file-stub"
         />
       </div>
       <span
-        className="actionName"
+        class="actionName"
       >
         Responded via Instagram Direct Message
       </span>
       <span
-        className="filler"
+        class="filler"
       >
         by
       </span>
-      <AgentLabel
-        name="Alex Plugaru"
-      />
+      <div>
+        AgentLabel
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2021-04-27T01:50:16.832898+00:00"
-    />
   </div>
 </div>
 `;
 
 exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook comment\` event 1`] = `
 <div
-  className="component last"
+  class="component last"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="privateReplyEventIcon"
+        class="privateReplyEventIcon"
       >
         <img
           alt="private reply event"
-          key="private-reply-event"
           src="test-file-stub"
         />
       </div>
       <span
-        className="actionName"
+        class="actionName"
       >
         Responding to a Facebook comment
       </span>
       <span
-        className="filler"
+        class="filler"
       >
         by
       </span>
-      <AgentLabel
-        name="Alex Plugaru"
-      />
+      <div>
+        AgentLabel
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2021-04-27T01:50:16.832898+00:00"
-    />
   </div>
   <div
-    className="eventDetails"
+    class="eventDetails"
   >
-    <TicketMessageEmbeddedCard
-      integrationId={8}
-      messageCreatedDatetime="2021-04-27T01:45:26+00:00"
-      messageId="1537287279812902_1664359293772366"
-      messageText="Nice post!"
-      meta={{}}
-      sender={
-        {
-          "email": null,
-          "firstname": "Mehdi",
-          "id": 6,
-          "lastname": "LA J",
-          "meta": {
-            "name_set_via": "facebook",
-          },
-          "name": "Mehdi D LA J",
-        }
-      }
-      source={
-        {
-          "extra": {
-            "page_id": "657788504429455",
-            "parent_id": "657788504429455_1537287279812902",
-            "post_id": "657788504429455_1537287279812902",
-          },
-          "from": {
-            "address": "657788504429455-3609805465727160",
-            "name": "Mehdi D LA J",
-          },
-          "to": [
-            {
-              "address": "657788504429455-657788504429455",
-              "name": "L'acteur",
-            },
-          ],
-          "type": "facebook-comment",
-        }
-      }
-      textBelowAvatar={false}
-    />
+    <div
+      class="genericCard card"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="m-0 row"
+        >
+          <div
+            class="avatarContainer col-md-1"
+          >
+            <div
+              class="component square"
+              style="width: 36px; height: 36px;"
+            >
+              <div
+                class="initials"
+                style="width: 36px; height: 36px; font-size: 15px;"
+              >
+                <span
+                  style="line-height: 38px;"
+                >
+                  MD
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-11"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-md-7"
+              >
+                <div
+                  class="verticalCenter"
+                >
+                  <div
+                    class="customerNameBody"
+                  >
+                    Mehdi
+                     
+                    LA J
+                  </div>
+                  <div>
+                    <span
+                      class="source"
+                    >
+                      <i
+                        class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
+                      />
+                    </span>
+                  </div>
+                  <div>
+                    <span
+                      class="from"
+                    >
+                      <span
+                        class="fromLabel"
+                      >
+                        go to
+                      </span>
+                       
+                      <span
+                        class="fromValue"
+                      >
+                        <a
+                          href="https://facebook.com/657788504429455/posts/1537287279812902?comment_id=1664359293772366"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          title="https://facebook.com/657788504429455/posts/1537287279812902?comment_id=1664359293772366"
+                        >
+                          comment
+                        </a>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="text-right justify-content-center align-self-center dateTimeText pr-0 col-md-5"
+              />
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="pr-0 mt-2 col-md-12"
+              >
+                <span
+                  class="textBlock"
+                >
+                  Nice post!
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook comment\` event even if the payload is missing source, sender and meta data 1`] = `
 <div
-  className="component last"
+  class="component last"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="privateReplyEventIcon"
+        class="privateReplyEventIcon"
       >
         <img
           alt="private reply event"
-          key="private-reply-event"
           src="test-file-stub"
         />
       </div>
       <span
-        className="actionName"
+        class="actionName"
       >
         Responding to a Facebook comment
       </span>
       <span
-        className="filler"
+        class="filler"
       >
         by
       </span>
-      <AgentLabel
-        name="Alex Plugaru"
-      />
+      <div>
+        AgentLabel
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2021-04-27T01:50:16.832898+00:00"
-    />
   </div>
   <div
-    className="eventDetails"
+    class="eventDetails"
   >
-    <TicketMessageEmbeddedCard
-      integrationId={8}
-      messageText="Nice post!"
-      meta={{}}
-      sender={{}}
-      source={{}}
-      textBelowAvatar={false}
-    />
+    <div
+      class="genericCard card"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="m-0 row"
+        >
+          <div
+            class="avatarContainer col-md-1"
+          >
+            <div
+              class="component square"
+              style="width: 36px; height: 36px;"
+            >
+              <div
+                class="initials"
+                style="width: 36px; height: 36px; font-size: 15px;"
+              >
+                <span
+                  style="line-height: 38px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-11"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-md-12"
+              >
+                <div
+                  class="verticalCenter"
+                >
+                  <div
+                    class="customerNameBody"
+                  >
+                     
+                  </div>
+                  <div>
+                    <span
+                      class="source"
+                    >
+                      <i
+                        class="icon d-inline-block material-icons uncolored"
+                      >
+                        live_help
+                      </i>
+                    </span>
+                  </div>
+                  <div />
+                </div>
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="pr-0 mt-2 col-md-12"
+              >
+                <span
+                  class="textBlock"
+                >
+                  Nice post!
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagram comment\` event 1`] = `
 <div
-  className="component last"
+  class="component last"
 >
   <div
-    className="event"
+    class="event"
   >
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="privateReplyEventIcon"
+        class="privateReplyEventIcon"
       >
         <img
           alt="private reply event"
-          key="private-reply-event"
           src="test-file-stub"
         />
       </div>
       <span
-        className="actionName"
+        class="actionName"
       >
         Responding to an Instagram comment
       </span>
       <span
-        className="filler"
+        class="filler"
       >
         by
       </span>
-      <AgentLabel
-        name="Alex Plugaru"
-      />
+      <div>
+        AgentLabel
+      </div>
     </div>
-    <Connect(DatetimeLabelContainer)
-      className="date text-faded"
-      dateTime="2021-04-27T01:50:16.832898+00:00"
-    />
   </div>
   <div
-    className="eventDetails"
+    class="eventDetails"
   >
-    <TicketMessageEmbeddedCard
-      integrationId={8}
-      messageCreatedDatetime="2021-04-27T01:45:26+00:00"
-      messageId="1537287279812902_1664359293772366"
-      meta={{}}
-      sender={
-        {
-          "email": null,
-          "firstname": "Mehdi",
-          "id": 6,
-          "lastname": "LA J",
-          "meta": {
-            "name_set_via": "facebook",
-          },
-          "name": "Mehdi D LA J",
-        }
-      }
-      source={
-        {
-          "extra": {
-            "page_id": "657788504429455",
-            "parent_id": "657788504429455_1537287279812902",
-            "post_id": "657788504429455_1537287279812902",
-          },
-          "from": {
-            "address": "657788504429455-3609805465727160",
-            "name": "Mehdi D LA J",
-          },
-          "to": [
-            {
-              "address": "657788504429455-657788504429455",
-              "name": "L'acteur",
-            },
-          ],
-          "type": "facebook-comment",
-        }
-      }
-      textBelowAvatar={false}
-    />
+    <div
+      class="genericCard card"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="m-0 row"
+        >
+          <div
+            class="avatarContainer col-md-1"
+          >
+            <div
+              class="component square"
+              style="width: 36px; height: 36px;"
+            >
+              <div
+                class="initials"
+                style="width: 36px; height: 36px; font-size: 15px;"
+              >
+                <span
+                  style="line-height: 38px;"
+                >
+                  MD
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-11"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-md-7"
+              >
+                <div
+                  class="verticalCenter"
+                >
+                  <div
+                    class="customerNameBody"
+                  >
+                    Mehdi
+                     
+                    LA J
+                  </div>
+                  <div>
+                    <span
+                      class="source"
+                    >
+                      <i
+                        class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
+                      />
+                    </span>
+                  </div>
+                  <div>
+                    <span
+                      class="from"
+                    >
+                      <span
+                        class="fromLabel"
+                      >
+                        go to
+                      </span>
+                       
+                      <span
+                        class="fromValue"
+                      >
+                        <a
+                          href="https://facebook.com/657788504429455/posts/1537287279812902?comment_id=1664359293772366"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          title="https://facebook.com/657788504429455/posts/1537287279812902?comment_id=1664359293772366"
+                        >
+                          comment
+                        </a>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="text-right justify-content-center align-self-center dateTimeText pr-0 col-md-5"
+              />
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="pr-0 mt-2 col-md-12"
+              >
+                <span
+                  class="textBlock"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;

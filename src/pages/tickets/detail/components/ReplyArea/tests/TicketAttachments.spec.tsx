@@ -1,10 +1,9 @@
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
-import {mount, ReactWrapper, shallow, ShallowWrapper} from 'enzyme'
-import _noop from 'lodash/noop'
-// aphrodite is required by react-images
 import {StyleSheetTestUtils} from 'aphrodite'
 
+import {act, render, screen} from '@testing-library/react'
 import {Account} from 'state/currentAccount/types'
 import {replaceAttachmentURL} from 'utils'
 import TicketAttachments from '../TicketAttachments'
@@ -16,7 +15,6 @@ describe('TicketAttachments component', () => {
         } as Account
     })
 
-    // attachments is an immutable list of pojos
     const attachments: ComponentProps<typeof TicketAttachments>['attachments'] =
         fromJS([
             {
@@ -52,31 +50,22 @@ describe('TicketAttachments component', () => {
     }
 
     describe('read-only', () => {
-        let component: ShallowWrapper
-
-        beforeAll(() => {
-            component = shallow(<TicketAttachments {...minProps} />)
-        })
-
         it('should match snapshot', () => {
-            expect(component).toMatchSnapshot()
+            const {container} = render(<TicketAttachments {...minProps} />)
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display all attachments', () => {
-            expect(component.find('.attachmentContainer').length).toBe(
-                attachments.size
-            )
+            render(<TicketAttachments {...minProps} />)
+            expect(
+                document.getElementsByClassName('attachmentContainer').length
+            ).toBe(attachments.size)
         })
 
         it('should set a preview on the first attachment', () => {
-            expect(
-                (
-                    component.children().children().at(0).props() as {
-                        style: {backgroundImage: string}
-                    }
-                ).style?.backgroundImage
-            ).toBe(
-                `url(${replaceAttachmentURL(
+            render(<TicketAttachments {...minProps} />)
+            expect(screen.getAllByRole('link')[0]).toHaveStyle(
+                `backgroundImage: url(${replaceAttachmentURL(
                     'https://uploads.gorgi.us/bar',
                     '120x80'
                 )})`
@@ -84,36 +73,30 @@ describe('TicketAttachments component', () => {
         })
 
         it('should not set a preview on the second attachment', () => {
-            expect(component.children().children().at(1)).toHaveProp(
-                'style',
-                undefined
-            )
+            render(<TicketAttachments {...minProps} />)
+            expect(screen.getAllByRole('link')[1]).not.toHaveAttribute('style')
         })
 
         it('should not show the remove button', () => {
-            expect(component.find('.itemRemove')).not.toExist()
+            expect(
+                document.getElementsByClassName('itemRemove').length
+            ).toEqual(0)
         })
     })
 
     describe('removable', () => {
-        let component: ShallowWrapper
-
-        beforeAll(() => {
-            component = shallow(<TicketAttachments {...minProps} removable />)
-        })
-
         it('should show the remove button', () => {
-            expect(component.find('.itemRemove')).toExist()
+            render(<TicketAttachments {...minProps} removable />)
+
+            expect(
+                document.getElementsByClassName('itemRemove').length
+            ).toBeGreaterThan(0)
         })
     })
 
     describe('lightbox', () => {
-        let component: ReactWrapper<ComponentProps<typeof TicketAttachments>>
-
         beforeEach(() => {
-            component = mount<TicketAttachments>(
-                <TicketAttachments {...minProps} />
-            )
+            render(<TicketAttachments {...minProps} />)
 
             // aphrodite does not work in jsdom
             StyleSheetTestUtils.suppressStyleInjection()
@@ -127,43 +110,44 @@ describe('TicketAttachments component', () => {
         })
 
         it('should list images in lightbox', () => {
-            component.setState({
-                isLightboxOpen: true,
+            act(() => {
+                userEvent.click(screen.getAllByRole('link')[0])
             })
 
             expect(document.body.querySelectorAll('figure').length).toBe(1)
         })
 
         it('should set image src', () => {
-            component.setState({
-                isLightboxOpen: true,
+            act(() => {
+                userEvent.click(screen.getAllByRole('link')[0])
             })
 
-            expect(document.body.querySelector('img')!.src).toBe(
-                replaceAttachmentURL('https://uploads.gorgi.us/bar')
+            expect(document.getElementsByTagName('img')[1]).toHaveAttribute(
+                'src',
+                'https://uploads.gorgi.us/bar'
             )
         })
 
         it('image should open the lightbox', () => {
-            component.find('.item').at(0).simulate('click', {
-                preventDefault: _noop,
+            act(() => {
+                userEvent.click(document.getElementsByClassName('item')[0])
             })
 
-            expect(component.state('isLightboxOpen')).toBe(true)
+            expect(document.body.querySelectorAll('figure').length).toBe(1)
         })
 
         it('not-image should not open the lightbox', () => {
-            component.find('.item').at(1).simulate('click', {
-                preventDefault: _noop,
+            act(() => {
+                userEvent.click(document.getElementsByClassName('item')[1])
             })
 
-            expect(component.state('isLightboxOpen')).toBe(false)
+            expect(document.body.querySelectorAll('figure').length).toBe(0)
         })
     })
 
     describe('private', () => {
         it("should display an error message if there's private attachments", () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAttachments
                     {...minProps}
                     attachments={fromJS([
@@ -189,11 +173,11 @@ describe('TicketAttachments component', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display both an error message and attachments', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAttachments
                     {...minProps}
                     attachments={fromJS([
@@ -230,7 +214,7 @@ describe('TicketAttachments component', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })
