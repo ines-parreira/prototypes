@@ -21,6 +21,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
 import {useHelpCenterAutomationForm} from '../../hooks/useHelpCenterAutomationForm'
 import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
@@ -55,6 +56,10 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         helpCenterShopIntegration.name
     )
 
+    const chatIntegrations = useAppSelector(
+        getIntegrationsByTypes([IntegrationType.GorgiasChat])
+    )
+
     const {
         state,
         updateOrderManagementEnabled,
@@ -63,7 +68,15 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
     } = useHelpCenterAutomationForm({
         orderManagementEnabled:
             helpCenter.self_service_deactivated_datetime === null,
+        articleRecommendationEnabled: chatIntegrations.length > 0,
     })
+    const {data: helpCenterArticles} = useGetHelpCenterArticleList(
+        helpCenter.id,
+        {
+            version_status: 'latest_draft',
+            locale: helpCenter.default_locale,
+        }
+    )
     const {
         isLoading: isHelpCenterWizardLoading,
         handleAction,
@@ -77,10 +90,6 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         handleHelpCenterAutomationSettingsUpdate,
         isFetchPending,
     } = useHelpCenterAutomationSettings(helpCenter.id, false)
-
-    const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat])
-    )
 
     useEffect(() => {
         const helpCenterFlows = automationSettings.workflows
@@ -113,20 +122,28 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
                 break
             case FOOTER_BUTTONS.FINISH:
                 await onSave()
-                handleSave(NEXT_ACTION.NEW_HELP_CENTER, undefined, {
-                    wizardCompleted: true,
-                    orderManagementEnabled: state.orderManagementEnabled,
+                handleSave({
+                    redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                    payload: {
+                        wizardCompleted: true,
+                        orderManagementEnabled: state.orderManagementEnabled,
+                    },
+                    successModalParams: {
+                        articlesCount: helpCenterArticles?.data.length,
+                        isArticleRecommendationEnabled:
+                            state.articleRecommendationEnabled,
+                    },
                 })
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
                 await onSave()
-                handleSave(
-                    NEXT_ACTION.BACK_HOME,
-                    HelpCenterCreationWizardStep.Automate,
-                    {
+                handleSave({
+                    redirectTo: NEXT_ACTION.BACK_HOME,
+                    stepName: HelpCenterCreationWizardStep.Automate,
+                    payload: {
                         orderManagementEnabled: state.orderManagementEnabled,
-                    }
-                )
+                    },
+                })
                 break
             default:
                 break

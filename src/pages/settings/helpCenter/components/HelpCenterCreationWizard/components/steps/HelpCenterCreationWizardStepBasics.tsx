@@ -219,24 +219,24 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                 break
             case FOOTER_BUTTONS.CREATE_AND_CUSTOMIZE:
                 !isInvalidForm &&
-                    handleSave(
-                        NEXT_ACTION.NEW_WIZARD,
-                        HelpCenterCreationWizardStep.Branding
-                    )
+                    handleSave({
+                        redirectTo: NEXT_ACTION.NEW_WIZARD,
+                        stepName: HelpCenterCreationWizardStep.Branding,
+                    })
                 break
             case FOOTER_BUTTONS.NEXT:
                 !isInvalidForm &&
-                    handleSave(
-                        NEXT_ACTION.NEXT_STEP,
-                        HelpCenterCreationWizardStep.Branding
-                    )
+                    handleSave({
+                        redirectTo: NEXT_ACTION.NEXT_STEP,
+                        stepName: HelpCenterCreationWizardStep.Branding,
+                    })
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
                 !isInvalidForm &&
-                    handleSave(
-                        NEXT_ACTION.BACK_HOME,
-                        HelpCenterCreationWizardStep.Basics
-                    )
+                    handleSave({
+                        redirectTo: NEXT_ACTION.BACK_HOME,
+                        stepName: HelpCenterCreationWizardStep.Basics,
+                    })
                 break
             default:
                 break

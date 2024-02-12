@@ -27,6 +27,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
 
@@ -35,6 +36,7 @@ jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
 )
 jest.mock('pages/automate/common/hooks/useHelpCenterAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
+jest.mock('models/helpCenter/queries')
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(() => () => undefined),
 }))
@@ -80,13 +82,16 @@ const mockUseHelpCenterAutomationSettings = jest.mocked(
 const mockedUseSelfServiceConfiguration = jest.mocked(
     useSelfServiceConfiguration
 )
+const mockedUseGetHelpCenterArticleList = jest.mocked(
+    useGetHelpCenterArticleList
+)
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>,
     fixtures?: {integrations?: Integration[]; helpCenter?: HelpCenter}
 ) => {
     const {
-        integrations = [shopifyIntegration],
+        integrations = [shopifyIntegration, ...chatIntegrationFixtures],
         helpCenter = helpCenterFixture,
     } = fixtures ?? {}
     const defaultStore = {
@@ -158,6 +163,9 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: undefined,
         })
+        mockedUseGetHelpCenterArticleList.mockReturnValue({
+            data: null,
+        } as unknown as ReturnType<typeof useGetHelpCenterArticleList>)
     })
     it('should render', () => {
         renderComponent({})
@@ -303,11 +311,14 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             fireEvent.click(screen.getByText('Finish'))
 
             await waitFor(() => expect(mockOnSave).toBeCalled())
-            expect(mockOnSave).toHaveBeenCalledWith(
-                NEXT_ACTION.NEW_HELP_CENTER,
-                undefined,
-                {orderManagementEnabled: false, wizardCompleted: true}
-            )
+            expect(mockOnSave).toHaveBeenCalledWith({
+                payload: {orderManagementEnabled: false, wizardCompleted: true},
+                redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                successModalParams: {
+                    articlesCount: undefined,
+                    isArticleRecommendationEnabled: true,
+                },
+            })
             expect(mockOnAutomationSettingsUpdate).toHaveBeenCalledWith({
                 workflows: [],
             })
@@ -325,6 +336,22 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             })
         })
 
+        it('should article recomm should be disabled when no chat integrations', async () => {
+            renderComponent({}, {integrations: [shopifyIntegration]})
+
+            fireEvent.click(screen.getByText('Finish'))
+
+            await waitFor(() => expect(mockOnSave).toBeCalled())
+            expect(mockOnSave).toHaveBeenCalledWith({
+                payload: {orderManagementEnabled: false, wizardCompleted: true},
+                redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                successModalParams: {
+                    articlesCount: undefined,
+                    isArticleRecommendationEnabled: false,
+                },
+            })
+        })
+
         it('should call handleSave when clicked save and continue later', async () => {
             const draft = {}
 
@@ -333,11 +360,13 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             fireEvent.click(screen.getByText('Save & Customize Later'))
 
             await waitFor(() => expect(mockOnSave).toBeCalled())
-            expect(mockOnSave).toHaveBeenCalledWith(
-                NEXT_ACTION.BACK_HOME,
-                HelpCenterCreationWizardStep.Automate,
-                {orderManagementEnabled: false}
-            )
+            expect(mockOnSave).toHaveBeenCalledWith({
+                redirectTo: NEXT_ACTION.BACK_HOME,
+                stepName: HelpCenterCreationWizardStep.Automate,
+                payload: {
+                    orderManagementEnabled: false,
+                },
+            })
             expect(mockOnAutomationSettingsUpdate).toHaveBeenCalledWith({
                 workflows: [],
             })

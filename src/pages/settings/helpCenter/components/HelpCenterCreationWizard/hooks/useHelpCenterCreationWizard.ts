@@ -12,6 +12,8 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     HELP_CENTER_DEFAULT_LOCALE,
+    HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
+    HELP_CENTER_WIZARD_COMPLETED_STATE,
     HelpCenterCreationWizard,
     NEXT_ACTION,
     PlatformType,
@@ -28,9 +30,9 @@ import {getNewHelpCenterTranslation} from 'pages/settings/helpCenter/utils/helpC
 import useEffectOnce from 'hooks/useEffectOnce'
 import {
     getUpdatedFields,
-    mapUIHelpCenterToApiHelpCenter,
-    mapApiHelpCenterToUIHelpCenter,
     handleOnError,
+    mapApiHelpCenterToUIHelpCenter,
+    mapUIHelpCenterToApiHelpCenter,
 } from '../HelpCenterCreationWizardUtils'
 
 const defaultHelpCenter: HelpCenterCreationWizard = {
@@ -46,17 +48,47 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     primaryFontFamily: 'Inter',
 }
 
+type SuccessModalParams = {
+    articlesCount?: number
+    isArticleRecommendationEnabled?: boolean
+}
+
+type HandleSaveParams = {
+    stepName?: HelpCenterCreationWizardStep
+    payload?: Partial<HelpCenterCreationWizard>
+    redirectTo?: NEXT_ACTION
+    successModalParams?: SuccessModalParams
+}
+
 type HelpCenterWizardOutput = {
     helpCenter: HelpCenterCreationWizard
     allStoreIntegrations: Integration[]
     handleFormUpdate: (payload: Partial<HelpCenterCreationWizard>) => void
     handleAction: (redirectTo: NEXT_ACTION, id?: number) => void
-    handleSave: (
-        redirectTo?: NEXT_ACTION,
-        stepName?: HelpCenterCreationWizardStep,
-        payload?: Partial<HelpCenterCreationWizard>
-    ) => void
+    handleSave: (params: HandleSaveParams) => void
     isLoading: boolean
+}
+
+const getNewHelpCenterSearchParams = (
+    successModalParams?: SuccessModalParams
+) => {
+    if (!successModalParams || successModalParams.articlesCount === undefined)
+        return undefined
+
+    const helpCenterCompletedState =
+        successModalParams.articlesCount > 0
+            ? HELP_CENTER_WIZARD_COMPLETED_STATE.AllSet
+            : successModalParams.isArticleRecommendationEnabled
+            ? HELP_CENTER_WIZARD_COMPLETED_STATE.AlmostDone
+            : undefined
+
+    if (!helpCenterCompletedState) return undefined
+
+    const searchParams = new URLSearchParams({
+        [HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY]: helpCenterCompletedState,
+    })
+
+    return searchParams.toString()
 }
 
 export const useHelpCenterCreationWizard = (
@@ -78,9 +110,9 @@ export const useHelpCenterCreationWizard = (
     const [newHelpCenter, setNewHelpCenter] =
         useState<HelpCenterCreationWizard>(defaultHelpCenter)
 
-    const {mutate: createHelpCenterMutate, isLoading: isCreating} =
+    const {mutateAsync: createHelpCenterMutateAsync, isLoading: isCreating} =
         useCreateHelpCenter()
-    const {mutate: updateHelpCenterMutate, isLoading: isUpdating} =
+    const {mutateAsync: updateHelpCenterMutateAsync, isLoading: isUpdating} =
         useUpdateHelpCenter()
     const {
         mutateAsync: createHelpCenterTranslationMutateAsync,
@@ -101,7 +133,11 @@ export const useHelpCenterCreationWizard = (
         setNewHelpCenter(newHelpCenter)
     })
 
-    const handleAction = (redirectTo: NEXT_ACTION, id?: number) => {
+    const handleAction = (
+        redirectTo: NEXT_ACTION,
+        id?: number,
+        searchParams?: string
+    ) => {
         switch (redirectTo) {
             case NEXT_ACTION.BACK_HOME:
                 history.replace('/app/settings/help-center')
@@ -118,7 +154,10 @@ export const useHelpCenterCreationWizard = (
                 break
             case NEXT_ACTION.NEW_HELP_CENTER:
                 if (!id) return
-                history.replace(`/app/settings/help-center/${id}/articles`) // Article is default path for the HC
+                history.replace({
+                    pathname: `/app/settings/help-center/${id}/articles`, // Article is default path for the HC
+                    search: searchParams,
+                })
                 break
         }
     }
@@ -133,65 +172,84 @@ export const useHelpCenterCreationWizard = (
         [setNewHelpCenter]
     )
 
-    const handleSave = (
-        redirectTo?: NEXT_ACTION,
-        stepName?: HelpCenterCreationWizardStep,
-        payload?: Partial<HelpCenterCreationWizard>
-    ) => {
+    const handleSave = async ({
+        redirectTo,
+        stepName,
+        payload,
+        successModalParams,
+    }: HandleSaveParams) => {
         const tempHelpCenterData = mapUIHelpCenterToApiHelpCenter({
             ...newHelpCenter,
             ...payload,
             stepName: stepName ?? newHelpCenter.stepName,
         })
 
-        return isUpdate
-            ? handleUpdateHelpCenter(tempHelpCenterData, redirectTo)
-            : handleCreateHelpCenter(tempHelpCenterData, redirectTo)
+        const helpCenterAction = () =>
+            isUpdate
+                ? handleUpdateHelpCenter(tempHelpCenterData)
+                : handleCreateHelpCenter(tempHelpCenterData)
+
+        const helpCenter = await helpCenterAction()
+
+        if (redirectTo) {
+            const searchParams =
+                getNewHelpCenterSearchParams(successModalParams)
+            handleAction(redirectTo, helpCenter?.id, searchParams)
+        }
+
+        return
     }
 
-    const handleCreateHelpCenter = (
-        payload: Partial<HelpCenter>,
-        redirectTo?: NEXT_ACTION
-    ) => {
-        createHelpCenterMutate([undefined, payload as HelpCenter], {
-            onSuccess: async (response) => {
-                if (!response) return
-                dispatch(helpCenterCreated(response.data))
-                void enableArticleRecommendation(response.data)
-                await handleSaveCallback(response.data, redirectTo)
-            },
-            onError: (error) =>
-                handleOnError(
-                    error,
-                    'Help center not successfully created.',
-                    dispatch
-                ),
-        })
+    const handleCreateHelpCenter = async (payload: Partial<HelpCenter>) => {
+        try {
+            const res = await createHelpCenterMutateAsync([
+                undefined,
+                payload as HelpCenter,
+            ])
+            if (res) {
+                dispatch(helpCenterCreated(res.data))
+                void enableArticleRecommendation(res.data)
+                await handleSaveCallback(res.data)
+            }
+
+            return res?.data
+        } catch (error) {
+            handleOnError(
+                error,
+                'Help center not successfully created.',
+                dispatch
+            )
+
+            return null
+        }
     }
 
-    const handleUpdateHelpCenter = (
-        payload: Partial<HelpCenter>,
-        redirectTo?: NEXT_ACTION
-    ) => {
+    const handleUpdateHelpCenter = async (payload: Partial<HelpCenter>) => {
         if (!helpCenter) return
 
         const fieldsToUpdate = getUpdatedFields(payload, helpCenter)
 
-        updateHelpCenterMutate(
-            [undefined, {help_center_id: helpCenter.id}, fieldsToUpdate],
-            {
-                onSuccess: async (response) => {
-                    if (!response) return
-                    await handleSaveCallback(response.data, redirectTo)
-                },
-                onError: (error) =>
-                    handleOnError(
-                        error,
-                        'Help center not successfully updated.',
-                        dispatch
-                    ),
+        try {
+            const res = await updateHelpCenterMutateAsync([
+                undefined,
+                {help_center_id: helpCenter.id},
+                fieldsToUpdate,
+            ])
+
+            if (res) {
+                await handleSaveCallback(res.data)
             }
-        )
+
+            return res?.data
+        } catch (error) {
+            handleOnError(
+                error,
+                'Help center not successfully updated.',
+                dispatch
+            )
+
+            return null
+        }
     }
 
     const handleTranslations = async (helpCenterId: number) => {
@@ -240,10 +298,7 @@ export const useHelpCenterCreationWizard = (
         }
     }
 
-    const handleSaveCallback = async (
-        payload: HelpCenter,
-        redirectTo?: NEXT_ACTION
-    ) => {
+    const handleSaveCallback = async (payload: HelpCenter) => {
         switch (step) {
             case HelpCenterCreationWizardStep.Basics:
                 await handleTranslations(payload.id)
@@ -263,10 +318,6 @@ export const useHelpCenterCreationWizard = (
                 break
             default:
                 break
-        }
-
-        if (redirectTo) {
-            handleAction(redirectTo, payload.id)
         }
     }
 

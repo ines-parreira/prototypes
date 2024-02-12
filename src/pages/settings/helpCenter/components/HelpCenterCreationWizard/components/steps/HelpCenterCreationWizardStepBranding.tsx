@@ -66,18 +66,18 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
                 handleAction(NEXT_ACTION.PREVIOUS_STEP)
                 break
             case FOOTER_BUTTONS.NEXT:
-                handleSave(
-                    NEXT_ACTION.NEXT_STEP,
-                    HelpCenterCreationWizardStep.Articles,
-                    payload
-                )
+                handleSave({
+                    redirectTo: NEXT_ACTION.NEXT_STEP,
+                    stepName: HelpCenterCreationWizardStep.Articles,
+                    payload,
+                })
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
-                handleSave(
-                    NEXT_ACTION.BACK_HOME,
-                    HelpCenterCreationWizardStep.Branding,
-                    payload
-                )
+                handleSave({
+                    redirectTo: NEXT_ACTION.BACK_HOME,
+                    stepName: HelpCenterCreationWizardStep.Branding,
+                    payload,
+                })
                 break
             default:
                 break

@@ -22,6 +22,7 @@ import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardAr
 import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
 import {useHelpCenterArticlesForm} from '../../hooks/useHelpCenterArticlesForm'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import {getEnabledArticlesCount} from '../../HelpCenterCreationWizardUtils'
 
 type Props = {
     helpCenter: HelpCenter
@@ -59,8 +60,14 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         switch (buttonClicked) {
             case FOOTER_BUTTONS.FINISH:
                 await handleNavigationSave()
-                handleSave(NEXT_ACTION.NEW_HELP_CENTER, undefined, {
-                    wizardCompleted: true,
+                handleSave({
+                    redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                    payload: {
+                        wizardCompleted: true,
+                    },
+                    successModalParams: {
+                        articlesCount: getEnabledArticlesCount(articles),
+                    },
                 })
                 break
             case FOOTER_BUTTONS.BACK:
@@ -68,17 +75,17 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                 break
             case FOOTER_BUTTONS.NEXT:
                 await handleNavigationSave()
-                handleSave(
-                    NEXT_ACTION.NEXT_STEP,
-                    HelpCenterCreationWizardStep.Automate
-                )
+                handleSave({
+                    redirectTo: NEXT_ACTION.NEXT_STEP,
+                    stepName: HelpCenterCreationWizardStep.Automate,
+                })
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
                 await handleNavigationSave()
-                handleSave(
-                    NEXT_ACTION.BACK_HOME,
-                    HelpCenterCreationWizardStep.Articles
-                )
+                handleSave({
+                    redirectTo: NEXT_ACTION.BACK_HOME,
+                    stepName: HelpCenterCreationWizardStep.Articles,
+                })
                 break
             default:
                 break

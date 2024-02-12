@@ -350,3 +350,13 @@ export const mapHelpCenterArticleItemToArticle = (
             : undefined,
     }
 }
+
+export const getEnabledArticlesCount = (
+    articlesRecord: Record<string, HelpCenterArticleItem[]>
+) =>
+    chain(articlesRecord)
+        .values()
+        .flatten()
+        .countBy('isSelected')
+        .get('true')
+        .value()

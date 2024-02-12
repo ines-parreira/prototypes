@@ -167,10 +167,10 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
 
         fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
 
-        expect(mockOnSave).toHaveBeenCalledWith(
-            NEXT_ACTION.NEW_WIZARD,
-            HelpCenterCreationWizardStep.Branding
-        )
+        expect(mockOnSave).toHaveBeenCalledWith({
+            redirectTo: NEXT_ACTION.NEW_WIZARD,
+            stepName: HelpCenterCreationWizardStep.Branding,
+        })
     })
 
     it('should call updateData method when a field is updated', async () => {

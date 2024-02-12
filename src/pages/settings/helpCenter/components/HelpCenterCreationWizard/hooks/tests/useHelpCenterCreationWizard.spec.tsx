@@ -4,6 +4,8 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import {
     HELP_CENTER_DEFAULT_LOCALE,
+    HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
+    HELP_CENTER_WIZARD_COMPLETED_STATE,
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
@@ -145,7 +147,7 @@ describe('useHelpCenterCreationWizard', () => {
         } as any)
 
         act(() => {
-            handleSave(NEXT_ACTION.NEW_WIZARD)
+            handleSave({redirectTo: NEXT_ACTION.NEW_WIZARD})
         })
 
         await waitFor(() => {
@@ -172,13 +174,113 @@ describe('useHelpCenterCreationWizard', () => {
         } as any)
 
         act(() => {
-            handleSave(NEXT_ACTION.BACK_HOME)
+            handleSave({redirectTo: NEXT_ACTION.BACK_HOME})
         })
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith(
                 '/app/settings/help-center'
             )
+        })
+    })
+
+    it('should update help center and navigate to new help center with articles', async () => {
+        const {result, waitFor} = renderHook(
+            () =>
+                useHelpCenterCreationWizard(
+                    helpCenterData as HelpCenter,
+                    HelpCenterCreationWizardStep.Automate
+                ),
+            {wrapper}
+        )
+
+        const {handleSave} = result.current
+
+        updateHelpCenter.mockResolvedValueOnce({
+            data: helpCenterData,
+        } as any)
+
+        act(() => {
+            handleSave({
+                redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                successModalParams: {
+                    articlesCount: 2,
+                    isArticleRecommendationEnabled: true,
+                },
+            })
+        })
+
+        await waitFor(() => {
+            expect(history.replace).toHaveBeenCalledWith({
+                pathname: `/app/settings/help-center/${helpCenterData.id}/articles`,
+                search: `${HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY}=${HELP_CENTER_WIZARD_COMPLETED_STATE.AllSet}`,
+            })
+        })
+    })
+
+    it('should update help center and navigate to new help center without articles', async () => {
+        const {result, waitFor} = renderHook(
+            () =>
+                useHelpCenterCreationWizard(
+                    helpCenterData as HelpCenter,
+                    HelpCenterCreationWizardStep.Automate
+                ),
+            {wrapper}
+        )
+
+        const {handleSave} = result.current
+
+        updateHelpCenter.mockResolvedValueOnce({
+            data: helpCenterData,
+        } as any)
+
+        act(() => {
+            handleSave({
+                redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                successModalParams: {
+                    articlesCount: 0,
+                },
+            })
+        })
+
+        await waitFor(() => {
+            expect(history.replace).toHaveBeenCalledWith({
+                pathname: `/app/settings/help-center/${helpCenterData.id}/articles`,
+            })
+        })
+    })
+
+    it('should update help center and navigate to new help center without articles and enabled article recom', async () => {
+        const {result, waitFor} = renderHook(
+            () =>
+                useHelpCenterCreationWizard(
+                    helpCenterData as HelpCenter,
+                    HelpCenterCreationWizardStep.Automate
+                ),
+            {wrapper}
+        )
+
+        const {handleSave} = result.current
+
+        updateHelpCenter.mockResolvedValueOnce({
+            data: helpCenterData,
+        } as any)
+
+        act(() => {
+            handleSave({
+                redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                successModalParams: {
+                    articlesCount: 0,
+                    isArticleRecommendationEnabled: true,
+                },
+            })
+        })
+
+        await waitFor(() => {
+            expect(history.replace).toHaveBeenCalledWith({
+                pathname: `/app/settings/help-center/${helpCenterData.id}/articles`,
+                search: `${HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY}=${HELP_CENTER_WIZARD_COMPLETED_STATE.AlmostDone}`,
+            })
         })
     })
 })

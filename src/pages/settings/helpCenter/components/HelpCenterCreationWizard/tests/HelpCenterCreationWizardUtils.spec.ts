@@ -16,6 +16,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
 import {
     findArticleByKey,
+    getEnabledArticlesCount,
     getUpdatedFields,
     groupArticlesByCategory,
     isErrorRecord,
@@ -408,6 +409,40 @@ describe('helpCenterCreationWizardUtils', () => {
             expect(result).toHaveProperty('translation')
             expect(result).toHaveProperty('template_key')
             expect(result?.template_key).toBeUndefined()
+        })
+    })
+
+    describe('getEnabledArticlesCount', () => {
+        it('should count all articles with isSelected enabled', () => {
+            const articleItem1: HelpCenterArticleItem = {
+                title: 'title',
+                content: 'content',
+                key: 'customKey',
+                seo_meta: {title: 'seo title', description: 'seo description'},
+                isSelected: true,
+            }
+
+            const articleItem2: HelpCenterArticleItem = {
+                title: 'title',
+                content: 'content',
+                key: 'customKey',
+                seo_meta: {title: 'seo title', description: 'seo description'},
+            }
+
+            const articleItem3: HelpCenterArticleItem = {
+                title: 'title',
+                content: 'content',
+                key: 'customKey',
+                seo_meta: {title: 'seo title', description: 'seo description'},
+                isSelected: false,
+            }
+
+            const articlesRecord = {
+                cat1: [articleItem1],
+                cat2: [articleItem2, articleItem3],
+            }
+
+            expect(getEnabledArticlesCount(articlesRecord)).toBe(1)
         })
     })
 })
