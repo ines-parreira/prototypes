@@ -131,12 +131,13 @@ const ContactFormPublish = (): JSX.Element => {
                                 shopName={contactForm.shop_name}
                             />
                         </section>
-                        contactForm.shop_name && (
-                        <section>
-                            <ContactFormMailtoReplacementSection
-                                contactFormId={contactForm.id}
-                            />
-                        </section>
+                        {contactForm.shop_name && (
+                            <section>
+                                <ContactFormMailtoReplacementSection
+                                    contactFormId={contactForm.id}
+                                />
+                            </section>
+                        )}
                     </div>
                 </Route>
             </Switch>
