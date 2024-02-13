@@ -15,12 +15,12 @@ export default function useSplitTicketViewSwitcher() {
 
     const history = useHistory()
     const {pathname: path} = useLocation()
-    const [enabled] = useSplitTicketView()
+    const {isEnabled} = useSplitTicketView()
     const activeView = useAppSelector(getActiveView)
     const isMobileResolution = useIsMobileResolution()
     const isSplitTicketViewEnabled = useMemo(
-        () => enabled && !isMobileResolution,
-        [enabled, isMobileResolution]
+        () => isEnabled && !isMobileResolution,
+        [isEnabled, isMobileResolution]
     )
     const previousIsSplitTicketViewEnabled = useRef<boolean | undefined>(
         undefined

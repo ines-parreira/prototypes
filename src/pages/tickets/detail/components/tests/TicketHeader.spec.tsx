@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _omit from 'lodash/omit'
+import {useParams} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {ticket} from 'fixtures/ticket'
@@ -77,6 +78,15 @@ jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 const mockStore = configureMockStore([thunk])
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () =>
+    jest.fn().mockReturnValue([true])
+)
+
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn(),
+}))
+
+const useParamsMock = useParams as jest.Mock
 
 describe('<TicketHeader />', () => {
     const defaultStore: Partial<RootState> = {
@@ -95,6 +105,7 @@ describe('<TicketHeader />', () => {
     beforeEach(() => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
+        useParamsMock.mockReturnValue({})
     })
 
     it('should render new ticket', () => {

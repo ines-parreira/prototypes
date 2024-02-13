@@ -1,5 +1,6 @@
 import {useEffect, useMemo, useState} from 'react'
 
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import usePrevious from 'hooks/usePrevious'
 
@@ -12,6 +13,7 @@ import {SortOrder} from './useSortOrder'
 import useStaleTickets from './useStaleTickets'
 import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
+import usePrevNextTicketId from './usePrevNextTicketId'
 
 export default function useTickets(
     viewId: number,
@@ -102,6 +104,18 @@ export default function useTickets(
     }, [endIndex, latestTimestamp, setLatest])
 
     const ticketIds = useTicketIds(tickets)
+
+    const previousTicketId = usePrevNextTicketId(ticketId, 'prev', partials)
+    const nextTicketId = usePrevNextTicketId(ticketId, 'next', partials)
+
+    const {setPrevNextTicketIds} = useSplitTicketView()
+
+    useEffect(() => {
+        setPrevNextTicketIds({
+            prev: previousTicketId,
+            next: nextTicketId,
+        })
+    }, [previousTicketId, nextTicketId, setPrevNextTicketIds])
 
     return {
         hasMore,

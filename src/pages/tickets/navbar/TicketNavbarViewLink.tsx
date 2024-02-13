@@ -36,7 +36,7 @@ const TicketNavbarViewLink = (
 ) => {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
-    const [splitTicketViewEnabled] = useSplitTicketView()
+    const {isEnabled: splitTicketViewEnabled} = useSplitTicketView()
     const {pathname: path} = useLocation()
 
     const viewId = useViewId()

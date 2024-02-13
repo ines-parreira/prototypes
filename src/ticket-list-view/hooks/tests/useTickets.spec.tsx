@@ -1,4 +1,6 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import {renderHook} from '@testing-library/react-hooks'
+
+import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
 import type {TicketPartial} from '../../types'
 import useTickets from '../useTickets'
@@ -18,6 +20,11 @@ const useElementSizeMock = useElementSize as jest.Mock
 
 jest.mock('../useScrollOffset', () => jest.fn())
 const useScrollOffsetMock = useScrollOffset as jest.Mock
+
+jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
+const mockUseSplitTicketView = useSplitTicketView as jest.Mock
+
+const mockSetPrevNextTicketIds = jest.fn()
 
 describe('useTickets', () => {
     let partials: TicketPartial[] = []
@@ -39,6 +46,9 @@ describe('useTickets', () => {
         })
         useElementSizeMock.mockReturnValue([0, 160])
         useScrollOffsetMock.mockReturnValue([0])
+        mockUseSplitTicketView.mockReturnValue({
+            setPrevNextTicketIds: mockSetPrevNextTicketIds,
+        })
     })
 
     it('should return tickets', () => {
@@ -58,7 +68,7 @@ describe('useTickets', () => {
     })
 
     it('should return new tickets', async () => {
-        const {result, waitForNextUpdate} = renderHook(() =>
+        const {result, waitFor} = renderHook(() =>
             useTickets(123, 'created_datetime:asc')
         )
 
@@ -73,16 +83,38 @@ describe('useTickets', () => {
             partials: newPartials,
         })
 
-        await act(async () => await waitForNextUpdate())
-        expect(result.current).toEqual({
+        await waitFor(() => {
+            expect(result.current).toEqual({
+                hasMore: false,
+                loading: false,
+                loadMore: expect.any(Function),
+                setElement: expect.any(Function),
+                staleTickets: {123: true},
+                tickets: newPartials,
+                newTickets: {456: newTicket},
+                ticketIds: {current: [123]},
+            })
+        })
+    })
+
+    it('should set prev and next ticket IDs', () => {
+        const mockPartials = [
+            ...partials,
+            {id: 456, updated_datetime: Date.now()},
+            {id: 789, updated_datetime: Date.now()},
+        ]
+        useTicketPartialsMock.mockReturnValue({
             hasMore: false,
             loading: false,
-            loadMore: expect.any(Function),
-            setElement: expect.any(Function),
-            staleTickets: {123: true},
-            tickets: newPartials,
-            newTickets: {456: newTicket},
-            ticketIds: {current: [123]},
+            loadMore: jest.fn(),
+            setLatest: jest.fn(),
+            partials: mockPartials,
+        })
+
+        renderHook(() => useTickets(1, 'created_datetime:asc', 456))
+        expect(mockSetPrevNextTicketIds).toHaveBeenCalledWith({
+            next: 789,
+            prev: 123,
         })
     })
 })

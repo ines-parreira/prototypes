@@ -6,19 +6,19 @@ import useSplitTicketView from '../hooks/useSplitTicketView'
 import css from './Toggle.less'
 
 export default function Toggle() {
-    const [enabled, setEnabled] = useSplitTicketView()
+    const {isEnabled, setIsEnabled} = useSplitTicketView()
 
     const handleClick = useCallback(() => {
-        setEnabled(!enabled)
-    }, [enabled, setEnabled])
+        setIsEnabled(!isEnabled)
+    }, [isEnabled, setIsEnabled])
 
     return (
         <button
-            className={cn(css.toggle, {[css.active]: enabled})}
+            className={cn(css.toggle, {[css.active]: isEnabled})}
             type="button"
             onClick={handleClick}
         >
-            {enabled ? 'Use full width view' : 'Use split ticket view'}
+            {isEnabled ? 'Use full width view' : 'Use split ticket view'}
         </button>
     )
 }

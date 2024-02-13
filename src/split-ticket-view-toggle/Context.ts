@@ -1,7 +1,16 @@
 import {createContext} from 'react'
 
-import useSplitTicketViewContext from './hooks/useSplitTicketViewContext'
+export type TicketIds = {
+    prev: number | undefined
+    next: number | undefined
+}
 
-export type ContextType = ReturnType<typeof useSplitTicketViewContext> | null
+export type ContextType = {
+    isEnabled: boolean
+    setIsEnabled: (value: boolean) => void
+    previousTicketId: TicketIds['prev']
+    nextTicketId: TicketIds['next']
+    setPrevNextTicketIds: (ticketIds: TicketIds) => void
+} | null
 
 export default createContext<ContextType>(null)
