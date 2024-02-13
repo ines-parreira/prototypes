@@ -39,6 +39,7 @@ describe('useSearchParams hook', () => {
                     response: {
                         data: {
                             error: {
+                                msg: 'Invalid cursor',
                                 data: {
                                     cursor: ['Invalid cursor'],
                                 },
@@ -52,5 +53,27 @@ describe('useSearchParams hook', () => {
         expect(hook.result.current.nextCursor).toBe('')
         expect(hook.result.current.previousCursor).toBe('')
         expect(hook.result.current.isCursorInvalid).toBe(true)
+    })
+
+    it('should return isCursorInvalid as false on session expired error', () => {
+        const hook = renderHook(() =>
+            useResponseCursor({
+                data: undefined,
+                error: {
+                    isAxiosError: true,
+                    response: {
+                        data: {
+                            error: {
+                                msg: 'Unauthorized',
+                            },
+                        },
+                    },
+                },
+            })
+        )
+
+        expect(hook.result.current.nextCursor).toBe('')
+        expect(hook.result.current.previousCursor).toBe('')
+        expect(hook.result.current.isCursorInvalid).toBe(false)
     })
 })

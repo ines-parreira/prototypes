@@ -1,6 +1,9 @@
-import {AxiosResponse, isAxiosError} from 'axios'
+import {AxiosResponse} from 'axios'
 
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import {
+    ApiListResponseCursorPagination,
+    isGorgiasApiError,
+} from 'models/api/types'
 
 export const useResponseCursor = ({
     data,
@@ -14,13 +17,14 @@ export const useResponseCursor = ({
     const nextCursor = metaData?.next_cursor || ''
 
     let isCursorInvalid = false
-    if (
-        isAxiosError<{
-            error: {message: string; data: {cursor?: string[]}}
-        }>(error)
-    ) {
-        if ((error?.response?.data?.error.data.cursor || []).length > 0)
-            isCursorInvalid = true
+    if (isGorgiasApiError(error)) {
+        const {data} = error.response.data.error
+        if (data && typeof data === 'object' && 'cursor' in data) {
+            const {cursor} = data as {cursor?: unknown}
+            if (Array.isArray(cursor) && cursor.length) {
+                isCursorInvalid = true
+            }
+        }
     }
 
     return {
