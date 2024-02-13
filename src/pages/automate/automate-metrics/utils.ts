@@ -12,7 +12,9 @@ export const toPercentage = (value: number) =>
     `${parseFloat((value * 100).toFixed(2))}%`
 
 export const toDuration = (trend: MetricTrend) => {
-    return trend.data?.value
-        ? formatMetricValue(trend.data?.value, 'duration')
-        : '0h 0m'
+    return (
+        (trend.data?.value &&
+            formatMetricValue(trend.data?.value, 'duration')) ||
+        '0h 0m'
+    )
 }
