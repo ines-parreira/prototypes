@@ -48,10 +48,10 @@ import {
     VoiceCallAverageTimeMetric,
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
-import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {saveReport} from 'services/reporting/voiceOverviewReportingService'
+import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 
 function VoiceOverview() {
     const displayVoiceAnalyticsNiceToHave: boolean =
@@ -148,7 +148,7 @@ function VoiceOverview() {
                         variant={'ghost'}
                     />
                     {displayVoiceAnalyticsNiceToHave && (
-                        <DownloadOverviewDataButton
+                        <VoiceOverviewDownloadDataButton
                             onClick={async () => {
                                 logEvent(SegmentEvent.StatDownloadClicked, {
                                     name: 'all-metrics',

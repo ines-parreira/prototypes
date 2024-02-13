@@ -22,6 +22,7 @@ import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voi
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import {VoiceAgentsDownloadDataButton} from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
 
 function VoiceAgents() {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
@@ -54,6 +55,7 @@ function VoiceAgents() {
                         value={pageStatsFilters.period}
                         variant={'ghost'}
                     />
+                    <VoiceAgentsDownloadDataButton />
                 </>
             }
         >

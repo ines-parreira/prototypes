@@ -32,3 +32,7 @@ export const CALL_LIST_TITLE = 'List of calls'
 export const ALL_CALLS_FILTER_LABEL = 'All calls'
 export const INBOUND_CALLS_FILTER_LABEL = 'Inbound calls'
 export const OUTBOUND_CALLS_FILTER_LABEL = 'Outbound calls'
+
+export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
+export const DOWNLOAD_BUTTON_TITLE =
+    'Download Caller Experience and Call Volume Data'
