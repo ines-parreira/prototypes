@@ -7,7 +7,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import usePrevNextTicketNavigation from './usePrevNextTicketNavigation'
 
-export default function useGoToPreviousTicket(ticketId: string) {
+export default function useGoToPreviousTicket(ticketId?: string) {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
     const {isEnabled: isSplitTicketViewEnabled, previousTicketId} =
@@ -15,7 +15,7 @@ export default function useGoToPreviousTicket(ticketId: string) {
 
     const {viewId} = useParams<{viewId?: string}>()
 
-    const goToPrevTicket = usePrevNextTicketNavigation('prev', ticketId)
+    const goToPrevTicket = usePrevNextTicketNavigation('prev', ticketId || '')
 
     return {
         goToTicket:

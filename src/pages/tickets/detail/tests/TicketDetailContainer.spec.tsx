@@ -10,7 +10,10 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
+import LD from 'launchdarkly-react-client-sdk'
 
+import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
+import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {MacroActionName} from 'models/macroAction/types'
 import client from 'models/api/resources'
@@ -42,6 +45,8 @@ import * as activityTracker from 'services/activityTracker'
 import {ActivityEvents} from 'services/activityTracker'
 import * as useTicketDraft from 'hooks/useTicketDraft'
 import * as ticketUtils from 'state/ticket/utils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import TicketView from '../components/TicketView'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 
@@ -119,6 +124,21 @@ jest.spyOn(customFieldsUtils, 'mergeFieldsStateWithMacroValues')
 const spiedMergeFieldsStateWithMacroValues = assumeMock(
     customFieldsUtils.mergeFieldsStateWithMacroValues
 )
+
+jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
+const useSplitTicketViewMock = useSplitTicketView as jest.Mock
+
+const mockGoToPreviousTicket = jest.fn()
+jest.mock(
+    'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
+)
+const mockUseGoToPreviousTicket = useGoToPreviousTicket as jest.Mock
+
+const mockGoToNextTicket = jest.fn()
+jest.mock(
+    'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+)
+const mockUseGoToNextTicket = useGoToNextTicket as jest.Mock
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
@@ -219,6 +239,18 @@ describe('TicketDetailContainer component', () => {
         prepareTicketMessageMock.mockReturnValue(preparedData)
         setStatusMock.mockImplementation((status, callback) => {
             act(callback)
+        })
+        jest.spyOn(LD, 'useFlags').mockReturnValue({
+            [FeatureFlagKey.SplitTicketView]: false,
+        })
+        useSplitTicketViewMock.mockReturnValue({isEnabled: false})
+        mockUseGoToPreviousTicket.mockReturnValue({
+            goToTicket: mockGoToPreviousTicket,
+            isDisabled: false,
+        })
+        mockUseGoToNextTicket.mockReturnValue({
+            goToTicket: mockGoToNextTicket,
+            isDisabled: false,
         })
     })
 
@@ -1090,7 +1122,7 @@ describe('TicketDetailContainer component', () => {
         await flushPromises()
     })
 
-    it.each<[string, string, boolean, () => jest.Mock, SegmentEvent]>([
+    it.each<[string, string, boolean, () => jest.Mock, SegmentEvent, boolean]>([
         [
             'next',
             'GO_FORWARD',
@@ -1101,6 +1133,7 @@ describe('TicketDetailContainer component', () => {
                 )
             },
             SegmentEvent.TicketKeyboardShortcutsNextNavigation,
+            false,
         ],
         [
             'next',
@@ -1112,6 +1145,15 @@ describe('TicketDetailContainer component', () => {
                 )
             },
             SegmentEvent.TicketKeyboardShortcutsNextNavigation,
+            false,
+        ],
+        [
+            'next',
+            'GO_FORWARD',
+            true,
+            () => mockGoToNextTicket,
+            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
+            true,
         ],
         [
             'prev',
@@ -1123,6 +1165,7 @@ describe('TicketDetailContainer component', () => {
                 )
             },
             SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
+            false,
         ],
         [
             'prev',
@@ -1134,6 +1177,15 @@ describe('TicketDetailContainer component', () => {
                 )
             },
             SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
+            false,
+        ],
+        [
+            'prev',
+            'GO_BACK',
+            true,
+            () => mockGoToPreviousTicket,
+            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
+            true,
         ],
     ])(
         'should debounce %s ticket calls while call is already pending',
@@ -1142,13 +1194,21 @@ describe('TicketDetailContainer component', () => {
             actionName,
             isTicketNavigationAvailable,
             testSetup,
-            trackedEvent
+            trackedEvent,
+            isSplitTicketViewEnabled
         ) => {
+            jest.spyOn(LD, 'useFlags').mockReturnValue({
+                [FeatureFlagKey.SplitTicketView]: isSplitTicketViewEnabled,
+            })
+            useSplitTicketViewMock.mockReturnValue({
+                isEnabled: isSplitTicketViewEnabled,
+            })
             mockedDispatch.mockReturnValue(isTicketNavigationAvailable)
 
             const execKeyboardAction =
                 makeExecuteKeyboardAction(shortcutManagerMock)
             const callMock = testSetup()
+
             renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
@@ -1165,8 +1225,13 @@ describe('TicketDetailContainer component', () => {
             execKeyboardAction(actionName)
 
             expect(callMock).toHaveBeenCalledTimes(
-                isTicketNavigationAvailable ? 1 : 0
+                isTicketNavigationAvailable
+                    ? isSplitTicketViewEnabled
+                        ? 2
+                        : 1
+                    : 0
             )
+
             expect(logEvent).toHaveBeenCalledWith(trackedEvent)
         }
     )

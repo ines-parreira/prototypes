@@ -3,6 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {MacroActionName} from 'models/macroAction/types'
@@ -69,9 +70,13 @@ import {
     pickedTicketFields,
 } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import Loader from 'pages/common/components/Loader/Loader'
-
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {useListVoiceCalls} from 'models/voiceCall/queries'
 import {getSourceTypeOfResponse} from 'state/ticket/utils'
+
+import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
+import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
@@ -240,6 +245,16 @@ export const TicketDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const hasSplitTicketView: boolean | undefined =
+        useFlags()[FeatureFlagKey.SplitTicketView]
+    const {isEnabled} = useSplitTicketView()
+    const isSplitTicketViewEnabled = hasSplitTicketView && isEnabled
+
+    const {goToTicket: goToPreviousTicketInTicketListPanel} =
+        useGoToPreviousTicket()
+
+    const {goToTicket: goToNextTicketInTicketListPanel} = useGoToNextTicket()
+
     const [{loading: isGoToPrevOrNextTicketPending}, goToPrevOrNextTicket] =
         useAsyncFn(
             async (direction: 'prev' | 'next') => {
@@ -387,7 +402,9 @@ export const TicketDetailContainer = ({
                         logEvent(
                             SegmentEvent.TicketKeyboardShortcutsPreviousNavigation
                         )
-                        void goToPrevOrNextTicket('prev')
+                        isSplitTicketViewEnabled
+                            ? goToPreviousTicketInTicketListPanel()
+                            : void goToPrevOrNextTicket('prev')
                     }
                 },
             },
@@ -397,7 +414,9 @@ export const TicketDetailContainer = ({
                         logEvent(
                             SegmentEvent.TicketKeyboardShortcutsNextNavigation
                         )
-                        void goToPrevOrNextTicket('next')
+                        isSplitTicketViewEnabled
+                            ? goToNextTicketInTicketListPanel()
+                            : void goToPrevOrNextTicket('next')
                     }
                 },
             },
