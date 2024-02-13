@@ -3030,6 +3030,27 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
+"@gorgias/api-client@^0.1.16":
+  version "0.1.16"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.16/d070606ba599b5ab3c926a5eb4f1b83c1f404d8e#d070606ba599b5ab3c926a5eb4f1b83c1f404d8e"
+  integrity sha512-YsbQ3aD9Lp7uUkIpl5V9vokzU/2WQpisQPIGiNcLUeOOx59lQh8lwmcKJJxMBSDRj+FBc2ya8sNRngIeBP1FPA==
+  dependencies:
+    "@gorgias/api-types" "^0.1.16"
+    axios "^1"
+
+"@gorgias/api-queries@^0.1":
+  version "0.1.16"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.16/5b4bb8c38411885049b7045fa1ce6895318f4349#5b4bb8c38411885049b7045fa1ce6895318f4349"
+  integrity sha512-aWVqb7SWNPtWr3DJlRygon05BE8RlCjBUxiVu4ww78FZRCxJywSPMzCzHEm8WT0TMlqxcCFFQfawf4UhGmwhTw==
+  dependencies:
+    "@gorgias/api-client" "^0.1.16"
+    "@gorgias/api-types" "^0.1.16"
+
+"@gorgias/api-types@^0.1.16":
+  version "0.1.16"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.16/17123ea9dc79c0a10772d587a34eb68856455e59#17123ea9dc79c0a10772d587a34eb68856455e59"
+  integrity sha512-j7rdwQGNTUz/lys3n8e6CBdIgeLRdRqOkJntt3E6DdeVKE6R5hwn0EayMmkUiJGJXBKEv08Abvgl3XIQihJxyA==
+
 "@gorgias/design-tokens@^0.2.4":
   version "0.2.4"
   resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.2.4/63d930101267e0a21fe2d472b3bb74092fd965b2#63d930101267e0a21fe2d472b3bb74092fd965b2"
@@ -7018,7 +7039,7 @@ async@^3.2.3:
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
-  integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
+  integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
 atob@^2.1.2:
   version "2.1.2"
@@ -7095,6 +7116,15 @@ axios@^0.21.1:
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
+
+axios@^1:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.7.tgz#7b48c2e27c96f9c68a2f8f31e2ab19f59b06b0a7"
+  integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
+  dependencies:
+    follow-redirects "^1.15.4"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
 
 axobject-query@^2.2.0:
   version "2.2.0"
@@ -9089,7 +9119,7 @@ del@^6.0.0:
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
-  integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
+  integrity sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==
 
 delegate@^3.1.2:
   version "3.2.0"
@@ -10680,10 +10710,15 @@ focus-trap@^7.5.3:
   dependencies:
     tabbable "^6.2.0"
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.15.0, follow-redirects@^1.15.4:
+follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.15.0:
   version "1.15.4"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.4.tgz#cdc7d308bf6493126b17ea2191ea0ccf3e535adf"
   integrity sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==
+
+follow-redirects@^1.15.4:
+  version "1.15.5"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
+  integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==
 
 for-each@^0.3.3:
   version "0.3.3"

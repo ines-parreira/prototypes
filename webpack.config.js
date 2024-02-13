@@ -282,6 +282,7 @@ module.exports = (env = {}) => {
             alias: {
                 ...aliasOptions,
                 css: `${srcDir}/assets/css/`,
+                "@tanstack/react-query": path.resolve(__dirname, 'node_modules/@tanstack/react-query'),
             },
             extensions: ['.ts', '.tsx', '.js'],
             modules: ['node_modules', srcDir],
