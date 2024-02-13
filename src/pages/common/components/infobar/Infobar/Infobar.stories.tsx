@@ -81,7 +81,6 @@ export const WithDefaultAppTheme: Meta = {
                 </div>
             )
         },
-        ...(storyConfig.decorators ?? []),
     ],
 }
 export default storyConfig
