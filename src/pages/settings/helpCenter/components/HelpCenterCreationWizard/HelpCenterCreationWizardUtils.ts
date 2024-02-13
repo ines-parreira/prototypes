@@ -95,7 +95,7 @@ export const mapApiHelpCenterToUIHelpCenter = (
         primaryColor: helpCenter?.primary_color || '',
         primaryFontFamily: helpCenter?.primary_font_family || '',
         deactivated: helpCenter
-            ? helpCenter.deactivated_datetime === null
+            ? helpCenter.deactivated_datetime !== null
             : true, // when no help center we mark it as unpublished by default
     }
 }

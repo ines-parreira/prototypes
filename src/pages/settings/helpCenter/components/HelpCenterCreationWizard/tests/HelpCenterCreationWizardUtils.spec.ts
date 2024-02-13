@@ -71,7 +71,7 @@ const defaultUIHelpCenter = {
     brandLogoUrl: null,
     primaryColor: '#4A8DF9',
     primaryFontFamily: 'Inter',
-    deactivated: false,
+    deactivated: true,
 }
 
 describe('helpCenterCreationWizardUtils', () => {
@@ -101,6 +101,28 @@ describe('helpCenterCreationWizardUtils', () => {
                 []
             )
             expect(result).toEqual(defaultUIHelpCenter)
+        })
+
+        it('should return true for deactivated when deactivated_datetime provided', () => {
+            const result = mapApiHelpCenterToUIHelpCenter(
+                {
+                    ...defaultApiHelpCenter,
+                    deactivated_datetime: '2021-01-01T00:00:00Z',
+                },
+                []
+            )
+            expect(result.deactivated).toEqual(true)
+        })
+
+        it('should return false for deactivated when deactivated_datetime provided', () => {
+            const result = mapApiHelpCenterToUIHelpCenter(
+                {
+                    ...defaultApiHelpCenter,
+                    deactivated_datetime: null,
+                },
+                []
+            )
+            expect(result.deactivated).toEqual(false)
         })
 
         it('should add shop name if only one integration and none provided from api', () => {
