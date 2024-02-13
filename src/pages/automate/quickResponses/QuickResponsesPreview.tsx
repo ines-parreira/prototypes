@@ -63,6 +63,9 @@ const QuickResponsesPreview = ({
                 const areQuickResponsesDisabled =
                     applicationAutomationSettings?.quickResponses.enabled ===
                     false
+                const isOrderManagementDisabled =
+                    applicationAutomationSettings?.orderManagement.enabled ===
+                    false
 
                 if (areQuickResponsesDisabled) {
                     return (
@@ -76,9 +79,32 @@ const QuickResponsesPreview = ({
                 return (
                     <SelfServicePreviewContext.Provider
                         value={{
-                            selfServiceConfiguration,
+                            selfServiceConfiguration: {
+                                ...selfServiceConfiguration,
+                                ...(isOrderManagementDisabled
+                                    ? {
+                                          track_order_policy: {
+                                              ...selfServiceConfiguration.track_order_policy,
+                                              enabled: false,
+                                          },
+                                          cancel_order_policy: {
+                                              ...selfServiceConfiguration.cancel_order_policy,
+                                              enabled: false,
+                                          },
+                                          return_order_policy: {
+                                              ...selfServiceConfiguration.return_order_policy,
+                                              enabled: false,
+                                          },
+                                          report_issue_policy: {
+                                              ...selfServiceConfiguration.report_issue_policy,
+                                              enabled: false,
+                                          },
+                                      }
+                                    : {}),
+                            },
                             quickResponse: expandedQuickResponse,
                             hoveredQuickResponseId,
+
                             workflowsEntrypoints:
                                 applicationAutomationSettings?.workflows
                                     ?.entrypoints,
