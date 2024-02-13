@@ -3,42 +3,50 @@ import {Form} from 'reactstrap'
 import {Map} from 'immutable'
 
 import {PartialTemplate} from 'models/widget/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {stopWidgetEdition, updateEditedWidget} from 'state/widgets/actions'
 import {IntegrationType} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
+export const TITLE_FIELD_LABEL = 'Title'
+export const TYPE_FIELD_LABEL = 'Type'
+export const SUBMIT_BUTTON_TEXT = 'Submit'
+export const CANCEL_BUTTON_TEXT = 'Cancel'
+
 type Props = {
     template: Map<string, unknown>
     widget: Map<string, unknown>
+    onSubmit: (partialTemplate: PartialTemplate) => void
+    onCancel: () => void
 }
 
-export default function FieldEdit({template, widget}: Props) {
-    const dispatch = useAppDispatch()
+export default function FieldEdit({
+    template,
+    widget,
+    onCancel,
+    onSubmit,
+}: Props) {
     const [title, setTitle] = useState(template.get('title', ''))
     const [type, setType] = useState(template.get('type', ''))
 
     let path = template.get('path')
     if (Array.isArray(path) && path.length) path = path[0]
 
-    const closePopup = (e?: SyntheticEvent<HTMLButtonElement>) => {
-        e?.stopPropagation()
-        dispatch(stopWidgetEdition())
+    const handleCancelClick = (e: SyntheticEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
+        onCancel()
     }
 
-    const handleSubmit = (e?: SyntheticEvent<HTMLFormElement>) => {
-        e?.preventDefault()
-        dispatch(updateEditedWidget({title, type} as PartialTemplate))
-        closePopup()
+    const handleFormSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        onSubmit({title, type} as PartialTemplate)
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleFormSubmit}>
             <DEPRECATED_InputField
                 type="text"
                 name="title"
-                label="Title"
+                label={TITLE_FIELD_LABEL}
                 required
                 value={title}
                 onChange={(title) => setTitle(title)}
@@ -46,7 +54,7 @@ export default function FieldEdit({template, widget}: Props) {
             <DEPRECATED_InputField
                 type="select"
                 name="type"
-                label="Type"
+                label={TYPE_FIELD_LABEL}
                 required
                 value={type}
                 onChange={(type) => setType(type)}
@@ -70,10 +78,14 @@ export default function FieldEdit({template, widget}: Props) {
 
             <div>
                 <Button type="submit" className="mr-2">
-                    Submit
+                    {SUBMIT_BUTTON_TEXT}
                 </Button>
-                <Button intent="secondary" type="button" onClick={closePopup}>
-                    Cancel
+                <Button
+                    intent="secondary"
+                    type="button"
+                    onClick={handleCancelClick}
+                >
+                    {CANCEL_BUTTON_TEXT}
                 </Button>
             </div>
         </Form>

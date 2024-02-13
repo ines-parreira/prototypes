@@ -1,3 +1,5 @@
+import {Leaf} from 'models/widget/types'
+
 export const shopifyWidget = {
     deleted_datetime: null,
     integration_id: null,
@@ -202,4 +204,11 @@ export const shopifyWidget = {
     type: 'shopify',
     id: 2,
     updated_datetime: '2017-08-17T23:33:46.991886+00:00',
+}
+
+export const idTemplate: Leaf = {
+    path: 'id',
+    type: 'text',
+    title: 'Id',
+    templatePath: '0.template.widgets.0.widgets.0',
 }

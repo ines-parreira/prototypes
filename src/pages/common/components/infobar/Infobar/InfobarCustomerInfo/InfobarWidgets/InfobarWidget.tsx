@@ -171,7 +171,6 @@ export default function InfobarWidget({
             component = (
                 <Field
                     isEditing={isEditing}
-                    isParentList={isParentList}
                     type={type}
                     value={guessFieldValueFromRawData(
                         data,
