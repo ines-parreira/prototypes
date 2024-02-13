@@ -47,7 +47,7 @@ function isArticleTemplateKey(key: any): key is ArticleTemplateKey {
     return keys.includes(key)
 }
 
-const isHelpCenterCreationWizardStep = (
+export const isHelpCenterCreationWizardStep = (
     step: unknown
 ): step is HelpCenterCreationWizardStep => {
     return Object.values(HelpCenterCreationWizardStep).includes(
@@ -364,32 +364,3 @@ export const getEnabledArticlesCount = (
         .countBy('isSelected')
         .get('true')
         .value()
-
-/*
- * Here is the logic to handle corner case when we can have non-basic step where we create Help Center
- * and we don't have Help Center yet. In this case we need to redirect to Basic step
- * */
-type WizardState =
-    | {
-          stepName: HelpCenterCreationWizardStep.Basics
-      }
-    | {
-          stepName: HelpCenterCreationWizardStep
-          helpCenter: HelpCenter
-      }
-
-export const getHelpCenterWizardState = (
-    helpCenter: HelpCenter | undefined
-): WizardState => {
-    const stepName = helpCenter?.wizard?.step_name
-
-    if (
-        !helpCenter || // When help center not created
-        !isHelpCenterCreationWizardStep(stepName) || // When help center wizard step is incorrect
-        stepName === HelpCenterCreationWizardStep.Initialization // When help center auto created
-    ) {
-        return {stepName: HelpCenterCreationWizardStep.Basics}
-    }
-
-    return {stepName, helpCenter}
-}

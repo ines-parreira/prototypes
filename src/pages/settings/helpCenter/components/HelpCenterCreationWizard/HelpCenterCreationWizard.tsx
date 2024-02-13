@@ -19,7 +19,6 @@ import useGetAutomateType from './hooks/useGetAutomateType'
 import HelpCenterCreationWizardStepBranding from './components/steps/HelpCenterCreationWizardStepBranding'
 import HelpCenterCreationWizardStepArticles from './components/steps/HelpCenterCreationWizardStepArticles'
 import HelpCenterCreationWizardStepAutomate from './components/steps/HelpCenterCreationWizardStepAutomate'
-import {getHelpCenterWizardState} from './HelpCenterCreationWizardUtils'
 
 type Props = {
     helpCenter?: HelpCenter
@@ -42,7 +41,16 @@ const HelpCenterCreationWizardComponent = ({
         return true
     })
 
-    const wizardState = getHelpCenterWizardState(helpCenter)
+    const helpCenterStepName = helpCenter?.wizard?.step_name
+
+    const wizardStep =
+        helpCenterStepName &&
+        Object.values(HelpCenterCreationWizardStep).includes(
+            helpCenterStepName as HelpCenterCreationWizardStep
+        ) &&
+        helpCenterStepName !== HelpCenterCreationWizardStep.Initialization
+            ? helpCenterStepName
+            : HelpCenterCreationWizardStep.Basics
 
     return (
         <>
@@ -64,7 +72,7 @@ const HelpCenterCreationWizardComponent = ({
                     }
                 />
                 <div className={css.wrapper}>
-                    <Wizard steps={steps} startAt={wizardState.stepName}>
+                    <Wizard steps={steps} startAt={wizardStep}>
                         <WizardStep name={HelpCenterCreationWizardStep.Basics}>
                             <HelpCenterCreationWizardStepBasics
                                 helpCenter={helpCenter}
@@ -79,34 +87,29 @@ const HelpCenterCreationWizardComponent = ({
                                 helpCenter={helpCenter}
                             />
                         </WizardStep>
-
-                        <WizardStep
-                            name={HelpCenterCreationWizardStep.Articles}
-                        >
-                            {wizardState.stepName ===
-                                HelpCenterCreationWizardStep.Articles && (
+                        {helpCenter && (
+                            <WizardStep
+                                name={HelpCenterCreationWizardStep.Articles}
+                            >
                                 <EditionManagerContextProvider>
                                     <HelpCenterCreationWizardStepArticles
-                                        helpCenter={wizardState.helpCenter}
+                                        helpCenter={helpCenter}
                                         automateType={automateType}
                                     />
                                 </EditionManagerContextProvider>
-                            )}
-                        </WizardStep>
-
-                        {automateType === HelpCenterAutomateType.AUTOMATE && (
-                            <WizardStep
-                                name={HelpCenterCreationWizardStep.Automate}
-                            >
-                                {wizardState.stepName ===
-                                    HelpCenterCreationWizardStep.Automate && (
-                                    <HelpCenterCreationWizardStepAutomate
-                                        helpCenter={wizardState.helpCenter}
-                                        isUpdate={!!isUpdate}
-                                    />
-                                )}
                             </WizardStep>
                         )}
+                        {automateType === HelpCenterAutomateType.AUTOMATE &&
+                            helpCenter && (
+                                <WizardStep
+                                    name={HelpCenterCreationWizardStep.Automate}
+                                >
+                                    <HelpCenterCreationWizardStepAutomate
+                                        helpCenter={helpCenter}
+                                        isUpdate={!!isUpdate}
+                                    />
+                                </WizardStep>
+                            )}
                     </Wizard>
                 </div>
             </div>

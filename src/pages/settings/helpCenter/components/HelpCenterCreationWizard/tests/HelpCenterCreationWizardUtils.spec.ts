@@ -14,11 +14,9 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
     findArticleByKey,
     getEnabledArticlesCount,
-    getHelpCenterWizardState,
     getUpdatedFields,
     groupArticlesByCategory,
     isErrorRecord,
@@ -30,8 +28,6 @@ import {
     mapHelpCenterLocalesToLanguagePicker,
     mapUIHelpCenterToApiHelpCenter,
 } from '../HelpCenterCreationWizardUtils'
-
-const helpCenterFixture = getHelpCentersResponseFixture.data[0]
 
 const defaultApiHelpCenter = {
     name: 'test',
@@ -349,45 +345,6 @@ describe('helpCenterCreationWizardUtils', () => {
         it('should return false for non-object types', () => {
             const error = 'An error occurred'
             expect(isErrorRecord(error)).toBe(false)
-        })
-    })
-
-    describe('getHelpCenterWizardState', () => {
-        it('should return basic step by default', () => {
-            expect(getHelpCenterWizardState(undefined)).toEqual({
-                stepName: HelpCenterCreationWizardStep.Basics,
-            })
-        })
-
-        it('should return automate step state when step is automate and help center exist', () => {
-            const stepName = HelpCenterCreationWizardStep.Automate
-
-            expect(getHelpCenterWizardState(helpCenterFixture)).toEqual({
-                stepName,
-                helpCenter: helpCenterFixture,
-            })
-        })
-
-        it('should return basic step state when wizard step is incorrect', () => {
-            const helpCenter = {
-                ...helpCenterFixture,
-                wizard: {step_name: 'random'},
-            }
-            expect(getHelpCenterWizardState(helpCenter)).toEqual({
-                stepName: HelpCenterCreationWizardStep.Basics,
-            })
-        })
-
-        it('should return basic step state when wizard step is init', () => {
-            const helpCenter = {
-                ...helpCenterFixture,
-                wizard: {
-                    step_name: HelpCenterCreationWizardStep.Initialization,
-                },
-            }
-            expect(getHelpCenterWizardState(helpCenter)).toEqual({
-                stepName: HelpCenterCreationWizardStep.Basics,
-            })
         })
     })
 
