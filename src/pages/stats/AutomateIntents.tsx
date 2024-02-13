@@ -1,47 +1,35 @@
-import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
-
-import useAppSelector from 'hooks/useAppSelector'
-import {getStatsFilters} from 'state/stats/selectors'
+import React, {useMemo} from 'react'
 import {
     INTENTS_BREAKDOWN_PER_DAY,
     INTENTS_OCCURRENCE,
     INTENTS_OVERVIEW,
     stats as statsConfig,
 } from 'config/stats'
+
+import useStatResource from 'hooks/reporting/useStatResource'
+
+import useAppSelector from 'hooks/useAppSelector'
 import {
     OneDimensionalChart,
     StatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
-import {TicketChannel} from 'business/types/ticket'
-
-import useStatResource from 'hooks/reporting/useStatResource'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import PeriodStatsFilter from './PeriodStatsFilter'
-import StatsPage from './StatsPage'
-import KeyMetricStatWrapper from './KeyMetricStatWrapper'
-import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
-import StatWrapper from './StatWrapper'
+import {AutomateIntentsFilters} from 'pages/stats/AutomateIntentsFilters'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {BarStat} from './common/components/charts/BarStat'
+import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
+import KeyMetricStatWrapper from './KeyMetricStatWrapper'
+import StatsPage from './StatsPage'
+import StatWrapper from './StatWrapper'
 
 const AUTOMATION_INTENTS_STAT_NAME = 'automation-intents'
-const AUTOMATION_INTENTS_CHANNELS = [
-    TicketChannel.Api,
-    TicketChannel.Chat,
-    TicketChannel.Email,
-    TicketChannel.Facebook,
-    TicketChannel.FacebookMention,
-    TicketChannel.FacebookMessenger,
-    TicketChannel.InstagramAdComment,
-    TicketChannel.InstagramComment,
-    TicketChannel.Phone,
-    TicketChannel.Sms,
-]
 
 export default function AutomateIntents() {
-    const statsFilters = useAppSelector(getStatsFilters)
+    const {cleanStatsFilters: statsFilters} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters
@@ -79,17 +67,7 @@ export default function AutomateIntents() {
             description="Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face.
             Intents can be used in rules and macros to automate your ticket-reply workflow."
             helpUrl="https://docs.gorgias.com/intents-sentiments/customer-intents"
-            filters={
-                pageStatsFilters && (
-                    <>
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                            channelsFilter={AUTOMATION_INTENTS_CHANNELS}
-                        />
-                        <PeriodStatsFilter value={pageStatsFilters.period} />
-                    </>
-                )
-            }
+            filters={<AutomateIntentsFilters />}
         >
             {pageStatsFilters && (
                 <>

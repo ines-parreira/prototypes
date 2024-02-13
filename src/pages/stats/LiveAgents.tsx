@@ -1,13 +1,12 @@
 import React, {useMemo, useCallback} from 'react'
 import moment from 'moment-timezone'
 import {produce} from 'immer'
+import {LiveAgentsFilters} from 'pages/stats/LiveAgentsFilters'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {stats as statsConfig, USERS_PERFORMANCE_OVERVIEW} from 'config/stats'
-import {getStatsFilters} from 'state/stats/selectors'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
-import {getTimezone} from 'state/currentUser/selectors'
 import {
     NumericStatAxisValue,
     Stat,
@@ -21,9 +20,8 @@ import {
 import Navigation from 'pages/common/components/Navigation/Navigation'
 
 import useStatResource from 'hooks/reporting/useStatResource'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import StatsPage from './StatsPage'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import AgentsStatsFilter from './AgentsStatsFilter'
 import StatCurrentDate from './common/components/StatCurrentDate'
 import css from './LiveAgents.less'
 import StatWrapper from './StatWrapper'
@@ -33,8 +31,9 @@ import StatsFiltersContext from './StatsFiltersContext'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
-    const userTimezone = useAppSelector(getTimezone)
-    const statsFilters = useAppSelector(getStatsFilters)
+    const {cleanStatsFilters: statsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
@@ -81,18 +80,7 @@ function LiveAgents() {
                 title="Live agents"
                 description="Live Agents will show you the work agents have accomplished over the day."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#data_sets"
-                filters={
-                    pageStatsFilters && (
-                        <>
-                            <ChannelsStatsFilter
-                                value={pageStatsFilters.channels}
-                            />
-                            <AgentsStatsFilter
-                                value={pageStatsFilters.agents}
-                            />
-                        </>
-                    )
-                }
+                filters={<LiveAgentsFilters />}
             >
                 {pageStatsFilters && (
                     <>

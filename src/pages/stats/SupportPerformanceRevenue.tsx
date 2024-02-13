@@ -1,16 +1,5 @@
 import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
-
-import {
-    getStatsFilters,
-    getStatsStoreIntegrations,
-    getStoreIntegrationsStatsFilter,
-} from 'state/stats/selectors'
-import {
-    OneDimensionalUnionChart,
-    StatsFilters,
-    TwoDimensionalChart,
-} from 'models/stat/types'
 import {
     REVENUE_OVERVIEW,
     REVENUE_PER_AGENT,
@@ -18,32 +7,40 @@ import {
     REVENUE_PER_TICKET,
     stats as statsConfig,
 } from 'config/stats'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import {AccountFeature} from 'state/currentAccount/types'
-import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import useAppSelector from 'hooks/useAppSelector'
+import {
+    OneDimensionalUnionChart,
+    StatsFilters,
+    TwoDimensionalChart,
+} from 'models/stat/types'
+import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import ConvertLimitBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/ConvertLimitBanner/ConvertLimitBanner'
-import IntegrationsStatsFilter from './IntegrationsStatsFilter'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import PeriodStatsFilter from './PeriodStatsFilter'
-import StatsPage from './StatsPage'
-import TagsStatsFilter from './TagsStatsFilter'
-import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
-import StatWrapper from './StatWrapper'
+import {SupportPerformanceRevenueFilters} from 'pages/stats/SupportPerformanceRevenueFilters'
+import {AccountFeature} from 'state/currentAccount/types'
+
+import {
+    getStatsStoreIntegrations,
+    getStoreIntegrationsStatsFilter,
+} from 'state/stats/selectors'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {BarStat} from './common/components/charts/BarStat'
+import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
-import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
-import CampaignsStatsFilter from './CampaignsStatsFilter'
+import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
+import StatsPage from './StatsPage'
+import StatWrapper from './StatWrapper'
 
 const SUPPORT_PERFORMANCE_REVENUE_STAT_NAME = 'support-performance-revenue'
 
 function SupportPerformanceRevenue() {
     const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
     const storeStatsFilter = useAppSelector(getStoreIntegrationsStatsFilter)
-    const statsFilters = useAppSelector(getStatsFilters)
+    const {cleanStatsFilters: statsFilters} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, tags, period, campaigns} = statsFilters
@@ -91,38 +88,13 @@ function SupportPerformanceRevenue() {
             statsFilters: pageStatsFilters,
         })
 
-    const isConvertSubscriber: boolean = useIsConvertSubscriber()
-
     return (
         <StatsPage
             title="Revenue"
             description="Revenue statistics allow you to measure how much money your support team is generating by
 helping customers through the purchasing journey."
             helpUrl="https://docs.gorgias.com/statistics/revenue-statistics"
-            filters={
-                pageStatsFilters && (
-                    <>
-                        <IntegrationsStatsFilter
-                            value={pageStatsFilters.integrations}
-                            integrations={storeIntegrations}
-                            isRequired
-                        />
-                        {isConvertSubscriber && (
-                            <CampaignsStatsFilter
-                                value={pageStatsFilters.campaigns}
-                                selectedIntegrations={
-                                    pageStatsFilters.integrations
-                                }
-                            />
-                        )}
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                        />
-                        <TagsStatsFilter value={pageStatsFilters.tags} />
-                        <PeriodStatsFilter value={pageStatsFilters.period} />
-                    </>
-                )
-            }
+            filters={<SupportPerformanceRevenueFilters />}
         >
             {pageStatsFilters && (
                 <>

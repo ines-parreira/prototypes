@@ -1,31 +1,26 @@
 import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
+import {stats as statsConfig, TICKETS_PER_TAG} from 'config/stats'
+
+import useStatResource from 'hooks/reporting/useStatResource'
+import useAppSelector from 'hooks/useAppSelector'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {SupportPerformanceTagsFilters} from 'pages/stats/SupportPerformanceTagsFilters'
 
 import {
     getMessagingIntegrationsStatsFilter,
     getStatsFilters,
-    getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
-import {stats as statsConfig, TICKETS_PER_TAG} from 'config/stats'
 import {getTags} from 'state/tags/selectors'
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
-import useAppSelector from 'hooks/useAppSelector'
-
-import useStatResource from 'hooks/reporting/useStatResource'
-import IntegrationsStatsFilter from './IntegrationsStatsFilter'
-import StatsPage from './StatsPage'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import TagsStatsFilter from './TagsStatsFilter'
-import PeriodStatsFilter from './PeriodStatsFilter'
 import TableStat from './common/components/charts/TableStat/TableStat'
-import StatWrapper from './StatWrapper'
 import StatsFiltersContext from './StatsFiltersContext'
+import StatsPage from './StatsPage'
+import StatWrapper from './StatWrapper'
 
 const SUPPORT_PERFORMANCE_TAGS_STAT_NAME = 'support-performance-tags'
 
 export default function SupportPerformanceTags() {
     const tags = useAppSelector(getTags)
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
@@ -61,20 +56,7 @@ export default function SupportPerformanceTags() {
                 description="Tags statistics will show you how many tickets were created during this time period and have a
 tag attached to them."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#tags"
-                filters={
-                    <>
-                        <IntegrationsStatsFilter
-                            value={integrationsStatsFilter}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                        />
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                        />
-                        <TagsStatsFilter value={pageStatsFilters.tags} />
-                        <PeriodStatsFilter value={pageStatsFilters.period} />
-                    </>
-                }
+                filters={<SupportPerformanceTagsFilters />}
             >
                 <StatWrapper
                     stat={ticketsPerTag}

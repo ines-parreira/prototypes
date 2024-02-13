@@ -1,6 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FIRST_RESPONSE_TIME,
@@ -28,24 +28,19 @@ import {
 } from 'models/stat/types'
 
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {DEPRECATED_SupportPerformanceOverviewFilters} from 'pages/stats/DEPRECATED_SupportPerformanceOverviewFilters'
 import {NotificationStatus} from 'state/notifications/types'
 import {
     getMessagingIntegrationsStatsFilter,
     getStatsFilters,
-    getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
-import AgentsStatsFilter from './AgentsStatsFilter'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
 import {BarStat} from './common/components/charts/BarStat'
 import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
 import LineStat from './common/components/charts/LineStat'
 import PerHourPerWeekTableStat from './common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat'
-import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
-import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'
 import StatWrapper from './StatWrapper'
-import TagsStatsFilter from './TagsStatsFilter'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 const PAGE_TITLE = 'Legacy overview'
@@ -61,7 +56,6 @@ export default function DEPRECATED_SupportPerformanceOverview() {
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
     const iAnalyticsProductivityMetricsEnabled =
         useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
@@ -263,27 +257,7 @@ export default function DEPRECATED_SupportPerformanceOverview() {
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
 providing excellent customer support."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#overview"
-                filters={
-                    pageStatsFilters && (
-                        <>
-                            <IntegrationsStatsFilter
-                                value={pageStatsFilters.integrations}
-                                integrations={messagingIntegrations}
-                                isMultiple
-                            />
-                            <ChannelsStatsFilter
-                                value={pageStatsFilters.channels}
-                            />
-                            <AgentsStatsFilter
-                                value={pageStatsFilters.agents}
-                            />
-                            <TagsStatsFilter value={pageStatsFilters.tags} />
-                            <PeriodStatsFilter
-                                value={pageStatsFilters.period}
-                            />
-                        </>
-                    )
-                }
+                filters={<DEPRECATED_SupportPerformanceOverviewFilters />}
             >
                 {pageStatsFilters && (
                     <>

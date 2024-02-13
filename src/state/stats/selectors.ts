@@ -57,8 +57,16 @@ export const getPageStatsFilters = createSelector(
     getStatsFilters,
     getMessagingIntegrationsStatsFilter,
     (statsFilters, integrationsStatsFilter) => {
-        const {channels, agents, period, tags, helpCenters, localeCodes} =
-            statsFilters
+        const {
+            channels,
+            agents,
+            period,
+            tags,
+            helpCenters,
+            localeCodes,
+            score,
+            campaigns,
+        } = statsFilters
         return {
             channels,
             agents,
@@ -67,6 +75,8 @@ export const getPageStatsFilters = createSelector(
             tags,
             helpCenters,
             localeCodes,
+            score,
+            campaigns,
         }
     }
 )

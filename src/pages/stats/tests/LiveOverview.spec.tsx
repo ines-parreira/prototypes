@@ -14,6 +14,7 @@ import {
     supportVolumePerHour,
     usersStatuses,
 } from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
@@ -66,6 +67,9 @@ describe('LiveOverview', () => {
         teams: fromJS({
             all: teams,
         }),
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     beforeEach(() => {

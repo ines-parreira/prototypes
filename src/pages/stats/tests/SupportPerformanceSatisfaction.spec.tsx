@@ -9,6 +9,7 @@ import _noop from 'lodash/noop'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {latestSatisfactionSurveys, satisfactionSurveys} from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {SATISFACTION_SURVEYS} from 'config/stats'
 import {integrationsState} from 'fixtures/integrations'
@@ -74,6 +75,9 @@ describe('SupportPerformanceSatisfaction', () => {
         teams: fromJS({
             all: teams,
         }),
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     beforeEach(() => {

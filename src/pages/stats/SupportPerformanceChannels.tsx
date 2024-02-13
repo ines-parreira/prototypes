@@ -1,10 +1,7 @@
 import React, {useMemo} from 'react'
+import {SupportPerformanceChannelsFilters} from 'pages/stats/SupportPerformanceChannelsFilters'
 
-import {
-    getMessagingIntegrationsStatsFilter,
-    getStatsFilters,
-    getStatsMessagingIntegrations,
-} from 'state/stats/selectors'
+import {getMessagingIntegrationsStatsFilter} from 'state/stats/selectors'
 import {
     stats as statsConfig,
     TICKETS_CREATED_PER_CHANNEL,
@@ -14,9 +11,7 @@ import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import IntegrationsStatsFilter from './IntegrationsStatsFilter'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import PeriodStatsFilter from './PeriodStatsFilter'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import StatWrapper from './StatWrapper'
 import BarStat from './common/components/charts/BarStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
@@ -26,11 +21,12 @@ import StatsFiltersContext from './StatsFiltersContext'
 const SUPPORT_PERFORMANCE_CHANNELS_STAT_NAME = 'support-performance-channels'
 
 export default function SupportPerformanceChannels() {
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useAppSelector(getStatsFilters)
+    const {cleanStatsFilters: statsFilters} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters
@@ -64,19 +60,7 @@ export default function SupportPerformanceChannels() {
                 description="Channel statistics to get a clear view of your ticket volume based on the different communication
 channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc..."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#channels"
-                filters={
-                    <>
-                        <IntegrationsStatsFilter
-                            value={integrationsStatsFilter}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                        />
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                        />
-                        <PeriodStatsFilter value={pageStatsFilters.period} />
-                    </>
-                }
+                filters={<SupportPerformanceChannelsFilters />}
             >
                 <StatWrapper
                     stat={ticketsCreatedPerChannelPerDay}

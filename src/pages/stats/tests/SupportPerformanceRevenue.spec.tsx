@@ -15,6 +15,7 @@ import {
     revenuePerDay,
     revenuePerTicket,
 } from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {
     REVENUE_OVERVIEW,
@@ -32,9 +33,9 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {billingState} from 'fixtures/billing'
+import {IntegrationType} from 'models/integration/constants'
 import TagsStatsFilter from '../TagsStatsFilter'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
-import {IntegrationType} from '../../../models/integration/constants'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -231,6 +232,9 @@ describe('SupportPerformanceRevenue', () => {
             all: teams,
         }),
         billing: fromJS(billingState),
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     beforeEach(() => {

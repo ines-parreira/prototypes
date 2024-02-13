@@ -16,6 +16,7 @@ import {
     ticketsCreatedPerHourPerWeekday,
     totalMessagesSent,
 } from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {
     FIRST_RESPONSE_TIME,
@@ -84,6 +85,9 @@ describe('DEPRECATED_SupportPerformanceOverview', () => {
         teams: fromJS({
             all: teams,
         }),
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     beforeEach(() => {

@@ -16,6 +16,7 @@ import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import useStatResource from 'hooks/reporting/useStatResource'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import SupportPerformanceBusiestTimesOfDays from '../SupportPerformanceBusiestTimesOfDays'
 
 jest.mock(
@@ -61,6 +62,9 @@ describe('<SupportPerformanceBusiestTimesOfDays />', () => {
         teams: fromJS({
             all: teams,
         }),
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     beforeEach(() => {

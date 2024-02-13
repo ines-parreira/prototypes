@@ -9,6 +9,7 @@ import _noop from 'lodash/noop'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {userPerformanceOverview} from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
@@ -70,6 +71,9 @@ describe('LiveAgents', () => {
         }),
         entities: {
             tags: {},
+        },
+        ui: {
+            stats: uiStatsInitialState,
         },
     } as RootState
 

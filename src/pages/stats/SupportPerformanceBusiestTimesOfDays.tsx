@@ -1,31 +1,24 @@
 import React, {useMemo} from 'react'
-
 import {
     FIRST_RESPONSE_TIME,
     stats as statsConfig,
     TICKETS_CREATED_PER_HOUR_PER_WEEKDAY,
 } from 'config/stats'
+import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
-import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import PerHourPerWeekTableStat from 'pages/stats/common/components/charts/PerHourPerWeekTableStat'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import StatsPage from 'pages/stats/StatsPage'
 import StatWrapper from 'pages/stats/StatWrapper'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
-import useStatResource from 'hooks/reporting/useStatResource'
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {SupportPerformanceBusiestTimesOfDaysFilters} from 'pages/stats/SupportPerformanceBusiestTimesOfDaysFilters'
 import {
     getMessagingIntegrationsStatsFilter,
     getStatsFilters,
-    getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 
 export default function SupportPerformanceBusiestTimesOfDays() {
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
@@ -54,27 +47,7 @@ export default function SupportPerformanceBusiestTimesOfDays() {
     return (
         <StatsPage
             title="Busiest times of days"
-            filters={
-                pageStatsFilters && (
-                    <>
-                        <IntegrationsStatsFilter
-                            value={pageStatsFilters.integrations}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                        />
-
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                        />
-
-                        <AgentsStatsFilter value={pageStatsFilters.agents} />
-
-                        <TagsStatsFilter value={pageStatsFilters.tags} />
-
-                        <PeriodStatsFilter value={pageStatsFilters.period} />
-                    </>
-                )
-            }
+            filters={<SupportPerformanceBusiestTimesOfDaysFilters />}
         >
             {pageStatsFilters && (
                 <StatWrapper

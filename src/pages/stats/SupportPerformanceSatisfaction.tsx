@@ -1,50 +1,40 @@
-import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
-
-import {
-    getMessagingIntegrationsStatsFilter,
-    getStatsFilters,
-    getStatsMessagingIntegrations,
-} from 'state/stats/selectors'
+import React, {useMemo} from 'react'
 import {
     LATEST_SATISFACTION_SURVEYS,
-    SATISFACTION_SURVEY_MAX_SCORE,
-    SATISFACTION_SURVEY_MIN_SCORE,
     SATISFACTION_SURVEYS,
     stats as statsConfig,
 } from 'config/stats'
+
+import useStatResource from 'hooks/reporting/useStatResource'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     OneDimensionalUnionChart,
     StatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
-import {TicketChannel} from 'business/types/ticket'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import {SupportPerformanceSatisfactionFilters} from 'pages/stats/SupportPerformanceSatisfactionFilters'
 import {AccountFeature} from 'state/currentAccount/types'
-import useAppSelector from 'hooks/useAppSelector'
 
-import useStatResource from 'hooks/reporting/useStatResource'
-import IntegrationsStatsFilter from './IntegrationsStatsFilter'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import PeriodStatsFilter from './PeriodStatsFilter'
-import StatsPage from './StatsPage'
-import {ScoreStatsFilter} from './ScoreStatsFilter'
-import AgentsStatsFilter from './AgentsStatsFilter'
-import TagsStatsFilter from './TagsStatsFilter'
+import {getMessagingIntegrationsStatsFilter} from 'state/stats/selectors'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
-import StatWrapper from './StatWrapper'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
+import StatsPage from './StatsPage'
+import StatWrapper from './StatWrapper'
 
 const SUPPORT_PERFORMANCE_SATISFACTION_STAT_NAME =
     'support-performance-satisfaction'
 
 function SupportPerformanceSatisfaction() {
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useAppSelector(getStatsFilters)
+    const {cleanStatsFilters: statsFilters} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, score, agents, tags, period} = statsFilters
@@ -83,31 +73,7 @@ function SupportPerformanceSatisfaction() {
             description="Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
 How many surveys have been sent, response rate, average scores and more."
             helpUrl="https://docs.gorgias.com/statistics/statistics#satisfaction"
-            filters={
-                <>
-                    <IntegrationsStatsFilter
-                        value={integrationsStatsFilter}
-                        integrations={messagingIntegrations}
-                        isMultiple
-                    />
-                    <ChannelsStatsFilter
-                        value={pageStatsFilters.channels}
-                        channelsFilter={[
-                            TicketChannel.Chat,
-                            TicketChannel.Email,
-                        ]}
-                    />
-                    <ScoreStatsFilter
-                        value={pageStatsFilters.score}
-                        minValue={SATISFACTION_SURVEY_MIN_SCORE}
-                        maxValue={SATISFACTION_SURVEY_MAX_SCORE}
-                        isDescending
-                    />
-                    <AgentsStatsFilter value={pageStatsFilters.agents} />
-                    <TagsStatsFilter value={pageStatsFilters.tags} />
-                    <PeriodStatsFilter value={pageStatsFilters.period} />
-                </>
-            }
+            filters={<SupportPerformanceSatisfactionFilters />}
         >
             <KeyMetricStatWrapper>
                 <KeyMetricStat

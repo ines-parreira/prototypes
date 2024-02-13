@@ -8,6 +8,7 @@ import _noop from 'lodash/noop'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {ticketsPerTagStat} from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {integrationsState} from 'fixtures/integrations'
 import {StatsFilters} from 'models/stat/types'
@@ -52,6 +53,9 @@ describe('SupportPerformanceTags', () => {
         integrations: fromJS(integrationsState),
         entities: {
             tags: {},
+        },
+        ui: {
+            stats: uiStatsInitialState,
         },
     } as RootState
 

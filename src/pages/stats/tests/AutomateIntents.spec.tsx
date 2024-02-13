@@ -12,6 +12,7 @@ import {
     intentsOccurrence,
     intentsOverview,
 } from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
 import {StatsFilters} from 'models/stat/types'
@@ -45,6 +46,9 @@ describe('AutomateIntents', () => {
                 channels: [TicketChannel.Chat],
             } as StatsFilters,
         }),
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     beforeEach(() => {

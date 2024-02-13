@@ -1,21 +1,30 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-
+import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import classnames from 'classnames'
-import {assetsUrl} from 'utils'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
-    SELF_SERVICE_OVERVIEW,
-    SELF_SERVICE_TOP_REPORTED_ISSUES,
-    stats as statsConfig,
-    SELF_SERVICE_VOLUME_PER_FLOW,
-    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
-    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
-    SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
+    PaywallConfig,
+    paywallConfigs as defaultPaywallConfigs,
+} from 'config/paywalls'
+import {
     AUTOMATE_PERFORMANCE_BY_FEATURE,
+    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
+    SELF_SERVICE_OVERVIEW,
+    SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
+    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
+    SELF_SERVICE_TOP_REPORTED_ISSUES,
+    SELF_SERVICE_VOLUME_PER_FLOW,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
+    stats as statsConfig,
 } from 'config/stats'
+import useStatResource from 'hooks/reporting/useStatResource'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {
     AnyStatAxisValue,
     DataStatLine,
@@ -23,57 +32,46 @@ import {
     StatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getStatsFilters} from 'state/stats/selectors'
-import {mergeStatsFilters} from 'state/stats/actions'
-import Loader from 'pages/common/components/Loader/Loader'
-import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {getIntegrations} from 'state/integrations/selectors'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import {AccountFeature} from 'state/currentAccount/types'
-import {
-    PaywallConfig,
-    paywallConfigs as defaultPaywallConfigs,
-} from 'config/paywalls'
-import PageHeader from 'pages/common/components/PageHeader'
-import HeaderTitle from 'pages/common/components/HeaderTitle'
-import useWorkflowApi from 'pages/automate/workflows/hooks/useWorkflowApi'
-import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import useStatResource from 'hooks/reporting/useStatResource'
-import useAsyncFn from 'hooks/useAsyncFn'
 import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
 } from 'pages/automate/common/components/constants'
+
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import withEcommerceIntegration from 'pages/automate/common/utils/withStoreIntegrations'
-import {FeatureFlagKey} from 'config/featureFlags'
-import TableStat from '../common/components/charts/TableStat/TableStat'
-import PeriodStatsFilter from '../PeriodStatsFilter'
-import StatsPage from '../StatsPage'
-import StatWrapper from '../StatWrapper'
+import useWorkflowApi from 'pages/automate/workflows/hooks/useWorkflowApi'
+import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import HeaderTitle from 'pages/common/components/HeaderTitle'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import {SelfServiceStatsPageFilters} from 'pages/stats/self-service/SelfServiceStatsPageFilters'
+import {AccountFeature} from 'state/currentAccount/types'
+import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
+import {getIntegrations} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {assetsUrl} from 'utils'
+import KeyMetricStat from '../common/components/charts/KeyMetricStat'
 
 import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
+import TableStat from '../common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
-import KeyMetricStat from '../common/components/charts/KeyMetricStat'
-import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
-import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
-import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
+import StatsPage from '../StatsPage'
+import StatWrapper from '../StatWrapper'
 import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,
     PAGE_DESCRIPTION,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
 } from './constants'
+import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
 
 import css from './SelfServiceStatsPage.less'
+import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
     const isNewAutomateFeatureEnabled =
@@ -85,7 +83,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     >([])
     const dispatch = useAppDispatch()
     const integrations = useAppSelector(getIntegrations)
-    const statsFilters = useAppSelector(getStatsFilters)
+    const {cleanStatsFilters: statsFilters} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {period, integrations} = statsFilters
         return {
@@ -270,13 +270,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         [storeIntegrations]
     )
 
-    const handleIntegrationsFilterChange = useCallback(
-        (values) => {
-            dispatch(mergeStatsFilters({integrations: values as number[]}))
-        },
-        [dispatch]
-    )
-
     const allSectionsNoData =
         overviewNoData &&
         volumePerFlowNoData &&
@@ -295,17 +288,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             title={PAGE_TITLE_PERFORMANCE_BY_FEATURES}
             description={PAGE_DESCRIPTION}
             helpUrl={HELP_URL}
-            filters={
-                pageStatsFilters && (
-                    <>
-                        <SelfServiceIntegrationsFilter
-                            onChange={handleIntegrationsFilterChange}
-                            value={pageStatsFilters.integrations}
-                        />
-                        <PeriodStatsFilter value={pageStatsFilters.period} />
-                    </>
-                )
-            }
+            filters={<SelfServiceStatsPageFilters />}
         >
             {pageStatsFilters && (
                 <>

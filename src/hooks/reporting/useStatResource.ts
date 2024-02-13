@@ -14,7 +14,6 @@ import {StatsState} from 'state/entities/stats/types'
 import {StatsState as StatsUIState} from 'state/ui/stats/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppSelector from 'hooks/useAppSelector'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 export const DEFAULT_ERROR_MESSAGE =
@@ -41,9 +40,8 @@ export default function useStatResource<T>({
         (state) => state.ui.stats.fetchingMap
     )
     const statKey = `${statName}/${resourceName}`
-    const cleanStatsFilters = useCleanStatsFilters(statsFilters)
     const [cursor, setCursor] = useState<string | undefined>()
-    const [filters, setFilters] = useState(cleanStatsFilters)
+    const [filters, setFilters] = useState(statsFilters)
 
     const createFetchStat = useCallback(
         (cancelToken: CancelToken) => {
@@ -104,12 +102,12 @@ export default function useStatResource<T>({
 
     useDebouncedEffect(
         () => {
-            if (cleanStatsFilters && !_isEqual(cleanStatsFilters, filters)) {
-                setFilters(cleanStatsFilters)
+            if (statsFilters && !_isEqual(statsFilters, filters)) {
+                setFilters(statsFilters)
                 setCursor(undefined)
             }
         },
-        [cleanStatsFilters, filters],
+        [statsFilters, filters],
         fetchDebounceDelay
     )
 

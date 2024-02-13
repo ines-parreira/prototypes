@@ -11,6 +11,7 @@ import {
     ticketsCreatedPerChannel,
     ticketsCreatedPerChannelPerDay,
 } from 'fixtures/stats'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {TICKETS_CREATED_PER_CHANNEL_PER_DAY} from 'config/stats'
 import {StatsFilters} from 'models/stat/types'
@@ -46,6 +47,9 @@ describe('SupportPerformanceChannels', () => {
         }),
         entities: {
             tags: {},
+        },
+        ui: {
+            stats: uiStatsInitialState,
         },
     } as RootState
 

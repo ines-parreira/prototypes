@@ -1,44 +1,42 @@
 import moment from 'moment'
 import React, {useMemo} from 'react'
-
-import {getTimezone} from 'state/currentUser/selectors'
-import {getStatsFilters} from 'state/stats/selectors'
 import {
-    stats as statsConfig,
-    USERS_STATUSES,
-    OPEN_TICKETS_ASSIGNMENT_STATUSES,
     LIVE_OVERVIEW_METRICS,
+    OPEN_TICKETS_ASSIGNMENT_STATUSES,
+    stats as statsConfig,
     SUPPORT_VOLUME_PER_HOUR,
+    USERS_STATUSES,
 } from 'config/stats'
+
+import useStatResource from 'hooks/reporting/useStatResource'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     OneDimensionalChart,
     StatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import {LiveOverviewFilters} from 'pages/stats/LiveOverviewFilters'
 import {AccountFeature} from 'state/currentAccount/types'
-import useAppSelector from 'hooks/useAppSelector'
-
-import useStatResource from 'hooks/reporting/useStatResource'
-import AgentsStatsFilter from './AgentsStatsFilter'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import StatsPage from './StatsPage'
-import KeyMetricStatWrapper from './KeyMetricStatWrapper'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
-import StatWrapper from './StatWrapper'
 import LineStat from './common/components/charts/LineStat'
 import StatCurrentDate from './common/components/StatCurrentDate'
+import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 import css from './LiveOverview.less'
+import StatsPage from './StatsPage'
+import StatWrapper from './StatWrapper'
 
 const LIVE_OVERVIEW_STAT_NAME = 'live-overview'
 
 function LiveOverview() {
-    const userTimezone = useAppSelector(getTimezone)
-    const statsFilters = useAppSelector(getStatsFilters)
+    const {cleanStatsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
-        const {channels, agents} = statsFilters
+        const {channels, agents} = cleanStatsFilters
         return {
             channels,
             agents,
@@ -47,7 +45,7 @@ function LiveOverview() {
                 end_datetime: currentDay.clone().endOf('day').format(),
             },
         }
-    }, [statsFilters, userTimezone])
+    }, [cleanStatsFilters, userTimezone])
 
     const [usersStatuses, isFetchingUsersStatuses] =
         useStatResource<OneDimensionalChart>({
@@ -107,16 +105,7 @@ function LiveOverview() {
             title="Live overview"
             description="Get a live overview of the current activity of your support team, including agent status, open tickets, and volume of tickets you are handling throughout the day."
             helpUrl="https://docs.gorgias.com/statistics/statistics#data_sets"
-            filters={
-                pageStatsFilters && (
-                    <>
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                        />
-                        <AgentsStatsFilter value={pageStatsFilters.agents} />
-                    </>
-                )
-            }
+            filters={<LiveOverviewFilters />}
         >
             {pageStatsFilters && (
                 <>
