@@ -106,6 +106,10 @@ export const BundleInstallView = () => {
         )
     }, [currentInstallationMethod, currentStoreIntegration])
 
+    const isSubmitDisabled = useMemo(() => {
+        return showUpdatePermissionsBanner || !currentStoreIntegration
+    }, [showUpdatePermissionsBanner, currentStoreIntegration])
+
     const [{loading: isSubmitting}, installBundle] = useAsyncFn(async () => {
         setHasStoreError(!currentStoreIntegration)
         if (!currentStoreIntegrationId) {
@@ -113,10 +117,12 @@ export const BundleInstallView = () => {
         }
 
         let action = 'install'
+        let message = 'Bundle installed successfully'
         if (
             currentInstallationMethod === RevenueBundleInstallationMethod.Manual
         ) {
             action = 'manual-install'
+            message = 'Ready for installation, please follow the instructions'
         }
 
         try {
@@ -130,7 +136,7 @@ export const BundleInstallView = () => {
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'Bundle installed successfully',
+                    message: message,
                 })
             )
 
@@ -177,7 +183,8 @@ export const BundleInstallView = () => {
                             Connect a store
                         </Label>
                         <div className={pageCss.connectStoreDescription}>
-                            Connect a store or chat to use Convert campaigns.
+                            Connect a store or a chat to use and display chat
+                            campaigns.
                         </div>
                         <StoreNameDropdown
                             gorgiasChatIntegrations={
@@ -195,6 +202,7 @@ export const BundleInstallView = () => {
                             }}
                             hasError={hasStoreError}
                             storeIntegrationId={currentStoreIntegrationId}
+                            selectLabel="Select a store or a chat"
                         />
                         {hasStoreError && (
                             <div className={pageCss.error}>
@@ -234,7 +242,15 @@ export const BundleInstallView = () => {
                     </div>
                     <div className={pageCss.section}>
                         <div className={pageCss.sectionHeading}>
-                            Select installation method
+                            Select installation method for the Campaign bundle
+                        </div>
+                        <div>
+                            <p>
+                                The Campaign bundle is a special code that
+                                allows the campaigns to appear on your store.
+                                The installation process is similar to the chat
+                                installation.
+                            </p>
                         </div>
                         <div className={pageCss.radioButtonGroup}>
                             <PreviewRadioButton
@@ -245,7 +261,7 @@ export const BundleInstallView = () => {
                                 }
                                 isDisabled={isManualMethodRequired}
                                 label="1-click install"
-                                caption="Shopify non headless stores"
+                                caption="for Shopify stores (except headless)"
                                 onClick={() => {
                                     setCurrentInstallationMethod(
                                         RevenueBundleInstallationMethod.OneClick
@@ -259,7 +275,7 @@ export const BundleInstallView = () => {
                                     RevenueBundleInstallationMethod.Manual
                                 }
                                 label="Manual install"
-                                caption="for headless, knowledge bases, etc."
+                                caption="for Shopify headless stores, Woocommerce, BigCommerce, Magento stores or custom websites"
                                 onClick={() => {
                                     setCurrentInstallationMethod(
                                         RevenueBundleInstallationMethod.Manual
@@ -272,7 +288,7 @@ export const BundleInstallView = () => {
                         <Button
                             onClick={installBundle}
                             isLoading={isSubmitting}
-                            isDisabled={showUpdatePermissionsBanner}
+                            isDisabled={isSubmitDisabled}
                         >
                             {currentInstallationMethod ===
                             RevenueBundleInstallationMethod.OneClick

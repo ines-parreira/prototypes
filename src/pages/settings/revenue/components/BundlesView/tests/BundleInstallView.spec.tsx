@@ -79,7 +79,7 @@ describe('<BundleInstallView />', () => {
             </MemoryRouter>
         )
 
-        fireEvent.click(getByText('Select a store'))
+        fireEvent.click(getByText('Select a store or a chat'))
         fireEvent.click(getByText('My shopify store'))
         fireEvent.click(
             getByText('Install', {
@@ -106,7 +106,7 @@ describe('<BundleInstallView />', () => {
             </MemoryRouter>
         )
 
-        fireEvent.click(getByText('Select a store'))
+        fireEvent.click(getByText('Select a store or a chat'))
         fireEvent.click(getByText('My shopify store'))
 
         expect(getByText(/Update Shopify app permissions/i)).toBeInTheDocument()

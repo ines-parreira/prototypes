@@ -15,6 +15,7 @@ type Props = {
     onChange: (newShopIntegrationIdValue: number) => void
     hasError?: boolean
     isDisabled?: boolean
+    selectLabel?: string
 }
 
 export const StoreNameDropdown = ({
@@ -24,6 +25,7 @@ export const StoreNameDropdown = ({
     onChange,
     hasError,
     isDisabled,
+    selectLabel,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -99,7 +101,7 @@ export const StoreNameDropdown = ({
                             >
                                 store
                             </i>
-                            Select a store
+                            {selectLabel || 'Select a store'}
                         </span>
                     )}
                 </DropdownToggle>
