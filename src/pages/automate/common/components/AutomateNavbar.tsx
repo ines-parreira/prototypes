@@ -1,8 +1,8 @@
 import React from 'react'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import classNames from 'classnames'
 import navbarCss from 'assets/css/navbar.less'
-
 import useAppSelector from 'hooks/useAppSelector'
 import Navbar from 'pages/common/components/Navbar'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
@@ -11,6 +11,7 @@ import {
     getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
+import automateNavbarCss from './AutomateNavbar.less'
 import AutomateNavbarView from './AutomateNavbarView'
 
 const AutomateNavbar = () => {
@@ -26,7 +27,12 @@ const AutomateNavbar = () => {
             {(hasAutomate || hasLegacyAutomateFeatures) && (
                 <>
                     {isNewLandingPageVisible && (
-                        <div className={navbarCss['link-wrapper']}>
+                        <div
+                            className={classNames(
+                                navbarCss['link-wrapper'],
+                                automateNavbarCss.automate
+                            )}
+                        >
                             <NavbarLink to="/app/automation" exact>
                                 <span>
                                     <i className="material-icons mr-2 icon">

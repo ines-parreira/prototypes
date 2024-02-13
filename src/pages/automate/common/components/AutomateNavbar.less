@@ -8,6 +8,10 @@
 }
 
 :local {
+    .automate {
+        margin-top: @layout-spacing-m;
+    }
+
     .popoverContainer {
         > div {
             .caption-regular();
@@ -29,6 +33,7 @@
     .disabled {
         color: var(--neutral-grey-5);
         cursor: unset;
+
         &:hover,
         &:active,
         &:focus {
