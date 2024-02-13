@@ -8,7 +8,12 @@ import React, {
     ReactNode,
 } from 'react'
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
-import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
+import {
+    getCountryCallingCode,
+    CountryCode,
+    parsePhoneNumber,
+    isValidPhoneNumber,
+} from 'libphonenumber-js'
 import classnames from 'classnames'
 
 import {countries} from 'config/countries'
@@ -102,13 +107,34 @@ const PhoneNumberInput = ({
         [allowedCountries]
     )
 
-    const handleChange = useCallback(
-        (number: string, country: CountryCode) => {
+    const handleNumberChange = useCallback(
+        (number: string, oldCountry: CountryCode) => {
+            const phoneNumber = isValidPhoneNumber(number)
+                ? parsePhoneNumber(number)
+                : null
+
+            const country = phoneNumber?.country ?? oldCountry
+
             setCurrentCountry(country)
-            setCountrySelectVisible(false)
             number === ''
                 ? onChange?.('')
                 : onChange?.(buildInternationalNumber(number, country))
+        },
+        [onChange, setCurrentCountry]
+    )
+
+    const handleCountryChange = useCallback(
+        (number: string, country: CountryCode) => {
+            setCurrentCountry(country)
+            setCountrySelectVisible(false)
+
+            const newNumber = buildInternationalNumber(number, country)
+
+            onChange?.(
+                getCountryFromPhoneNumber(newNumber) === country
+                    ? newNumber
+                    : ''
+            )
         },
         [onChange, setCurrentCountry]
     )
@@ -159,7 +185,7 @@ const PhoneNumberInput = ({
                             value={currentCountry}
                             options={options}
                             onChange={(nextCountry) => {
-                                handleChange(
+                                handleCountryChange(
                                     formatAsNationalNumber(value),
                                     nextCountry as CountryCode
                                 )
@@ -187,7 +213,7 @@ const PhoneNumberInput = ({
                             return
                         }
                         setIsPhoneNumberTooLong(false)
-                        handleChange(value, currentCountry)
+                        handleNumberChange(value, currentCountry)
                     }}
                     autoFocus={autoFocus}
                 />

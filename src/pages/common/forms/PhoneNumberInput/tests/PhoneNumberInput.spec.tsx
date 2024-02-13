@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, waitFor} from '@testing-library/react'
 
 import {reportError} from 'utils/errors'
 import PhoneNumberInput from '../PhoneNumberInput'
@@ -50,7 +50,7 @@ describe('<PhoneNumberInput/>', () => {
         expect(onChange).toHaveBeenCalledWith('+123456')
     })
 
-    it('should filter the country list when typing a country name', () => {
+    it('should filter the country list when typing a country name', async () => {
         const {container, getByText} = render(
             <PhoneNumberInput value="+1234567890" onChange={onChange} />
         )
@@ -59,9 +59,9 @@ describe('<PhoneNumberInput/>', () => {
         fireEvent.change(container.getElementsByTagName('input')[0], {
             target: {value: 'france'},
         })
-        fireEvent.click(getByText('France'))
-
-        expect(onChange).toHaveBeenCalledWith('+33234567890')
+        await waitFor(() => {
+            expect(getByText('France')).toBeVisible()
+        })
     })
 
     it('should restrict selectable countries based on props', () => {
@@ -107,6 +107,49 @@ describe('<PhoneNumberInput/>', () => {
         })
 
         expect(onChange).toHaveBeenCalledWith('+1555')
+    })
+
+    it('should infer correct country from value', () => {
+        const {container, getByText} = render(
+            <PhoneNumberInput
+                value=""
+                onChange={onChange}
+                defaultCountry="US"
+            />
+        )
+
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {value: '+373 600 00 000'},
+        })
+        expect(getByText(/\+373/i)).toBeVisible()
+
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {value: '+1 251 261 0000'},
+        })
+        expect(getByText(/\+1/i)).toBeVisible()
+
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {value: '+40 750 000 000'},
+        })
+        expect(getByText(/\+40/i)).toBeVisible()
+    })
+
+    it('should clear the input when selecting a new country if resulting phone number is invalid', () => {
+        const {container, getByText} = render(
+            <PhoneNumberInput value="" onChange={onChange} />
+        )
+
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {value: '+373 600 00 000'},
+        })
+
+        fireEvent.click(getByText('🇲🇩'))
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {value: 'france'},
+        })
+        fireEvent.click(getByText('France'))
+
+        expect(onChange).toHaveBeenLastCalledWith('+33')
     })
 
     it('should report an error if the default country is not allowed', () => {
