@@ -268,6 +268,7 @@ export type HelpCenterCreationWizard = {
     primaryFontFamily: string
     wizardCompleted?: boolean
     orderManagementEnabled?: boolean
+    deactivated: boolean
 }
 
 export enum NEXT_ACTION {

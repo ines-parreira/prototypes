@@ -61,6 +61,7 @@ const emptyUIHelpCenter: HelpCenterCreationWizard = {
     brandLogoUrl: null,
     primaryColor: '',
     primaryFontFamily: '',
+    deactivated: true,
 }
 
 const defaultUIHelpCenter = {
@@ -74,6 +75,7 @@ const defaultUIHelpCenter = {
     brandLogoUrl: null,
     primaryColor: '#4A8DF9',
     primaryFontFamily: 'Inter',
+    deactivated: false,
 }
 
 describe('helpCenterCreationWizardUtils', () => {

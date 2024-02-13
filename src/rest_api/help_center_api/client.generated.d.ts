@@ -1256,7 +1256,7 @@ declare namespace Components {
       wizard?: {
         /**
          * example:
-         * Automation
+         * automate
          */
         step_name: string;
         step_data?: {
@@ -1268,6 +1268,12 @@ declare namespace Components {
         } | null;
         completed?: boolean | null;
       } | null;
+      /**
+       * Boolean indicating if the help center is deactivated.
+       * example:
+       * false
+       */
+      deactivated?: boolean;
       account_id?: number;
     }
     export interface CreateNavigationLinkDto {
@@ -1519,7 +1525,7 @@ declare namespace Components {
       wizard?: {
         /**
          * example:
-         * Automation
+         * automate
          */
         step_name: string;
         step_data?: {
@@ -1600,7 +1606,7 @@ declare namespace Components {
       wizard?: {
         /**
          * example:
-         * Automation
+         * automate
          */
         step_name: string;
         step_data?: {
@@ -1691,7 +1697,7 @@ declare namespace Components {
     export interface HelpCenterWizardDto {
       /**
        * example:
-       * Automation
+       * automate
        */
       step_name: string;
       step_data?: {
@@ -2371,7 +2377,7 @@ declare namespace Components {
       wizard?: {
         /**
          * example:
-         * Automation
+         * automate
          */
         step_name: string;
         step_data?: {
@@ -2384,17 +2390,17 @@ declare namespace Components {
         completed?: boolean | null;
       } | null;
       /**
-       * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
-       * example:
-       * false
-       */
-      powered_by_deactivated?: boolean;
-      /**
        * Boolean indicating if the help center is deactivated.
        * example:
        * false
        */
       deactivated?: boolean;
+      /**
+       * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
+       * example:
+       * false
+       */
+      powered_by_deactivated?: boolean;
       primary_font_family?: string | null;
     }
     export interface UpdateHelpCenterTranslationDto {
@@ -2494,11 +2500,6 @@ declare namespace Components {
     export interface UploadAttachmentDto {
       file: AttachmentFileDto;
       channel: AttachmentChannelDto;
-    }
-    export interface UploadPolicyRequestDto {
-      filename: string;
-      size: number;
-      mimetype: string;
     }
     export interface UpsertAutomationSettingsDto {
       /**
@@ -3166,18 +3167,6 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.ExtraHTML;
-    }
-  }
-  namespace GetFileUploadPolicy {
-    namespace Parameters {
-      export type HelpCenterId = number;
-    }
-    export interface PathParameters {
-      help_center_id: Parameters.HelpCenterId;
-    }
-    export type RequestBody = Components.Schemas.UploadPolicyRequestDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.SignedPostPolicyDto;
     }
   }
   namespace GetHelpCenter {
@@ -4481,14 +4470,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
   /**
-   * getFileUploadPolicy - Generate a signed url to upload a file based on the declared policy
-   */
-  'getFileUploadPolicy'(
-    parameters?: Parameters<Paths.GetFileUploadPolicy.PathParameters> | null,
-    data?: Paths.GetFileUploadPolicy.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetFileUploadPolicy.Responses.$201>
-  /**
    * getAttachmentUploadPolicy - Generate a signed url to upload a file based on the declared policy
    */
   'getAttachmentUploadPolicy'(
@@ -5466,16 +5447,6 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/attachments']: {
-    /**
-     * getFileUploadPolicy - Generate a signed url to upload a file based on the declared policy
-     */
-    'post'(
-      parameters?: Parameters<Paths.GetFileUploadPolicy.PathParameters> | null,
-      data?: Paths.GetFileUploadPolicy.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetFileUploadPolicy.Responses.$201>
   }
   ['/api/help-center/attachments']: {
     /**

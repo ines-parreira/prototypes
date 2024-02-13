@@ -63,6 +63,7 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     brandLogoUrl: null,
     primaryColor: '',
     primaryFontFamily: '',
+    deactivated: true,
 }
 const mockedUseHelpCenterWizardHook = {
     helpCenter: defaultHelpCenter,

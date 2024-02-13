@@ -2610,43 +2610,6 @@
                 "tags": ["auth"]
             }
         },
-        "/api/help-center/help-centers/{help_center_id}/attachments": {
-            "post": {
-                "operationId": "getFileUploadPolicy",
-                "summary": "Generate a signed url to upload a file based on the declared policy",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UploadPolicyRequestDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SignedPostPolicyDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["attachment"]
-            }
-        },
         "/api/help-center/attachments": {
             "post": {
                 "operationId": "getAttachmentUploadPolicy",
@@ -4249,7 +4212,7 @@
             "HelpCenterWizardDto": {
                 "type": "object",
                 "properties": {
-                    "step_name": {"type": "string", "example": "Automation"},
+                    "step_name": {"type": "string", "example": "automate"},
                     "step_data": {
                         "nullable": true,
                         "allOf": [
@@ -4357,6 +4320,11 @@
                         "allOf": [
                             {"$ref": "#/components/schemas/HelpCenterWizardDto"}
                         ]
+                    },
+                    "deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the help center is deactivated.",
+                        "example": false
                     },
                     "account_id": {"type": "number"}
                 },
@@ -5102,14 +5070,14 @@
                             {"$ref": "#/components/schemas/HelpCenterWizardDto"}
                         ]
                     },
-                    "powered_by_deactivated": {
-                        "type": "boolean",
-                        "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
-                        "example": false
-                    },
                     "deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if the help center is deactivated.",
+                        "example": false
+                    },
+                    "powered_by_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
                         "example": false
                     },
                     "primary_font_family": {"type": "string", "nullable": true}
@@ -7043,23 +7011,6 @@
                 },
                 "required": ["access_token", "token_type"]
             },
-            "UploadPolicyRequestDto": {
-                "type": "object",
-                "properties": {
-                    "filename": {"type": "string"},
-                    "size": {"type": "number", "minimum": 1},
-                    "mimetype": {"type": "string"}
-                },
-                "required": ["filename", "size", "mimetype"]
-            },
-            "SignedPostPolicyDto": {
-                "type": "object",
-                "properties": {
-                    "url": {"type": "string"},
-                    "fields": {"type": "object"}
-                },
-                "required": ["url", "fields"]
-            },
             "AttachmentFileDto": {
                 "type": "object",
                 "properties": {
@@ -7108,6 +7059,14 @@
                     }
                 },
                 "required": ["file", "channel"]
+            },
+            "SignedPostPolicyDto": {
+                "type": "object",
+                "properties": {
+                    "url": {"type": "string"},
+                    "fields": {"type": "object"}
+                },
+                "required": ["url", "fields"]
             },
             "CreateSubjectLinesDto": {
                 "type": "object",

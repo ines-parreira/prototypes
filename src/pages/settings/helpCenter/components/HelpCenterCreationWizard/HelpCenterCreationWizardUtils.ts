@@ -94,6 +94,9 @@ export const mapApiHelpCenterToUIHelpCenter = (
         brandLogoUrl: helpCenter?.brand_logo_url || null,
         primaryColor: helpCenter?.primary_color || '',
         primaryFontFamily: helpCenter?.primary_font_family || '',
+        deactivated: helpCenter
+            ? helpCenter.deactivated_datetime === null
+            : true, // when no help center we mark it as unpublished by default
     }
 }
 
@@ -119,6 +122,7 @@ export const mapUIHelpCenterToApiHelpCenter = (
         primary_color: data.primaryColor,
         primary_font_family: data.primaryFontFamily,
         self_service_deactivated: !data.orderManagementEnabled,
+        deactivated: data.deactivated,
     }
 
     Object.keys(result).forEach((key) => {

@@ -46,6 +46,7 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     brandLogoUrl: '',
     primaryColor: '#4A8DF9',
     primaryFontFamily: 'Inter',
+    deactivated: true, // Unpublish help center by default
 }
 
 type SuccessModalParams = {
