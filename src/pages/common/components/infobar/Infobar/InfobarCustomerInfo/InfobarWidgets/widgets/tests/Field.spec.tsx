@@ -207,4 +207,21 @@ describe('Field', () => {
             actions.findIndex(({type}: Action) => type === stopEditAction.type)
         )
     })
+
+    it('should hide edit form and dispatch stop widget on click outside of the popover', async () => {
+        const store = mockStore(defaultState)
+        const {getByText, queryByTestId, container} = render(
+            <Provider store={store}>
+                <Field {...defaultProps} isEditing />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
+        fireEvent.click(container)
+
+        await waitFor(() =>
+            expect(queryByTestId(FIELD_EDIT_TEST_ID)).not.toBeInTheDocument()
+        )
+        expect(store.getActions()).toContainEqual(stopWidgetEdition())
+    })
 })

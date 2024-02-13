@@ -65,6 +65,7 @@ export default function Field({
 
     const handlePopoverToggle = () => {
         if (isPopoverOpen) {
+            setIsPopoverOpen(false)
             dispatch(stopWidgetEdition())
         }
     }
