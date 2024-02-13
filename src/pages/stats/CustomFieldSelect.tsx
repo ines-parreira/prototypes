@@ -6,7 +6,7 @@ import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {ListParams} from 'models/customField/types'
+import {CustomField, ListParams} from 'models/customField/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
@@ -25,6 +25,10 @@ const activeParams: ListParams = {
     object_type: 'Ticket',
 }
 
+export const selectDropdownTextFields = (field: CustomField) =>
+    field.definition.data_type === 'text' &&
+    field.definition.input_settings.input_type === 'dropdown'
+
 export const CustomFieldSelect = () => {
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const dispatch = useAppDispatch()
@@ -34,22 +38,23 @@ export const CustomFieldSelect = () => {
 
     const {data: {data: activeFields = []} = {}, isLoading} =
         useCustomFieldDefinitions(activeParams)
+    const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
 
-    const selectedField = activeFields.find(
+    const selectedField = activeDropdownFields.find(
         (field) => field.id === selectedCustomField.id
     )
 
     useEffect(() => {
-        if (activeFields[0] !== undefined) {
+        if (!selectedField && activeDropdownFields[0] !== undefined) {
             dispatch(
                 setSelectedCustomField({
-                    id: activeFields[0].id,
-                    label: activeFields[0].label,
+                    id: activeDropdownFields[0].id,
+                    label: activeDropdownFields[0].label,
                     isLoading,
                 })
             )
         }
-    }, [activeFields, isLoading, dispatch])
+    }, [activeDropdownFields, isLoading, dispatch, selectedField])
 
     return isLoading ? (
         <Skeleton inline width={160} />
@@ -73,7 +78,7 @@ export const CustomFieldSelect = () => {
                 target={buttonRef}
                 value={selectedCustomField.id}
             >
-                {activeFields.map((field) => (
+                {activeDropdownFields.map((field) => (
                     <DropdownItem
                         key={field.id}
                         className={classnames(css.dropdownItem)}

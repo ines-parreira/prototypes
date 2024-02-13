@@ -13,6 +13,7 @@ import {CustomField} from 'models/customField/types'
 import {
     CustomFieldSelect,
     SELECT_FIELD_LABEL,
+    selectDropdownTextFields,
     TOOLTIP_CONTENT,
 } from 'pages/stats/CustomFieldSelect'
 import {RootState} from 'state/types'
@@ -35,6 +36,8 @@ describe('<CustomFieldSelect />', () => {
         },
     } as unknown as RootState
 
+    const dropdownField = ticketFieldDefinitions[1]
+
     useCustomFieldDefinitionsMock.mockReturnValue({
         data: {data: ticketFieldDefinitions},
         isLoading: false,
@@ -56,8 +59,8 @@ describe('<CustomFieldSelect />', () => {
 
         expect(store.getActions()).toContainEqual(
             setSelectedCustomField({
-                id: ticketFieldDefinitions[0].id,
-                label: ticketFieldDefinitions[0].label,
+                id: dropdownField.id,
+                label: dropdownField.label,
                 isLoading: true,
             })
         )
@@ -80,8 +83,8 @@ describe('<CustomFieldSelect />', () => {
 
         expect(store.getActions()).toContainEqual(
             setSelectedCustomField({
-                id: ticketFieldDefinitions[0].id,
-                label: ticketFieldDefinitions[0].label,
+                id: dropdownField.id,
+                label: dropdownField.label,
                 isLoading: false,
             })
         )
@@ -91,7 +94,7 @@ describe('<CustomFieldSelect />', () => {
     it.each([{data: undefined}, undefined])(
         'should render if empty response %#',
         (response) => {
-            const selectedCustomFieldId = ticketFieldDefinitions[0].id
+            const selectedCustomFieldId = dropdownField.id
             const state = {
                 ui: {
                     [ticketInsightsSlice.name]: {
@@ -115,7 +118,7 @@ describe('<CustomFieldSelect />', () => {
     )
 
     it('should render Button with currently selected field Label', () => {
-        const selectedCustomFieldId = ticketFieldDefinitions[0].id
+        const selectedCustomFieldId = dropdownField.id
         const state = {
             ui: {
                 [ticketInsightsSlice.name]: {
@@ -134,12 +137,10 @@ describe('<CustomFieldSelect />', () => {
             </Provider>
         )
 
-        expect(
-            screen.getByText(ticketFieldDefinitions[0].label)
-        ).toBeInTheDocument()
+        expect(screen.getByText(dropdownField.label)).toBeInTheDocument()
     })
 
-    it('should list all available Custom Fields and dispatch selection', () => {
+    it('should list all available Dropdown-Text Custom Fields and dispatch selection', () => {
         const state = {
             ui: {
                 [ticketInsightsSlice.name]: initialState,
@@ -161,9 +162,11 @@ describe('<CustomFieldSelect />', () => {
             userEvent.click(screen.getByRole('button'))
         })
 
-        ticketFieldDefinitions.forEach((field) => {
-            expect(screen.getByText(field.label)).toBeInTheDocument()
-        })
+        ticketFieldDefinitions
+            .filter(selectDropdownTextFields)
+            .forEach((field) => {
+                expect(screen.getByText(field.label)).toBeInTheDocument()
+            })
 
         act(() => {
             userEvent.click(
