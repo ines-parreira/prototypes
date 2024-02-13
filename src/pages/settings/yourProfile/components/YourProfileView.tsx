@@ -24,8 +24,6 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {Theme, useSavedTheme, useSetTheme, withTheme} from 'theme'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -75,7 +73,6 @@ type State = {
     }
     password_confirmation?: string
     timezone: string
-    hasNewThemes?: boolean
 }
 
 export class YourProfileView extends Component<Props, State> {
@@ -95,10 +92,6 @@ export class YourProfileView extends Component<Props, State> {
                 isLoading: false,
                 preferences: props.preferences.get('data'),
                 hasChangedEmail: false,
-                hasNewThemes: getLDClient().variation(
-                    FeatureFlagKey.NewThemes,
-                    false
-                ),
             },
             this._getForm(props)
         )
@@ -202,23 +195,8 @@ export class YourProfileView extends Component<Props, State> {
         this.props.setTheme(theme)
     }
 
-    async componentDidMount() {
-        await getLDClient().waitUntilReady()
-        this.setState({
-            hasNewThemes: getLDClient().variation(
-                FeatureFlagKey.NewThemes,
-                false
-            ),
-        })
-    }
-
     render() {
-        const {
-            isLoading,
-            hasChangedEmail,
-            password_confirmation,
-            hasNewThemes,
-        } = this.state
+        const {isLoading, hasChangedEmail, password_confirmation} = this.state
 
         return (
             <div className="full-width">
@@ -461,27 +439,15 @@ export class YourProfileView extends Component<Props, State> {
                                 Account preferences
                             </div>
                             <div className={settingsCss.section}>
-                                {hasNewThemes && (
-                                    <>
-                                        <div
-                                            className={
-                                                settingsCss.headingSubsection
-                                            }
-                                        >
-                                            Theme
-                                        </div>
-                                        <div className={settingsCss.section}>
-                                            <ThemeList
-                                                savedTheme={
-                                                    this.props.savedTheme
-                                                }
-                                                onChangeTheme={
-                                                    this.onChangeTheme
-                                                }
-                                            />
-                                        </div>
-                                    </>
-                                )}
+                                <div className={settingsCss.headingSubsection}>
+                                    Theme
+                                </div>
+                                <div className={settingsCss.section}>
+                                    <ThemeList
+                                        savedTheme={this.props.savedTheme}
+                                        onChangeTheme={this.onChangeTheme}
+                                    />
+                                </div>
                                 <div className={settingsCss.headingSubsection}>
                                     Macro display
                                 </div>

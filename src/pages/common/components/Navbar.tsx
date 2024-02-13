@@ -516,48 +516,40 @@ export class Navbar extends Component<Props, State> {
                                     />
                                 </div>
                                 <hr className={css.separator} />
-                                {!!flags?.[FeatureFlagKey.NewThemes] && (
-                                    <>
-                                        <div
-                                            onClick={() => {
-                                                this.setState({
-                                                    activeScreen: 'theme',
-                                                })
-                                            }}
-                                            className={classnames(
-                                                css['dropdown-item-user-menu'],
-                                                css.wrapper
-                                            )}
-                                        >
-                                            <DropdownItemLabel
-                                                className={css.submenu}
-                                                suffix={
-                                                    <i
-                                                        className={classnames(
-                                                            'material-icons',
-                                                            css[
-                                                                'sub-menu-chevron'
-                                                            ]
-                                                        )}
-                                                    >
-                                                        chevron_right
-                                                    </i>
-                                                }
+                                <div
+                                    onClick={() => {
+                                        this.setState({
+                                            activeScreen: 'theme',
+                                        })
+                                    }}
+                                    className={classnames(
+                                        css['dropdown-item-user-menu'],
+                                        css.wrapper
+                                    )}
+                                >
+                                    <DropdownItemLabel
+                                        className={css.submenu}
+                                        suffix={
+                                            <i
+                                                className={classnames(
+                                                    'material-icons',
+                                                    css['sub-menu-chevron']
+                                                )}
                                             >
-                                                <span className={css.label}>
-                                                    Theme:
-                                                </span>
-                                                <span className={css.value}>
-                                                    {Themes[savedTheme]
-                                                        .settingsLabel ??
-                                                        Themes[savedTheme]
-                                                            .label}
-                                                </span>
-                                            </DropdownItemLabel>
-                                        </div>
-                                        <hr className={css.separator} />
-                                    </>
-                                )}
+                                                chevron_right
+                                            </i>
+                                        }
+                                    >
+                                        <span className={css.label}>
+                                            Theme:
+                                        </span>
+                                        <span className={css.value}>
+                                            {Themes[savedTheme].settingsLabel ??
+                                                Themes[savedTheme].label}
+                                        </span>
+                                    </DropdownItemLabel>
+                                </div>
+                                <hr className={css.separator} />
                                 <DropdownBody>
                                     <NavLink
                                         to="/app/settings/profile"

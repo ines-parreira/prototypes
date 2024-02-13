@@ -67,7 +67,6 @@ export enum FeatureFlagKey {
     NavbarImprovements = 'navbar-improvements',
     NewAutomationAddon = 'new-automation-add-on',
     NewBillingInterface = 'new-billing-interface',
-    NewThemes = 'new-themes',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',

@@ -11,7 +11,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
 import {Theme} from 'theme/types'
-import {getLDClient} from 'utils/launchDarkly'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -31,10 +30,6 @@ jest.mock('moment-timezone', () => {
     }
 })
 
-jest.mock('utils/launchDarkly')
-const variationMock = getLDClient().variation as jest.Mock
-;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
-
 jest.mock('pages/common/components/UnsavedChangesPrompt', () => () => null)
 
 const defaultState = {}
@@ -45,7 +40,6 @@ describe('YourProfileView', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         global.Date.now = jest.fn(() => 1587000000000)
-        variationMock.mockImplementation(() => true)
         Object.defineProperty(window, 'matchMedia', {
             value: jest.fn(() => {
                 return {
@@ -61,19 +55,15 @@ describe('YourProfileView', () => {
     })
 
     describe('render', () => {
-        it.each([true, false])(
-            'should render current user profile form',
-            (hasNewFeatureActive) => {
-                variationMock.mockImplementation(() => hasNewFeatureActive)
-                const {container} = render(
-                    <Provider store={mockedStore(defaultState)}>
-                        <YourProfileView {...minProps} />
-                    </Provider>
-                )
+        it('should render current user profile form', () => {
+            const {container} = render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView {...minProps} />
+                </Provider>
+            )
 
-                expect(container.firstChild).toMatchSnapshot()
-            }
-        )
+            expect(container.firstChild).toMatchSnapshot()
+        })
 
         it('should expand to show the phone number field when enabling call forwarding', async () => {
             const {findByText, getByLabelText} = render(
