@@ -8,19 +8,26 @@ import {
     within,
 } from '@testing-library/react'
 import _noop from 'lodash/noop'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {AGENT_ROLE, LITE_AGENT_ROLE} from 'config/user'
-import * as viewsActions from 'state/views/actions'
-import * as ticketsActions from 'state/tickets/actions'
-import {JobType} from 'models/job/types'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
-import history from 'pages/history'
-import {ticket} from 'fixtures/ticket'
-import {makeExecuteKeyboardAction} from 'utils/testing'
-import {user} from 'fixtures/users'
 import {UserRole} from 'config/types/user'
-import {TicketListActionsContainer} from '../TicketListActions'
+import {ticket} from 'fixtures/ticket'
+import {user} from 'fixtures/users'
+import {JobType} from 'models/job/types'
+import history from 'pages/history'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {createJob as createJobTicket} from 'state/tickets/actions'
+import {
+    createJob as createJobView,
+    fieldEnumSearch,
+    updateSelectedItemsIds,
+} from 'state/views/actions'
+import {RootState, StoreState} from 'state/types'
+import {assumeMock, makeExecuteKeyboardAction} from 'utils/testing'
+
+import {TicketListActions} from '../TicketListActions'
 
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('state/views/actions')
@@ -28,50 +35,53 @@ jest.mock('state/tickets/actions')
 jest.mock('pages/history')
 jest.mock('common/segment')
 
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+const mockedCreateJobTicket = assumeMock(createJobTicket)
+const mockedCreateJobView = assumeMock(createJobView)
+const mockedFieldEnumSearch = assumeMock(fieldEnumSearch)
+const mockedUpdateSelectedItemsIds = assumeMock(updateSelectedItemsIds)
+
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
 >
-const viewsActionsMock = viewsActions as jest.Mocked<typeof viewsActions>
-const ticketsActionsMock = ticketsActions as jest.Mocked<typeof ticketsActions>
 const shortcutEventMock = {
     preventDefault: jest.fn(),
 } as unknown as jest.Mocked<Event>
 const historyMock = history as jest.Mocked<typeof history>
-const fieldEnumSearchCancellableMock = jest.fn()
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
+const mockStore = configureMockStore()
+
 describe('TicketListActions component', () => {
-    const minProps: ComponentProps<typeof TicketListActionsContainer> = {
+    const state = {
+        agents: fromJS({all: []}),
         currentUser: fromJS(user),
-        areFiltersValid: true,
-        isActiveViewTrashView: false,
-        allViewItemsSelected: false,
-        activeView: fromJS({}) as Map<any, any>,
-        agents: fromJS([]) as List<any>,
-        teams: fromJS([]) as List<any>,
-        view: fromJS({}) as Map<any, any>,
+        teams: fromJS({all: []}),
+        tickets: fromJS({items: []}),
+        views: fromJS({
+            active: {id: 888, filters: ''},
+        }),
+    }
+    const store = mockStore(state)
+    const props = {
         selectedItemsIds: fromJS([]) as List<any>,
-        getViewCount: jest.fn(),
         openMacroModal: jest.fn(),
-        fieldEnumSearchCancellable: fieldEnumSearchCancellableMock,
-        cancelFieldEnumSearchCancellable: jest.fn(),
-        actions: {
-            views: viewsActionsMock,
-            tickets: ticketsActionsMock,
-        },
-        tickets: fromJS([]),
     }
 
-    const expectAllActionsToHaveEnabledState = (
+    const expectAllActionsToHaveEnabledState = async (
         {getAllByRole}: RenderResult,
         isEnabled: boolean
     ) => {
         const buttons = getAllByRole('button')
         for (const button of buttons) {
             if (isEnabled) {
-                expect(button.classList).not.toContain('isDisabled')
+                expect(button).toHaveAttribute('aria-disabled', 'false')
             } else {
-                expect(button.classList).toContain('isDisabled')
+                await waitFor(() =>
+                    expect(button).toHaveAttribute('aria-disabled', 'true')
+                )
             }
         }
     }
@@ -85,59 +95,72 @@ describe('TicketListActions component', () => {
         jest.resetAllMocks()
     })
 
-    it('should render enabled buttons when some tickets are selected', () => {
-        const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
-            />
+    it('should render enabled buttons when some tickets are selected', async () => {
+        const renderResult = render(
+            <Provider store={store}>
+                <TicketListActions
+                    {...props}
+                    selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
+                />
+            </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        await expectAllActionsToHaveEnabledState(renderResult, true)
     })
 
     it.each([
         [
             'nothing is selected',
+            {},
             {
-                ...minProps,
+                ...props,
                 selectedItemsIds: fromJS([]),
-                areFiltersValid: true,
             },
         ],
         [
             'filters are not valid',
+            {views: fromJS({active: {id: 111, filters: ", '')"}})},
             {
-                ...minProps,
+                ...props,
                 selectedItemsIds: fromJS([1, 2, 3, 4, 5]),
-                areFiltersValid: false,
             },
         ],
     ])(
         'should render disabled buttons when %s',
-        (
+        async (
             testName,
-            props: ComponentProps<typeof TicketListActionsContainer>
+            customState,
+            props: ComponentProps<typeof TicketListActions>
         ) => {
             const renderResult = render(
-                <TicketListActionsContainer {...props} />
+                <Provider store={mockStore({...state, ...customState})}>
+                    <TicketListActions {...props} />
+                </Provider>
             )
 
-            expectAllActionsToHaveEnabledState(renderResult, false)
+            await expectAllActionsToHaveEnabledState(renderResult, false)
         }
     )
 
     it('should render teams in assign team dropdown', () => {
         const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
-                teams={fromJS([
-                    {id: 4, name: 'foo'},
-                    {id: 5, name: 'bar'},
-                    {id: 6, name: 'baz'},
-                ])}
-            />
+            <Provider
+                store={mockStore({
+                    ...state,
+                    teams: fromJS({
+                        all: [
+                            {id: 4, name: 'foo'},
+                            {id: 5, name: 'bar'},
+                            {id: 6, name: 'baz'},
+                        ],
+                    }),
+                })}
+            >
+                <TicketListActions
+                    {...props}
+                    selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
+                />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -145,109 +168,144 @@ describe('TicketListActions component', () => {
 
     it('should render agents options in assign agent dropdown', () => {
         const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
-                agents={fromJS([
-                    {id: 4, name: 'foo'},
-                    {id: 5, name: 'bar'},
-                    {id: 6, name: 'baz'},
-                ])}
-            />
+            <Provider
+                store={mockStore({
+                    ...state,
+                    agents: fromJS({
+                        all: [
+                            {id: 4, name: 'foo'},
+                            {id: 5, name: 'bar'},
+                            {id: 6, name: 'baz'},
+                        ],
+                    }),
+                })}
+            >
+                <TicketListActions
+                    {...props}
+                    selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
+                />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the delete action for lead and admin agents', () => {
-        const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: UserRole.Agent},
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.Agent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} />
+            </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('Delete')).toBeInTheDocument()
     })
 
     it('should render the special actions for lead and admin agents', () => {
-        const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                isActiveViewTrashView={true}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: UserRole.Agent},
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.Agent},
+                    }),
+                    views: fromJS({
+                        active: {
+                            id: 888,
+                            filters: 'isNotEmpty(ticket.trashed_datetime)',
+                        },
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} />
+            </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('Delete forever')).toBeInTheDocument()
+        expect(getByText('Undelete')).toBeInTheDocument()
     })
 
     it('should not render the delete button for basic, lite and observer agents', () => {
-        const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: UserRole.LiteAgent},
+        const {queryByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.LiteAgent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} />
+            </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(queryByText('Delete')).not.toBeInTheDocument()
     })
 
     it('should render export tickets button for agents', () => {
-        const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([])}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: AGENT_ROLE},
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.Agent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([])} />
+            </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('Export tickets')).toBeInTheDocument()
     })
 
     it('should not render export tickets button for lite agents', () => {
-        const {container} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([])}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 2, name: LITE_AGENT_ROLE},
+        const {queryByText} = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.LiteAgent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([])} />
+            </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(queryByText('Export tickets')).not.toBeInTheDocument()
     })
 
     it('should send event to segment on click export tickets button', () => {
         const {getByText} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([])}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: AGENT_ROLE},
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.Agent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([])} />
+            </Provider>
         )
 
         fireEvent.click(getByText(/Export tickets/))
@@ -261,7 +319,11 @@ describe('TicketListActions component', () => {
     })
 
     it('should bind keyboard shortcuts on mount', () => {
-        render(<TicketListActionsContainer {...minProps} />)
+        render(
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
+        )
 
         expect(shortcutManagerMock.bind).toHaveBeenCalled()
         const [[component, actions]] = shortcutManagerMock.bind.mock.calls
@@ -270,7 +332,11 @@ describe('TicketListActions component', () => {
     })
 
     it('should unbind keyboard shortcuts on mount', () => {
-        const {unmount} = render(<TicketListActionsContainer {...minProps} />)
+        const {unmount} = render(
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
+        )
 
         unmount()
 
@@ -280,7 +346,11 @@ describe('TicketListActions component', () => {
     })
 
     it('should redirect to new ticket page on create ticket shortcut', () => {
-        render(<TicketListActionsContainer {...minProps} />)
+        render(
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
+        )
 
         hitShortcut('CREATE_TICKET')
 
@@ -290,16 +360,21 @@ describe('TicketListActions component', () => {
 
     it('should open agents dropdown on open assignee shortcut', () => {
         const {getByRole} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-                agents={fromJS([
-                    {
-                        id: 1,
-                        name: 'John Doe',
-                    },
-                ])}
-            />
+            <Provider
+                store={mockStore({
+                    ...state,
+                    agents: fromJS({
+                        all: [
+                            {
+                                id: 1,
+                                name: 'John Doe',
+                            },
+                        ],
+                    }),
+                })}
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         hitShortcut('OPEN_ASSIGNEE')
@@ -311,7 +386,9 @@ describe('TicketListActions component', () => {
 
     it('should not open agents dropdown on open assignee shortcut when no selected items', () => {
         const {queryByRole} = render(
-            <TicketListActionsContainer {...minProps} />
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
         )
 
         hitShortcut('OPEN_ASSIGNEE')
@@ -321,16 +398,21 @@ describe('TicketListActions component', () => {
 
     it('should close agents dropdown on hide popover shortcut', () => {
         const {queryByRole} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-                agents={fromJS([
-                    {
-                        id: 1,
-                        name: 'John Doe',
-                    },
-                ])}
-            />
+            <Provider
+                store={mockStore({
+                    ...state,
+                    agents: fromJS({
+                        all: [
+                            {
+                                id: 1,
+                                name: 'John Doe',
+                            },
+                        ],
+                    }),
+                })}
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         hitShortcut('OPEN_ASSIGNEE')
@@ -340,19 +422,20 @@ describe('TicketListActions component', () => {
     })
 
     it('should open tags dropdown on open tags shortcut', async () => {
-        fieldEnumSearchCancellableMock.mockResolvedValue(
-            fromJS([
-                {
-                    id: 1,
-                    name: 'refund',
-                },
-            ])
+        mockedFieldEnumSearch.mockReturnValue(() =>
+            Promise.resolve(
+                fromJS([
+                    {
+                        id: 1,
+                        name: 'refund',
+                    },
+                ]) as List<any>
+            )
         )
         const {getByRole} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-            />
+            <Provider store={store}>
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         hitShortcut('OPEN_TAGS')
@@ -366,7 +449,9 @@ describe('TicketListActions component', () => {
 
     it('should not open tags dropdown on open tags shortcut when no selected items', () => {
         const {queryByRole} = render(
-            <TicketListActionsContainer {...minProps} />
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
         )
 
         hitShortcut('OPEN_TAGS')
@@ -375,19 +460,20 @@ describe('TicketListActions component', () => {
     })
 
     it('should close tags dropdown on hide popover shortcut', async () => {
-        fieldEnumSearchCancellableMock.mockResolvedValue(
-            fromJS([
-                {
-                    id: 1,
-                    name: 'refund',
-                },
-            ])
+        mockedFieldEnumSearch.mockReturnValue(() =>
+            Promise.resolve(
+                fromJS([
+                    {
+                        id: 1,
+                        name: 'refund',
+                    },
+                ]) as List<any>
+            )
         )
         const {getByRole, queryByRole} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-            />
+            <Provider store={store}>
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         hitShortcut('OPEN_TAGS')
@@ -402,31 +488,33 @@ describe('TicketListActions component', () => {
 
     it('should call openMacroModal on open macro shortcut', () => {
         render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-            />
+            <Provider store={store}>
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         hitShortcut('OPEN_MACRO')
 
-        expect(minProps.openMacroModal).toHaveBeenLastCalledWith()
+        expect(props.openMacroModal).toHaveBeenLastCalledWith()
     })
 
     it('should not call openMacroModal on open macro shortcut when no selected items', () => {
-        render(<TicketListActionsContainer {...minProps} />)
+        render(
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
+        )
 
         hitShortcut('OPEN_MACRO')
 
-        expect(minProps.openMacroModal).not.toHaveBeenCalled()
+        expect(props.openMacroModal).not.toHaveBeenCalled()
     })
 
     it('should show delete confirmation on delete ticket shortcut', () => {
         const {queryByText} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-            />
+            <Provider store={store}>
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         hitShortcut('DELETE_TICKET')
@@ -436,7 +524,9 @@ describe('TicketListActions component', () => {
 
     it('should not show delete confirmation on delete ticket shortcut when no selected items', () => {
         const {queryByText} = render(
-            <TicketListActionsContainer {...minProps} />
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
         )
 
         hitShortcut('DELETE_TICKET')
@@ -446,15 +536,18 @@ describe('TicketListActions component', () => {
 
     it("should not show delete confirmation on delete ticket shortcut when the user's role is basic, lite or observer", () => {
         const {queryByText} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: UserRole.LiteAgent},
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.LiteAgent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         hitShortcut('DELETE_TICKET')
@@ -465,10 +558,11 @@ describe('TicketListActions component', () => {
     type CreateJobTestSuite = [
         JobType,
         string,
+        (state: StoreState) => StoreState,
         (
-            props: ComponentProps<typeof TicketListActionsContainer>
-        ) => ComponentProps<typeof TicketListActionsContainer>,
-        (renderResult: RenderResult) => Promise<void>,
+            props: ComponentProps<typeof TicketListActions>
+        ) => ComponentProps<typeof TicketListActions>,
+        (renderResult: RenderResult) => void | Promise<void>,
         {updates: any}
     ]
 
@@ -476,6 +570,7 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'close button click',
+            (state) => state,
             (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Close'))
@@ -485,6 +580,7 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'open dropdown item click',
+            (state) => state,
             (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Open'))
@@ -494,13 +590,14 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'assign to me button click',
-            (props) => ({
-                ...props,
+            (state) => ({
+                ...state,
                 currentUser: fromJS({
                     id: 1,
                     name: 'Foo',
                 }),
             }),
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Assign to me'))
             },
@@ -516,15 +613,18 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'assign to user dropdown item click',
-            (props) => ({
-                ...props,
-                agents: fromJS([
-                    {
-                        id: 1,
-                        name: 'John Doe',
-                    },
-                ]),
+            (state) => ({
+                ...state,
+                agents: fromJS({
+                    all: [
+                        {
+                            id: 1,
+                            name: 'John Doe',
+                        },
+                    ],
+                }),
             }),
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('John Doe'))
             },
@@ -540,6 +640,7 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'clear assignee dropdown item click',
+            (state) => state,
             (props) => props,
             ({getAllByText}) => {
                 fireEvent.click(getAllByText('Clear assignee')[0])
@@ -552,16 +653,19 @@ describe('TicketListActions component', () => {
         ],
         [
             JobType.UpdateTicket,
-            'assign to user dropdown item click',
-            (props) => ({
-                ...props,
-                teams: fromJS([
-                    {
-                        id: 1,
-                        name: 'Team Sports',
-                    },
-                ]),
+            'assign to team dropdown item click',
+            (state) => ({
+                ...state,
+                teams: fromJS({
+                    all: [
+                        {
+                            id: 1,
+                            name: 'Team Sports',
+                        },
+                    ],
+                }),
             }),
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Team Sports'))
             },
@@ -574,6 +678,7 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'clear team assignee dropdown item click',
+            (state) => state,
             (props) => props,
             ({getAllByText}) => {
                 fireEvent.click(getAllByText('Clear assignee')[1])
@@ -587,17 +692,8 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'add tag dropdown item click',
-            (props) => ({
-                ...props,
-                fieldEnumSearchCancellable: jest.fn().mockResolvedValue(
-                    fromJS([
-                        {
-                            id: 1,
-                            name: 'refund',
-                        },
-                    ])
-                ),
-            }),
+            (state) => state,
+            (props) => props,
             async ({getByText}) => {
                 fireEvent.click(getByText('Add tag'))
                 await waitFor(() => getByText('refund'))
@@ -612,10 +708,15 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'undelete dropdown item click',
-            (props) => ({
-                ...props,
-                isActiveViewTrashView: true,
+            (state) => ({
+                ...state,
+                views: fromJS({
+                    active: (state.views.get('active') as Map<any, any>).merge({
+                        filters: 'isNotEmpty(ticket.trashed_datetime)',
+                    }),
+                }),
             }),
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Undelete'))
             },
@@ -628,10 +729,15 @@ describe('TicketListActions component', () => {
         [
             JobType.DeleteTicket,
             'delete forever dropdown item click',
-            (props) => ({
-                ...props,
-                isActiveViewTrashView: true,
+            (state) => ({
+                ...state,
+                views: fromJS({
+                    active: (state.views.get('active') as Map<any, any>).merge({
+                        filters: 'isNotEmpty(ticket.trashed_datetime)',
+                    }),
+                }),
             }),
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Delete forever'))
                 fireEvent.click(getByText('Confirm'))
@@ -641,10 +747,8 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'delete dropdown item click',
-            (props) => ({
-                ...props,
-                isActiveViewTrashView: false,
-            }),
+            (state) => state,
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Delete'))
                 fireEvent.click(getByText('Confirm'))
@@ -658,6 +762,7 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'open ticket shortcut',
+            (state) => state,
             (props) => props,
             () => {
                 hitShortcut('OPEN_TICKET')
@@ -669,6 +774,7 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'close ticket shortcut',
+            (state) => state,
             (props) => props,
             () => {
                 hitShortcut('CLOSE_TICKET')
@@ -680,17 +786,19 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'mark as read dropdown item click',
-            (props) => ({
-                ...props,
-                selectedItemsIds: fromJS([1]),
-                tickets: fromJS([
-                    {
-                        ...ticket,
-                        id: 1,
-                        is_unread: true,
-                    },
-                ]),
+            (state) => ({
+                ...state,
+                tickets: fromJS({
+                    items: [
+                        {
+                            ...ticket,
+                            id: 1,
+                            is_unread: true,
+                        },
+                    ],
+                }),
             }),
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Mark as read'))
             },
@@ -703,17 +811,19 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'mark as unread dropdown item click',
-            (props) => ({
-                ...props,
-                selectedItemsIds: fromJS([1]),
-                tickets: fromJS([
-                    {
-                        ...ticket,
-                        id: 1,
-                        is_unread: false,
-                    },
-                ]),
+            (state) => ({
+                ...state,
+                tickets: fromJS({
+                    items: [
+                        {
+                            ...ticket,
+                            id: 1,
+                            is_unread: false,
+                        },
+                    ],
+                }),
             }),
+            (props) => props,
             ({getByText}) => {
                 fireEvent.click(getByText('Mark as unread'))
             },
@@ -726,17 +836,19 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'mark tickets read shortcut',
-            (props) => ({
-                ...props,
-                selectedItemsIds: fromJS([1]),
-                tickets: fromJS([
-                    {
-                        ...ticket,
-                        id: 1,
-                        is_unread: true,
-                    },
-                ]),
+            (state) => ({
+                ...state,
+                tickets: fromJS({
+                    items: [
+                        {
+                            ...ticket,
+                            id: 1,
+                            is_unread: true,
+                        },
+                    ],
+                }),
             }),
+            (props) => props,
             () => {
                 hitShortcut('MARK_TICKET_READ')
             },
@@ -749,17 +861,19 @@ describe('TicketListActions component', () => {
         [
             JobType.UpdateTicket,
             'mark tickets unread shortcut',
-            (props) => ({
-                ...props,
-                selectedItemsIds: fromJS([1]),
-                tickets: fromJS([
-                    {
-                        ...ticket,
-                        id: 1,
-                        is_unread: false,
-                    },
-                ]),
+            (state) => ({
+                ...state,
+                tickets: fromJS({
+                    items: [
+                        {
+                            ...ticket,
+                            id: 1,
+                            is_unread: false,
+                        },
+                    ],
+                }),
             }),
+            (props) => props,
             () => {
                 hitShortcut('MARK_TICKET_UNREAD')
             },
@@ -771,117 +885,169 @@ describe('TicketListActions component', () => {
         ],
     ] as CreateJobTestSuite[])(
         'create %s job on %s',
-        (jobType, suiteName, getTestProps, testActions, jobParams) => {
-            const suiteProps = {
-                ...minProps,
+        (
+            jobType,
+            suiteName,
+            getState,
+            getTestProps,
+            testActions,
+            jobParams
+        ) => {
+            const suiteProps = getTestProps({
+                ...props,
                 selectedItemsIds: fromJS([1]),
-            }
+            })
+            const store = mockStore(getState(state as RootState))
+
+            beforeEach(() => {
+                mockedFieldEnumSearch.mockReturnValue(() =>
+                    Promise.resolve(
+                        fromJS([
+                            {
+                                id: 1,
+                                name: 'refund',
+                            },
+                        ]) as List<any>
+                    )
+                )
+            })
 
             it(`should create ${jobType} ticket job`, async () => {
-                const props = getTestProps(suiteProps)
                 const renderResult = render(
-                    <TicketListActionsContainer {...props} />
+                    <Provider store={store}>
+                        <TicketListActions {...suiteProps} />
+                    </Provider>
                 )
 
                 await testActions(renderResult)
 
-                expect(ticketsActionsMock.createJob).toHaveBeenLastCalledWith(
-                    props.selectedItemsIds,
+                expect(mockedCreateJobTicket).toHaveBeenLastCalledWith(
+                    suiteProps.selectedItemsIds,
                     jobType,
                     jobParams
                 )
             })
 
             it(`should create ${jobType} view job when all view items are selected`, async () => {
-                const props = getTestProps({
-                    ...suiteProps,
-                    allViewItemsSelected: true,
+                const newState = getState({
+                    ...(state as RootState),
+                    views: fromJS({
+                        active: (
+                            (state as RootState).views.get('active') as Map<
+                                any,
+                                any
+                            >
+                        ).merge({
+                            allItemsSelected: true,
+                        }),
+                    }),
                 })
+
                 const renderResult = render(
-                    <TicketListActionsContainer {...props} />
+                    <Provider store={mockStore(newState)}>
+                        <TicketListActions {...suiteProps} />
+                    </Provider>
                 )
 
                 await testActions(renderResult)
 
-                expect(viewsActionsMock.createJob).toHaveBeenLastCalledWith(
-                    props.activeView,
+                expect(mockedCreateJobView).toHaveBeenLastCalledWith(
+                    newState.views.get('active'),
                     jobType,
                     jobParams
                 )
             })
 
             it('should disable buttons when job is being created', async () => {
-                ticketsActionsMock.createJob.mockImplementation((() => {
+                mockedCreateJobTicket.mockImplementation((() => {
                     return new Promise(_noop)
                 }) as any)
                 const renderResult = render(
-                    <TicketListActionsContainer {...getTestProps(suiteProps)} />
+                    <Provider store={store}>
+                        <TicketListActions {...suiteProps} />
+                    </Provider>
                 )
 
                 void testActions(renderResult)
 
                 await waitFor(() => {
-                    expectAllActionsToHaveEnabledState(renderResult, false)
+                    void expectAllActionsToHaveEnabledState(renderResult, false)
                 })
             })
 
             it('should enable buttons when job was created', async () => {
                 const renderResult = render(
-                    <TicketListActionsContainer {...getTestProps(suiteProps)} />
+                    <Provider store={store}>
+                        <TicketListActions {...suiteProps} />
+                    </Provider>
                 )
 
                 await testActions(renderResult)
 
                 await waitFor(() => {
-                    expectAllActionsToHaveEnabledState(renderResult, true)
+                    void expectAllActionsToHaveEnabledState(renderResult, true)
                 })
             })
 
             it('should deselect all items', async () => {
+                mockedCreateJobTicket.mockImplementation((() => {
+                    return new Promise(_noop)
+                }) as any)
+
                 const renderResult = render(
-                    <TicketListActionsContainer {...getTestProps(suiteProps)} />
+                    <Provider store={store}>
+                        <TicketListActions {...suiteProps} />
+                    </Provider>
                 )
 
                 await testActions(renderResult)
 
-                expect(
-                    viewsActions.updateSelectedItemsIds
-                ).toHaveBeenLastCalledWith(fromJS([]))
+                expect(mockedUpdateSelectedItemsIds).toHaveBeenLastCalledWith(
+                    fromJS([])
+                )
             })
         }
     )
 
     it('should call openMacroModal on Apply macro dropdown item click', () => {
-        const {getByText} = render(<TicketListActionsContainer {...minProps} />)
+        const {getByText} = render(
+            <Provider store={store}>
+                <TicketListActions {...props} />
+            </Provider>
+        )
 
         fireEvent.click(getByText('Apply macro'))
 
-        expect(minProps.openMacroModal).toHaveBeenLastCalledWith(
-            expect.anything()
-        )
+        expect(props.openMacroModal).toHaveBeenLastCalledWith(expect.anything())
     })
 
     describe('read and unread tickets selected', () => {
-        const props = {
-            ...minProps,
-            selectedItemsIds: fromJS([1, 2]),
-            tickets: fromJS([
-                {
-                    ...ticket,
-                    id: 1,
-                    is_unread: true,
-                },
-                {
-                    ...ticket,
-                    id: 2,
-                    is_unread: false,
-                },
-            ]),
+        const newState = {
+            ...state,
+            tickets: fromJS({
+                items: [
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: true,
+                    },
+                    {
+                        ...ticket,
+                        id: 2,
+                        is_unread: false,
+                    },
+                ],
+            }),
         }
 
         it('should render mark as read and mark as unread dropdown items', () => {
             const {queryByText} = render(
-                <TicketListActionsContainer {...props} />
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1, 2])}
+                    />
+                </Provider>
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -890,7 +1056,23 @@ describe('TicketListActions component', () => {
 
         it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
             const {queryByText} = render(
-                <TicketListActionsContainer {...props} allViewItemsSelected />
+                <Provider
+                    store={mockStore({
+                        ...newState,
+                        views: fromJS({
+                            active: {
+                                id: 888,
+                                allItemsSelected: true,
+                                filters: '',
+                            },
+                        }),
+                    })}
+                >
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1, 2])}
+                    />
+                </Provider>
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -898,40 +1080,60 @@ describe('TicketListActions component', () => {
         })
 
         it('should create a job on mark as read shortcut', () => {
-            render(<TicketListActionsContainer {...props} />)
+            render(
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1, 2])}
+                    />
+                </Provider>
+            )
 
             hitShortcut('MARK_TICKET_READ')
 
             expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
-            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+            expect(mockedCreateJobTicket).toHaveBeenCalled()
         })
 
         it('should create a job on mark as unread shortcut', () => {
-            render(<TicketListActionsContainer {...props} />)
+            render(
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1, 2])}
+                    />
+                </Provider>
+            )
 
             hitShortcut('MARK_TICKET_UNREAD')
 
             expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
-            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+            expect(mockedCreateJobTicket).toHaveBeenCalled()
         })
     })
 
     describe('only unread tickets selected', () => {
-        const props = {
-            ...minProps,
-            selectedItemsIds: fromJS([1]),
-            tickets: fromJS([
-                {
-                    ...ticket,
-                    id: 1,
-                    is_unread: true,
-                },
-            ]),
+        const newState = {
+            ...state,
+            tickets: fromJS({
+                items: [
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: true,
+                    },
+                ],
+            }),
         }
 
         it('should render mark as read dropdown item', () => {
             const {queryByText} = render(
-                <TicketListActionsContainer {...props} />
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -940,7 +1142,23 @@ describe('TicketListActions component', () => {
 
         it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
             const {queryByText} = render(
-                <TicketListActionsContainer {...props} allViewItemsSelected />
+                <Provider
+                    store={mockStore({
+                        ...newState,
+                        views: fromJS({
+                            active: {
+                                id: 888,
+                                allItemsSelected: true,
+                                filters: '',
+                            },
+                        }),
+                    })}
+                >
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -948,40 +1166,60 @@ describe('TicketListActions component', () => {
         })
 
         it('should create a job on mark as read shortcut', () => {
-            render(<TicketListActionsContainer {...props} />)
+            render(
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>
+            )
 
             hitShortcut('MARK_TICKET_READ')
 
             expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
-            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+            expect(mockedCreateJobTicket).toHaveBeenCalled()
         })
 
         it('should not create a job on mark as unread shortcut', () => {
-            render(<TicketListActionsContainer {...props} />)
+            render(
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>
+            )
 
             hitShortcut('MARK_TICKET_UNREAD')
 
             expect(shortcutEventMock.preventDefault).not.toHaveBeenCalled()
-            expect(ticketsActionsMock.createJob).not.toHaveBeenCalled()
+            expect(mockedCreateJobTicket).not.toHaveBeenCalled()
         })
     })
 
     describe('only read tickets selected', () => {
-        const props = {
-            ...minProps,
-            selectedItemsIds: fromJS([1]),
-            tickets: fromJS([
-                {
-                    ...ticket,
-                    id: 1,
-                    is_unread: false,
-                },
-            ]),
+        const newState = {
+            ...state,
+            tickets: fromJS({
+                items: [
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: false,
+                    },
+                ],
+            }),
         }
 
         it('should render mark as read dropdown item', () => {
             const {queryByText} = render(
-                <TicketListActionsContainer {...props} />
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>
             )
 
             expect(queryByText('Mark as read')).toBe(null)
@@ -990,7 +1228,20 @@ describe('TicketListActions component', () => {
 
         it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
             const {queryByText} = render(
-                <TicketListActionsContainer {...props} allViewItemsSelected />
+                <Provider
+                    store={mockStore({
+                        ...newState,
+                        views: fromJS({
+                            active: {
+                                id: 888,
+                                allItemsSelected: true,
+                                filters: '',
+                            },
+                        }),
+                    })}
+                >
+                    <TicketListActions {...props} />
+                </Provider>
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -998,37 +1249,53 @@ describe('TicketListActions component', () => {
         })
 
         it('should not create a job on mark as read shortcut', () => {
-            render(<TicketListActionsContainer {...props} />)
+            render(
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions {...props} />
+                </Provider>
+            )
 
             hitShortcut('MARK_TICKET_READ')
 
             expect(shortcutEventMock.preventDefault).not.toHaveBeenCalled()
-            expect(ticketsActionsMock.createJob).not.toHaveBeenCalled()
+            expect(mockedCreateJobTicket).not.toHaveBeenCalled()
         })
 
         it('should create a job on mark as unread shortcut', () => {
-            render(<TicketListActionsContainer {...props} />)
+            render(
+                <Provider store={mockStore(newState)}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>
+            )
 
             hitShortcut('MARK_TICKET_UNREAD')
 
             expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
-            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+            expect(mockedCreateJobTicket).toHaveBeenCalled()
         })
     })
 
     it('should render mark as read dropdown item when only unread tickets are selected', () => {
         const {queryByText} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-                tickets={fromJS([
-                    {
-                        ...ticket,
-                        id: 1,
-                        is_unread: true,
-                    },
-                ])}
-            />
+            <Provider
+                store={mockStore({
+                    ...state,
+                    tickets: fromJS({
+                        items: [
+                            {
+                                ...ticket,
+                                id: 1,
+                                is_unread: true,
+                            },
+                        ],
+                    }),
+                })}
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         expect(queryByText('Mark as read')).not.toBe(null)
@@ -1037,17 +1304,22 @@ describe('TicketListActions component', () => {
 
     it('should render mark as unread dropdown item when only read tickets are selected', () => {
         const {queryByText} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-                tickets={fromJS([
-                    {
-                        ...ticket,
-                        id: 1,
-                        is_unread: false,
-                    },
-                ])}
-            />
+            <Provider
+                store={mockStore({
+                    ...state,
+                    tickets: fromJS({
+                        items: [
+                            {
+                                ...ticket,
+                                id: 1,
+                                is_unread: false,
+                            },
+                        ],
+                    }),
+                })}
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         expect(queryByText('Mark as read')).toBe(null)
@@ -1055,17 +1327,22 @@ describe('TicketListActions component', () => {
     })
 
     it('should allow tag creation for lead and admin agents', async () => {
-        fieldEnumSearchCancellableMock.mockResolvedValue(fromJS([]))
+        mockedFieldEnumSearch.mockReturnValue(() =>
+            Promise.resolve(fromJS([]) as List<any>)
+        )
         const {getByText, getByPlaceholderText, findByText} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: UserRole.Agent},
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.Agent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         fireEvent.click(getByText('Add tag'))
@@ -1076,17 +1353,23 @@ describe('TicketListActions component', () => {
     })
 
     it('should prevent tag creation for low-level agents', async () => {
-        fieldEnumSearchCancellableMock.mockResolvedValue(fromJS([]))
+        mockedFieldEnumSearch.mockReturnValue(() =>
+            Promise.resolve(fromJS([]) as List<any>)
+        )
+
         const {getByText, getByPlaceholderText, findByText} = render(
-            <TicketListActionsContainer
-                {...minProps}
-                selectedItemsIds={fromJS([1])}
-                currentUser={fromJS({
-                    id: 1,
-                    name: 'Peter Parker',
-                    role: {id: 1, name: UserRole.BasicAgent},
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: {id: 1, name: UserRole.BasicAgent},
+                    }),
                 })}
-            />
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>
         )
 
         fireEvent.click(getByText('Add tag'))

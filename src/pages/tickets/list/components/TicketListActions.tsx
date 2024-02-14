@@ -1,15 +1,13 @@
 import React, {
+    MouseEvent,
     ReactElement,
     useCallback,
-    useEffect,
     useMemo,
     useState,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
-import {bindActionCreators} from 'redux'
 import {
     ButtonDropdown,
     DropdownItem,
@@ -21,52 +19,55 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 import _debounce from 'lodash/debounce'
-import _isUndefined from 'lodash/isUndefined'
+import {CancelToken} from 'axios'
 
 import {useAppNode} from 'appNode'
 import {SegmentEvent, logEvent} from 'common/segment'
-import shortcutManager from 'services/shortcutManager'
-import * as viewsActions from 'state/views/actions'
-import * as ticketsActions from 'state/tickets/actions'
-import * as viewsSelectors from 'state/views/selectors'
+import {UserRole} from 'config/types/user'
+import {AGENT_ROLE} from 'config/user'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import useShortcuts from 'hooks/useShortcuts'
+import {JobType} from 'models/job/types'
+
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconButton from 'pages/common/components/button/IconButton'
+import Group from 'pages/common/components/layout/Group'
+import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
+import history from 'pages/history'
+
+import {
+    createJob as createJobView,
+    fieldEnumSearch,
+    updateSelectedItemsIds,
+} from 'state/views/actions'
+import {createJob as createJobTicket} from 'state/tickets/actions'
+import {getTickets} from 'state/tickets/selectors'
+import {
+    areAllActiveViewItemsSelected,
+    areFiltersValid as getAreFiltersValid,
+    getActiveView,
+    isActiveViewTrashView as getIsActiveViewTrashView,
+    getViewCount,
+} from 'state/views/selectors'
 import {getAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
-import {RootState} from 'state/types'
-import {AGENT_ROLE} from 'config/user'
-import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
+
 import {hasRole} from 'utils'
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
-import Group from 'pages/common/components/layout/Group'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from 'pages/common/utils/withCancellableRequest'
-import history from 'pages/history'
-import {JobType} from 'models/job/types'
-import {getTickets} from 'state/tickets/selectors'
-import {UserRole} from 'config/types/user'
-import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './TicketListActions.less'
 
 const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
 
-type OwnProps = {
-    view: Map<any, any>
-    selectedItemsIds: List<number>
+type Props = {
     openMacroModal: () => void
+    selectedItemsIds: List<number>
     searchTagsDebounceDelay?: number
 }
-
-type Props = OwnProps &
-    ConnectedProps<typeof connector> &
-    CancellableRequestInjectedProps<
-        'fieldEnumSearchCancellable',
-        'cancelFieldEnumSearchCancellable',
-        typeof viewsActions.fieldEnumSearch
-    >
 
 enum ActionDropdown {
     Teams = 'teams',
@@ -76,22 +77,24 @@ enum ActionDropdown {
 }
 
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
-export const TicketListActionsContainer = ({
-    selectedItemsIds,
-    allViewItemsSelected,
-    actions,
-    activeView,
-    fieldEnumSearchCancellable,
+export const TicketListActions = ({
     openMacroModal,
-    teams,
-    agents,
-    getViewCount,
-    areFiltersValid,
-    currentUser,
-    isActiveViewTrashView,
     searchTagsDebounceDelay = 1000,
-    tickets,
+    selectedItemsIds,
 }: Props) => {
+    const dispatch = useAppDispatch()
+
+    const currentUser = useAppSelector((state) => state.currentUser)
+    const teams = useAppSelector(getTeams)
+    const agents = useAppSelector(getAgents)
+    const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
+    const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
+    const areFiltersValid = useAppSelector(getAreFiltersValid)
+    const activeView = useAppSelector(getActiveView)
+    const viewCount = useAppSelector(getViewCount(activeView.get('id')))
+
+    const tickets = useAppSelector(getTickets)
+
     const [openDropdown, setOpenDropdown] = useState<ActionDropdown | null>(
         null
     )
@@ -117,22 +120,19 @@ export const TicketListActionsContainer = ({
     }, [teams, teamsSearchQuery])
 
     const filteredAgents = useMemo(() => {
-        return agents.filter((agent) => {
+        return agents.filter((agent: Map<any, any>) => {
             const agentLabel =
-                (agent!.get('name') as string) ||
-                (agent!.get('email') as string)
+                (agent.get('name') as string) || (agent.get('email') as string)
             return agentLabel
                 .toLowerCase()
                 .includes(agentsSearchQuery.toLowerCase())
         }) as List<Map<any, any>>
     }, [agents, agentsSearchQuery])
 
-    const selectedCount = useMemo(() => {
-        return allViewItemsSelected
-            ? getViewCount(activeView.get('id'))
-            : selectedItemsIds.size
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [allViewItemsSelected, getViewCount, selectedItemsIds.size])
+    const selectedCount = useMemo(
+        () => (allViewItemsSelected ? viewCount : selectedItemsIds.size),
+        [allViewItemsSelected, viewCount, selectedItemsIds.size]
+    )
 
     const selectedTickets = useMemo<List<Map<any, any>>>(() => {
         return selectedItemsIds
@@ -180,11 +180,11 @@ export const TicketListActionsContainer = ({
         }
     }
 
-    const toggleTagsDropdown = () => {
+    const toggleTagsDropdown = async () => {
         const isOpen = toggleDropdown(ActionDropdown.Tags)
         if (isOpen) {
             const search = ''
-            queryTags(search)
+            await queryTags(search)
             setTagsSearchQuery(search)
         }
     }
@@ -198,26 +198,32 @@ export const TicketListActionsContainer = ({
         setTagsSearchQuery('')
     }
 
-    const searchTags = (search: string) => {
+    const searchTags = async (search: string) => {
         setIsLoadingTags(true)
         setTagsSearchQuery(search)
-        queryTagsOnSearch(search)
+        await queryTagsOnSearch(search)
     }
 
-    const queryTags = (search: string) => {
+    const [fieldEnumSearchCancellable] = useCancellableRequest(
+        (cancelToken: CancelToken) => {
+            return (field: Map<any, any>, search: string) =>
+                fieldEnumSearch(field, search, cancelToken)()
+        }
+    )
+
+    const queryTags = async (search: string) => {
         setIsLoadingTags(true)
 
         const field = fromJS({
             filter: {type: 'tag'},
         })
 
-        void fieldEnumSearchCancellable(field, search).then((data) => {
-            if (!data) {
-                return
-            }
-            setTags(data)
-            setIsLoadingTags(false)
-        })
+        const data = await fieldEnumSearchCancellable(field, search)
+        if (!data) {
+            return
+        }
+        setTags(data)
+        setIsLoadingTags(false)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,15 +237,16 @@ export const TicketListActionsContainer = ({
         jobParams: Record<string, unknown>
     ) => {
         setIsLaunchingJob(true)
-        const actionsToUse = allViewItemsSelected
-            ? actions.views
-            : actions.tickets
-        const actionsArgs = allViewItemsSelected ? activeView : selectedItemsIds
-
         try {
-            // eslint-disable-next-line @typescript-eslint/await-thenable
-            await actionsToUse.createJob(actionsArgs as any, jobType, jobParams)
-            actions.views.updateSelectedItemsIds(fromJS([]))
+            if (allViewItemsSelected) {
+                await dispatch(createJobView(activeView, jobType, jobParams))
+            } else {
+                await dispatch(
+                    createJobTicket(selectedItemsIds, jobType, jobParams)
+                )
+            }
+
+            dispatch(updateSelectedItemsIds(fromJS([])))
         } catch {
             // Don't raise an exception in the console
         } finally {
@@ -279,87 +286,84 @@ export const TicketListActionsContainer = ({
         void createJob(JobType.DeleteTicket, {})
     }
 
-    useEffect(() => {
-        shortcutManager.bind(SHORTCUT_MANAGER_COMPONENT_NAME, {
-            CREATE_TICKET: {
-                action: (e) => {
-                    e.preventDefault()
-                    history.push('/app/ticket/new')
-                },
+    const actions = {
+        CREATE_TICKET: {
+            action: (e: Event) => {
+                e.preventDefault()
+                history.push('/app/ticket/new')
             },
-            OPEN_TICKET: {
-                action: () => bulkUpdate('status', 'open'),
+        },
+        OPEN_TICKET: {
+            action: () => bulkUpdate('status', 'open'),
+        },
+        CLOSE_TICKET: {
+            action: () => bulkUpdate('status', 'closed'),
+        },
+        OPEN_ASSIGNEE: {
+            action: (e: Event) => {
+                if (!hasSelectedItems) {
+                    return
+                }
+                e.preventDefault()
+                toggleAgentsDropdown()
             },
-            CLOSE_TICKET: {
-                action: () => bulkUpdate('status', 'closed'),
+        },
+        OPEN_TAGS: {
+            action: async (e: Event) => {
+                if (!hasSelectedItems) {
+                    return
+                }
+                e.preventDefault()
+                await toggleTagsDropdown()
             },
-            OPEN_ASSIGNEE: {
-                action: (e) => {
-                    if (!hasSelectedItems) {
-                        return
-                    }
-                    e.preventDefault()
-                    toggleAgentsDropdown()
-                },
+        },
+        OPEN_MACRO: {
+            action: (e: Event) => {
+                if (!hasSelectedItems) {
+                    return
+                }
+                e.preventDefault()
+                openMacroModal()
             },
-            OPEN_TAGS: {
-                action: (e) => {
-                    if (!hasSelectedItems) {
-                        return
-                    }
-                    e.preventDefault()
-                    toggleTagsDropdown()
-                },
+        },
+        DELETE_TICKET: {
+            action: () => {
+                if (
+                    !hasSelectedItems ||
+                    !hasRole(currentUser, UserRole.Agent)
+                ) {
+                    return
+                }
+                toggleTrashConfirmation()
             },
-            OPEN_MACRO: {
-                action: (e) => {
-                    if (!hasSelectedItems) {
-                        return
-                    }
-                    e.preventDefault()
-                    openMacroModal()
-                },
+        },
+        HIDE_POPOVER: {
+            key: 'esc',
+            action: () => {
+                setOpenDropdown(null)
             },
-            DELETE_TICKET: {
-                action: () => {
-                    if (
-                        !hasSelectedItems ||
-                        !hasRole(currentUser, UserRole.Agent)
-                    ) {
-                        return
-                    }
-                    toggleTrashConfirmation()
-                },
+        },
+        MARK_TICKET_READ: {
+            action: (event: Event) => {
+                if (!isMarkAsReadActionAvailable) {
+                    return
+                }
+                event.preventDefault()
+                bulkUpdate('is_unread', false)
             },
-            HIDE_POPOVER: {
-                key: 'esc',
-                action: () => {
-                    setOpenDropdown(null)
-                },
+        },
+        MARK_TICKET_UNREAD: {
+            action: (event: Event) => {
+                if (!isMarkAsUnreadActionAvailable) {
+                    return
+                }
+                event.preventDefault()
+                bulkUpdate('is_unread', true)
             },
-            MARK_TICKET_READ: {
-                action: (event) => {
-                    if (!isMarkAsReadActionAvailable) {
-                        return
-                    }
-                    event.preventDefault()
-                    bulkUpdate('is_unread', false)
-                },
-            },
-            MARK_TICKET_UNREAD: {
-                action: (event) => {
-                    if (!isMarkAsUnreadActionAvailable) {
-                        return
-                    }
-                    event.preventDefault()
-                    bulkUpdate('is_unread', true)
-                },
-            },
-        })
-        return () => {
-            shortcutManager.unbind(SHORTCUT_MANAGER_COMPONENT_NAME)
-        }
-    })
+        },
+    }
+
+    useShortcuts(SHORTCUT_MANAGER_COMPONENT_NAME, actions)
 
     const renderTagsMenu = () => {
         if (isLoadingTags) {
@@ -415,10 +419,11 @@ export const TicketListActionsContainer = ({
         return options
     }
 
-    const toggleTrashConfirmation = (visible?: any) => {
-        const opens = !_isUndefined(visible)
-            ? visible
-            : openDropdown !== ActionDropdown.Trash
+    const toggleTrashConfirmation = (visible?: boolean | MouseEvent) => {
+        const opens =
+            visible !== undefined
+                ? !!visible
+                : openDropdown !== ActionDropdown.Trash
         setOpenDropdown(opens ? ActionDropdown.Trash : null)
         toggleDeleteConfirmation()
     }
@@ -800,32 +805,4 @@ export const TicketListActionsContainer = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => {
-        return {
-            currentUser: state.currentUser,
-            teams: getTeams(state),
-            agents: getAgents(state) as List<Map<any, any>>,
-            isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
-            allViewItemsSelected:
-                viewsSelectors.areAllActiveViewItemsSelected(state),
-            areFiltersValid: viewsSelectors.areFiltersValid(state),
-            activeView: viewsSelectors.getActiveView(state),
-            getViewCount: viewsSelectors.makeGetViewCount(state),
-            tickets: getTickets(state),
-        }
-    },
-    (dispatch) => {
-        return {
-            actions: {
-                views: bindActionCreators(viewsActions, dispatch),
-                tickets: bindActionCreators(ticketsActions, dispatch),
-            },
-        }
-    }
-)
-
-export default withCancellableRequest(
-    'fieldEnumSearchCancellable',
-    viewsActions.fieldEnumSearch
-)(connector(TicketListActionsContainer))
+export default TicketListActions
