@@ -1,8 +1,15 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {chain} from 'lodash'
 import {assumeMock} from 'utils/testing'
 import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {
+    ArticleTemplatesGroupedByCategoryFixture,
+    ArticleTemplatesListFixture,
+    ArticlesListFixture,
+} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
+import {findArticleByKey} from '../../HelpCenterCreationWizardUtils'
 
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/helpCenter/queries')
@@ -12,27 +19,12 @@ const mockedUseGetHelpCenterArticleList = assumeMock(
     useGetHelpCenterArticleList
 )
 
-const articleTemplates = [
-    {
-        key: 'howToCancelOrder',
-        title: 'How do I cancel my order?',
-        category: 'orderManagement',
-        html_content: 'content',
-    },
-    {
-        key: 'howToReturn',
-        title: 'How do I make a return?',
-        category: 'returnsAndRefunds',
-        html_content: 'content',
-    },
-]
-
 describe('useGetHelpCenterArticles', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedUseGetArticleTemplates.mockImplementation(() => {
             return {
-                data: articleTemplates,
+                data: ArticleTemplatesListFixture,
                 isLoading: false,
             } as unknown as ReturnType<typeof useGetArticleTemplates>
         })
@@ -49,25 +41,9 @@ describe('useGetHelpCenterArticles', () => {
         expect(mockedUseGetArticleTemplates).toHaveBeenCalled()
         expect(mockedUseGetHelpCenterArticleList).toHaveBeenCalled()
 
-        expect(result.current.articles).toMatchObject({
-            orderManagement: [
-                {
-                    key: 'howToCancelOrder',
-                    title: 'How do I cancel my order?',
-                    category: 'orderManagement',
-                    content: 'content',
-                    isSelected: true,
-                },
-            ],
-            returnsAndRefunds: [
-                {
-                    key: 'howToReturn',
-                    title: 'How do I make a return?',
-                    category: 'returnsAndRefunds',
-                    content: 'content',
-                },
-            ],
-        })
+        expect(result.current.articles).toMatchObject(
+            ArticleTemplatesGroupedByCategoryFixture
+        )
         expect(result.current.isLoading).toBeFalsy()
     })
 
@@ -91,54 +67,34 @@ describe('useGetHelpCenterArticles', () => {
 
     it('should select the first template article by default when no articles created', () => {
         const {result} = renderHook(() => useGetHelpCenterArticles(1, 'en-US'))
-        expect(
-            result.current.articles['orderManagement'][0].isSelected
-        ).toBeTruthy()
+        const resultArray = chain(result.current.articles)
+            .values()
+            .flatten()
+            .value()
+        expect(resultArray[0].isSelected).toBeTruthy()
     })
 
     it('should return article data when there are articles created based on a template', () => {
         mockedUseGetHelpCenterArticleList.mockImplementation(() => {
             return {
                 data: {
-                    data: [
-                        {
-                            id: 1,
-                            template_key: 'howToReturn',
-                            translation: {
-                                title: 'How do I make a return from my account?',
-                                content: 'Updated content',
-                                locale: 'en-US',
-                            },
-                            available_languages: ['en-US'],
-                        },
-                    ],
+                    data: ArticlesListFixture,
                 },
                 isLoading: false,
             } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
         })
 
         const {result} = renderHook(() => useGetHelpCenterArticles(1, 'en-US'))
-
-        expect(result.current.articles).toMatchObject({
-            orderManagement: [
-                {
-                    key: 'howToCancelOrder',
-                    title: 'How do I cancel my order?',
-                    category: 'orderManagement',
-                    content: 'content',
-                },
-            ],
-            returnsAndRefunds: [
-                {
-                    key: 'howToReturn',
-                    title: 'How do I make a return from my account?',
-                    category: 'returnsAndRefunds',
-                    content: 'Updated content',
-                    isSelected: true,
-                },
-            ],
+        const articleByKey = findArticleByKey(
+            result.current.articles,
+            'shippingPolicy'
+        )
+        expect(articleByKey).toMatchObject({
+            id: 1,
+            isSelected: true,
+            title: 'Article 1',
+            category: 'shippingAndDelivery',
         })
-        expect(result.current.isLoading).toBeFalsy()
     })
 
     it('should return only articles created from a template and ignore the rest', () => {
@@ -148,7 +104,7 @@ describe('useGetHelpCenterArticles', () => {
                     data: [
                         {
                             id: 1,
-                            template_key: 'howToReturn',
+                            template_key: 'customTemplateKey',
                             translation: {
                                 title: 'How do I make a return from my account?',
                                 content: 'Updated content',
@@ -173,26 +129,9 @@ describe('useGetHelpCenterArticles', () => {
 
         const {result} = renderHook(() => useGetHelpCenterArticles(1, 'en-US'))
 
-        expect(result.current.articles).toMatchObject({
-            orderManagement: [
-                {
-                    key: 'howToCancelOrder',
-                    title: 'How do I cancel my order?',
-                    category: 'orderManagement',
-                    content: 'content',
-                    isSelected: false,
-                },
-            ],
-            returnsAndRefunds: [
-                {
-                    key: 'howToReturn',
-                    title: 'How do I make a return from my account?',
-                    category: 'returnsAndRefunds',
-                    content: 'Updated content',
-                    isSelected: true,
-                },
-            ],
-        })
+        expect(result.current.articles).toMatchObject(
+            ArticleTemplatesGroupedByCategoryFixture
+        )
         expect(result.current.isLoading).toBeFalsy()
     })
 })

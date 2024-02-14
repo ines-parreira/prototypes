@@ -1,19 +1,22 @@
 import {
-    ArticleTemplate,
-    ArticleWithLocalTranslationAndRating,
     HelpCenter,
     HelpCenterArticleItem,
-    HelpCenterCreationWizardStep,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {
-    HELP_CENTER_DEFAULT_LOCALE,
-    HELP_CENTER_LANGUAGE_DEFAULT_UI,
-    HelpCenterCreationWizard,
-    PlatformType,
-} from 'pages/settings/helpCenter/constants'
+import {HELP_CENTER_LANGUAGE_DEFAULT_UI} from 'pages/settings/helpCenter/constants'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
+import {
+    EmptyHelpCenterUiFixture,
+    HelpCenterApiBasicsFixture,
+    HelpCenterUiBasicsFixture,
+    InvalidHelpCenterApiFixture,
+    PartialHelpCenterApiFixture,
+} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
+import {
+    ArticleTemplatesListFixture,
+    ArticlesListFixture,
+} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {
     findArticleByKey,
     getEnabledArticlesCount,
@@ -29,50 +32,12 @@ import {
     mapUIHelpCenterToApiHelpCenter,
 } from '../HelpCenterCreationWizardUtils'
 
-const defaultApiHelpCenter = {
-    name: 'test',
-    subdomain: 'test',
-    default_locale: 'en-US',
-    supported_locales: ['en-US'],
-    wizard: {
-        step_name: HelpCenterCreationWizardStep.Basics,
-        step_data: {
-            platform_type: PlatformType.ECOMMERCE,
-        },
-    },
-    shop_name: 'test',
-    brand_logo_url: null,
-    primary_color: '#4A8DF9',
-    primary_font_family: 'Inter',
-} as HelpCenter
+const defaultApiHelpCenter = HelpCenterApiBasicsFixture
+const emptyUIHelpCenter = EmptyHelpCenterUiFixture
+const defaultUIHelpCenter = HelpCenterUiBasicsFixture
 
-const emptyUIHelpCenter: HelpCenterCreationWizard = {
-    name: '',
-    subdomain: '',
-    defaultLocale: HELP_CENTER_DEFAULT_LOCALE,
-    supportedLocales: [HELP_CENTER_DEFAULT_LOCALE],
-    platformType: PlatformType.ECOMMERCE,
-    stepName: HelpCenterCreationWizardStep.Basics,
-    shopName: '',
-    brandLogoUrl: null,
-    primaryColor: '',
-    primaryFontFamily: '',
-    deactivated: true,
-}
-
-const defaultUIHelpCenter = {
-    name: 'test',
-    subdomain: 'test',
-    defaultLocale: 'en-US' as LocaleCode,
-    supportedLocales: ['en-US' as LocaleCode],
-    platformType: PlatformType.ECOMMERCE,
-    stepName: HelpCenterCreationWizardStep.Basics,
-    shopName: 'test',
-    brandLogoUrl: null,
-    primaryColor: '#4A8DF9',
-    primaryFontFamily: 'Inter',
-    deactivated: true,
-}
+const articleTemplates = ArticleTemplatesListFixture
+const articles = ArticlesListFixture
 
 describe('helpCenterCreationWizardUtils', () => {
     describe('mapApiHelpCenterToUIHelpCenter', () => {
@@ -91,13 +56,7 @@ describe('helpCenterCreationWizardUtils', () => {
 
         it('should add default platform type and default step name if wrong ones are provided', () => {
             const result = mapApiHelpCenterToUIHelpCenter(
-                {
-                    ...defaultApiHelpCenter,
-                    wizard: {
-                        step_data: {platform_type: 'test' as any},
-                        step_name: 'test',
-                    },
-                },
+                InvalidHelpCenterApiFixture,
                 []
             )
             expect(result).toEqual(defaultUIHelpCenter)
@@ -154,16 +113,7 @@ describe('helpCenterCreationWizardUtils', () => {
         it('should correctly map UI help center to API help center', () => {
             const result = mapUIHelpCenterToApiHelpCenter(defaultUIHelpCenter)
 
-            expect(result).toMatchObject({
-                name: 'test',
-                subdomain: 'test',
-                default_locale: 'en-US',
-                wizard: {
-                    step_name: 'basics',
-                    step_data: {platform_type: 'ecommerce'},
-                },
-                shop_name: 'test',
-            })
+            expect(result).toMatchObject(PartialHelpCenterApiFixture)
         })
 
         it('should correctly map help center locales to UI', () => {
@@ -203,101 +153,55 @@ describe('helpCenterCreationWizardUtils', () => {
         })
 
         it('should group articles by category', () => {
-            const articles = [
-                {
-                    category: 'orderManagement',
-                    title: 'Article 1',
-                },
-                {
-                    category: 'orderManagement',
-                    title: 'Article 2',
-                },
-                {
-                    category: 'returnsAndRefunds',
-                    title: 'Article 3',
-                },
-            ]
-
             const expected = {
-                orderManagement: [
-                    {category: 'orderManagement', title: 'Article 1'},
-                    {category: 'orderManagement', title: 'Article 2'},
+                shippingAndDelivery: [
+                    {
+                        category: 'shippingAndDelivery',
+                        title: 'Shipping policy',
+                        key: 'shippingPolicy',
+                    },
+                    {
+                        category: 'shippingAndDelivery',
+                        title: 'How to return',
+                        key: 'howToReturn',
+                    },
                 ],
-                returnsAndRefunds: [
-                    {category: 'returnsAndRefunds', title: 'Article 3'},
+                orderManagement: [
+                    {
+                        category: 'orderManagement',
+                        title: 'How to cancel order',
+                        key: 'howToCancelOrder',
+                    },
                 ],
             }
 
-            expect(
-                groupArticlesByCategory(articles as HelpCenterArticleItem[])
-            ).toEqual(expected)
+            const groupedArticles = groupArticlesByCategory(articleTemplates)
+
+            expect(groupedArticles).toMatchObject(expected)
         })
 
         it('should map article data correctly', () => {
-            const articleTemplates = [
-                {key: 'template1', title: 'Template 1'},
-                {key: 'template2', title: 'Template 2'},
-            ]
+            const result = mapHelpCenterArticleData(
+                articleTemplates,
+                articles,
+                'en-US'
+            )
+            const article = result.find(
+                (article) => article.key === 'shippingPolicy'
+            )
 
-            const articleListData = [
-                {
-                    id: 1,
-                    template_key: 'template1',
-                    translation: {
-                        title: 'Article 1',
-                        content: 'Content 1',
-                        locale: 'en-US',
-                    },
-                    available_locales: ['en-US'],
-                },
-            ]
-
-            const expected = [
-                {
-                    key: 'template1',
-                    title: 'Article 1',
-                    id: 1,
-                    content: 'Content 1',
-                    isSelected: true,
-                    availableLocales: ['en-US'],
-                    locale: 'en-US',
-                },
-                {key: 'template2', title: 'Template 2', isSelected: false},
-            ]
-
-            expect(
-                mapHelpCenterArticleData(
-                    articleTemplates as ArticleTemplate[],
-                    articleListData as ArticleWithLocalTranslationAndRating[],
-                    'en-US'
-                )
-            ).toEqual(expected)
+            expect(result.length).toBe(3)
+            expect(article?.title).toBe('Article 1')
         })
 
         it('should return the correct article when the key exists', () => {
-            const articles = {
-                orderManagement: [
-                    {
-                        key: 'howToOrder',
-                        category: 'orderManagement',
-                        title: 'Article 1',
-                    },
-                ],
-                returnsAndRefunds: [
-                    {
-                        key: 'howToReturn',
-                        category: 'returnsAndRefunds',
-                        title: 'Article 2',
-                    },
-                ],
-            }
+            const groupedArticles = groupArticlesByCategory(articleTemplates)
+            const article = findArticleByKey(groupedArticles, 'howToReturn')
 
-            const article = findArticleByKey(articles as any, 'howToReturn')
-
-            expect(article).toEqual({
+            expect(article).toMatchObject({
                 key: 'howToReturn',
-                category: 'returnsAndRefunds',
-                title: 'Article 2',
+                category: 'shippingAndDelivery',
+                title: 'How to return',
             })
         })
     })

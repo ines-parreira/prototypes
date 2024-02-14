@@ -2,40 +2,36 @@ import 'tests/__mocks__/intersectionObserverMock'
 
 import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import {
+    HelpCenterApiBrandingFixture,
+    HelpCenterUiBrandingFixture,
+} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import HelpCenterCreationWizardStepBranding from '../HelpCenterCreationWizardStepBranding'
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
-import {mapApiHelpCenterToUIHelpCenter} from '../../../HelpCenterCreationWizardUtils'
-
-const helpCenterFixture = getHelpCentersResponseFixture.data[0]
-const helpCenterFixtureUI = mapApiHelpCenterToUIHelpCenter(
-    helpCenterFixture,
-    []
-)
 
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
     useHelpCenterCreationWizard: jest.fn(),
 }))
 const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
 const mockedHook = {
-    helpCenter: helpCenterFixtureUI,
+    helpCenter: HelpCenterUiBrandingFixture,
     allStoreIntegrations: [],
+    isLoading: false,
     handleFormUpdate: jest.fn(),
     handleSave: jest.fn(),
     handleAction: jest.fn(),
-    isLoading: false,
 }
 
-const renderComponent = () => {
+const renderComponent = (fixtures?: {helpCenter?: HelpCenter}) => {
+    const {helpCenter = HelpCenterApiBrandingFixture} = fixtures ?? {}
+
     render(
-        <CurrentHelpCenterContext.Provider value={helpCenterFixture}>
+        <CurrentHelpCenterContext.Provider value={helpCenter}>
             <Wizard steps={[HelpCenterCreationWizardStep.Branding]}>
-                <HelpCenterCreationWizardStepBranding
-                    helpCenter={helpCenterFixture}
-                />
+                <HelpCenterCreationWizardStepBranding helpCenter={helpCenter} />
             </Wizard>
         </CurrentHelpCenterContext.Provider>
     )
@@ -55,7 +51,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
         mockUseHelpCenterCreationWizard.mockReturnValue({
             ...mockedHook,
             helpCenter: {
-                ...helpCenterFixtureUI,
+                ...HelpCenterUiBrandingFixture,
                 primaryColor: '#000000',
             },
         })
@@ -67,7 +63,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
         mockUseHelpCenterCreationWizard.mockReturnValue({
             ...mockedHook,
             helpCenter: {
-                ...helpCenterFixtureUI,
+                ...HelpCenterUiBrandingFixture,
                 primaryFontFamily: 'Test Font',
             },
         })
@@ -79,7 +75,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
         mockUseHelpCenterCreationWizard.mockReturnValue({
             ...mockedHook,
             helpCenter: {
-                ...helpCenterFixtureUI,
+                ...HelpCenterUiBrandingFixture,
                 brandLogoUrl: 'https://test.com/test.png',
             },
         })

@@ -34,6 +34,12 @@ export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
 }
 
+export const isErrorRecord = (
+    error: unknown
+): error is Record<string, unknown> => {
+    return typeof error === 'object' && error !== null && !Array.isArray(error)
+}
+
 function isArticleTemplateKey(key: any): key is ArticleTemplateKey {
     const keys: ArticleTemplateKey[] = [
         'shippingPolicy',
@@ -223,12 +229,6 @@ export const getUpdatedFields = (
     })
 }
 
-export const isErrorRecord = (
-    error: unknown
-): error is Record<string, unknown> => {
-    return typeof error === 'object' && error !== null && !Array.isArray(error)
-}
-
 export const handleOnSuccess = (message: string, dispatch: StoreDispatch) => {
     void dispatch(
         notify({
@@ -271,6 +271,13 @@ export const groupArticlesByCategory = (
     }, DEFAULT_ARTICLE_GROUP)
 }
 
+/**
+ * Map article templates to the format used in the HelpCenterCreationWizard
+ * It considers article templates and articles for the current help center
+ * If there is no match between templates and articles, it means that there are no articles created based on the template
+ * If there is a match, locale is checked to see if there is a translation for the current locale
+ * If there is no translation for the locale, add id of the article so a new translation can be created
+ */
 export const mapHelpCenterArticleData = (
     articleTemplates: ArticleTemplate[],
     articleListData: ArticleWithLocalTranslationAndRating[],
@@ -281,7 +288,6 @@ export const mapHelpCenterArticleData = (
             (data) => data.template_key === template.key
         )
 
-        // If there is no matching data, it means that there are no articles for this template
         if (!matchingData) {
             return {
                 ...template,
@@ -290,7 +296,6 @@ export const mapHelpCenterArticleData = (
             }
         }
 
-        // If there is matching data, check if there is a translation for the current locale
         if (matchingData.translation?.locale === locale) {
             const content = matchingData.translation?.content
             return {
@@ -304,7 +309,6 @@ export const mapHelpCenterArticleData = (
             }
         }
 
-        // If there is no translation for the current locale, then add id of the article so we can create a new translation later
         return {
             ...template,
             content: template.html_content?.replace(/\\n/g, ''),
@@ -327,6 +331,9 @@ export const findArticleByKey = (
         .value() as HelpCenterArticleItem | undefined
 }
 
+/**
+ * Map articles UI to API Help Center articles
+ */
 export const mapHelpCenterArticleItemToArticle = (
     articleItem: HelpCenterArticleItem,
     locale: LocaleCode

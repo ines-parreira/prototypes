@@ -1,131 +1,103 @@
-import React, {FC} from 'react'
+import React from 'react'
+import 'tests/__mocks__/intersectionObserverMock'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, waitFor} from '@testing-library/react'
-import {renderWithRouter} from 'utils/testing'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
+import thunk from 'redux-thunk'
+import userEvent from '@testing-library/user-event'
 import {
+    HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import history from 'pages/history'
-import {RootState, StoreDispatch} from 'state/types'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {integrationsState} from 'fixtures/integrations'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {StoreState} from 'state/types'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {shopifyIntegration} from 'fixtures/integrations'
 import Wizard from 'pages/common/components/wizard/Wizard'
+import {Integration} from 'models/integration/types'
 import {
-    HELP_CENTER_DEFAULT_LOCALE,
-    HelpCenterCreationWizard,
-    NEXT_ACTION,
-    PlatformType,
-} from 'pages/settings/helpCenter/constants'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegration} from 'models/integration/types'
+    HelpCenterApiBasicsFixture,
+    HelpCenterUiBasicsFixture,
+} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
+import {renderWithRouter} from 'utils/testing'
+import {NEXT_ACTION} from 'pages/settings/helpCenter/constants'
 import HelpCenterCreationWizardStepBasics from '../HelpCenterCreationWizardStepBasics'
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const defaultHelpCenter = HelpCenterUiBasicsFixture
 
-jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
-;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
     useHelpCenterCreationWizard: jest.fn(),
 }))
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false
-)
-
-const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
-const mockOnSave = jest.fn()
-const mockUpdateData = jest.fn()
-const mockMutateAsync = jest.fn()
-
 jest.mock('models/helpCenter/queries', () => ({
     useCheckHelpCenterWithSubdomainExists: () => ({
-        mutateAsync: mockMutateAsync,
+        mutateAsync: mockCheckDomainMutateAsync,
         isError: true,
     }),
 }))
 
-const store = mockStore({
-    integrations: fromJS(integrationsState),
-})
-
-const defaultHelpCenter: HelpCenterCreationWizard = {
-    name: 'My brand',
-    subdomain: 'my-brand',
-    defaultLocale: HELP_CENTER_DEFAULT_LOCALE,
-    supportedLocales: [HELP_CENTER_DEFAULT_LOCALE],
-    platformType: PlatformType.ECOMMERCE,
-    stepName: HelpCenterCreationWizardStep.Basics,
-    shopName: 'shop-test',
-    brandLogoUrl: null,
-    primaryColor: '',
-    primaryFontFamily: '',
-    deactivated: true,
-}
-
-const storeIntegrations = [
-    {
-        name: 'shop-test',
-        type: IntegrationType.Shopify,
-    } as ShopifyIntegration,
-]
+const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
+const mockOnSave = jest.fn()
+const mockUpdateData = jest.fn()
+const mockCheckDomainMutateAsync = jest.fn()
 
 const mockedHook = {
     helpCenter: defaultHelpCenter,
-    allStoreIntegrations: storeIntegrations,
+    allStoreIntegrations: [shopifyIntegration],
+    isLoading: false,
     handleFormUpdate: mockUpdateData,
     handleSave: mockOnSave,
     handleAction: jest.fn(),
-    isLoading: false,
 }
 
-const queryClient = mockQueryClient()
+const renderComponent = (fixtures?: {
+    integrations?: Integration[]
+    helpCenter?: HelpCenter
+    automateType?: HelpCenterAutomateType
+}) => {
+    const {
+        integrations = [shopifyIntegration],
+        helpCenter = HelpCenterApiBasicsFixture,
+        automateType = HelpCenterAutomateType.AUTOMATE,
+    } = fixtures ?? {}
 
-const DefaultProviders: FC = ({children}) => (
-    <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-            <Wizard steps={[HelpCenterCreationWizardStep.Basics]}>
-                {children}
-            </Wizard>
+    const defaultStore = {
+        integrations: fromJS({integrations}),
+    } as unknown as StoreState
+
+    const mockStore = configureMockStore([thunk])
+
+    renderWithRouter(
+        <Provider store={mockStore(defaultStore)}>
+            <SupportedLocalesProvider>
+                <Wizard steps={[HelpCenterCreationWizardStep.Basics]}>
+                    <HelpCenterCreationWizardStepBasics
+                        isUpdate={false}
+                        helpCenter={helpCenter}
+                        automateType={automateType}
+                    />
+                </Wizard>
+            </SupportedLocalesProvider>
         </Provider>
-    </QueryClientProvider>
-)
+    )
+}
 
 describe('<HelpCenterCreationWizardStepBasics />', () => {
     beforeEach(() => {
-        history.push = jest.fn()
-        jest.useFakeTimers()
         mockUseHelpCenterCreationWizard.mockReturnValue(mockedHook)
     })
 
-    afterEach(() => {
-        jest.useRealTimers()
-    })
+    it('renders wizard with default options selected', () => {
+        renderComponent({})
 
-    it('renders wizard with default options selected', async () => {
-        const {findByTestId, getByRole, findByText, queryByText} =
-            renderWithRouter(
-                <DefaultProviders>
-                    <HelpCenterCreationWizardStepBasics
-                        isUpdate={false}
-                        automateType={HelpCenterAutomateType.AUTOMATE}
-                    />
-                </DefaultProviders>
-            )
-
-        const brandInput = await findByTestId('name')
-        const subdomainInput = getByRole('textbox', {
+        const brandInput = screen.getByTestId('name')
+        const subdomainInput = screen.getByRole('textbox', {
             name: /subdomain/i,
-        }) as HTMLInputElement
-        const defaultLanguageLabel = await findByText(/default language/i)
-        const platformTypeLabel = queryByText(/platform type/i)
+        })
+        const defaultLanguageLabel = screen.getByText(/default language/i)
+        const platformTypeLabel = screen.queryByText(/Select a platform type/i)
 
         expect(brandInput).toBeInTheDocument()
         expect(subdomainInput).toBeInTheDocument()
@@ -133,7 +105,25 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
         expect(platformTypeLabel).not.toBeInTheDocument()
     })
 
-    it('should trigger error at field level when action button is clicked', async () => {
+    it('renders wizard with platform type when non automate account', () => {
+        renderComponent({automateType: HelpCenterAutomateType.NON_AUTOMATE})
+
+        const platformTypeLabel = screen.getByText(/Select a platform type/i)
+
+        expect(platformTypeLabel).toBeInTheDocument()
+    })
+
+    it('renders wizard with platform type when no store connected', () => {
+        renderComponent({
+            automateType: HelpCenterAutomateType.AUTOMATE_NO_STORE,
+        })
+
+        const platformTypeLabel = screen.getByText(/Select a platform type/i)
+
+        expect(platformTypeLabel).toBeInTheDocument()
+    })
+
+    it('should trigger error at field level when action button is clicked', () => {
         mockUseHelpCenterCreationWizard.mockReturnValue({
             ...mockedHook,
             helpCenter: {
@@ -141,32 +131,19 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
                 name: '',
             },
         })
-        const {getByText, findAllByText} = renderWithRouter(
-            <DefaultProviders>
-                <HelpCenterCreationWizardStepBasics
-                    isUpdate={false}
-                    automateType={HelpCenterAutomateType.AUTOMATE}
-                />
-            </DefaultProviders>
-        )
 
-        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+        renderComponent()
 
-        const errorMessages = await findAllByText('This field is required.')
+        userEvent.click(screen.getByText('Create & Customize'))
+
+        const errorMessages = screen.getAllByText('This field is required.')
         expect(errorMessages).toHaveLength(1)
     })
 
     it('should call onSave method when all fields are valid', () => {
-        const {getByText} = renderWithRouter(
-            <DefaultProviders>
-                <HelpCenterCreationWizardStepBasics
-                    isUpdate={false}
-                    automateType={HelpCenterAutomateType.AUTOMATE}
-                />
-            </DefaultProviders>
-        )
+        renderComponent()
 
-        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+        userEvent.click(screen.getByText('Create & Customize'))
 
         expect(mockOnSave).toHaveBeenCalledWith({
             redirectTo: NEXT_ACTION.NEW_WIZARD,
@@ -174,16 +151,10 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
         })
     })
 
-    it('should call updateData method when a field is updated', async () => {
-        const {findByTestId} = renderWithRouter(
-            <DefaultProviders>
-                <HelpCenterCreationWizardStepBasics
-                    isUpdate={false}
-                    automateType={HelpCenterAutomateType.AUTOMATE}
-                />
-            </DefaultProviders>
-        )
-        const brandInput = await findByTestId('name')
+    it('should call updateData method when a field is updated', () => {
+        renderComponent()
+
+        const brandInput = screen.getByTestId('name')
         fireEvent.change(brandInput, {target: {value: 'updated name'}})
 
         expect(mockUpdateData).toHaveBeenCalledWith({
@@ -193,25 +164,18 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
     })
 
     it('should check subdomain when value is updated', async () => {
-        const {getByRole} = renderWithRouter(
-            <DefaultProviders>
-                <HelpCenterCreationWizardStepBasics
-                    isUpdate={false}
-                    automateType={HelpCenterAutomateType.AUTOMATE}
-                />
-            </DefaultProviders>
-        )
+        renderComponent()
 
-        const subdomainInput = getByRole('textbox', {
+        const subdomainInput = screen.getByRole('textbox', {
             name: /subdomain/i,
-        }) as HTMLInputElement
+        })
 
         fireEvent.change(subdomainInput, {
             target: {value: 'custom-subdomain'},
         })
 
         await waitFor(() => {
-            expect(mockMutateAsync).toHaveBeenCalled()
+            expect(mockCheckDomainMutateAsync).toHaveBeenCalled()
         })
     })
 })

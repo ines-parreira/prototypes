@@ -102,7 +102,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                 footer={
                     <WizardFooter
                         displaySaveAndCustomizeLater
-                        displayBackButton={isAutomate}
+                        displayBackButton
                         displayNextButton={isAutomate}
                         displayFinishButton={!isAutomate}
                         onClick={onFooterAction}
