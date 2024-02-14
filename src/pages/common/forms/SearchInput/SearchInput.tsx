@@ -233,7 +233,7 @@ export default class SearchInput<
         } finally {
             this.setState({isLoading: false})
         }
-    }, 300)
+    }, 200)
 
     _onBackClicked = () => {
         this.setState({
