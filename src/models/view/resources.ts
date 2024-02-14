@@ -48,7 +48,7 @@ export type ViewTicketUpdatesParams = {
     cursor?: string | null
     limit?: number
     order_by?: string
-    up_to_timestamp?: number
+    up_to_datetime?: string | null
 }
 
 export function getViewTicketUpdates(

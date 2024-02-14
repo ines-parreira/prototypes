@@ -89,19 +89,16 @@ export default function useTickets(
     const data = useTicketData(visibleStaleTicketIds, markUpdated, ticketId)
     const tickets = partials.map((partial) => data[partial.id] || partial)
 
-    const latestTimestamp = useMemo(() => {
+    const latestDatetime = useMemo(() => {
         const lastVisiblePartial = visiblePartials[visiblePartials.length - 1]
-        if (!lastVisiblePartial) return 0
-
-        const lastId = lastVisiblePartial.id
-        return data[lastId]?.created_datetime
-            ? new Date(data[lastId].created_datetime).getTime()
-            : 0
+        return lastVisiblePartial && data[lastVisiblePartial.id]
+            ? data[lastVisiblePartial.id].created_datetime
+            : null
     }, [data, visiblePartials])
 
     useEffect(() => {
-        setLatest(endIndex, latestTimestamp)
-    }, [endIndex, latestTimestamp, setLatest])
+        setLatest(endIndex, latestDatetime)
+    }, [endIndex, latestDatetime, setLatest])
 
     const ticketIds = useTicketIds(tickets)
 

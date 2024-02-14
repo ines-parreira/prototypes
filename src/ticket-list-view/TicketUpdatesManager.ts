@@ -18,7 +18,7 @@ const POLLING_INTERVAL = 5000
 
 export default class TicketUpdatesManager {
     private latestIndex = 0
-    private latestTimestamp = 0
+    private latestDatetime: string | null = null
     private listener: Listener | null = null
     private loading = false
     private nextCursor: CursorMeta['next_cursor'] = null
@@ -45,9 +45,9 @@ export default class TicketUpdatesManager {
         this.loading = false
     }
 
-    setLatest = (index: number, timestamp: number) => {
+    setLatest = (index: number, datetime: string | null) => {
         this.latestIndex = index
-        this.latestTimestamp = Math.ceil(timestamp / 1000)
+        this.latestDatetime = datetime
     }
 
     subscribe(listener: Listener): Unsubscribe {
@@ -80,12 +80,15 @@ export default class TicketUpdatesManager {
         return response.data
     }
 
-    private async getTicketsUpTo(sortOrder: SortOrder, timestamp: number) {
+    private async getTicketsUpTo(
+        sortOrder: SortOrder,
+        datetime: string | null
+    ) {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
                 getViewTicketUpdates(this.viewId, {
                     order_by: sortOrder,
-                    up_to_timestamp: timestamp,
+                    up_to_datetime: datetime,
                 }),
             queryKey: viewItemsDefinitionKeys.updates(this.viewId),
         })
@@ -117,13 +120,13 @@ export default class TicketUpdatesManager {
 
         // if the latest timestamp is not known yet (since this comes from the data
         // request), we just skip this polling attempt
-        if (this.latestTimestamp === 0) return
+        if (!this.latestDatetime) return
 
         this.loading = true
 
         const {data} = await this.getTicketsUpTo(
             this.sortOrder,
-            this.latestTimestamp
+            this.latestDatetime
         )
         this.tickets.splice(
             0,
