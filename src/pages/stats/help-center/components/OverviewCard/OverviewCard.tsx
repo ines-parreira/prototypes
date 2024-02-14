@@ -56,23 +56,6 @@ const OverviewCard = ({
             hint={{
                 title: hintTitle,
             }}
-            trendBadge={
-                isLoading ? (
-                    <Skeleton
-                        data-testid="trend-badge-loader"
-                        height={20}
-                        className={css.trendLoader}
-                    />
-                ) : (
-                    <TrendBadge
-                        prevValue={prevTrendValue}
-                        value={trendValue}
-                        format="percent"
-                        interpretAs="more-is-better"
-                        tooltip={`Compared to: ${formattedStartDate} - ${formattedEndDate}`}
-                    />
-                )
-            }
             tip={
                 showTip ? (
                     !isLoading && !prevTrendValue && !trendValue ? (
@@ -92,7 +75,19 @@ const OverviewCard = ({
             {isLoading ? (
                 <Skeleton data-testid="content-loader" height={32} inline />
             ) : (
-                <BigNumberMetric from={formatMetricValue(prevTrendValue)}>
+                <BigNumberMetric
+                    trendBadge={
+                        <TrendBadge
+                            prevValue={prevTrendValue}
+                            value={trendValue}
+                            format="percent"
+                            interpretAs="more-is-better"
+                            tooltipData={{
+                                period: `${formattedStartDate} - ${formattedEndDate}`,
+                            }}
+                        />
+                    }
+                >
                     <span className={css.bigNumber}>
                         {formatMetricValue(trendValue)}
                     </span>

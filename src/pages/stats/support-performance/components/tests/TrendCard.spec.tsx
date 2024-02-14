@@ -4,7 +4,6 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {NO_DATA_TOOLTIP_ICON} from 'pages/stats/support-performance/components/NoDataTooltip'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -17,8 +16,11 @@ import {
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
-import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
-import TrendBadge from 'pages/stats/TrendBadge'
+import {
+    TREND_BADGE_FORMAT,
+    TrendCard,
+} from 'pages/stats/support-performance/components/TrendCard'
+import TrendBadge, {DEFAULT_BADGE_TEXT} from 'pages/stats/TrendBadge'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
@@ -30,6 +32,8 @@ import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {useOneTouchTicketsPercentageMetric} from 'hooks/reporting/useOneTouchTicketsPercentageMetric'
+import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
+import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -176,7 +180,7 @@ describe('<TrendCard />', () => {
         useMessagesSentTrendMock.mockReturnValue(messagesSentMetricTrend)
         useOneTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
 
-        trendBadgeMock.mockImplementation(() => null)
+        trendBadgeMock.mockImplementation(() => <>{DEFAULT_BADGE_TEXT}</>)
     })
 
     it.each(Object.values(OverviewMetric))(
@@ -196,15 +200,22 @@ describe('<TrendCard />', () => {
                     expect.objectContaining({
                         interpretAs:
                             OverviewMetricConfig[overviewMetric].interpretAs,
-                        tooltip: 'Compared to: Feb 2nd, 2021 - Feb 2nd, 2021',
+                        tooltipData: {
+                            period: getBadgeTooltipForPreviousPeriod(
+                                defaultStatsFilters
+                            ),
+                        },
                         value: defaultMetricTrend?.data?.value,
+                        prevValue: defaultMetricTrend.data?.prevValue,
+                        format: TREND_BADGE_FORMAT,
+                        isLoading: !defaultMetricTrend?.data,
                     }),
                 ])
             )
         }
     )
 
-    it('should render NoDataTooltip if no data available', () => {
+    it('should render not available placeholder and default badge text if no data available', () => {
         const metric = OverviewMetric.CustomerSatisfaction
         useCustomerSatisfactionTrendMock.mockReturnValue({
             data: {value: null, prevValue: null},
@@ -221,6 +232,10 @@ describe('<TrendCard />', () => {
             </Provider>
         )
 
-        expect(screen.getByText(NO_DATA_TOOLTIP_ICON)).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                `${NOT_AVAILABLE_PLACEHOLDER}${DEFAULT_BADGE_TEXT}`
+            )
+        ).toBeInTheDocument()
     })
 })

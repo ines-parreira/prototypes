@@ -11,13 +11,13 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {StatConfigMetric} from 'config/stats'
 
 import {
-    comparedPeriodString,
     formatNumber,
     formatCurrency,
     formatDuration,
     formatPercent,
-} from '../../../utils'
-import StatDifference from '../../StatDifference'
+    formatComparedPeriodString,
+} from 'pages/stats/common/utils'
+import StatDifference from 'pages/stats/common/components/StatDifference'
 
 import DistributionKeyMetricStat from './DistributionKeyMetricStat'
 import DonutKeyMetricStat from './DonutKeyMetricStat'
@@ -185,7 +185,7 @@ export const KeyMetricCell = ({
     if (meta) {
         previousStartDatetime = moment(meta.get('previous_start_datetime'))
         previousEndDatetime = moment(meta.get('previous_end_datetime'))
-        tooltipDelta = comparedPeriodString(
+        tooltipDelta = formatComparedPeriodString(
             previousStartDatetime,
             previousEndDatetime
         )

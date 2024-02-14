@@ -173,18 +173,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         2%
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                       <div
                         class="tip"
@@ -271,18 +267,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         93
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                       <div
                         class="tip"
@@ -347,18 +339,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         $228
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -383,18 +371,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -419,18 +403,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -844,18 +824,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       2%
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                     <div
                       class="tip"
@@ -942,18 +918,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       93
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                     <div
                       class="tip"
@@ -1018,18 +990,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       $228
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1054,18 +1022,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1090,18 +1054,14 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1494,18 +1454,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         21%
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                       <div
                         class="tip"
@@ -1592,18 +1548,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         93
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                       <div
                         class="tip"
@@ -1668,18 +1620,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         $228
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1704,18 +1652,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1740,18 +1684,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2165,18 +2105,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       21%
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                     <div
                       class="tip"
@@ -2263,18 +2199,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       93
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                     <div
                       class="tip"
@@ -2339,18 +2271,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       $228
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2375,18 +2303,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2411,18 +2335,14 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2815,18 +2735,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         41%
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                       <div
                         class="tip"
@@ -2913,18 +2829,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         93
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                       <div
                         class="tip"
@@ -2989,18 +2901,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         $228
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3025,18 +2933,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3061,18 +2965,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             info
                           </i>
                         </div>
-                        <div
-                          class="trendBadge"
-                        >
-                          <div>
-                            TrendBadgeMock
-                          </div>
-                        </div>
                       </div>
                       <div
                         class="wrapper heading-page-semibold"
                       >
                         1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3486,18 +3386,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       41%
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                     <div
                       class="tip"
@@ -3584,18 +3480,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       93
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                     <div
                       class="tip"
@@ -3660,18 +3552,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       $228
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3696,18 +3584,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3732,18 +3616,14 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           info
                         </i>
                       </div>
-                      <div
-                        class="trendBadge"
-                      >
-                        <div>
-                          TrendBadgeMock
-                        </div>
-                      </div>
                     </div>
                     <div
                       class="wrapper heading-page-semibold"
                     >
                       1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -4132,18 +4012,14 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       info
                     </i>
                   </div>
-                  <div
-                    class="trendBadge"
-                  >
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
                 </div>
                 <div
                   class="wrapper heading-page-semibold"
                 >
                   9,300%
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
                 <div
                   class="tip"
@@ -4230,18 +4106,14 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       info
                     </i>
                   </div>
-                  <div
-                    class="trendBadge"
-                  >
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
                 </div>
                 <div
                   class="wrapper heading-page-semibold"
                 >
                   93
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
                 <div
                   class="tip"
@@ -4306,18 +4178,14 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       info
                     </i>
                   </div>
-                  <div
-                    class="trendBadge"
-                  >
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
                 </div>
                 <div
                   class="wrapper heading-page-semibold"
                 >
                   $228
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -4342,18 +4210,14 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       info
                     </i>
                   </div>
-                  <div
-                    class="trendBadge"
-                  >
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
                 </div>
                 <div
                   class="wrapper heading-page-semibold"
                 >
                   1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -4378,18 +4242,14 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       info
                     </i>
                   </div>
-                  <div
-                    class="trendBadge"
-                  >
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
                 </div>
                 <div
                   class="wrapper heading-page-semibold"
                 >
                   1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>

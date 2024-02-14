@@ -24,7 +24,6 @@ function VoiceCallCallerExperienceMetric({
     metricTrend,
 }: VoiceCallCallerExperienceMetricProps) {
     const voiceCallsAverageTime = metricTrend.data?.value
-    const prevValue = metricTrend.data?.prevValue
     const previousPeriod = getAdvancedVoicePeriodFilters(
         getPreviousPeriod(statsFilters.period)
     )
@@ -36,25 +35,22 @@ function VoiceCallCallerExperienceMetric({
                 title: hint,
             }}
             isLoading={metricTrend.isFetching}
-            trendBadge={
-                <TrendBadge
-                    value={metricTrend.data?.value}
-                    prevValue={metricTrend.data?.prevValue}
-                    format={'percent'}
-                    interpretAs={'less-is-better'}
-                    tooltip={comparedPeriodString(
-                        moment(previousPeriod.start_datetime),
-                        moment(previousPeriod.end_datetime)
-                    )}
-                />
-            }
         >
             <BigNumberMetric
                 isLoading={metricTrend.isFetching}
-                from={
-                    typeof prevValue === 'number'
-                        ? formatMetricValue(prevValue, 'duration')
-                        : undefined
+                trendBadge={
+                    <TrendBadge
+                        value={metricTrend.data?.value}
+                        prevValue={metricTrend.data?.prevValue}
+                        format={'percent'}
+                        interpretAs={'less-is-better'}
+                        tooltipData={{
+                            period: comparedPeriodString(
+                                moment(previousPeriod.start_datetime),
+                                moment(previousPeriod.end_datetime)
+                            ),
+                        }}
+                    />
                 }
             >
                 {typeof voiceCallsAverageTime === 'number'

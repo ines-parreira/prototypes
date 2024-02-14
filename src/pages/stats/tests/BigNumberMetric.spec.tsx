@@ -15,9 +15,7 @@ describe('<BigNumberMetric />', () => {
     })
 
     it('should render the number metric content from a value', () => {
-        const {container} = render(
-            <BigNumberMetric from="previous content">content</BigNumberMetric>
-        )
+        const {container} = render(<BigNumberMetric>content</BigNumberMetric>)
 
         expect(container).toMatchSnapshot()
     })

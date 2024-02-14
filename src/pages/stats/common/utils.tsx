@@ -34,14 +34,24 @@ export const comparedPeriodString = (
     previousEndDatetime: Moment
 ) => {
     let previousPeriod = `${previousStartDatetime.format(
-        'MMM DD, YYYY'
-    )} - ${previousEndDatetime.format('MMM DD, YYYY')}`
+        SHORT_FORMAT
+    )} - ${previousEndDatetime.format(SHORT_FORMAT)}`
 
     if (previousStartDatetime.isSame(previousEndDatetime, 'day')) {
-        previousPeriod = previousStartDatetime.format('MMM DD, YYYY')
+        previousPeriod = previousStartDatetime.format(SHORT_FORMAT)
     }
 
-    return `Compared to: ${previousPeriod}`
+    return `${previousPeriod}`
+}
+
+export const formatComparedPeriodString = (
+    previousStartDatetime: Moment,
+    previousEndDatetime: Moment
+) => {
+    return `Compared to: ${comparedPeriodString(
+        previousStartDatetime,
+        previousEndDatetime
+    )}`
 }
 
 export const formatNumber = (value: number) => {

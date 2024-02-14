@@ -21,9 +21,6 @@ export const AutomatedInteractionsMetric = ({
             hint={{
                 title: AUTOMATED_INTERACTION_TOOLTIP,
             }}
-            trendBadge={
-                <TrendBadge {...getTrendProps(automatedInteractionsTrend)} />
-            }
             tip={
                 showTips && (
                     <PerformanceTip showBenchmark={false}>
@@ -47,7 +44,14 @@ export const AutomatedInteractionsMetric = ({
                 )
             }
         >
-            <BigNumberMetric isLoading={automatedInteractionsTrend.isFetching}>
+            <BigNumberMetric
+                isLoading={automatedInteractionsTrend.isFetching}
+                trendBadge={
+                    <TrendBadge
+                        {...getTrendProps(automatedInteractionsTrend)}
+                    />
+                }
+            >
                 {formatMetricValue(automatedInteractionsTrend.data?.value)}
             </BigNumberMetric>
         </MetricCard>

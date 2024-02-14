@@ -2,15 +2,11 @@ import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
 import MetricCard from './MetricCard'
-import TrendBadge from './TrendBadge'
 import PerformanceTip from './PerformanceTip'
 
 const storyConfig: Meta = {
     title: 'Stats/MetricCard',
     component: MetricCard,
-    parameters: {
-        chromatic: {disableSnapshot: false},
-    },
 }
 
 const Template: Story<ComponentProps<typeof MetricCard>> = (props) => (
@@ -27,7 +23,6 @@ const defaultProps: ComponentProps<typeof MetricCard> = {
             Tooltip content
         </PerformanceTip>
     ),
-    trendBadge: <TrendBadge value={7} prevValue={2} />,
 }
 
 export const Default = Template.bind({})

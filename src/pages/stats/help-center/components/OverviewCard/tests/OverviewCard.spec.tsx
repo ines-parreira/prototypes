@@ -3,6 +3,7 @@ import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {formatMetricTrend} from 'pages/stats/common/utils'
 import OverviewCard, {OverviewCardProps} from '../OverviewCard'
 
 const mockStore = configureMockStore([thunk])
@@ -42,7 +43,14 @@ describe('<OverviewCard />', () => {
             screen.getByText(new RegExp(String(trendValue)))
         ).toBeInTheDocument()
         expect(
-            screen.getByText(new RegExp(String(prevTrendValue)))
+            screen.getByText(
+                new RegExp(
+                    String(
+                        formatMetricTrend(trendValue, prevTrendValue, 'percent')
+                            .formattedTrend
+                    )
+                )
+            )
         ).toBeInTheDocument()
     })
 
@@ -51,7 +59,7 @@ describe('<OverviewCard />', () => {
         const prevTrendValue = undefined
         renderComponent({trendValue, prevTrendValue})
 
-        expect(screen.getByText(new RegExp('from N/A'))).toBeInTheDocument()
+        expect(screen.getByText(new RegExp('0%'))).toBeInTheDocument()
     })
 
     it('should show loader when component loading', () => {

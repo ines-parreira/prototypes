@@ -16,12 +16,6 @@ exports[`<BigNumberMetric /> should render the number metric content from a valu
     class="wrapper heading-page-semibold"
   >
     content
-    <span
-      class="from caption-regular"
-    >
-      from 
-      previous content
-    </span>
   </div>
 </div>
 `;

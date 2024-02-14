@@ -37,7 +37,6 @@ function VoiceCallVolumeMetric({
     moreIsBetter = true,
 }: VoiceCallVolumeMetricProps) {
     const voiceCallsCount = metricTrend.data?.value
-    const prevValue = metricTrend.data?.prevValue
     const previousPeriod = getPreviousPeriod(statsFilters.period)
 
     return (
@@ -47,22 +46,19 @@ function VoiceCallVolumeMetric({
                 title: hint,
             }}
             isLoading={metricTrend.isFetching}
-            trendBadge={
-                <TrendBadge
-                    {...getTrendProps(metricTrend, moreIsBetter)}
-                    tooltip={comparedPeriodString(
-                        moment(previousPeriod.start_datetime),
-                        moment(previousPeriod.end_datetime)
-                    )}
-                />
-            }
         >
             <BigNumberMetric
                 isLoading={metricTrend.isFetching}
-                from={
-                    prevValue !== undefined
-                        ? formatMetricValue(prevValue)
-                        : undefined
+                trendBadge={
+                    <TrendBadge
+                        {...getTrendProps(metricTrend, moreIsBetter)}
+                        tooltipData={{
+                            period: comparedPeriodString(
+                                moment(previousPeriod.start_datetime),
+                                moment(previousPeriod.end_datetime)
+                            ),
+                        }}
+                    />
                 }
             >
                 {voiceCallsCount !== undefined

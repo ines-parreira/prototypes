@@ -41,7 +41,6 @@ export const OverviewMetricConfig: Record<
         title: string
         useTrend: MetricTrendHook
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
-        withFrom: boolean
         metricFormat?: MetricTrendFormat
     }
 > = {
@@ -53,7 +52,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'more-is-better',
         useTrend: useCustomerSatisfactionTrend,
-        withFrom: false,
     },
     [OverviewMetric.MedianFirstResponseTime]: {
         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -64,7 +62,6 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'less-is-better',
         metricFormat: 'duration',
         useTrend: useMedianFirstResponseTimeTrend,
-        withFrom: false,
     },
     [OverviewMetric.MedianResolutionTime]: {
         title: MEDIAN_RESOLUTION_TIME_LABEL,
@@ -75,7 +72,6 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'less-is-better',
         metricFormat: 'duration',
         useTrend: useMedianResolutionTimeTrend,
-        withFrom: false,
     },
     [OverviewMetric.MessagesPerTicket]: {
         title: MESSAGES_PER_TICKET_LABEL,
@@ -85,7 +81,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'less-is-better',
         useTrend: useMessagesPerTicketTrend,
-        withFrom: false,
     },
     [OverviewMetric.OpenTickets]: {
         title: OPEN_TICKETS_LABEL,
@@ -95,7 +90,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'neutral',
         useTrend: useOpenTicketsTrend,
-        withFrom: true,
     },
     [OverviewMetric.TicketsClosed]: {
         title: TICKETS_CLOSED_LABEL,
@@ -105,7 +99,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'neutral',
         useTrend: useClosedTicketsTrend,
-        withFrom: true,
     },
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
@@ -115,7 +108,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'neutral',
         useTrend: useTicketsCreatedTrend,
-        withFrom: true,
     },
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
@@ -125,7 +117,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'neutral',
         useTrend: useTicketsRepliedTrend,
-        withFrom: true,
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
@@ -135,7 +126,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'neutral',
         useTrend: useMessagesSentTrend,
-        withFrom: true,
     },
     [OverviewMetric.OneTouchTickets]: {
         title: ONE_TOUCH_TICKETS_LABEL,
@@ -145,7 +135,6 @@ export const OverviewMetricConfig: Record<
         },
         interpretAs: 'more-is-better',
         useTrend: useOneTouchTicketsPercentageMetric,
-        withFrom: true,
         metricFormat: 'percent',
     },
 }

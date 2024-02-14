@@ -3,7 +3,7 @@ import moment from 'moment'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatPercentage} from 'pages/common/utils/numbers'
-import {getFormat, SHORT_FORMAT} from 'pages/stats/common/utils'
+import {comparedPeriodString, getFormat} from 'pages/stats/common/utils'
 
 import {toRGBA} from 'utils'
 import {
@@ -129,7 +129,17 @@ export const getBadgeTooltipForPreviousPeriod = (
     statsFilters: StatsFilters
 ) => {
     const period = getPreviousPeriod(statsFilters.period)
-    return `Compared to: ${moment(period.start_datetime).format(
-        SHORT_FORMAT
-    )} - ${moment(period.end_datetime).format(SHORT_FORMAT)}`
+    return comparedPeriodString(
+        moment(period.start_datetime),
+        moment(period.end_datetime)
+    )
+}
+
+export const getIconNameBySign = (sign: number) => {
+    if (sign > 0) {
+        return 'arrow_upward'
+    } else if (sign < 0) {
+        return 'arrow_downward'
+    }
+    return null
 }

@@ -37,7 +37,6 @@ export const AutomationRateMetric = ({
             title={AUTOMATION_RATE_LABEL}
             hint={{title: AUTOMATION_RATE_TOOLTIP}}
             isLoading={automationRateTrend.isFetching}
-            trendBadge={<TrendBadge {...getTrendProps(automationRateTrend)} />}
             tip={
                 showTips && (
                     <PerformanceTip
@@ -59,7 +58,12 @@ export const AutomationRateMetric = ({
                 )
             }
         >
-            <BigNumberMetric isLoading={automationRateTrend.isFetching}>
+            <BigNumberMetric
+                isLoading={automationRateTrend.isFetching}
+                trendBadge={
+                    <TrendBadge {...getTrendProps(automationRateTrend)} />
+                }
+            >
                 {automationRateValue
                     ? formatMetricValue(automationRateValue * 100, 'percent')
                     : '-'}

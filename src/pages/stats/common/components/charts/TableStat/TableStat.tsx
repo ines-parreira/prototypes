@@ -18,8 +18,11 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import Tooltip from '../../../../../common/components/Tooltip'
-import {DatetimeLabel} from '../../../../../common/utils/labels'
+import {
+    formatComparedPeriodString,
+    formatCurrency,
+    formatDuration,
+} from 'pages/stats/common/utils'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
@@ -28,17 +31,14 @@ import {
     StatMap,
     StatValueType,
     TICKET_MAX_SUBJECT_LENGTH,
-} from '../../../../../../config/stats'
-import {
-    comparedPeriodString,
-    formatCurrency,
-    formatDuration,
-} from '../../../utils'
+} from 'config/stats'
+import Tooltip from 'pages/common/components/Tooltip'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import StatDifference from 'pages/stats/common/components/StatDifference'
+import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 import DistributionVariantStat, {
     DistributionStatVariant,
-} from '../DistributionVariantStat'
-import StatDifference from '../../StatDifference'
-import StatsHelpIcon from '../../StatsHelpIcon'
+} from 'pages/stats/common/components/charts/DistributionVariantStat'
 
 import ProductCell from './cells/ProductCell'
 import css from './TableStat.less'
@@ -275,7 +275,7 @@ export class TableStat extends Component<
                     meta.get('previous_end_datetime')
                 )
 
-                const tooltipDelta = comparedPeriodString(
+                const tooltipDelta = formatComparedPeriodString(
                     previousStartDatetime,
                     previousEndDatetime
                 )

@@ -16,14 +16,14 @@ export const DecreaseInResolutionTimeMetric = ({
                 title: 'How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time.',
             }}
             isLoading={decreaseInResolutionTimeMetric.isFetching}
-            trendBadge={
-                <TrendBadge
-                    {...getTrendProps(decreaseInResolutionTimeMetric)}
-                />
-            }
         >
             <BigNumberMetric
                 isLoading={decreaseInResolutionTimeMetric.isFetching}
+                trendBadge={
+                    <TrendBadge
+                        {...getTrendProps(decreaseInResolutionTimeMetric)}
+                    />
+                }
             >
                 {toDuration(decreaseInResolutionTimeMetric)}
             </BigNumberMetric>

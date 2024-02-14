@@ -7,15 +7,15 @@ import css from './BigNumberMetric.less'
 type Props = {
     children: ReactNode
     className?: string
-    from?: ReactNode
     isLoading?: boolean
+    trendBadge?: ReactNode
 }
 
 export default function BigNumberMetric({
     children,
     className,
-    from,
     isLoading = false,
+    trendBadge,
 }: Props) {
     if (isLoading) {
         return <Skeleton height={32} />
@@ -31,11 +31,7 @@ export default function BigNumberMetric({
         >
             {children}
 
-            {from && (
-                <span className={classnames(css.from, 'caption-regular')}>
-                    from {from}
-                </span>
-            )}
+            {trendBadge ? trendBadge : null}
         </div>
     )
 }

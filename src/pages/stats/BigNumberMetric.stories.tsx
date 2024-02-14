@@ -1,5 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import TrendBadge from './TrendBadge'
 
 import BigNumberMetric from './BigNumberMetric'
 
@@ -18,10 +19,27 @@ const Template: Story<ComponentProps<typeof BigNumberMetric>> = (props) => (
 const defaultProps: ComponentProps<typeof BigNumberMetric> = {
     className: '',
     children: '123',
-    from: '456',
 }
 
 export const Default = Template.bind({})
 Default.args = defaultProps
+
+export const LoadingState = Template.bind({})
+LoadingState.args = {
+    ...defaultProps,
+    isLoading: true,
+}
+
+export const WithTrendBadge = Template.bind({})
+WithTrendBadge.args = {
+    ...defaultProps,
+    trendBadge: <TrendBadge value={123} prevValue={100} format="percent" />,
+}
+
+export const WithoutDataAndWithTrendBadge = Template.bind({})
+WithoutDataAndWithTrendBadge.args = {
+    children: '-',
+    trendBadge: <TrendBadge value={0} prevValue={0} format="percent" />,
+}
 
 export default storyConfig

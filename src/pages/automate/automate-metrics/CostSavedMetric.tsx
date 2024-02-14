@@ -17,9 +17,11 @@ export const CostSavedMetric = ({
                 title: 'How much more it would have cost if these interactions were handled by an agent, based on Helpdesk ticket cost plus the benchmark agent cost of $3.1 per ticket.',
             }}
             isLoading={costSavedTrend.isFetching}
-            trendBadge={<TrendBadge {...getTrendProps(costSavedTrend)} />}
         >
-            <BigNumberMetric isLoading={costSavedTrend.isFetching}>
+            <BigNumberMetric
+                isLoading={costSavedTrend.isFetching}
+                trendBadge={<TrendBadge {...getTrendProps(costSavedTrend)} />}
+            >
                 {formatCurrency(
                     Math.round(costSavedTrend.data?.value ?? 0),
                     'usd'

@@ -15,7 +15,6 @@ type Props = {
     isLoading?: boolean
     title: ReactNode
     tip?: ReactNode
-    trendBadge?: ReactNode
 }
 
 export default function MetricCard({
@@ -25,16 +24,12 @@ export default function MetricCard({
     isLoading = false,
     title,
     tip,
-    trendBadge,
 }: Props) {
     return (
         <Card className={classnames(css.card, className)}>
             <div className={css.title}>
                 {title}
                 {hint && <HintTooltip {...hint} />}
-                {trendBadge && (
-                    <div className={css.trendBadge}>{trendBadge}</div>
-                )}
             </div>
 
             {children}
