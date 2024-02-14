@@ -93,10 +93,6 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             | IntegrationType.Email = integration.get('type')
         const isGmail = integrationType === IntegrationType.Gmail
         const isOutlook = integrationType === IntegrationType.Outlook
-        const enableGmailSending = integration.getIn(
-            ['meta', 'enable_gmail_sending'],
-            true
-        )
 
         const isVerified = integration.getIn(['meta', 'verified'], true)
         const isDomainVerified = verifiedDomains.includes(domain)
@@ -107,15 +103,20 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             !isSendgridEmailIntegration(integration.toJS()) && // In case the provider is sendgrid, use shouldDisplayOutboundVerificationWarning
             !isDomainVerified &&
             !isBaseIntegration && // The base email integration cannot have a domain associated
-            !isOutlook && // Outlook does not need domain verification
-            !(isGmail && enableGmailSending) && // GMail only needs domain verification if email sending is disabled
-            (isGmail || isVerified) // Email integrations must be verified before adding a domain configuration
+            isVerified &&
+            !isOutlook &&
+            !isGmail
+
+        const shouldDisplayDomainVerificationWarningGmailOutlook =
+            !isDomainVerified && active && (isOutlook || isGmail)
 
         const shouldDisplayOutboundVerificationWarning =
-            isVerified &&
-            !isBaseIntegration &&
             isSendgridEmailIntegration(integration.toJS()) &&
-            !isOutboundVerifiedSendgrid(integration.toJS())
+            !isOutboundVerifiedSendgrid(integration.toJS()) &&
+            !isBaseIntegration && // The base email integration cannot have a domain associated
+            isVerified &&
+            !isOutlook &&
+            !isGmail
 
         const getTabURL = () => {
             if (shouldDisplayOutboundVerificationWarning) {
@@ -208,7 +209,8 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                                 Not verified
                             </div>
                         )}
-                        {shouldDisplayDomainVerificationWarning && (
+                        {(shouldDisplayDomainVerificationWarning ||
+                            shouldDisplayDomainVerificationWarningGmailOutlook) && (
                             <div>
                                 <i
                                     className={classnames(

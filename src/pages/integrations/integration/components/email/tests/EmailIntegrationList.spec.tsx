@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {fromJS} from 'immutable'
-import {render, waitFor} from '@testing-library/react'
+import {render, waitFor, screen} from '@testing-library/react'
 
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
@@ -15,37 +15,57 @@ jest.mock('../resources')
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 
 describe('<EmailIntegrationList/>', () => {
-    function getEmailIntegration(id: number) {
+    function getEmailIntegration(
+        id: number,
+        deactivated = false,
+        provider = EmailProvider.Mailgun
+    ) {
         return {
             id,
             type: IntegrationType.Email,
+            ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
             name: `My Email Integration ${id}`,
             meta: {
                 address: 'email@gorgias-test.com',
+                provider: provider,
             },
         }
     }
 
-    function getGmailIntegration(id: number, sendingEnabled: boolean) {
+    function getGmailIntegration(
+        id: number,
+        deactivated = false,
+        sendingEnabled: boolean,
+        provider = EmailProvider.Mailgun
+    ) {
         return {
             id,
             type: IntegrationType.Gmail,
+            ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
             name: `My GMail Integration ${id}`,
             meta: {
                 address: 'email@gmail.com',
                 enable_gmail_sending: sendingEnabled,
+                provider: provider,
             },
         }
     }
 
-    function getOutlookIntegration(id: number, sendingEnabled: boolean) {
+    function getOutlookIntegration(
+        id: number,
+        deactivated = false,
+        sendingEnabled: boolean,
+        provider = EmailProvider.Mailgun
+    ) {
         return {
             id,
             type: IntegrationType.Outlook,
+            ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
             name: `My Outlook Integration ${id}`,
             meta: {
                 address: 'email@Outlook.com',
                 enable_gmail_sending: sendingEnabled,
+                provider: provider,
             },
         }
     }
@@ -66,19 +86,16 @@ describe('<EmailIntegrationList/>', () => {
         it('should render the page with a warning when the domain is not verified', async () => {
             const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
-            const {container} = render(
+            renderWithRouter(
                 <Provider store={store}>
                     <EmailIntegrationList {...commonProps} />
-                </Provider>,
-                {
-                    wrapper: ({children}) => (
-                        <MemoryRouter>{children}</MemoryRouter>
-                    ),
-                }
+                </Provider>
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
-            expect(container).toMatchSnapshot()
+            expect(
+                screen.getByText('Pending domain verification')
+            ).toBeVisible()
         })
 
         it('should render the page when there are no integrations', async () => {
@@ -138,71 +155,145 @@ describe('<EmailIntegrationList/>', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render the page with a warning when a GMail integration has sending disabled', async () => {
-            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
+            'should render the page with a warning when a GMail integration has sending disabled',
+            async (emailProvider: EmailProvider) => {
+                const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
-            const {container} = render(
-                <Provider store={store}>
-                    <EmailIntegrationList
-                        {...commonProps}
-                        integrations={fromJS([getGmailIntegration(1, false)])}
-                    />
-                </Provider>,
+                renderWithRouter(
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                getGmailIntegration(
+                                    1,
+                                    false,
+                                    false,
+                                    emailProvider
+                                ),
+                            ])}
+                        />
+                    </Provider>
+                )
+                await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
-                {
-                    wrapper: ({children}) => (
-                        <MemoryRouter>{children}</MemoryRouter>
-                    ),
-                }
-            )
-            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+                expect(
+                    screen.getByText('Pending domain verification')
+                ).toBeVisible()
+            }
+        )
 
-            expect(container).toMatchSnapshot()
-        })
+        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
+            'should render the page with a warning when a Outlook integration has sending disabled',
+            async (emailProvider: EmailProvider) => {
+                const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
-        it('should render the page with a warning when a Outlook integration has sending disabled', async () => {
-            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+                renderWithRouter(
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                getOutlookIntegration(
+                                    1,
+                                    false,
+                                    false,
+                                    emailProvider
+                                ),
+                            ])}
+                        />
+                    </Provider>
+                )
+                await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
-            const {container} = render(
-                <Provider store={store}>
-                    <EmailIntegrationList
-                        {...commonProps}
-                        integrations={fromJS([getOutlookIntegration(1, false)])}
-                    />
-                </Provider>,
+                expect(
+                    screen.getByText('Pending domain verification')
+                ).toBeVisible()
+            }
+        )
 
-                {
-                    wrapper: ({children}) => (
-                        <MemoryRouter>{children}</MemoryRouter>
-                    ),
-                }
-            )
-            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
+            'should render the page with a warning when a GMail integration has sending enabled',
+            async (emailProvider: EmailProvider) => {
+                const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
-            expect(container).toMatchSnapshot()
-        })
+                renderWithRouter(
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                getGmailIntegration(
+                                    1,
+                                    false,
+                                    true,
+                                    emailProvider
+                                ),
+                            ])}
+                        />
+                    </Provider>
+                )
+                await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
-        it('should render the page without warning when a GMail integration has sending enabled', async () => {
-            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+                expect(
+                    screen.getByText('Pending domain verification')
+                ).toBeVisible()
+            }
+        )
 
-            const {container} = render(
-                <Provider store={store}>
-                    <EmailIntegrationList
-                        {...commonProps}
-                        integrations={fromJS([getGmailIntegration(1, true)])}
-                    />
-                </Provider>,
+        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
+            'should render the page without warning when a GMail integration is deactivated',
+            async (emailProvider: EmailProvider) => {
+                const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
-                {
-                    wrapper: ({children}) => (
-                        <MemoryRouter>{children}</MemoryRouter>
-                    ),
-                }
-            )
-            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+                renderWithRouter(
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                getGmailIntegration(
+                                    1,
+                                    true,
+                                    true,
+                                    emailProvider
+                                ),
+                            ])}
+                        />
+                    </Provider>
+                )
+                await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
-            expect(container).toMatchSnapshot()
-        })
+                expect(
+                    screen.queryByText('Pending domain verification')
+                ).toBeNull()
+            }
+        )
+
+        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
+            'should render the page without warning when a Outlook integration is deactivated',
+            async (emailProvider: EmailProvider) => {
+                const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+
+                renderWithRouter(
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                getOutlookIntegration(
+                                    1,
+                                    true,
+                                    true,
+                                    emailProvider
+                                ),
+                            ])}
+                        />
+                    </Provider>
+                )
+                await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+
+                expect(
+                    screen.queryByText('Pending domain verification')
+                ).toBeNull()
+            }
+        )
 
         it('should redirect to preferences tab when provider is not Sendgrid', async () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
