@@ -38,6 +38,7 @@ import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import ChartCard from 'pages/stats/ChartCard'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
@@ -56,6 +57,8 @@ import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/Voic
 function VoiceOverview() {
     const displayVoiceAnalyticsNiceToHave: boolean =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave] || false
+    const displayVoiceAnalyticsV1: boolean | undefined =
+        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1] || false
     const [tableFilterOption, setTableFilterOption] = useState(
         VoiceCallFilterOptions.All
     )
@@ -130,6 +133,12 @@ function VoiceOverview() {
                         isMultiple
                         variant={'ghost'}
                     />
+                    {displayVoiceAnalyticsV1 && (
+                        <TagsStatsFilter
+                            value={pageStatsFilters.tags}
+                            variant={'ghost'}
+                        />
+                    )}
                     {displayVoiceAnalyticsNiceToHave && (
                         <AgentsStatsFilter
                             value={pageStatsFilters.agents}

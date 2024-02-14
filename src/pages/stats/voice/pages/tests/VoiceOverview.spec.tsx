@@ -28,6 +28,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {billingState} from 'fixtures/billing'
 import {agents} from 'fixtures/agents'
 import {StatsFilters} from 'models/stat/types'
+import {tags} from 'fixtures/tag'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {saveReport} from 'services/reporting/voiceOverviewReportingService'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
@@ -61,7 +62,10 @@ const mockSaveReport = assumeMock(saveReport)
 describe('VoiceOverview', () => {
     beforeEach(() => {
         resetLDMocks()
-        mockFlags({[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true})
+        mockFlags({
+            [FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true,
+            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
+        })
     })
 
     const renderVoiceOverview = (featureEnabled = true) => {
@@ -71,6 +75,7 @@ describe('VoiceOverview', () => {
                 end_datetime: '2023-12-11T23:59:59.999Z',
             },
             agents: [agents[0].id],
+            tags: [tags[0].id],
         }
         const state = {
             currentUser: fromJS(user) as Map<any, any>,
@@ -94,6 +99,7 @@ describe('VoiceOverview', () => {
                     fetchingMap: {},
                 },
             },
+            entities: {tags: {[tags[0].id]: tags[0]}},
         } as RootState
         return render(
             <QueryClientProvider client={queryClient}>
@@ -113,6 +119,7 @@ describe('VoiceOverview', () => {
 
         // filters
         expect(queryByText('All integrations')).toBeInTheDocument()
+        expect(queryByText('1 tag')).toBeInTheDocument()
         expect(queryByText('1 agent')).toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
         expect(queryByText('Download data')).toBeInTheDocument()

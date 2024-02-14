@@ -1,5 +1,6 @@
 import {Cube} from 'models/reporting/types'
 import {StatsFiltersMembers} from 'utils/reporting'
+import {TicketMember} from './TicketCube'
 
 export enum VoiceCallMeasure {
     VoiceCallCount = 'VoiceCall.count',
@@ -49,6 +50,7 @@ export const VoiceCallFiltersMembers: StatsFiltersMembers = {
     periodEnd: VoiceCallMember.PeriodEnd,
     integrations: VoiceCallMember.IntegrationId,
     agents: VoiceCallMember.AgentId,
+    tags: TicketMember.Tags,
 }
 
 export type VoiceCallCube = Cube<
