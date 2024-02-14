@@ -14,7 +14,6 @@ import CustomerInitialMessages from './CustomerInitialMessages'
 
 type Props = {
     conversationColor: string
-    mainColor: string
     chatTitle?: string
     language?: string
     autoResponderReply?: string
@@ -26,7 +25,6 @@ type Props = {
 const AutoResponderMessages: React.FC<Props> = ({
     currentUser,
     avatar,
-    mainColor,
     conversationColor,
     chatTitle,
     language,
@@ -45,7 +43,6 @@ const AutoResponderMessages: React.FC<Props> = ({
                 messages={[widgetTranslatedTexts.previewCustomerInitialMessage]}
             />
             <AutoResponder
-                mainColor={mainColor}
                 chatTitle={chatTitle}
                 language={language}
                 autoResponderReply={autoResponderReply}

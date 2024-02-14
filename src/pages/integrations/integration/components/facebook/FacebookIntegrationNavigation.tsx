@@ -1,33 +1,32 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
 
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
-type Props = {
+const FacebookIntegrationNavigation = ({
+    integration,
+}: {
     integration: Map<any, any>
+}) => {
+    const integrationId: number = integration.get('id')
+    const baseURL = `/app/settings/integrations/facebook/${integrationId}`
+
+    const links = [
+        [`${baseURL}/overview`, 'Overview'],
+        [`${baseURL}/customer_chat`, 'Customer chat'],
+        [`${baseURL}/preferences`, 'Preferences'],
+    ]
+
+    return (
+        <SecondaryNavbar>
+            {links.map(([to, text]) => (
+                <NavLink key={to} to={to} exact>
+                    {text}
+                </NavLink>
+            ))}
+        </SecondaryNavbar>
+    )
 }
 
-export default class FacebookIntegrationNavigation extends Component<Props> {
-    render() {
-        const {integration} = this.props
-        const integrationId: number = integration.get('id')
-        const baseURL = `/app/settings/integrations/facebook/${integrationId}`
-
-        const links = [
-            [`${baseURL}/overview`, 'Overview'],
-            [`${baseURL}/customer_chat`, 'Customer chat'],
-            [`${baseURL}/preferences`, 'Preferences'],
-        ]
-
-        return (
-            <SecondaryNavbar>
-                {links.map(([to, text]) => (
-                    <NavLink key={to} to={to} exact>
-                        {text}
-                    </NavLink>
-                ))}
-            </SecondaryNavbar>
-        )
-    }
-}
+export default FacebookIntegrationNavigation

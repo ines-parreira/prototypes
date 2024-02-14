@@ -754,7 +754,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             previewChildren = (
                 <AutoResponderPreview
                     key="auto-responder"
-                    mainColor={mainColor}
                     chatTitle={chatTitle}
                     language={language}
                     autoResponderReply={autoResponderReply}

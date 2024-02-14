@@ -190,7 +190,6 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <AutoResponder
-                            mainColor={mainColor}
                             language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                             chatTitle="My little chat integration"
                             autoResponderReply={

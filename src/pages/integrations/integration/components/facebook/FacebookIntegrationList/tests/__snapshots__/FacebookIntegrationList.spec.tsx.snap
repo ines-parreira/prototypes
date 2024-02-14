@@ -1,50 +1,70 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FacebookIntegrationList component should render 1`] = `
-<Router
-  history={
-    {
-      "action": "PUSH",
-      "block": [Function],
-      "createHref": [Function],
-      "go": [Function],
-      "goBack": [Function],
-      "goForward": [Function],
-      "length": 2,
-      "listen": [Function],
-      "location": {
-        "hash": "",
-        "key": "KEY",
-        "pathname": "/foo/facebook",
-        "search": "",
-        "state": undefined,
-      },
-      "push": [Function],
-      "replace": [Function],
-    }
-  }
+exports[`<FacebookIntegrationList /> should render 1`] = `
+<div
+  class="w-100"
 >
-  <Route
-    path="/foo/:integrationType"
+  <div
+    class="page-header pageHeader"
   >
-    <Provider
-      store={
-        {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        }
-      }
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <FacebookIntegrationListContainer
-        integrations={Immutable.List []}
-        loading={Immutable.Map {}}
-        redirectUri="https://.../"
-      />
-    </Provider>
-  </Route>
-</Router>
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Facebook, Messenger & Instagram
+        </li>
+      </ol>
+    </nav>
+    <div>
+      <button
+        aria-disabled="false"
+        class="wrapper facebookButton primary fill primary medium"
+        type="submit"
+      >
+        <img
+          alt="facebook-logo"
+          class="facebookLogo"
+          src="test-file-stub"
+        />
+        Login with Facebook
+      </button>
+    </div>
+  </div>
+  <div
+    class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-list-top"
+  >
+    <div
+      class="mb-3"
+    >
+      Facebook is a popular social network where customers can interact with companies.
+This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.
+    </div>
+  </div>
+  <table
+    class="table-integrations mt-3 table table-hover"
+  >
+    <tbody />
+  </table>
+  <div
+    class="container-fluid"
+    data-candu-id="integration-list-bottom"
+  />
+</div>
 `;

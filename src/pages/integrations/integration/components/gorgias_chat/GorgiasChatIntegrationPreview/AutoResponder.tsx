@@ -1,27 +1,30 @@
-import React, {Component} from 'react'
+import React, {useMemo} from 'react'
 
+import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from 'config/integrations'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/gorgias_chat'
-import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from '../../../../../../config/integrations'
+} from 'config/integrations/gorgias_chat'
 
 import BotMessages from './BotMessages'
 import EmailCaptureMessage from './EmailCaptureMessage'
 
 type Props = {
-    mainColor: string
-    chatTitle?: string
-    language?: string
     autoResponderReply?: string
+    chatTitle?: string
     isEmailCaptureEnabled?: boolean
+    language?: string
 }
 
-export default class AutoResponder extends Component<Props> {
-    _getMessage = () => {
-        const {autoResponderReply, language} = this.props
+const AutoResponder = ({
+    autoResponderReply,
+    chatTitle,
+    isEmailCaptureEnabled = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
+    language,
+}: Props) => {
+    const message = useMemo(() => {
         const widgetTranslatedTexts =
             GORGIAS_CHAT_WIDGET_TEXTS[
                 language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
@@ -37,26 +40,19 @@ export default class AutoResponder extends Component<Props> {
                       ? widgetTranslatedTexts.emailCaptureTriggerTypicalReplyMinutes
                       : widgetTranslatedTexts.emailCaptureTriggerTypicalReplyHours
               }`
-    }
+    }, [autoResponderReply, language])
 
-    render() {
-        const {
-            chatTitle,
-            language,
-            isEmailCaptureEnabled = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
-        } = this.props
-        const message = this._getMessage()
-
-        return (
-            <BotMessages
-                chatTitle={chatTitle}
-                messages={[message]}
-                language={language}
-            >
-                {isEmailCaptureEnabled && (
-                    <EmailCaptureMessage language={language} />
-                )}
-            </BotMessages>
-        )
-    }
+    return (
+        <BotMessages
+            chatTitle={chatTitle}
+            messages={[message]}
+            language={language}
+        >
+            {isEmailCaptureEnabled && (
+                <EmailCaptureMessage language={language} />
+            )}
+        </BotMessages>
+    )
 }
+
+export default AutoResponder

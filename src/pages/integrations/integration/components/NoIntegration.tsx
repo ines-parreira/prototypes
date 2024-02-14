@@ -1,19 +1,12 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 import Loader from 'pages/common/components/Loader/Loader'
 
-type Props = {
-    loading?: boolean
-}
+const NoIntegration = ({loading = false}: {loading?: boolean}) =>
+    loading ? (
+        <Loader />
+    ) : (
+        <>You have no integration of this type at the moment.</>
+    )
 
-export default class NoIntegration extends Component<Props> {
-    render() {
-        const {loading = false} = this.props
-
-        if (loading) {
-            return <Loader />
-        }
-
-        return <>You have no integration of this type at the moment.</>
-    }
-}
+export default NoIntegration

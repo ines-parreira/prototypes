@@ -1,60 +1,41 @@
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {FC, ReactNode, SyntheticEvent} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import {getFacebookRedirectUri} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
+
 import FacebookLoginButton from './FacebookLoginButton'
 
-type OwnProps = {
-    reconnect?: boolean
-    link?: boolean
+type Props = {
     children?: ReactNode
     intent?: ButtonIntent
+    link?: boolean
+    reconnect?: boolean
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+const FacebookIntegrationLoginButton: FC<Props> = ({
+    children,
+    intent,
+    link = false,
+    reconnect = false,
+}) => {
+    const redirectUri = useAppSelector(getFacebookRedirectUri(reconnect))
 
-export class FacebookIntegrationLoginButtonContainer extends Component<Props> {
-    static defaultProps: OwnProps = {
-        reconnect: false,
-        link: false,
-        children: null,
-    }
-
-    _handleSubmit = (e: React.SyntheticEvent, redirectUri: string) => {
+    const handleSubmit = (e: SyntheticEvent, redirectUri: string) => {
         e.preventDefault()
         window.open(redirectUri)
     }
 
-    renderLink() {
-        const {redirectUri, children} = this.props
-
-        return <a href={redirectUri}>{children || 'Login with Facebook'}</a>
-    }
-
-    renderButton() {
-        const {redirectUri, children, intent} = this.props
-
-        return (
-            <FacebookLoginButton
-                intent={intent}
-                onClick={(e) => this._handleSubmit(e, redirectUri)}
-            >
-                {children || 'Reconnect'}
-            </FacebookLoginButton>
-        )
-    }
-
-    render() {
-        const {link} = this.props
-
-        return link ? this.renderLink() : this.renderButton()
-    }
+    return link ? (
+        <a href={redirectUri}>{children || 'Login with Facebook'}</a>
+    ) : (
+        <FacebookLoginButton
+            intent={intent}
+            onClick={(e) => handleSubmit(e, redirectUri)}
+        >
+            {children || 'Reconnect'}
+        </FacebookLoginButton>
+    )
 }
 
-const connector = connect((state: RootState, props: OwnProps) => ({
-    redirectUri: getFacebookRedirectUri(props.reconnect)(state),
-}))
-
-export default connector(FacebookIntegrationLoginButtonContainer)
+export default FacebookIntegrationLoginButton

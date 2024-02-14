@@ -1043,7 +1043,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               autoResponderReply="reply-dynamic"
               isEmailCaptureEnabled={true}
               language="en-US"
-              mainColor="#789c5d"
             />
           </ChatIntegrationPreviewContent>
         </ChatIntegrationPreview>
@@ -1569,7 +1568,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               autoResponderReply="reply-dynamic"
               isEmailCaptureEnabled={true}
               language="en-US"
-              mainColor="#789c5d"
             />
           </ChatIntegrationPreviewContent>
         </ChatIntegrationPreview>

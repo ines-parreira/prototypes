@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useMemo} from 'react'
 import {RichUtils} from 'draft-js'
 
 import {ActionInjectedProps} from '../types'
@@ -6,14 +6,20 @@ import {ActionInjectedProps} from '../types'
 import Button from './Button'
 
 type Props = {
-    name: string
     icon: string
+    name: string
     style: string
 } & ActionInjectedProps
 
-export default class InlineStyle extends Component<Props> {
-    _isActive = () => {
-        const editorState = this.props.getEditorState()
+const InlineStyle = ({
+    getEditorState,
+    icon,
+    name,
+    setEditorState,
+    style,
+}: Props) => {
+    const isActive = useMemo(() => {
+        const editorState = getEditorState()
         const contentState = editorState.getCurrentContent()
 
         if (!contentState.hasText()) {
@@ -21,25 +27,23 @@ export default class InlineStyle extends Component<Props> {
         }
 
         const currentStyle = editorState.getCurrentInlineStyle()
-        return currentStyle.has(this.props.style)
+        return currentStyle.has(style)
+    }, [getEditorState, style])
+
+    const onToggle = () => {
+        const editorState = getEditorState()
+        setEditorState(RichUtils.toggleInlineStyle(editorState, style))
     }
 
-    _onToggle = () => {
-        const editorState = this.props.getEditorState()
-        this.props.setEditorState(
-            RichUtils.toggleInlineStyle(editorState, this.props.style)
-        )
-    }
-
-    render() {
-        return (
-            <Button
-                name={this.props.name}
-                icon={this.props.icon}
-                isActive={this._isActive()}
-                isDisabled={false}
-                onToggle={this._onToggle}
-            />
-        )
-    }
+    return (
+        <Button
+            name={name}
+            icon={icon}
+            isActive={isActive}
+            isDisabled={false}
+            onToggle={onToggle}
+        />
+    )
 }
+
+export default InlineStyle

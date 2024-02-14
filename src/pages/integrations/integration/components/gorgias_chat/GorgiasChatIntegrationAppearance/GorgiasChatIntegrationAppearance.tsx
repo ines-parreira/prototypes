@@ -816,7 +816,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         />
                     ) : isOnline ? (
                         <AutoResponderMessages
-                            mainColor={mainColor}
                             currentUser={currentUser}
                             conversationColor={conversationColor}
                             chatTitle={name}

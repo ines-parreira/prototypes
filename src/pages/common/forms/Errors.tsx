@@ -1,12 +1,9 @@
-import React, {Component, ComponentProps} from 'react'
+import React, {ComponentProps, FC} from 'react'
 import {FormFeedback} from 'reactstrap'
 
-export default class Errors extends Component<
-    ComponentProps<typeof FormFeedback>
-> {
-    render() {
-        const {children, ...rest} = this.props
+const Errors: FC<ComponentProps<typeof FormFeedback>> = ({
+    children,
+    ...rest
+}) => <FormFeedback {...rest}>{children}</FormFeedback>
 
-        return <FormFeedback {...rest}>{children}</FormFeedback>
-    }
-}
+export default Errors

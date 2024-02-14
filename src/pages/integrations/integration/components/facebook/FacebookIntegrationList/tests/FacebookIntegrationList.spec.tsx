@@ -1,14 +1,14 @@
 import React, {ReactNode} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {createBrowserHistory, History} from 'history'
 import {Router, Route} from 'react-router-dom'
+import {render} from '@testing-library/react'
+import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
-import {FacebookIntegrationListContainer} from '../FacebookIntegrationList'
+import FacebookIntegrationList from '../FacebookIntegrationList'
 
 const RouterWrapper = ({
     history,
@@ -37,7 +37,7 @@ const RouterWrapper = ({
     )
 }
 
-describe('FacebookIntegrationList component', () => {
+describe('<FacebookIntegrationList />', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
 
@@ -64,18 +64,17 @@ describe('FacebookIntegrationList component', () => {
     })
 
     it('should render', () => {
-        const component = shallow(
+        const {container} = render(
             <RouterWrapper>
                 <Provider store={store}>
-                    <FacebookIntegrationListContainer
+                    <FacebookIntegrationList
                         loading={fromJS({})}
                         redirectUri="https://.../"
-                        integrations={fromJS([])}
                     />
                 </Provider>
             </RouterWrapper>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })
