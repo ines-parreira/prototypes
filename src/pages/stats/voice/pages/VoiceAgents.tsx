@@ -13,6 +13,8 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import ChartCard from 'pages/stats/ChartCard'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
@@ -21,7 +23,6 @@ import {VoiceAgentsTable} from 'pages/stats/voice/components/VoiceAgentsTable/Vo
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import {VoiceAgentsDownloadDataButton} from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
 
 function VoiceAgents() {
@@ -38,6 +39,10 @@ function VoiceAgents() {
                         value={pageStatsFilters.integrations}
                         integrations={phoneIntegrations}
                         isMultiple
+                        variant={'ghost'}
+                    />
+                    <TagsStatsFilter
+                        value={pageStatsFilters.tags}
                         variant={'ghost'}
                     />
                     <AgentsStatsFilter

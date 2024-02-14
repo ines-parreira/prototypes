@@ -5,7 +5,6 @@ import {fromJS, Map} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
@@ -13,7 +12,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {StatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
 import {billingState} from 'fixtures/billing'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {tags} from 'fixtures/tag'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
@@ -33,11 +32,6 @@ const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceAgents', () => {
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true})
-    })
-
     const renderVoiceAgents = (featureEnabled = true) => {
         const statsFilters: StatsFilters = {
             period: {
@@ -45,6 +39,7 @@ describe('VoiceAgents', () => {
                 end_datetime: '2023-12-11T23:59:59.999Z',
             },
             agents: [agents[0].id],
+            tags: [tags[0].id],
         }
         const state = {
             currentUser: fromJS(user) as Map<any, any>,
@@ -69,6 +64,7 @@ describe('VoiceAgents', () => {
                 },
                 agentPerformance: agentPerformanceInitialState,
             },
+            entities: {tags: {[tags[0].id]: tags[0]}},
         } as RootState
 
         return render(
@@ -86,6 +82,15 @@ describe('VoiceAgents', () => {
         // title
         expect(queryByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
         expect(queryByText(VOICE_CALL_ACTIVITY_TITLE)).toBeInTheDocument()
+
+        expect(queryByText('Voice add-on features')).toBeNull()
+
+        // filters
+        expect(queryByText('All integrations')).toBeInTheDocument()
+        expect(queryByText('1 tag')).toBeInTheDocument()
+        expect(queryByText('1 agent')).toBeInTheDocument()
+        expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
+        expect(queryByText('Download data')).toBeInTheDocument()
 
         // footer
         expect(
