@@ -23,6 +23,7 @@ import {
     handleOnSuccess,
     mapHelpCenterArticleItemToArticle,
 } from '../HelpCenterCreationWizardUtils'
+import {logEvent, SegmentEvent} from '../../../../../../common/segment'
 
 type HelpCenterArticlesFormOutput = {
     articles: Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
@@ -120,6 +121,10 @@ export const useHelpCenterArticlesForm = (
         (key: string) => {
             const article = findArticleByKey(newArticles, key)
             if (article) {
+                logEvent(SegmentEvent.WizardArticleEditClicked, {
+                    type: 'template',
+                })
+
                 setSelectedArticle(article)
                 setEditModal({
                     isOpened: true,
@@ -280,6 +285,10 @@ export const useHelpCenterArticlesForm = (
 
         const article = {...selectedArticle, title, content}
 
+        logEvent(SegmentEvent.WizardArticleEdited, {
+            type: 'template',
+        })
+
         if (article.id) {
             article.shouldCreateTranslation
                 ? await createArticleTranslation(article)
@@ -299,6 +308,17 @@ export const useHelpCenterArticlesForm = (
                     (!id || shouldCreateTranslation === true)
             )
         )
+
+        // Track every selected item
+        flatMap(newArticles, (items) => {
+            items.forEach((item) => {
+                if (item.isSelected) {
+                    logEvent(SegmentEvent.WizardArticleSaved, {
+                        type: 'template',
+                    })
+                }
+            })
+        })
 
         const unselectedItemsWithId = flatMap(newArticles, (items) =>
             filter(items, ({isSelected, id}) => !isSelected && id !== undefined)

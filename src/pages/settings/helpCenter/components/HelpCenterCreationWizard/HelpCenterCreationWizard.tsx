@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
@@ -12,6 +12,7 @@ import {
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
 import css from './HelpCenterCreationWizard.less'
 import HelpCenterCreationWizardStepBasics from './components/steps/HelpCenterCreationWizardStepBasics'
@@ -33,15 +34,19 @@ const HelpCenterCreationWizardComponent = ({
     const automateType =
         HelpCenterAutomateType.NON_AUTOMATE as HelpCenterAutomateType // For UAT. TEmp solutionÏÏÏ
 
-    const steps = Object.values(HelpCenterCreationWizardStep).filter((step) => {
-        if (step === HelpCenterCreationWizardStep.Automate) {
-            return automateType === HelpCenterAutomateType.AUTOMATE
-        }
-        if (step === HelpCenterCreationWizardStep.Initialization) {
-            return false
-        }
-        return true
-    })
+    const steps = useMemo(
+        () =>
+            Object.values(HelpCenterCreationWizardStep).filter((step) => {
+                if (step === HelpCenterCreationWizardStep.Automate) {
+                    return automateType === HelpCenterAutomateType.AUTOMATE
+                }
+                if (step === HelpCenterCreationWizardStep.Initialization) {
+                    return false
+                }
+                return true
+            }),
+        [automateType]
+    )
 
     const helpCenterStepName = helpCenter?.wizard?.step_name
 
@@ -53,6 +58,20 @@ const HelpCenterCreationWizardComponent = ({
         helpCenterStepName !== HelpCenterCreationWizardStep.Initialization
             ? helpCenterStepName
             : HelpCenterCreationWizardStep.Basics
+
+    const onStepChanged = useCallback(
+        (stepName) => {
+            logEvent(SegmentEvent.WizardPageViewed, {
+                steps: steps.join(', '),
+                automate:
+                    automateType === HelpCenterAutomateType.AUTOMATE
+                        ? 'yes'
+                        : 'no',
+                type: stepName,
+            })
+        },
+        [automateType, steps]
+    )
 
     return (
         <>
@@ -74,7 +93,11 @@ const HelpCenterCreationWizardComponent = ({
                     }
                 />
                 <div className={css.wrapper}>
-                    <Wizard steps={steps} startAt={wizardStep}>
+                    <Wizard
+                        steps={steps}
+                        startAt={wizardStep}
+                        onStepChanged={onStepChanged}
+                    >
                         <WizardStep name={HelpCenterCreationWizardStep.Basics}>
                             <HelpCenterCreationWizardStepBasics
                                 helpCenter={helpCenter}

@@ -12,6 +12,7 @@ type Props = {
     children: ReactNode
     startAt?: string
     steps: string[]
+    onStepChanged?: (step: string) => void
 }
 
 export type WizardContextState = {
@@ -26,7 +27,12 @@ export type WizardContextState = {
 
 export const WizardContext = createContext<WizardContextState | null>(null)
 
-export default function Wizard({children, steps, startAt = steps[0]}: Props) {
+export default function Wizard({
+    children,
+    steps,
+    startAt = steps[0],
+    onStepChanged,
+}: Props) {
     const [activeStep, setActiveStep] = useState(startAt || '')
     const activeStepIndex = useMemo(
         () => steps.findIndex((step) => activeStep === step),
@@ -48,6 +54,10 @@ export default function Wizard({children, steps, startAt = steps[0]}: Props) {
             )
         }
     }, [steps])
+
+    useEffect(() => {
+        onStepChanged?.(activeStep)
+    }, [activeStep, onStepChanged])
 
     useUpdateEffect(() => {
         if (steps.includes(activeStep)) {

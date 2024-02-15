@@ -9,6 +9,7 @@ import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import IconButton from 'pages/common/components/button/IconButton'
 import {HelpCenterArticleItem, LocaleCode} from 'models/helpCenter/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
@@ -50,6 +51,14 @@ const ArticleEditor: React.FC<Props> = ({
     useEffect(() => {
         setIsDisabled(!(title && content))
     }, [title, content])
+
+    useEffect(() => {
+        if (article) {
+            logEvent(SegmentEvent.WizardArticleEditViewed, {
+                type: 'template',
+            })
+        }
+    }, [article])
 
     const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value)
