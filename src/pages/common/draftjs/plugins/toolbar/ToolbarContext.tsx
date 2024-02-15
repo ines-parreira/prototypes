@@ -30,6 +30,9 @@ export type ToolbarContextType = {
     shopifyIntegrations: List<any>
     // WorkflowVariablePicker
     workflowVariables?: WorkflowVariableList
+    workflowVariablesNodeTypes?: NonNullable<
+        WorkflowVariableList[number]['nodeType']
+    >[]
 }
 
 const ToolbarContext = createContext<ToolbarContextType>({

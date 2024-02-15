@@ -21,6 +21,17 @@ type Props = {
     error?: string
 }
 
+const workflowVariablesNodeTypes: NonNullable<
+    WorkflowVariableList[number]['nodeType']
+>[] = [
+    'text_reply',
+    'multiple_choices',
+    'file_upload',
+    'order_selection',
+    'http_request',
+    'shopper_authentication',
+]
+
 const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
     const editorRef = useRef<Editor | null>()
 
@@ -106,7 +117,10 @@ const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
     return (
         <div>
             <div className={css.container}>
-                <ToolbarProvider workflowVariables={variables}>
+                <ToolbarProvider
+                    workflowVariables={variables}
+                    workflowVariablesNodeTypes={workflowVariablesNodeTypes}
+                >
                     <div
                         className={classnames(css.editor, {
                             [css.hasError]: !!error,

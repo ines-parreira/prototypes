@@ -9,8 +9,8 @@ import {
     extractVariablesFromNode,
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
+    validateJSONWithVariables,
 } from 'pages/automate/workflows/models/variables.model'
-import {validateJSON} from 'utils'
 import {Drawer} from 'pages/common/components/Drawer'
 import Button from 'pages/common/components/button/Button'
 import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
@@ -242,7 +242,7 @@ export default function HttpRequestEditor({
                                     }}
                                     variables={workflowVariables}
                                     error={
-                                        validateJSON(
+                                        validateJSONWithVariables(
                                             nodeInEdition.data.json ?? ''
                                         )
                                             ? undefined

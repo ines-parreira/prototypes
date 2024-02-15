@@ -25,6 +25,7 @@ const ToolbarProvider = ({
     onInsertProductLinkAdded = _noop,
     shopifyIntegrations = List(),
     workflowVariables,
+    workflowVariablesNodeTypes,
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -43,6 +44,7 @@ const ToolbarProvider = ({
             onInsertProductLinkAdded,
             shopifyIntegrations,
             workflowVariables,
+            workflowVariablesNodeTypes,
         }),
         [
             canAddVideoPlayer,
@@ -60,6 +62,7 @@ const ToolbarProvider = ({
             onInsertProductLinkAdded,
             shopifyIntegrations,
             workflowVariables,
+            workflowVariablesNodeTypes,
         ]
     )
 

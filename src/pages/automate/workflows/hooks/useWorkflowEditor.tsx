@@ -8,7 +8,7 @@ import React, {
     useMemo,
 } from 'react'
 
-import {validateHttpHeaderName, validateJSON, validateWebhookURL} from 'utils'
+import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import {saveFileAsDownloaded} from 'utils/file'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import useThrottledValue from 'hooks/useThrottledValue'
@@ -36,6 +36,7 @@ import {
     buildWorkflowVariableFromNode,
     findVariable,
     extractVariablesFromNode,
+    validateJSONWithVariables,
 } from '../models/variables.model'
 import {
     getPayloadSizeToLimitRate,
@@ -691,7 +692,7 @@ function validate(
         .filter(
             (s) => s.settings.headers?.['content-type'] === 'application/json'
         )
-        .some((s) => !validateJSON(s.settings.body || ''))
+        .some((s) => !validateJSONWithVariables(s.settings.body || ''))
     if (jsonInvalid) {
         return 'Invalid JSON'
     }

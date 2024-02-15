@@ -1,6 +1,10 @@
-import {Liquid} from 'liquidjs'
+import {Liquid, Output} from 'liquidjs'
 import _flatten from 'lodash/flatten'
+import _set from 'lodash/set'
+import _get from 'lodash/get'
 
+import {PropertyAccessToken, IdentifierToken} from 'liquidjs/dist/src/tokens'
+import {validateJSON} from '../../../../utils'
 import {
     WorkflowVariableList,
     WorkflowVariable,
@@ -103,14 +107,17 @@ export const buildWorkflowVariableFromNode = (
                 {
                     name: 'Order number',
                     value: '{{order.name}}',
+                    nodeType: 'order_selection',
                 },
                 {
                     name: 'Order total amount',
                     value: '{{order.total_amount | format_currency: order.currency.code, order.currency.decimals}}',
+                    nodeType: 'order_selection',
                 },
                 {
                     name: 'Order date',
                     value: '{{order.created_datetime | format_datetime}}',
+                    nodeType: 'order_selection',
                 },
             ],
         }
@@ -122,22 +129,27 @@ export const buildWorkflowVariableFromNode = (
                 {
                     name: 'Customer first name',
                     value: '{{customer.firstname}}',
+                    nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer last name',
                     value: '{{customer.lastname}}',
+                    nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer full name',
                     value: '{{customer.name}}',
+                    nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer email',
                     value: '{{customer.email}}',
+                    nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer phone number',
                     value: '{{customer.phone_number}}',
+                    nodeType: 'shopper_authentication',
                 },
             ],
         }
@@ -151,7 +163,19 @@ export const buildWorkflowVariableFromNode = (
             variables: variables.map((variable) => ({
                 name: variable.name,
                 value: `{{steps_state.${node.id}.content.${variable.id}}}`,
+                nodeType: 'http_request',
             })),
+        }
+    } else if (node.type === 'file_upload') {
+        const {
+            data: {
+                content: {text},
+            },
+        } = node
+        return {
+            name: formatVariableName(text.length > 0 ? text : 'Message'),
+            value: `{{steps_state.${node.id}.attachments | json}}`,
+            nodeType: 'file_upload',
         }
     }
 }
@@ -310,4 +334,43 @@ const urlEncodedVariableRegex = new RegExp('%7B%7B(.+?)(?=%7D%7D)%7D%7D', 'g')
 
 export function unescapeUrlEncodedVariables(text: string) {
     return text.replace(urlEncodedVariableRegex, '{{$1}}')
+}
+
+export function validateJSONWithVariables(string: string) {
+    return validateJSON(prerenderVariables(string))
+}
+
+function prerenderVariables(string: string) {
+    const context: Record<string, unknown> = {}
+
+    try {
+        const tpls = templateEngine.parse(string)
+
+        for (const tpl of tpls) {
+            if (tpl instanceof Output) {
+                const propertyAccessToken: PropertyAccessToken = _get(tpl, [
+                    'value',
+                    'initial',
+                    'postfix',
+                    '0',
+                ])
+                const identifierTokens =
+                    propertyAccessToken.props as IdentifierToken[]
+                const props = identifierTokens.map((token) => token.content)
+
+                if (
+                    props.length === 3 &&
+                    props[props.length - 1] === 'attachments'
+                ) {
+                    _set(context, props, [])
+                } else {
+                    _set(context, props, '')
+                }
+            }
+        }
+
+        return templateEngine.renderSync(tpls, context) as string
+    } catch {
+        return string
+    }
 }

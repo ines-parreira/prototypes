@@ -1,9 +1,12 @@
 import {useMemo} from 'react'
 
-import {validateHttpHeaderName, validateJSON, validateWebhookURL} from 'utils'
+import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
 import {HttpRequestNodeType} from '../models/visualBuilderGraph.types'
-import {isValidLiquidSyntaxInNode} from '../models/variables.model'
+import {
+    isValidLiquidSyntaxInNode,
+    validateJSONWithVariables,
+} from '../models/variables.model'
 import {useWorkflowEditorContext} from './useWorkflowEditor'
 
 export default function useIsHttpRequestNodeErrored(
@@ -44,7 +47,8 @@ export default function useIsHttpRequestNodeErrored(
             )) ||
         !isValidLiquidSyntaxInNode({data: node.data, type: 'http_request'}) ||
         !!validateWebhookURL(url) ||
-        (bodyContentType === 'application/json' && !validateJSON(json ?? ''))
+        (bodyContentType === 'application/json' &&
+            !validateJSONWithVariables(json ?? ''))
 
     return {
         isErrored,

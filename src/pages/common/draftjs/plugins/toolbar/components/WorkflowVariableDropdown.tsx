@@ -1,4 +1,4 @@
-import React, {RefObject, useEffect, useState} from 'react'
+import React, {RefObject, useEffect, useMemo, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -25,7 +25,16 @@ const WorkflowVariableDropdown = ({
     isOpen,
     onToggle,
 }: Props) => {
-    const {workflowVariables = []} = useToolbarContext()
+    const {
+        workflowVariables: workflowVariablesProp = [],
+        workflowVariablesNodeTypes = [
+            'text_reply',
+            'multiple_choices',
+            'order_selection',
+            'http_request',
+            'shopper_authentication',
+        ],
+    } = useToolbarContext()
 
     const [selectedCategory, setSelectedCategory] =
         useState<WorkflowVariableGroup | null>(null)
@@ -36,6 +45,15 @@ const WorkflowVariableDropdown = ({
         }
     }, [isOpen])
 
+    const workflowVariables = useMemo(
+        () =>
+            workflowVariablesProp.filter(
+                (variable) =>
+                    variable.nodeType &&
+                    workflowVariablesNodeTypes.includes(variable.nodeType)
+            ),
+        [workflowVariablesProp, workflowVariablesNodeTypes]
+    )
     const filteredOptions = selectedCategory
         ? selectedCategory.variables
         : workflowVariables
