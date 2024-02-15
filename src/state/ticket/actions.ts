@@ -1,5 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
+import _noop from 'lodash/noop'
 import _pick from 'lodash/pick'
 import {AxiosError} from 'axios'
 import {createAction} from '@reduxjs/toolkit'
@@ -295,7 +296,7 @@ export const removeTag =
     }
 
 export const setSpam =
-    (spam: boolean, callback?: () => void) =>
+    (spam: boolean, callback: () => void = _noop) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -314,7 +315,7 @@ export const setSpam =
         })
 
         // execute callback immediately, do not wait for server answer
-        callback?.()
+        callback()
 
         return dispatch(ticketPartialUpdate({spam})).then(() => {
             dispatch({
@@ -353,7 +354,7 @@ export const setSpam =
     }
 
 export const setTrashed =
-    (datetime: Maybe<Moment>, callback?: () => void) =>
+    (datetime: Maybe<Moment>, callback: () => void = _noop) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -372,7 +373,7 @@ export const setTrashed =
         })
 
         // execute callback immediately, do not wait for server answer
-        callback?.()
+        callback()
 
         return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(
             () => {
@@ -475,7 +476,7 @@ export const setCustomer =
     }
 
 export const setStatus =
-    (status: string, callback?: () => void) =>
+    (status: string, callback: () => void = _noop) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -500,7 +501,7 @@ export const setStatus =
                 })
                 return response
             }
-            if (status === 'closed') callback?.()
+            if (status === 'closed') callback()
         })
     }
 
@@ -520,7 +521,7 @@ export const setSubject =
     }
 
 export const snoozeTicket =
-    (datetime: Moment | string | null, callback?: () => void) =>
+    (datetime: Moment | string | null, callback: () => void = _noop) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const data = {
             snooze_datetime: datetime,
@@ -533,7 +534,7 @@ export const snoozeTicket =
         })
 
         // execute callback immediately, do not wait for server answer
-        callback?.()
+        callback()
 
         return dispatch(ticketPartialUpdate(data)).then(() => {
             if (datetime) {
