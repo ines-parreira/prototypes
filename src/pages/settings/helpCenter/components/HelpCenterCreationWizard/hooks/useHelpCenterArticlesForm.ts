@@ -55,7 +55,7 @@ export const useHelpCenterArticlesForm = (
     const {mutateAsync: createArticleMutateAsync} = useCreateArticle()
     const {mutateAsync: deleteArticleMutateAsync} = useDeleteArticle()
 
-    const {mutate: updateArticleTranslationMutate} =
+    const {mutateAsync: updateArticleTranslationMutateAsync} =
         useUpdateArticleTranslation()
     const {mutateAsync: createArticleTranslationMutateAsync} =
         useCreateArticleTranslation()
@@ -191,7 +191,7 @@ export const useHelpCenterArticlesForm = (
     ) => {
         if (!articleTemplate.id) return
 
-        return updateArticleTranslationMutate(
+        return updateArticleTranslationMutateAsync(
             [
                 undefined,
                 {
@@ -292,7 +292,7 @@ export const useHelpCenterArticlesForm = (
         if (article.id) {
             article.shouldCreateTranslation
                 ? await createArticleTranslation(article)
-                : updateArticleTranslation(article)
+                : await updateArticleTranslation(article)
         } else {
             await createArticle(article)
         }

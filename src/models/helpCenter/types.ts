@@ -196,13 +196,17 @@ export type ArticleTemplateCategory =
     | 'returnsAndRefunds'
     | 'shippingAndDelivery'
 
+export const ARTICLE_TEMPLATES_KEYS = [
+    'shippingPolicy',
+    'howToReturn',
+    'howToCancelOrder',
+    'howToTrackOrder',
+    'refundsOrExchanges',
+    'packageLostOrDamaged',
+] as const
+
 export type ArticleTemplateKey =
-    | 'shippingPolicy'
-    | 'howToReturn'
-    | 'howToCancelOrder'
-    | 'howToTrackOrder'
-    | 'refundsOrExchanges'
-    | 'packageLostOrDamaged'
+    | typeof ARTICLE_TEMPLATES_KEYS[number]
     | undefined
 
 export type HelpCenterArticleItem = Partial<LocalArticleTranslation> & {

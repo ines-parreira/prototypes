@@ -120,7 +120,7 @@ export const useHelpCenterCreationWizard = (
         isLoading: isCreatingHelpCenterTranslation,
     } = useCreateHelpCenterTranslation()
     const {
-        mutate: deleteHelpCenterTranslationMutateAsync,
+        mutateAsync: deleteHelpCenterTranslationMutateAsync,
         isLoading: isDeletingHelpCenterTranslation,
     } = useDeleteHelpCenterTranslation()
 
@@ -173,34 +173,6 @@ export const useHelpCenterCreationWizard = (
         [setNewHelpCenter]
     )
 
-    const handleSave = async ({
-        redirectTo,
-        stepName,
-        payload,
-        successModalParams,
-    }: HandleSaveParams) => {
-        const tempHelpCenterData = mapUIHelpCenterToApiHelpCenter({
-            ...newHelpCenter,
-            ...payload,
-            stepName: stepName ?? newHelpCenter.stepName,
-        })
-
-        const helpCenterAction = () =>
-            isUpdate
-                ? handleUpdateHelpCenter(tempHelpCenterData)
-                : handleCreateHelpCenter(tempHelpCenterData)
-
-        const helpCenter = await helpCenterAction()
-
-        if (redirectTo) {
-            const searchParams =
-                getNewHelpCenterSearchParams(successModalParams)
-            handleAction(redirectTo, helpCenter?.id, searchParams)
-        }
-
-        return
-    }
-
     const handleCreateHelpCenter = async (payload: Partial<HelpCenter>) => {
         try {
             const res = await createHelpCenterMutateAsync([
@@ -251,6 +223,34 @@ export const useHelpCenterCreationWizard = (
 
             return null
         }
+    }
+
+    const handleSave = async ({
+        redirectTo,
+        stepName,
+        payload,
+        successModalParams,
+    }: HandleSaveParams) => {
+        const tempHelpCenterData = mapUIHelpCenterToApiHelpCenter({
+            ...newHelpCenter,
+            ...payload,
+            stepName: stepName ?? newHelpCenter.stepName,
+        })
+
+        const helpCenterAction = () =>
+            isUpdate
+                ? handleUpdateHelpCenter(tempHelpCenterData)
+                : handleCreateHelpCenter(tempHelpCenterData)
+
+        const helpCenter = await helpCenterAction()
+
+        if (redirectTo) {
+            const searchParams =
+                getNewHelpCenterSearchParams(successModalParams)
+            handleAction(redirectTo, helpCenter?.id, searchParams)
+        }
+
+        return
     }
 
     const handleTranslations = async (helpCenterId: number) => {

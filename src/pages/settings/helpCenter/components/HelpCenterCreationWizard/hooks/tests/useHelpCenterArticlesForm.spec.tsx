@@ -11,7 +11,7 @@ const mockedCreateArticleMutateAsync = jest.fn()
 const mockedDeleteArticleMutateAsync = jest.fn()
 const mockedDeleteArticleTranslationMutateAsync = jest.fn()
 const mockedCreateArticleTranslationMutateAsync = jest.fn()
-const mockedUpdateArticleTranslationMutate = jest.fn()
+const mockedUpdateArticleTranslationMutateAsync = jest.fn()
 
 jest.mock('hooks/useAppSelector')
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -26,7 +26,7 @@ jest.mock('models/helpCenter/queries', () => ({
         mutateAsync: mockedCreateArticleTranslationMutateAsync,
     }),
     useUpdateArticleTranslation: () => ({
-        mutate: mockedUpdateArticleTranslationMutate,
+        mutateAsync: mockedUpdateArticleTranslationMutateAsync,
     }),
     useDeleteArticleTranslation: () => ({
         mutateAsync: mockedDeleteArticleTranslationMutateAsync,
@@ -217,7 +217,9 @@ describe('useHelpCenterArticlesForm', () => {
             })
 
             await waitFor(() => {
-                expect(mockedUpdateArticleTranslationMutate).toHaveBeenCalled()
+                expect(
+                    mockedUpdateArticleTranslationMutateAsync
+                ).toHaveBeenCalled()
                 expect(result.current.selectedArticle).toBeNull()
             })
         })

@@ -2,6 +2,7 @@ import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 import {chain} from 'lodash'
 import {
+    ARTICLE_TEMPLATES_KEYS,
     ArticleTemplate,
     ArticleTemplateKey,
     ArticleWithLocalTranslationAndRating,
@@ -40,17 +41,8 @@ export const isErrorRecord = (
     return typeof error === 'object' && error !== null && !Array.isArray(error)
 }
 
-function isArticleTemplateKey(key: any): key is ArticleTemplateKey {
-    const keys: ArticleTemplateKey[] = [
-        'shippingPolicy',
-        'howToReturn',
-        'howToCancelOrder',
-        'howToTrackOrder',
-        'refundsOrExchanges',
-        'packageLostOrDamaged',
-    ]
-
-    return keys.includes(key)
+function isArticleTemplateKey(key: unknown): key is ArticleTemplateKey {
+    return ARTICLE_TEMPLATES_KEYS.includes(key as any)
 }
 
 export const isHelpCenterCreationWizardStep = (
