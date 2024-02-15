@@ -13,3 +13,12 @@
         flex: 1;
     }
 }
+
+:global {
+    // When .help-center-wizard is present, we need to adjust the position of the chat button
+    body:has(.help-center-wizard) {
+        #chat-button {
+            bottom: 40px !important; // avoid overlapping with the footer button when screen is smallÏ
+        }
+    }
+}

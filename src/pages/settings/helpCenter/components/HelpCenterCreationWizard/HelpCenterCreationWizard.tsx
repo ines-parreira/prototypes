@@ -1,6 +1,7 @@
 import React, {useCallback, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import classnames from 'classnames'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import Wizard from 'pages/common/components/wizard/Wizard'
@@ -75,7 +76,8 @@ const HelpCenterCreationWizardComponent = ({
 
     return (
         <>
-            <div className={css.page}>
+            {/* .help-center-wizard class used to understand on css level that wizard component inside body */}
+            <div className={classnames(css.page, 'help-center-wizard')}>
                 <PageHeader
                     title={
                         <Breadcrumb>
