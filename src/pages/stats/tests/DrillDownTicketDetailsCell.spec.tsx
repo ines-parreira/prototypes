@@ -50,4 +50,17 @@ describe('<DrillDownTicketDetailsCell />', () => {
 
         expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
     })
+
+    it('should render as deleted or merged when status unknown', () => {
+        render(
+            <DrillDownTicketDetailsCell
+                ticketDetails={{
+                    ...ticketDetails,
+                    status: null,
+                }}
+            />
+        )
+
+        expect(screen.getByText('delete')).toBeInTheDocument()
+    })
 })

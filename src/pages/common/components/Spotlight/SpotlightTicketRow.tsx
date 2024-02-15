@@ -2,7 +2,6 @@ import React, {ComponentProps, useMemo} from 'react'
 import moment from 'moment'
 import {fromJS} from 'immutable'
 
-import {TicketStatus} from 'business/types/ticket'
 import {Customer} from 'models/customer/types'
 import {Ticket, TicketAssignee} from 'models/ticket/types'
 import TicketIcon from 'pages/common/components/TicketIcon'
@@ -50,12 +49,7 @@ const SpotlightTicketRow = ({
     <SpotlightRow
         id={id}
         index={index}
-        icon={
-            <TicketIcon
-                channel={item.channel}
-                isOpen={item.status === TicketStatus.Open}
-            />
-        }
+        icon={<TicketIcon channel={item.channel} status={item.status} />}
         title={item.subject || item.excerpt || ''}
         info={
             <SpotlightTicketInfo

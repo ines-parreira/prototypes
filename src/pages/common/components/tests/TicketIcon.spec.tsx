@@ -1,20 +1,17 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {TicketChannel} from 'business/types/ticket'
+import {TicketChannel, TicketStatus} from 'business/types/ticket'
 
-import TicketIcon from '../TicketIcon'
+import TicketIcon, {NullTicketIcon} from '../TicketIcon'
 
 jest.mock('hooks/useId', () => () => 'test')
 
 describe('<TicketIcon />', () => {
     const props = {
         channel: TicketChannel.Email,
+        status: TicketStatus.Closed,
     }
-
-    afterEach(() => {
-        jest.resetAllMocks()
-    })
 
     it('should render the icon as closed', () => {
         const {getByText} = render(<TicketIcon {...props} />)
@@ -24,7 +21,9 @@ describe('<TicketIcon />', () => {
     })
 
     it('should render the icon as open', () => {
-        const {getByText} = render(<TicketIcon {...props} isOpen />)
+        const {getByText} = render(
+            <TicketIcon {...props} status={TicketStatus.Open} />
+        )
         expect(
             getByText('email').closest('div')?.classList.contains('isOpen')
         ).toBeTruthy()
@@ -36,5 +35,13 @@ describe('<TicketIcon />', () => {
         )
 
         expect(getByText('forum')).toBeInTheDocument()
+    })
+})
+
+describe('<NullTicketIcon />', () => {
+    it('should render delete icon', () => {
+        const {getByText} = render(<NullTicketIcon />)
+
+        expect(getByText('delete')).toBeInTheDocument()
     })
 })

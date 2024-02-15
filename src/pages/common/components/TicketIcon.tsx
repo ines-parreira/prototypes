@@ -1,24 +1,25 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {TicketChannel} from 'business/types/ticket'
+import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import useId from 'hooks/useId'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import Tooltip from 'pages/common/components/Tooltip'
 
-import css from './TicketIcon.less'
+import css from 'pages/common/components/TicketIcon.less'
 
 export default function TicketIcon({
     channel,
     className,
-    isOpen = false,
+    status,
 }: {
     channel: TicketChannel
     className?: string
-    isOpen?: boolean
+    status: TicketStatus
 }) {
     const id = useId()
     const iconTargetId = 'icon-' + id + '-tooltip-target'
+    const isOpen = status === TicketStatus.Open
     return (
         <div
             className={classnames(
@@ -34,6 +35,16 @@ export default function TicketIcon({
             <Tooltip placement="top" target={iconTargetId}>
                 This ticket is {isOpen ? 'open' : 'closed'}
             </Tooltip>
+        </div>
+    )
+}
+
+export function NullTicketIcon() {
+    return (
+        <div className={classnames(css.ticketIconWrapper)}>
+            <i className={classnames('material-icons', css.ticketIcon)}>
+                delete
+            </i>
         </div>
     )
 }

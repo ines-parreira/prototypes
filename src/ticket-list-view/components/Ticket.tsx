@@ -5,7 +5,6 @@ import {CSSTransition} from 'react-transition-group'
 import {Link} from 'react-router-dom'
 import {Components} from 'react-virtuoso'
 
-import {TicketStatus} from 'business/types/ticket'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import {shortenRelativeDurationLabel} from 'utils/date'
 
@@ -79,7 +78,7 @@ export default function Ticket({
                             <TicketIcon
                                 channel={ticket.channel}
                                 className={css.icon}
-                                isOpen={ticket.status === TicketStatus.Open}
+                                status={ticket.status}
                             />
                             <div
                                 className={cn(css.content, {

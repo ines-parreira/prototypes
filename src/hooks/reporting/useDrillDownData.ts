@@ -23,7 +23,7 @@ export interface TicketDetails {
     isRead: boolean
     created: string | null
     contactReason: string | null
-    status: TicketStatus
+    status: TicketStatus | null
 }
 
 export interface DrillDownRowData {
