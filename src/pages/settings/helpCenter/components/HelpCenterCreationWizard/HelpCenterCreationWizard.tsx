@@ -15,7 +15,7 @@ import {
 import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
 import css from './HelpCenterCreationWizard.less'
 import HelpCenterCreationWizardStepBasics from './components/steps/HelpCenterCreationWizardStepBasics'
-import useGetAutomateType from './hooks/useGetAutomateType'
+// import useGetAutomateType from './hooks/useGetAutomateType'
 import HelpCenterCreationWizardStepBranding from './components/steps/HelpCenterCreationWizardStepBranding'
 import HelpCenterCreationWizardStepArticles from './components/steps/HelpCenterCreationWizardStepArticles'
 import HelpCenterCreationWizardStepAutomate from './components/steps/HelpCenterCreationWizardStepAutomate'
@@ -29,7 +29,9 @@ const HelpCenterCreationWizardComponent = ({
     helpCenter,
     isUpdate,
 }: Props): JSX.Element => {
-    const automateType = useGetAutomateType()
+    // const automateType = useGetAutomateType()
+    const automateType =
+        HelpCenterAutomateType.NON_AUTOMATE as HelpCenterAutomateType // For UAT. TEmp solutionÏÏÏ
 
     const steps = Object.values(HelpCenterCreationWizardStep).filter((step) => {
         if (step === HelpCenterCreationWizardStep.Automate) {
