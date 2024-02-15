@@ -16,6 +16,11 @@ import {
     ArticleTemplatesEmptyListFixture,
     ArticleTemplatesGeneric500ErrorFixture,
 } from '../fixtures/articleTemplate.fixture'
+import {
+    AIArticlesListFixture,
+    AIArticlesEmptyListFixture,
+    AIArticlesGeneric500ErrorFixture,
+} from '../fixtures/aiGeneratedArticle.fixture'
 
 import * as helpCenterResourceMethods from '../resources'
 
@@ -115,6 +120,23 @@ export const mockResourceServerReplies = (
             .reply(500, ArticleTemplatesGeneric500ErrorFixture)
     }
 
+    if (options.getAIGeneratedArticles === 'success') {
+        mockedServer
+            .onGet('/api/help-center/article-templates')
+            .reply(200, AIArticlesListFixture)
+    }
+    if (options.getAIGeneratedArticles === 'success-empty') {
+        mockedServer
+            .onGet('/api/help-center/article-templates')
+            .reply(200, AIArticlesEmptyListFixture)
+    }
+
+    if (options.getAIGeneratedArticles === 'error') {
+        mockedServer
+            .onGet(`/api/help-center/article-templates`)
+            .reply(500, AIArticlesGeneric500ErrorFixture)
+    }
+
     return {
         fixtures: {
             ShopifyPagesListFixture,
@@ -127,6 +149,9 @@ export const mockResourceServerReplies = (
             ArticleTemplatesListFixture,
             ArticleTemplatesEmptyListFixture,
             ArticleTemplatesGeneric500ErrorFixture,
+            AIArticlesListFixture,
+            AIArticlesEmptyListFixture,
+            AIArticlesGeneric500ErrorFixture,
         },
     }
 }

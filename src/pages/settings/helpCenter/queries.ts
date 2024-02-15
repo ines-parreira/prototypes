@@ -11,6 +11,7 @@ import {
     deletePageEmbedment,
     getArticleTemplates,
     getArticleTemplate,
+    getAIGeneratedArticles,
 } from './resources'
 
 /**
@@ -89,6 +90,14 @@ export const articleTemplateKeys = {
         locale: Paths.ListArticleTemplates.Parameters.Locale,
         key: Paths.GetArticleTemplate.Parameters.TemplateKey | null
     ) => [...articleTemplateKeys.details(locale), key] as const,
+}
+
+/**
+ * RQ Key Factory for Help Center AI Articles
+ */
+export const aiArticleKeys = {
+    all: () => ['aiArticle'] as const,
+    list: () => [...aiArticleKeys.all(), 'list'] as const,
 }
 
 /**
@@ -189,6 +198,29 @@ export const useGetArticleTemplate = <
                     locale,
                 }
             ),
+        enabled: !!client,
+        ...overrides,
+    })
+}
+
+export const useGetAIArticles = <
+    TData = Awaited<ReturnType<typeof getAIGeneratedArticles>>
+>(
+    locale: Paths.ListArticleTemplates.Parameters.Locale,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getAIGeneratedArticles>>,
+        unknown,
+        TData
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: aiArticleKeys.list(),
+        queryFn: async () =>
+            getAIGeneratedArticles(client, {
+                locale,
+            }),
         enabled: !!client,
         ...overrides,
     })

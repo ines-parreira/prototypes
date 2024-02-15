@@ -170,6 +170,12 @@ export type HelpCenterPageEmbedment = Components.Schemas.PageEmbedmentDto
 // ARTICLE TEMPLATE
 export type ArticleTemplate = Components.Schemas.ArticleTemplateDto
 
+// AI ARTICLE
+export type AIArticle = Omit<ArticleTemplate, 'key' | 'category'> & {
+    key: string
+    category?: string
+}
+
 // HELP CENTER CREATION WIZARD
 export enum HelpCenterCreationWizardStep {
     Initialization = 'initialization',

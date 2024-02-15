@@ -12,6 +12,7 @@ import {
     useUpdatePageEmbedment,
     useGetArticleTemplates,
     useGetArticleTemplate,
+    useGetAIArticles,
 } from '../queries'
 import {mockResourceServerReplies} from './resource-mocks'
 
@@ -348,6 +349,53 @@ describe('useGetArticleTemplate', () => {
                 wrapper,
             }
         )
+
+        await waitFor(() => {
+            expect(result.current.isError).toBeTruthy()
+            expect(result.current.error).toMatchInlineSnapshot(
+                `[Error: Request failed with status code 500]`
+            )
+        })
+    })
+})
+
+describe('useGetAIArticles', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const locale = 'en-US'
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+        queryClient.getQueryCache().clear()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+    })
+
+    it('resolves with the list of AIArticles', async () => {
+        const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
+            getAIGeneratedArticles: 'success',
+        })
+
+        const {result, waitFor} = renderHook(() => useGetAIArticles(locale), {
+            wrapper,
+        })
+
+        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+
+        expect(result.current.data).toEqual(
+            mocks.fixtures.AIArticlesListFixture
+        )
+    })
+
+    it('returns the error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getAIGeneratedArticles: 'error',
+        })
+
+        const {result, waitFor} = renderHook(() => useGetAIArticles(locale), {
+            wrapper,
+        })
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
