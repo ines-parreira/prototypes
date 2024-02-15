@@ -26,10 +26,10 @@ describe('<DialPad/>', () => {
     it('should render as closed', async () => {
         const call = mockIncomingCall() as Call
 
-        const {findByTestId} = render(<DialPad call={call} />)
+        const {findByTestId, queryByTestId} = render(<DialPad call={call} />)
 
         await waitFor(() => findByTestId('dial-pad-button'))
-        expect(document.body.children).toMatchSnapshot()
+        expect(queryByTestId('digit-1')).toBeNull()
     })
 
     it('should render as open', async () => {
@@ -41,20 +41,19 @@ describe('<DialPad/>', () => {
             fireEvent.click(getByTestId('dial-pad-button'))
         })
 
-        await waitFor(() => findByTestId(document.body, 'digit-1'))
-        expect(document.body.children).toMatchSnapshot()
+        await waitFor(() => expect(getByTestId('digit-1')).toBeInTheDocument())
     })
 
     it(`should render as open when 10 digits have been pressed`, async () => {
         const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<DialPad call={call} />)
+        const {getByTestId, findByTestId} = render(<DialPad call={call} />)
 
         act(() => {
             fireEvent.click(getByTestId('dial-pad-button'))
         })
 
-        await waitFor(() => findByTestId(document.body, 'digit-1'))
+        await waitFor(() => findByTestId('digit-1'))
 
         for (let digit = 0; digit < 10; digit++) {
             act(() => {

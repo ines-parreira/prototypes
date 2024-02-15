@@ -14,6 +14,18 @@ import PhoneIntegrationBar from '../PhoneIntegrationBar'
 
 jest.mock('@twilio/voice-sdk')
 
+jest.mock('../OngoingPhoneCall/OngoingPhoneCall', () => () => (
+    <div data-testid="ongoing-phone-call" />
+))
+
+jest.mock('../IncomingPhoneCall/IncomingPhoneCall', () => () => (
+    <div data-testid="incoming-phone-call" />
+))
+
+jest.mock('../OutgoingPhoneCall/OutgoingPhoneCall', () => () => (
+    <div data-testid="outgoing-phone-call" />
+))
+
 describe('<PhoneIntegrationBar/>', () => {
     let store: MockStoreEnhanced
     const mockedServer = new MockAdapter(client)

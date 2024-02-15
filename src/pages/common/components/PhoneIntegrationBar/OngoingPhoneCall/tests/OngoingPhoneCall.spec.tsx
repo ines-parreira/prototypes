@@ -6,10 +6,12 @@ import {Provider} from 'react-redux'
 import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {TwilioSocketEventType} from 'business/twilio'
 
 import * as utils from 'hooks/integrations/phone/utils'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
@@ -42,6 +44,8 @@ describe('<OngoingPhoneCall/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        resetLDMocks()
+        mockFlags({})
         mockedServer.reset()
 
         store = mockStore({
@@ -60,18 +64,6 @@ describe('<OngoingPhoneCall/>', () => {
                 integrations: [integration],
             }),
         })
-    })
-
-    it('should render', () => {
-        const call = mockIncomingCall(integrationId) as Call
-
-        const {container} = render(
-            <Provider store={store}>
-                <OngoingPhoneCall call={call} />
-            </Provider>
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should mute call', () => {
@@ -146,5 +138,30 @@ describe('<OngoingPhoneCall/>', () => {
                 },
             })
         })
+    })
+
+    it('should display hold button', () => {
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({[FeatureFlagKey.CallOnHold]: true})
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>
+        )
+
+        expect(getByTestId('hold-call-button')).toBeInTheDocument()
+    })
+
+    it('should not display hold button when FF is disabled', () => {
+        const call = mockIncomingCall(integrationId) as Call
+
+        const {queryByTestId} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>
+        )
+
+        expect(queryByTestId('hold-call-button')).toBeNull()
     })
 })

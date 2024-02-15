@@ -2,8 +2,7 @@ import React, {useCallback, useState} from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
 import {Call} from '@twilio/voice-sdk'
 
-import IconButton from 'pages/common/components/button/IconButton'
-
+import IconButtonTooltip from '../IconButtonTooltip'
 import css from './DialPad.less'
 
 type Props = {
@@ -36,14 +35,15 @@ export default function DialPad({className, call}: Props): JSX.Element {
 
     return (
         <>
-            <IconButton
+            <IconButtonTooltip
                 id="dial-pad-button"
                 data-testid="dial-pad-button"
                 className={className}
                 intent="secondary"
+                icon="dialpad"
             >
-                dialpad
-            </IconButton>
+                Dialpad
+            </IconButtonTooltip>
             <Popover
                 placement="top"
                 isOpen={isOpen}

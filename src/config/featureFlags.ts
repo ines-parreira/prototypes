@@ -10,6 +10,7 @@ export enum FeatureFlagKey {
     AutoMergeAccountSetting = 'auto-merge-account-setting',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
+    CallOnHold = 'call-on-hold',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     ChatBackgroundColorStyle = 'chat-background-color-style',

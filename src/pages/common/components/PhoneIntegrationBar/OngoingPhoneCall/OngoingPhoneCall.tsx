@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 import classNames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TwilioSocketEventType} from 'business/twilio'
 import {
     sendTwilioSocketEvent,
@@ -27,8 +28,10 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import DialPad from './DialPad/DialPad'
 import css from './OngoingPhoneCall.less'
+import IconButtonTooltip from './IconButtonTooltip'
 
 type OwnProps = {
     call: Call
@@ -47,6 +50,8 @@ export function OngoingPhoneCall({
     const {onDisconnect} = useDisconnect(call)
     const {integrationId, customerName, customerPhoneNumber} =
         useConnectionParameters(call)
+    const [isOnHold, setIsOnHold] = useState(false)
+    const isCallHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
 
     const {startRecording, isRequestPending} = useRecording(
         call,
@@ -54,6 +59,10 @@ export function OngoingPhoneCall({
         setIsRecording,
         notify
     )
+
+    const onToggleHold = () => {
+        setIsOnHold((isOnHold) => !isOnHold)
+    }
 
     useEffect(() => {
         const isInbound = call.direction === Call.CallDirection.Incoming
@@ -81,17 +90,26 @@ export function OngoingPhoneCall({
                     phoneNumber={customerPhoneNumber}
                 />
                 <DialPad className={css.dialPad} call={call} />
-                <IconButton
+                <IconButtonTooltip
                     intent="secondary"
                     data-testid="mute-call-button"
-                    className={css.mute}
                     onClick={onToggleMute}
+                    icon={isMuted ? 'mic_off' : 'mic'}
                 >
-                    {isMuted ? 'mic_off' : 'mic'}
-                </IconButton>
-                <IconButton
+                    {isMuted ? 'Unmute' : 'Mute'}
+                </IconButtonTooltip>
+                {isCallHoldEnabled && (
+                    <IconButtonTooltip
+                        intent="secondary"
+                        data-testid="hold-call-button"
+                        onClick={onToggleHold}
+                        icon={isOnHold ? 'pause_circle_outline' : 'pause'}
+                    >
+                        {isOnHold ? 'Take off hold' : 'Hold'}
+                    </IconButtonTooltip>
+                )}
+                <IconButtonTooltip
                     data-testid="record-call-button"
-                    className={css.recording}
                     intent="secondary"
                     isDisabled={isRequestPending}
                     onClick={startRecording}
@@ -99,9 +117,10 @@ export function OngoingPhoneCall({
                         'material-icons-outlined': isRecording,
                         'material-icons': !isRecording,
                     })}
+                    icon={isRecording ? 'stop_circle' : 'fiber_manual_record'}
                 >
-                    {isRecording ? 'stop_circle' : 'fiber_manual_record'}
-                </IconButton>
+                    {isRecording ? 'Stop recording' : 'Start recording'}
+                </IconButtonTooltip>
                 <IconButton
                     data-testid="end-call-button"
                     intent="destructive"
