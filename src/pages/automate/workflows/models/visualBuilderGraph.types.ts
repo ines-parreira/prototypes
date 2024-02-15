@@ -102,7 +102,7 @@ export type ShopperAuthenticationNodeType = Node<
 
 export type EndNodeType = Node<
     {
-        withWasThisHelpfulPrompt: boolean
+        action: 'ask-for-feedback' | 'create-ticket' | 'end'
         ticketTags?: string[] | null
         ticketAssigneeUserId?: number | null
         ticketAssigneeTeamId?: number | null

@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react'
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
-import {VisualBuilderNode} from './models/visualBuilderGraph.types'
+import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
 
 export const colorByVisualBuilderNodeType: Record<
     Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>,
@@ -64,6 +64,23 @@ export const labelByVisualBuilderNodeType: Record<
     http_request: 'HTTP request',
     shopper_authentication: 'Customer login',
     end: 'End flow',
+}
+
+export const endNodeActionLabelByAction: Record<
+    EndNodeType['data']['action'],
+    string
+> = {
+    'ask-for-feedback': 'Ask for feedback',
+    'create-ticket': 'Create ticket',
+    end: 'End interaction',
+}
+export const endNodeActionIconByAction: Record<
+    EndNodeType['data']['action'],
+    string
+> = {
+    'ask-for-feedback': 'thumb_up_alt',
+    'create-ticket': 'forum',
+    end: 'stop_circle',
 }
 
 export const MAX_CONFIGURATION_SIZE_IN_BYTES = 2 * 1024 * 1024 // 2MB

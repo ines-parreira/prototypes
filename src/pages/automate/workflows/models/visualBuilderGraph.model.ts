@@ -11,6 +11,7 @@ import {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
+    WorkflowStepEnd,
     WorkflowStepHandover,
     WorkflowStepHelpfulPrompt,
     WorkflowStepHttpRequest,
@@ -300,7 +301,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 stepIdByNodeId[node.id] = step.id
             } else if (
                 node.type === 'end' &&
-                node.data.withWasThisHelpfulPrompt
+                node.data.action === 'ask-for-feedback'
             ) {
                 const step: WorkflowStepHelpfulPrompt = {
                     id: node.id,
@@ -325,7 +326,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 stepIdByNodeId[node.id] = step.id
             } else if (
                 node.type === 'end' &&
-                !node.data.withWasThisHelpfulPrompt
+                node.data.action === 'create-ticket'
             ) {
                 const step: WorkflowStepHandover = {
                     id: node.id,
@@ -335,6 +336,23 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         ticket_assignee_user_id: node.data.ticketAssigneeUserId,
                         ticket_assignee_team_id: node.data.ticketAssigneeTeamId,
                     },
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = step.id
+                }
+                stepIdByNodeId[node.id] = step.id
+            } else if (node.type === 'end' && node.data.action === 'end') {
+                const step: WorkflowStepEnd = {
+                    id: node.id,
+                    kind: 'end',
                 }
                 c.steps.push(step)
                 if (previousNode && stepIdByNodeId[previousNode.id]) {

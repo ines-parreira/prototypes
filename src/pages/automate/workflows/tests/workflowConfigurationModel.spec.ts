@@ -159,7 +159,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     id: 'helpfulPrompt1',
                     type: 'end',
                     data: expect.objectContaining({
-                        withWasThisHelpfulPrompt: true,
+                        action: 'ask-for-feedback',
                     }),
                 }),
                 expect.objectContaining({
@@ -176,7 +176,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     id: 'helpfulPrompt2',
                     type: 'end',
                     data: {
-                        withWasThisHelpfulPrompt: true,
+                        action: 'ask-for-feedback',
                     },
                 }),
             ])

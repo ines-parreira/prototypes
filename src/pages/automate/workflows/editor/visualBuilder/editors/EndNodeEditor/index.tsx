@@ -33,17 +33,13 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
     )
     const {dispatch} = useWorkflowEditorContext()
     const handleAddTag = (tag: string) => {
-        const {
-            withWasThisHelpfulPrompt,
-            ticketTags,
-            ticketAssigneeUserId,
-            ticketAssigneeTeamId,
-        } = nodeInEdition.data
+        const {action, ticketTags, ticketAssigneeUserId, ticketAssigneeTeamId} =
+            nodeInEdition.data
         dispatch({
             type: 'SET_END_NODE_SETTINGS',
             endNodeId: nodeInEdition.id,
             settings: {
-                withWasThisHelpfulPrompt,
+                action,
                 ticketAssigneeUserId,
                 ticketAssigneeTeamId,
                 ticketTags: [...(ticketTags ?? []), tag],
@@ -51,17 +47,13 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
         })
     }
     const handleDeleteTag = (tag: string) => {
-        const {
-            withWasThisHelpfulPrompt,
-            ticketTags,
-            ticketAssigneeUserId,
-            ticketAssigneeTeamId,
-        } = nodeInEdition.data
+        const {action, ticketTags, ticketAssigneeUserId, ticketAssigneeTeamId} =
+            nodeInEdition.data
         dispatch({
             type: 'SET_END_NODE_SETTINGS',
             endNodeId: nodeInEdition.id,
             settings: {
-                withWasThisHelpfulPrompt,
+                action,
                 ticketAssigneeUserId,
                 ticketAssigneeTeamId,
                 ticketTags: (ticketTags ?? []).filter((t) => t !== tag),
@@ -83,10 +75,8 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                     <div className={css.formField}>
                         <Label className={css.label}>Action</Label>
                         <EndNodeTypeSelect
-                            withWasThisHelpfulPrompt={
-                                nodeInEdition.data.withWasThisHelpfulPrompt
-                            }
-                            onChange={(withWasThisHelpfulPrompt) => {
+                            value={nodeInEdition.data.action}
+                            onChange={(action) => {
                                 const {
                                     ticketTags,
                                     ticketAssigneeUserId,
@@ -99,7 +89,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                                         ticketTags,
                                         ticketAssigneeUserId,
                                         ticketAssigneeTeamId,
-                                        withWasThisHelpfulPrompt,
+                                        action,
                                     },
                                 })
                             }}
@@ -109,7 +99,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                         className={css.formField}
                         ref={onDropdownContainerRefChange}
                     >
-                        {nodeInEdition.data.withWasThisHelpfulPrompt && (
+                        {nodeInEdition.data.action === 'ask-for-feedback' && (
                             <div className={css.withDescription}>
                                 <WasThisHelpfulCard />
                                 <div className={css.description}>
@@ -121,67 +111,81 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                                 </div>
                             </div>
                         )}
-                        <Label className={css.label}>
-                            {nodeInEdition.data.withWasThisHelpfulPrompt
-                                ? 'If'
-                                : 'When'}{' '}
-                            ticket is created
-                        </Label>
-                        <TicketTags
-                            ticketTags={Immutable.fromJS(
-                                (nodeInEdition.data.ticketTags ?? []).map(
-                                    (tag) => ({
-                                        name: tag,
-                                    })
-                                )
-                            )}
-                            addTag={handleAddTag}
-                            removeTag={handleDeleteTag}
-                            transparent
-                            dropdownContainer={
-                                dropdownContainerRef ?? undefined
-                            }
-                        />
-                        <TicketAssignee
-                            currentAssigneeUser={ticketAssigneeUser}
-                            currentAssigneeTeam={ticketAssigneeTeam}
-                            handleTeams={true}
-                            handleUsers={true}
-                            setUser={(user) => {
-                                const {
-                                    ticketTags,
-                                    ticketAssigneeTeamId,
-                                    withWasThisHelpfulPrompt,
-                                } = nodeInEdition.data
-                                dispatch({
-                                    type: 'SET_END_NODE_SETTINGS',
-                                    endNodeId: nodeInEdition.id,
-                                    settings: {
-                                        ticketTags,
-                                        ticketAssigneeUserId: user?.id,
-                                        ticketAssigneeTeamId,
-                                        withWasThisHelpfulPrompt,
-                                    },
-                                })
-                            }}
-                            setTeam={(team) => {
-                                const {
-                                    ticketTags,
-                                    ticketAssigneeUserId,
-                                    withWasThisHelpfulPrompt,
-                                } = nodeInEdition.data
-                                dispatch({
-                                    type: 'SET_END_NODE_SETTINGS',
-                                    endNodeId: nodeInEdition.id,
-                                    settings: {
-                                        ticketTags,
-                                        ticketAssigneeUserId,
-                                        ticketAssigneeTeamId: team?.id,
-                                        withWasThisHelpfulPrompt,
-                                    },
-                                })
-                            }}
-                        />
+                        {nodeInEdition.data.action === 'end' && (
+                            <div className={css.description}>
+                                The interaction will end and be considered
+                                automated. Customers will not be able to create
+                                a ticket and must leave the flow to ask for
+                                further support.
+                            </div>
+                        )}
+                        {(nodeInEdition.data.action === 'ask-for-feedback' ||
+                            nodeInEdition.data.action === 'create-ticket') && (
+                            <>
+                                <Label className={css.label}>
+                                    {nodeInEdition.data.action ===
+                                    'ask-for-feedback'
+                                        ? 'If'
+                                        : 'When'}{' '}
+                                    ticket is created
+                                </Label>
+                                <TicketTags
+                                    ticketTags={Immutable.fromJS(
+                                        (
+                                            nodeInEdition.data.ticketTags ?? []
+                                        ).map((tag) => ({
+                                            name: tag,
+                                        }))
+                                    )}
+                                    addTag={handleAddTag}
+                                    removeTag={handleDeleteTag}
+                                    transparent
+                                    dropdownContainer={
+                                        dropdownContainerRef ?? undefined
+                                    }
+                                />
+                                <TicketAssignee
+                                    currentAssigneeUser={ticketAssigneeUser}
+                                    currentAssigneeTeam={ticketAssigneeTeam}
+                                    handleTeams
+                                    handleUsers
+                                    setUser={(user) => {
+                                        const {
+                                            ticketTags,
+                                            ticketAssigneeTeamId,
+                                            action,
+                                        } = nodeInEdition.data
+                                        dispatch({
+                                            type: 'SET_END_NODE_SETTINGS',
+                                            endNodeId: nodeInEdition.id,
+                                            settings: {
+                                                ticketTags,
+                                                ticketAssigneeUserId: user?.id,
+                                                ticketAssigneeTeamId,
+                                                action,
+                                            },
+                                        })
+                                    }}
+                                    setTeam={(team) => {
+                                        const {
+                                            ticketTags,
+                                            ticketAssigneeUserId,
+                                            action,
+                                        } = nodeInEdition.data
+                                        dispatch({
+                                            type: 'SET_END_NODE_SETTINGS',
+                                            endNodeId: nodeInEdition.id,
+                                            settings: {
+                                                ticketTags,
+                                                ticketAssigneeUserId,
+                                                ticketAssigneeTeamId: team?.id,
+                                                action,
+                                            },
+                                        })
+                                    }}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </Drawer.Content>

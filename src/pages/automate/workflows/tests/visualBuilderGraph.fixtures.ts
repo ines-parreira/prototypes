@@ -90,7 +90,7 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'end1',
             type: 'end',
             data: {
-                withWasThisHelpfulPrompt: true,
+                action: 'ask-for-feedback',
             },
         },
         {
@@ -98,7 +98,7 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'end2',
             type: 'end',
             data: {
-                withWasThisHelpfulPrompt: true,
+                action: 'ask-for-feedback',
             },
         },
         {
@@ -106,7 +106,7 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'end3',
             type: 'end',
             data: {
-                withWasThisHelpfulPrompt: true,
+                action: 'ask-for-feedback',
             },
         },
     ],

@@ -65,7 +65,7 @@ export type VisualBuilderBaseAction =
           endNodeId: string
           settings: Pick<
               EndNodeType['data'],
-              | 'withWasThisHelpfulPrompt'
+              | 'action'
               | 'ticketTags'
               | 'ticketAssigneeUserId'
               | 'ticketAssigneeTeamId'
@@ -180,17 +180,12 @@ export function baseReducer(
                     (n): n is EndNodeType => n.id === action.endNodeId
                 )
                 if (node) {
-                    const {
-                        withWasThisHelpfulPrompt,
-                        ticketAssigneeTeamId,
-                        ticketAssigneeUserId,
-                        ticketTags,
-                    } = action.settings
-                    node.data.withWasThisHelpfulPrompt =
-                        withWasThisHelpfulPrompt
-                    node.data.ticketAssigneeTeamId = ticketAssigneeTeamId
-                    node.data.ticketAssigneeUserId = ticketAssigneeUserId
-                    node.data.ticketTags = ticketTags
+                    node.data.action = action.settings.action
+                    node.data.ticketAssigneeTeamId =
+                        action.settings.ticketAssigneeTeamId
+                    node.data.ticketAssigneeUserId =
+                        action.settings.ticketAssigneeUserId
+                    node.data.ticketTags = action.settings.ticketTags
                 }
             })
         case 'INSERT_AUTOMATED_MESSAGE_NODE':

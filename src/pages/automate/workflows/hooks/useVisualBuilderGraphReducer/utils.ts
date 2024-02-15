@@ -164,7 +164,7 @@ export const buildEndNode = (): EndNodeType => {
         id,
         type: 'end',
         data: {
-            withWasThisHelpfulPrompt: true,
+            action: 'ask-for-feedback',
         },
     }
 }

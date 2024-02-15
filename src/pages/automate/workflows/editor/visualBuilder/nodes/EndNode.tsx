@@ -9,6 +9,10 @@ import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import {
+    endNodeActionIconByAction,
+    endNodeActionLabelByAction,
+} from 'pages/automate/workflows/constants'
 
 import EdgeBlock from '../components/EdgeBlock'
 
@@ -16,12 +20,12 @@ import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
     isShopperInputFeatureEnabled: boolean
-    withWasThisHelpfulPrompt: boolean
+    action: EndNodeType['data']['action']
 }
 
 const EndNode = memo(function EndNode({
     isShopperInputFeatureEnabled,
-    withWasThisHelpfulPrompt,
+    action,
     isGreyedOut,
     isSelected,
     edgeProps,
@@ -47,16 +51,11 @@ const EndNode = memo(function EndNode({
                 <div className={css.nodeTitle}>
                     <div>
                         <span className={css.iconContainer}>
-                            {' '}
                             <i className={classNames('material-icons')}>
-                                {withWasThisHelpfulPrompt
-                                    ? 'thumb_up_alt'
-                                    : 'forum'}
+                                {endNodeActionIconByAction[action]}
                             </i>
                         </span>
-                        {withWasThisHelpfulPrompt
-                            ? 'Ask for feedback'
-                            : 'Create ticket'}
+                        {endNodeActionLabelByAction[action]}
                     </div>
                 </div>
                 <Handle
@@ -79,7 +78,7 @@ export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
         <EndNode
             {...commonProps}
             isShopperInputFeatureEnabled={isShopperInputFeatureEnabled}
-            withWasThisHelpfulPrompt={node.data.withWasThisHelpfulPrompt}
+            action={node.data.action}
         />
     )
 }

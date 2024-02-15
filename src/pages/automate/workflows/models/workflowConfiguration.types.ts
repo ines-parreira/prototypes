@@ -104,6 +104,11 @@ export type WorkflowStepHttpRequest = {
     }
 }
 
+export type WorkflowStepEnd = {
+    id: string
+    kind: 'end'
+}
+
 export type WorkflowStep =
     | WorkflowStepTextInput
     | WorkflowStepAttachmentsInput
@@ -114,6 +119,7 @@ export type WorkflowStep =
     | WorkflowStepMessage
     | WorkflowStepOrderSelection
     | WorkflowStepHelpfulPrompt
+    | WorkflowStepEnd
 
 export type WorkflowTransition = {
     id: string

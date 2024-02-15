@@ -183,7 +183,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'end',
                 data: {
-                    withWasThisHelpfulPrompt: true,
+                    action: 'ask-for-feedback',
                     ticketTags: step.settings?.ticket_tags,
                     ticketAssigneeUserId:
                         step.settings?.ticket_assignee_user_id,
@@ -199,10 +199,21 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 id: step.id,
                 type: 'end',
                 data: {
-                    withWasThisHelpfulPrompt: false,
+                    action: 'create-ticket',
                     ticketTags: step.settings.ticket_tags,
                     ticketAssigneeUserId: step.settings.ticket_assignee_user_id,
                     ticketAssigneeTeamId: step.settings.ticket_assignee_team_id,
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'end') {
+            const n: EndNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'end',
+                data: {
+                    action: 'end',
                 },
             }
             nodeIdByStepId[step.id] = n.id
