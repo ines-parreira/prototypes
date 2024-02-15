@@ -1,6 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'
 import TipsToggle from 'pages/stats/TipsToggle'
@@ -31,6 +31,7 @@ import {
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import {MetricName} from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import DashboardGridCell from './DashboardGridCell'
 import DashboardSection from './DashboardSection'
 import {TicketsCreatedVsClosedChartCard} from './support-performance/components/TicketsCreatedVsClosedChartCard'
@@ -76,6 +77,14 @@ export default function SupportPerformanceOverview() {
         STATS_TIPS_VISIBILITY_KEY,
         true
     )
+    const screenSize = useScreenSize()
+
+    const getGridCellSize = useCallback(
+        (defaultSize: number) => {
+            return screenSize === SCREEN_SIZE.SMALL ? 12 : defaultSize
+        },
+        [screenSize]
+    )
 
     return (
         <div className="full-width">
@@ -119,7 +128,7 @@ export default function SupportPerformanceOverview() {
                         />
                     }
                 >
-                    <DashboardGridCell size={3}>
+                    <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
                             {...OverviewMetricConfig[
                                 OverviewMetric.CustomerSatisfaction
@@ -140,7 +149,7 @@ export default function SupportPerformanceOverview() {
                             }
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={3}>
+                    <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
                             {...OverviewMetricConfig[
                                 OverviewMetric.MedianFirstResponseTime
@@ -163,7 +172,7 @@ export default function SupportPerformanceOverview() {
                             }
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={3}>
+                    <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
                             {...OverviewMetricConfig[
                                 OverviewMetric.MedianResolutionTime
@@ -181,7 +190,7 @@ export default function SupportPerformanceOverview() {
                             }
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={3}>
+                    <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
                             {...OverviewMetricConfig[
                                 OverviewMetric.MessagesPerTicket
@@ -204,7 +213,7 @@ export default function SupportPerformanceOverview() {
                 <DashboardSection title="Workload">
                     {isAnalyticsProductivityMetricsEnabled ? (
                         <>
-                            <DashboardGridCell size={4}>
+                            <DashboardGridCell size={getGridCellSize(3)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsCreated
@@ -214,7 +223,7 @@ export default function SupportPerformanceOverview() {
                                     }
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={4}>
+                            <DashboardGridCell size={getGridCellSize(3)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsClosed
@@ -224,7 +233,7 @@ export default function SupportPerformanceOverview() {
                                     }
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={4}>
+                            <DashboardGridCell size={getGridCellSize(3)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.OpenTickets
@@ -238,7 +247,7 @@ export default function SupportPerformanceOverview() {
                         </>
                     ) : (
                         <>
-                            <DashboardGridCell size={6}>
+                            <DashboardGridCell size={getGridCellSize(6)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.OpenTickets
@@ -246,7 +255,7 @@ export default function SupportPerformanceOverview() {
                                     overviewMetric={OverviewMetric.OpenTickets}
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={6}>
+                            <DashboardGridCell size={getGridCellSize(6)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsClosed
@@ -256,7 +265,7 @@ export default function SupportPerformanceOverview() {
                                     }
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={4}>
+                            <DashboardGridCell size={getGridCellSize(4)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsCreated
@@ -266,7 +275,7 @@ export default function SupportPerformanceOverview() {
                                     }
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={4}>
+                            <DashboardGridCell size={getGridCellSize(4)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsReplied
@@ -276,7 +285,7 @@ export default function SupportPerformanceOverview() {
                                     }
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={4}>
+                            <DashboardGridCell size={getGridCellSize(4)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.MessagesSent
@@ -284,14 +293,14 @@ export default function SupportPerformanceOverview() {
                                     overviewMetric={OverviewMetric.MessagesSent}
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={6}>
+                            <DashboardGridCell size={getGridCellSize(6)}>
                                 <OverviewChartCard
                                     {...OverviewChartConfig[
                                         OverviewMetric.TicketsCreated
                                     ]}
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={6}>
+                            <DashboardGridCell size={getGridCellSize(6)}>
                                 <OverviewChartCard
                                     {...OverviewChartConfig[
                                         OverviewMetric.TicketsClosed
@@ -303,14 +312,14 @@ export default function SupportPerformanceOverview() {
 
                     {!isAnalyticsProductivityMetricsEnabled ? (
                         <>
-                            <DashboardGridCell size={6}>
+                            <DashboardGridCell size={getGridCellSize(6)}>
                                 <OverviewChartCard
                                     {...OverviewChartConfig[
                                         OverviewMetric.TicketsReplied
                                     ]}
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={6}>
+                            <DashboardGridCell size={getGridCellSize(6)}>
                                 <OverviewChartCard
                                     {...OverviewChartConfig[
                                         OverviewMetric.MessagesSent
@@ -325,7 +334,7 @@ export default function SupportPerformanceOverview() {
                 </DashboardSection>
                 {isAnalyticsProductivityMetricsEnabled ? (
                     <DashboardSection title="Productivity">
-                        <DashboardGridCell size={3}>
+                        <DashboardGridCell size={getGridCellSize(3)}>
                             <TrendCard
                                 {...OverviewMetricConfig[
                                     OverviewMetric.TicketsReplied
@@ -333,7 +342,7 @@ export default function SupportPerformanceOverview() {
                                 overviewMetric={OverviewMetric.TicketsReplied}
                             />
                         </DashboardGridCell>
-                        <DashboardGridCell size={3}>
+                        <DashboardGridCell size={getGridCellSize(3)}>
                             <TrendCard
                                 {...OverviewMetricConfig[
                                     OverviewMetric.MessagesSent
@@ -341,10 +350,10 @@ export default function SupportPerformanceOverview() {
                                 overviewMetric={OverviewMetric.MessagesSent}
                             />
                         </DashboardGridCell>
-                        <DashboardGridCell size={3}>
+                        <DashboardGridCell size={getGridCellSize(3)}>
                             <div></div>
                         </DashboardGridCell>
-                        <DashboardGridCell size={3}>
+                        <DashboardGridCell size={getGridCellSize(3)}>
                             <TrendCard
                                 {...OverviewMetricConfig[
                                     OverviewMetric.OneTouchTickets
@@ -352,14 +361,14 @@ export default function SupportPerformanceOverview() {
                                 overviewMetric={OverviewMetric.OneTouchTickets}
                             />
                         </DashboardGridCell>
-                        <DashboardGridCell size={6}>
+                        <DashboardGridCell size={getGridCellSize(6)}>
                             <OverviewChartCard
                                 {...OverviewChartConfig[
                                     OverviewMetric.TicketsReplied
                                 ]}
                             />
                         </DashboardGridCell>
-                        <DashboardGridCell size={6}>
+                        <DashboardGridCell size={getGridCellSize(6)}>
                             <OverviewChartCard
                                 {...OverviewChartConfig[
                                     OverviewMetric.MessagesSent
