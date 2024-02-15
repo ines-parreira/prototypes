@@ -87,7 +87,7 @@ describe('VoiceCallTable', () => {
         expect(getByText('Outbound')).toBeInTheDocument()
         expect(getByText('Avg. Talk Time')).toBeInTheDocument()
 
-        expect(getByText('Team average')).toBeInTheDocument()
+        expect(getByText('Average')).toBeInTheDocument()
         expect(getAllByText('TeamAverageCallsCountCell')).toHaveLength(5)
         expect(getByText('TeamAverageTalkTimeCell')).toBeInTheDocument()
 

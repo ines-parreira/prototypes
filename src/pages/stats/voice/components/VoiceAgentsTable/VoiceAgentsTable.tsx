@@ -134,7 +134,7 @@ export const VoiceAgentsTable = () => {
                                     [css.withShadow]: isTableScrolled,
                                 })}
                             >
-                                Team average
+                                Average
                             </BodyCell>
                             <TeamAverageCallsCountCell
                                 agentsCount={agents.length}
