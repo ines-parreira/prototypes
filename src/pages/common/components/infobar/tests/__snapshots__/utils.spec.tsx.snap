@@ -271,7 +271,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should return a comm
 exports[`widgets infobar utils guessFieldValueFromRawData() should return a danger badge because passed data is a \`false\` value should render a badge 1`] = `
 <div>
   <div
-    class="badge"
+    class="badge upperCase"
   >
     False
   </div>
@@ -307,7 +307,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should return a link
 exports[`widgets infobar utils guessFieldValueFromRawData() should return a success badge because passed data is a \`true\` value should render a badge 1`] = `
 <div>
   <div
-    class="badge"
+    class="badge upperCase"
   >
     True
   </div>

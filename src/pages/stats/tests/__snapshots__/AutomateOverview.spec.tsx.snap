@@ -4474,7 +4474,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 GORGIAS AUTOMATE 
               </div>

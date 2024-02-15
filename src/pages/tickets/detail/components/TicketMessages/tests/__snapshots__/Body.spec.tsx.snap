@@ -539,7 +539,7 @@ exports[`Body should display the Yotpo product card if there's matching metadata
                     </td>
                     <th>
                       <div
-                        class="badge"
+                        class="badge upperCase"
                       >
                         electronics
                       </div>

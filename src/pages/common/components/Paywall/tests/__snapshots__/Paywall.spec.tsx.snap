@@ -47,7 +47,7 @@ exports[`<Paywall /> should not render the default upgrade CTA if a custom upgra
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -142,7 +142,7 @@ exports[`<Paywall /> should render a custom upgrade CTA 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -240,7 +240,7 @@ exports[`<Paywall /> should render a page header with custom header element 1`] 
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -337,7 +337,7 @@ exports[`<Paywall /> should render a page header with string header 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -425,7 +425,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Advanced paywa
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -513,7 +513,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Basic paywall 
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -601,7 +601,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Default paywal
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -689,7 +689,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Enterprise pay
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -777,7 +777,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Pro paywall ty
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -865,7 +865,7 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -981,7 +981,7 @@ exports[`<Paywall /> should render with a legacy badge 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 <i
                   class="material-icons mr-1"
@@ -996,7 +996,7 @@ exports[`<Paywall /> should render with a legacy badge 1`] = `
                 chevron_right
               </i>
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -1084,7 +1084,7 @@ exports[`<Paywall /> should render with a testimonial 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -1214,7 +1214,7 @@ exports[`<Paywall /> should render with an add-on update type 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Add-on
               </div>
@@ -1314,7 +1314,7 @@ exports[`<Paywall /> should render with minimal props 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>
@@ -1402,7 +1402,7 @@ exports[`<Paywall /> should render with modal 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Foo Plan
               </div>

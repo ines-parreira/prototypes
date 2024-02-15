@@ -75,7 +75,7 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
         class="heroMeta"
       >
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           ECOMMERCE
         </div>

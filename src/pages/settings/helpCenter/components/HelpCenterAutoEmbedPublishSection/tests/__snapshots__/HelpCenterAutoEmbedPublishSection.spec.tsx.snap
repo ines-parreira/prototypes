@@ -15,7 +15,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
       >
         Automatically embed on your website
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           RECOMMENDED
         </div>
@@ -89,7 +89,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       >
         Automatically embed on your website
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           RECOMMENDED
         </div>
@@ -125,7 +125,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       >
         Automatically embed on your website
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           RECOMMENDED
         </div>

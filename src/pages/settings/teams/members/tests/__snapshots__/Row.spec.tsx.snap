@@ -56,7 +56,7 @@ exports[`<Row /> should render 1`] = `
       class="role"
     >
       <div
-        class="badge"
+        class="badge upperCase"
       >
         Admin
       </div>

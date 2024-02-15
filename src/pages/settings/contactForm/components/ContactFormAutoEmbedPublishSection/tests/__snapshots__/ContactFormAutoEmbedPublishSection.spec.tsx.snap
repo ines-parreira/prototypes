@@ -12,7 +12,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a no
     >
       Automatically embed on your website
       <div
-        class="badge badge"
+        class="badge badge upperCase"
       >
         RECOMMENDED
       </div>
@@ -85,7 +85,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a sh
     >
       Automatically embed on your website
       <div
-        class="badge badge"
+        class="badge badge upperCase"
       >
         RECOMMENDED
       </div>

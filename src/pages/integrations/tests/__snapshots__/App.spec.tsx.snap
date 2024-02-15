@@ -92,17 +92,17 @@ exports[`App should render 2`] = `
         class="heroMeta"
       >
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           ECOMMERCE
         </div>
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           REVIEWS & UGC
         </div>
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           14 DAYS FREE TRIAL
         </div>

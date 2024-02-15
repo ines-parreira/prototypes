@@ -49,7 +49,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
             class="meta"
           >
             <div
-              class="badge statusLabel"
+              class="badge statusLabel upperCase"
             >
               open
             </div>

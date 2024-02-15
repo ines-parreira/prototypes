@@ -22,12 +22,12 @@ exports[`<AfterContent/> render() should render top topics for reviews 1`] = `
     class="topics"
   >
     <div
-      class="badge topic"
+      class="badge topic upperCase"
     >
       food
     </div>
     <div
-      class="badge topic"
+      class="badge topic upperCase"
     >
       stuff
     </div>
@@ -72,7 +72,7 @@ exports[`<TitleWrapper/> render() should render header total reviews 1`] = `
     Reviews
   </span>
   <div
-    class="badge pill"
+    class="badge pill upperCase"
   >
     2
   </div>

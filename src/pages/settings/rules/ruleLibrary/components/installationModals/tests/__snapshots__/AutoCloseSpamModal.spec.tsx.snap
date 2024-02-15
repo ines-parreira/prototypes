@@ -75,7 +75,7 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when Automa
             Newsletter
           </span>
           <div
-            class="badge fakeTicketClosed"
+            class="badge fakeTicketClosed upperCase"
             style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
           >
             closed
@@ -117,7 +117,7 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when Automa
             Promotion! -50%...
           </span>
           <div
-            class="badge fakeTicketClosed"
+            class="badge fakeTicketClosed upperCase"
             style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
           >
             closed
@@ -209,7 +209,7 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when Automa
             Newsletter
           </span>
           <div
-            class="badge fakeTicketClosed"
+            class="badge fakeTicketClosed upperCase"
             style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
           >
             closed
@@ -251,7 +251,7 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when Automa
             Promotion! -50%...
           </span>
           <div
-            class="badge fakeTicketClosed"
+            class="badge fakeTicketClosed upperCase"
             style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
           >
             closed

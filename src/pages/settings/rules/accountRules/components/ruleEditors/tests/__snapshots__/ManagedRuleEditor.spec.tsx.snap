@@ -3787,7 +3787,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
             Newsletter
           </span>
           <div
-            class="badge fakeTicketClosed"
+            class="badge fakeTicketClosed upperCase"
             style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
           >
             closed
@@ -3829,7 +3829,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
             Promotion! -50%...
           </span>
           <div
-            class="badge fakeTicketClosed"
+            class="badge fakeTicketClosed upperCase"
             style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
           >
             closed

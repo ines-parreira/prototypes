@@ -13,7 +13,7 @@ exports[`<TitleWrapper/> render() should not render loyalty point balance 1`] = 
     Loyalty Points
   </span>
   <div
-    class="badge pill"
+    class="badge pill upperCase"
   >
     NaN
   </div>
@@ -33,7 +33,7 @@ exports[`<TitleWrapper/> render() should render loyalty point balance 1`] = `
     Loyalty Points
   </span>
   <div
-    class="badge pill"
+    class="badge pill upperCase"
   >
     1
   </div>

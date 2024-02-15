@@ -95,7 +95,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
             Status
           </label>
           <div
-            class="badge"
+            class="badge upperCase"
           >
             ACTIVE
           </div>
@@ -337,7 +337,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
             Status
           </label>
           <div
-            class="badge"
+            class="badge upperCase"
           >
             ACTIVE
           </div>

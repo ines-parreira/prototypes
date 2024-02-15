@@ -57,7 +57,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                 class="flex align-items-center"
               >
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   <i
                     class="material-icons mr-1"
@@ -72,7 +72,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                   chevron_right
                 </i>
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   Pro Plan
                 </div>
@@ -183,7 +183,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                 class="flex align-items-center"
               >
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   <i
                     class="material-icons mr-1"
@@ -198,7 +198,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                   chevron_right
                 </i>
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   Advanced Plan
                 </div>
@@ -310,7 +310,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                 class="flex align-items-center"
               >
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   <i
                     class="material-icons mr-1"
@@ -325,7 +325,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                   chevron_right
                 </i>
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   Basic Plan
                 </div>
@@ -436,7 +436,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                 class="flex align-items-center"
               >
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   <i
                     class="material-icons mr-1"
@@ -451,7 +451,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                   chevron_right
                 </i>
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   Enterprise Plan
                 </div>
@@ -563,7 +563,7 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
                 class="flex align-items-center"
               >
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   <i
                     class="material-icons mr-1"
@@ -578,7 +578,7 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
                   chevron_right
                 </i>
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   Basic Plan
                 </div>

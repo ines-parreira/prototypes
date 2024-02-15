@@ -7,6 +7,7 @@ type Props = {
     children: ReactNode
     style?: CSSProperties
     type?: ColorType
+    upperCase?: boolean
 } & HTMLAttributes<HTMLDivElement>
 
 export enum ColorType {
@@ -31,10 +32,19 @@ export enum ColorType {
     LightPurple = 'light-purple',
 }
 
-const Badge = ({className, children, style, type, ...props}: Props) => {
+const Badge = ({
+    className,
+    children,
+    style,
+    type,
+    upperCase = true,
+    ...props
+}: Props) => {
     return (
         <div
-            className={classnames(css.badge, className)}
+            className={classnames(css.badge, className, {
+                [css.upperCase]: upperCase,
+            })}
             style={{
                 ...(!!type
                     ? {

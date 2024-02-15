@@ -11,7 +11,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
       Status
     </label>
     <div
-      class="badge"
+      class="badge upperCase"
     >
       ACTIVE
     </div>
@@ -212,7 +212,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
       Status
     </label>
     <div
-      class="badge"
+      class="badge upperCase"
     >
       ACTIVE
     </div>
@@ -595,7 +595,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
       Status
     </label>
     <div
-      class="badge"
+      class="badge upperCase"
     >
       ACTIVE
     </div>
@@ -775,7 +775,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
       Status
     </label>
     <div
-      class="badge"
+      class="badge upperCase"
     >
       ACTIVE
     </div>
@@ -955,7 +955,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
       Status
     </label>
     <div
-      class="badge"
+      class="badge upperCase"
     >
       ACTIVE
     </div>

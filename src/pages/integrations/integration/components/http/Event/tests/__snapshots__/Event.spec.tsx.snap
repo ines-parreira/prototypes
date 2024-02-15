@@ -77,7 +77,7 @@ exports[`Event should render 1`] = `
         :
       </b>
       <div
-        class="badge"
+        class="badge upperCase"
       >
         200
          

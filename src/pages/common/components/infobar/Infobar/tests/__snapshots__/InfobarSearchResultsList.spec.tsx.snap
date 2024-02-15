@@ -31,7 +31,7 @@ exports[`<InfobarSearchResultsList /> Should match snapshot when results are ava
         >
           test
           <div
-            class="badge ml-2"
+            class="badge ml-2 upperCase"
           >
             Current Customer
           </div>

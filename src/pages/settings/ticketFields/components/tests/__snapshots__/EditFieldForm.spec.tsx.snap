@@ -59,7 +59,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
       Status
     </label>
     <div
-      class="badge"
+      class="badge upperCase"
     >
       ACTIVE
     </div>

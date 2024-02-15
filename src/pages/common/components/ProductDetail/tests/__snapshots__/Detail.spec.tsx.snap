@@ -25,12 +25,12 @@ exports[`Detail should render 1`] = `
         class="heroMeta"
       >
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           MY CATEGORY
         </div>
         <div
-          class="badge badge"
+          class="badge badge upperCase"
         >
           WOW
         </div>

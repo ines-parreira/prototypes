@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
-import {Badge} from 'gorgias-design-system/Badge/Badge'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
     isFinalVoiceCallStatus,
 } from 'models/voiceCall/utils'
 import useInterval from 'hooks/useInterval'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 interface TicketVoiceCallDurationProps {
     voiceCall: VoiceCall
@@ -54,14 +54,14 @@ export default function TicketVoiceCallDuration({
 
     return (
         <Badge
-            color={isFinalStatus ? 'accessoryGrey' : 'accessoryGreen'}
-            label={
-                isFinalStatus
-                    ? `duration: ${getFormattedDurationEndedCall(
-                          voiceCall.duration
-                      )}`
-                    : `connected: ${ongoingCallDuration}`
-            }
-        />
+            type={isFinalStatus ? ColorType.LightGrey : ColorType.LightSuccess}
+            upperCase={false}
+        >
+            {isFinalStatus
+                ? `DURATION: ${getFormattedDurationEndedCall(
+                      voiceCall.duration
+                  )}`
+                : `CONNECTED: ${ongoingCallDuration}`}
+        </Badge>
     )
 }

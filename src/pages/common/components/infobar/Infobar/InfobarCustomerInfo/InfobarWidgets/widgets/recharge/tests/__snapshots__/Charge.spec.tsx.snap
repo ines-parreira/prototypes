@@ -217,7 +217,7 @@ exports[`Charge BeforeContent should display default color if there's no matchin
       class="widgetFieldValue"
     >
       <div
-        class="badge"
+        class="badge upperCase"
       >
         Foobar
       </div>
@@ -242,7 +242,7 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
       class="widgetFieldValue"
     >
       <div
-        class="badge"
+        class="badge upperCase"
       >
         Error
       </div>

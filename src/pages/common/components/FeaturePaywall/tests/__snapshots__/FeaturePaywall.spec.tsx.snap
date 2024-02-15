@@ -56,7 +56,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom price when missing feat
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 <i
                   class="material-icons mr-1"
@@ -71,7 +71,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom price when missing feat
                 chevron_right
               </i>
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Enterprise Plan
               </div>
@@ -238,7 +238,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy price into new price 1`
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 <i
                   class="material-icons mr-1"
@@ -253,7 +253,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy price into new price 1`
                 chevron_right
               </i>
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Basic Plan
               </div>
@@ -424,7 +424,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="badge"
+                class="badge upperCase"
               >
                 Pro Plan
               </div>

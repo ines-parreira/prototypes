@@ -2,7 +2,7 @@
 
 exports[`<Badge /> should render a badge with custom style 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
   style="color: rgb(165, 65, 171);"
 >
   Shopify
@@ -11,7 +11,7 @@ exports[`<Badge /> should render a badge with custom style 1`] = `
 
 exports[`<Badge /> should render a badge with specified color type 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
 >
   Shopify
 </div>

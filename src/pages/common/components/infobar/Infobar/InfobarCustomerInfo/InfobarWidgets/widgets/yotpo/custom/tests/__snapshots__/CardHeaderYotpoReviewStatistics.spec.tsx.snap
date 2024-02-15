@@ -13,7 +13,7 @@ exports[`<CardHeaderYotpoReviewStatistics/> render() should render children and 
     Reviews
   </span>
   <div
-    class="badge pill"
+    class="badge pill upperCase"
   >
     3
   </div>

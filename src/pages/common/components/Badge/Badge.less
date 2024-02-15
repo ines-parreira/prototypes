@@ -3,6 +3,11 @@
 :local {
     .badge {
         .caption-allcaps();
+
+        &:not(.upperCase) {
+            text-transform: none;
+        }
+
         align-items: center;
         border-radius: 100px;
         display: inline-flex;

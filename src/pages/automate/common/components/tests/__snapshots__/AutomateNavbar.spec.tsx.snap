@@ -259,7 +259,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                 Train My AI
               </span>
               <div
-                class="badge badge"
+                class="badge badge upperCase"
               >
                 NEW
               </div>
@@ -370,7 +370,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                 Train My AI
               </span>
               <div
-                class="badge badge"
+                class="badge badge upperCase"
               >
                 NEW
               </div>
@@ -707,7 +707,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                 Train My AI
               </span>
               <div
-                class="badge badge"
+                class="badge badge upperCase"
               >
                 NEW
               </div>
@@ -1196,7 +1196,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                 Train My AI
               </span>
               <div
-                class="badge badge"
+                class="badge badge upperCase"
               >
                 NEW
               </div>
@@ -1307,7 +1307,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                 Train My AI
               </span>
               <div
-                class="badge badge"
+                class="badge badge upperCase"
               >
                 NEW
               </div>
@@ -1644,7 +1644,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                 Train My AI
               </span>
               <div
-                class="badge badge"
+                class="badge badge upperCase"
               >
                 NEW
               </div>

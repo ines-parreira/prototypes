@@ -2,7 +2,7 @@
 
 exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
 >
   400
    
@@ -12,7 +12,7 @@ exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1
 
 exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
 >
   500
    
@@ -22,7 +22,7 @@ exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1
 
 exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
 >
   300
    
@@ -32,7 +32,7 @@ exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 
 
 exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status code 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
 >
   100
    
@@ -42,7 +42,7 @@ exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status cod
 
 exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status code 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
 >
   78
    
@@ -52,7 +52,7 @@ exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status
 
 exports[`HTTPStatusLabel should render a success label for 2xx HTTP status code 1`] = `
 <div
-  class="badge"
+  class="badge upperCase"
 >
   200
    

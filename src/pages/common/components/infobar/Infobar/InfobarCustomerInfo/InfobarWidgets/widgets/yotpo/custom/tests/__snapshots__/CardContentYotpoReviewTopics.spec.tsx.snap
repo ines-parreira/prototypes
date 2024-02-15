@@ -22,12 +22,12 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
     class="topics"
   >
     <div
-      class="badge topic"
+      class="badge topic upperCase"
     >
       bread
     </div>
     <div
-      class="badge topic"
+      class="badge topic upperCase"
     >
       test
     </div>

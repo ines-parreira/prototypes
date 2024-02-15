@@ -57,7 +57,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                 class="flex align-items-center"
               >
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   Pro Plan
                 </div>
@@ -220,7 +220,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                 class="flex align-items-center"
               >
                 <div
-                  class="badge"
+                  class="badge upperCase"
                 >
                   Pro Plan
                 </div>

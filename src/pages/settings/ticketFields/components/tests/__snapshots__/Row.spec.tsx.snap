@@ -203,7 +203,7 @@ exports[`<Row /> should render correctly active required field 1`] = `
         class="link-full-td align-middle smallest pr-4"
       >
         <div
-          class="badge"
+          class="badge upperCase"
         >
           REQUIRED
         </div>
@@ -278,7 +278,7 @@ exports[`<Row /> should render correctly active required field 2`] = `
         class="link-full-td align-middle smallest pr-4"
       >
         <div
-          class="badge"
+          class="badge upperCase"
         >
           REQUIRED
         </div>

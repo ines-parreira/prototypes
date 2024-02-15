@@ -64,7 +64,7 @@ exports[`<EditTicketField/> should render 2`] = `
             Status
           </label>
           <div
-            class="badge"
+            class="badge upperCase"
           >
             ACTIVE
           </div>

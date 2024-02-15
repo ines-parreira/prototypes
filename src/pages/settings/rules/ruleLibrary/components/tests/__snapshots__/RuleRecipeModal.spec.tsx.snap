@@ -162,7 +162,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                           Newsletter
                         </span>
                         <div
-                          class="badge fakeTicketClosed"
+                          class="badge fakeTicketClosed upperCase"
                           style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
                         >
                           closed
@@ -204,7 +204,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                           Promotion! -50%...
                         </span>
                         <div
-                          class="badge fakeTicketClosed"
+                          class="badge fakeTicketClosed upperCase"
                           style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
                         >
                           closed
