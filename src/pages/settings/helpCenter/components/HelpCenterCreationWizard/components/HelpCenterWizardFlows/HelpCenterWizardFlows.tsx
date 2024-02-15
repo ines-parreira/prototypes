@@ -64,6 +64,10 @@ const HelpCenterWizardFlows = ({
     const shouldDisplayShowMoreButton =
         !isShowMore && entrypoints.length > FLOWS_LIMIT
 
+    if (entrypoints.length === 0) {
+        return null
+    }
+
     return (
         <div>
             <div className="heading-page-semibold mb-1">Flows</div>

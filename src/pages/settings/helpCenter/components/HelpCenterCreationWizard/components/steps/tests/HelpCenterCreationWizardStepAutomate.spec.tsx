@@ -30,6 +30,8 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import {createWorkflowConfigurationShallow} from '../../../../../../../../fixtures/workflows'
+import {SelfServiceConfiguration} from '../../../../../../../../models/selfServiceConfiguration/types'
 
 jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
     jest.fn()
@@ -283,7 +285,56 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             expect(screen.queryByText('Flows')).not.toBeInTheDocument()
         })
 
+        it('should not render flows section when no workflow available', () => {
+            mockedUseWorkflowConfigurations.mockReturnValue({
+                isFetchPending: false,
+                workflowConfigurations: [],
+            })
+
+            renderComponent(
+                {},
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                    helpCenter: {
+                        ...helpCenterFixture,
+                        shop_name: shopifyIntegration.name,
+                    },
+                }
+            )
+
+            expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        })
+
         it('should not render show more when available flow is 0', () => {
+            const workflowConfigurations = [
+                createWorkflowConfigurationShallow('1'),
+            ]
+            mockedUseWorkflowConfigurations.mockReturnValue({
+                isFetchPending: false,
+                workflowConfigurations,
+            })
+            mockedUseSelfServiceConfiguration.mockReturnValue({
+                isFetchPending: false,
+                isUpdatePending: false,
+                handleSelfServiceConfigurationUpdate:
+                    mockSelfServiceConfigUpdate,
+                storeIntegration: undefined,
+                selfServiceConfiguration: {
+                    workflows_entrypoints: workflowConfigurations.map(
+                        (config) => ({
+                            workflow_id: config.id,
+                        })
+                    ),
+                    track_order_policy: {enabled: false},
+                    report_issue_policy: {enabled: false},
+                    cancel_order_policy: {enabled: false},
+                    return_order_policy: {enabled: false},
+                } as unknown as SelfServiceConfiguration,
+            })
+
             renderComponent(
                 {},
                 {
