@@ -92,6 +92,7 @@ export const CampaignsList = ({
         if (search) {
             const fuse = new Fuse(campaignsByStatus, {
                 threshold: 0.25,
+                distance: 1020,
                 keys: ['name'],
             })
 
