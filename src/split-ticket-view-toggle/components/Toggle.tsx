@@ -1,6 +1,8 @@
 import cn from 'classnames'
 import React, {useCallback} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import useSplitTicketView from '../hooks/useSplitTicketView'
 
 import css from './Toggle.less'
@@ -9,6 +11,9 @@ export default function Toggle() {
     const {isEnabled, setIsEnabled} = useSplitTicketView()
 
     const handleClick = useCallback(() => {
+        logEvent(SegmentEvent.DedicatedTicketPanelToggled, {
+            enabled: !isEnabled,
+        })
         setIsEnabled(!isEnabled)
     }, [isEnabled, setIsEnabled])
 

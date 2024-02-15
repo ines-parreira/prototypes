@@ -80,6 +80,7 @@ export enum SegmentEvent {
     CustomFieldTicketValueInputFocused = 'custom-fields/ticket/input-focused',
     CustomFieldTicketValueRequiredMissingError = 'custom-fields/ticket/value-required-missing-error',
     CustomerNoteEdited = 'customer-note-edited',
+    DedicatedTicketPanelToggled = 'dedicated-ticket-panel-toggled',
     DisplayAllEventsClicked = 'display-all-events-clicked',
     DraftTicket = 'draft-ticket',
     ExternalLinkClicked = 'external-link-clicked',
