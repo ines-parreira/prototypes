@@ -3,40 +3,44 @@
 exports[`<DropdownField /> should display display results when searching 1`] = `
 <body>
   <div>
-    <label
-      class="labelWrapper"
+    <div
+      class="wrapper"
     >
+      <label
+        class="labelWrapper"
+      >
+        <span
+          class="label"
+        >
+          dropdown
+          :
+        </span>
+        <sup
+          class="asterisk"
+        >
+          *
+        </sup>
+      </label>
       <span
-        class="label"
-      >
-        dropdown
-        :
-      </span>
-      <sup
-        class="asterisk"
-      >
-        *
-      </sup>
-    </label>
-    <span
-      class=""
-      id="ticket-whateva-custom-field-value-input-1"
-      style="width: 82px;"
-    >
-      <input
-        autocomplete="off"
-        class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-1-input"
-        name="dropdown"
-        placeholder="+Add"
+        class=""
+        id="ticket-whateva-custom-field-value-input-1"
         style="width: 82px;"
-        type="text"
-        value="c2"
-      />
-      <span
-        style="visibility: hidden; position: absolute;"
-      />
-    </span>
+      >
+        <input
+          autocomplete="off"
+          class="baseStyles stealth"
+          id="ticket-whateva-custom-field-value-input-1-input"
+          name="dropdown"
+          placeholder="+Add"
+          style="width: 82px;"
+          type="text"
+          value="c2"
+        />
+        <span
+          style="visibility: hidden; position: absolute;"
+        />
+      </span>
+    </div>
   </div>
   <div
     data-floating-ui-portal=""
@@ -247,40 +251,44 @@ exports[`<DropdownField /> should display prediction icon in field and in list 1
 exports[`<DropdownField /> should render the dropdown component correctly 1`] = `
 <body>
   <div>
-    <label
-      class="labelWrapper"
+    <div
+      class="wrapper"
     >
+      <label
+        class="labelWrapper"
+      >
+        <span
+          class="label"
+        >
+          dropdown
+          :
+        </span>
+        <sup
+          class="asterisk"
+        >
+          *
+        </sup>
+      </label>
       <span
-        class="label"
-      >
-        dropdown
-        :
-      </span>
-      <sup
-        class="asterisk"
-      >
-        *
-      </sup>
-    </label>
-    <span
-      class=""
-      id="ticket-whateva-custom-field-value-input-1"
-      style="width: 82px;"
-    >
-      <input
-        autocomplete="off"
-        class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-1-input"
-        name="dropdown"
-        placeholder="+Add"
+        class=""
+        id="ticket-whateva-custom-field-value-input-1"
         style="width: 82px;"
-        type="text"
-        value="c2"
-      />
-      <span
-        style="visibility: hidden; position: absolute;"
-      />
-    </span>
+      >
+        <input
+          autocomplete="off"
+          class="baseStyles stealth"
+          id="ticket-whateva-custom-field-value-input-1-input"
+          name="dropdown"
+          placeholder="+Add"
+          style="width: 82px;"
+          type="text"
+          value="c2"
+        />
+        <span
+          style="visibility: hidden; position: absolute;"
+        />
+      </span>
+    </div>
     )
   </div>
   <div

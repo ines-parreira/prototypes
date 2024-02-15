@@ -19,6 +19,8 @@ import MultiLevelSelect from './MultiLevelSelect'
 import {getLabel} from './helpers/getLabels'
 import {isOutdatedValue} from './helpers/isOutdatedValue'
 
+import css from './DropdownField.less'
+
 type Props = Omit<
     ComponentProps<typeof MultiLevelSelect>,
     'onChange' | 'onFocus' | 'value' | 'prediction' | 'hasError' | 'inputId'
@@ -92,7 +94,7 @@ export default function DropdownField(props: Props) {
     }, [value, dispatch, id, props.choices])
 
     return (
-        <>
+        <div className={css.wrapper}>
             <Label label={props.label} isRequired={props.isRequired}>
                 {!isValueEmpty && (
                     <Tooltip placement="left" target={inputId} autohide={false}>
@@ -109,6 +111,6 @@ export default function DropdownField(props: Props) {
                 onFocus={handleFocus}
                 {...props}
             />
-        </>
+        </div>
     )
 }

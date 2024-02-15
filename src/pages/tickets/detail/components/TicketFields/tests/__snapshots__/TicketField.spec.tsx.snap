@@ -38,69 +38,77 @@ exports[`<TicketField /> should render the appropriate field 1`] = `
 
 exports[`<TicketField /> should render the appropriate field 2`] = `
 <div>
-  <label
-    class="labelWrapper"
+  <div
+    class="wrapper"
   >
-    <span
-      class="label"
+    <label
+      class="labelWrapper"
     >
-      Dropdown field
-      :
-    </span>
-  </label>
-  <span
-    class=""
-    id="ticket-whateva-custom-field-value-input-2"
-    style="width: 82px;"
-  >
-    <input
-      autocomplete="off"
-      class="baseStyles stealth"
-      id="ticket-whateva-custom-field-value-input-2-input"
-      name="Dropdown field"
-      placeholder="+Add"
-      style="width: 82px;"
-      type="text"
-      value="some value"
-    />
+      <span
+        class="label"
+      >
+        Dropdown field
+        :
+      </span>
+    </label>
     <span
-      style="visibility: hidden; position: absolute;"
-    />
-  </span>
+      class=""
+      id="ticket-whateva-custom-field-value-input-2"
+      style="width: 82px;"
+    >
+      <input
+        autocomplete="off"
+        class="baseStyles stealth"
+        id="ticket-whateva-custom-field-value-input-2-input"
+        name="Dropdown field"
+        placeholder="+Add"
+        style="width: 82px;"
+        type="text"
+        value="some value"
+      />
+      <span
+        style="visibility: hidden; position: absolute;"
+      />
+    </span>
+  </div>
 </div>
 `;
 
 exports[`<TicketField /> should render the appropriate field 3`] = `
 <div>
-  <label
-    class="labelWrapper"
+  <div
+    class="wrapper"
   >
-    <span
-      class="label"
+    <label
+      class="labelWrapper"
     >
-      Yes/No field
-      :
-    </span>
-  </label>
-  <span
-    class=""
-    id="ticket-whateva-custom-field-value-input-2"
-    style="width: 82px;"
-  >
-    <input
-      autocomplete="off"
-      class="baseStyles stealth"
-      id="ticket-whateva-custom-field-value-input-2-input"
-      name="Yes/No field"
-      placeholder="+Add"
-      style="width: 82px;"
-      type="text"
-      value="Yes"
-    />
+      <span
+        class="label"
+      >
+        Yes/No field
+        :
+      </span>
+    </label>
     <span
-      style="visibility: hidden; position: absolute;"
-    />
-  </span>
+      class=""
+      id="ticket-whateva-custom-field-value-input-2"
+      style="width: 82px;"
+    >
+      <input
+        autocomplete="off"
+        class="baseStyles stealth"
+        id="ticket-whateva-custom-field-value-input-2-input"
+        name="Yes/No field"
+        placeholder="+Add"
+        style="width: 82px;"
+        type="text"
+        value="Yes"
+      />
+      <span
+        style="visibility: hidden; position: absolute;"
+      />
+    </span>
+  </div>
 </div>
 `;
 

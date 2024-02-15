@@ -1,7 +1,7 @@
 @import '~css/new/mixins';
 
 :local .component {
-    padding: 1px 10px 5px 20px;
+    padding: 16px 24px 8px 24px;
     background: var(--neutral-grey-0);
 
     @media @mobiles {
@@ -19,5 +19,12 @@
 
     .statusAndTags {
         gap: 0.5rem;
+    }
+
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
     }
 }
