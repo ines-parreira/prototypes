@@ -31,6 +31,12 @@ import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 import {Components} from 'rest_api/help_center_api/client.generated'
 import {slugify} from '../../utils/helpCenter.utils'
 
+type HelpCenterArticleParams = {
+    article: HelpCenterArticleItem
+    locale: LocaleCode
+    shouldPublish: boolean
+}
+
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
 }
@@ -294,7 +300,7 @@ export const mapHelpCenterArticleData = (
                 ...matchingData.translation,
                 id: matchingData.id,
                 content: content?.replace(/\\n/g, ''),
-                isSelected: true,
+                isSelected: matchingData.translation?.is_current,
                 key: template.key,
                 category: template.category,
                 availableLocales: matchingData.available_locales,
@@ -327,29 +333,31 @@ export const findArticleByKey = (
  * Map articles UI to API Help Center articles
  */
 export const mapHelpCenterArticleItemToArticle = (
-    articleItem: HelpCenterArticleItem,
-    locale: LocaleCode
+    params: HelpCenterArticleParams
 ) => {
-    if (!articleItem.title || !articleItem.content) return null
+    const {article, locale, shouldPublish} = params
 
-    const article = {
+    if (!article.title || !article.content) return null
+
+    const hcArticle = {
         translation: {
-            title: articleItem.title,
-            content: articleItem.content,
-            seo_meta: articleItem.seo_meta || {
+            title: article.title,
+            content: article.content,
+            seo_meta: article.seo_meta || {
                 title: null,
                 description: null,
             },
             excerpt: '',
-            slug: slugify(articleItem.title),
+            slug: slugify(article.title),
             locale,
+            is_current: shouldPublish,
         },
     }
 
     return {
-        ...article,
-        template_key: isArticleTemplateKey(articleItem.key)
-            ? articleItem.key
+        ...hcArticle,
+        template_key: isArticleTemplateKey(article.key)
+            ? article.key
             : undefined,
     }
 }

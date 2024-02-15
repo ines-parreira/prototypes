@@ -301,7 +301,11 @@ describe('helpCenterCreationWizardUtils', () => {
             }
             const locale: LocaleCode = 'en-US'
             expect(
-                mapHelpCenterArticleItemToArticle(articleItem, locale)
+                mapHelpCenterArticleItemToArticle({
+                    article: articleItem,
+                    locale,
+                    shouldPublish: true,
+                })
             ).toBeNull()
         })
 
@@ -313,10 +317,11 @@ describe('helpCenterCreationWizardUtils', () => {
                 seo_meta: {title: 'seo title', description: 'seo description'},
             }
             const locale: LocaleCode = 'en-US'
-            const result = mapHelpCenterArticleItemToArticle(
-                articleItem,
-                locale
-            )
+            const result = mapHelpCenterArticleItemToArticle({
+                article: articleItem,
+                locale,
+                shouldPublish: true,
+            })
             expect(result).toHaveProperty('translation')
             expect(result).toHaveProperty('template_key')
             expect(result?.template_key).toBe(articleItem.key)
@@ -330,10 +335,11 @@ describe('helpCenterCreationWizardUtils', () => {
                 seo_meta: {title: 'seo title', description: 'seo description'},
             }
             const locale: LocaleCode = 'en-US'
-            const result = mapHelpCenterArticleItemToArticle(
-                articleItem,
-                locale
-            )
+            const result = mapHelpCenterArticleItemToArticle({
+                article: articleItem,
+                locale,
+                shouldPublish: true,
+            })
             expect(result).toHaveProperty('translation')
             expect(result).toHaveProperty('template_key')
             expect(result?.template_key).toBeUndefined()

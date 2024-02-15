@@ -8,8 +8,6 @@ import {HelpCenterApiArticlesFixture} from 'pages/settings/helpCenter/fixtures/w
 import {useHelpCenterArticlesForm} from '../useHelpCenterArticlesForm'
 
 const mockedCreateArticleMutateAsync = jest.fn()
-const mockedDeleteArticleMutateAsync = jest.fn()
-const mockedDeleteArticleTranslationMutateAsync = jest.fn()
 const mockedCreateArticleTranslationMutateAsync = jest.fn()
 const mockedUpdateArticleTranslationMutateAsync = jest.fn()
 
@@ -19,17 +17,11 @@ jest.mock('models/helpCenter/queries', () => ({
     useCreateArticle: () => ({
         mutateAsync: mockedCreateArticleMutateAsync,
     }),
-    useDeleteArticle: () => ({
-        mutateAsync: mockedDeleteArticleMutateAsync,
-    }),
     useCreateArticleTranslation: () => ({
         mutateAsync: mockedCreateArticleTranslationMutateAsync,
     }),
     useUpdateArticleTranslation: () => ({
         mutateAsync: mockedUpdateArticleTranslationMutateAsync,
-    }),
-    useDeleteArticleTranslation: () => ({
-        mutateAsync: mockedDeleteArticleTranslationMutateAsync,
     }),
 }))
 
@@ -133,7 +125,6 @@ describe('useHelpCenterArticlesForm', () => {
 
             await waitFor(() => {
                 expect(mockedCreateArticleMutateAsync).toHaveBeenCalled()
-                expect(result.current.selectedArticle).toBeNull()
             })
         })
 
@@ -177,7 +168,6 @@ describe('useHelpCenterArticlesForm', () => {
                 expect(
                     mockedCreateArticleTranslationMutateAsync
                 ).toHaveBeenCalled()
-                expect(result.current.selectedArticle).toBeNull()
             })
         })
 
@@ -220,7 +210,6 @@ describe('useHelpCenterArticlesForm', () => {
                 expect(
                     mockedUpdateArticleTranslationMutateAsync
                 ).toHaveBeenCalled()
-                expect(result.current.selectedArticle).toBeNull()
             })
         })
 

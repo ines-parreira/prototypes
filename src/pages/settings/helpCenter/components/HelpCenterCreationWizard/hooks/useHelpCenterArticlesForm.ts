@@ -11,8 +11,6 @@ import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
 import {
     useCreateArticle,
     useCreateArticleTranslation,
-    useDeleteArticle,
-    useDeleteArticleTranslation,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -53,14 +51,10 @@ export const useHelpCenterArticlesForm = (
     const dispatch = useAppDispatch()
 
     const {mutateAsync: createArticleMutateAsync} = useCreateArticle()
-    const {mutateAsync: deleteArticleMutateAsync} = useDeleteArticle()
-
     const {mutateAsync: updateArticleTranslationMutateAsync} =
         useUpdateArticleTranslation()
     const {mutateAsync: createArticleTranslationMutateAsync} =
         useCreateArticleTranslation()
-    const {mutateAsync: deleteArticleTranslationMutateAsync} =
-        useDeleteArticleTranslation()
 
     useEffect(() => {
         setArticles(articles)
@@ -157,127 +151,70 @@ export const useHelpCenterArticlesForm = (
 
     const createArticle = (
         articleTemplate: HelpCenterArticleItem,
-        shouldTriggerCallback = true
+        shouldPublish = false
     ) => {
-        const payload = mapHelpCenterArticleItemToArticle(
-            articleTemplate,
-            helpCenter.default_locale
-        )
-        if (!payload) return
+        const payload = mapHelpCenterArticleItemToArticle({
+            article: articleTemplate,
+            locale: helpCenter.default_locale,
+            shouldPublish,
+        })
+        if (!payload)
+            return Promise.reject(
+                'No payload provided during article creation.'
+            )
 
-        return createArticleMutateAsync(
-            [undefined, {help_center_id: helpCenter.id}, payload],
-            shouldTriggerCallback
-                ? {
-                      onSuccess: (response) => {
-                          createOrUpdateCallback(
-                              articleTemplate.key,
-                              response?.data.translation
-                          )
-                      },
-                      onError: (error) =>
-                          handleOnError(
-                              error,
-                              'Article not successfully created.',
-                              dispatch
-                          ),
-                  }
-                : {}
-        )
+        return createArticleMutateAsync([
+            undefined,
+            {help_center_id: helpCenter.id},
+            payload,
+        ])
     }
 
     const updateArticleTranslation = (
-        articleTemplate: HelpCenterArticleItem
+        article: HelpCenterArticleItem,
+        shouldPublish = false
     ) => {
-        if (!articleTemplate.id) return
+        if (!article.id)
+            return Promise.reject('No article provided during article update.')
 
-        return updateArticleTranslationMutateAsync(
-            [
-                undefined,
-                {
-                    help_center_id: helpCenter.id,
-                    article_id: articleTemplate.id,
-                    locale: helpCenter.default_locale,
-                },
-                {
-                    title: articleTemplate.title,
-                    content: articleTemplate.content,
-                    slug: slugify(articleTemplate.title!),
-                },
-            ],
+        return updateArticleTranslationMutateAsync([
+            undefined,
             {
-                onSuccess: (response) => {
-                    createOrUpdateCallback(articleTemplate.key, response?.data)
-                },
-                onError: (error) =>
-                    handleOnError(
-                        error,
-                        'Article not successfully updated.',
-                        dispatch
-                    ),
-            }
-        )
+                help_center_id: helpCenter.id,
+                article_id: article.id,
+                locale: helpCenter.default_locale,
+            },
+            {
+                title: article.title,
+                content: article.content,
+                slug: slugify(article.title!),
+                is_current: shouldPublish,
+            },
+        ])
     }
 
     const createArticleTranslation = (
         articleTemplate: HelpCenterArticleItem,
-        shouldTriggerCallback = true
+        shouldPublish = false
     ) => {
-        const payload = mapHelpCenterArticleItemToArticle(
-            articleTemplate,
-            helpCenter.default_locale
-        )
-        if (!payload || !articleTemplate.id) return
-
-        return createArticleTranslationMutateAsync(
-            [
-                undefined,
-                {
-                    help_center_id: helpCenter.id,
-                    article_id: articleTemplate.id,
-                },
-                {...payload?.translation},
-            ],
-            shouldTriggerCallback
-                ? {
-                      onSuccess: (response) => {
-                          createOrUpdateCallback(
-                              articleTemplate.key,
-                              response?.data
-                          )
-                      },
-                      onError: (error) =>
-                          handleOnError(
-                              error,
-                              'Article not successfully updated.',
-                              dispatch
-                          ),
-                  }
-                : {}
-        )
-    }
-
-    const deleteArticleTranslation = (
-        articleTemplate: HelpCenterArticleItem
-    ) => {
-        if (!articleTemplate.id) return
-
-        const params = {
-            help_center_id: helpCenter.id,
-            article_id: articleTemplate.id,
+        const payload = mapHelpCenterArticleItemToArticle({
+            article: articleTemplate,
             locale: helpCenter.default_locale,
-        }
-        return deleteArticleTranslationMutateAsync([undefined, params])
-    }
+            shouldPublish,
+        })
+        if (!payload || !articleTemplate.id)
+            return Promise.reject(
+                'No payload provided during article creation.'
+            )
 
-    const deleteArticle = (articleTemplate: HelpCenterArticleItem) => {
-        if (!articleTemplate.id) return
-
-        const params = {
-            help_center_id: helpCenter.id,
-            id: articleTemplate.id,
-        }
-        return deleteArticleMutateAsync([undefined, params])
+        return createArticleTranslationMutateAsync([
+            undefined,
+            {
+                help_center_id: helpCenter.id,
+                article_id: articleTemplate.id,
+            },
+            {...payload?.translation},
+        ])
     }
 
     const handleEditorSave = async (title: string, content: string) => {
@@ -289,27 +226,54 @@ export const useHelpCenterArticlesForm = (
             type: 'template',
         })
 
+        let nextAction = 'CREATE_ARTICLE'
+
         if (article.id) {
-            article.shouldCreateTranslation
-                ? await createArticleTranslation(article)
-                : await updateArticleTranslation(article)
-        } else {
-            await createArticle(article)
+            nextAction = article.shouldCreateTranslation
+                ? 'CREATE_ARTICLE_TRANSLATION'
+                : 'UPDATE_ARTICLE_TRANSLATION'
         }
-        handleEditorClose()
+
+        try {
+            switch (nextAction) {
+                case 'CREATE_ARTICLE': {
+                    const response = await createArticle(article)
+                    if (response) {
+                        createOrUpdateCallback(
+                            article.key,
+                            response?.data.translation
+                        )
+                        handleEditorClose()
+                    }
+                    break
+                }
+                case 'CREATE_ARTICLE_TRANSLATION': {
+                    const response = await createArticleTranslation(article)
+                    if (response) {
+                        createOrUpdateCallback(article.key, response?.data)
+                        handleEditorClose()
+                    }
+                    break
+                }
+                case 'UPDATE_ARTICLE_TRANSLATION': {
+                    const response = await updateArticleTranslation(article)
+                    if (response) {
+                        createOrUpdateCallback(article.key, response?.data)
+                        handleEditorClose()
+                    }
+                    break
+                }
+            }
+        } catch (error) {
+            const message =
+                typeof error === 'string'
+                    ? error
+                    : 'Article not successfully saved.'
+            handleOnError(error, message, dispatch)
+        }
     }
 
-    const handleNavigationSave = async () => {
-        const selectedItemsWithoutId = flatMap(newArticles, (items) =>
-            filter(
-                items,
-                ({isSelected, id, shouldCreateTranslation}) =>
-                    isSelected === true &&
-                    (!id || shouldCreateTranslation === true)
-            )
-        )
-
-        // Track every selected item
+    const trackSelectedItems = () => {
         flatMap(newArticles, (items) => {
             items.forEach((item) => {
                 if (item.isSelected) {
@@ -319,31 +283,38 @@ export const useHelpCenterArticlesForm = (
                 }
             })
         })
+    }
 
-        const unselectedItemsWithId = flatMap(newArticles, (items) =>
-            filter(items, ({isSelected, id}) => !isSelected && id !== undefined)
+    const handleNavigationSave = async () => {
+        // Track every selected item
+        trackSelectedItems()
+
+        const selectedItemsWithoutId = flatMap(newArticles, (items) =>
+            filter(items, ({isSelected, id}) => isSelected === true && !id)
         )
 
-        const createArticlesFromTemplate =
-            selectedItemsWithoutId.map(async (item) => {
-                return item.shouldCreateTranslation
-                    ? createArticleTranslation(item, false)
-                    : createArticle(item, false)
-            }) || []
+        const itemsWithId = flatMap(newArticles, (items) =>
+            filter(items, ({id}) => id !== undefined)
+        )
 
-        const deleteArticlesFromTemplate =
-            unselectedItemsWithId.map(async (item) => {
-                const translationsLength = item.availableLocales?.length
-                return translationsLength && translationsLength > 1
-                    ? deleteArticleTranslation(item)
-                    : deleteArticle(item)
-            }) || []
+        const handleArticlesFromTemplate = selectedItemsWithoutId.map(
+            (item) => {
+                return createArticle(item, true)
+            }
+        )
+
+        const handleArticlesTranslations = itemsWithId.map((item) => {
+            const shouldPublish = !!item.isSelected
+            return item.shouldCreateTranslation
+                ? createArticleTranslation(item, true)
+                : updateArticleTranslation(item, shouldPublish)
+        })
 
         try {
-            await Promise.all(createArticlesFromTemplate)
-            await Promise.all(deleteArticlesFromTemplate)
+            await Promise.all(handleArticlesFromTemplate)
+            await Promise.all(handleArticlesTranslations)
         } catch (error) {
-            handleOnError(error, 'Articles not successfully updated.', dispatch)
+            handleOnError(error, 'An error occured.', dispatch)
         }
     }
 
