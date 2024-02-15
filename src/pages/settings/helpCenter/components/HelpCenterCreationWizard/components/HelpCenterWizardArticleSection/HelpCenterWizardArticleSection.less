@@ -18,14 +18,22 @@
 
     .article {
         padding: @layout-spacing-s @layout-spacing-m;
-    }
-
-    .articleCheckboxContent {
         display: flex;
         flex: 1;
         align-items: center;
+        .body-semibold();
+    }
+
+    .articleCheckboxContent {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
         justify-content: space-between;
         margin-left: @layout-spacing-xs;
+    }
+
+    .articleCheckbox {
+        margin-bottom: @layout-spacing-xxs; // adjust the margin to align with the article content
     }
 
     .articleEditButton {

@@ -32,22 +32,29 @@ const ArticleSection: React.FC<Props> = ({
                 <div key={item.key}>
                     <div className={css.article}>
                         <CheckBox
+                            className={css.articleCheckbox}
                             value={item.key}
                             isChecked={item.isSelected}
                             onChange={() => onSelect(item.key)}
+                        />
+                        <div
+                            className={css.articleCheckboxContent}
+                            onClick={() => {
+                                onEdit(item.key)
+                            }}
+                            tabIndex={0}
+                            role="button"
                         >
-                            <div className={css.articleCheckboxContent}>
-                                <span>{item.title}</span>
-                                <IconButton
-                                    className={css.articleEditButton}
-                                    fillStyle="ghost"
-                                    size="small"
-                                    onClick={() => onEdit(item.key)}
-                                >
-                                    edit
-                                </IconButton>
-                            </div>
-                        </CheckBox>
+                            <span>{item.title}</span>
+                            <IconButton
+                                className={css.articleEditButton}
+                                fillStyle="ghost"
+                                size="small"
+                                onClick={() => onEdit(item.key)}
+                            >
+                                edit
+                            </IconButton>
+                        </div>
                     </div>
                     <div className={css.articleDelimiter} />
                 </div>
