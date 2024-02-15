@@ -198,7 +198,7 @@ function useMenuItems(
             updateMenuItems((draft) => {
                 if (draft.type === 'order_selection') {
                     draft.disabledText =
-                        'This step requires a parent "Customer login" step.'
+                        'Add a Customer login step first in order to use this step.'
                 }
             })
         } else {
