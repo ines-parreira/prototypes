@@ -1,10 +1,10 @@
-import React, {SyntheticEvent, useState} from 'react'
+import React, {SyntheticEvent, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 import {Map} from 'immutable'
 
 import {useAppNode} from 'appNode'
-import {PartialTemplate} from 'models/widget/types'
+import {LeafTypes} from 'models/widget/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -13,13 +13,53 @@ import {
 } from 'state/widgets/actions'
 import useId from 'hooks/useId'
 import useAppDispatch from 'hooks/useAppDispatch'
+import FieldEditForm, {FormData, TypeOption} from 'infobar/ui/FieldEditForm'
+import {IntegrationType} from 'models/integration/constants'
 
-import FieldEdit from './forms/FieldEdit'
 import css from './Field.less'
 import {Copy} from './CopyButton'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'
+export const TYPE_OPTIONS: TypeOption<LeafTypes>[] = [
+    {
+        value: 'text',
+        label: 'Text',
+    },
+    {
+        value: 'age',
+        label: 'Age',
+    },
+    {
+        value: 'email',
+        label: 'Email',
+    },
+    {
+        value: 'boolean',
+        label: 'Boolean (true/false)',
+    },
+    {value: 'editableList', label: 'Editable List'},
+    {
+        value: 'array',
+        label: 'List',
+    },
+    {
+        value: 'sentiment',
+        label: 'Sentiment',
+    },
+    {
+        value: 'rating',
+        label: 'Rating',
+    },
+    {
+        value: 'points',
+        label: 'Points',
+    },
+    {
+        value: 'percent',
+        label: 'Percent',
+    },
+]
 
 type Props = {
     value: (string | number | boolean | Record<string, unknown>)[] | unknown
@@ -75,9 +115,9 @@ export default function Field({
         dispatch(stopWidgetEdition())
     }
 
-    const handleFieldEditSubmit = (partialTemplate: PartialTemplate) => {
+    const handleFieldEditSubmit = (formData: FormData<LeafTypes>) => {
         setIsPopoverOpen(false)
-        dispatch(updateEditedWidget(partialTemplate))
+        dispatch(updateEditedWidget(formData))
         dispatch(stopWidgetEdition())
     }
 
@@ -85,6 +125,15 @@ export default function Field({
     const className = classnames(`${css.widgetField} widget-field draggable`, {
         [css.widgetFieldEditing]: isEditing,
     })
+
+    let path = template.get('path')
+    if (Array.isArray(path) && path.length) path = path[0]
+    const availableTypes = useMemo(() => {
+        if (widget.get('type') === IntegrationType.Shopify && path === 'tags') {
+            return TYPE_OPTIONS
+        }
+        return TYPE_OPTIONS.filter((option) => option.value !== 'editableList')
+    }, [widget, path])
 
     return (
         <div id={uniqueId} className={className}>
@@ -129,9 +178,12 @@ export default function Field({
                         container={appNode ?? document.body}
                     >
                         <PopoverBody>
-                            <FieldEdit
-                                template={template}
-                                widget={widget}
+                            <FieldEditForm
+                                initialData={{
+                                    title: template.get('title') as string,
+                                    type: template.get('type') as LeafTypes,
+                                }}
+                                availableTypes={availableTypes}
                                 onCancel={handleFieldEditCancel}
                                 onSubmit={handleFieldEditSubmit}
                             />

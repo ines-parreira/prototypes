@@ -1,9 +1,5 @@
 import React, {useState, SyntheticEvent} from 'react'
-import {Form} from 'reactstrap'
-import {Map} from 'immutable'
 
-import {PartialTemplate} from 'models/widget/types'
-import {IntegrationType} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
@@ -12,24 +8,31 @@ export const TYPE_FIELD_LABEL = 'Type'
 export const SUBMIT_BUTTON_TEXT = 'Submit'
 export const CANCEL_BUTTON_TEXT = 'Cancel'
 
-type Props = {
-    template: Map<string, unknown>
-    widget: Map<string, unknown>
-    onSubmit: (partialTemplate: PartialTemplate) => void
+export type FormData<T> = {
+    title: string
+    type: T
+}
+
+export type TypeOption<T> = {
+    value: T
+    label: string
+}
+
+type Props<T extends string> = {
+    initialData: Partial<FormData<T>>
+    availableTypes: TypeOption<T>[]
+    onSubmit: (formData: FormData<T>) => void
     onCancel: () => void
 }
 
-export default function FieldEdit({
-    template,
-    widget,
+export default function FieldEditForm<T extends string>({
+    initialData,
+    availableTypes,
     onCancel,
     onSubmit,
-}: Props) {
-    const [title, setTitle] = useState(template.get('title', ''))
-    const [type, setType] = useState(template.get('type', ''))
-
-    let path = template.get('path')
-    if (Array.isArray(path) && path.length) path = path[0]
+}: Props<T>) {
+    const [title, setTitle] = useState(initialData.title || '')
+    const [type, setType] = useState<T | ''>(initialData.type || '')
 
     const handleCancelClick = (e: SyntheticEvent<HTMLButtonElement>) => {
         e.stopPropagation()
@@ -38,11 +41,14 @@ export default function FieldEdit({
 
     const handleFormSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault()
-        onSubmit({title, type} as PartialTemplate)
+        if (!type) {
+            return
+        }
+        onSubmit({title, type})
     }
 
     return (
-        <Form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit}>
             <DEPRECATED_InputField
                 type="text"
                 name="title"
@@ -59,21 +65,11 @@ export default function FieldEdit({
                 value={type}
                 onChange={(type) => setType(type)}
             >
-                <option value="text">Text</option>
-                <option value="date">Date</option>
-                <option value="age">Age</option>
-                <option value="url">Url</option>
-                <option value="email">Email</option>
-                <option value="boolean">Boolean (true/false)</option>
-                {path === 'tags' &&
-                    widget.get('type') === IntegrationType.Shopify && (
-                        <option value="editableList">Editable List</option>
-                    )}
-                <option value="array">List</option>
-                <option value="sentiment">Sentiment</option>
-                <option value="rating">Rating</option>
-                <option value="points">Points</option>
-                <option value="percent">Percent</option>
+                {availableTypes.map(({value, label}) => (
+                    <option key={value} value={value}>
+                        {label}
+                    </option>
+                ))}
             </DEPRECATED_InputField>
 
             <div>
@@ -88,6 +84,6 @@ export default function FieldEdit({
                     {CANCEL_BUTTON_TEXT}
                 </Button>
             </div>
-        </Form>
+        </form>
     )
 }

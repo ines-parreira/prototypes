@@ -6,7 +6,7 @@ import {Map, fromJS} from 'immutable'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
 import {assumeMock} from 'utils/testing'
-import {PartialTemplate} from 'models/widget/types'
+import {LeafTypes} from 'models/widget/types'
 import {idTemplate, shopifyWidget} from 'fixtures/widgets'
 import {RootState} from 'state/types'
 import {SHOPIFY_WIDGET_TYPE} from 'state/widgets/constants'
@@ -16,10 +16,14 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
+import FieldEditForm, {FormData} from 'infobar/ui/FieldEditForm'
 
-import Field, {DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT} from '../Field'
+import Field, {
+    DELETE_BUTTON_TEXT,
+    EDIT_BUTTON_TEXT,
+    TYPE_OPTIONS,
+} from '../Field'
 import {Copy} from '../CopyButton'
-import FieldEdit from '../forms/FieldEdit'
 
 const mockStore = configureMockStore()
 
@@ -31,15 +35,15 @@ jest.mock('../CopyButton', () => ({
 }))
 const CopyMock = assumeMock(Copy)
 
-const FIELD_EDIT_TEST_ID = 'field-edit'
-jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/forms/FieldEdit',
-    () =>
-        jest.fn(() => {
-            return <span data-testid={FIELD_EDIT_TEST_ID}>field edit</span>
-        })
+const FIELD_EDIT_FORM_TEST_ID = 'field-edit-form'
+jest.mock('infobar/ui/FieldEditForm', () =>
+    jest.fn(() => {
+        return (
+            <span data-testid={FIELD_EDIT_FORM_TEST_ID}>field edit form</span>
+        )
+    })
 )
-const FieldEditMock = assumeMock(FieldEdit)
+const FieldEditFormMock = assumeMock(FieldEditForm)
 
 describe('Field', () => {
     const defaultState = {
@@ -50,14 +54,15 @@ describe('Field', () => {
         }),
     } as RootState
     const defaultAbsolutePath = ['foo', 'bar']
+    const defaultTemplate = (fromJS(idTemplate) as Map<any, any>).set(
+        'absolutePath',
+        defaultAbsolutePath
+    )
     const defaultValue = 'foo value'
     const defaultCopyableValue = 'copyable value'
     const defaultProps: ComponentProps<typeof Field> = {
         value: defaultValue,
-        template: (fromJS(idTemplate) as Map<any, any>).set(
-            'absolutePath',
-            defaultAbsolutePath
-        ),
+        template: defaultTemplate,
         isEditing: false,
         type: SHOPIFY_WIDGET_TYPE,
         widget: fromJS(shopifyWidget),
@@ -154,7 +159,78 @@ describe('Field', () => {
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
 
-        expect(queryByTestId(FIELD_EDIT_TEST_ID)).toBeInTheDocument()
+        expect(queryByTestId(FIELD_EDIT_FORM_TEST_ID)).toBeInTheDocument()
+    })
+
+    it('should pass template title and type to the edit form', () => {
+        const expectedInitialData: FormData<LeafTypes> = {
+            title: idTemplate.title,
+            type: idTemplate.type,
+        }
+        const store = mockStore(defaultState)
+        const {getByText} = render(
+            <Provider store={store}>
+                <Field {...defaultProps} isEditing />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
+
+        expect(FieldEditFormMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                initialData: expectedInitialData,
+            }),
+            expect.anything()
+        )
+    })
+
+    it('should exclude editableList from type options', () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Field {...defaultProps} isEditing />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
+
+        const {availableTypes} = FieldEditFormMock.mock.calls.slice(-1)[0][0]
+        expect(availableTypes).toEqual(
+            TYPE_OPTIONS.filter((option) => option.value !== 'editableList')
+        )
+    })
+
+    it('should include editableList in the type options for the tags path of a shopify widget ', () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Field
+                    {...defaultProps}
+                    template={defaultTemplate.set('path', 'tags')}
+                    isEditing
+                />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
+
+        const {availableTypes} = FieldEditFormMock.mock.calls.slice(-1)[0][0]
+        expect(availableTypes).toEqual(TYPE_OPTIONS)
+    })
+
+    it('should include editableList in the type options for the array tags path of a shopify widget', () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Field
+                    {...defaultProps}
+                    template={defaultTemplate.set('path', ['tags'])}
+                    isEditing
+                />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
+
+        const {availableTypes} = FieldEditFormMock.mock.calls.slice(-1)[0][0]
+        expect(availableTypes).toEqual(TYPE_OPTIONS)
     })
 
     it('should hide edit form and dispatch stop widget edit on onCancel callback', async () => {
@@ -166,16 +242,18 @@ describe('Field', () => {
         )
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-        act(() => FieldEditMock.mock.calls.slice(-1)[0][0].onCancel())
+        act(() => FieldEditFormMock.mock.calls.slice(-1)[0][0].onCancel())
 
         await waitFor(() =>
-            expect(queryByTestId(FIELD_EDIT_TEST_ID)).not.toBeInTheDocument()
+            expect(
+                queryByTestId(FIELD_EDIT_FORM_TEST_ID)
+            ).not.toBeInTheDocument()
         )
         expect(store.getActions()).toContainEqual(stopWidgetEdition())
     })
 
     it('should hide edit form, dispatch update widget and stop edit on onSubmit callback', async () => {
-        const partialTemplate: PartialTemplate = {title: 'foo', type: 'url'}
+        const formData: FormData<LeafTypes> = {title: 'Url', type: 'url'}
         const store = mockStore(defaultState)
         const {getByText, queryByTestId} = render(
             <Provider store={store}>
@@ -185,15 +263,17 @@ describe('Field', () => {
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
         act(() =>
-            FieldEditMock.mock.calls.slice(-1)[0][0].onSubmit(partialTemplate)
+            FieldEditFormMock.mock.calls.slice(-1)[0][0].onSubmit(formData)
         )
 
         await waitFor(() =>
-            expect(queryByTestId(FIELD_EDIT_TEST_ID)).not.toBeInTheDocument()
+            expect(
+                queryByTestId(FIELD_EDIT_FORM_TEST_ID)
+            ).not.toBeInTheDocument()
         )
 
         const actions = store.getActions()
-        const updateWidgetAction = updateEditedWidget(partialTemplate)
+        const updateWidgetAction = updateEditedWidget(formData)
         expect(actions).toContainEqual(updateWidgetAction)
 
         const stopEditAction = stopWidgetEdition()
@@ -220,7 +300,9 @@ describe('Field', () => {
         fireEvent.click(container)
 
         await waitFor(() =>
-            expect(queryByTestId(FIELD_EDIT_TEST_ID)).not.toBeInTheDocument()
+            expect(
+                queryByTestId(FIELD_EDIT_FORM_TEST_ID)
+            ).not.toBeInTheDocument()
         )
         expect(store.getActions()).toContainEqual(stopWidgetEdition())
     })
