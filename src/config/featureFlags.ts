@@ -82,4 +82,5 @@ export enum FeatureFlagKey {
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     HelpCenterRulesAndViews = 'help-center-rules-and-views',
+    EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
 }

@@ -23,6 +23,7 @@ type Props = {
     integrationType: IntegrationType
     integrations: List<Map<any, any>>
     createIntegration: () => void
+    tableHeader?: ReactNode
     createIntegrationButton?: ReactNode
     createIntegrationButtonLabel?: string
     longTypeDescription?: ReactNode
@@ -82,6 +83,7 @@ class IntegrationList extends React.Component<Props> {
             integrationToItemDisplay,
             loading,
             alert,
+            tableHeader,
         } = this.props
 
         const config = getIntegrationConfig(integrationType)
@@ -145,6 +147,7 @@ class IntegrationList extends React.Component<Props> {
 
                 {!integrations.isEmpty() && (
                     <Table className="table-integrations mt-3" hover>
+                        {tableHeader}
                         <tbody>
                             {integrations
                                 .valueSeq()

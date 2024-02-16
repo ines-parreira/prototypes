@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 
 import gmailImg from 'assets/img/integrations/gmail.png'
@@ -12,7 +13,10 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {EmailDomain, IntegrationType} from 'models/integration/types'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
-import {getIntegrationsByTypes} from 'state/integrations/helpers'
+import {
+    getIconFromType,
+    getIntegrationsByTypes,
+} from 'state/integrations/helpers'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchIntegrations} from 'state/integrations/actions'
@@ -20,6 +24,8 @@ import Tooltip from 'pages/common/components/Tooltip'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import IntegrationList from '../IntegrationList'
+import {useListStoreMappings} from '../../../../../models/storeMapping/queries'
+import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import {fetchEmailDomains} from './resources'
 import {
     getDomainFromEmailAddress,
@@ -39,10 +45,29 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
     const {integrations, loading} = props
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
 
+    const showStoreMapping: boolean | undefined =
+        useFlags()[FeatureFlagKey.EnableEmailToStoreMapping]
+
     const [isLoadingDomains, setIsLoadingDomains] = useState(false)
     const [emailDomains, setEmailDomains] = useState<EmailDomain[]>([])
 
     const dispatch = useAppDispatch()
+
+    const {data: storeMappings, isFetching: isLoadingStoreMappings} =
+        useListStoreMappings(
+            integrations
+                .map((integration) => integration?.get('id') as number)
+                .toArray(),
+            {
+                enabled: integrations.size > 0,
+                refetchOnWindowFocus: false,
+                select: (data) =>
+                    data?.reduce<Record<string, number>>((acc, mapping) => {
+                        acc[mapping.integration_id] = mapping.store_id
+                        return acc
+                    }, {}),
+            }
+        )
 
     useEffect(() => {
         setIsLoadingDomains(true)
@@ -59,7 +84,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         void dispatch(fetchIntegrations())
     })
 
-    if (isLoadingDomains) {
+    if (isLoadingDomains || (isLoadingStoreMappings && showStoreMapping)) {
         return <Loader />
     }
 
@@ -161,6 +186,11 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const adapter = adapters[integrationType]
 
+        const storeIntegration: Map<any, any> = integrations.find(
+            (_integration) =>
+                _integration?.get('id') === storeMappings?.[integrationId]
+        )
+
         return (
             <tr key={integrationId}>
                 <td className="smallest align-middle">{adapter.image}</td>
@@ -172,6 +202,23 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                         </div>
                     </Link>
                 </td>
+                {showStoreMapping && (
+                    <td className="align-middle pr-2">
+                        {storeIntegration && (
+                            <span className={css.storeName}>
+                                <img
+                                    height={16}
+                                    width={16}
+                                    src={getIconFromType(
+                                        storeIntegration.get('type')
+                                    )}
+                                    alt="logo"
+                                />
+                                <span>{storeIntegration.get('name')}</span>
+                            </span>
+                        )}
+                    </td>
+                )}
                 <td className="smallest align-middle text-right p-0">
                     <div>
                         {!active && (isGmail || isOutlook) && (
@@ -257,6 +304,17 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             createIntegrationButtonLabel="Add email address"
             integrationToItemDisplay={integrationToItemDisplay}
             loading={loading}
+            tableHeader={
+                showStoreMapping ? (
+                    <thead>
+                        <tr>
+                            <td colSpan={2}>Email</td>
+                            <td>Stores</td>
+                            <td colSpan={2}></td>
+                        </tr>
+                    </thead>
+                ) : undefined
+            }
         />
     )
 }

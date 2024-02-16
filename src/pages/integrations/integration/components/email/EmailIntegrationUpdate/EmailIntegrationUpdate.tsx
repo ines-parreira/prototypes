@@ -48,6 +48,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import getOutboundEmailProviderSettingKey from 'pages/integrations/integration/components/email/helpers'
 
 import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
+import EmailIntegrationConnectStore from '../EmailToStoreMapping/EmailIntegrationConnectStore'
 import css from './EmailIntegrationUpdate.less'
 import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'
 
@@ -485,6 +486,9 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
 
         return (
             <div className="mt-4">
+                <EmailIntegrationConnectStore
+                    integration={this.props.integration}
+                />
                 <h3>Settings</h3>
                 <Form onSubmit={this._handleSubmit}>
                     <InputField

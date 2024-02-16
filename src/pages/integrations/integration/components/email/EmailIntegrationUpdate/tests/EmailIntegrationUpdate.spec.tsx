@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
+import {QueryClientProvider} from '@tanstack/react-query'
 import {integrationsState} from 'fixtures/integrations'
 
 import {IntegrationType} from 'models/integration/constants'
@@ -23,6 +24,9 @@ import {
 import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
 import getOutboundEmailProviderSettingKey from 'pages/integrations/integration/components/email/helpers'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+const queryClient = mockQueryClient()
 const INTEGRATION_NAME = 'My Integration'
 const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {
     loading: fromJS({integration: false}),
@@ -45,9 +49,14 @@ describe('<EmailIntegrationUpdateContainer />', () => {
 
     const renderWithStore = (props = {}) =>
         render(
-            <Provider store={store}>
-                <EmailIntegrationUpdateContainer {...commonProps} {...props} />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <EmailIntegrationUpdateContainer
+                        {...commonProps}
+                        {...props}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
     it.each([

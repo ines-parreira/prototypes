@@ -6,10 +6,16 @@ import {render, waitFor, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 
+import {QueryClientProvider} from '@tanstack/react-query'
+import LD from 'launchdarkly-react-client-sdk'
 import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
 import {IntegrationType, EmailProvider} from 'models/integration/constants'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {FeatureFlagKey} from 'config/featureFlags'
 import EmailIntegrationList from '../EmailIntegrationList'
 import {fetchEmailDomains} from '../resources'
+
+const queryClient = mockQueryClient()
 
 jest.mock('../resources')
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
@@ -80,6 +86,9 @@ describe('<EmailIntegrationList/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.EnableEmailToStoreMapping]: false,
+        }))
     })
 
     describe('render()', () => {
@@ -87,9 +96,11 @@ describe('<EmailIntegrationList/>', () => {
             const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
             renderWithRouter(
-                <Provider store={store}>
-                    <EmailIntegrationList {...commonProps} />
-                </Provider>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <EmailIntegrationList {...commonProps} />
+                    </Provider>
+                </QueryClientProvider>
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -111,7 +122,9 @@ describe('<EmailIntegrationList/>', () => {
 
                 {
                     wrapper: ({children}) => (
-                        <MemoryRouter>{children}</MemoryRouter>
+                        <QueryClientProvider client={queryClient}>
+                            <MemoryRouter>{children}</MemoryRouter>
+                        </QueryClientProvider>
                     ),
                 }
             )
@@ -146,7 +159,9 @@ describe('<EmailIntegrationList/>', () => {
 
                 {
                     wrapper: ({children}) => (
-                        <MemoryRouter>{children}</MemoryRouter>
+                        <QueryClientProvider client={queryClient}>
+                            <MemoryRouter>{children}</MemoryRouter>
+                        </QueryClientProvider>
                     ),
                 }
             )
@@ -161,19 +176,21 @@ describe('<EmailIntegrationList/>', () => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
                 renderWithRouter(
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([
-                                getGmailIntegration(
-                                    1,
-                                    false,
-                                    false,
-                                    emailProvider
-                                ),
-                            ])}
-                        />
-                    </Provider>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                integrations={fromJS([
+                                    getGmailIntegration(
+                                        1,
+                                        false,
+                                        false,
+                                        emailProvider
+                                    ),
+                                ])}
+                            />
+                        </Provider>
+                    </QueryClientProvider>
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -189,19 +206,21 @@ describe('<EmailIntegrationList/>', () => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
                 renderWithRouter(
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([
-                                getOutlookIntegration(
-                                    1,
-                                    false,
-                                    false,
-                                    emailProvider
-                                ),
-                            ])}
-                        />
-                    </Provider>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                integrations={fromJS([
+                                    getOutlookIntegration(
+                                        1,
+                                        false,
+                                        false,
+                                        emailProvider
+                                    ),
+                                ])}
+                            />
+                        </Provider>
+                    </QueryClientProvider>
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -217,19 +236,21 @@ describe('<EmailIntegrationList/>', () => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
                 renderWithRouter(
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([
-                                getGmailIntegration(
-                                    1,
-                                    false,
-                                    true,
-                                    emailProvider
-                                ),
-                            ])}
-                        />
-                    </Provider>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                integrations={fromJS([
+                                    getGmailIntegration(
+                                        1,
+                                        false,
+                                        true,
+                                        emailProvider
+                                    ),
+                                ])}
+                            />
+                        </Provider>
+                    </QueryClientProvider>
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -245,19 +266,21 @@ describe('<EmailIntegrationList/>', () => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
                 renderWithRouter(
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([
-                                getGmailIntegration(
-                                    1,
-                                    true,
-                                    true,
-                                    emailProvider
-                                ),
-                            ])}
-                        />
-                    </Provider>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                integrations={fromJS([
+                                    getGmailIntegration(
+                                        1,
+                                        true,
+                                        true,
+                                        emailProvider
+                                    ),
+                                ])}
+                            />
+                        </Provider>
+                    </QueryClientProvider>
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -273,19 +296,21 @@ describe('<EmailIntegrationList/>', () => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
                 renderWithRouter(
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([
-                                getOutlookIntegration(
-                                    1,
-                                    true,
-                                    true,
-                                    emailProvider
-                                ),
-                            ])}
-                        />
-                    </Provider>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <EmailIntegrationList
+                                {...commonProps}
+                                integrations={fromJS([
+                                    getOutlookIntegration(
+                                        1,
+                                        true,
+                                        true,
+                                        emailProvider
+                                    ),
+                                ])}
+                            />
+                        </Provider>
+                    </QueryClientProvider>
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -300,12 +325,14 @@ describe('<EmailIntegrationList/>', () => {
             const integration = getEmailIntegration(1)
 
             const component = renderWithRouter(
-                <Provider store={store}>
-                    <EmailIntegrationList
-                        {...commonProps}
-                        integrations={fromJS([integration])}
-                    />
-                </Provider>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([integration])}
+                        />
+                    </Provider>
+                </QueryClientProvider>
             )
 
             await component.findByTestId('integration-link')
@@ -319,20 +346,22 @@ describe('<EmailIntegrationList/>', () => {
             const integration = getEmailIntegration(1)
 
             const component = renderWithRouter(
-                <Provider store={store}>
-                    <EmailIntegrationList
-                        {...commonProps}
-                        integrations={fromJS([
-                            {
-                                ...integration,
-                                meta: {
-                                    ...integration.meta,
-                                    provider: EmailProvider.Sendgrid,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                {
+                                    ...integration,
+                                    meta: {
+                                        ...integration.meta,
+                                        provider: EmailProvider.Sendgrid,
+                                    },
                                 },
-                            },
-                        ])}
-                    />
-                </Provider>
+                            ])}
+                        />
+                    </Provider>
+                </QueryClientProvider>
             )
 
             await component.findByTestId('integration-link')
