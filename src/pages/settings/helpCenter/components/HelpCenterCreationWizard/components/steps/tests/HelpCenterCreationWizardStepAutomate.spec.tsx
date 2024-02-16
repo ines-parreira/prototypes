@@ -28,10 +28,10 @@ import {NotificationStatus} from 'state/notifications/types'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
+import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
-import {createWorkflowConfigurationShallow} from '../../../../../../../../fixtures/workflows'
-import {SelfServiceConfiguration} from '../../../../../../../../models/selfServiceConfiguration/types'
 
 jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
     jest.fn()
@@ -74,6 +74,14 @@ const mockedUseHelpCenterWizardHook = {
     handleAction: mockOnAction,
     isLoading: false,
     allStoreIntegrations: [],
+}
+
+const defaultUseSelfServiceConfiguration = {
+    isFetchPending: false,
+    isUpdatePending: false,
+    handleSelfServiceConfigurationUpdate: mockSelfServiceConfigUpdate,
+    storeIntegration: undefined,
+    selfServiceConfiguration: undefined,
 }
 
 const mockStore = configureMockStore([thunk])
@@ -159,13 +167,9 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             isUpdatePending: false,
             handleHelpCenterAutomationSettingsFetch: jest.fn(),
         })
-        mockedUseSelfServiceConfiguration.mockReturnValue({
-            isFetchPending: false,
-            isUpdatePending: false,
-            handleSelfServiceConfigurationUpdate: mockSelfServiceConfigUpdate,
-            storeIntegration: undefined,
-            selfServiceConfiguration: undefined,
-        })
+        mockedUseSelfServiceConfiguration.mockReturnValue(
+            defaultUseSelfServiceConfiguration
+        )
         mockedUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
         } as unknown as ReturnType<typeof useGetHelpCenterArticleList>)
@@ -243,7 +247,15 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
     })
 
     describe('article recommendation', () => {
-        it('should be enabled by default', () => {
+        it('should be enabled by default when no article recomm with different help center', () => {
+            mockedUseSelfServiceConfiguration.mockReturnValue({
+                ...defaultUseSelfServiceConfiguration,
+                selfServiceConfiguration: {
+                    ...selfServiceConfiguration1,
+                    article_recommendation_help_center_id: null,
+                },
+            })
+
             renderComponent(
                 {},
                 {integrations: [shopifyIntegration, ...chatIntegrationFixtures]}
@@ -257,6 +269,59 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             expect(
                 screen.getByText('Article Recommendation')
             ).toBeInTheDocument()
+        })
+
+        it('should be disabled by default when article recomm with different help center', () => {
+            mockedUseSelfServiceConfiguration.mockReturnValue({
+                ...defaultUseSelfServiceConfiguration,
+                selfServiceConfiguration: {
+                    ...selfServiceConfiguration1,
+                    article_recommendation_help_center_id: 999,
+                },
+            })
+
+            renderComponent(
+                {},
+                {integrations: [shopifyIntegration, ...chatIntegrationFixtures]}
+            )
+
+            expect(
+                screen.getByLabelText(
+                    /Recommend articles from this Help Center in my Chat/i
+                )
+            ).not.toBeChecked()
+            expect(
+                screen.getByText(
+                    'You already have another Help Center used for article recommendations. By turning this setting on, articles will be surfaced in your chat from this Help Center instead.'
+                )
+            ).toBeInTheDocument()
+        })
+
+        it('should be enabled when article recomm with same help center', () => {
+            mockedUseSelfServiceConfiguration.mockReturnValue({
+                ...defaultUseSelfServiceConfiguration,
+                selfServiceConfiguration: {
+                    ...selfServiceConfiguration1,
+                    article_recommendation_help_center_id: helpCenterFixture.id,
+                },
+            })
+
+            renderComponent(
+                {},
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                    helpCenter: helpCenterFixture,
+                }
+            )
+
+            expect(
+                screen.getByLabelText(
+                    /Recommend articles from this Help Center in my Chat/i
+                )
+            ).toBeChecked()
         })
 
         it('should hide article recommendation whe no chat integrations', () => {
@@ -317,22 +382,15 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 workflowConfigurations,
             })
             mockedUseSelfServiceConfiguration.mockReturnValue({
-                isFetchPending: false,
-                isUpdatePending: false,
-                handleSelfServiceConfigurationUpdate:
-                    mockSelfServiceConfigUpdate,
-                storeIntegration: undefined,
+                ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
+                    ...selfServiceConfiguration1,
                     workflows_entrypoints: workflowConfigurations.map(
                         (config) => ({
                             workflow_id: config.id,
                         })
                     ),
-                    track_order_policy: {enabled: false},
-                    report_issue_policy: {enabled: false},
-                    cancel_order_policy: {enabled: false},
-                    return_order_policy: {enabled: false},
-                } as unknown as SelfServiceConfiguration,
+                },
             })
 
             renderComponent(

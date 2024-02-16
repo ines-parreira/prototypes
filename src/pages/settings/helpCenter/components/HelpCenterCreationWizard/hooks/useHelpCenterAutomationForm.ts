@@ -43,7 +43,7 @@ const reducer = (
 
 const defaultState: UseHelpCenterAutomationFormState = {
     orderManagementEnabled: true,
-    articleRecommendationEnabled: true,
+    articleRecommendationEnabled: false,
     flows: [],
 }
 

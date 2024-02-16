@@ -1,17 +1,20 @@
 import React from 'react'
 import classnames from 'classnames'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import css from './HelpCenterWizardArticleRec.less'
 
 type HelpCenterWizardArticleRecProps = {
     articleRecommendationEnabled: boolean
+    isArticleRecomAlreadyEnabled: boolean
     onArticleRecommendationEnabledChange: (enabled: boolean) => void
 }
 
 const HelpCenterWizardArticleRec = ({
     articleRecommendationEnabled,
     onArticleRecommendationEnabledChange,
+    isArticleRecomAlreadyEnabled,
 }: HelpCenterWizardArticleRecProps) => {
     const handleArticleRecommendationEnabledChange = (enabled: boolean) => {
         onArticleRecommendationEnabledChange(enabled)
@@ -24,6 +27,15 @@ const HelpCenterWizardArticleRec = ({
             </div>
 
             <div className={css.container}>
+                {isArticleRecomAlreadyEnabled && (
+                    <Alert icon type={AlertType.Warning}>
+                        You already have another Help Center used for article
+                        recommendations. By turning this setting on, articles
+                        will be surfaced in your chat from this Help Center
+                        instead.
+                    </Alert>
+                )}
+
                 <ToggleInput
                     name="article-recommendation"
                     isToggled={articleRecommendationEnabled}

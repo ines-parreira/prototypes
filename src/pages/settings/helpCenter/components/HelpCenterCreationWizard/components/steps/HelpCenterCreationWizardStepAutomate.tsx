@@ -51,6 +51,7 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         isFetchPending: isSelfServiceConfigurationPending,
         isUpdatePending: isSelfServiceConfigurationUpdating,
         handleSelfServiceConfigurationUpdate,
+        selfServiceConfiguration,
     } = useSelfServiceConfiguration(
         helpCenterShopIntegration.type,
         helpCenterShopIntegration.name,
@@ -58,6 +59,12 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => {}
     )
+
+    const isArticleRecomAlreadyEnabled =
+        !!selfServiceConfiguration?.article_recommendation_help_center_id &&
+        // we have different help center in the self service configuration. This prevents from case when user clicks "Save and customize later"
+        selfServiceConfiguration?.article_recommendation_help_center_id !==
+            helpCenter.id
 
     const chatIntegrations = useAppSelector(
         getIntegrationsByTypes([IntegrationType.GorgiasChat])
@@ -71,7 +78,6 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
     } = useHelpCenterAutomationForm({
         orderManagementEnabled:
             helpCenter.self_service_deactivated_datetime === null,
-        articleRecommendationEnabled: chatIntegrations.length > 0,
     })
     const {data: helpCenterArticles} = useGetHelpCenterArticleList(
         helpCenter.id,
@@ -105,6 +111,17 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
             )
         }
     }, [automationSettings.workflows, isFetchPending, updateFlows])
+
+    useEffect(() => {
+        if (!isFetchPending && chatIntegrations.length > 0) {
+            updateArticleRecommendationEnabled(!isArticleRecomAlreadyEnabled)
+        }
+    }, [
+        chatIntegrations.length,
+        isArticleRecomAlreadyEnabled,
+        isFetchPending,
+        updateArticleRecommendationEnabled,
+    ])
 
     const onSave = async () => {
         const automationSettings = mapEntrypointsToAutomationSettings(
@@ -190,6 +207,9 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
                 />
                 {chatIntegrations.length > 0 && (
                     <HelpCenterWizardArticleRec
+                        isArticleRecomAlreadyEnabled={
+                            isArticleRecomAlreadyEnabled
+                        }
                         articleRecommendationEnabled={
                             state.articleRecommendationEnabled
                         }
