@@ -1,0 +1,31 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .badge {
+        // for some bad reasons the badge component adds
+        // extra margins to itself when stacked
+        margin-left: 0px !important;
+        margin: 4px 4px 0 0;
+    }
+
+    .orderTitle {
+        font-size: 18px;
+    }
+
+    .copyButton {
+        display: none;
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .orderTitleContainer {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+
+        &:hover {
+            .copyButton {
+                display: inline-block;
+            }
+        }
+    }
+}

@@ -5,6 +5,7 @@ import Item from './Item'
 import Order from './Order/OrderWidget'
 import ShippingAddress from './Order/ShippingAddress'
 import Fulfillment from './Fulfillment'
+import DraftOrder from './DraftOrder/DraftOrderWidget'
 
 const shopify = (args: {
     template: Map<any, any>
@@ -17,6 +18,10 @@ const shopify = (args: {
 
     if (path.match(/integrations\.\d+\.customer$/)) {
         return Customer()
+    }
+
+    if (path.match(/integrations\.\d+\.draft_orders\.\[]$/)) {
+        return DraftOrder()
     }
 
     if (path.match(/integrations\.\d+\.orders\.\[]$/)) {

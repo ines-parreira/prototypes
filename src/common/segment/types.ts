@@ -198,6 +198,7 @@ export enum SegmentEvent {
     ShopifyCreateOrderTaxesPopoverApply = 'shopify/create-order/taxes-popover/apply',
     ShopifyCreateOrderTaxesPopoverClose = 'shopify/create-order/taxes-popover/close',
     ShopifyCreateOrderTaxesPopoverOpen = 'shopify/create-order/taxes-popover/open',
+    ShopifyDraftOrderClicked = 'widget/shopify-draft-order-link/link-clicked',
     ShopifyDuplicateOrderCancel = 'shopify/duplicate-order/cancel',
     ShopifyDuplicateOrderCustomItemPopoverCancel = 'shopify/duplicate-order/custom-item-popover/cancel',
     ShopifyDuplicateOrderCustomItemPopoverOpen = 'shopify/duplicate-order/custom-item-popover/open',

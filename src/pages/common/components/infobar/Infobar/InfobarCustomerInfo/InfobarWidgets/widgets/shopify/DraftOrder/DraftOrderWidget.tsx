@@ -1,0 +1,109 @@
+import React, {ReactNode, useContext} from 'react'
+import {Map} from 'immutable'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {StaticField} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/StaticField'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+
+import {EditionContext} from 'providers/infobar/EditionContext'
+
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {Copy} from '../../CopyButton'
+import css from './DraftOrderWidget.less'
+
+export default function DraftOrderWidget() {
+    return {
+        AfterTitle,
+        editionHiddenFields: ['link'],
+        TitleWrapper,
+    }
+}
+
+type AfterTitleProps = {
+    isEditing: boolean
+    source: Map<string, string | number | boolean>
+}
+
+const AfterTitle = ({isEditing, source}: AfterTitleProps) => {
+    const {integrationId} = useContext(IntegrationContext)
+
+    if (isEditing || !integrationId) {
+        return null
+    }
+
+    return (
+        <>
+            <StaticField label="Created">
+                <DatetimeLabel
+                    key="created-at"
+                    dateTime={source.get('created_at') as string}
+                />
+            </StaticField>
+            <StaticField label="Total">
+                <MoneyAmount
+                    amount={(source.get('total_price') as string) || '0.00'}
+                    currencyCode={source.get('currency') as string}
+                />
+            </StaticField>
+        </>
+    )
+}
+
+const OpenStatus = () => (
+    <Badge className={css.badge} type={ColorType.Grey}>
+        Open
+    </Badge>
+)
+
+const InvoiceSentStatus = () => (
+    <Badge className={css.badge} type={ColorType.LightWarning}>
+        Invoice Sent
+    </Badge>
+)
+
+type TitleWrapperProps = {
+    children?: ReactNode
+    source: Map<any, any>
+}
+
+function TitleWrapper({children, source}: TitleWrapperProps) {
+    const {isEditing} = useContext(EditionContext)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const {integration} = useContext(IntegrationContext)
+    const shopName: string = integration.getIn(['meta', 'shop_name']) as string
+    const invoiceSent = source.get('invoice_sent_at')
+    return (
+        <>
+            <div className={css.orderTitleContainer}>
+                <a
+                    href={`https://${shopName}.myshopify.com/admin/draft_orders/${(
+                        (source.get('id') as number) || ''
+                    ).toString()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                        logEvent(SegmentEvent.ShopifyDraftOrderClicked, {
+                            account_domain: currentAccount.get('domain'),
+                        })
+                    }}
+                    className={css.orderTitle}
+                >
+                    <>{children}</>
+                </a>
+                {!isEditing && (
+                    <Copy
+                        value={source.get('name')}
+                        className={css.copyButton}
+                        name="Draft Order Name"
+                        onCopyMessage="Draft Order Number copied to clipboard"
+                    />
+                )}
+            </div>
+            <div>{invoiceSent ? <InvoiceSentStatus /> : <OpenStatus />}</div>
+        </>
+    )
+}

@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AfterTitle/> should not render with eding 1`] = `<div />`;
+
+exports[`<AfterTitle/> should not render without integration 1`] = `<div />`;
+
+exports[`<TitleWrapper/> should not render copy button if editing 1`] = `
+<div>
+  <div
+    class="orderTitleContainer"
+  >
+    <a
+      class="orderTitle"
+      href="https://undefined.myshopify.com/admin/draft_orders/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <div>
+        foo bar
+      </div>
+    </a>
+  </div>
+  <div>
+    <div
+      class="badge badge"
+    >
+      Open
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TitleWrapper/> should render the invoice sent status 1`] = `
+<div>
+  <div
+    class="orderTitleContainer"
+  >
+    <a
+      class="orderTitle"
+      href="https://undefined.myshopify.com/admin/draft_orders/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <div>
+        foo bar
+      </div>
+    </a>
+    <span
+      class="copyButton"
+    >
+      <button
+        aria-disabled="false"
+        class="wrapper iconButton wrapper ghost small ghost primary small"
+        type="button"
+      >
+        <i
+          class="material-icons copyIcon icon"
+        >
+          content_copy
+        </i>
+      </button>
+    </span>
+  </div>
+  <div>
+    <div
+      class="badge badge"
+    >
+      Invoice Sent
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TitleWrapper/> should render the open status 1`] = `
+<div>
+  <div
+    class="orderTitleContainer"
+  >
+    <a
+      class="orderTitle"
+      href="https://undefined.myshopify.com/admin/draft_orders/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <div>
+        foo bar
+      </div>
+    </a>
+    <span
+      class="copyButton"
+    >
+      <button
+        aria-disabled="false"
+        class="wrapper iconButton wrapper ghost small ghost primary small"
+        type="button"
+      >
+        <i
+          class="material-icons copyIcon icon"
+        >
+          content_copy
+        </i>
+      </button>
+    </span>
+  </div>
+  <div>
+    <div
+      class="badge badge"
+    >
+      Open
+    </div>
+  </div>
+</div>
+`;
