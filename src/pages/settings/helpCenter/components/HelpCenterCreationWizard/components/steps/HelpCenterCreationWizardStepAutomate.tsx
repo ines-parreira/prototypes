@@ -53,7 +53,10 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(
         helpCenterShopIntegration.type,
-        helpCenterShopIntegration.name
+        helpCenterShopIntegration.name,
+        // Avoid notifications about the self service configuration
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        () => {}
     )
 
     const chatIntegrations = useAppSelector(
