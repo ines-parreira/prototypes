@@ -173,7 +173,10 @@ export const VoiceAgentsTable = () => {
                                         onClick={() =>
                                             handleAgentClick(agent.id)
                                         }
-                                        className={css.container}
+                                        className={classNames(
+                                            css.container,
+                                            css.agentsContainer
+                                        )}
                                     >
                                         <AgentAvatar agent={agent} />
                                     </Link>
