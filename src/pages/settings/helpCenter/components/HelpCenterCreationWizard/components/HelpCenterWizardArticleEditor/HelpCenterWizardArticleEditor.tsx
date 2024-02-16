@@ -14,6 +14,7 @@ import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
 import {DiscardChangesModal} from '../../../articles/DiscardChangesModal'
+import {CloseModal} from '../../../articles/CloseModal'
 import css from './HelpCenterWizardArticleEditor.less'
 
 type Props = {
@@ -41,11 +42,13 @@ const ArticleEditor: React.FC<Props> = ({
     const [isPristine, setIsPristine] = useState<boolean>(true)
 
     const [pendingDiscardChanges, setPendingDiscardChanges] = useState(false)
+    const [pendingCloseEditor, setPendingCloseEditor] = useState(false)
 
     useEffect(() => {
         setTitle(article?.title)
         setContent(article?.content)
         setIsPristine(true)
+        setPendingCloseEditor(false)
     }, [article])
 
     useEffect(() => {
@@ -75,8 +78,13 @@ const ArticleEditor: React.FC<Props> = ({
         isPristine ? onEditorClose() : setPendingDiscardChanges(true)
     }
 
+    const handleEditorClose = () => {
+        isPristine ? onEditorClose() : setPendingCloseEditor(true)
+    }
+
     const onConfirmDiscardChanges = () => {
         setPendingDiscardChanges(false)
+        setPendingCloseEditor(false)
         onEditorClose()
     }
 
@@ -84,7 +92,7 @@ const ArticleEditor: React.FC<Props> = ({
         <HelpCenterEditModal
             isLoading={isLoading}
             portalRootId="app-root"
-            onBackdropClick={handleDiscardChanges}
+            onBackdropClick={handleEditorClose}
             transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
             containerZIndices={[100, -1]}
         >
@@ -100,7 +108,7 @@ const ArticleEditor: React.FC<Props> = ({
                             maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                         />
                         <IconButton
-                            onClick={handleDiscardChanges}
+                            onClick={handleEditorClose}
                             fillStyle="ghost"
                             id="close-edit-mode-button"
                             intent="secondary"
@@ -161,6 +169,24 @@ const ArticleEditor: React.FC<Props> = ({
                                 you made editing. Are you sure you want to
                                 proceed?
                             </DiscardChangesModal>
+                        )}
+
+                        {pendingCloseEditor && (
+                            <CloseModal
+                                isOpen={!!pendingCloseEditor}
+                                title="Save changes?"
+                                saveText="Save changes"
+                                discardText="Discard changes"
+                                editText="Back to editing"
+                                onDiscard={onConfirmDiscardChanges}
+                                onContinueEditing={() =>
+                                    setPendingCloseEditor(false)
+                                }
+                                onSave={() => onEditorSave(title!, content!)}
+                            >
+                                Your changes to this page will be lost if you
+                                don't save them.
+                            </CloseModal>
                         )}
                     </footer>
                 </div>
