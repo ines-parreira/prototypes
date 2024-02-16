@@ -415,16 +415,16 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 </InputGroup>
                 <br />
                 <Alert>
-                    We also <strong>highly recommend</strong> you{' '}
+                    Starting February 1st 2024,{' '}
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
                     >
-                        setup SPF
+                        Domain Verification
                     </a>{' '}
-                    so your emails are not flagged as Spam when you send them
-                    from Gorgias.
+                    is <b>mandatory</b>, to <b>avoid deliverability issues</b>{' '}
+                    when you send emails from Gorgias.
                 </Alert>
             </div>
         )

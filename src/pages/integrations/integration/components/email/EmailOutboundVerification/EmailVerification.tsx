@@ -52,15 +52,15 @@ export default function EmailVerification({
                     onClose={() => setShowAlert(false)}
                     className="mb-5"
                 >
-                    To send outbound messages,{' '}
-                    <strong>outbound verification is required</strong> through
-                    Single Sender or Domain Verification.{' '}
+                    To send outbound messages via Gorgias with your email
+                    address,{' '}
+                    <strong>you need to complete Domain Verification</strong>.{' '}
                     <a
-                        href="https://docs.gorgias.com/en-US/email-integrations-81753"
+                        href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
                         rel="noopener noreferrer"
                         target="_blank"
                     >
-                        Learn more about verification
+                        Learn more about Domain Verification
                     </a>
                     .
                 </Alert>
@@ -78,16 +78,17 @@ export default function EmailVerification({
                 header={
                     <div className="d-flex align-items-center">
                         <h3>Domain Verification</h3>
-                        <Badge className="ml-2" type={ColorType.Purple}>
-                            Recommended
+                        <Badge className="ml-2" type={ColorType.LightError}>
+                            Required
                         </Badge>
                     </div>
                 }
                 body={
                     <>
                         Send emails from <strong>any email address</strong> on
-                        your domain. A verified domain improves email
-                        deliverability.
+                        your domain. A verified domain is{' '}
+                        <strong>required</strong> to guarantee the
+                        deliverability of your email.
                     </>
                 }
                 bodyActions={
@@ -118,9 +119,9 @@ export default function EmailVerification({
                 body={
                     <>
                         Send emails using a{' '}
-                        <strong>single email address</strong> on your domain.
-                        Single Sender is a quick way to get started and is
-                        recommended for testing purposes.
+                        <strong>single email address</strong>. Single Sender is
+                        a quick way to get started and is recommended{' '}
+                        <strong>only for testing purposes</strong>.
                     </>
                 }
                 bodyActions={
