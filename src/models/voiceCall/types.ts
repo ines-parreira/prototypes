@@ -148,7 +148,10 @@ export const getDisplayOutboundVoiceCallStatus = (status: VoiceCallStatus) => {
     }
 }
 
-export const getDisplayInboundVoiceCallStatus = (status: VoiceCallStatus) => {
+export const getDisplayInboundVoiceCallStatus = (
+    status: VoiceCallStatus,
+    lastAnsweredByAgentId?: number | null
+) => {
     switch (status) {
         case VoiceCallStatus.Ringing:
         case VoiceCallStatus.Initiated:
@@ -167,6 +170,9 @@ export const getDisplayInboundVoiceCallStatus = (status: VoiceCallStatus) => {
         case VoiceCallStatus.Connected:
             return VoiceCallDisplayStatus.InProgress
         case VoiceCallStatus.Completed:
+            if (lastAnsweredByAgentId === null) {
+                return VoiceCallDisplayStatus.Missed
+            }
             return VoiceCallDisplayStatus.Answered
         default:
             return null

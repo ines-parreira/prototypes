@@ -265,6 +265,9 @@ export const VoiceCallTable = ({
                                           <VoiceCallStatusLabel
                                               voiceCallStatus={item.status}
                                               direction={item.direction}
+                                              lastAnsweredByAgentId={
+                                                  item.agentId
+                                              }
                                           />
                                       </BodyCell>
                                       {displayVoiceAnalyticsV1 && (

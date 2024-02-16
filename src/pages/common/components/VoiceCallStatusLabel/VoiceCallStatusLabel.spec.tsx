@@ -161,4 +161,18 @@ describe('VoiceCallStatusLabel', () => {
         expect(status).not.toHaveClass('redStatus')
         expect(status).toHaveClass('greenStatus')
     })
+
+    it('should render missed', () => {
+        const {getByText} = render(
+            <VoiceCallStatusLabel
+                voiceCallStatus={VoiceCallStatus.Completed}
+                direction={'inbound'}
+                lastAnsweredByAgentId={null}
+            />
+        )
+        const status = getByText('Missed')
+        expect(status).toBeInTheDocument()
+        expect(status).toHaveClass('redStatus')
+        expect(status).not.toHaveClass('greenStatus')
+    })
 })

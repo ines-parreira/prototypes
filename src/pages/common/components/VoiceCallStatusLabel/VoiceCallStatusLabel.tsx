@@ -12,6 +12,7 @@ import css from './VoiceCallStatusLabel.less'
 type Props = {
     voiceCallStatus: VoiceCallStatus
     direction: string
+    lastAnsweredByAgentId?: number | null
 }
 
 const GREEN_STATUS = [
@@ -22,10 +23,17 @@ const RED_STATUS = [
     VoiceCallDisplayStatus.Failed,
     VoiceCallDisplayStatus.Missed,
 ]
-const VoiceCallStatusLabel = ({voiceCallStatus, direction}: Props) => {
+const VoiceCallStatusLabel = ({
+    voiceCallStatus,
+    direction,
+    lastAnsweredByAgentId,
+}: Props) => {
     const status =
         direction === 'inbound'
-            ? getDisplayInboundVoiceCallStatus(voiceCallStatus)
+            ? getDisplayInboundVoiceCallStatus(
+                  voiceCallStatus,
+                  lastAnsweredByAgentId
+              )
             : getDisplayOutboundVoiceCallStatus(voiceCallStatus)
 
     return (

@@ -22,7 +22,6 @@ export enum VoiceEventsByAgentMember {
 
 export enum VoiceEventsByAgentSegment {
     declinedCalls = 'VoiceEventsByAgent.declinedInboundCalls',
-    answeredCalls = 'VoiceEventsByAgent.answeredInboundCalls',
 }
 
 export const VoiceEventsByAgentFiltersMembers: StatsFiltersMembers = {

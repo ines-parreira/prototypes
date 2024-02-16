@@ -17,60 +17,69 @@ type Props = {
 }
 
 export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
-    const answeredByAgentId = (
-        <CollapsibleDetails
-            title={
-                <div className={classNames(css.statusWrapper, css.inbound)}>
-                    <div>Answered by</div>
-                    {voiceCall.last_answered_by_agent_id && (
-                        <VoiceCallAgentLabel
-                            agentId={voiceCall.last_answered_by_agent_id}
-                            phoneNumber={voiceCall.phone_number_destination}
-                        />
-                    )}
-                </div>
-            }
-        >
-            <TicketVoiceCallEvents callId={voiceCall.id} />
-        </CollapsibleDetails>
-    )
-
-    switch (getDisplayInboundVoiceCallStatus(voiceCall.status)) {
+    switch (
+        getDisplayInboundVoiceCallStatus(
+            voiceCall.status,
+            voiceCall.last_answered_by_agent_id
+        )
+    ) {
         case VoiceCallDisplayStatus.Ringing:
             return <>Ringing</>
         case VoiceCallDisplayStatus.Failed:
             return <div className={css.errorStatus}>Failed</div>
         case VoiceCallDisplayStatus.Missed:
-        case VoiceCallDisplayStatus.Answered:
-            if (!voiceCall.last_answered_by_agent_id) {
-                return (
-                    <CollapsibleDetails
-                        title={
-                            <div
+            return (
+                <CollapsibleDetails
+                    title={
+                        <div
+                            className={classNames(
+                                css.errorStatus,
+                                css.missedCallStatus
+                            )}
+                        >
+                            <i
                                 className={classNames(
-                                    css.errorStatus,
-                                    css.missedCallStatus
+                                    'material-icons',
+                                    css.missedCallIcon
                                 )}
                             >
-                                <i
-                                    className={classNames(
-                                        'material-icons',
-                                        css.missedCallIcon
-                                    )}
-                                >
-                                    call_missed
-                                </i>
-                                <div>Missed call</div>
-                            </div>
-                        }
-                    >
-                        <TicketVoiceCallEvents callId={voiceCall.id} />
-                    </CollapsibleDetails>
-                )
-            }
-            return answeredByAgentId
+                                call_missed
+                            </i>
+                            <div>Missed call</div>
+                        </div>
+                    }
+                >
+                    <TicketVoiceCallEvents callId={voiceCall.id} />
+                </CollapsibleDetails>
+            )
         case VoiceCallDisplayStatus.InProgress:
-            return answeredByAgentId
+        case VoiceCallDisplayStatus.Answered:
+            return (
+                <CollapsibleDetails
+                    title={
+                        <div
+                            className={classNames(
+                                css.statusWrapper,
+                                css.inbound
+                            )}
+                        >
+                            <div>Answered by</div>
+                            {voiceCall.last_answered_by_agent_id && (
+                                <VoiceCallAgentLabel
+                                    agentId={
+                                        voiceCall.last_answered_by_agent_id
+                                    }
+                                    phoneNumber={
+                                        voiceCall.phone_number_destination
+                                    }
+                                />
+                            )}
+                        </div>
+                    }
+                >
+                    <TicketVoiceCallEvents callId={voiceCall.id} />
+                </CollapsibleDetails>
+            )
         default:
             return null
     }
