@@ -1,19 +1,18 @@
 import classnames from 'classnames'
-import React, {ComponentProps, ReactNode} from 'react'
+import React, {ReactNode} from 'react'
 
 import {Card} from '@gorgias/analytics-ui-kit'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
-import Tooltip from 'pages/common/components/Tooltip'
 import css from './ChartCard.less'
+import {TooltipData} from './types'
+import {HintTooltip} from './common/HintTooltip'
 
 type Props = {
     children?: ReactNode
     className?: string
-    hint?: ReactNode
+    hint?: TooltipData
     title: ReactNode
     titleExtra?: ReactNode
     noPadding?: boolean
-    tooltipProps?: Partial<ComponentProps<typeof Tooltip>>
 }
 
 export default function ChartCard({
@@ -23,7 +22,6 @@ export default function ChartCard({
     title,
     titleExtra,
     noPadding = false,
-    tooltipProps,
 }: Props) {
     return (
         <Card
@@ -35,15 +33,10 @@ export default function ChartCard({
                 <div className={css.title}>
                     <span>{title}</span>
                     {hint && (
-                        <IconTooltip
-                            tooltipProps={{
-                                innerClassName: css.innerTooltip,
-                                ...tooltipProps,
-                            }}
-                            className={css.tooltip}
-                        >
-                            {hint}
-                        </IconTooltip>
+                        <HintTooltip
+                            className={`${css.tooltipIcon}`}
+                            {...hint}
+                        />
                     )}
                 </div>
 

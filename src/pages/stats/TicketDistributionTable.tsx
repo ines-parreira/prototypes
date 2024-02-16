@@ -46,7 +46,9 @@ export const TicketDistributionTable = ({
     return (
         <ChartCard
             title="Top used values"
-            hint="Top 10 used values, as well as the number of tickets that were labeled with one of these values within the selected timeframe for the selected Ticket Field. All other values are grouped in the “Outside of Top used”."
+            hint={{
+                title: 'Top 10 used values, as well as the number of tickets that were labeled with one of these values within the selected timeframe for the selected Ticket Field. All other values are grouped in the “Outside of Top used”.',
+            }}
             className={css.card}
         >
             {isFetching ? (

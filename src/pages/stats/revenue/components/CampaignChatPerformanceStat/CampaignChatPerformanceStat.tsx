@@ -74,7 +74,7 @@ export const CampaignChatPerformanceStat = () => {
     return (
         <DashboardGridCell size={12}>
             {statsVisible && (
-                <ChartCard title={title} hint={hint}>
+                <ChartCard title={title} hint={{title: hint}}>
                     <LineChart
                         data={graphData}
                         hasBackground={false}

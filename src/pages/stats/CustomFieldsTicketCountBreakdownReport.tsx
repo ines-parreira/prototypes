@@ -19,7 +19,7 @@ export const CustomFieldsTicketCountBreakdownReport = () => {
     return (
         <ChartCard
             title={REPORT_TITLE}
-            hint={REPORT_HINT}
+            hint={{title: REPORT_HINT}}
             noPadding={true}
             className={css.limitedHeight}
             titleExtra={

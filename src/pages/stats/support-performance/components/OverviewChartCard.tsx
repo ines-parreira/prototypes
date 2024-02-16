@@ -5,6 +5,7 @@ import ChartCard from 'pages/stats/ChartCard'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import LineChart from 'pages/stats/LineChart'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {TooltipData} from 'pages/stats/types'
 
 export const OverviewChartCard = ({
     title,
@@ -12,7 +13,7 @@ export const OverviewChartCard = ({
     useTimeSeries,
 }: {
     title: string
-    hint: string
+    hint: TooltipData
     useTimeSeries: TimeSeriesHook
 }) => {
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(

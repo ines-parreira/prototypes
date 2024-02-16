@@ -8,7 +8,7 @@ describe('<ChartCard />', () => {
         const title = 'Metric title'
 
         render(
-            <ChartCard hint="metric hint" title={title}>
+            <ChartCard hint={{title: 'metric hint'}} title={title}>
                 Metric
             </ChartCard>
         )

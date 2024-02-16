@@ -4,11 +4,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import GaugeChart from 'pages/stats/GaugeChart'
-import {
-    TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
-    WORKLOAD_BY_CHANNEL_HINT_MESSAGE,
-} from 'services/reporting/constants'
+import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
 
 export const WorkloadPerChannelChart = () => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
@@ -22,7 +20,7 @@ export const WorkloadPerChannelChart = () => {
     return (
         <ChartCard
             title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
-            hint={WORKLOAD_BY_CHANNEL_HINT_MESSAGE}
+            hint={WORKLOAD_BY_CHANNEL_HINT}
         >
             {workloadPerChannel.data ? (
                 <GaugeChart data={workloadPerChannel.data} />

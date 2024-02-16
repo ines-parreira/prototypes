@@ -514,8 +514,7 @@ export function AutomateOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATION_RATE_LABEL}
-                            hint={AUTOMATION_RATE_TOOLTIP}
-                            tooltipProps={{autohide: false}}
+                            hint={{title: AUTOMATION_RATE_TOOLTIP}}
                         >
                             <LineChart
                                 isCurvedLine={false}
@@ -535,7 +534,7 @@ export function AutomateOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATED_INTERACTIONS_LABEL}
-                            hint={AUTOMATED_INTERACTION_TOOLTIP}
+                            hint={{title: AUTOMATED_INTERACTION_TOOLTIP}}
                         >
                             <LineChart
                                 isCurvedLine={false}
@@ -562,7 +561,7 @@ export function AutomateOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL}
-                            hint={AUTOMATED_INTERACTION_TOOLTIP}
+                            hint={{title: AUTOMATED_INTERACTION_TOOLTIP}}
                         >
                             <LineChart
                                 isCurvedLine={false}

@@ -23,7 +23,7 @@ const Template: Story<ComponentProps<typeof ChartCard>> = (props) => (
 const defaultProps: ComponentProps<typeof ChartCard> = {
     children: <div>Chart</div>,
     title: 'Tickets created',
-    hint: 'This is a hint',
+    hint: {title: 'This is a hint'},
 }
 
 export const Default = Template.bind({})
@@ -33,7 +33,7 @@ export const WithSingleLineChart = Template.bind({})
 WithSingleLineChart.args = {
     children: <LineChart data={[ticketsCreatedDataItem]} hasBackground />,
     title: 'Tickets created',
-    hint: 'This is a hint',
+    hint: {title: 'This is a hint'},
 }
 
 export default storyConfig

@@ -48,7 +48,7 @@ export const OverviewMetricConfig: Record<
         title: CUSTOMER_SATISFACTION_LABEL,
         hint: {
             title: 'Average CSAT score for tickets assigned to the agent for which a survey was sent within the timeframe; surveys are sent following ticket resolution',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#1customer-satisfaction-csat',
+            link: 'https://link.gorgias.com/3ol',
         },
         interpretAs: 'more-is-better',
         useTrend: useCustomerSatisfactionTrend,
@@ -57,7 +57,7 @@ export const OverviewMetricConfig: Record<
         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
         hint: {
             title: 'Median time between 1st customer message and 1st agent response, for tickets where the response was sent within the selected timeframe',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#2-first-response-time',
+            link: 'https://link.gorgias.com/svd',
         },
         interpretAs: 'less-is-better',
         metricFormat: 'duration',
@@ -67,7 +67,7 @@ export const OverviewMetricConfig: Record<
         title: MEDIAN_RESOLUTION_TIME_LABEL,
         hint: {
             title: 'Median time between 1st customer message and the last time the ticket was closed, for tickets closed within the selected timeframe',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#3-resolution-time',
+            link: 'https://link.gorgias.com/5v7',
         },
         interpretAs: 'less-is-better',
         metricFormat: 'duration',
@@ -77,7 +77,7 @@ export const OverviewMetricConfig: Record<
         title: MESSAGES_PER_TICKET_LABEL,
         hint: {
             title: 'Average number of messages exchanged in tickets closed within the selected timeframe; includes auto-responses',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#4-messages-per-ticket',
+            link: 'https://link.gorgias.com/fhq',
         },
         interpretAs: 'less-is-better',
         useTrend: useMessagesPerTicketTrend,
@@ -86,7 +86,7 @@ export const OverviewMetricConfig: Record<
         title: OPEN_TICKETS_LABEL,
         hint: {
             title: 'Number of tickets with the status “open” at the end of the period. Only counts tickets that have been created during or within the 180 days preceding the start of the period.',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#1-open-tickets',
+            link: 'https://link.gorgias.com/78k',
         },
         interpretAs: 'neutral',
         useTrend: useOpenTicketsTrend,
@@ -95,7 +95,7 @@ export const OverviewMetricConfig: Record<
         title: TICKETS_CLOSED_LABEL,
         hint: {
             title: 'Number of unique closed tickets within the selected timeframe (that did not reopen), assigned to selected agent(s)/team(s)',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#2-closed-tickets',
+            link: 'https://link.gorgias.com/126',
         },
         interpretAs: 'neutral',
         useTrend: useClosedTicketsTrend,
@@ -104,7 +104,7 @@ export const OverviewMetricConfig: Record<
         title: TICKETS_CREATED_LABEL,
         hint: {
             title: 'Number of inbound and outbound tickets created within the selected timeframe.\nWhen filtering by an agent, only tickets created by the agent are counted.',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#3-tickets-created',
+            link: 'https://link.gorgias.com/bji',
         },
         interpretAs: 'neutral',
         useTrend: useTicketsCreatedTrend,
@@ -113,7 +113,7 @@ export const OverviewMetricConfig: Record<
         title: TICKETS_REPLIED_LABEL,
         hint: {
             title: 'Number of unique tickets where an agent sent a message within the selected timeframe',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#4-tickets-replied',
+            link: 'https://link.gorgias.com/27b',
         },
         interpretAs: 'neutral',
         useTrend: useTicketsRepliedTrend,
@@ -122,7 +122,7 @@ export const OverviewMetricConfig: Record<
         title: MESSAGES_SENT_LABEL,
         hint: {
             title: 'Number of messages sent by an agent within the selected timeframe (excluding internal-notes)',
-            link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#5-messages-sent',
+            link: 'https://link.gorgias.com/jo0',
         },
         interpretAs: 'neutral',
         useTrend: useMessagesSentTrend,
@@ -131,7 +131,7 @@ export const OverviewMetricConfig: Record<
         title: ONE_TOUCH_TICKETS_LABEL,
         hint: {
             title: 'Percentage of tickets closed within the selected timeframe with exactly 1 message sent by an agent or rule.',
-            link: 'https://docs.gorgias.com/en-US/overview-226700#4-one-touch-tickets',
+            link: 'https://link.gorgias.com/dk7',
         },
         interpretAs: 'more-is-better',
         useTrend: useOneTouchTicketsPercentageMetric,
@@ -146,28 +146,40 @@ export const OverviewChartConfig: Record<
     | OverviewMetric.MessagesSent,
     {
         title: string
-        hint: string
+        hint: TooltipData
         useTimeSeries: TimeSeriesHook
     }
 > = {
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
-        hint: 'Number of new tickets to handle',
+        hint: {title: 'Number of new tickets to handle'},
         useTimeSeries: useTicketsCreatedTimeSeries,
     },
     [OverviewMetric.TicketsClosed]: {
         title: TICKETS_CLOSED_LABEL,
-        hint: 'Number of opened tickets solved by the end of the period',
+        hint: {
+            title: 'Number of opened tickets solved by the end of the period',
+        },
         useTimeSeries: useTicketsClosedTimeSeries,
     },
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
-        hint: 'Number of tickets where the customer got a response',
+        hint: {title: 'Number of tickets where the customer got a response'},
         useTimeSeries: useTicketsRepliedTimeSeries,
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
-        hint: 'Number of messages received by your customer',
+        hint: {title: 'Number of messages received by your customer'},
         useTimeSeries: useMessagesSentTimeSeries,
     },
+}
+
+export const WORKLOAD_BY_CHANNEL_HINT = {
+    title: 'Total number of tickets that had to be handled during the selected timeframe(all closed tickets plus tickets that are still open at the end of the period) broken down by channel.\n\nFor open tickets, only counts tickets that have been created during or within the 180 days preceding the start of the period.',
+    link: 'https://link.gorgias.com/wub',
+}
+
+export const TICKETS_CREATED_VS_CLOSED_HINT = {
+    title: 'Number of tickets created vs closed over time.',
+    link: 'https://link.gorgias.com/3ol',
 }

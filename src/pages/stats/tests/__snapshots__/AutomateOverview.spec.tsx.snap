@@ -448,7 +448,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             Automation rate
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -485,7 +485,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             Automated interactions
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -522,7 +522,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             Automated interactions by feature
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -1099,7 +1099,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           Automation rate
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -1136,7 +1136,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           Automated interactions
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -1173,7 +1173,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           Automated interactions by feature
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -1729,7 +1729,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             Automation rate
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -1766,7 +1766,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             Automated interactions
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -1803,7 +1803,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             Automated interactions by feature
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -2380,7 +2380,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           Automation rate
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -2417,7 +2417,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           Automated interactions
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -2454,7 +2454,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           Automated interactions by feature
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -3010,7 +3010,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             Automation rate
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -3047,7 +3047,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             Automated interactions
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -3084,7 +3084,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             Automated interactions by feature
                           </span>
                           <div
-                            class="wrapper tooltip"
+                            class="wrapper tooltip tooltipIcon"
                           >
                             <i
                               class="material-icons-outlined icon"
@@ -3661,7 +3661,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           Automation rate
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -3698,7 +3698,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           Automated interactions
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -3735,7 +3735,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           Automated interactions by feature
                         </span>
                         <div
-                          class="wrapper tooltip"
+                          class="wrapper tooltip tooltipIcon"
                         >
                           <i
                             class="material-icons-outlined icon"
@@ -4287,7 +4287,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       Automation rate
                     </span>
                     <div
-                      class="wrapper tooltip"
+                      class="wrapper tooltip tooltipIcon"
                     >
                       <i
                         class="material-icons-outlined icon"
@@ -4324,7 +4324,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       Automated interactions
                     </span>
                     <div
-                      class="wrapper tooltip"
+                      class="wrapper tooltip tooltipIcon"
                     >
                       <i
                         class="material-icons-outlined icon"
@@ -4361,7 +4361,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       Automated interactions by feature
                     </span>
                     <div
-                      class="wrapper tooltip"
+                      class="wrapper tooltip tooltipIcon"
                     >
                       <i
                         class="material-icons-outlined icon"

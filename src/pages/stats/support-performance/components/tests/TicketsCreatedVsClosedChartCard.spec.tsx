@@ -1,12 +1,10 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import LineChart from 'pages/stats/LineChart'
-import {
-    TicketsCreatedVsClosedChartCard,
-    TITLE,
-} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
+import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import {assumeMock} from 'utils/testing'
+import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
 
 jest.mock('hooks/reporting/useCreatedVsClosedTicketsTimeSeries')
 const createdVsClosedTicketsTimeSeriesMock = assumeMock(
@@ -40,7 +38,9 @@ describe('<TicketsCreatedVsClosedChartCard />', () => {
     it('should use CreatedVsClosedTicketsTimeSeries hook data and render chart', () => {
         render(<TicketsCreatedVsClosedChartCard />)
 
-        expect(screen.getByText(new RegExp(TITLE))).toBeInTheDocument()
+        expect(
+            screen.getByText(new RegExp(CREATED_VS_CLOSED_TICKETS_LABEL))
+        ).toBeInTheDocument()
         expect(LineChartMock).toHaveBeenCalledWith(
             {
                 isLoading,

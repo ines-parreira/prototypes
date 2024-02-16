@@ -72,37 +72,39 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
     [TableColumn.AgentName]: undefined,
     [TableColumn.CustomerSatisfaction]: {
         title: 'Average CSAT score for tickets assigned to the agent for which a survey was sent within the timeframe; surveys are sent following ticket resolution',
-        link: 'https://docs.gorgias.com/en-US/agents-report-292100#1-customer-satisfaction-csat',
+        link: 'https://link.gorgias.com/9a6',
     },
     [TableColumn.MedianFirstResponseTime]: {
         title: 'Median time between 1st customer message and 1st agent response, for tickets where the response was sent within the selected timeframe',
-        link: 'https://docs.gorgias.com/en-US/agents-report-292100#2-first-response-time',
+        link: 'https://link.gorgias.com/gs6',
     },
     [TableColumn.MedianResolutionTime]: {
         title: 'Median time between 1st customer message and the last time the ticket was closed, for tickets closed within the selected timeframe',
-        link: 'https://docs.gorgias.com/en-US/agents-report-292100#3-resolution-time',
+        link: 'https://link.gorgias.com/a9m',
     },
     [TableColumn.MessagesSent]: {
         title: 'Total number of messages sent by the agent within the selected timeframe',
-        link: 'https://docs.gorgias.com/en-US/agents-report-292100#7-messages-sent',
+        link: 'https://link.gorgias.com/114',
     },
     [TableColumn.PercentageOfClosedTickets]: {
         title: 'Proportion of closed tickets assigned to the agent compared to the total number of closed tickets assigned to all agents (excludes unassigned closed tickets)',
-        link: 'https://docs.gorgias.com/en-US/agents-report-292100#5-proportion--of-closed-tickets',
+        link: 'https://link.gorgias.com/jd4',
     },
     [TableColumn.ClosedTickets]: {
         title: 'Number of unique closed tickets within the selected timeframe (that did not reopen), assigned to selected agent(s)/team(s)',
-        link: 'https://docs.gorgias.com/en-US/agents-report-292100#4-closed-tickets',
+        link: 'https://link.gorgias.com/m9b',
     },
     [TableColumn.RepliedTickets]: {
         title: 'Number of unique tickets where the agent sent a message within the selected timeframe',
-        link: 'https://docs.gorgias.com/en-US/agents-report-292100#6-tickets-replied',
+        link: 'https://link.gorgias.com/jhv',
     },
     [TableColumn.OneTouchTickets]: {
         title: 'Percentage of closed tickets assigned to the agent with exactly 1 message sent by the agent (or rule).',
+        link: 'https://link.gorgias.com/t13',
     },
     [TableColumn.OnlineTime]: {
         title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
+        link: 'https://link.gorgias.com/qdx',
     },
 }
 

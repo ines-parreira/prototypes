@@ -27,7 +27,9 @@ export function TicketInsightsFieldTrend() {
     return (
         <ChartCard
             title="Trend"
-            hint="Evolution of the top 10 used values during the selected timeframe. Values are grouped by the date the value was added to a ticket."
+            hint={{
+                title: 'Evolution of the top 10 used values during the selected timeframe. Values are grouped by the date the value was added to a ticket.',
+            }}
         >
             <LineChart
                 isLoading={isFetching}

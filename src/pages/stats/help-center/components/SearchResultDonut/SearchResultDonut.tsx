@@ -21,7 +21,9 @@ const SearchResultDonut = ({
         <ChartCard
             title="Search results"
             className={css.card}
-            hint="Distribution of total searches resulting in articles shown to the user vs. no search results"
+            hint={{
+                title: 'Distribution of total searches resulting in articles shown to the user vs. no search results',
+            }}
         >
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable

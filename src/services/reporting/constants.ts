@@ -16,6 +16,7 @@ export const EMPTY_LABEL = ' '
 export const CURRENT_PERIOD_LABEL = 'current period'
 export const PREVIOUS_PERIOD_LABEL = 'previous period'
 export const ONE_TOUCH_TICKETS_LABEL = 'One touch tickets'
+export const CREATED_VS_CLOSED_TICKETS_LABEL = 'Created vs. closed tickets'
 
 export enum MetricName {
     CustomerSatisfaction = 'customerSatisfaction',
@@ -23,6 +24,3 @@ export enum MetricName {
     MedianResolutionTime = 'medianResolutionTime',
     MessagesPerTicket = 'messagesPerTicket',
 }
-
-export const WORKLOAD_BY_CHANNEL_HINT_MESSAGE =
-    'Total number of tickets that had to be handled during the selected timeframe(all closed tickets plus tickets that are still open at the end of the period) broken down by channel.\n\nFor open tickets, only counts tickets that have been created during or within the 180 days preceding the start of the period.'
