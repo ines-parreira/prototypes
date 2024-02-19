@@ -145,4 +145,16 @@ describe('VoiceCallTable', () => {
 
         expect(store.getActions()).toContainEqual(pageSet(pageToClick))
     })
+
+    it('should render table tooltips', async () => {
+        const {getByText, getAllByText} = renderComponent()
+        const helpIcons = getAllByText('info_outline')
+
+        fireEvent.mouseOver(helpIcons[0])
+        await waitFor(() =>
+            expect(
+                getByText('Average time agent spent talking to customers')
+            ).toBeInTheDocument()
+        )
+    })
 })

@@ -19,7 +19,6 @@ import {
 } from 'state/ui/stats/agentPerformanceSlice'
 import {mergeStatsFilters} from 'state/stats/actions'
 import {NumberedPagination} from 'pages/common/components/Paginations'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {AgentAvatar} from 'pages/stats/AgentAvatar'
 import {
     useAnsweredCallsMetricPerAgent,
@@ -117,13 +116,10 @@ export const VoiceAgentsTable = () => {
                             justifyContent={'right'}
                             wrapContent={true}
                             className={css.metricCell}
-                        >
-                            <HintTooltip
-                                title={
-                                    'Average time agent spent talking to customers'
-                                }
-                            />
-                        </HeaderCellProperty>
+                            tooltip={
+                                'Average time agent spent talking to customers'
+                            }
+                        />
                     </TableHead>
                     <TableBody>
                         <TableBodyRow
