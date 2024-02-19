@@ -22,7 +22,6 @@ import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {formatNumTickets} from '../../utils/formatAmount'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
-import {useIsConvertAutoUpgradeEnabled} from '../../hooks/useIsConvertAutoUpgradeEnabled'
 import css from './ProductPlanSelection.less'
 
 export type ProductPlanSelectionProps = {
@@ -63,8 +62,6 @@ const ProductPlanSelection = ({
     }, [product, isTrialing])
 
     const selectedPlan = selectedPlans[type].plan
-
-    const isConvertAutoUpgradeEnabled = useIsConvertAutoUpgradeEnabled()
 
     const [isCancelAAOModalOpen, setIsCancelAAOModalOpen] = useState(false)
 
@@ -292,16 +289,14 @@ const ProductPlanSelection = ({
                         )}
                 </div>
             )}
-            {isConvertAutoUpgradeEnabled &&
-                selectedPlans[type].isSelected &&
-                type === ProductType.Convert && (
-                    <AutoUpgradeToggle
-                        type={type}
-                        selectedPlans={selectedPlans}
-                        setSelectedPlans={setSelectedPlans}
-                        prices={prices}
-                    />
-                )}
+            {selectedPlans[type].isSelected && type === ProductType.Convert && (
+                <AutoUpgradeToggle
+                    type={type}
+                    selectedPlans={selectedPlans}
+                    setSelectedPlans={setSelectedPlans}
+                    prices={prices}
+                />
+            )}
             {!!periodEnd && !!currentUsage && (
                 <CancelAAOModal
                     isOpen={isCancelAAOModalOpen}

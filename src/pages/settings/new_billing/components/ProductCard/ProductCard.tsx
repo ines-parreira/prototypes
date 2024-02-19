@@ -27,7 +27,6 @@ import {
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
-import {useIsConvertAutoUpgradeEnabled} from '../../hooks/useIsConvertAutoUpgradeEnabled'
 import css from './ProductCard.less'
 
 export type ProductCardProps = {
@@ -50,7 +49,6 @@ const ProductCard = ({
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const history = useHistory()
-    const isConvertAutoUpgradeEnabled = useIsConvertAutoUpgradeEnabled()
 
     const {className, canduOverageStatus} = useMemo(() => {
         if (
@@ -268,8 +266,7 @@ const ProductCard = ({
                 <div>
                     {isActive && counter}
 
-                    {isConvertAutoUpgradeEnabled &&
-                    product &&
+                    {product &&
                     type === ProductType.Convert &&
                     !isEnterprisePrice(product, type) ? (
                         <div className={css.autoUpgradeLabel}>

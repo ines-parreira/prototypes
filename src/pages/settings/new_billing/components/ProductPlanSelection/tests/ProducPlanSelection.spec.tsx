@@ -5,7 +5,6 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {basicMonthlyHelpdeskPrice, convertPrice1} from 'fixtures/productPrices'
-import * as isRevenueBillingHook from 'pages/settings/new_billing/hooks/useIsConvertAutoUpgradeEnabled'
 import {billingState} from 'fixtures/billing'
 import ProductPlanSelection, {
     ProductPlanSelectionProps,
@@ -113,11 +112,6 @@ describe('ProductPlanSelection', () => {
     })
 
     it('displays the auto-upgrade toggle', () => {
-        jest.spyOn(
-            isRevenueBillingHook,
-            'useIsConvertAutoUpgradeEnabled'
-        ).mockImplementation(() => true)
-
         const {getByText} = render(
             <Provider store={store}>
                 <ProductPlanSelection

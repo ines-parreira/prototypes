@@ -17,7 +17,6 @@ import {formatAmount} from '../../utils/formatAmount'
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
 import Tooltip from '../../../../common/components/Tooltip'
 import {getNextTier} from '../../utils/getNextTier'
-import {useIsConvertAutoUpgradeEnabled} from '../../hooks/useIsConvertAutoUpgradeEnabled'
 import css from './SummaryItem.less'
 
 export type SummaryItemProps = {
@@ -43,8 +42,6 @@ const SummaryItem = ({
     isFrequencyChanged = false,
 }: SummaryItemProps) => {
     const selectedPlan = selectedPlans[type]
-
-    const isConvertAutoUpgradeEnabled = useIsConvertAutoUpgradeEnabled()
 
     const {price, currency, name, tickets} = useMemo(() => {
         const priceObject = prices.find(
@@ -136,8 +133,7 @@ const SummaryItem = ({
                         <span>{formatAmount(price, currency)}</span>/{interval}
                     </>
                 )}
-                {isConvertAutoUpgradeEnabled &&
-                    selectedPlan.isSelected &&
+                {selectedPlan.isSelected &&
                     type === ProductType.Convert &&
                     selectedPlan.plan?.price_id !== ENTERPRISE_PRICE_ID &&
                     getNextTier(prices, selectedPlan.plan) && (

@@ -363,6 +363,19 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     info_outlined
                   </i>
                 </div>
+                <div
+                  class="autoUpgradeLabel"
+                >
+                  Auto-upgrade
+                   disabled 
+                  <a
+                    href="https://docs.gorgias.com/en-US/convert-pricing-348387"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                  </a>
+                </div>
               </div>
             </div>
           </div>
