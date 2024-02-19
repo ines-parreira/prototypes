@@ -53,7 +53,6 @@ import {getGenericMessageFromError} from '../utils'
 import {useGetArticleTemplate} from '../queries'
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'
-import {DiscardChangesModal} from './articles/DiscardChangesModal'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
 import {ArticlesTable} from './ArticlesTable'
 import {CategoryDrawer} from './CategoryDrawer'
@@ -760,15 +759,14 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
     }
 
-    const onConfirmDiscardChanges = () => {
+    const resetPendingStates = () => {
         setIsPendingCloseArticle(false)
         setIsPendingDiscardChanges(false)
-        nextAction.current()
     }
 
-    const onConfirmEditing = () => {
-        setIsPendingCloseArticle(false)
-        setIsPendingDiscardChanges(false)
+    const onConfirmDiscardChanges = () => {
+        resetPendingStates()
+        nextAction.current()
     }
 
     const onConfirmSaveArticle = async () => {
@@ -784,13 +782,12 @@ export const HelpCenterArticlesView: React.FC = () => {
                           selectedArticleLanguage,
                       ],
             })
-
             await updateArticle(selectedArticle, false)
         } else {
             await createArticle(selectedArticle, false)
         }
 
-        setIsPendingCloseArticle(false)
+        resetPendingStates()
         if (isExistingArticle(selectedArticle)) nextAction.current()
     }
 
@@ -1022,36 +1019,28 @@ export const HelpCenterArticlesView: React.FC = () => {
                 )}
             </HelpCenterEditModal>
 
-            {isPendingCloseArticle && (
+            {(isPendingCloseArticle || isPendingDiscardChanges) && (
                 <CloseModal
                     isOpen={
-                        !!isPendingCloseArticle &&
+                        (isPendingDiscardChanges || isPendingCloseArticle) &&
                         (canSaveArticle || isEditorCodeViewActive)
                     }
-                    title={<span>Unsaved changes</span>}
+                    title={
+                        isPendingCloseArticle
+                            ? 'Unsaved changes'
+                            : 'Quit without saving?'
+                    }
                     saveText="Save"
                     discardText="Don't save"
                     editText="Back to editing"
                     onDiscard={onConfirmDiscardChanges}
-                    onContinueEditing={onConfirmEditing}
+                    onContinueEditing={resetPendingStates}
                     onSave={onConfirmSaveArticle}
                 >
-                    <span>
-                        Do you want to save the changes made to this article?
-                        All changes will be lost if you don't save them.
-                    </span>
+                    {isPendingCloseArticle
+                        ? "Do you want to save the changes made to this article? All changes will be lost if you don't save them."
+                        : 'By discarding changes you will lose all progress you made editing. Are you sure you want to proceed?'}
                 </CloseModal>
-            )}
-
-            {isPendingDiscardChanges && (
-                <DiscardChangesModal
-                    title="Quit without Saving?"
-                    onDiscard={onConfirmDiscardChanges}
-                    onContinueEditing={onConfirmEditing}
-                >
-                    By discarding changes you will lose all progress you made
-                    editing. Are you sure you want to proceed?
-                </DiscardChangesModal>
             )}
 
             {pendingDeleteLocaleOptionItem && (

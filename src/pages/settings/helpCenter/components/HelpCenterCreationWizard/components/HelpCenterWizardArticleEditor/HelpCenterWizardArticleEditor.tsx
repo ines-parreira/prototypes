@@ -13,7 +13,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
-import {DiscardChangesModal} from '../../../articles/DiscardChangesModal'
 import {CloseModal} from '../../../articles/CloseModal'
 import css from './HelpCenterWizardArticleEditor.less'
 
@@ -48,7 +47,7 @@ const ArticleEditor: React.FC<Props> = ({
         setTitle(article?.title)
         setContent(article?.content)
         setIsPristine(true)
-        setPendingCloseEditor(false)
+        resetPendingStates()
     }, [article])
 
     useEffect(() => {
@@ -82,9 +81,13 @@ const ArticleEditor: React.FC<Props> = ({
         isPristine ? onEditorClose() : setPendingCloseEditor(true)
     }
 
-    const onConfirmDiscardChanges = () => {
+    const resetPendingStates = () => {
         setPendingDiscardChanges(false)
         setPendingCloseEditor(false)
+    }
+
+    const onConfirmDiscardChanges = () => {
+        resetPendingStates()
         onEditorClose()
     }
 
@@ -157,35 +160,26 @@ const ArticleEditor: React.FC<Props> = ({
                         </div>
                         <div className={css.counter}>Characters: {count}</div>
 
-                        {pendingDiscardChanges && (
-                            <DiscardChangesModal
-                                title="Quit without saving?"
-                                onDiscard={onConfirmDiscardChanges}
-                                onContinueEditing={() =>
-                                    setPendingDiscardChanges(false)
-                                }
-                            >
-                                By discarding changes you will lose all progress
-                                you made editing. Are you sure you want to
-                                proceed?
-                            </DiscardChangesModal>
-                        )}
-
-                        {pendingCloseEditor && (
+                        {(pendingCloseEditor || pendingDiscardChanges) && (
                             <CloseModal
-                                isOpen={!!pendingCloseEditor}
-                                title="Save changes?"
-                                saveText="Save changes"
-                                discardText="Discard changes"
+                                isOpen={
+                                    pendingCloseEditor || pendingDiscardChanges
+                                }
+                                title={
+                                    pendingCloseEditor
+                                        ? 'Unsaved changes'
+                                        : 'Quit without saving?'
+                                }
+                                saveText="Save"
+                                discardText="Don't save"
                                 editText="Back to editing"
                                 onDiscard={onConfirmDiscardChanges}
-                                onContinueEditing={() =>
-                                    setPendingCloseEditor(false)
-                                }
+                                onContinueEditing={resetPendingStates}
                                 onSave={() => onEditorSave(title!, content!)}
                             >
-                                Your changes to this page will be lost if you
-                                don't save them.
+                                {pendingCloseEditor
+                                    ? "Do you want to save the changes made to this article? All changes will be lost if you don't save them."
+                                    : 'By discarding changes you will lose all progress you made editing. Are you sure you want to proceed?'}
                             </CloseModal>
                         )}
                     </footer>
