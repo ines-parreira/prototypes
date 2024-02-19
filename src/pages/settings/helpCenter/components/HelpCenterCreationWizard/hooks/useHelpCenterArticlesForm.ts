@@ -26,6 +26,7 @@ import {logEvent, SegmentEvent} from '../../../../../../common/segment'
 type HelpCenterArticlesFormOutput = {
     articles: Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
     selectedArticle: HelpCenterArticleItem | null
+    isLoading: boolean
 
     handleArticleSelect: (key: string) => void
     handleArticleEdit: (key: string) => void
@@ -50,11 +51,18 @@ export const useHelpCenterArticlesForm = (
 
     const dispatch = useAppDispatch()
 
-    const {mutateAsync: createArticleMutateAsync} = useCreateArticle()
-    const {mutateAsync: updateArticleTranslationMutateAsync} =
-        useUpdateArticleTranslation()
-    const {mutateAsync: createArticleTranslationMutateAsync} =
-        useCreateArticleTranslation()
+    const {
+        mutateAsync: createArticleMutateAsync,
+        isLoading: isCreateArticleLoading,
+    } = useCreateArticle()
+    const {
+        mutateAsync: updateArticleTranslationMutateAsync,
+        isLoading: isUpdateArticleTranslationLoading,
+    } = useUpdateArticleTranslation()
+    const {
+        mutateAsync: createArticleTranslationMutateAsync,
+        isLoading: isCreateArticleTranslationLoading,
+    } = useCreateArticleTranslation()
 
     useEffect(() => {
         setArticles(articles)
@@ -334,6 +342,10 @@ export const useHelpCenterArticlesForm = (
     return {
         articles: newArticles,
         selectedArticle,
+        isLoading:
+            isCreateArticleLoading ||
+            isCreateArticleTranslationLoading ||
+            isUpdateArticleTranslationLoading,
         handleArticleSelect,
         handleArticleEdit,
         handleEditorClose,

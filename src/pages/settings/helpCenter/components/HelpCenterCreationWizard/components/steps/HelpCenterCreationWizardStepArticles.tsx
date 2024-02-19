@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {
     ArticleTemplateCategory,
@@ -33,19 +33,22 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     helpCenter,
     automateType,
 }) => {
-    const {handleSave, handleAction} = useHelpCenterCreationWizard(
+    const {
+        handleSave,
+        handleAction,
+        isLoading: isUpdatingHelpCenterLoading,
+    } = useHelpCenterCreationWizard(
         helpCenter,
         HelpCenterCreationWizardStep.Articles
     )
 
-    const {articles: fetchedArticles, isLoading} = useGetHelpCenterArticles(
-        helpCenter.id,
-        helpCenter.default_locale
-    )
+    const {articles: fetchedArticles, isLoading: isGettingArticlesLoading} =
+        useGetHelpCenterArticles(helpCenter.id, helpCenter.default_locale)
 
     const {
         articles,
         selectedArticle,
+        isLoading: isSavingArticlesLoading,
         handleArticleSelect,
         handleArticleEdit,
         handleEditorReady,
@@ -53,6 +56,18 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         handleEditorClose,
         handleNavigationSave,
     } = useHelpCenterArticlesForm(helpCenter, fetchedArticles)
+
+    const isLoading = useMemo(() => {
+        return (
+            isGettingArticlesLoading ||
+            isSavingArticlesLoading ||
+            isUpdatingHelpCenterLoading
+        )
+    }, [
+        isGettingArticlesLoading,
+        isSavingArticlesLoading,
+        isUpdatingHelpCenterLoading,
+    ])
 
     const isAutomate = automateType === HelpCenterAutomateType.AUTOMATE
 

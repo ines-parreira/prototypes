@@ -59,6 +59,7 @@ const mockedUseHelpCenterCreationWizard = {
 const mockedUseHelpCenterArticlesForm = {
     articles: ArticleTemplatesGroupedByCategoryFixture,
     selectedArticle: HelpCenterArticleItemFixture,
+    isLoading: false,
     handleArticleSelect: jest.fn(),
     handleArticleEdit: jest.fn(),
     handleEditorClose: jest.fn(),
