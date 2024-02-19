@@ -50,7 +50,6 @@ export enum FeatureFlagKey {
     EnableNewLanguages = 'enable-new-languages',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     EnforceTicketsOnES = 'enforce-tickets-on-es',
-    FlowsStepsEnd = 'flows-steps-end',
     FlowsStepsHttpRequest = 'flows-steps-http-request',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
     FlowsStepsShopperAuthentication = 'flows-steps-shopper-authentication-1',

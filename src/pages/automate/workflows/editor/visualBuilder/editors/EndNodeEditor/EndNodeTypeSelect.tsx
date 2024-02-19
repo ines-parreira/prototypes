@@ -1,6 +1,5 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import SelectInputBox, {
@@ -9,13 +8,18 @@ import SelectInputBox, {
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
 
 import css from './EndNodeTypeSelect.less'
+
+const options: EndNodeType['data']['action'][] = [
+    'ask-for-feedback',
+    'create-ticket',
+    'end',
+]
 
 type EndNodeTypeSelectProps = {
     value: EndNodeType['data']['action']
@@ -26,19 +30,9 @@ export default function EndNodeTypeSelect({
     value,
     onChange,
 }: EndNodeTypeSelectProps) {
-    const endStepEnabled = useFlags()[FeatureFlagKey.FlowsStepsEnd]
-
     const [isTypeSelectOpen, setIsTypeSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
-
-    const options = useMemo<EndNodeType['data']['action'][]>(
-        () =>
-            endStepEnabled
-                ? ['ask-for-feedback', 'create-ticket', 'end']
-                : ['ask-for-feedback', 'create-ticket'],
-        [endStepEnabled]
-    )
 
     return (
         <SelectInputBox
