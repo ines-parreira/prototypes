@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {useDispatch} from 'react-redux'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {
@@ -17,6 +18,8 @@ import Label from 'pages/common/forms/Label/Label'
 import ColorField from 'pages/common/forms/ColorField'
 import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
 import {useFileUpload} from 'pages/settings/helpCenter/hooks/useFileUpload'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
 import {ImageUpload} from '../../../ImageUpload'
 import HelpCenterPreviewHomePage from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
@@ -30,6 +33,7 @@ type Props = {
 const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
     helpCenter,
 }) => {
+    const dispatch = useDispatch()
     const {
         helpCenter: newHelpCenter,
         handleFormUpdate,
@@ -52,9 +56,18 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
 
     const handleBrandLogoChange = async () => {
         if (!brandLogo.isTouched) return
-        const brandLogoUrl = await brandLogo.getFileUploadURL()
-        handleFormUpdate({brandLogoUrl})
-        return brandLogoUrl
+        try {
+            const brandLogoUrl = await brandLogo.getFileUploadURL()
+            handleFormUpdate({brandLogoUrl})
+            return brandLogoUrl
+        } catch (error) {
+            dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to upload the logo. Please try again.',
+                })
+            )
+        }
     }
 
     const onFooterAction = async (buttonClicked: FOOTER_BUTTONS) => {

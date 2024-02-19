@@ -2,6 +2,9 @@ import 'tests/__mocks__/intersectionObserverMock'
 
 import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
@@ -25,15 +28,21 @@ const mockedHook = {
     handleAction: jest.fn(),
 }
 
+const store = configureMockStore([thunk])()
+
 const renderComponent = (fixtures?: {helpCenter?: HelpCenter}) => {
     const {helpCenter = HelpCenterApiBrandingFixture} = fixtures ?? {}
 
     render(
-        <CurrentHelpCenterContext.Provider value={helpCenter}>
-            <Wizard steps={[HelpCenterCreationWizardStep.Branding]}>
-                <HelpCenterCreationWizardStepBranding helpCenter={helpCenter} />
-            </Wizard>
-        </CurrentHelpCenterContext.Provider>
+        <Provider store={store}>
+            <CurrentHelpCenterContext.Provider value={helpCenter}>
+                <Wizard steps={[HelpCenterCreationWizardStep.Branding]}>
+                    <HelpCenterCreationWizardStepBranding
+                        helpCenter={helpCenter}
+                    />
+                </Wizard>
+            </CurrentHelpCenterContext.Provider>
+        </Provider>
     )
 }
 
