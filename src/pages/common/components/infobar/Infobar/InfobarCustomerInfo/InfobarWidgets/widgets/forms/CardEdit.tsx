@@ -1,18 +1,8 @@
-import React, {
-    useCallback,
-    useRef,
-    useState,
-    MouseEvent,
-    FormEvent,
-    memo,
-} from 'react'
+import React, {useRef, useState, FormEvent} from 'react'
 import {Iterable, List, Map, fromJS} from 'immutable'
 import {Form, FormGroup} from 'reactstrap'
 
 import {UploadType} from 'common/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {PartialTemplate} from 'models/widget/types'
-import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
 import Button from 'pages/common/components/button/Button'
 import ColorField from 'pages/common/forms/ColorField'
 import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
@@ -22,16 +12,19 @@ import FileField from 'pages/common/forms/FileField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
 
+export const TITLE_FIELD_LABEL = 'Title'
+export const LINK_FIELD_LABEL = 'Link'
+export const ICON_FIELD_LABEL = 'Icon'
+export const ICON_BACKGROUND_FIELD_LABEL = 'Icon background'
+export const DISPLAY_CARD_FIELD_LABEL = 'Display card'
+export const LIMIT_FIELD_LABEL = 'Limit'
+export const ORDER_FIELD_LABEL = 'Order by'
+export const SUBMIT_BUTTON_TEXT = 'Submit'
+export const CANCEL_BUTTON_TEXT = 'Cancel'
+
 export type EditionHiddenField = 'title' | 'link' | 'displayCard' | 'icon'
 
-type Props = {
-    template: Map<string, unknown>
-    parent: Map<string, unknown>
-    editionHiddenFields: EditionHiddenField[]
-    isParentList: boolean
-}
-
-type FormState = {
+export type CardEditFormState = {
     title: string
     link: string
     pictureUrl: string
@@ -41,15 +34,25 @@ type FormState = {
     orderBy: string
 }
 
-const WidgetEdit = ({
+type Props = {
+    template: Map<string, unknown>
+    parent: Map<string, unknown>
+    editionHiddenFields: EditionHiddenField[]
+    isParentList: boolean
+    onSubmit: (formState: CardEditFormState) => void
+    onCancel: () => void
+}
+
+const CardEdit = ({
     template,
     parent,
     editionHiddenFields = [],
     isParentList = false,
+    onSubmit,
+    onCancel,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const wrapperRef = useRef<HTMLDivElement>(null)
-    const [formState, setFormState] = useState<FormState>({
+    const [formState, setFormState] = useState<CardEditFormState>({
         title: template.get('title', '') as string,
         link: template.getIn(['meta', 'link'], ''),
         pictureUrl: template.getIn(['meta', 'pictureUrl'], ''),
@@ -61,51 +64,10 @@ const WidgetEdit = ({
         orderBy: isParentList ? parent.getIn(['meta', 'orderBy'], '') : '',
     })
 
-    const handleClose = useCallback(
-        (evt?: MouseEvent<HTMLButtonElement>) => {
-            if (evt) {
-                evt.stopPropagation()
-            }
-            dispatch(stopWidgetEdition())
-        },
-        [dispatch]
-    )
-
-    const handleSubmit = useCallback(
-        (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault()
-            const card: PartialTemplate = {
-                type: 'card',
-                title: formState.title,
-                meta: {
-                    link: formState.link,
-                    displayCard: formState.displayCard,
-                    pictureUrl: formState.pictureUrl,
-                    color: formState.color,
-                },
-            }
-
-            if (isParentList) {
-                const list: PartialTemplate = {
-                    title: parent.get('title') as string,
-                    type: 'list',
-                    meta: {
-                        limit: formState.limit,
-                        orderBy: formState.orderBy,
-                    },
-                    widgets: [card],
-                }
-                // saving the parent list AND the card inside that list
-                dispatch(updateEditedWidget(list))
-            } else {
-                // saving only the card
-                dispatch(updateEditedWidget(card))
-            }
-
-            handleClose()
-        },
-        [formState, isParentList, parent, dispatch, handleClose]
-    )
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        onSubmit(formState)
+    }
 
     let orderByOptions = fromJS([]) as Iterable<
         number,
@@ -129,7 +91,7 @@ const WidgetEdit = ({
                     <DEPRECATED_InputField
                         type="text"
                         name="card.title"
-                        label="Title"
+                        label={TITLE_FIELD_LABEL}
                         placeholder="Order {{id}}"
                         value={formState.title}
                         onChange={(title) =>
@@ -141,7 +103,7 @@ const WidgetEdit = ({
                     <DEPRECATED_InputField
                         type="text"
                         name="card.meta.link"
-                        label="Link"
+                        label={LINK_FIELD_LABEL}
                         placeholder="http://myapi.com/{{id}}"
                         value={formState.link}
                         onChange={(link) =>
@@ -153,7 +115,7 @@ const WidgetEdit = ({
                     <>
                         <FileField
                             name="card.meta.pictureUrl"
-                            label="Icon"
+                            label={ICON_FIELD_LABEL}
                             value={formState.pictureUrl}
                             onChange={(pictureUrl: string) => {
                                 setFormState((formState) => ({
@@ -169,7 +131,7 @@ const WidgetEdit = ({
                         />
                         <ColorField
                             name="card.meta.color"
-                            label="Icon background"
+                            label={ICON_BACKGROUND_FIELD_LABEL}
                             value={formState.color}
                             onChange={(color: string) => {
                                 setFormState((formState) => ({
@@ -193,13 +155,15 @@ const WidgetEdit = ({
                                 }))
                             }
                         >
-                            Display card
+                            {DISPLAY_CARD_FIELD_LABEL}
                         </CheckBox>
                     </FormGroup>
                 )}
                 {isParentList && (
                     <>
-                        <Label htmlFor="list.meta.limit">Limit</Label>
+                        <Label htmlFor="list.meta.limit">
+                            {LIMIT_FIELD_LABEL}
+                        </Label>
                         <NumberInput
                             key="limit"
                             id="list.meta.limit"
@@ -222,7 +186,7 @@ const WidgetEdit = ({
                             key="order"
                             type="select"
                             name="list.meta.orderBy"
-                            label="Order by"
+                            label={ORDER_FIELD_LABEL}
                             value={formState.orderBy}
                             onChange={(orderBy) =>
                                 setFormState((formState) => ({
@@ -253,14 +217,10 @@ const WidgetEdit = ({
 
                 <div>
                     <Button type="submit" className="mr-2">
-                        Submit
+                        {SUBMIT_BUTTON_TEXT}
                     </Button>
-                    <Button
-                        intent="secondary"
-                        type="button"
-                        onClick={handleClose}
-                    >
-                        Cancel
+                    <Button intent="secondary" type="button" onClick={onCancel}>
+                        {CANCEL_BUTTON_TEXT}
                     </Button>
                 </div>
             </Form>
@@ -268,4 +228,4 @@ const WidgetEdit = ({
     )
 }
 
-export default memo(WidgetEdit)
+export default CardEdit
