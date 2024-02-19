@@ -4,7 +4,7 @@ import {StatsFilters} from 'models/stat/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock} from 'utils/testing'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import {formatMetricTrend} from 'pages/stats/common/utils'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import VoiceCallVolumeMetric from './VoiceCallVolumeMetric'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
@@ -53,13 +53,9 @@ describe('<VoiceCallVolumeMetric />', () => {
             expect(
                 document.querySelector('.tooltip-inner')?.textContent
             ).toEqual(
-                `Vs. ${
-                    formatMetricTrend(
-                        trendValue.data.value,
-                        trendValue.data.prevValue,
-                        'percent'
-                    ).formattedTrend ?? 0
-                } on Feb 2nd, 2021`
+                `Vs. ${formatMetricValue(
+                    trendValue.data.prevValue
+                )} on Feb 2nd, 2021`
             )
         })
     })

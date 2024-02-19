@@ -80,7 +80,6 @@ const OverviewCard = ({
                         <TrendBadge
                             prevValue={prevTrendValue}
                             value={trendValue}
-                            format="percent"
                             interpretAs="more-is-better"
                             tooltipData={{
                                 period: `${formattedStartDate} - ${formattedEndDate}`,

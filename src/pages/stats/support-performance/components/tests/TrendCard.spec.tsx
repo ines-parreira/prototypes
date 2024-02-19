@@ -16,10 +16,7 @@ import {
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
-import {
-    TREND_BADGE_FORMAT,
-    TrendCard,
-} from 'pages/stats/support-performance/components/TrendCard'
+import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
 import TrendBadge, {DEFAULT_BADGE_TEXT} from 'pages/stats/TrendBadge'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
@@ -207,8 +204,9 @@ describe('<TrendCard />', () => {
                         },
                         value: defaultMetricTrend?.data?.value,
                         prevValue: defaultMetricTrend.data?.prevValue,
-                        format: TREND_BADGE_FORMAT,
                         isLoading: !defaultMetricTrend?.data,
+                        metricFormat:
+                            OverviewMetricConfig[overviewMetric].metricFormat,
                     }),
                 ])
             )

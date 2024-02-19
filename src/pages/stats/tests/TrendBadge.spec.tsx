@@ -2,7 +2,7 @@ import React from 'react'
 import {act, render, screen} from '@testing-library/react'
 
 import userEvent from '@testing-library/user-event'
-import {formatMetricTrend} from 'pages/stats/common/utils'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import TrendBadge, {DEFAULT_BADGE_TEXT} from '../TrendBadge'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
@@ -25,10 +25,9 @@ describe('<TrendBadge />', () => {
     it('should render when prev value is zero and the format is percent', () => {
         const value = 2.3
         const prevValue = 0
-        const format = 'percent'
 
         const {container} = render(
-            <TrendBadge value={value} prevValue={prevValue} format={format} />
+            <TrendBadge value={value} prevValue={prevValue} />
         )
 
         expect(container.firstChild).not.toBe(null)
@@ -84,9 +83,9 @@ describe('<TrendBadge />', () => {
         const value = 5
         const prevValue = 10
         const tooltipData = {period: 'random text'}
-        const tooltipResultingText = `Vs. ${
-            formatMetricTrend(value, prevValue, 'decimal').formattedTrend ?? 0
-        } on ${tooltipData.period}`
+        const tooltipResultingText = `Vs. ${formatMetricValue(prevValue)} on ${
+            tooltipData.period
+        }`
 
         render(
             <TrendBadge

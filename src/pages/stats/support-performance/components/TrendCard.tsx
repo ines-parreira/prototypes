@@ -15,8 +15,6 @@ import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {OverviewMetric} from 'state/ui/stats/types'
 
-export const TREND_BADGE_FORMAT = 'percent'
-
 export const TrendCard = ({
     hint,
     title,
@@ -50,7 +48,6 @@ export const TrendCard = ({
                 isLoading={!trend.data}
                 trendBadge={
                     <TrendBadge
-                        format={TREND_BADGE_FORMAT}
                         interpretAs={interpretAs}
                         isLoading={!trend.data}
                         value={trend.data?.value}
@@ -60,6 +57,7 @@ export const TrendCard = ({
                                 cleanStatsFilters
                             ),
                         }}
+                        metricFormat={metricFormat}
                     />
                 }
             >

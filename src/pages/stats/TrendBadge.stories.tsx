@@ -24,7 +24,6 @@ const defaultProps: ComponentProps<typeof TrendBadge> = {
     value: 0,
     prevValue: 0,
     interpretAs: 'more-is-better',
-    format: 'percent',
 }
 
 export const Neutral = Template.bind({})

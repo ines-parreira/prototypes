@@ -5,7 +5,11 @@ import useId from 'hooks/useId'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import Tooltip from 'pages/common/components/Tooltip'
-import {formatMetricTrend, MetricTrendFormat} from './common/utils'
+import {
+    formatMetricTrend,
+    formatMetricValue,
+    MetricTrendFormat,
+} from './common/utils'
 import css from './TrendBadge.less'
 import {getIconNameBySign} from './utils'
 
@@ -15,19 +19,20 @@ const getTooltipText = (prevValue: string, period: string) => (
     </>
 )
 
+export const TREND_BADGE_FORMAT = 'percent'
+export const DEFAULT_BADGE_TEXT = '0%'
+
 type Props = {
     className?: string
     isLoading?: boolean
     interpretAs?: 'more-is-better' | 'less-is-better' | 'neutral'
     value?: number | null
     prevValue?: number | null
-    format?: MetricTrendFormat
     tooltipData?: {
         period: string
     }
+    metricFormat?: MetricTrendFormat
 }
-
-export const DEFAULT_BADGE_TEXT = '0%'
 
 export default function TrendBadge({
     className,
@@ -35,15 +40,15 @@ export default function TrendBadge({
     prevValue,
     isLoading = false,
     interpretAs = 'neutral',
-    format = 'decimal',
     tooltipData,
+    metricFormat,
 }: Props) {
     const id = useId()
     const badgeId = `badge-${id}`
 
     const {formattedTrend, sign = 0} =
         value != null && prevValue != null
-            ? formatMetricTrend(value, prevValue, format)
+            ? formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
             : {formattedTrend: null}
 
     let trendColor = sign > 0 || sign < 0 ? 'neutral' : 'unchanged'
@@ -75,7 +80,10 @@ export default function TrendBadge({
             </div>
             {tooltipData && formattedTrend && (
                 <Tooltip target={`#${badgeId}`}>
-                    {getTooltipText(formattedTrend, tooltipData.period)}
+                    {getTooltipText(
+                        formatMetricValue(prevValue, metricFormat),
+                        tooltipData.period
+                    )}
                 </Tooltip>
             )}
         </>

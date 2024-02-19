@@ -213,7 +213,7 @@ export default function SupportPerformanceOverview() {
                 <DashboardSection title="Workload">
                     {isAnalyticsProductivityMetricsEnabled ? (
                         <>
-                            <DashboardGridCell size={getGridCellSize(3)}>
+                            <DashboardGridCell size={getGridCellSize(4)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsCreated
@@ -223,7 +223,7 @@ export default function SupportPerformanceOverview() {
                                     }
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(3)}>
+                            <DashboardGridCell size={getGridCellSize(4)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsClosed
@@ -233,7 +233,7 @@ export default function SupportPerformanceOverview() {
                                     }
                                 />
                             </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(3)}>
+                            <DashboardGridCell size={getGridCellSize(4)}>
                                 <TrendCard
                                     {...OverviewMetricConfig[
                                         OverviewMetric.OpenTickets

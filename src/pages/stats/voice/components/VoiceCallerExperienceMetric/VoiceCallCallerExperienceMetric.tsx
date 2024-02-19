@@ -42,7 +42,6 @@ function VoiceCallCallerExperienceMetric({
                     <TrendBadge
                         value={metricTrend.data?.value}
                         prevValue={metricTrend.data?.prevValue}
-                        format={'percent'}
                         interpretAs={'less-is-better'}
                         tooltipData={{
                             period: comparedPeriodString(

@@ -33,13 +33,13 @@ LoadingState.args = {
 export const WithTrendBadge = Template.bind({})
 WithTrendBadge.args = {
     ...defaultProps,
-    trendBadge: <TrendBadge value={123} prevValue={100} format="percent" />,
+    trendBadge: <TrendBadge value={123} prevValue={100} />,
 }
 
 export const WithoutDataAndWithTrendBadge = Template.bind({})
 WithoutDataAndWithTrendBadge.args = {
     children: '-',
-    trendBadge: <TrendBadge value={0} prevValue={0} format="percent" />,
+    trendBadge: <TrendBadge value={0} prevValue={0} />,
 }
 
 export default storyConfig
