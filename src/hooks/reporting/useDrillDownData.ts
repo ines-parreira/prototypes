@@ -7,7 +7,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getAgentsJS} from 'state/agents/selectors'
@@ -62,10 +61,11 @@ export const defaultEnrichmentFields: EnrichmentFields[] = [
 export const formatDrillDownRowData = (
     row: MergedRecord<any, any>,
     agents: User[],
-    metricField: string
+    metricField: string,
+    ticketIdField: string
 ): DrillDownRowData => ({
     ticket: {
-        id: row[TicketDimension.TicketId] || null,
+        id: row[ticketIdField] || null,
         subject: row[EnrichmentFields.TicketName] || null,
         description: row[EnrichmentFields.Description] || null,
         channel: row[EnrichmentFields.Channel] || null,
@@ -150,7 +150,12 @@ export const useDrillDownData = (
             ),
         data: rowData
             .map((row) =>
-                formatDrillDownRowData(row, agents, query.dimensions[1])
+                formatDrillDownRowData(
+                    row,
+                    agents,
+                    query.dimensions[1],
+                    query.dimensions[0]
+                )
             )
             .slice(
                 Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),

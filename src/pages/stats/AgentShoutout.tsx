@@ -10,26 +10,31 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
-export default function AgentsShoutout(props: ShoutoutConfig) {
-    const {useQuery, queryOrder} = props
+export default function AgentsShoutout({
+    useQuery,
+    queryOrder,
+    metricName,
+    measure,
+    formatValue,
+}: ShoutoutConfig) {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
     const queryResult = useQuery(cleanStatsFilters, userTimezone, queryOrder)
 
-    const data = useShoutoutTopResults(queryResult, props)
+    const data = useShoutoutTopResults(queryResult, formatValue, measure)
 
     if (queryResult.isFetching) return <Skeleton height={SHOUTOUT_HEIGHT_PX} />
 
     return (
         <Shoutout
-            testId={`shoutout-for-${props.measure}`}
+            testId={`shoutout-for-${measure}`}
             persons={data.agents.map((agent) => ({
                 name: agent.name,
                 image: agent.meta?.profile_picture_url,
             }))}
             multiplePersonsLabel={(count) => `${count} agents`}
-            metricName={props.metricName}
+            metricName={metricName}
             value={data.metricValue}
         />
     )

@@ -1,5 +1,7 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+import LD from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMeasure,
@@ -29,7 +31,9 @@ describe('useMetricTrend', () => {
     }
 
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewCubes]: false,
+        }))
         usePostReportingMock.mockReturnValue(defaultReporting)
     })
 

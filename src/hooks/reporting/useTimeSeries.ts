@@ -1,6 +1,7 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
+import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
 import {StatsFilters} from 'models/stat/types'
 import {DataResponse} from 'hooks/reporting/withDeciles'
 import {Cubes} from 'models/reporting/cubes'
@@ -77,8 +78,10 @@ const selectPerDimension =
     }
 
 export default function useTimeSeries<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>
+    originalQuery: TimeSeriesQuery<TCube>
 ) {
+    const query = useEnrichedCubes(originalQuery)
+
     return usePostReporting<
         Record<string, string>[],
         TimeSeriesDataItem[][],
@@ -89,8 +92,10 @@ export default function useTimeSeries<TCube extends Cubes>(
 }
 
 export function useTimeSeriesPerDimension<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>
+    originalQuery: TimeSeriesQuery<TCube>
 ) {
+    const query = useEnrichedCubes(originalQuery)
+
     return usePostReporting<
         Record<string, string>[],
         Record<string, TimeSeriesDataItem[][]>,

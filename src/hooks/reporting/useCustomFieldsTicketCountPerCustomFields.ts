@@ -1,5 +1,11 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 import _zip from 'lodash/zip'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
@@ -20,20 +26,27 @@ import {
     getCustomFieldsOrder,
     TicketInsightsOrder,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {getFilterDateRange} from 'utils/reporting'
+import {getFilterDateRange, renameMember} from 'utils/reporting'
 import {notUndefined} from 'utils/types'
 
 const breakdownTimeSeries = (
     timeSeriesData: Record<string, TimeSeriesDataItem[][]>,
-    order: TicketInsightsOrder
+    order: TicketInsightsOrder,
+    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
     const timeSeriesObjects = Object.keys(timeSeriesData).map((key) => ({
-        [BREAKDOWN_FIELD]: key,
+        [breakdownField]: key,
         initialCustomFieldValue: [key],
         timeSeries: timeSeriesData[key][0],
     }))
 
-    return selectTimeSeriesWithBreakdown(timeSeriesObjects, order)
+    return selectTimeSeriesWithBreakdown(
+        timeSeriesObjects,
+        order,
+        breakdownField,
+        valueField
+    )
 }
 
 export const useCustomFieldsTicketCountPerCustomFields = (
@@ -44,6 +57,23 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     isLoading: boolean
     order: TicketInsightsOrder
 } => {
+    const isAnalyticsNewCubes: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
+    const breakdownField = isAnalyticsNewCubes
+        ? renameMember<typeof BREAKDOWN_FIELD>(
+              BREAKDOWN_FIELD,
+              'TicketCustomFields',
+              'TicketCustomFieldsEnriched'
+          )
+        : BREAKDOWN_FIELD
+    const valueField = isAnalyticsNewCubes
+        ? renameMember<typeof VALUE_FIELD>(
+              VALUE_FIELD,
+              'TicketCustomFields',
+              'TicketCustomFieldsEnriched'
+          )
+        : VALUE_FIELD
+
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -64,10 +94,15 @@ export const useCustomFieldsTicketCountPerCustomFields = (
         () =>
             timeSeriesData !== undefined
                 ? enrichWithPercentagesAndDeciles(
-                      breakdownTimeSeries(timeSeriesData, order)
+                      breakdownTimeSeries(
+                          timeSeriesData,
+                          order,
+                          breakdownField,
+                          valueField
+                      )
                   )
                 : [],
-        [timeSeriesData, order]
+        [timeSeriesData, order, breakdownField, valueField]
     )
 
     return {

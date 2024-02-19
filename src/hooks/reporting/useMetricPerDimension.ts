@@ -1,3 +1,4 @@
+import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
 import {
     TicketCustomFieldsTicketCountData,
     withBreakdown,
@@ -11,6 +12,7 @@ import {
 } from 'hooks/reporting/withEnrichment'
 import {Cubes} from 'models/reporting/cubes'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     useEnrichedPostReporting,
     UseEnrichedPostReportingQueryData,
@@ -88,9 +90,10 @@ const selectMetric =
         )
 
 export function useMetricPerDimension<TCube extends Cubes>(
-    query: ReportingQuery<TCube>,
+    originalQuery: ReportingQuery<TCube>,
     dimensionId?: string
 ): MetricWithDecile<TCube> {
+    const query = useEnrichedCubes(originalQuery)
     const metricData = usePostReporting<
         QueryReturnType<TCube>,
         QueryReturnType<TCube>
@@ -116,8 +119,10 @@ export function useMetricPerDimension<TCube extends Cubes>(
 }
 
 export function useMetricPerDimensionWithBreakdown(
-    query: ReportingQuery<HelpdeskMessageCubeWithJoins>
+    originalQuery: ReportingQuery<TicketCustomFieldsCube>
 ): MetricWithBreakdown {
+    const query =
+        useEnrichedCubes<ReportingQuery<TicketCustomFieldsCube>>(originalQuery)
     const metricData = usePostReporting<
         WithChildren<TicketCustomFieldsTicketCountData>[],
         WithChildren<TicketCustomFieldsTicketCountData>[]
@@ -128,7 +133,13 @@ export function useMetricPerDimensionWithBreakdown(
         queryFn: () =>
             postReporting<WithChildren<TicketCustomFieldsTicketCountData[]>>([
                 query,
-            ]).then((data) => withBreakdown(data)),
+            ]).then((data) =>
+                withBreakdown(
+                    data,
+                    query['dimensions'][0],
+                    query['measures'][0]
+                )
+            ),
         queryKey: ['reporting', 'post-reporting-breakdown', query],
     })
 
@@ -145,12 +156,14 @@ export function useMetricPerDimensionWithBreakdown(
 }
 
 export function useMetricPerDimensionWithEnrichment(
-    query: ReportingQuery<HelpdeskMessageCubeWithJoins>,
+    originalQuery: ReportingQuery<HelpdeskMessageCubeWithJoins>,
     enrichmentFields: EnrichmentFields[]
 ): MetricWithEnrichment<
     typeof query['measures'][0],
     typeof query['dimensions'][0]
 > {
+    const query = useEnrichedCubes(originalQuery)
+
     const idField = query.dimensions[0]
     const metricData = useEnrichedPostReporting<
         {

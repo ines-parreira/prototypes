@@ -43,17 +43,25 @@ describe('withBreakdown', () => {
 
     describe('withBreakdown', () => {
         it('should replace the response data with data with data breakdown', () => {
-            const responseWithDeciles = withBreakdown(response)
+            const responseWithDeciles = withBreakdown(
+                response,
+                BREAKDOWN_FIELD,
+                VALUE_FIELD
+            )
 
             expect(responseWithDeciles.data.data).toEqual(
-                selectWithBreakdown(results)
+                selectWithBreakdown(results, BREAKDOWN_FIELD, VALUE_FIELD)
             )
         })
     })
 
     describe('selectWithBreakdown', () => {
         it('should create a hierarchy', () => {
-            const breakdown = selectWithBreakdown(results)
+            const breakdown = selectWithBreakdown(
+                results,
+                BREAKDOWN_FIELD,
+                VALUE_FIELD
+            )
 
             expect(breakdown).toEqual([
                 {
@@ -120,7 +128,11 @@ describe('withBreakdown', () => {
                 [VALUE_FIELD]: '1',
             }))
 
-            const breakdown = selectWithBreakdown(results)
+            const breakdown = selectWithBreakdown(
+                results,
+                BREAKDOWN_FIELD,
+                VALUE_FIELD
+            )
 
             expect(breakdown).toEqual([
                 {
@@ -221,7 +233,9 @@ describe('withBreakdown', () => {
         it('should return hierarchy with timeSeries and subtotals', () => {
             const results = selectTimeSeriesWithBreakdown(
                 timeSeriesData,
-                defaultOrder
+                defaultOrder,
+                BREAKDOWN_FIELD,
+                VALUE_FIELD
             )
 
             expect(results).toEqual([
@@ -421,7 +435,9 @@ describe('withBreakdown', () => {
             }) => {
                 const results = selectTimeSeriesWithBreakdown(
                     timeSeriesData,
-                    order
+                    order,
+                    BREAKDOWN_FIELD,
+                    VALUE_FIELD
                 )
 
                 expect(

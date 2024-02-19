@@ -59,6 +59,7 @@ describe('useDrillDownData', () => {
     }
     const userTimezone = 'someTimeZone'
     const metricDimension = TicketMessagesDimension.MessagesCount
+    const ticketIdField = TicketDimension.TicketId
     const exampleRow = {
         [TicketDimension.TicketId]: '777',
         [EnrichmentFields.TicketName]: 'Some Ticket',
@@ -105,7 +106,12 @@ describe('useDrillDownData', () => {
             totalResults: rowData.length,
             onPageChange: expect.any(Function),
             data: rowData.map((row) =>
-                formatDrillDownRowData(row, agents, metricDimension)
+                formatDrillDownRowData(
+                    row,
+                    agents,
+                    metricDimension,
+                    ticketIdField
+                )
             ),
         })
     })

@@ -1,28 +1,24 @@
-import {useContext, useMemo} from 'react'
-import moment, {Moment} from 'moment'
-import _isNumber from 'lodash/isNumber'
 import {findKey} from 'lodash'
-import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import _isNumber from 'lodash/isNumber'
+import moment, {Moment} from 'moment'
+import {useContext, useMemo} from 'react'
+import {TicketChannel} from 'business/types/ticket'
+import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
+
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ViewFilter} from 'state/views/types'
-import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
+import {ReportingGranularity} from 'models/reporting/types'
 import {ViewField} from 'models/view/types'
 import {
     CollectionOperator,
     DatetimeOperator,
     EqualityOperator,
 } from 'state/rules/types'
-import {RootState} from 'state/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TicketChannel} from 'business/types/ticket'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {RootState} from 'state/types'
+import {ViewFilter} from 'state/views/types'
 import StatsFiltersContext from '../StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
@@ -350,13 +346,15 @@ export const formatLabeledTooltipTimeSeriesData = (
 
 export const isMetricForAgent = (
     metric: ReportingMetricItem,
-    agentId: number | string
-) =>
-    metric[TicketMember.AssigneeUserId] === String(agentId) ||
-    metric[TicketMessagesMember.FirstHelpdeskMessageUserId] ===
-        String(agentId) ||
-    metric[HelpdeskMessageMember.SenderId] === String(agentId) ||
-    metric[AgentTimeTrackingMember.UserId] === String(agentId)
+    agentId: number | string,
+    agentIdFields: string[]
+) => {
+    return agentIdFields.reduce(
+        (acc, agentIdField) =>
+            metric[agentIdField] === String(agentId) ? true : acc,
+        false
+    )
+}
 
 export const periodPickerMaxSpanDays = (
     maxSpan?: daterangepicker.Options['maxSpan'],

@@ -1,7 +1,9 @@
 import moment, {Moment} from 'moment'
-import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {Cubes} from 'models/reporting/cubes'
+import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
+
+import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
@@ -12,8 +14,6 @@ import {
     ReportingQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-
-import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
@@ -221,3 +221,24 @@ export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({
     operator: ReportingFilterOperator.Set,
     values: agentAssigneeId ? [agentAssigneeId] : [],
 })
+
+export const renameMember = <T extends string>(
+    member: string,
+    source: string,
+    target: string
+): T => {
+    return member.replace(
+        new RegExp(`${source}` + '\\.', 'g'),
+        `${target}.`
+    ) as T
+}
+
+export const renameCubeStringified = <T>(
+    query: ReportingQuery,
+    sourceCube: string,
+    targetCube: string
+): T => {
+    return JSON.parse(
+        renameMember(JSON.stringify(query), sourceCube, targetCube)
+    ) as T
+}

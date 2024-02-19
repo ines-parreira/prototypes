@@ -2,6 +2,7 @@ import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
+    TicketCustomFieldsCube,
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
@@ -28,7 +29,7 @@ export const customFieldsTicketCountQueryFactory = (
     timezone: string,
     customFieldId: string,
     sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+): ReportingQuery<TicketCustomFieldsCube> => ({
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
     timezone,

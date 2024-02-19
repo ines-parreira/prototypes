@@ -10,6 +10,8 @@ import {
     formatReportingQueryDate,
     HelpCenterStatsFiltersMembers,
     periodToReportingGranularity,
+    renameCubeStringified,
+    renameMember,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
     withFilter,
@@ -170,6 +172,96 @@ describe('reporting utils', () => {
                 member: TicketMember.AssigneeUserId,
                 operator: ReportingFilterOperator.Set,
                 values: [],
+            })
+        })
+    })
+
+    describe('renameCube', () => {
+        it('should rename the member', () => {
+            expect(
+                renameMember(
+                    'TicketMessages.firstHelpdeskMessageDatetime',
+                    'Ticket',
+                    'TicketEnriched'
+                )
+            ).toEqual('TicketMessages.firstHelpdeskMessageDatetime')
+
+            expect(
+                renameMember(
+                    'Ticket.firstHelpdeskMessageDatetime',
+                    'Ticket',
+                    'TicketEnriched'
+                )
+            ).toEqual('TicketEnriched.firstHelpdeskMessageDatetime')
+        })
+
+        it('should rename Cube name in all fields', () => {
+            const query = messagesSentQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2020-01-01T00:00:00.000Z',
+                        end_datetime: '2020-01-03T00:00:00.000Z',
+                    },
+                },
+                'timezone'
+            )
+
+            expect(
+                renameCubeStringified(query, 'Ticket', 'TicketEnriched')
+            ).toEqual({
+                measures: ['HelpdeskMessage.messageCount'],
+                dimensions: [],
+                timezone: 'timezone',
+                filters: [
+                    {
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: ['2020-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2020-01-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'HelpdeskMessage.sentDatetime',
+                        operator: 'inDateRange',
+                        values: [
+                            '2020-01-01T00:00:00.000',
+                            '2020-01-03T00:00:00.000',
+                        ],
+                    },
+                    {
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'HelpdeskMessage.isMessagePublic',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'HelpdeskMessage.messageVia',
+                        operator: 'in',
+                        values: ['helpdesk', 'api'],
+                    },
+                    {
+                        member: 'HelpdeskMessage.periodStart',
+                        operator: 'afterDate',
+                        values: ['2020-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'HelpdeskMessage.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2020-01-03T00:00:00.000'],
+                    },
+                ],
             })
         })
     })

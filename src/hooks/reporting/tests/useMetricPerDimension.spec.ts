@@ -1,5 +1,7 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+import LD from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {
     QueryReturnType,
@@ -7,21 +9,21 @@ import {
     useMetricPerDimensionWithBreakdown,
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
+import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     TicketMessagesCube,
     TicketMessagesDimension,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {ReportingQuery} from 'models/reporting/types'
 import {
     useEnrichedPostReporting,
     usePostReporting,
 } from 'models/reporting/queries'
+import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 import {
     BREAKDOWN_FIELD,
@@ -64,6 +66,12 @@ describe('useMetricPerDimension', () => {
             isError: false,
             data: data,
         } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
+
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewCubes]: false,
+        }))
+    })
 
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(mockedResponse)
@@ -147,7 +155,7 @@ describe('useMetricPerDimensionWithBreakdown', () => {
     const ticketField = 'customTag'
     const ticketFieldL2_1 = 'subTag'
     const ticketFieldL2_2 = 'subTag2'
-    const query: ReportingQuery<HelpdeskMessageCubeWithJoins> =
+    const query: ReportingQuery<TicketCustomFieldsCube> =
         customFieldsTicketCountQueryFactory(
             {
                 period: {
@@ -176,9 +184,19 @@ describe('useMetricPerDimensionWithBreakdown', () => {
         data: data,
     }
 
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewCubes]: false,
+        }))
+    })
+
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(
-            withBreakdown({data: mockedResponse} as any).data as any
+            withBreakdown(
+                {data: mockedResponse} as any,
+                BREAKDOWN_FIELD,
+                VALUE_FIELD
+            ).data as any
         )
 
         const {result} = renderHook(() =>

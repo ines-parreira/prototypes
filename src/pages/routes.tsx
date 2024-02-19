@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {logPageChange} from 'common/segment'
 import {ThemeProvider} from 'theme'
@@ -495,6 +496,10 @@ export function StatsRoutes() {
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
+    const isAnalyticsNewCubes: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
+    const flagLoading = isAnalyticsNewCubes === undefined
+
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
@@ -546,7 +551,11 @@ export function StatsRoutes() {
                         path={`${path}/support-performance-overview`}
                         render={() => (
                             <App
-                                content={SupportPerformanceOverview}
+                                content={
+                                    flagLoading
+                                        ? Skeleton
+                                        : SupportPerformanceOverview
+                                }
                                 navbar={StatsNavbarContainer}
                             />
                         )}
@@ -576,7 +585,11 @@ export function StatsRoutes() {
                         path={`${path}/ticket-fields`}
                         render={() => (
                             <App
-                                content={SupportPerformanceTicketInsights}
+                                content={
+                                    flagLoading
+                                        ? Skeleton
+                                        : SupportPerformanceTicketInsights
+                                }
                                 navbar={StatsNavbarContainer}
                             />
                         )}
@@ -606,7 +619,11 @@ export function StatsRoutes() {
                         path={`${path}/support-performance-agents`}
                         render={() => (
                             <App
-                                content={SupportPerformanceAgents}
+                                content={
+                                    flagLoading
+                                        ? Skeleton
+                                        : SupportPerformanceAgents
+                                }
                                 navbar={StatsNavbarContainer}
                             />
                         )}

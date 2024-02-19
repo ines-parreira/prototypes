@@ -1,10 +1,13 @@
-import {useMemo} from 'react'
-import _orderBy from 'lodash/orderBy'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _difference from 'lodash/difference'
+import _orderBy from 'lodash/orderBy'
+import {useMemo} from 'react'
+import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
-    useOneTouchTicketsMetricPerAgent,
     useClosedTicketsMetricPerAgent,
+    useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
@@ -19,6 +22,15 @@ export const useOneTouchTicketsPercentageMetricPerAgent = (
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ) => {
+    const isAnalyticsNewCubes: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
+    const assigneeIdField = isAnalyticsNewCubes
+        ? renameMemberEnriched(TicketDimension.AssigneeUserId)
+        : TicketDimension.AssigneeUserId
+    const ticketCountField = isAnalyticsNewCubes
+        ? renameMemberEnriched(TicketMeasure.TicketCount)
+        : TicketMeasure.TicketCount
+
     const {data, isFetching, isError} = useOneTouchTicketsMetricPerAgent(
         statsFilters,
         timezone,
@@ -48,34 +60,36 @@ export const useOneTouchTicketsPercentageMetricPerAgent = (
                 const closedTicketsValue =
                     closedTicketsPerAgent.data?.allData.find(
                         (value) =>
-                            value[TicketDimension.AssigneeUserId] ===
-                            item[TicketDimension.AssigneeUserId]
-                    )?.[TicketMeasure.TicketCount]
+                            value[assigneeIdField] === item[assigneeIdField]
+                    )?.[ticketCountField]
 
                 return {
                     ...item,
-                    [TicketMeasure.TicketCount]: closedTicketsValue
+                    [ticketCountField]: closedTicketsValue
                         ? String(
                               calculatePercentage(
-                                  Number(item[TicketMeasure.TicketCount]),
+                                  Number(item[ticketCountField]),
                                   Number(closedTicketsValue)
                               )
                           )
                         : null,
                 }
             }),
-        [closedTicketsPerAgent.data?.allData, data?.allData]
+        [
+            assigneeIdField,
+            closedTicketsPerAgent.data?.allData,
+            data?.allData,
+            ticketCountField,
+        ]
     )
 
     const sortAllData = () => {
         const nonNullValues =
-            allData?.filter(
-                (item) => item[TicketMeasure.TicketCount] !== null
-            ) || []
+            allData?.filter((item) => item[ticketCountField] !== null) || []
 
         const sortedArray = _orderBy(
             nonNullValues,
-            (v) => Number(v[TicketMeasure.TicketCount]),
+            (v) => Number(v[ticketCountField]),
             sorting
         )
 
@@ -85,11 +99,7 @@ export const useOneTouchTicketsPercentageMetricPerAgent = (
     const sortedData = sortAllData()
 
     const maxValue = sortedData.length
-        ? Math.max(
-              ...sortedData.map((item) =>
-                  Number(item[TicketMeasure.TicketCount])
-              )
-          )
+        ? Math.max(...sortedData.map((item) => Number(item[ticketCountField])))
         : 0
 
     return {
