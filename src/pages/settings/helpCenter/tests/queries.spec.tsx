@@ -2,8 +2,10 @@ import React from 'react'
 import _get from 'lodash/get'
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
     useGetShopifyPages,
@@ -362,6 +364,10 @@ describe('useGetArticleTemplate', () => {
 describe('useGetAIArticles', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const locale = 'en-US'
+
+    mockFlags({
+        [FeatureFlagKey.ObservabilityAIArticles]: true,
+    })
 
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()

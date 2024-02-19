@@ -41,9 +41,12 @@ const WizardStepSkeleton: React.FC<Props> = ({
                             {titles[step]}
                         </div>
                         {descriptions[step] && (
-                            <div className={css.description}>
-                                {descriptions[step]}
-                            </div>
+                            <div
+                                className={css.description}
+                                dangerouslySetInnerHTML={{
+                                    __html: descriptions[step] || '',
+                                }}
+                            />
                         )}
                     </div>
                     {children}

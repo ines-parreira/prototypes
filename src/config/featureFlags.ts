@@ -61,6 +61,7 @@ export enum FeatureFlagKey {
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     ObservabilityArticleTemplates = 'observability-article-templates',
+    ObservabilityAIArticles = 'observability-ai-articles',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MLFlowsRecommendation = 'ml-flows-recommendation',
