@@ -88,6 +88,10 @@ export type SubmitArgs = {
     resetMessage?: boolean
 }
 
+type Props = {
+    onCloseCallback?: () => void
+} & ConnectedProps<typeof connector>
+
 export const TicketDetailContainer = ({
     activeCustomer,
     activeView,
@@ -114,7 +118,8 @@ export const TicketDetailContainer = ({
     submitTicket,
     ticket,
     updateCursor,
-}: ConnectedProps<typeof connector>) => {
+    onCloseCallback,
+}: Props) => {
     const dispatch = useAppDispatch()
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const {customer: customerId} = useSearch<{customer?: string}>()
@@ -648,7 +653,9 @@ export const TicketDetailContainer = ({
                     message: 'Ticket has been closed',
                 })
             )
-            maybeGoToNextTicket()
+
+            const callback = onCloseCallback || maybeGoToNextTicket
+            callback()
         })
     }
 

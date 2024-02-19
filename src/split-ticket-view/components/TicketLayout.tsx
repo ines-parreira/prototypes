@@ -1,7 +1,6 @@
 import React from 'react'
 import {RouteComponentProps} from 'react-router-dom'
 
-import TicketDetail from 'pages/tickets/detail/TicketDetailContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import {Config, Panel, Panels} from 'panels'
@@ -10,6 +9,7 @@ import storePanelWidths from '../utils/storePanelWidths'
 import createInitialConfig from '../utils/createInitialConfig'
 import {LayoutKeys} from '../constants'
 import DefaultViewFallback from './DefaultViewFallback'
+import TicketWrapper from './TicketWrapper'
 import css from './TicketLayout.less'
 
 const defaultPanelsConfig: Config = [
@@ -45,7 +45,7 @@ export default function TicketLayout({
                 <DefaultViewFallback viewId={viewId} ticketId={ticketId} />
             </Panel>
             <Panel className={css.container}>
-                <TicketDetail />
+                <TicketWrapper />
             </Panel>
             <Panel>
                 <TicketInfobarContainer isOnNewLayout />
