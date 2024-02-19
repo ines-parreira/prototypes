@@ -213,6 +213,7 @@ export type HelpCenterArticleItem = Partial<LocalArticleTranslation> & {
     key: string
     id?: number
     isSelected?: boolean
+    isTouched?: boolean
     category?: ArticleTemplateCategory
     availableLocales?: LocaleCode[]
     shouldCreateTranslation?: boolean

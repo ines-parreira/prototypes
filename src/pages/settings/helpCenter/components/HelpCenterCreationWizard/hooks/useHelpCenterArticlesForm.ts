@@ -87,6 +87,7 @@ export const useHelpCenterArticlesForm = (
             slug: translation?.slug,
             id: translation?.article_id,
             isSelected: true,
+            isTouched: true,
             shouldCreateTranslation: false,
         }
         setArticles((prevState) =>
@@ -299,15 +300,27 @@ export const useHelpCenterArticlesForm = (
 
         const handleArticlesFromTemplate = selectedItemsWithoutId.map(
             (item) => {
-                return createArticle(item, true)
+                return createArticle(item, !!item.isTouched)
             }
         )
 
         const handleArticlesTranslations = itemsWithId.map((item) => {
-            const shouldPublish = !!item.isSelected
-            return item.shouldCreateTranslation
-                ? createArticleTranslation(item, true)
-                : updateArticleTranslation(item, shouldPublish)
+            const isSelected = !!item.isSelected
+            const isTouched = !!item.isTouched
+
+            if (isSelected) {
+                if (item.shouldCreateTranslation) {
+                    // If the article is selected, but a translation for a different locale exists, a new translation is created for the current locale
+                    return createArticleTranslation(item, isTouched)
+                }
+                // If the article is selected and touched, it should be marked as published
+                if (isTouched) {
+                    return updateArticleTranslation(item, true)
+                }
+            } else {
+                // If the article is not selected, it should be marked as draft
+                return updateArticleTranslation(item, false)
+            }
         })
 
         try {
