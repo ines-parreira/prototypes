@@ -3,70 +3,70 @@ import {renderHook} from '@testing-library/react-hooks'
 import * as activityTracker from 'services/activityTracker'
 import {ActivityEvents} from 'services/activityTracker'
 
-import {useTicketActivityTracking} from '../useTicketActivityTracking'
+import useDraftTicketActivityTracking from '../useDraftTicketActivityTracking'
 
 jest.mock('services/activityTracker')
 
-describe('useTicketActivityTracking', () => {
+describe('useDraftTicketActivityTracking', () => {
     const mockLogActivityEvent = jest.spyOn(activityTracker, 'logActivityEvent')
 
-    it('should register activity tracker hooks when the ticketId is defined', () => {
+    it('should register activity tracker hooks when the temporaryId is defined', () => {
         const mockRegisterActivityTrackerHooks = jest.spyOn(
             activityTracker,
             'registerActivityTrackerHooks'
         )
-        const mockTicketId = 1
+        const mockTemporaryId = '1'
         const mockProperties = {
-            entityId: mockTicketId,
-            entityType: 'ticket',
+            temporaryId: mockTemporaryId,
+            entityType: 'ticket-draft',
         }
 
-        renderHook(() => useTicketActivityTracking(mockTicketId))
+        renderHook(() => useDraftTicketActivityTracking(mockTemporaryId))
 
         expect(mockRegisterActivityTrackerHooks).toHaveBeenCalledWith({
             focusEvent: {
-                eventTrigger: ActivityEvents.UserStartedWorkingOnTicket,
+                eventTrigger: ActivityEvents.UserStartedDraftingTicket,
                 properties: mockProperties,
             },
             blurEvent: {
-                eventTrigger: ActivityEvents.UserStoppedWorkingOnTicket,
+                eventTrigger: ActivityEvents.UserStoppedDraftingTicket,
                 properties: mockProperties,
             },
             terminationEvent: {
-                eventTrigger: ActivityEvents.UserStoppedWorkingOnTicket,
+                eventTrigger: ActivityEvents.UserStoppedDraftingTicket,
                 properties: mockProperties,
             },
         })
     })
 
-    it('should log an event when the ticketId is defined', () => {
-        const mockTicketId = 1
+    it('should log an event when the temporaryId is defined', () => {
+        const mockTemporaryId = '1'
 
         const {unmount} = renderHook(() =>
-            useTicketActivityTracking(mockTicketId)
+            useDraftTicketActivityTracking(mockTemporaryId)
         )
 
         expect(mockLogActivityEvent).toHaveBeenLastCalledWith(
-            ActivityEvents.UserStartedWorkingOnTicket,
+            ActivityEvents.UserStartedDraftingTicket,
             {
-                entityId: mockTicketId,
-                entityType: 'ticket',
+                temporaryId: mockTemporaryId,
+                entityType: 'ticket-draft',
             }
         )
 
         unmount()
 
         expect(mockLogActivityEvent).toHaveBeenLastCalledWith(
-            ActivityEvents.UserStoppedWorkingOnTicket,
+            ActivityEvents.UserStoppedDraftingTicket,
             {
-                entityId: mockTicketId,
-                entityType: 'ticket',
+                temporaryId: mockTemporaryId,
+                entityType: 'ticket-draft',
             }
         )
     })
 
-    it('should not log an event when the ticketId is undefined on mount', () => {
-        const {unmount} = renderHook(() => useTicketActivityTracking(undefined))
+    it('should not log an event when the temporaryId is null on mount', () => {
+        const {unmount} = renderHook(() => useDraftTicketActivityTracking(null))
         expect(mockLogActivityEvent).not.toHaveBeenCalled()
 
         unmount()

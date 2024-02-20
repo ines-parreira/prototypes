@@ -1,14 +1,14 @@
 import useEffectOnce from 'hooks/useEffectOnce'
 import {
-    registerActivityTrackerHooks,
-    unregisterActivityTrackerHooks,
+    registerAppActivityTrackerHooks,
+    unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
 
 export default function useActivityTracker() {
     useEffectOnce(() => {
-        void registerActivityTrackerHooks()
+        void registerAppActivityTrackerHooks()
         return () => {
-            void unregisterActivityTrackerHooks()
+            void unregisterAppActivityTrackerHooks()
         }
     })
 }

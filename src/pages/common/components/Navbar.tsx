@@ -53,7 +53,7 @@ import {
     ActivityEvents,
     clearActivityTrackerSession,
     logActivityEvent,
-    unregisterActivityTrackerHooks,
+    unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
 import Avatar from './Avatar/Avatar'
 import DropdownBody from './dropdown/DropdownBody'
@@ -717,7 +717,7 @@ export class Navbar extends Component<Props, State> {
                                             logActivityEvent(
                                                 ActivityEvents.UserClosedApp
                                             )
-                                            void unregisterActivityTrackerHooks()
+                                            void unregisterAppActivityTrackerHooks()
                                             void clearActivityTrackerSession()
                                             window.location.href = `/logout?csrf-token=${window.CSRF_TOKEN}`
                                         }}

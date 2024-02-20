@@ -1,37 +1,39 @@
 import {useEffect} from 'react'
-
 import {
     ActivityEvents,
     logActivityEvent,
     registerActivityTrackerHooks,
 } from 'services/activityTracker'
 
-export function useTicketActivityTracking(ticketId: number | undefined) {
+export default function useDraftTicketActivityTracking(
+    draftTicketId: string | null
+) {
     useEffect(() => {
         let unregisterBrowserHooks: (() => void) | undefined
 
-        if (!!ticketId) {
+        if (draftTicketId) {
             const eventProperties = {
-                entityId: ticketId,
-                entityType: 'ticket',
+                temporaryId: draftTicketId,
+                entityType: 'ticket-draft',
             }
 
             logActivityEvent(
-                ActivityEvents.UserStartedWorkingOnTicket,
+                ActivityEvents.UserStartedDraftingTicket,
                 eventProperties
             )
+
             const registerHooks = async () => {
                 unregisterBrowserHooks = await registerActivityTrackerHooks({
                     focusEvent: {
-                        eventTrigger: ActivityEvents.UserStartedWorkingOnTicket,
+                        eventTrigger: ActivityEvents.UserStartedDraftingTicket,
                         properties: eventProperties,
                     },
                     blurEvent: {
-                        eventTrigger: ActivityEvents.UserStoppedWorkingOnTicket,
+                        eventTrigger: ActivityEvents.UserStoppedDraftingTicket,
                         properties: eventProperties,
                     },
                     terminationEvent: {
-                        eventTrigger: ActivityEvents.UserStoppedWorkingOnTicket,
+                        eventTrigger: ActivityEvents.UserStoppedDraftingTicket,
                         properties: eventProperties,
                     },
                 })
@@ -41,14 +43,14 @@ export function useTicketActivityTracking(ticketId: number | undefined) {
         }
 
         return () => {
-            if (!!ticketId) {
-                logActivityEvent(ActivityEvents.UserStoppedWorkingOnTicket, {
-                    entityId: ticketId,
-                    entityType: 'ticket',
+            if (draftTicketId) {
+                logActivityEvent(ActivityEvents.UserStoppedDraftingTicket, {
+                    temporaryId: draftTicketId,
+                    entityType: 'ticket-draft',
                 })
 
                 unregisterBrowserHooks?.()
             }
         }
-    }, [ticketId])
+    }, [draftTicketId])
 }

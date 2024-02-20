@@ -41,9 +41,6 @@ import {triggerTicketFieldsErrors} from 'state/ticket/actions'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import * as customFieldsUtils from 'utils/customFields'
-import * as activityTracker from 'services/activityTracker'
-import {ActivityEvents} from 'services/activityTracker'
-import * as useTicketDraft from 'hooks/useTicketDraft'
 import * as ticketUtils from 'state/ticket/utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
@@ -1515,47 +1512,6 @@ describe('TicketDetailContainer component', () => {
             expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
             expect(minProps.prepare).toHaveBeenCalledWith(
                 TicketMessageSourceType.Phone
-            )
-        })
-    })
-
-    describe('ticket activity logging', () => {
-        it('should log agent activity when new ticket page is opened and closed', () => {
-            const logActivityEventSpy = jest.spyOn(
-                activityTracker,
-                'logActivityEvent'
-            )
-            const useTicketDraftSpy = jest.spyOn(useTicketDraft, 'default')
-            useTicketDraftSpy.mockReturnValue({
-                temporaryId: '123',
-            })
-            const {unmount} = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockedStore}>
-                        <TicketDetailContainer {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/foo/:ticketId',
-                    route: '/foo/new',
-                }
-            )
-
-            expect(logActivityEventSpy).toHaveBeenCalledWith(
-                ActivityEvents.UserStartedDraftingTicket,
-                {
-                    entityType: 'ticket-draft',
-                    temporaryId: '123',
-                }
-            )
-
-            unmount()
-            expect(logActivityEventSpy).toHaveBeenCalledWith(
-                ActivityEvents.UserStoppedDraftingTicket,
-                {
-                    entityType: 'ticket-draft',
-                    temporaryId: '123',
-                }
             )
         })
     })

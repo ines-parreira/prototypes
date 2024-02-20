@@ -13,7 +13,7 @@ describe('useActivityTracking', () => {
     it('should register activity tracker', () => {
         const registerActivityTrackerSpy = jest.spyOn(
             activityTracker,
-            'registerActivityTrackerHooks'
+            'registerAppActivityTrackerHooks'
         )
         renderHook(() => useActivityTracker())
 
@@ -23,7 +23,7 @@ describe('useActivityTracking', () => {
     it('should unregister activity tracker', () => {
         const unregisterActivityTrackerSpy = jest.spyOn(
             activityTracker,
-            'unregisterActivityTrackerHooks'
+            'unregisterAppActivityTrackerHooks'
         )
         renderHook(() => useActivityTracker()).unmount()
 

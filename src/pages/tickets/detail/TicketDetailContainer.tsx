@@ -56,7 +56,6 @@ import {updateCursor} from 'state/tickets/actions'
 import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
 import LocalForageManager from 'services/localForageManager/localForageManager'
-import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
@@ -81,6 +80,7 @@ import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
 import {useTicketActivityTracking} from './hooks/useTicketActivityTracking'
+import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
 
 export type SubmitArgs = {
     status?: TicketStatus
@@ -146,23 +146,7 @@ export const TicketDetailContainer = ({
 
     const {temporaryId} = useDraftMessages(ticketIdParam === 'new')
 
-    useEffect(() => {
-        if (temporaryId) {
-            logActivityEvent(ActivityEvents.UserStartedDraftingTicket, {
-                temporaryId: temporaryId,
-                entityType: 'ticket-draft',
-            })
-        }
-
-        return () => {
-            if (temporaryId) {
-                logActivityEvent(ActivityEvents.UserStoppedDraftingTicket, {
-                    temporaryId: temporaryId,
-                    entityType: 'ticket-draft',
-                })
-            }
-        }
-    }, [temporaryId])
+    useDraftTicketActivityTracking(temporaryId)
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -172,7 +156,11 @@ export const TicketDetailContainer = ({
 
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
 
-    useTicketActivityTracking(ticketId)
+    useTicketActivityTracking(
+        ticketIdParam && Number(ticketIdParam) === ticketId
+            ? ticketId
+            : undefined
+    )
 
     const recipients = useMemo(
         () => (newMessageSource.get('to') || fromJS([])) as List<any>,

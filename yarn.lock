@@ -3192,10 +3192,10 @@
     cloudevents "8.0.0"
     uuid ">=8.0.0 <=9.0.1"
 
-"@gorgias/event-tracker-browser@1.0.3":
-  version "1.0.3"
-  resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/1.0.3/e4d36b47644761f2b191d0ff504f5176a61e3056#e4d36b47644761f2b191d0ff504f5176a61e3056"
-  integrity sha512-ycKio8F0poc0kmfp1xeVB17jOamuueaVUzT3C4Nf/hYNh1YdUfGeR0lsVP6SyB0h26fXDXlateF7L55wKBx66w==
+"@gorgias/event-tracker-browser@2.0.0":
+  version "2.0.0"
+  resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/2.0.0/32f6f602f780f619bb6dde8b32dfb63a5ed8de23#32f6f602f780f619bb6dde8b32dfb63a5ed8de23"
+  integrity sha512-7eQCxXxa0jzFXDYOG4DDokla90hOXbUlnKniMn7gYlbsvNX75bGJR4vYoMKeQeZX1WcWxBnveiCR21gl+LwPIw==
   dependencies:
     "@gorgias/event-tracker-api" "*"
     localforage "~1.10.0"

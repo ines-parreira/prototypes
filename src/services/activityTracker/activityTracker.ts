@@ -38,6 +38,7 @@ activityTrackerInstance.createUserContext({
 })
 
 let activityTrackerHealthCheckInterval: number | null = null
+let unregisterBrowserHooks: (() => void) | null = null
 
 export const startActivityHealthCheck = () => {
     if (activityTrackerHealthCheckInterval) return
@@ -68,7 +69,7 @@ const checkIfTrackerIsEnabled = async () => {
 }
 
 // after feature flags are removed, these helper functions can be removed
-
+// as the check will be redundant
 const logActivityEventWithLD = async (
     ...args: Parameters<typeof activityTrackerInstance.logEvent>
 ) => {
@@ -86,26 +87,46 @@ export const logActivityEvent = (
     void logActivityEventWithLD(...args)
 }
 
-export const registerActivityTrackerHooks = async () => {
+/**
+ * This method can be reused to add browser lifecycle hooks
+ * for different parts of the app.
+ */
+export const registerActivityTrackerHooks = async (
+    ...args: Parameters<typeof activityTrackerInstance.registerBrowserHooks>
+) => {
+    const isActivityTrackerEnabled = await checkIfTrackerIsEnabled()
+    if (isActivityTrackerEnabled) {
+        const unregisterBrowserHooks =
+            activityTrackerInstance.registerBrowserHooks(...args)
+        return unregisterBrowserHooks
+    }
+    return
+}
+
+/**
+ * This method is meant to be used only once,
+ * to track generic app lifecycle events.
+ */
+export const registerAppActivityTrackerHooks = async () => {
     const isActivityTrackerEnabled = await checkIfTrackerIsEnabled()
 
     if (isActivityTrackerEnabled) {
-        activityTrackerInstance.registerBrowserHooks({
-            startEvent: ActivityEvents.UserOpenedApp,
-            terminationEvent: ActivityEvents.UserClosedApp,
-            focusEvent: ActivityEvents.UserOpenedApp,
-            blurEvent: ActivityEvents.UserClosedApp,
+        unregisterBrowserHooks = activityTrackerInstance.registerBrowserHooks({
+            startEvent: {eventTrigger: ActivityEvents.UserOpenedApp},
+            terminationEvent: {eventTrigger: ActivityEvents.UserClosedApp},
+            focusEvent: {eventTrigger: ActivityEvents.UserOpenedApp},
+            blurEvent: {eventTrigger: ActivityEvents.UserClosedApp},
         })
 
         startActivityHealthCheck()
     }
 }
 
-export const unregisterActivityTrackerHooks = async () => {
+export const unregisterAppActivityTrackerHooks = async () => {
     const isActivityTrackerEnabled = await checkIfTrackerIsEnabled()
 
     if (isActivityTrackerEnabled) {
-        activityTrackerInstance.destroyListeners()
+        unregisterBrowserHooks?.()
         stopActivityHealthCheck()
     }
 }
