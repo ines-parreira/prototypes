@@ -5,7 +5,6 @@ import {
     TicketMeasure,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ReportingGranularity,
     ReportingQuery,
@@ -76,7 +75,6 @@ export const closedTicketsPerTicketDrillDownQueryFactory = (
         measures: [],
         dimensions: [
             TicketDimension.TicketId,
-            TicketMessagesDimension.FirstHelpdeskMessageUserId,
             TicketDimension.CreatedDatetime,
             ...baseQuery.dimensions,
         ],

@@ -7,10 +7,7 @@ import {
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {
-    TicketMessagesDimension,
-    TicketMessagesMember,
-} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     closedTicketsPerAgentQueryFactory,
     closedTicketsPerTicketDrillDownQueryFactory,
@@ -153,7 +150,6 @@ describe('closedTicketsPerTicketQueryFactory', () => {
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
-                TicketMessagesDimension.FirstHelpdeskMessageUserId,
                 TicketDimension.CreatedDatetime,
                 ...closedTicketsPerAgentQueryFactory(statsFilters, timezone)
                     .dimensions,
@@ -182,7 +178,6 @@ describe('closedTicketsPerTicketQueryFactory', () => {
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
-                TicketMessagesDimension.FirstHelpdeskMessageUserId,
                 TicketDimension.CreatedDatetime,
                 ...closedTicketsPerAgentQueryFactory(statsFilters, timezone)
                     .dimensions,
