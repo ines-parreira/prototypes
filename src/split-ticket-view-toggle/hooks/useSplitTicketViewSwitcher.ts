@@ -78,7 +78,7 @@ export default function useSplitTicketViewSwitcher() {
             return
         }
 
-        if (path.match(/^\/app\/?$/)) {
+        if (path.match(/^\/app(?:\/tickets)?$/)) {
             history.push('/app/views')
         }
     }, [
