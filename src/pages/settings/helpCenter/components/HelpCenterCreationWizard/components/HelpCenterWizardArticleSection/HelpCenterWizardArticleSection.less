@@ -32,11 +32,8 @@
         display: flex;
         flex: 1;
         justify-content: space-between;
+        align-items: center;
         margin-left: @layout-spacing-xs;
-    }
-
-    .articleCheckbox {
-        margin-bottom: @layout-spacing-xxs; // adjust the margin to align with the article content
     }
 
     .articleEditButton {
@@ -58,5 +55,23 @@
 
     .icon {
         font-size: 20px;
+    }
+
+    .loadingContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .shopMoreIcon {
+        transform: rotate(90deg);
+        font-size: @heading-section-regular-font-size;
+
+        // Issue of using icon in Button made it take a lot of space
+        width: 20px;
+    }
+
+    .showMoreContainer {
+        margin-top: @layout-spacing-s;
     }
 }

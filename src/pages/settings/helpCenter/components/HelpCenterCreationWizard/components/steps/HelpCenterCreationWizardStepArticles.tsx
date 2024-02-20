@@ -115,6 +115,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         <>
             <WizardStepSkeleton
                 step={HelpCenterCreationWizardStep.Articles}
+                isLoading={isGettingArticlesLoading}
                 metaStep={
                     hasAiArticles
                         ? ArticleTemplateType.AI
@@ -141,6 +142,11 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                                 key={category}
                                 articles={articleItems}
                                 category={category}
+                                isLoading={isGettingArticlesLoading}
+                                isLimitEnabled={
+                                    hasAiArticles &&
+                                    category === ArticleTemplateType.Template
+                                }
                                 onEdit={handleArticleEdit}
                                 onSelect={handleArticleSelect}
                             />

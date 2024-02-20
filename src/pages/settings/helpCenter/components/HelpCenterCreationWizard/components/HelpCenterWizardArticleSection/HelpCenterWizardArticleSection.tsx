@@ -1,98 +1,153 @@
-import React from 'react'
+import React, {useMemo, useState} from 'react'
 
 import classNames from 'classnames'
 import CheckBox from 'pages/common/forms/CheckBox'
 import IconButton from 'pages/common/components/button/IconButton'
 import {HelpCenterArticleItem} from 'models/helpCenter/types'
 import Tooltip from 'pages/common/components/Tooltip'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ARTICLE_TEMPLATE_CATEGORIES} from '../../../CategoriesView/components/ArticleTemplateCard/constants'
 
+import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'
 import css from './HelpCenterWizardArticleSection.less'
 
 type Props = {
     articles: HelpCenterArticleItem[]
     category: string
+    isLimitEnabled: boolean
     onEdit: (key: string) => void
     onSelect: (key: string) => void
+    isLoading: boolean
 }
+
+const ARTICLE_TEMPLATE_LIMIT = 1
 
 const ArticleSection: React.FC<Props> = ({
     category,
     articles,
+    isLoading,
+    isLimitEnabled,
     onEdit,
     onSelect,
 }) => {
+    const [shouldDisplayShowMore, setShouldDisplayShowMore] =
+        useState(isLimitEnabled)
+
     const headerData = ARTICLE_TEMPLATE_CATEGORIES[category]
     const tooltipId = `tooltip-${category}`
 
+    const slicedArticles = useMemo(() => {
+        if (!shouldDisplayShowMore) {
+            return articles
+        }
+
+        return articles.slice(0, ARTICLE_TEMPLATE_LIMIT)
+    }, [shouldDisplayShowMore, articles])
+
     return (
         <div className={css.articleSection}>
-            <div className={css.articleCategory}>
-                {headerData?.icon && (
-                    <i
-                        className={classNames('material-icons', css.icon)}
-                        style={{color: headerData.icon.color}}
-                    >
-                        {headerData.icon.name}
-                    </i>
-                )}
-                {headerData?.label}
-                {headerData?.tooltip && (
+            <AnimatedFadeInOut isLoading={isLoading}>
+                {isLoading ? (
+                    <div className={css.loadingContainer}>
+                        {Array(3)
+                            .fill(null)
+                            .map((_, index) => (
+                                <Skeleton key={index} height={32} />
+                            ))}
+                    </div>
+                ) : (
                     <>
-                        <i
-                            className={classNames(
-                                'material-icons',
-                                css.infoIcon
+                        <div className={css.articleCategory}>
+                            {headerData?.icon && (
+                                <i
+                                    className={classNames(
+                                        'material-icons',
+                                        css.icon
+                                    )}
+                                    style={{color: headerData.icon.color}}
+                                >
+                                    {headerData.icon.name}
+                                </i>
                             )}
-                            id={tooltipId}
-                        >
-                            info_outline
-                        </i>
-                        <Tooltip
-                            placement="top-start"
-                            target={tooltipId}
-                            trigger={['hover']}
-                            autohide={false}
-                        >
-                            <div className={css.tooltipContainer}>
-                                {headerData.tooltip}
+                            {headerData?.label}
+                            {headerData?.tooltip && (
+                                <>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.infoIcon
+                                        )}
+                                        id={tooltipId}
+                                    >
+                                        info_outline
+                                    </i>
+                                    <Tooltip
+                                        placement="top-start"
+                                        target={tooltipId}
+                                        trigger={['hover']}
+                                        autohide={false}
+                                    >
+                                        <div className={css.tooltipContainer}>
+                                            {headerData.tooltip}
+                                        </div>
+                                    </Tooltip>
+                                </>
+                            )}
+                        </div>
+                        <div className={css.articleDelimiter} />
+                        {slicedArticles.map((item) => (
+                            <div key={item.key}>
+                                <div className={css.article}>
+                                    <CheckBox
+                                        value={item.key}
+                                        isChecked={item.isSelected}
+                                        onChange={() => onSelect(item.key)}
+                                    />
+                                    <div
+                                        className={css.articleCheckboxContent}
+                                        onClick={() => {
+                                            onEdit(item.key)
+                                        }}
+                                        tabIndex={0}
+                                        role="button"
+                                    >
+                                        <span>{item.title}</span>
+                                        <IconButton
+                                            className={css.articleEditButton}
+                                            fillStyle="ghost"
+                                            size="small"
+                                            onClick={() => onEdit(item.key)}
+                                        >
+                                            edit
+                                        </IconButton>
+                                    </div>
+                                </div>
+                                <div className={css.articleDelimiter} />
                             </div>
-                        </Tooltip>
+                        ))}
+                        {shouldDisplayShowMore && (
+                            <div className={css.showMoreContainer}>
+                                <Button
+                                    fillStyle="ghost"
+                                    size="medium"
+                                    onClick={() =>
+                                        setShouldDisplayShowMore(false)
+                                    }
+                                >
+                                    <ButtonIconLabel
+                                        icon="double_arrow_down"
+                                        iconClassName={css.shopMoreIcon}
+                                    >
+                                        Show More
+                                    </ButtonIconLabel>
+                                </Button>
+                            </div>
+                        )}
                     </>
                 )}
-            </div>
-            <div className={css.articleDelimiter} />
-            {articles.map((item) => (
-                <div key={item.key}>
-                    <div className={css.article}>
-                        <CheckBox
-                            className={css.articleCheckbox}
-                            value={item.key}
-                            isChecked={item.isSelected}
-                            onChange={() => onSelect(item.key)}
-                        />
-                        <div
-                            className={css.articleCheckboxContent}
-                            onClick={() => {
-                                onEdit(item.key)
-                            }}
-                            tabIndex={0}
-                            role="button"
-                        >
-                            <span>{item.title}</span>
-                            <IconButton
-                                className={css.articleEditButton}
-                                fillStyle="ghost"
-                                size="small"
-                                onClick={() => onEdit(item.key)}
-                            >
-                                edit
-                            </IconButton>
-                        </div>
-                    </div>
-                    <div className={css.articleDelimiter} />
-                </div>
-            ))}
+            </AnimatedFadeInOut>
         </div>
     )
 }

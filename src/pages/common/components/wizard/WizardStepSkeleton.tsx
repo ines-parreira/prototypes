@@ -5,6 +5,8 @@ import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsInters
 
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 
+import {AnimatedFadeInOut} from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/AnimatedFadeInOut/AnimatedFadeInOut'
+import Skeleton from '../Skeleton/Skeleton'
 import css from './WizardStepSkeleton.less'
 
 type Props = {
@@ -15,6 +17,7 @@ type Props = {
     labels: Record<string, string>
     titles: Record<string, string | Record<string, string>>
     descriptions: Record<string, string | Record<string, string>>
+    isLoading?: boolean
 }
 
 const isRecord = (
@@ -32,6 +35,7 @@ const WizardStepSkeleton: React.FC<Props> = ({
     titles,
     descriptions,
     metaStep,
+    isLoading,
 }) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
     const contentIsIntersecting =
@@ -49,22 +53,36 @@ const WizardStepSkeleton: React.FC<Props> = ({
                         className={css.wizardProgressHeader}
                     />
                     <div className={css.heading}>
-                        <div className="heading-page-semibold">
-                            {metaStep && isRecord(stepTitle)
-                                ? stepTitle[metaStep]
-                                : stepTitle}
-                        </div>
-                        {descriptions[step] && (
-                            <div
-                                className={css.description}
-                                dangerouslySetInnerHTML={{
-                                    __html:
-                                        metaStep && isRecord(stepDescription)
-                                            ? stepDescription[metaStep]
-                                            : stepDescription,
-                                }}
-                            />
-                        )}
+                        <AnimatedFadeInOut isLoading={!!isLoading}>
+                            {isLoading ? (
+                                <div className={css.loadingContainer}>
+                                    <Skeleton height={32} />
+                                    <Skeleton height={48} />
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="heading-page-semibold">
+                                        {metaStep && isRecord(stepTitle)
+                                            ? stepTitle[metaStep]
+                                            : stepTitle}
+                                    </div>
+                                    {descriptions[step] && (
+                                        <div
+                                            className={css.description}
+                                            dangerouslySetInnerHTML={{
+                                                __html:
+                                                    metaStep &&
+                                                    isRecord(stepDescription)
+                                                        ? stepDescription[
+                                                              metaStep
+                                                          ]
+                                                        : stepDescription,
+                                            }}
+                                        />
+                                    )}
+                                </>
+                            )}
+                        </AnimatedFadeInOut>
                     </div>
                     {children}
                 </div>
