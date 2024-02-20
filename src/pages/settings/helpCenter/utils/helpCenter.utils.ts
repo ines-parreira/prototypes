@@ -1,6 +1,8 @@
 import {isDevelopment} from 'utils/environment'
 import {
+    ARTICLE_TEMPLATES_KEYS,
     Article,
+    ArticleTemplateKey,
     ArticleTranslationWithRating,
     CreateArticleDto,
     CreateArticleTranslationDto,
@@ -204,4 +206,10 @@ export const replaceUploadUrls = (originalStr: string): string => {
         /https:\/\/uploads.gorgias.io\//g,
         'https://attachments.gorgias.help/uploads.gorgias.io/'
     )
+}
+
+export const isArticleTemplateKey = (
+    key: unknown
+): key is ArticleTemplateKey => {
+    return ARTICLE_TEMPLATES_KEYS.includes(key as any)
 }

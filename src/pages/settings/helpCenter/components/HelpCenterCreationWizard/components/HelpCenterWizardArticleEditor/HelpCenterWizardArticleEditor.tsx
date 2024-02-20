@@ -57,7 +57,7 @@ const ArticleEditor: React.FC<Props> = ({
     useEffect(() => {
         if (article) {
             logEvent(SegmentEvent.WizardArticleEditViewed, {
-                type: 'template',
+                type: article.type,
             })
         }
     }, [article])

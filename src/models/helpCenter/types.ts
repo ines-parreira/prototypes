@@ -171,10 +171,7 @@ export type HelpCenterPageEmbedment = Components.Schemas.PageEmbedmentDto
 export type ArticleTemplate = Components.Schemas.ArticleTemplateDto
 
 // AI ARTICLE
-export type AIArticle = Omit<ArticleTemplate, 'key' | 'category'> & {
-    key: string
-    category?: string
-}
+export type AIArticle = Components.Schemas.ArticleTemplateDto
 
 // HELP CENTER CREATION WIZARD
 export enum HelpCenterCreationWizardStep {
@@ -191,11 +188,6 @@ export enum HelpCenterAutomateType {
     AUTOMATE = 'automate',
 }
 
-export type ArticleTemplateCategory =
-    | 'orderManagement'
-    | 'returnsAndRefunds'
-    | 'shippingAndDelivery'
-
 export const ARTICLE_TEMPLATES_KEYS = [
     'shippingPolicy',
     'howToReturn',
@@ -205,16 +197,20 @@ export const ARTICLE_TEMPLATES_KEYS = [
     'packageLostOrDamaged',
 ] as const
 
-export type ArticleTemplateKey =
-    | typeof ARTICLE_TEMPLATES_KEYS[number]
-    | undefined
+export type ArticleTemplateKey = typeof ARTICLE_TEMPLATES_KEYS[number]
+
+export enum ArticleTemplateType {
+    Template = 'template',
+    AI = 'ai',
+}
 
 export type HelpCenterArticleItem = Partial<LocalArticleTranslation> & {
     key: string
     id?: number
     isSelected?: boolean
+    category?: string
     isTouched?: boolean
-    category?: ArticleTemplateCategory
     availableLocales?: LocaleCode[]
     shouldCreateTranslation?: boolean
+    type: ArticleTemplateType
 }

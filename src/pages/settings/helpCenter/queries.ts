@@ -222,13 +222,12 @@ export const useGetAIArticles = <
     return useQuery({
         queryKey: aiArticleKeys.list(),
         queryFn: async () => {
-            if (!isAIArticlesEnabled) {
+            // Enforcing locale here because API doesn't support locale as param and AI articles are only availables in english
+            if (!isAIArticlesEnabled || locale !== 'en-US') {
                 return []
             }
 
-            return getAIGeneratedArticles(client, {
-                locale,
-            })
+            return getAIGeneratedArticles(client)
         },
         enabled: !!client,
         ...overrides,

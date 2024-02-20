@@ -70,6 +70,7 @@ const mockedUseHelpCenterArticlesForm = {
 
 const mockedUseGetHelpCenterArticles = {
     articles: ArticleTemplatesGroupedByCategoryFixture,
+    hasAiArticles: false,
     isLoading: false,
 }
 

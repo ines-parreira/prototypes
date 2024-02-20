@@ -3756,6 +3756,29 @@
                 "tags": ["article-templates"]
             }
         },
+        "/api/help-center/article-templates/ai": {
+            "get": {
+                "operationId": "listAIArticleTemplates",
+                "summary": "Retrieve AI article templates",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ArticleTemplateDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-templates"]
+            }
+        },
         "/api/help-center/article-templates/{template_key}": {
             "get": {
                 "operationId": "getArticleTemplate",
@@ -4443,8 +4466,8 @@
                     },
                     "source": {
                         "nullable": false,
-                        "type": "string",
-                        "enum": ["manual", "automation"]
+                        "enum": ["manual", "automation"],
+                        "type": "string"
                     },
                     "gaid": {"type": "string", "nullable": true},
                     "email_integration": {
@@ -4888,8 +4911,8 @@
                     },
                     "source": {
                         "nullable": false,
-                        "type": "string",
-                        "enum": ["manual", "automation"]
+                        "enum": ["manual", "automation"],
+                        "type": "string"
                     },
                     "gaid": {"type": "string", "nullable": true},
                     "email_integration": {
@@ -6046,18 +6069,7 @@
                     "unlisted_id": {"type": "string"},
                     "category_id": {"type": "number", "nullable": true},
                     "help_center_id": {"type": "number"},
-                    "template_key": {
-                        "nullable": true,
-                        "type": "string",
-                        "enum": [
-                            "shippingPolicy",
-                            "howToReturn",
-                            "howToCancelOrder",
-                            "howToTrackOrder",
-                            "refundsOrExchanges",
-                            "packageLostOrDamaged"
-                        ]
-                    },
+                    "template_key": {"type": "string", "nullable": true},
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -6287,18 +6299,7 @@
                     },
                     "category_id": {"type": "number", "nullable": true},
                     "help_center_id": {"type": "number"},
-                    "template_key": {
-                        "nullable": true,
-                        "type": "string",
-                        "enum": [
-                            "shippingPolicy",
-                            "howToReturn",
-                            "howToCancelOrder",
-                            "howToTrackOrder",
-                            "refundsOrExchanges",
-                            "packageLostOrDamaged"
-                        ]
-                    },
+                    "template_key": {"type": "string", "nullable": true},
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -6483,18 +6484,7 @@
                     },
                     "category_id": {"type": "number", "nullable": true},
                     "help_center_id": {"type": "number"},
-                    "template_key": {
-                        "nullable": true,
-                        "type": "string",
-                        "enum": [
-                            "shippingPolicy",
-                            "howToReturn",
-                            "howToCancelOrder",
-                            "howToTrackOrder",
-                            "refundsOrExchanges",
-                            "packageLostOrDamaged"
-                        ]
-                    },
+                    "template_key": {"type": "string", "nullable": true},
                     "id": {"type": "number"},
                     "translation": {
                         "$ref": "#/components/schemas/LocalArticleTranslation"
@@ -6566,18 +6556,7 @@
                         }
                     },
                     "help_center_id": {"type": "number"},
-                    "template_key": {
-                        "nullable": true,
-                        "type": "string",
-                        "enum": [
-                            "shippingPolicy",
-                            "howToReturn",
-                            "howToCancelOrder",
-                            "howToTrackOrder",
-                            "refundsOrExchanges",
-                            "packageLostOrDamaged"
-                        ]
-                    },
+                    "template_key": {"type": "string", "nullable": true},
                     "id": {"type": "number"}
                 },
                 "required": [
@@ -6706,17 +6685,9 @@
                         "deprecated": true
                     },
                     "template_key": {
-                        "nullable": true,
                         "type": "string",
-                        "default": null,
-                        "enum": [
-                            "shippingPolicy",
-                            "howToReturn",
-                            "howToCancelOrder",
-                            "howToTrackOrder",
-                            "refundsOrExchanges",
-                            "packageLostOrDamaged"
-                        ]
+                        "nullable": true,
+                        "default": null
                     }
                 },
                 "required": ["translation"]
@@ -7875,31 +7846,14 @@
             "ArticleTemplateDto": {
                 "type": "object",
                 "properties": {
-                    "key": {
-                        "enum": [
-                            "shippingPolicy",
-                            "howToReturn",
-                            "howToCancelOrder",
-                            "howToTrackOrder",
-                            "refundsOrExchanges",
-                            "packageLostOrDamaged"
-                        ],
-                        "type": "string"
-                    },
+                    "key": {"type": "string"},
                     "title": {"type": "string"},
                     "html_content": {"type": "string"},
                     "excerpt": {
                         "type": "string",
                         "description": "\n      A short summary of the article.\n      Usually the first paragraph of the article.\n    "
                     },
-                    "category": {
-                        "enum": [
-                            "orderManagement",
-                            "returnsAndRefunds",
-                            "shippingAndDelivery"
-                        ],
-                        "type": "string"
-                    },
+                    "category": {"type": "string"},
                     "score": {
                         "type": "number",
                         "description": "\n      The relevancy of the article template.\n      The higher being the more relevant.\n      Static article templates have a score between 0 and -1.\n      Expecting AI articles to have a score between 0 and 1 in the future.\n    "

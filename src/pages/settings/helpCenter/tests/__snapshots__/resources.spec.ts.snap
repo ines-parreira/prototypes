@@ -119,9 +119,7 @@ exports[`getAIArticles rejects if the server returns an error 2`] = `
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
-      "params": {
-        "locale": "en-US",
-      },
+      "params": {},
       "paramsSerializer": {
         "serialize": [Function],
       },
@@ -137,7 +135,7 @@ exports[`getAIArticles rejects if the server returns an error 2`] = `
         "forcedJSONParsing": true,
         "silentJSONParsing": true,
       },
-      "url": "/api/help-center/article-templates",
+      "url": "/api/help-center/article-templates/ai",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -171,9 +169,7 @@ exports[`getAIArticles resolves with a list of AI articles on success 1`] = `
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
-      "params": {
-        "locale": "en-US",
-      },
+      "params": {},
       "paramsSerializer": {
         "serialize": [Function],
       },
@@ -189,7 +185,7 @@ exports[`getAIArticles resolves with a list of AI articles on success 1`] = `
         "forcedJSONParsing": true,
         "silentJSONParsing": true,
       },
-      "url": "/api/help-center/article-templates",
+      "url": "/api/help-center/article-templates/ai",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",

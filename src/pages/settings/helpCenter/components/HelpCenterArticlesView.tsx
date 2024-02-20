@@ -41,6 +41,7 @@ import {
     getArticleUrl,
     getHelpCenterDomain,
     getNewArticleTranslation,
+    isArticleTemplateKey,
     isExistingArticle,
     slugify,
 } from '../utils/helpCenter.utils'
@@ -384,7 +385,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         setSelectedArticleTranslations(null)
 
         const templateKey = article.template_key || template?.key
-        setSelectedTemplateKey(templateKey ?? null)
+
+        setSelectedTemplateKey(
+            isArticleTemplateKey(templateKey) ? templateKey : null
+        )
 
         setSelectedArticle({
             ...article,

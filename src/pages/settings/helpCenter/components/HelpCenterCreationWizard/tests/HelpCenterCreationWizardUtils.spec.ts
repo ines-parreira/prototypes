@@ -1,4 +1,5 @@
 import {
+    ArticleTemplateType,
     HelpCenter,
     HelpCenterArticleItem,
     LocaleCode,
@@ -15,14 +16,17 @@ import {
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import {
     ArticleTemplatesListFixture,
+    HelpCenterItemsListFixture,
     ArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
+import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {
     findArticleByKey,
     getEnabledArticlesCount,
     getUpdatedFields,
     groupArticlesByCategory,
     isErrorRecord,
+    mapAIHelpCenterArticleData,
     mapApiHelpCenterToUIHelpCenter,
     mapEntrypointsToAutomationSettings,
     mapHelpCenterArticleData,
@@ -36,7 +40,9 @@ const defaultApiHelpCenter = HelpCenterApiBasicsFixture
 const emptyUIHelpCenter = EmptyHelpCenterUiFixture
 const defaultUIHelpCenter = HelpCenterUiBasicsFixture
 
+const aiArticles = AIArticlesListFixture
 const articleTemplates = ArticleTemplatesListFixture
+const articleItems = HelpCenterItemsListFixture
 const articles = ArticlesListFixture
 
 describe('helpCenterCreationWizardUtils', () => {
@@ -175,12 +181,12 @@ describe('helpCenterCreationWizardUtils', () => {
                 ],
             }
 
-            const groupedArticles = groupArticlesByCategory(articleTemplates)
+            const groupedArticles = groupArticlesByCategory(articleItems)
 
             expect(groupedArticles).toMatchObject(expected)
         })
 
-        it('should map article data correctly', () => {
+        it('should map article template data correctly', () => {
             const result = mapHelpCenterArticleData(
                 articleTemplates,
                 articles,
@@ -194,8 +200,21 @@ describe('helpCenterCreationWizardUtils', () => {
             expect(article?.title).toBe('Article 1')
         })
 
+        it('should map AI article data correctly', () => {
+            const result = mapAIHelpCenterArticleData(
+                aiArticles,
+                articles,
+                'en-US'
+            )
+            const article = result.find(
+                (article) => article.key === 'ai_Generated_1'
+            )
+
+            expect(article?.title).toBe('AI article generated')
+        })
+
         it('should return the correct article when the key exists', () => {
-            const groupedArticles = groupArticlesByCategory(articleTemplates)
+            const groupedArticles = groupArticlesByCategory(articleItems)
             const article = findArticleByKey(groupedArticles, 'howToReturn')
 
             expect(article).toMatchObject({
@@ -297,6 +316,7 @@ describe('helpCenterCreationWizardUtils', () => {
                 title: '',
                 content: 'content',
                 key: 'key',
+                type: ArticleTemplateType.Template,
                 seo_meta: {title: 'seo title', description: 'seo description'},
             }
             const locale: LocaleCode = 'en-US'
@@ -314,6 +334,7 @@ describe('helpCenterCreationWizardUtils', () => {
                 title: 'title',
                 content: 'content',
                 key: 'shippingPolicy',
+                type: ArticleTemplateType.Template,
                 seo_meta: {title: 'seo title', description: 'seo description'},
             }
             const locale: LocaleCode = 'en-US'
@@ -326,24 +347,6 @@ describe('helpCenterCreationWizardUtils', () => {
             expect(result).toHaveProperty('template_key')
             expect(result?.template_key).toBe(articleItem.key)
         })
-
-        it('returns article with undefined template_key if key is not an ArticleTemplateKey', () => {
-            const articleItem: HelpCenterArticleItem = {
-                title: 'title',
-                content: 'content',
-                key: 'customKey',
-                seo_meta: {title: 'seo title', description: 'seo description'},
-            }
-            const locale: LocaleCode = 'en-US'
-            const result = mapHelpCenterArticleItemToArticle({
-                article: articleItem,
-                locale,
-                shouldPublish: true,
-            })
-            expect(result).toHaveProperty('translation')
-            expect(result).toHaveProperty('template_key')
-            expect(result?.template_key).toBeUndefined()
-        })
     })
 
     describe('getEnabledArticlesCount', () => {
@@ -352,6 +355,7 @@ describe('helpCenterCreationWizardUtils', () => {
                 title: 'title',
                 content: 'content',
                 key: 'customKey',
+                type: ArticleTemplateType.Template,
                 seo_meta: {title: 'seo title', description: 'seo description'},
                 isSelected: true,
             }
@@ -360,6 +364,7 @@ describe('helpCenterCreationWizardUtils', () => {
                 title: 'title',
                 content: 'content',
                 key: 'customKey',
+                type: ArticleTemplateType.Template,
                 seo_meta: {title: 'seo title', description: 'seo description'},
             }
 
@@ -367,6 +372,7 @@ describe('helpCenterCreationWizardUtils', () => {
                 title: 'title',
                 content: 'content',
                 key: 'customKey',
+                type: ArticleTemplateType.Template,
                 seo_meta: {title: 'seo title', description: 'seo description'},
                 isSelected: false,
             }

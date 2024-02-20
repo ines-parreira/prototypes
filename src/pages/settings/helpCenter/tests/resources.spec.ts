@@ -15,7 +15,7 @@ import * as helpCenterResourceMethods from '../resources'
 import {
     AIArticlesGeneric500ErrorFixture,
     AIArticlesListFixture,
-} from '../fixtures/aiGeneratedArticle.fixture'
+} from '../fixtures/aiArticles.fixture'
 import {mockResourceServerReplies} from './resource-mocks'
 
 describe('getShopifyPages', () => {
@@ -236,7 +236,6 @@ describe('getArticleTemplate', () => {
 
 describe('getAIArticles', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
-    const locale = 'en-US'
 
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()
@@ -248,8 +247,7 @@ describe('getAIArticles', () => {
         })
 
         const data = await helpCenterResourceMethods.getAIGeneratedArticles(
-            sdkMocks.client,
-            {locale}
+            sdkMocks.client
         )
         expect(data).toEqual(AIArticlesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -265,11 +263,9 @@ describe('getAIArticles', () => {
             .reply(500, AIArticlesGeneric500ErrorFixture)
 
         await expect(
-            helpCenterResourceMethods.getAIGeneratedArticles(sdkMocks.client, {
-                locale,
-            })
+            helpCenterResourceMethods.getAIGeneratedArticles(sdkMocks.client)
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 404]`
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })

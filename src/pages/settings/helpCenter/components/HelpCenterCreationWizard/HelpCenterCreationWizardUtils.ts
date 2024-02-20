@@ -1,10 +1,10 @@
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
-import {chain} from 'lodash'
+import {chain, differenceBy, map} from 'lodash'
 import {
-    ARTICLE_TEMPLATES_KEYS,
+    AIArticle,
     ArticleTemplate,
-    ArticleTemplateKey,
+    ArticleTemplateType,
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
     HelpCenterArticleItem,
@@ -47,10 +47,6 @@ export const isErrorRecord = (
     return typeof error === 'object' && error !== null && !Array.isArray(error)
 }
 
-function isArticleTemplateKey(key: unknown): key is ArticleTemplateKey {
-    return ARTICLE_TEMPLATES_KEYS.includes(key as any)
-}
-
 export const isHelpCenterCreationWizardStep = (
     step: unknown
 ): step is HelpCenterCreationWizardStep => {
@@ -58,6 +54,9 @@ export const isHelpCenterCreationWizardStep = (
         step as HelpCenterCreationWizardStep
     )
 }
+
+const replaceNewLines = (input: string | undefined): string | undefined =>
+    input?.replace(/\\n/g, '')
 
 /**
  * Map API Help Center to UI Help Center which is used in the UI
@@ -289,33 +288,80 @@ export const mapHelpCenterArticleData = (
         if (!matchingData) {
             return {
                 ...template,
-                content: template.html_content?.replace(/\\n/g, ''),
+                content: replaceNewLines(template.html_content),
                 isSelected: false,
+                type: ArticleTemplateType.Template,
             }
         }
 
         if (matchingData.translation?.locale === locale) {
-            const content = matchingData.translation?.content
             return {
                 ...matchingData.translation,
                 id: matchingData.id,
-                content: content?.replace(/\\n/g, ''),
+                content: replaceNewLines(matchingData.translation?.content),
                 isSelected: matchingData.translation?.is_current,
                 key: template.key,
                 category: template.category,
                 availableLocales: matchingData.available_locales,
+                type: ArticleTemplateType.Template,
             }
         }
 
         return {
             ...template,
-            content: template.html_content?.replace(/\\n/g, ''),
+            content: replaceNewLines(template.html_content),
             id: matchingData.id,
             availableLocales: matchingData.available_locales,
             isSelected: false,
             shouldCreateTranslation: true,
+            type: ArticleTemplateType.Template,
         }
     })
+}
+
+export const mapAIHelpCenterArticleData = (
+    aiArticles: AIArticle[],
+    articleListData: ArticleWithLocalTranslationAndRating[],
+    locale: LocaleCode
+): HelpCenterArticleItem[] => {
+    const helpCenterArticles = articleListData?.filter(
+        (article) =>
+            article.template_key &&
+            article.template_key.startsWith('ai_') &&
+            article.translation?.locale === locale
+    )
+
+    const helpCenterAiArticles: HelpCenterArticleItem[] = map(
+        helpCenterArticles,
+        (article) => ({
+            ...article.translation,
+            id: article.id,
+            content: replaceNewLines(article.translation?.content),
+            isSelected: article.translation?.is_current,
+            key: article.template_key!,
+            availableLocales: article.available_locales,
+            type: ArticleTemplateType.AI,
+        })
+    )
+
+    const aiArticlesFilter = differenceBy(
+        aiArticles,
+        helpCenterAiArticles,
+        'key'
+    )
+
+    const aiArticlesMapped: HelpCenterArticleItem[] = map(
+        aiArticlesFilter,
+        (aiArticle) => ({
+            ...aiArticle,
+            content: replaceNewLines(aiArticle.html_content),
+            isSelected: true,
+            type: ArticleTemplateType.AI,
+            category: aiArticle.category,
+        })
+    )
+
+    return [...helpCenterAiArticles, ...aiArticlesMapped]
 }
 
 export const findArticleByKey = (
@@ -356,9 +402,7 @@ export const mapHelpCenterArticleItemToArticle = (
 
     return {
         ...hcArticle,
-        template_key: isArticleTemplateKey(article.key)
-            ? article.key
-            : undefined,
+        template_key: article.key,
     }
 }
 

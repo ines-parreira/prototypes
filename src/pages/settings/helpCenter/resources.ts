@@ -107,12 +107,11 @@ export const getArticleTemplate = async (
 }
 
 export const getAIGeneratedArticles = async (
-    client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListArticleTemplates.QueryParameters
+    client: HelpCenterClient | undefined
 ) => {
     if (!client) return null
 
-    const res = await client.listArticleTemplates(pathParameters)
+    const res = await client.listAIArticleTemplates()
 
     return res.data
 }

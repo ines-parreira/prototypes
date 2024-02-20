@@ -1,25 +1,36 @@
 import {useMemo} from 'react'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {
-    ArticleTemplateCategory,
+    ArticleTemplateType,
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
+import {
+    useGetAIArticles,
+    useGetArticleTemplates,
+} from 'pages/settings/helpCenter/queries'
 import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
 import {
     groupArticlesByCategory,
+    mapAIHelpCenterArticleData,
     mapHelpCenterArticleData,
 } from '../HelpCenterCreationWizardUtils'
+import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
 export type HelpCenterArticlesOutput = {
-    articles: Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
+    articles: Record<string, HelpCenterArticleItem[]>
+    hasAiArticles: boolean
     isLoading: boolean
 }
 export const useGetHelpCenterArticles = (
     helpCenterId: number,
     locale: LocaleCode
 ): HelpCenterArticlesOutput => {
+    const {data: aiArticles, isLoading: isGetAIArticlesLoading} =
+        useGetAIArticles(locale, {
+            refetchOnWindowFocus: false,
+        })
+
     const {data: articleTemplates, isLoading: isGetArticleTemplatesLoading} =
         useGetArticleTemplates(locale, {
             refetchOnWindowFocus: false,
@@ -44,26 +55,45 @@ export const useGetHelpCenterArticles = (
             return DEFAULT_ARTICLE_GROUP
         }
 
-        const mappedArticles = mapHelpCenterArticleData(
+        const mappedArticleTemplates = mapHelpCenterArticleData(
             articleTemplates,
             helpCenterArticles,
             locale
         )
 
-        const isAnyArticleSelected = mappedArticles.some(
+        const mappedArticlesAI = mapAIHelpCenterArticleData(
+            aiArticles || [],
+            helpCenterArticles,
+            locale
+        )
+
+        const slicedAiArticles = mappedArticlesAI.slice(0, MINIMUM_AI_ARTICLES)
+
+        if (slicedAiArticles.length) {
+            return {
+                [ArticleTemplateType.AI]: slicedAiArticles,
+                [ArticleTemplateType.Template]: mappedArticleTemplates,
+            }
+        }
+
+        // If no AI articles are available, return template articles grouped by category
+        const isAnyArticleSelected = mappedArticleTemplates.some(
             (article) => article.isSelected
         )
 
-        if (mappedArticles.length && !isAnyArticleSelected) {
-            mappedArticles[0].isSelected = true
+        if (mappedArticleTemplates.length && !isAnyArticleSelected) {
+            mappedArticleTemplates[0].isSelected = true
         }
 
-        return groupArticlesByCategory(mappedArticles)
-    }, [articleTemplates, helpCenterArticles, locale])
+        return groupArticlesByCategory(mappedArticleTemplates)
+    }, [articleTemplates, helpCenterArticles, aiArticles, locale])
 
     return {
         articles,
+        hasAiArticles: !!articles[ArticleTemplateType.AI]?.length,
         isLoading:
-            isGetArticleTemplatesLoading || isGetHelpCenterArticleListLoading,
+            isGetArticleTemplatesLoading ||
+            isGetHelpCenterArticleListLoading ||
+            isGetAIArticlesLoading,
     }
 }

@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useState} from 'react'
 import {filter, flatMap, map, mapValues} from 'lodash'
 import {
-    ArticleTemplateCategory,
     HelpCenter,
     HelpCenterArticleItem,
     LocalArticleTranslation,
@@ -24,7 +23,7 @@ import {
 import {logEvent, SegmentEvent} from '../../../../../../common/segment'
 
 type HelpCenterArticlesFormOutput = {
-    articles: Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
+    articles: Record<string, HelpCenterArticleItem[]>
     selectedArticle: HelpCenterArticleItem | null
     isLoading: boolean
 
@@ -39,11 +38,12 @@ type HelpCenterArticlesFormOutput = {
 }
 export const useHelpCenterArticlesForm = (
     helpCenter: HelpCenter,
-    articles: Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
+    articles: Record<string, HelpCenterArticleItem[]>
 ): HelpCenterArticlesFormOutput => {
     const [newArticles, setArticles] = useState<
-        Record<ArticleTemplateCategory, HelpCenterArticleItem[]>
+        Record<string, HelpCenterArticleItem[]>
     >(DEFAULT_ARTICLE_GROUP)
+
     const [selectedArticle, setSelectedArticle] =
         useState<HelpCenterArticleItem | null>(null)
 
@@ -125,7 +125,7 @@ export const useHelpCenterArticlesForm = (
             const article = findArticleByKey(newArticles, key)
             if (article) {
                 logEvent(SegmentEvent.WizardArticleEditClicked, {
-                    type: 'template',
+                    type: article.type,
                 })
 
                 setSelectedArticle(article)
@@ -232,7 +232,7 @@ export const useHelpCenterArticlesForm = (
         const article = {...selectedArticle, title, content}
 
         logEvent(SegmentEvent.WizardArticleEdited, {
-            type: 'template',
+            type: article.type,
         })
 
         let nextAction = 'CREATE_ARTICLE'
@@ -287,7 +287,7 @@ export const useHelpCenterArticlesForm = (
             items.forEach((item) => {
                 if (item.isSelected) {
                     logEvent(SegmentEvent.WizardArticleSaved, {
-                        type: 'template',
+                        type: item.type,
                     })
                 }
             })

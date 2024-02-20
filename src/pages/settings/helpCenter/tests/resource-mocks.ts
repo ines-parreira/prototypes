@@ -20,7 +20,7 @@ import {
     AIArticlesListFixture,
     AIArticlesEmptyListFixture,
     AIArticlesGeneric500ErrorFixture,
-} from '../fixtures/aiGeneratedArticle.fixture'
+} from '../fixtures/aiArticles.fixture'
 
 import * as helpCenterResourceMethods from '../resources'
 
@@ -122,12 +122,12 @@ export const mockResourceServerReplies = (
 
     if (options.getAIGeneratedArticles === 'success') {
         mockedServer
-            .onGet('/api/help-center/article-templates')
+            .onGet('/api/help-center/article-templates/ai')
             .reply(200, AIArticlesListFixture)
     }
     if (options.getAIGeneratedArticles === 'success-empty') {
         mockedServer
-            .onGet('/api/help-center/article-templates')
+            .onGet('/api/help-center/article-templates/ai')
             .reply(200, AIArticlesEmptyListFixture)
     }
 

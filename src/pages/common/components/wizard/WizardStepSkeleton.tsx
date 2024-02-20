@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {isObject} from 'lodash'
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
@@ -8,11 +9,18 @@ import css from './WizardStepSkeleton.less'
 
 type Props = {
     step: string
+    metaStep?: string
     footer: React.ReactNode
     preview?: React.ReactNode
     labels: Record<string, string>
-    titles: Record<string, string>
-    descriptions: Partial<Record<string, string>>
+    titles: Record<string, string | Record<string, string>>
+    descriptions: Record<string, string | Record<string, string>>
+}
+
+const isRecord = (
+    value: string | Record<string, string>
+): value is Record<string, string> => {
+    return isObject(value)
 }
 
 const WizardStepSkeleton: React.FC<Props> = ({
@@ -23,10 +31,14 @@ const WizardStepSkeleton: React.FC<Props> = ({
     labels,
     titles,
     descriptions,
+    metaStep,
 }) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
     const contentIsIntersecting =
         useIsIntersectingWithBrowserViewport(contentRef)
+
+    const stepTitle = titles[step] || ''
+    const stepDescription = descriptions[step] || ''
 
     return (
         <>
@@ -38,13 +50,18 @@ const WizardStepSkeleton: React.FC<Props> = ({
                     />
                     <div className={css.heading}>
                         <div className="heading-page-semibold">
-                            {titles[step]}
+                            {metaStep && isRecord(stepTitle)
+                                ? stepTitle[metaStep]
+                                : stepTitle}
                         </div>
                         {descriptions[step] && (
                             <div
                                 className={css.description}
                                 dangerouslySetInnerHTML={{
-                                    __html: descriptions[step] || '',
+                                    __html:
+                                        metaStep && isRecord(stepDescription)
+                                            ? stepDescription[metaStep]
+                                            : stepDescription,
                                 }}
                             />
                         )}

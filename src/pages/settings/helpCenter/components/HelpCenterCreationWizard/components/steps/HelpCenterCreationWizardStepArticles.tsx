@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 
 import {
-    ArticleTemplateCategory,
+    ArticleTemplateType,
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
@@ -42,8 +42,11 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         HelpCenterCreationWizardStep.Articles
     )
 
-    const {articles: fetchedArticles, isLoading: isGettingArticlesLoading} =
-        useGetHelpCenterArticles(helpCenter.id, helpCenter.default_locale)
+    const {
+        articles: fetchedArticles,
+        hasAiArticles,
+        isLoading: isGettingArticlesLoading,
+    } = useGetHelpCenterArticles(helpCenter.id, helpCenter.default_locale)
 
     const {
         articles,
@@ -54,6 +57,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         handleEditorReady,
         handleEditorSave,
         handleEditorClose,
+
         handleNavigationSave,
     } = useHelpCenterArticlesForm(helpCenter, fetchedArticles)
 
@@ -111,6 +115,11 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         <>
             <WizardStepSkeleton
                 step={HelpCenterCreationWizardStep.Articles}
+                metaStep={
+                    hasAiArticles
+                        ? ArticleTemplateType.AI
+                        : ArticleTemplateType.Template
+                }
                 labels={HELP_CENTER_STEPS_LABELS}
                 titles={HELP_CENTER_STEPS_TITLES}
                 descriptions={HELP_CENTER_STEPS_DESCRIPTIONS}
@@ -131,7 +140,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                             <ArticleSection
                                 key={category}
                                 articles={articleItems}
-                                category={category as ArticleTemplateCategory}
+                                category={category}
                                 onEdit={handleArticleEdit}
                                 onSelect={handleArticleSelect}
                             />

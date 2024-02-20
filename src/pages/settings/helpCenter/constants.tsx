@@ -231,21 +231,27 @@ export const HELP_CENTER_STEPS_LABELS: Partial<
 }
 
 export const HELP_CENTER_STEPS_TITLES: Partial<
-    Record<HelpCenterCreationWizardStep, string>
+    Record<HelpCenterCreationWizardStep, string | Record<string, string>>
 > = {
     [HelpCenterCreationWizardStep.Basics]: 'Set up the basics',
     [HelpCenterCreationWizardStep.Branding]: 'Add your branding',
-    [HelpCenterCreationWizardStep.Articles]: 'Add articles using templates',
+    [HelpCenterCreationWizardStep.Articles]: {
+        template: 'Add articles using templates',
+        ai: 'Add recommended articles generated with AI',
+    },
     [HelpCenterCreationWizardStep.Automate]: 'Automate',
 }
 
 export const HELP_CENTER_STEPS_DESCRIPTIONS: Partial<
-    Record<HelpCenterCreationWizardStep, string>
+    Record<HelpCenterCreationWizardStep, string | Record<string, string>>
 > = {
     [HelpCenterCreationWizardStep.Branding]:
         'Give the Help Center your brands look and feel. Additional customization available later.',
-    [HelpCenterCreationWizardStep.Articles]:
-        'The template language is based on the default language set in Step 1. You can import your own articles after onboarding.',
+    [HelpCenterCreationWizardStep.Articles]: {
+        template:
+            'The template language is based on the default language set in Step 1. <b>You can import your own articles after onboarding.<b>',
+        ai: "View and edit pre-written articles generated from your customers' top asked questions. <b>You can import your own articles after onboarding.</b>",
+    },
     [HelpCenterCreationWizardStep.Automate]:
         'Start getting the most from Automate now.',
 }

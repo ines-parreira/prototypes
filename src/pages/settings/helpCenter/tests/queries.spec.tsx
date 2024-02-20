@@ -406,7 +406,7 @@ describe('useGetAIArticles', () => {
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 404]`
             )
         })
     })

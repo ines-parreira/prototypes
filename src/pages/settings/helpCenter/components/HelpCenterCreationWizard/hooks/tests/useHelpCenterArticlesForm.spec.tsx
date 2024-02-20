@@ -2,7 +2,10 @@ import 'tests/__mocks__/editionManagerContextMock'
 
 import {renderHook, act} from '@testing-library/react-hooks/dom'
 import {waitFor} from '@testing-library/react'
-import {HelpCenterArticleItem} from 'models/helpCenter/types'
+import {
+    ArticleTemplateType,
+    HelpCenterArticleItem,
+} from 'models/helpCenter/types'
 import {ArticleTemplatesGroupedByCategoryFixture} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {HelpCenterApiArticlesFixture} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import {useHelpCenterArticlesForm} from '../useHelpCenterArticlesForm'
@@ -143,6 +146,7 @@ describe('useHelpCenterArticlesForm', () => {
                         isSelected: true,
                         availableLocales: ['en-US'],
                         shouldCreateTranslation: true,
+                        type: ArticleTemplateType.Template,
                     },
                 ],
             }
@@ -185,6 +189,7 @@ describe('useHelpCenterArticlesForm', () => {
                         content: '<p>><strong>Test</strong></p>',
                         isSelected: true,
                         availableLocales: ['en-US'],
+                        type: ArticleTemplateType.Template,
                     },
                 ],
             }
