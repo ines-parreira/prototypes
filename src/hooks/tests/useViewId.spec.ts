@@ -17,9 +17,7 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 describe('useViewId', () => {
     beforeEach(() => {
         useParamsMock.mockReturnValue({})
-        useAppSelectorMock
-            .mockReturnValueOnce(fromJS({}))
-            .mockReturnValueOnce({id: 123})
+        useAppSelectorMock.mockReturnValueOnce(fromJS({}))
     })
 
     it('should return the view id from the url if it exists', () => {
@@ -37,10 +35,5 @@ describe('useViewId', () => {
 
         const {result} = renderHook(() => useViewId())
         expect(result.current).toBe(456)
-    })
-
-    it('should return the view id of the default view', () => {
-        const {result} = renderHook(() => useViewId())
-        expect(result.current).toBe(123)
     })
 })

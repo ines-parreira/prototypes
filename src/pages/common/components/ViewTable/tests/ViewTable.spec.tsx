@@ -172,6 +172,19 @@ describe('<ViewTable />', () => {
             expect(history.push).not.toHaveBeenCalled()
         })
 
+        it('should redirect to the default view page when urlViewId is not provided', () => {
+            render(
+                <ViewTableContainer
+                    {...minProps}
+                    activeView={fromJS({})}
+                    urlViewId={undefined}
+                />
+            )
+            expect(history.push).toHaveBeenLastCalledWith(
+                `/app/tickets/${fixtureView.id}`
+            )
+        })
+
         it('should set the new active view based on visibility params and fetch the view items when the url is a creation one', () => {
             render(
                 <ViewTableContainer

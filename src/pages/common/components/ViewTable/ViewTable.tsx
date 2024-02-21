@@ -130,16 +130,18 @@ export class ViewTableContainer extends Component<Props> {
 
             if (viewMissing) {
                 history.push('/app')
+            } else if (!urlViewId) {
+                history.push(`/app/tickets/${suggestedViewId!.toString()}`)
             }
 
-            setViewActive(getView(suggestedViewId as unknown as string))
+            setViewActive(getView(suggestedViewId!.toString()))
             activeViewIdSet(suggestedViewId)
         } else if (!isSearch && activeView.get('search') !== null) {
             const suggestedViewId = getViewIdToDisplay(
                 config.get('type'),
                 undefined
             )
-            setViewActive(getView(suggestedViewId as unknown as string))
+            setViewActive(getView(suggestedViewId!.toString()))
             activeViewIdSet(suggestedViewId)
         }
 

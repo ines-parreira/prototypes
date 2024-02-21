@@ -2,7 +2,7 @@ import {useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getActiveView, getDefaultTicketView} from 'state/views/selectors'
+import {getActiveView} from 'state/views/selectors'
 
 export default function useViewId() {
     const {viewId: viewIdParam} = useParams<{viewId?: string}>()
@@ -13,8 +13,6 @@ export default function useViewId() {
         [activeView]
     )
 
-    const defaultView = useAppSelector(getDefaultTicketView)
-
     return useMemo(() => {
         if (viewIdParam) {
             return parseInt(viewIdParam, 10)
@@ -24,6 +22,6 @@ export default function useViewId() {
             return activeViewId
         }
 
-        return defaultView?.id || 0
-    }, [activeViewId, defaultView, viewIdParam])
+        return 0
+    }, [activeViewId, viewIdParam])
 }
