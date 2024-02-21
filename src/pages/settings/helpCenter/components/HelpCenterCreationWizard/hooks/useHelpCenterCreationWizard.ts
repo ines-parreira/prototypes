@@ -234,7 +234,7 @@ export const useHelpCenterCreationWizard = (
         const tempHelpCenterData = mapUIHelpCenterToApiHelpCenter({
             ...newHelpCenter,
             ...payload,
-            stepName: stepName ?? newHelpCenter.stepName,
+            stepName: stepName ?? step,
         })
 
         const helpCenterAction = () =>
