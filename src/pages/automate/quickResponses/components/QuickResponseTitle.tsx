@@ -32,6 +32,7 @@ const QuickResponseTitle = ({title, onChange}: Props) => {
 
     return (
         <TextArea
+            data-testid="quick-response-title"
             key={isExpanded ? 1 : 0} // force rerender to trigger height re-computation
             ref={setRef}
             className={classnames(css.input, {

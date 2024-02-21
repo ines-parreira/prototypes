@@ -7,6 +7,7 @@ exports[`<QuickResponseTitle /> should render the title component 1`] = `
   >
     <textarea
       class="textarea"
+      data-testid="quick-response-title"
       id="textarea-1"
       maxlength="50"
       name="textarea-1"

@@ -79,7 +79,11 @@ const QuickResponsesAccordionItem = ({
     return (
         <>
             <SortableAccordionHeader>
-                <div id={toggleInputId} onClick={handleToggleStopPropagation}>
+                <div
+                    id={toggleInputId}
+                    data-testid="quick-response-toggle"
+                    onClick={handleToggleStopPropagation}
+                >
                     <ToggleInput
                         isDisabled={
                             isDisabled ||
