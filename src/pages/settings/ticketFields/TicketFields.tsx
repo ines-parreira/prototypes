@@ -1,9 +1,12 @@
 import React, {useState} from 'react'
 import {Container} from 'reactstrap'
 import {Link, NavLink, useParams} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useTitle from 'hooks/useTitle'
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -15,10 +18,9 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/types'
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import useCallbackRef from 'hooks/useCallbackRef'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './TicketFields.less'
 
 type TicketFieldsTab = 'active' | 'archived'
@@ -30,6 +32,8 @@ export default function TicketFields() {
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
     const [listingNode, setListingNode] = useCallbackRef()
     const [landingNode, setLandingNode] = useCallbackRef()
+    const hasMoreTicketFields = useFlags()[FeatureFlagKey.MoreTicketFields]
+    const maxTicketFields = hasMoreTicketFields ? 25 : 4
 
     useInjectStyleToCandu(listingNode)
     useInjectStyleToCandu(landingNode)
@@ -80,7 +84,7 @@ export default function TicketFields() {
     const isLoading = isLoadingActive || isLoadingArchived
 
     const createFieldButton =
-        activeFields.length >= 4 ? (
+        activeFields.length >= maxTicketFields ? (
             <Button isDisabled>Create Field</Button>
         ) : (
             <Link
@@ -175,16 +179,18 @@ export default function TicketFields() {
                             ) : (
                                 <>
                                     {activeTab === 'active' &&
-                                        activeFields.length >= 4 && (
+                                        activeFields.length >=
+                                            maxTicketFields && (
                                             <Alert
                                                 type={AlertType.Info}
                                                 icon
                                                 className="m-4"
                                             >
-                                                You can only have 4 active
-                                                fields at a time. Please archive
-                                                some fields before creating a
-                                                new one.
+                                                {`You can only have ${maxTicketFields}
+                                                 active fields
+                                                at a time. Please archive some
+                                                fields before creating a new
+                                                one.`}
                                             </Alert>
                                         )}
                                     <List
