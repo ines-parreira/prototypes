@@ -301,6 +301,29 @@ describe('global utils', () => {
         })
     })
 
+    describe('isStrictTicketPath', () => {
+        it('should return true when the current location is a page displaying strictly ticket / views ', () => {
+            expect(utils.isStrictTicketPath('/app')).toBe(true)
+            expect(utils.isStrictTicketPath('/app/tickets')).toBe(true)
+            expect(utils.isStrictTicketPath('/app/tickets/1')).toBe(true)
+            expect(utils.isStrictTicketPath('/app/ticket/1')).toBe(true)
+            expect(utils.isStrictTicketPath('/app/views')).toBe(true)
+            expect(utils.isStrictTicketPath('/app/views/1')).toBe(true)
+        })
+
+        it('should exclude any sub-page', () => {
+            expect(utils.isStrictTicketPath('/app/tickets/1/sub-page')).toBe(
+                false
+            )
+            expect(utils.isStrictTicketPath('/app/ticket/1/sub-page')).toBe(
+                false
+            )
+            expect(utils.isStrictTicketPath('/app/views/1/sub-page')).toBe(
+                false
+            )
+        })
+    })
+
     describe('isCurrentlyOnCustomerPage', () => {
         it("should return true when the current location is the customer's URL", () => {
             window.location.pathname = '/app/customer/1'

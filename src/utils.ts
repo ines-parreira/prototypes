@@ -787,6 +787,17 @@ export const isTicketPath = (path: string) => {
     return regex.test(path)
 }
 
+/**
+ * Similar to previous regex
+ * except it enforces stricter param validation
+ * and allows no sub-paths
+ */
+export const isStrictTicketPath = (path: string) => {
+    const regex =
+        /^\/app$|^\/app\/tickets$|^\/app\/views$|^\/app\/ticket\/\d+$|^\/app\/tickets\/\d+$|^\/app\/views\/\d+(\/\d+)?$/
+    return regex.test(path)
+}
+
 export const isCurrentlyOnCustomerPage = (customerId: string | number) => {
     return (
         window.location.pathname === `/app/customer/${customerId}` ||

@@ -5,7 +5,9 @@ import {useHistory, useLocation, useParams} from 'react-router-dom'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import usePrevious from 'hooks/usePrevious'
 import {getActiveView} from 'state/views/selectors'
+import {isStrictTicketPath} from 'utils'
 
 import useSplitTicketView from './useSplitTicketView'
 
@@ -15,6 +17,7 @@ export default function useSplitTicketViewSwitcher() {
 
     const history = useHistory()
     const {pathname: path} = useLocation()
+    const previousPath = usePrevious(path)
     const {isEnabled} = useSplitTicketView()
     const activeView = useAppSelector(getActiveView)
     const isMobileResolution = useIsMobileResolution()
@@ -40,7 +43,8 @@ export default function useSplitTicketViewSwitcher() {
 
         if (
             isSplitTicketViewEnabled ===
-            previousIsSplitTicketViewEnabled.current
+                previousIsSplitTicketViewEnabled.current &&
+            (!!previousPath ? isStrictTicketPath(previousPath) : true)
         ) {
             return
         }
@@ -63,6 +67,10 @@ export default function useSplitTicketViewSwitcher() {
                 return
             }
 
+            return
+        }
+
+        if (path.match(/^\/app\/ticket\/\d+\/edit-widgets$/)) {
             return
         }
 
@@ -90,5 +98,6 @@ export default function useSplitTicketViewSwitcher() {
         path,
         ticketId,
         viewId,
+        previousPath,
     ])
 }
