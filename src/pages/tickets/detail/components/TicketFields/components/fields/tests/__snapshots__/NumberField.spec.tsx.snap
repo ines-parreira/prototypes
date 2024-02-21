@@ -2,136 +2,181 @@
 
 exports[`<NumberField /> should render the number field component correctly 1`] = `
 <label
-  class="labelWrapper"
+  class="wrapper"
 >
-  <span
-    class="label"
+  <div
+    class="labelWrapper"
   >
-    number field
-    :
-  </span>
-  <sup
-    class="asterisk"
+    <span
+      class="label"
+      title="number field"
+    >
+      number field
+      :
+    </span>
+    <sup
+      class="asterisk"
+    >
+      *
+    </sup>
+  </div>
+  <div
+    class="wrapper"
   >
-    *
-  </sup>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-number-input-1"
-    name="number field"
-    placeholder="+Add"
-    type="number"
-    value="999"
-  />
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-number-input-1"
+      name="number field"
+      placeholder="+Add"
+      type="number"
+      value="999"
+    />
+  </div>
 </label>
 `;
 
 exports[`<NumberField /> should render the number field component correctly 2`] = `
 <label
-  class="labelWrapper"
+  class="wrapper"
 >
-  <span
-    class="label"
+  <div
+    class="labelWrapper"
   >
-    number field
-    :
-  </span>
-  <sup
-    class="asterisk"
+    <span
+      class="label"
+      title="number field"
+    >
+      number field
+      :
+    </span>
+    <sup
+      class="asterisk"
+    >
+      *
+    </sup>
+  </div>
+  <div
+    class="wrapper"
   >
-    *
-  </sup>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-number-input-1"
-    name="number field"
-    placeholder="+Add"
-    type="number"
-    value=""
-  />
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-number-input-1"
+      name="number field"
+      placeholder="+Add"
+      type="number"
+      value=""
+    />
+  </div>
 </label>
 `;
 
 exports[`<NumberField /> should render the number field component correctly 3`] = `
 <label
-  class="labelWrapper"
+  class="wrapper"
 >
-  <span
-    class="label"
+  <div
+    class="labelWrapper"
   >
-    number field
-    :
-  </span>
-  <sup
-    class="asterisk"
+    <span
+      class="label"
+      title="number field"
+    >
+      number field
+      :
+    </span>
+    <sup
+      class="asterisk"
+    >
+      *
+    </sup>
+  </div>
+  <div
+    class="wrapper"
   >
-    *
-  </sup>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-number-input-1"
-    name="number field"
-    placeholder="+Add"
-    type="number"
-    value="0"
-  />
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-number-input-1"
+      name="number field"
+      placeholder="+Add"
+      type="number"
+      value="0"
+    />
+  </div>
 </label>
 `;
 
 exports[`<NumberField /> should render the number field component correctly 4`] = `
 <label
-  class="labelWrapper"
+  class="wrapper"
 >
-  <span
-    class="label"
+  <div
+    class="labelWrapper"
   >
-    number field
-    :
-  </span>
-  <sup
-    class="asterisk"
+    <span
+      class="label"
+      title="number field"
+    >
+      number field
+      :
+    </span>
+    <sup
+      class="asterisk"
+    >
+      *
+    </sup>
+  </div>
+  <div
+    class="wrapper"
   >
-    *
-  </sup>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-number-input-1"
-    name="number field"
-    placeholder="+Add"
-    type="number"
-    value="2.3e-34"
-  />
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-number-input-1"
+      name="number field"
+      placeholder="+Add"
+      type="number"
+      value="2.3e-34"
+    />
+  </div>
 </label>
 `;
 
 exports[`<NumberField /> should render the number field component correctly but dispatch an error 1`] = `
 <label
-  class="labelWrapper"
+  class="wrapper"
 >
-  <span
-    class="label"
+  <div
+    class="labelWrapper"
   >
-    number field
-    :
-  </span>
-  <sup
-    class="asterisk"
+    <span
+      class="label"
+      title="number field"
+    >
+      number field
+      :
+    </span>
+    <sup
+      class="asterisk"
+    >
+      *
+    </sup>
+  </div>
+  <div
+    class="wrapper"
   >
-    *
-  </sup>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-number-input-1"
-    max="10"
-    name="number field"
-    placeholder="+Add"
-    type="number"
-    value="9999999998"
-  />
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-number-input-1"
+      max="10"
+      name="number field"
+      placeholder="+Add"
+      type="number"
+      value="9999999998"
+    />
+  </div>
 </label>
 `;

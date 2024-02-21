@@ -6,9 +6,8 @@ exports[`<CustomFieldInput/> should render a boolean dropdown 1`] = `
     class="custom-field-input--dropdown"
   >
     <span
-      class="autoWidthInputContainer placeholder"
+      class="wrapper autoWidthInputContainer placeholder"
       id="rule-custom-field-2"
-      style="width: 82px;"
     >
       <span
         class="autoWidthSpan"
@@ -21,12 +20,11 @@ exports[`<CustomFieldInput/> should render a boolean dropdown 1`] = `
         id="rule-custom-field-2-input"
         name="Yes/No field"
         placeholder="Select an option"
-        style="width: 82px;"
         type="text"
         value=""
       />
       <span
-        style="visibility: hidden; position: absolute;"
+        class="hiddenInputValue"
       />
     </span>
   </div>
@@ -83,9 +81,8 @@ exports[`<CustomFieldInput/> should render a text dropdown 1`] = `
     class="custom-field-input--dropdown"
   >
     <span
-      class="autoWidthInputContainer placeholder"
+      class="wrapper autoWidthInputContainer placeholder"
       id="rule-custom-field-2"
-      style="width: 82px;"
     >
       <span
         class="autoWidthSpan"
@@ -98,12 +95,11 @@ exports[`<CustomFieldInput/> should render a text dropdown 1`] = `
         id="rule-custom-field-2-input"
         name="Dropdown field"
         placeholder="Select an option"
-        style="width: 82px;"
         type="text"
         value=""
       />
       <span
-        style="visibility: hidden; position: absolute;"
+        class="hiddenInputValue"
       />
     </span>
   </div>

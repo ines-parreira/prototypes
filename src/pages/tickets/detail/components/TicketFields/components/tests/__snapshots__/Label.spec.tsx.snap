@@ -2,14 +2,19 @@
 
 exports[`<Label /> should render correctly 1`] = `
 <label
-  class="labelWrapper"
+  class="wrapper"
 >
-  <span
-    class="label"
+  <div
+    class="labelWrapper"
   >
-    My label
-    :
-  </span>
+    <span
+      class="label"
+      title="My label"
+    >
+      My label
+      :
+    </span>
+  </div>
   <input
     name="test"
     value="yeaboy"

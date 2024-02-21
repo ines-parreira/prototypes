@@ -13,7 +13,6 @@ type Props = {
     hasError?: boolean
     onChange?: (nextValue: string) => void
     id: string
-    isLarge?: boolean
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'required'>
 
 function StealthInput(
@@ -28,7 +27,6 @@ function StealthInput(
         className,
         placeholder = '+Add',
         id,
-        isLarge = false,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>
@@ -42,7 +40,6 @@ function StealthInput(
             ref={ref}
             type={type}
             className={classnames(css.baseStyles, className, {
-                [css.large]: isLarge,
                 // beware, order can matter
                 [css.stealth]: !isActive,
                 [css.valid]: isActive && !hasError,

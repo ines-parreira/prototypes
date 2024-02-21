@@ -16,13 +16,14 @@ import Tooltip from 'pages/common/components/Tooltip'
 import StealthInput from '../StealthInput'
 import Label from '../Label'
 
+import css from './Field.less'
+
 type Props = {
     id: CustomFieldState['id']
     label: string
     fieldState?: CustomFieldState
     placeholder?: string
     isRequired?: boolean
-    isLarge?: boolean
 }
 
 export default function TextField({
@@ -31,7 +32,6 @@ export default function TextField({
     fieldState,
     placeholder,
     isRequired,
-    isLarge = false,
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -84,40 +84,46 @@ export default function TextField({
                     {currentValue}
                 </Tooltip>
             )}
-            <StealthInput
-                id={inputId}
-                name={label}
-                type="text"
-                value={currentValue}
-                placeholder={placeholder}
-                onChange={handleChange}
-                hasError={hasError}
-                onFocus={() => {
-                    setActive(true)
-                    logEvent(SegmentEvent.CustomFieldTicketValueInputFocused, {
-                        ticketId,
-                        id,
-                        label,
-                    })
-                }}
-                isLarge={isLarge}
-                onBlur={() => {
-                    setActive(false)
-                    const trimmedCurrentValue = currentValue.trim()
-                    setCurrentValue(trimmedCurrentValue)
-                    dispatch(updateCustomFieldValue(id, trimmedCurrentValue))
-                    if (trimmedCurrentValue !== stateValue) {
-                        mutate([
+            <div className={css.wrapper}>
+                <StealthInput
+                    id={inputId}
+                    name={label}
+                    type="text"
+                    value={currentValue}
+                    placeholder={placeholder}
+                    onChange={handleChange}
+                    hasError={hasError}
+                    onFocus={() => {
+                        setActive(true)
+                        logEvent(
+                            SegmentEvent.CustomFieldTicketValueInputFocused,
                             {
-                                fieldType: 'Ticket',
-                                holderId: ticketId,
-                                fieldId: id,
-                                value: trimmedCurrentValue,
-                            },
-                        ])
-                    }
-                }}
-            />
+                                ticketId,
+                                id,
+                                label,
+                            }
+                        )
+                    }}
+                    onBlur={() => {
+                        setActive(false)
+                        const trimmedCurrentValue = currentValue.trim()
+                        setCurrentValue(trimmedCurrentValue)
+                        dispatch(
+                            updateCustomFieldValue(id, trimmedCurrentValue)
+                        )
+                        if (trimmedCurrentValue !== stateValue) {
+                            mutate([
+                                {
+                                    fieldType: 'Ticket',
+                                    holderId: ticketId,
+                                    fieldId: id,
+                                    value: trimmedCurrentValue,
+                                },
+                            ])
+                        }
+                    }}
+                />
+            </div>
         </Label>
     )
 }

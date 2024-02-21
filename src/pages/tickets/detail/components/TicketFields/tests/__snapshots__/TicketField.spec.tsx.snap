@@ -15,23 +15,32 @@ exports[`<TicketField /> should render coming soon for unsupported fields 2`] = 
 exports[`<TicketField /> should render the appropriate field 1`] = `
 <div>
   <label
-    class="labelWrapper"
+    class="wrapper"
   >
-    <span
-      class="label"
+    <div
+      class="labelWrapper"
     >
-      Input field
-      :
-    </span>
-    <input
-      autocomplete="off"
-      class="baseStyles stealth"
-      id="ticket-whateva-custom-field-value-input-123"
-      name="Input field"
-      placeholder="Some placeholder"
-      type="text"
-      value="some value"
-    />
+      <span
+        class="label"
+        title="Input field"
+      >
+        Input field
+        :
+      </span>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <input
+        autocomplete="off"
+        class="baseStyles stealth"
+        id="ticket-whateva-custom-field-value-input-123"
+        name="Input field"
+        placeholder="Some placeholder"
+        type="text"
+        value="some value"
+      />
+    </div>
   </label>
 </div>
 `;
@@ -42,19 +51,23 @@ exports[`<TicketField /> should render the appropriate field 2`] = `
     class="wrapper"
   >
     <label
-      class="labelWrapper"
+      class="wrapper label"
     >
-      <span
-        class="label"
+      <div
+        class="labelWrapper"
       >
-        Dropdown field
-        :
-      </span>
+        <span
+          class="label"
+          title="Dropdown field"
+        >
+          Dropdown field
+          :
+        </span>
+      </div>
     </label>
     <span
-      class=""
+      class="wrapper"
       id="ticket-whateva-custom-field-value-input-2"
-      style="width: 82px;"
     >
       <input
         autocomplete="off"
@@ -62,12 +75,11 @@ exports[`<TicketField /> should render the appropriate field 2`] = `
         id="ticket-whateva-custom-field-value-input-2-input"
         name="Dropdown field"
         placeholder="+Add"
-        style="width: 82px;"
         type="text"
         value="some value"
       />
       <span
-        style="visibility: hidden; position: absolute;"
+        class="hiddenInputValue"
       />
     </span>
   </div>
@@ -80,19 +92,23 @@ exports[`<TicketField /> should render the appropriate field 3`] = `
     class="wrapper"
   >
     <label
-      class="labelWrapper"
+      class="wrapper label"
     >
-      <span
-        class="label"
+      <div
+        class="labelWrapper"
       >
-        Yes/No field
-        :
-      </span>
+        <span
+          class="label"
+          title="Yes/No field"
+        >
+          Yes/No field
+          :
+        </span>
+      </div>
     </label>
     <span
-      class=""
+      class="wrapper"
       id="ticket-whateva-custom-field-value-input-2"
-      style="width: 82px;"
     >
       <input
         autocomplete="off"
@@ -100,12 +116,11 @@ exports[`<TicketField /> should render the appropriate field 3`] = `
         id="ticket-whateva-custom-field-value-input-2-input"
         name="Yes/No field"
         placeholder="+Add"
-        style="width: 82px;"
         type="text"
         value="Yes"
       />
       <span
-        style="visibility: hidden; position: absolute;"
+        class="hiddenInputValue"
       />
     </span>
   </div>
@@ -115,25 +130,34 @@ exports[`<TicketField /> should render the appropriate field 3`] = `
 exports[`<TicketField /> should render the appropriate field 4`] = `
 <div>
   <label
-    class="labelWrapper"
+    class="wrapper"
   >
-    <span
-      class="label"
+    <div
+      class="labelWrapper"
     >
-      Number field
-      :
-    </span>
-    <input
-      autocomplete="off"
-      class="baseStyles stealth"
-      id="ticket-whateva-custom-field-value-number-input-123"
-      max="10"
-      min="1"
-      name="Number field"
-      placeholder="+Add"
-      type="number"
-      value="123"
-    />
+      <span
+        class="label"
+        title="Number field"
+      >
+        Number field
+        :
+      </span>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <input
+        autocomplete="off"
+        class="baseStyles stealth"
+        id="ticket-whateva-custom-field-value-number-input-123"
+        max="10"
+        min="1"
+        name="Number field"
+        placeholder="+Add"
+        type="number"
+        value="123"
+      />
+    </div>
   </label>
 </div>
 `;

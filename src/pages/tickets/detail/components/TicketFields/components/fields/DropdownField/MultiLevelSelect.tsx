@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
+import useDimensions from 'hooks/useDimensions'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 import {
     CustomFieldPrediction,
@@ -34,7 +35,7 @@ import {CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID} from './constants'
 import {SearchResult} from './search/SearchResult'
 import {SearchInput} from './search/SearchInput'
 import css from './MultiLevelSelect.less'
-import {usePredictionIconWidthAdjuster} from './hooks/usePredictionIconWidthAdjuster'
+import {usePredictionIconPositionAdjuster} from './hooks/usePredictionIconPositionAdjuster'
 
 type Props = {
     id: CustomFieldState['id']
@@ -44,7 +45,6 @@ type Props = {
     hasError?: boolean
     prediction?: CustomFieldPrediction
     choices: CustomFieldValue[]
-    isLarge?: boolean
     showFullValue?: boolean
     autoWidth?: boolean
     inputId: string
@@ -60,7 +60,6 @@ export default function MultiLevelSelect({
     hasError = false,
     prediction,
     choices,
-    isLarge = false,
     showFullValue = false,
     autoWidth = false,
     inputId,
@@ -68,8 +67,8 @@ export default function MultiLevelSelect({
     onFocus,
 }: Props) {
     const containerRef = useRef<HTMLSpanElement>(null)
-    const inputRef = useRef<HTMLInputElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
+    const [inputRef, inputDimensions] = useDimensions()
 
     const isValueEmpty = isCustomFieldValueEmpty(value)
     const displayValue = showFullValue
@@ -110,7 +109,7 @@ export default function MultiLevelSelect({
         isActive,
         setActive,
         currentPath,
-        inputRef,
+        inputRef: inputRef as unknown as RefObject<HTMLInputElement>,
         modalRef,
     })
 
@@ -157,19 +156,18 @@ export default function MultiLevelSelect({
         ((prediction.confirmed === true && prediction.modified === false) ||
             (prediction.confirmed === false && prediction.modified === false))
 
-    const {containerWidth, inputWidth, hiddenRef} =
-        usePredictionIconWidthAdjuster({
-            value,
-            shouldShowIcon: isPredictionCorrect,
-            isLarge,
-        })
+    const {iconLeft, hiddenRef} = usePredictionIconPositionAdjuster({
+        value,
+        inputDimensions,
+        shouldShowIcon: isPredictionCorrect,
+    })
+
     return (
         <>
             <span
                 ref={containerRef}
                 id={inputId}
-                style={{width: `${containerWidth}px`}}
-                className={classNames({
+                className={classNames(css.wrapper, {
                     [css.autoWidthInputContainer]: autoWidth,
                     [css.placeholder]: isValueEmpty,
                 })}
@@ -181,22 +179,25 @@ export default function MultiLevelSelect({
                 )}
                 <StealthInput
                     id={inputId + '-input'}
+                    className={
+                        isPredictionCorrect && hiddenRef.current
+                            ? css.inputWithPredictionIcon
+                            : undefined
+                    }
                     ref={inputRef}
                     name={label}
                     value={displayValue}
                     placeholder={placeholder}
                     isActive={false}
-                    isLarge={isLarge}
-                    style={{width: `${inputWidth}px`}}
                     onFocus={handleFocus}
                     hasError={hasError}
                 />
-                <span
-                    ref={hiddenRef}
-                    style={{visibility: 'hidden', position: 'absolute'}}
-                ></span>
+                <span ref={hiddenRef} className={css.hiddenInputValue} />
                 {isPredictionCorrect && hiddenRef.current && (
-                    <i className={`material-icons ${css.predictionIcon}`}>
+                    <i
+                        className={`material-icons ${css.predictionIcon}`}
+                        style={{left: `${iconLeft}px`}}
+                    >
                         auto_awesome
                     </i>
                 )}

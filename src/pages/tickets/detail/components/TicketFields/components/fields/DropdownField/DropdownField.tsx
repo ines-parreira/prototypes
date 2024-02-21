@@ -23,7 +23,13 @@ import css from './DropdownField.less'
 
 type Props = Omit<
     ComponentProps<typeof MultiLevelSelect>,
-    'onChange' | 'onFocus' | 'value' | 'prediction' | 'hasError' | 'inputId'
+    | 'onChange'
+    | 'onFocus'
+    | 'value'
+    | 'prediction'
+    | 'hasError'
+    | 'inputId'
+    | 'labelRef'
 > & {
     fieldState?: CustomFieldState
     isRequired?: boolean
@@ -95,7 +101,11 @@ export default function DropdownField(props: Props) {
 
     return (
         <div className={css.wrapper}>
-            <Label label={props.label} isRequired={props.isRequired}>
+            <Label
+                className={css.label}
+                label={props.label}
+                isRequired={props.isRequired}
+            >
                 {!isValueEmpty && (
                     <Tooltip placement="left" target={inputId} autohide={false}>
                         {getLabel(value)}

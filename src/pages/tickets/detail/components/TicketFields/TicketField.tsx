@@ -10,10 +10,9 @@ import DropdownField from './components/fields/DropdownField'
 type Props = {
     fieldDefinition: CustomField
     fieldState?: CustomFieldState
-    isLarge?: boolean
 }
 
-function TicketField({fieldDefinition, fieldState, isLarge = false}: Props) {
+function TicketField({fieldDefinition, fieldState}: Props) {
     const {id, label, required, definition} = fieldDefinition
     const baseFieldProps = {
         id,
@@ -29,7 +28,6 @@ function TicketField({fieldDefinition, fieldState, isLarge = false}: Props) {
         const textFieldProps = {
             ...baseFieldProps,
             placeholder: definition.input_settings.placeholder,
-            isLarge,
         }
         return <TextField {...textFieldProps} />
     } else if (
@@ -53,7 +51,6 @@ function TicketField({fieldDefinition, fieldState, isLarge = false}: Props) {
         const dropdownProps = {
             ...baseFieldProps,
             choices: definition.input_settings.choices,
-            isLarge: definition.data_type === 'text' && isLarge,
         }
         return <DropdownField {...dropdownProps} />
     }

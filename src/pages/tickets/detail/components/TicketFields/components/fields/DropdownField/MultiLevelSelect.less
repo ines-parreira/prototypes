@@ -1,4 +1,5 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
 
 :local {
     .dropdown {
@@ -65,7 +66,9 @@
 
     .predictionIcon {
         color: var(--main-primary);
-        font-size: 1.2rem;
+        font-size: 1.2rem !important;
+        align-self: center;
+        position: absolute;
     }
 
     .autoWidthInputContainer {
@@ -102,5 +105,21 @@
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
         }
+    }
+
+    .wrapper {
+        display: flex;
+        position: relative;
+    }
+
+    .hiddenInputValue {
+        visibility: hidden;
+        position: absolute;
+        .body-semibold();
+        padding-left: 8px;
+    }
+
+    .inputWithPredictionIcon {
+        padding-right: 20px;
     }
 }

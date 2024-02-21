@@ -17,6 +17,8 @@ import {isCustomFieldValueEmpty} from 'utils/customFields'
 import StealthInput from '../StealthInput'
 import Label from '../Label'
 
+import css from './Field.less'
+
 export type Props = {
     id: CustomFieldState['id']
     label: string
@@ -117,41 +119,48 @@ export default function NumberField({
                     {currentValue}
                 </Tooltip>
             )}
-            <StealthInput
-                id={inputId}
-                name={label}
-                type="number"
-                min={min}
-                max={max}
-                value={typeof currentValue === 'undefined' ? '' : currentValue}
-                onChange={(nextValue) =>
-                    handleChange(numberOrUndefined(nextValue))
-                }
-                hasError={hasError}
-                onFocus={() => {
-                    setActive(true)
-                    logEvent(SegmentEvent.CustomFieldTicketValueInputFocused, {
-                        ticketId,
-                        id,
-                        label,
-                    })
-                }}
-                onBlur={() => {
-                    setActive(false)
-                    setCurrentValue(currentValue)
-                    dispatch(updateCustomFieldValue(id, currentValue))
-                    if (currentValue !== stateValue) {
-                        mutate([
-                            {
-                                fieldType: 'Ticket',
-                                holderId: ticketId,
-                                fieldId: id,
-                                value: currentValue,
-                            },
-                        ])
+            <div className={css.wrapper}>
+                <StealthInput
+                    id={inputId}
+                    name={label}
+                    type="number"
+                    min={min}
+                    max={max}
+                    value={
+                        typeof currentValue === 'undefined' ? '' : currentValue
                     }
-                }}
-            />
+                    onChange={(nextValue) =>
+                        handleChange(numberOrUndefined(nextValue))
+                    }
+                    hasError={hasError}
+                    onFocus={() => {
+                        setActive(true)
+                        logEvent(
+                            SegmentEvent.CustomFieldTicketValueInputFocused,
+                            {
+                                ticketId,
+                                id,
+                                label,
+                            }
+                        )
+                    }}
+                    onBlur={() => {
+                        setActive(false)
+                        setCurrentValue(currentValue)
+                        dispatch(updateCustomFieldValue(id, currentValue))
+                        if (currentValue !== stateValue) {
+                            mutate([
+                                {
+                                    fieldType: 'Ticket',
+                                    holderId: ticketId,
+                                    fieldId: id,
+                                    value: currentValue,
+                                },
+                            ])
+                        }
+                    }}
+                />
+            </div>
         </Label>
     )
 }

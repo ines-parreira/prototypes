@@ -1,19 +1,30 @@
-import React, {ReactNode} from 'react'
+import React, {ForwardedRef, ReactNode, forwardRef} from 'react'
+import classNames from 'classnames'
 
 import css from './Label.less'
 
 type Props = {
+    className?: string
     label: string
     children: ReactNode
     isRequired?: boolean
 }
 
-export default function Label({label, children, isRequired = false}: Props) {
+function Label(
+    {className, label, children, isRequired = false}: Props,
+    ref: ForwardedRef<HTMLLabelElement>
+) {
     return (
-        <label className={css.labelWrapper}>
-            <span className={css.label}>{label}:</span>
-            {isRequired && <sup className={css.asterisk}>*</sup>}
+        <label ref={ref} className={classNames(css.wrapper, className)}>
+            <div className={css.labelWrapper}>
+                <span title={label} className={css.label}>
+                    {label}:
+                </span>
+                {isRequired && <sup className={css.asterisk}>*</sup>}
+            </div>
             {children}
         </label>
     )
 }
+
+export default forwardRef<HTMLLabelElement, Props>(Label)

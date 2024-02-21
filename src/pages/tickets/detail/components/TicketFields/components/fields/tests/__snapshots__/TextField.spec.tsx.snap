@@ -2,27 +2,36 @@
 
 exports[`<TextField /> should render the text field component correctly 1`] = `
 <label
-  class="labelWrapper"
+  class="wrapper"
 >
-  <span
-    class="label"
+  <div
+    class="labelWrapper"
   >
-    text field
-    :
-  </span>
-  <sup
-    class="asterisk"
+    <span
+      class="label"
+      title="text field"
+    >
+      text field
+      :
+    </span>
+    <sup
+      class="asterisk"
+    >
+      *
+    </sup>
+  </div>
+  <div
+    class="wrapper"
   >
-    *
-  </sup>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-input-1"
-    name="text field"
-    placeholder="+Add"
-    type="text"
-    value="this is a very long value that should be truncated"
-  />
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-input-1"
+      name="text field"
+      placeholder="+Add"
+      type="text"
+      value="this is a very long value that should be truncated"
+    />
+  </div>
 </label>
 `;

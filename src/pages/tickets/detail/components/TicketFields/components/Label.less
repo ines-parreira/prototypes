@@ -2,17 +2,19 @@
 @import (reference) '~css/typography';
 
 :local {
-    .labelWrapper {
+    .wrapper {
         display: flex;
         // revert bootstrap shitty styles
         margin-bottom: 0;
-        cursor: pointer;
     }
 
     .label {
         display: inline-block;
         margin-right: @layout-spacing-xxs;
         .body-regular();
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .asterisk {
@@ -25,5 +27,10 @@
         font-size: medium;
         vertical-align: super;
         line-height: initial;
+    }
+
+    .labelWrapper {
+        display: flex;
+        max-width: 60%;
     }
 }

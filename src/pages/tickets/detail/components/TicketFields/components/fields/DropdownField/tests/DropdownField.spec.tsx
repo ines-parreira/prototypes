@@ -246,7 +246,7 @@ describe('<DropdownField />', () => {
         expect(screen.queryByPlaceholderText('Search')).toBeNull()
     })
 
-    it('should display display results when searching', async () => {
+    it('should display results when searching', async () => {
         const {container} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>

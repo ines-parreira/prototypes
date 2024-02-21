@@ -35,14 +35,6 @@ describe('<StealthInput />', () => {
         expect(input.classList.contains('valid')).toBe(false)
     })
 
-    it('should handle isLarge prop correctly', () => {
-        const {rerender} = render(<StealthInput {...initialProps} />)
-        const input = screen.getByRole('textbox')
-        expect(input.classList.contains('large')).toBe(false)
-        rerender(<StealthInput {...initialProps} isLarge />)
-        expect(input.classList.contains('large')).toBe(true)
-    })
-
     it('should handle errors correctly', () => {
         render(<StealthInput {...initialProps} hasError />)
         expect(screen.getByRole('textbox').classList.contains('invalid')).toBe(

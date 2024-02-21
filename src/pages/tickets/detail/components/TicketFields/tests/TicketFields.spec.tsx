@@ -88,26 +88,4 @@ describe('<TicketFields />', () => {
             ).toBeDefined()
         })
     })
-
-    it('should provide an isLarge prop if they are less than 4 custom fields', async () => {
-        mockedServer.onGet('/api/custom-fields/').reply(200, {
-            data: [
-                ticketDropdownFieldDefinition,
-                ticketDropdownFieldDefinition,
-                ticketInputFieldDefinition,
-            ],
-        })
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>
-        )
-        await waitFor(() => {
-            const input = screen.getAllByRole('textbox')[0]
-            expect(input.classList.contains('large')).toBe(true)
-        })
-    })
 })

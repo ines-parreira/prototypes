@@ -4,9 +4,8 @@ exports[`<MultiLevelSelect /> should display display results when searching 1`] 
 <body>
   <div>
     <span
-      class=""
+      class="wrapper"
       id="test-input-id"
-      style="width: 82px;"
     >
       <input
         autocomplete="off"
@@ -14,12 +13,11 @@ exports[`<MultiLevelSelect /> should display display results when searching 1`] 
         id="test-input-id-input"
         name="dropdown"
         placeholder="+Add"
-        style="width: 82px;"
         type="text"
         value="c2"
       />
       <span
-        style="visibility: hidden; position: absolute;"
+        class="hiddenInputValue"
       />
     </span>
   </div>
@@ -197,9 +195,8 @@ exports[`<MultiLevelSelect /> should render the dropdown component correctly 1`]
 <body>
   <div>
     <span
-      class=""
+      class="wrapper"
       id="test-input-id"
-      style="width: 82px;"
     >
       <input
         autocomplete="off"
@@ -207,12 +204,11 @@ exports[`<MultiLevelSelect /> should render the dropdown component correctly 1`]
         id="test-input-id-input"
         name="dropdown"
         placeholder="+Add"
-        style="width: 82px;"
         type="text"
         value="c2"
       />
       <span
-        style="visibility: hidden; position: absolute;"
+        class="hiddenInputValue"
       />
     </span>
   </div>
