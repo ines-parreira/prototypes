@@ -38,7 +38,6 @@ import Group from 'pages/common/components/layout/Group'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
-import history from 'pages/history'
 
 import {
     createJob as createJobView,
@@ -61,7 +60,7 @@ import {hasRole} from 'utils'
 
 import css from './TicketListActions.less'
 
-const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
+export const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
 
 type Props = {
     openMacroModal: () => void
@@ -287,12 +286,6 @@ export const TicketListActions = ({
     }
 
     const actions = {
-        CREATE_TICKET: {
-            action: (e: Event) => {
-                e.preventDefault()
-                history.push('/app/ticket/new')
-            },
-        },
         OPEN_TICKET: {
             action: () => bulkUpdate('status', 'open'),
         },

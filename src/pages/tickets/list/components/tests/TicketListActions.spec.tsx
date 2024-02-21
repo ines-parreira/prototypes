@@ -16,7 +16,6 @@ import {UserRole} from 'config/types/user'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
 import {JobType} from 'models/job/types'
-import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {createJob as createJobTicket} from 'state/tickets/actions'
 import {
@@ -49,7 +48,6 @@ const shortcutManagerMock = shortcutManager as jest.Mocked<
 const shortcutEventMock = {
     preventDefault: jest.fn(),
 } as unknown as jest.Mocked<Event>
-const historyMock = history as jest.Mocked<typeof history>
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockStore = configureMockStore()
@@ -343,19 +341,6 @@ describe('TicketListActions component', () => {
         expect(shortcutManagerMock.unbind).toHaveBeenLastCalledWith(
             'TicketListActions'
         )
-    })
-
-    it('should redirect to new ticket page on create ticket shortcut', () => {
-        render(
-            <Provider store={store}>
-                <TicketListActions {...props} />
-            </Provider>
-        )
-
-        hitShortcut('CREATE_TICKET')
-
-        expect(shortcutEventMock.preventDefault).toHaveBeenLastCalledWith()
-        expect(historyMock.push).toHaveBeenLastCalledWith('/app/ticket/new')
     })
 
     it('should open agents dropdown on open assignee shortcut', () => {

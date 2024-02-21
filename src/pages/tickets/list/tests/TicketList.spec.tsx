@@ -9,10 +9,12 @@ import thunk from 'redux-thunk'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {user} from 'fixtures/users'
 import {view as fixtureView} from 'fixtures/views'
+import useShortcuts from 'hooks/useShortcuts'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import {SHORTCUT_MANAGER_COMPONENT_NAME} from 'pages/tickets/list/components/TicketListActions'
 import LocalForageManager from 'services/localForageManager/localForageManager'
-import {flushPromises, renderWithRouter} from 'utils/testing'
 import {fetchTags} from 'state/tags/actions'
+import {flushPromises, renderWithRouter} from 'utils/testing'
 
 jest.mock('state/tags/actions')
 
@@ -96,6 +98,9 @@ const store = mockStore({
         },
     }),
 })
+
+jest.mock('hooks/useShortcuts')
+const useShortcutsMock = useShortcuts as jest.Mock
 
 describe('<TicketList />', () => {
     it('should display with default props', () => {
@@ -235,6 +240,22 @@ describe('<TicketList />', () => {
                 type: 'discard',
                 user_id: user.id,
             })
+        )
+    })
+
+    it('should bind keyboard shortcuts', () => {
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketList />
+            </Provider>
+        )
+        expect(useShortcutsMock).toHaveBeenCalledWith(
+            SHORTCUT_MANAGER_COMPONENT_NAME,
+            {
+                CREATE_TICKET: {
+                    action: expect.any(Function),
+                },
+            }
         )
     })
 })

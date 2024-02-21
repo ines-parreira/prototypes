@@ -2,7 +2,6 @@
 
 exports[`TicketListActions component should bind keyboard shortcuts on mount 1`] = `
 [
-  "CREATE_TICKET",
   "OPEN_TICKET",
   "CLOSE_TICKET",
   "OPEN_ASSIGNEE",

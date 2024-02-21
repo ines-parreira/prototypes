@@ -40,7 +40,10 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 
-import TicketListActions from './components/TicketListActions'
+import useShortcuts from 'hooks/useShortcuts'
+import TicketListActions, {
+    SHORTCUT_MANAGER_COMPONENT_NAME,
+} from './components/TicketListActions'
 import css from './TicketList.less'
 
 const TicketList = () => {
@@ -125,6 +128,15 @@ const TicketList = () => {
             user_id: currentUser.get('id'),
         })
     }, [currentUser, history, localForage])
+
+    useShortcuts(SHORTCUT_MANAGER_COMPONENT_NAME, {
+        CREATE_TICKET: {
+            action: (e: Event) => {
+                e.preventDefault()
+                history.push('/app/ticket/new')
+            },
+        },
+    })
 
     useTitle(title)
 
