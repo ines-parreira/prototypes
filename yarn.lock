@@ -3169,10 +3169,10 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.18/80ed68b4985c953da7fd3d30c02bf5c89748e84b#80ed68b4985c953da7fd3d30c02bf5c89748e84b"
   integrity sha512-YzKQZwwTfMLi3oEFOgOC6gf9T80fueMo2j8H69jsv31NqU8SCqCYHyWdpYLUiO0AXoWkzM9ewLThKKwIGTbOxQ==
 
-"@gorgias/design-tokens@^0.2.4":
-  version "0.2.4"
-  resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.2.4/63d930101267e0a21fe2d472b3bb74092fd965b2#63d930101267e0a21fe2d472b3bb74092fd965b2"
-  integrity sha512-PdNP4XBV24KX+OPKRXjNO1qYOiapbeyjfGT2LBcF0KW1x4IS6oQK8/r1UZmUrc3vdzBwYs1BSl1TiImOo4zWfw==
+"@gorgias/design-tokens@^0.2.8":
+  version "0.2.8"
+  resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.2.8/ed3499b23c0de4cf9708181685b23221e5191440#ed3499b23c0de4cf9708181685b23221e5191440"
+  integrity sha512-g7TrzC3v7oGsKlrjgJMVxuhpAyUI8FVnwZbcZZt+KLZ6Fg0u2GtAw4jZZtMVa+r5bcDZqgK+gYdq+ygGgIXlqw==
   dependencies:
     "@gorgias/javascript-shared-config" "^0.1.0"
     lodash "^4.17.21"

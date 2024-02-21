@@ -63,7 +63,7 @@
         "@formatjs/intl-numberformat": "5.5.0",
         "@formatjs/intl-pluralrules": "3.4.7",
         "@gorgias/analytics-ui-kit": "^0.1.0",
-        "@gorgias/design-tokens": "^0.2.4",
+        "@gorgias/design-tokens": "^0.2.8",
         "@gorgias/event-tracker-browser": "2.0.0",
         "@hot-loader/react-dom": "16.13.0",
         "@reduxjs/toolkit": "^1.9.7",
