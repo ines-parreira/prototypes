@@ -1,3 +1,12 @@
+// Make typescript happy when updating a record with values of another
+// record with the same keys / type
+export function updateRecord<
+    R extends Record<string, unknown>,
+    K extends keyof R
+>(record: R, key: K, value: R[K]) {
+    record[key] = value
+}
+
 export const notNull = <T>(val: T | null): val is T => {
     return val !== null
 }

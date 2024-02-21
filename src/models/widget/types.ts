@@ -70,7 +70,8 @@ export type Wrapper = baseTemplate & {
 
 export type Card = baseTemplate & {
     type: 'card'
-    path: string
+    // in the case card has a list as a parent, path is the path of the list
+    path?: string
     title?: string
     order?: number
     widgets: Array<Card | List | Leaf>
@@ -89,6 +90,8 @@ export type Leaf = baseTemplate & {
     type: LeafTypes
     path: string
     title: string
+    // allows to access the widget property in any case
+    widgets?: undefined
 }
 
 export type TemplateTypes = Template['type']

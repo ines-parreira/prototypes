@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
-import {assumeMock} from 'utils/testing'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import WrapperEditActions, {FormData} from '../WrapperEditActions'
 import WrapperEditForm from '../WrapperEditForm'
@@ -85,7 +85,7 @@ describe('WrapperEditActions', () => {
         )
 
         fireEvent.click(getByText(defaultProps.editButtonText))
-        act(() => WrapperEditFormMock.mock.calls.slice(-1)[0][0].onCancel())
+        act(() => getLastMockCall(WrapperEditFormMock)[0].onCancel())
 
         await waitFor(() =>
             expect(queryByTestId(MOCK_EDIT_FORM_ID)).not.toBeInTheDocument()
@@ -103,9 +103,7 @@ describe('WrapperEditActions', () => {
 
         fireEvent.click(getByText(defaultProps.editButtonText))
         act(() =>
-            WrapperEditFormMock.mock.calls
-                .slice(-1)[0][0]
-                .onSubmit(expectedData)
+            getLastMockCall(WrapperEditFormMock)[0].onSubmit(expectedData)
         )
 
         await waitFor(() =>

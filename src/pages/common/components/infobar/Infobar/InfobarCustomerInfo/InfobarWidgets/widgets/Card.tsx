@@ -4,11 +4,17 @@ import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
+import {updateRecord} from 'utils/types'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
 import {IntegrationType} from 'models/integration/constants'
-import {PartialTemplate} from 'models/widget/types'
+import {
+    CardMeta,
+    ListMeta,
+    PartialTemplate,
+    Template,
+} from 'models/widget/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
     removeEditedWidget,
@@ -20,14 +26,20 @@ import {getWidgetsState} from 'state/widgets/selectors'
 import {WidgetType} from 'state/widgets/types'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
-import {canDrop} from 'pages/common/components/infobar/utils'
+import {
+    canDrop,
+    isSimpleTemplateWidget,
+} from 'pages/common/components/infobar/utils'
 import {CardHeaderIcon} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderIcon'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 // This is to avoid circular dependencies while doing recursion
+import CardEditForm, {
+    CardEditFormState,
+    HiddenField,
+} from 'infobar/ui/CardEditForm'
 import {widgetReference} from '../widgetReference'
 import {getWidgetTitle} from '../helpers'
-import CardEdit, {CardEditFormState, EditionHiddenField} from './forms/CardEdit'
 import {StaticField} from './StaticField'
 import CustomActions from './customActions'
 import css from './Card.less'
@@ -38,7 +50,7 @@ type Props = {
     AfterContent?: ElementType
     TitleWrapper?: ElementType
     Wrapper?: ElementType
-    editionHiddenFields?: EditionHiddenField[]
+    editionHiddenFields?: HiddenField[]
 
     parent?: Map<any, any>
     source?: Maybe<Map<string, unknown>>
@@ -51,20 +63,31 @@ type Props = {
     removeBorderTop: boolean
 }
 
-export function Card(props: Props) {
+export const cardMetaFields: Array<keyof Omit<CardMeta, 'custom'>> = [
+    'displayCard',
+    'link',
+    'pictureUrl',
+    'color',
+]
+export const listMetaFields: Array<keyof ListMeta> = ['limit', 'orderBy']
+
+export const EDIT_BUTTON_TEXT = 'edit'
+export const DELETE_BUTTON_TEXT = 'delete'
+
+export default function Card(props: Props) {
     const {
         TitleWrapper,
         AfterTitle,
         BeforeContent,
         AfterContent,
         Wrapper,
+        editionHiddenFields = [],
         template,
-        parent,
+        parent = Map({}),
         source,
         widget,
         isParentList,
         isEditing,
-        editionHiddenFields = [],
         removeBorderTop,
     } = props
     const InfobarWidget = widgetReference.Widget
@@ -108,23 +131,27 @@ export function Card(props: Props) {
         const card: PartialTemplate = {
             type: 'card',
             title: formState.title,
-            meta: {
-                link: formState.link,
-                displayCard: formState.displayCard,
-                pictureUrl: formState.pictureUrl,
-                color: formState.color,
-            },
+        }
+
+        for (const field of cardMetaFields) {
+            if (formState[field] !== undefined) {
+                card.meta ??= {}
+                updateRecord(card.meta, field, formState[field])
+            }
         }
 
         if (isParentList) {
             const list: PartialTemplate = {
                 title: parent?.get('title') as string,
                 type: 'list',
-                meta: {
-                    limit: formState.limit,
-                    orderBy: formState.orderBy,
-                },
                 widgets: [card],
+            }
+
+            for (const field of listMetaFields) {
+                if (formState[field] !== undefined) {
+                    list.meta ??= {}
+                    updateRecord(list.meta, field, formState[field])
+                }
             }
             // saving the parent list AND the card inside that list
             dispatch(updateEditedWidget(list))
@@ -133,6 +160,7 @@ export function Card(props: Props) {
             dispatch(updateEditedWidget(card))
         }
 
+        dispatch(stopWidgetEdition())
         setPopupOpen(false)
     }
 
@@ -145,8 +173,6 @@ export function Card(props: Props) {
     const handlePopoverToggle = () => {
         if (isPopupOpen) {
             handleEditCancel()
-        } else {
-            handleEditStart()
         }
     }
 
@@ -263,15 +289,54 @@ export function Card(props: Props) {
     // detect first non-text nested widget, to auto-expand
     let firstNonTextWidget = false
 
+    const enrichedEditionHiddenField = [...editionHiddenFields]
+    if (!isParentList) {
+        enrichedEditionHiddenField.push('limit', 'orderBy')
+    }
     // HTTP is a special case because it can have both
     // custom and hard coded icons
-    const enrichedEditionHiddenField = [...editionHiddenFields]
     if (
         integrationContext.integration.get('type') !== IntegrationType.Http &&
         Boolean(TitleWrapper)
     ) {
-        enrichedEditionHiddenField.push('icon')
+        enrichedEditionHiddenField.push('pictureUrl', 'color')
     }
+
+    // existing data might have it stored as a string, though it should always be a number
+    const limit = parent.getIn(['meta', 'limit'], undefined) as
+        | number
+        | string
+        | undefined
+
+    const initialData = {
+        title: template.get('title', '') as string,
+        link: template.getIn(['meta', 'link'], undefined) as string | undefined,
+        pictureUrl: template.getIn(['meta', 'pictureUrl'], undefined) as
+            | string
+            | undefined,
+        color: template.getIn(['meta', 'color'], undefined) as
+            | string
+            | undefined,
+        displayCard: template.getIn(['meta', 'displayCard'], undefined) as
+            | boolean
+            | undefined,
+        limit: limit === undefined ? limit : Number(limit),
+        orderBy: parent.getIn(['meta', 'orderBy'], undefined) as
+            | string
+            | undefined,
+    }
+
+    const orderByOptions = (childWidgets.toJS() as Template[])
+        .filter(isSimpleTemplateWidget)
+        .reduce((acc, {title = '', path}) => {
+            ;['-', '+'].forEach((order) =>
+                acc.push({
+                    value: `${order}${typeof path === 'string' ? path : ''}`,
+                    label: `${title} (${order === '-' ? 'DESC' : 'ASC'})`,
+                })
+            )
+            return acc
+        }, [] as {value: string; label: string}[])
 
     let content = (
         <div className={className}>
@@ -315,13 +380,13 @@ export function Card(props: Props) {
                                             className={`material-icons text-danger ${css.widgetCardToolIcon}`}
                                             onClick={handleDelete}
                                         >
-                                            delete
+                                            {DELETE_BUTTON_TEXT}
                                         </i>
                                         <i
                                             className={`material-icons ${css.widgetCardToolIcon}`}
                                             onClick={handleEditStart}
                                         >
-                                            edit
+                                            {EDIT_BUTTON_TEXT}
                                         </i>
                                     </span>
                                     {onlyContent && (
@@ -342,11 +407,10 @@ export function Card(props: Props) {
                                         container={appNode ?? undefined}
                                     >
                                         <PopoverBody>
-                                            <CardEdit
-                                                template={template}
-                                                parent={parent || Map()}
-                                                isParentList={isParentList}
-                                                editionHiddenFields={
+                                            <CardEditForm
+                                                initialData={initialData}
+                                                orderByOptions={orderByOptions}
+                                                hiddenFields={
                                                     enrichedEditionHiddenField
                                                 }
                                                 onSubmit={handleEditSubmit}
@@ -455,8 +519,6 @@ export function Card(props: Props) {
 
     return content
 }
-
-export default Card
 
 function isRootWidget(templatePath: string) {
     // We must handle the case where the first widget after the wrapper

@@ -67,21 +67,18 @@ export function isObject(value: any) {
 /**
  * Check if a widget is a simple field (not a card or a list)
  */
-export function isSimpleTemplateWidget(
-    widget: Map<string, unknown> | undefined
-) {
+export function isSimpleTemplateWidget(widget: Template) {
     if (typeof widget === 'undefined') return true
-    return !['card', 'list'].includes(widget.get('type') as string)
+    return !['card', 'list'].includes(widget.type)
 }
 
 /**
  * Check if a widget does not contain any simple widget (ie. only complex widgets such as cards or lists)
  * If it contains at least a card, or a list, etc. it returns false
  */
-export function hasNoSimpleWidget(widget: Map<any, any>) {
-    return !(widget.get('widgets', fromJS([])) as List<any>).some(
-        isSimpleTemplateWidget
-    )
+export function hasNoSimpleWidget(widget: Template) {
+    const children = widget.widgets || []
+    return !children.some(isSimpleTemplateWidget)
 }
 
 export function isUppercase(string: string) {
@@ -289,7 +286,7 @@ export function makeWrapper({
         const firstWidget = (
             wrapperWidget.get('widgets', fromJS([])) as List<any>
         ).first() as Map<any, any>
-        if (hasNoSimpleWidget(firstWidget)) {
+        if (hasNoSimpleWidget(firstWidget.toJS())) {
             wrapperWidget = wrapperWidget.set(
                 'widgets',
                 firstWidget.get('widgets', fromJS([]))

@@ -5,7 +5,7 @@ import {Action} from 'redux'
 import {Map, fromJS} from 'immutable'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
-import {assumeMock} from 'utils/testing'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 import {LeafTypes} from 'models/widget/types'
 import {idTemplate, shopifyWidget} from 'fixtures/widgets'
 import {RootState} from 'state/types'
@@ -193,7 +193,7 @@ describe('Field', () => {
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
 
-        const {availableTypes} = FieldEditFormMock.mock.calls.slice(-1)[0][0]
+        const {availableTypes} = getLastMockCall(FieldEditFormMock)[0]
         expect(availableTypes).toEqual(
             TYPE_OPTIONS.filter((option) => option.value !== 'editableList')
         )
@@ -212,7 +212,7 @@ describe('Field', () => {
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
 
-        const {availableTypes} = FieldEditFormMock.mock.calls.slice(-1)[0][0]
+        const {availableTypes} = getLastMockCall(FieldEditFormMock)[0]
         expect(availableTypes).toEqual(TYPE_OPTIONS)
     })
 
@@ -229,7 +229,7 @@ describe('Field', () => {
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
 
-        const {availableTypes} = FieldEditFormMock.mock.calls.slice(-1)[0][0]
+        const {availableTypes} = getLastMockCall(FieldEditFormMock)[0]
         expect(availableTypes).toEqual(TYPE_OPTIONS)
     })
 
@@ -242,7 +242,7 @@ describe('Field', () => {
         )
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-        act(() => FieldEditFormMock.mock.calls.slice(-1)[0][0].onCancel())
+        act(() => getLastMockCall(FieldEditFormMock)[0].onCancel())
 
         await waitFor(() =>
             expect(
@@ -262,9 +262,7 @@ describe('Field', () => {
         )
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-        act(() =>
-            FieldEditFormMock.mock.calls.slice(-1)[0][0].onSubmit(formData)
-        )
+        act(() => getLastMockCall(FieldEditFormMock)[0].onSubmit(formData))
 
         await waitFor(() =>
             expect(

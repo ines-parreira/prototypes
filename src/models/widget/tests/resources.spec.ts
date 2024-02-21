@@ -1,6 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {shopifyWidget} from 'fixtures/widgets'
 import client from 'models/api/resources'
 
 import {fetchWidgets} from '../resources'
@@ -15,7 +14,7 @@ describe('widgets resources', () => {
     describe('fetchWidgets', () => {
         it('should resolve with a list of widgets on success', async () => {
             mockedServer.onGet('/api/widgets/').reply(200, {
-                data: [shopifyWidget],
+                data: [{whatever: true}],
             })
 
             const res = await fetchWidgets()

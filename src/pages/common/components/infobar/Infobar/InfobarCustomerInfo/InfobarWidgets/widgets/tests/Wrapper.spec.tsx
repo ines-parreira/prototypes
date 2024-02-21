@@ -15,7 +15,7 @@ import {
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {assumeMock} from 'utils/testing'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 import WrapperEditActions, {FormData} from 'infobar/ui/WrapperEditActions'
 
 import Wrapper, {CUSTOMIZABLE_WIDGET_TYPES, useIntegration} from '../Wrapper'
@@ -165,7 +165,7 @@ describe('Wrapper', () => {
             </Provider>
         )
 
-        WrapperEditActionsMock.mock.calls.slice(-1)[0][0].onDelete()
+        getLastMockCall(WrapperEditActionsMock)[0].onDelete()
 
         expect(store.getActions()).toContainEqual(
             removeEditedWidget(defaultTemplatePath, fromJS(defaultAbsolutePath))
@@ -285,7 +285,7 @@ describe('Wrapper', () => {
             </Provider>
         )
 
-        WrapperEditActionsMock.mock.calls.slice(-1)[0][0].onEditStart()
+        getLastMockCall(WrapperEditActionsMock)[0].onEditStart()
 
         expect(store.getActions()).toContainEqual(
             actions.startWidgetEdition(defaultTemplatePath)
@@ -309,7 +309,7 @@ describe('Wrapper', () => {
             </Provider>
         )
 
-        WrapperEditActionsMock.mock.calls.slice(-1)[0][0].onEditCancel()
+        getLastMockCall(WrapperEditActionsMock)[0].onEditCancel()
 
         expect(store.getActions()).toContainEqual(actions.stopWidgetEdition())
     })
