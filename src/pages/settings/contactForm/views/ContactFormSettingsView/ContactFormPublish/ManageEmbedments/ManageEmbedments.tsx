@@ -313,6 +313,9 @@ const ManageEmbedments = ({
                                             <SelectField
                                                 fixedWidth
                                                 style={{width: '200px'}}
+                                                dropdownMenuClassName={
+                                                    css.dropdownMenu
+                                                }
                                                 onChange={(value) =>
                                                     onPositionChange(
                                                         embedment.id,
