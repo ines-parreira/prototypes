@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 
+import classNames from 'classnames'
 import {Drawer} from 'pages/common/components/Drawer'
 
 import {ShopperAuthenticationNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -7,6 +8,7 @@ import {ShopperAuthenticationNodeType} from 'pages/automate/workflows/models/vis
 import Label from 'pages/common/forms/Label/Label'
 import InputField from 'gorgias-design-system/Input/TextField'
 import RadioButton from 'pages/common/components/RadioButton'
+import {Theme} from 'theme'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 
 import css from '../NodeEditor.less'
@@ -24,7 +26,12 @@ export default function ShopperAuthenticationEditor({
             <Drawer.Content>
                 <div className={css.container}>
                     <div className={shopperAuthenticationCss.content}>
-                        <div className={shopperAuthenticationCss.loginCard}>
+                        <div
+                            className={classNames(
+                                shopperAuthenticationCss.loginCard,
+                                Theme.Light
+                            )}
+                        >
                             <div
                                 className={
                                     shopperAuthenticationCss.loginCardContent
