@@ -362,7 +362,13 @@ function prerenderVariables(string: string) {
                     props.length === 3 &&
                     props[props.length - 1] === 'attachments'
                 ) {
-                    _set(context, props, [])
+                    // https://github.com/gorgias/workflows/blob/0b763486a5f07b9c6c06246059d07de41168ba8d/libs/wf-execution/src/lib/schemas/wf-execution-state.schema.ts#L32
+                    _set(context, props, [
+                        {
+                            content_type: 'image/jpeg',
+                            url: 'https://uploads.gorgias.io/asset.jpeg',
+                        },
+                    ])
                 } else {
                     _set(context, props, '')
                 }
