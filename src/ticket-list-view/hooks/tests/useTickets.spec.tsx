@@ -39,7 +39,7 @@ describe('useTickets', () => {
         useTicketDataMock.mockReturnValue({})
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,
-            loading: false,
+            initialLoaded: false,
             loadMore: jest.fn(),
             setLatest: jest.fn(),
             partials,
@@ -57,7 +57,7 @@ describe('useTickets', () => {
         )
         expect(result.current).toEqual({
             hasMore: false,
-            loading: false,
+            initialLoaded: false,
             loadMore: expect.any(Function),
             setElement: expect.any(Function),
             staleTickets: {123: true},
@@ -77,7 +77,7 @@ describe('useTickets', () => {
 
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,
-            loading: false,
+            initialLoaded: true,
             loadMore: jest.fn(),
             setLatest: jest.fn(),
             partials: newPartials,
@@ -86,7 +86,7 @@ describe('useTickets', () => {
         await waitFor(() => {
             expect(result.current).toEqual({
                 hasMore: false,
-                loading: false,
+                initialLoaded: true,
                 loadMore: expect.any(Function),
                 setElement: expect.any(Function),
                 staleTickets: {123: true},
@@ -105,7 +105,7 @@ describe('useTickets', () => {
         ]
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,
-            loading: false,
+            isLoaded: true,
             loadMore: jest.fn(),
             setLatest: jest.fn(),
             partials: mockPartials,

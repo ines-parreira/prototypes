@@ -8,7 +8,7 @@ import {SortOrder} from './useSortOrder'
 
 type State = {
     cursor: CursorMeta['next_cursor']
-    loading: boolean
+    initialLoaded: boolean
     partials: TicketPartial[]
 }
 
@@ -16,9 +16,9 @@ export default function useTicketPartials(
     viewId: number,
     sortOrder: SortOrder
 ) {
-    const [{cursor, loading, partials}, setState] = useState<State>({
+    const [{cursor, initialLoaded, partials}, setState] = useState<State>({
         cursor: null,
-        loading: false,
+        initialLoaded: false,
         partials: [],
     })
 
@@ -30,10 +30,14 @@ export default function useTicketPartials(
     useEffect(
         () =>
             client.subscribe((partials, cursor) => {
-                setState((s) => ({...s, cursor, partials}))
+                setState((s) => ({...s, cursor, partials, initialLoaded: true}))
             }),
         [client]
     )
+
+    useEffect(() => {
+        setState((s) => ({...s, initialLoaded: false}))
+    }, [viewId])
 
     const loadMore = useCallback(() => {
         if (!cursor) return
@@ -44,11 +48,11 @@ export default function useTicketPartials(
     return useMemo(
         () => ({
             hasMore: !!cursor,
-            loading,
+            initialLoaded,
             loadMore,
             partials,
             setLatest: client.setLatest,
         }),
-        [client, cursor, loading, loadMore, partials]
+        [client, cursor, initialLoaded, loadMore, partials]
     )
 }

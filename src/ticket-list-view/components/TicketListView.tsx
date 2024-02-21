@@ -6,6 +6,7 @@ import React, {
     Fragment,
     ReactElement,
     useCallback,
+    useEffect,
     useMemo,
     useRef,
 } from 'react'
@@ -23,6 +24,7 @@ import {TicketSummary} from '../types'
 
 import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
+import TicketListInfo from './TicketListInfo'
 import css from './TicketListView.less'
 
 type Props = {
@@ -33,11 +35,19 @@ type Props = {
 export default function TicketListView({activeTicketId, viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const [sortOrder, setSortOrder] = useSortOrder()
-    const {loadMore, setElement, tickets, newTickets, ticketIds} = useTickets(
-        viewId,
-        sortOrder,
-        activeTicketId
-    )
+    const {
+        loadMore,
+        setElement,
+        tickets,
+        newTickets,
+        ticketIds,
+        initialLoaded,
+    } = useTickets(viewId, sortOrder, activeTicketId)
+
+    const initialLoadedRef = useRef(initialLoaded)
+    useEffect(() => {
+        initialLoadedRef.current = initialLoaded
+    }, [initialLoaded])
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketSummary) => (
@@ -96,6 +106,13 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
                     </TransitionGroup>
                 </div>
             )),
+            EmptyPlaceholder: () =>
+                initialLoadedRef.current ? (
+                    <TicketListInfo
+                        text="No tickets"
+                        subText="There are no tickets in this view"
+                    />
+                ) : null,
         }),
         [ticketIds]
     )

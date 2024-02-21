@@ -9,6 +9,11 @@ import useTicketPartials from '../useTicketPartials'
 jest.mock('../../TicketUpdatesManager', () => jest.fn())
 const TicketUpdatesManagerMock = TicketUpdatesManager as jest.Mock
 
+type Listener = (
+    partials: TicketPartial[],
+    cursor: CursorMeta['next_cursor']
+) => void
+
 describe('useTicketPartials', () => {
     let loadMore: jest.Mock
     let subscribe: jest.Mock
@@ -49,14 +54,7 @@ describe('useTicketPartials', () => {
             useTicketPartials(123, 'created_datetime:asc')
         )
 
-        const [[listener]] = subscribe.mock.calls as [
-            [
-                (
-                    partials: TicketPartial[],
-                    cursor: CursorMeta['next_cursor']
-                ) => void
-            ]
-        ]
+        const [[listener]] = subscribe.mock.calls as [[Listener]]
 
         act(() => {
             listener([], 'random-cursor')
@@ -64,5 +62,34 @@ describe('useTicketPartials', () => {
 
         result.current.loadMore()
         expect(loadMore).toHaveBeenCalledWith()
+    })
+
+    it('should update initialLoaded state when partials are received', () => {
+        const {result} = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc')
+        )
+        const [[listener]] = subscribe.mock.calls as [[Listener]]
+
+        act(() => {
+            listener([], 'random-cursor')
+        })
+
+        expect(result.current.initialLoaded).toEqual(true)
+    })
+
+    it('should reset initialLoaded state when viewId changes', () => {
+        const {result, rerender} = renderHook(
+            ({viewId}) => useTicketPartials(viewId, 'created_datetime:asc'),
+            {initialProps: {viewId: 123}}
+        )
+        const [[listener]] = subscribe.mock.calls as [[Listener]]
+
+        act(() => {
+            listener([], 'random-cursor')
+        })
+
+        rerender({viewId: 456})
+
+        expect(result.current.initialLoaded).toEqual(false)
     })
 })

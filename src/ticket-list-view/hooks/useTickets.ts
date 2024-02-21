@@ -20,10 +20,8 @@ export default function useTickets(
     sortOrder: SortOrder,
     ticketId?: number
 ) {
-    const {hasMore, loading, loadMore, partials, setLatest} = useTicketPartials(
-        viewId,
-        sortOrder
-    )
+    const {hasMore, initialLoaded, loadMore, partials, setLatest} =
+        useTicketPartials(viewId, sortOrder)
     const previousPartials = usePrevious(partials)
     const previousPartialsMap = useMemo(() => {
         return previousPartials?.reduce(
@@ -116,7 +114,7 @@ export default function useTickets(
 
     return {
         hasMore,
-        loading,
+        initialLoaded,
         loadMore,
         setElement,
         staleTickets,
