@@ -1,0 +1,16 @@
+name: Check snapshot tests
+run-name: Check if new snapshot tests have been added to the repo
+on: [pull_request]
+jobs:
+  Check-Snapshot-Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            fetch-depth: 0
+      - run: ./scripts/check-snapshots.sh
+        shell: bash
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.base.sha }}
+          SOURCE_BRANCH: ${{ github.event.pull_request.head.sha }}
+          SOURCE_BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
