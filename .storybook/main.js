@@ -33,7 +33,7 @@ module.exports = {
                         browsers: ['last 2 versions', 'safari >= 7'],
                     },
                     useBuiltIns: 'usage',
-                    corejs: '2.6.5',
+                    corejs: '3.36.0',
                     loose: true,
                 },
             ],
