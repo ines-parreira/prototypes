@@ -136,7 +136,7 @@ const EmailIntegrationConnectStore = ({integration}: Props) => {
                             onClick={handleModalOpen}
                             disabled={isDeleting}
                         >
-                            Change store
+                            Change
                         </Button>
                         <ConfirmButton
                             confirmationButtonIntent="destructive"
