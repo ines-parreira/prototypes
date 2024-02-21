@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import {getIncomingChoice} from '../models/visualBuilderGraph.model'
+import {getIncoming} from '../models/visualBuilderGraph.model'
 import {VisualBuilderEdgeProps} from '../editor/visualBuilder/components/EdgeBlock'
 import {VisualBuilderDeleteProps} from '../editor/visualBuilder/components/NodeDeleteIcon'
 import {useWorkflowEditorContext} from './useWorkflowEditor'
@@ -35,7 +35,8 @@ export function useVisualBuilderNodeProps({
     } = useWorkflowEditorContext()
 
     const isSelected = visualBuilderNodeIdEditing === id
-    const incomingChoice = getIncomingChoice(visualBuilderGraph, id)
+    const incomingChoice = getIncoming(visualBuilderGraph, id, 'choice')
+    const incomingCondition = getIncoming(visualBuilderGraph, id, 'conditions')
 
     const isEdgeSelected = incomingChoice?.nodeId === visualBuilderNodeIdEditing
     const edgeProps: VisualBuilderEdgeProps = useMemo(
@@ -52,6 +53,13 @@ export function useVisualBuilderNodeProps({
                           nodeId: incomingChoice.nodeId,
                       }
                     : undefined,
+            incomingCondition:
+                incomingCondition?.nodeId && incomingCondition?.label
+                    ? {
+                          label: incomingCondition.label,
+                          nodeId: incomingCondition.nodeId,
+                      }
+                    : undefined,
             dispatch,
             isSelected: isEdgeSelected,
             setVisualBuilderNodeIdEditing,
@@ -60,6 +68,8 @@ export function useVisualBuilderNodeProps({
         [
             id,
             configuration.id,
+            incomingCondition?.label,
+            incomingCondition?.nodeId,
             incomingChoice?.label,
             incomingChoice?.eventId,
             incomingChoice?.nodeId,

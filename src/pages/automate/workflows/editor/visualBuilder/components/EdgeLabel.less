@@ -2,18 +2,22 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
-    .container {
-        .caption-semibold();
-
+    .base() {
         padding: 2px @layout-spacing-xs;
         border-radius: 4px;
-        color: var(--main-primary-4);
-        background: var(--accessory-blue-1);
         max-width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         cursor: pointer;
+    }
+
+    .choice {
+        .caption-semibold();
+        .base();
+
+        color: var(--main-primary-4);
+        background: var(--accessory-blue-1);
 
         &:hover {
             box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
@@ -23,5 +27,13 @@
             outline: 1px solid var(--main-primary);
             box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
         }
+    }
+
+    .condition {
+        .caption-semibold();
+        .base();
+
+        color: var(--accessory-red-3);
+        background: var(--accessory-red-1);
     }
 }

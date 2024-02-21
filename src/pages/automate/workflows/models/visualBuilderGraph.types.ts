@@ -35,6 +35,12 @@ export function isMultipleChoicesNodeType(
     return node.type === 'multiple_choices'
 }
 
+export function isConditionsNodeType(
+    node: VisualBuilderNode
+): node is ConditionsNodeType {
+    return node.type === 'conditions'
+}
+
 export type AutomatedMessageNodeType = Node<
     {
         content: MessageContent
@@ -111,6 +117,14 @@ export type EndNodeType = Node<
     'end'
 >
 
+export type ConditionsNodeType = Node<
+    {
+        name: string
+        isGreyedOut?: boolean | null
+    },
+    'conditions'
+>
+
 export type VisualBuilderNode =
     | TriggerButtonNodeType
     | MultipleChoicesNodeType
@@ -121,9 +135,12 @@ export type VisualBuilderNode =
     | HttpRequestNodeType
     | EndNodeType
     | ShopperAuthenticationNodeType
+    | ConditionsNodeType
 
 export type VisualBuilderEdge = Edge<{
+    name?: string
     event?: WorkflowTransition['event'] | null
+    conditions?: WorkflowTransition['conditions'] | null
 }>
 
 export type VisualBuilderGraph = {

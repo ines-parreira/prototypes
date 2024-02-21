@@ -1,4 +1,11 @@
-import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import classNames from 'classnames'
 import {produce, Draft} from 'immer'
 
@@ -153,6 +160,20 @@ function useMenuItems(
                 })
             },
         },
+        {
+            label: labelByVisualBuilderNodeType.conditions,
+            description: 'Route customers using variables',
+            type: 'conditions',
+            icon: iconByVisualBuilderNodeType.conditions,
+            style: colorByVisualBuilderNodeType.conditions,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_CONDITIONS_NODE',
+                    beforeNodeId: nodeId,
+                })
+            },
+        },
     ])
     const updateMenuItems = useCallback(
         (immerProducer: (draft: Draft<MenuItem>) => void) => {
@@ -208,6 +229,29 @@ function useMenuItems(
                 }
             })
         }
+
+        if (
+            !hasParentNodeInPath(
+                'shopper_authentication',
+                visualBuilderGraph,
+                nodeId
+            ) &&
+            !hasParentNodeInPath('http_request', visualBuilderGraph, nodeId)
+        ) {
+            updateMenuItems((draft) => {
+                if (draft.type === 'conditions') {
+                    draft.disabledText =
+                        'Conditions rely on variables from other steps such as Customer login, Order selection and HTTP requests. '
+                }
+            })
+        } else {
+            updateMenuItems((draft) => {
+                if (draft.type === 'conditions' && draft.disabledText) {
+                    draft.disabledText = ''
+                }
+            })
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         visualBuilderGraph.nodes.length,
@@ -250,6 +294,7 @@ function useMenuItemsForConnectedChannels(
             const unsupportedConnectedChannels =
                 await getUnsupportedConnectedChannels(configurationId, nodeType)
             const supportedChannels = getSupportedChannels(nodeType)
+
             const disabledText =
                 unsupportedConnectedChannels.length > 0
                     ? ` This step is currently only supported in ${supportedChannels
@@ -286,6 +331,10 @@ export type VisualBuilderEdgeProps = {
         eventId: string
         nodeId: string
     }
+    incomingCondition?: {
+        label: string
+        nodeId: string
+    }
 } & Pick<
     WorkflowEditorContext,
     | 'dispatch'
@@ -297,6 +346,7 @@ export default function EdgeBlock({
     nodeId,
     configurationId,
     incomingChoice,
+    incomingCondition,
     isSelected,
     setVisualBuilderChoiceEventIdEditing,
     setVisualBuilderNodeIdEditing,
@@ -312,6 +362,11 @@ export default function EdgeBlock({
         nodeId,
         dispatch,
         configurationId
+    )
+
+    const visibleMenuItems = useMemo(
+        () => menuItems.filter((item) => !item.hidden),
+        [menuItems]
     )
 
     return (
@@ -333,8 +388,20 @@ export default function EdgeBlock({
                         setVisualBuilderNodeIdEditing(incomingChoice.nodeId)
                     }}
                     isSelected={isSelected}
+                    type="choice"
                 >
                     {incomingChoice.label}
+                </EdgeLabel>
+            )}
+            {incomingCondition && (
+                <EdgeLabel
+                    type="condition"
+                    onClick={() => {
+                        setVisualBuilderNodeIdEditing(incomingCondition.nodeId)
+                    }}
+                    isSelected={isSelected}
+                >
+                    {incomingCondition.label}
                 </EdgeLabel>
             )}
             <EdgeIconButton
@@ -342,6 +409,7 @@ export default function EdgeBlock({
                 icon="add"
                 onClick={() => setIsNodeMenuDropdownOpen(true)}
             />
+
             <Dropdown
                 ref={onFloatingRefChange}
                 isOpen={isNodeMenuDropdownOpen}
@@ -351,60 +419,50 @@ export default function EdgeBlock({
                 className={css.menuContainer}
             >
                 <DropdownBody>
-                    {menuItems
-                        .filter((item) => !item.hidden)
-                        .map(
-                            ({
-                                type,
-                                label,
-                                description,
-                                icon,
-                                style,
-                                disabledText,
-                                onClick,
-                            }) => (
-                                <DropdownItem
-                                    id={`dropdown-item-${type}`}
-                                    key={label}
-                                    option={{
-                                        label,
-                                        value: label,
-                                    }}
-                                    onClick={disabledText ? noop : onClick}
-                                    shouldCloseOnSelect={!disabledText}
-                                    className={classNames(
-                                        css.menuItemContainer,
-                                        {
-                                            [css.disabled]: disabledText,
-                                        }
-                                    )}
-                                >
-                                    <div className={css.menuIcon} style={style}>
-                                        {icon}
+                    {visibleMenuItems.map(
+                        ({
+                            type,
+                            label,
+                            description,
+                            icon,
+                            style,
+                            disabledText,
+                            onClick,
+                        }) => (
+                            <DropdownItem
+                                id={`dropdown-item-${type}`}
+                                key={label}
+                                option={{
+                                    label,
+                                    value: label,
+                                }}
+                                onClick={disabledText ? noop : onClick}
+                                shouldCloseOnSelect={!disabledText}
+                                className={classNames(css.menuItemContainer, {
+                                    [css.disabled]: disabledText,
+                                })}
+                            >
+                                <div className={css.menuIcon} style={style}>
+                                    {icon}
+                                </div>
+                                <div>
+                                    {label}
+                                    <div className={css.menuItemDescription}>
+                                        {description}
                                     </div>
-                                    <div>
-                                        {label}
-                                        <div
-                                            className={css.menuItemDescription}
-                                        >
-                                            {description}
-                                        </div>
-                                    </div>
-                                    {disabledText &&
-                                        floatingRef?.parentElement && (
-                                            <Tooltip
-                                                placement="top-start"
-                                                target={`dropdown-item-${type}`}
-                                                container={
-                                                    floatingRef.parentElement
-                                                }
-                                            >
-                                                {disabledText}
-                                            </Tooltip>
-                                        )}
-                                </DropdownItem>
-                            )
-                        )}
+                                </div>
+                                {disabledText && floatingRef?.parentElement && (
+                                    <Tooltip
+                                        placement="top-start"
+                                        target={`dropdown-item-${type}`}
+                                        container={floatingRef.parentElement}
+                                    >
+                                        {disabledText}
+                                    </Tooltip>
+                                )}
+                            </DropdownItem>
+                        )
+                    )}
                 </DropdownBody>
             </Dropdown>
         </div>

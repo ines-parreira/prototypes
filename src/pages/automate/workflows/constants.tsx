@@ -1,6 +1,7 @@
 import React, {ReactNode} from 'react'
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
+import conditionsMergeIcon from 'assets/img/workflows/icons/conditions-merge-sm.svg'
 
 import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
 
@@ -15,6 +16,10 @@ export const colorByVisualBuilderNodeType: Record<
     shopper_authentication: {
         color: 'var(--accessory-violet-3)',
         backgroundColor: 'var(--accessory-violet-1)',
+    },
+    conditions: {
+        color: 'var(--accessory-red-3)',
+        backgroundColor: 'var(--accessory-red-1)',
     },
     multiple_choices: {
         color: 'var(--main-primary-4)',
@@ -46,9 +51,10 @@ export const iconByVisualBuilderNodeType: Record<
     multiple_choices: <i className="material-icons">view_list</i>,
     text_reply: <i className="material-icons">short_text</i>,
     file_upload: <i className="material-icons">attach_file</i>,
-    order_selection: <img src={orderSelectionIcon} alt="" />,
+    order_selection: <img src={orderSelectionIcon} alt="box" />,
     http_request: <i className="material-icons">webhook</i>,
     shopper_authentication: <i className="material-icons">person</i>,
+    conditions: <img src={conditionsMergeIcon} alt="merge" />,
 }
 
 export const labelByVisualBuilderNodeType: Record<
@@ -63,6 +69,7 @@ export const labelByVisualBuilderNodeType: Record<
     order_selection: 'Order selection',
     http_request: 'HTTP request',
     shopper_authentication: 'Customer login',
+    conditions: 'Conditions',
     end: 'End flow',
 }
 

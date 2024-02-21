@@ -6,6 +6,7 @@ import {
 } from './visualBuilderGraph.model'
 import {
     AutomatedMessageNodeType,
+    ConditionsNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
@@ -177,6 +178,17 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
+        } else if (step.kind === 'conditions') {
+            const n: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'conditions',
+                data: {
+                    name: step.settings.name,
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
         } else if (step.kind === 'helpful-prompt') {
             const n: EndNodeType = {
                 ...buildNodeCommonProperties(),
@@ -292,6 +304,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             })
         }
     })
+
     return {
         name: c.name,
         available_languages: c.available_languages,

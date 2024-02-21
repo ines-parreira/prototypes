@@ -1,5 +1,3 @@
-import type {RulesLogic} from 'json-logic-js'
-
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 export type MessageContent = {
@@ -69,6 +67,13 @@ export type WorkflowStepShopperAuthentication = {
     }
 }
 
+export type WorkflowStepConditions = {
+    id: string
+    kind: 'conditions'
+    settings: {
+        name: string
+    }
+}
 export type WorkflowStepOrderSelection = {
     id: string
     kind: 'order-selection'
@@ -120,6 +125,7 @@ export type WorkflowStep =
     | WorkflowStepOrderSelection
     | WorkflowStepHelpfulPrompt
     | WorkflowStepEnd
+    | WorkflowStepConditions
 
 export type WorkflowTransition = {
     id: string
@@ -129,7 +135,9 @@ export type WorkflowTransition = {
         id: string
         kind: 'choices'
     }>
-    conditions?: RulesLogic
+    name?: string
+    //TODO: change to ConditionsSchema later
+    conditions?: Maybe<Record<string, string>>
 }
 
 export const supportedLanguages = [

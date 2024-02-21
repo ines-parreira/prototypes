@@ -7,12 +7,13 @@ type Props = {
     children: ReactNode
     onClick?: (event: MouseEvent<HTMLDivElement>) => void
     isSelected?: boolean
+    type: 'choice' | 'condition'
 }
 
-const EdgeLabel = ({children, onClick, isSelected}: Props) => {
+const EdgeLabel = ({children, onClick, isSelected, type}: Props) => {
     return (
         <div
-            className={classnames(css.container, {
+            className={classnames(css[type], {
                 [css.isSelected]: isSelected,
             })}
             onClick={onClick}

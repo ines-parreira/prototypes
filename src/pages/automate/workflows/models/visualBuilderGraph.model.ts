@@ -11,6 +11,7 @@ import {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
+    WorkflowStepConditions,
     WorkflowStepEnd,
     WorkflowStepHandover,
     WorkflowStepHelpfulPrompt,
@@ -25,6 +26,7 @@ import {
     VisualBuilderGraph,
     VisualBuilderNode,
     isMultipleChoicesNodeType,
+    isConditionsNodeType,
 } from './visualBuilderGraph.types'
 import {unescapeUrlEncodedVariables} from './variables.model'
 
@@ -204,7 +206,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
+                        name: incomingEdge?.data?.name,
                         event: incomingEdge?.data?.event,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -226,7 +230,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
+                        name: incomingEdge?.data?.name,
                         event: incomingEdge?.data?.event,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -248,7 +254,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
+                        name: incomingEdge?.data?.name,
                         event: incomingEdge?.data?.event,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -270,7 +278,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
+                        name: incomingEdge?.data?.name,
                         event: incomingEdge?.data?.event,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -293,7 +303,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
+                        name: incomingEdge?.data?.name,
                         event: incomingEdge?.data?.event,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -319,6 +331,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
                         event: incomingEdge?.data?.event,
+                        name: incomingEdge?.data?.name,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -344,6 +358,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
                         event: incomingEdge?.data?.event,
+                        name: incomingEdge?.data?.name,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -361,6 +377,30 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
                         event: incomingEdge?.data?.event,
+                        name: incomingEdge?.data?.name,
+                        conditions: incomingEdge?.data?.conditions,
+                    })
+                } else {
+                    c.initial_step_id = step.id
+                }
+                stepIdByNodeId[node.id] = step.id
+            } else if (node.type === 'conditions') {
+                const step: WorkflowStepConditions = {
+                    id: node.id,
+                    kind: 'conditions',
+                    settings: {
+                        name: node.data.name,
+                    },
+                }
+                c.steps.push(step)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: step.id,
+                        event: incomingEdge?.data?.event,
+                        name: incomingEdge?.data?.name,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -415,6 +455,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
                         event: incomingEdge?.data?.event,
+                        name: incomingEdge?.data?.name,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -435,6 +477,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: step.id,
                         event: incomingEdge?.data?.event,
+                        name: incomingEdge?.data?.name,
+                        conditions: incomingEdge?.data?.conditions,
                     })
                 } else {
                     c.initial_step_id = step.id
@@ -446,36 +490,55 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
     return c
 }
 
-export function getIncomingChoice(
+export function getIncoming(
     visualBuilderGraph: VisualBuilderGraph,
-    currentNodeId: string
+    currentNodeId: string,
+    type: 'choice' | 'conditions'
 ) {
     const incomingEdge = visualBuilderGraph.edges.find(
         ({target}) => target === currentNodeId
     )
-    const choiceEventId = incomingEdge?.data?.event?.id
     const previousNodeId = incomingEdge?.source
     const previousNode = previousNodeId
         ? visualBuilderGraph.nodes.find(({id}) => id === previousNodeId)
         : undefined
-    const choiceIndex =
-        previousNode?.type === 'multiple_choices' && choiceEventId != null
-            ? previousNode.data.choices.findIndex(
-                  ({event_id}) => event_id === choiceEventId
-              )
-            : -1
-    if (
-        choiceIndex >= 0 &&
-        previousNode &&
-        isMultipleChoicesNodeType(previousNode)
-    ) {
-        const choice = previousNode.data.choices[choiceIndex]
-        return {
-            label: choice.label || `Option ${choiceIndex + 1}`,
-            eventId: choice.event_id,
-            nodeId: previousNode.id,
+
+    switch (type) {
+        case 'choice': {
+            const choiceEventId = incomingEdge?.data?.event?.id
+            const choiceIndex =
+                previousNode?.type === 'multiple_choices' &&
+                choiceEventId != null
+                    ? previousNode.data.choices.findIndex(
+                          ({event_id}) => event_id === choiceEventId
+                      )
+                    : -1
+            if (
+                choiceIndex >= 0 &&
+                previousNode &&
+                isMultipleChoicesNodeType(previousNode)
+            ) {
+                const choice = previousNode.data.choices[choiceIndex]
+                return {
+                    label: choice.label || `Option ${choiceIndex + 1}`,
+                    eventId: choice.event_id,
+                    nodeId: previousNode.id,
+                }
+            }
+            break
+        }
+        case 'conditions': {
+            const branchName = incomingEdge?.data?.name
+
+            if (previousNode && isConditionsNodeType(previousNode)) {
+                return {
+                    label: branchName,
+                    nodeId: previousNode.id,
+                }
+            }
         }
     }
+
     return undefined
 }
 

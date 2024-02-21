@@ -27,6 +27,7 @@ export const optionalNodeTypes: NonNullable<VisualBuilderNode['type']>[] = [
     'order_selection',
     'shopper_authentication',
     'http_request',
+    'conditions',
 ]
 
 type Workflow = {
@@ -83,9 +84,12 @@ function useSupportedChannelsFromFeatureFlag(
         | FeatureFlagKey.FlowsStepsShopperInput
         | FeatureFlagKey.FlowsStepsOrderSelection
         | FeatureFlagKey.FlowsStepsShopperAuthentication
+        | FeatureFlagKey.FlowsStepsOrderSelection
         | FeatureFlagKey.FlowsStepsHttpRequest
+        | FeatureFlagKey.FlowsStepsConditions
 ): Set<SelfServiceChannelType> {
     const supportedChannelsRaw: string = useFlags()[featureFlag] ?? ''
+
     return useMemo(() => {
         return new Set(
             supportedChannelsRaw
@@ -123,6 +127,12 @@ function useShopperAuthenticationSupportedChannels(): Set<SelfServiceChannelType
 function useHttpRequestSupportedChannels(): Set<SelfServiceChannelType> {
     return useSupportedChannelsFromFeatureFlag(
         FeatureFlagKey.FlowsStepsHttpRequest
+    )
+}
+
+function useConditionsSupportedChannels(): Set<SelfServiceChannelType> {
+    return useSupportedChannelsFromFeatureFlag(
+        FeatureFlagKey.FlowsStepsConditions
     )
 }
 
@@ -245,6 +255,8 @@ export default function useWorkflowChannelSupport(
     const shopperAuthenticationSupportedChannels =
         useShopperAuthenticationSupportedChannels()
     const httpRequestSupportedChannels = useHttpRequestSupportedChannels()
+    const conditionsSupportedChannels = useConditionsSupportedChannels()
+
     const getChannelTypesWhereWorkflowIsEnabled =
         useGetChannelTypesWhereWorkflowIsEnabled(shopType, shopName)
 
@@ -278,11 +290,18 @@ export default function useWorkflowChannelSupport(
                     (c) => !httpRequestSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'conditions') {
+                return embeddingChannels.filter(
+                    (c) => !conditionsSupportedChannels.has(c)
+                )
+            }
             return []
         },
         [
             getChannelTypesWhereWorkflowIsEnabled,
             shopperInputSupportedChannels,
+            conditionsSupportedChannels,
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
             shopperAuthenticationSupportedChannels,
@@ -313,9 +332,16 @@ export default function useWorkflowChannelSupport(
                     httpRequestSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'conditions') {
+                return allChannels.filter((c) =>
+                    conditionsSupportedChannels.has(c)
+                )
+            }
             return []
         },
         [
+            conditionsSupportedChannels,
             shopperInputSupportedChannels,
             orderSelectionSupportedChannels,
             shopperAuthenticationSupportedChannels,
@@ -345,9 +371,16 @@ export default function useWorkflowChannelSupport(
                     (c) => !httpRequestSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'conditions') {
+                return allChannels.filter(
+                    (c) => !conditionsSupportedChannels.has(c)
+                )
+            }
             return []
         },
         [
+            conditionsSupportedChannels,
             shopperInputSupportedChannels,
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
@@ -383,9 +416,16 @@ export default function useWorkflowChannelSupport(
                     return ['http_request']
                 }
             }
+
+            if (workflow.steps.find((s) => s.kind === 'conditions')) {
+                if (!conditionsSupportedChannels.has(channelType)) {
+                    return ['conditions']
+                }
+            }
             return []
         },
         [
+            conditionsSupportedChannels,
             shopperInputSupportedChannels,
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
@@ -399,7 +439,8 @@ export default function useWorkflowChannelSupport(
                 nodeType === 'file_upload' ||
                 nodeType === 'order_selection' ||
                 nodeType === 'shopper_authentication' ||
-                nodeType === 'http_request'
+                nodeType === 'http_request' ||
+                nodeType === 'conditions'
             ) {
                 const unsupportedChannels = getUnsupportedChannels(nodeType)
                 return allChannels.every((c) => unsupportedChannels.includes(c))

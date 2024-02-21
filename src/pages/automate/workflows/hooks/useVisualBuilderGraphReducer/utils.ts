@@ -9,6 +9,7 @@ import {
 } from '../../models/visualBuilderGraph.model'
 import {
     AutomatedMessageNodeType,
+    ConditionsNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
@@ -153,6 +154,18 @@ export const buildMultipleChoicesNode = (): MultipleChoicesNodeType => {
                     label_tkey: ulid(),
                 },
             ],
+        },
+    }
+}
+
+export const buildConditionsNode = (): ConditionsNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'conditions',
+        data: {
+            name: '',
         },
     }
 }

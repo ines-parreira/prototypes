@@ -30,10 +30,12 @@ import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
 
 import css from './WorkflowVisualBuilder.less'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
+import ConditionsNode from './nodes/ConditionsNode'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
     automated_message: AutomatedMessageNode,
+    conditions: ConditionsNode,
     multiple_choices: MultipleChoicesNode,
     text_reply: TextReplyNode,
     file_upload: FileUploadNode,
