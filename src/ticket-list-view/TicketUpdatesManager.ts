@@ -100,10 +100,13 @@ export default class TicketUpdatesManager {
         if (!this.listener || this.loading) return
 
         // we want to get the full first page if:
+        // - if the last visible item is lower than the PAGE_LIMIT -2, since that's
+        //   when we would fetch the next page
         // - the amount of tickets in the view is lower than the PAGE_LIMIT, OR
         // - if the amount of tickets is equal to the PAGE_LIMIT and there is no cursor
         // in this case, we simply replace the full tickets array that we know about
         if (
+            (this.latestIndex > 0 && this.latestIndex < PAGE_LIMIT - 2) ||
             this.tickets.length < PAGE_LIMIT ||
             (this.tickets.length === PAGE_LIMIT && !this.nextCursor)
         ) {
@@ -128,11 +131,17 @@ export default class TicketUpdatesManager {
             this.sortOrder,
             this.latestDatetime
         )
-        this.tickets.splice(
-            0,
-            this.latestIndex + 1,
-            ...data.map(transformApiTicketPartial)
+
+        const newTickets = data.map(transformApiTicketPartial)
+        const newTicketIds = newTickets.reduce(
+            (acc, t) => ({...acc, [t.id]: true}),
+            {} as {[k: number]: boolean}
         )
+        const oldTickets = this.tickets
+            .slice(this.latestIndex + 1)
+            .filter((t) => !newTicketIds[t.id])
+
+        this.tickets = [...newTickets, ...oldTickets]
         this.listener(this.tickets, this.nextCursor)
 
         this.loading = false
