@@ -355,7 +355,7 @@ export const mapAIHelpCenterArticleData = (
         (aiArticle) => ({
             ...aiArticle,
             content: replaceNewLines(aiArticle.html_content),
-            isSelected: true,
+            isSelected: !!!helpCenterAiArticles.length,
             type: ArticleTemplateType.AI,
             category: aiArticle.category,
         })

@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useState} from 'react'
 import {filter, flatMap, map, mapValues} from 'lodash'
 import {
+    ArticleTemplateType,
     HelpCenter,
     HelpCenterArticleItem,
     LocalArticleTranslation,
@@ -308,7 +309,11 @@ export const useHelpCenterArticlesForm = (
 
         const handleArticlesFromTemplate = selectedItemsWithoutId.map(
             (item) => {
-                return createArticle(item, !!item.isTouched)
+                const shouldPublish =
+                    item.type === ArticleTemplateType.AI
+                        ? true
+                        : !!item.isTouched
+                return createArticle(item, shouldPublish)
             }
         )
 

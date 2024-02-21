@@ -12,7 +12,7 @@ import {
     ArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {
-    AIArticlesGrouped,
+    AIArticlesGroupedFixture,
     AIArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
@@ -180,7 +180,9 @@ describe('useGetHelpCenterArticles', () => {
             )
 
             expect(mockedUseGetAIArticles).toHaveBeenCalled()
-            expect(result.current.articles).toMatchObject(AIArticlesGrouped)
+            expect(result.current.articles).toMatchObject(
+                AIArticlesGroupedFixture
+            )
         })
     })
 })

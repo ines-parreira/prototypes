@@ -34,37 +34,38 @@ export const AIArticlesListFixture: AIArticle[] = [
     },
 ]
 
-export const AIArticlesGrouped: Record<string, HelpCenterArticleItem[]> = {
-    ai: [
-        {
-            key: 'ai_Generated_1',
-            title: 'AI Generated Article 1',
-            content: '<h1>AI Generated Article 1</h1>',
-            category: 'General',
-            type: ArticleTemplateType.AI,
-            excerpt:
-                'Our standard shipping time within [country/region] is [# of days] business days. Shipping charges, if applicable, will be calculated and displayed at checkout...',
-        },
-        {
-            key: 'ai_Generated_2',
-            title: 'AI Generated Article 2',
-            content: '<h1>AI Generated Article 2</h1>',
-            category: 'General',
-            type: ArticleTemplateType.AI,
-            excerpt:
-                'Returns must be initiated within [x days] of receiving your order. Items must be unused and in the original packaging...',
-        },
-        {
-            key: 'ai_Generated_3',
-            title: 'How to cancel order',
-            content: '<h1>How to cancel order</h1>',
-            category: 'Ordering',
-            type: ArticleTemplateType.AI,
-            excerpt:
-                'You will have the option to cancel your order within your confirmation email. You may also contact our customer service team at [email/phone #]...',
-        },
-    ],
-}
+export const AIArticlesGroupedFixture: Record<string, HelpCenterArticleItem[]> =
+    {
+        ai: [
+            {
+                key: 'ai_Generated_1',
+                title: 'AI Generated Article 1',
+                content: '<h1>AI Generated Article 1</h1>',
+                category: 'General',
+                type: ArticleTemplateType.AI,
+                excerpt:
+                    'Our standard shipping time within [country/region] is [# of days] business days. Shipping charges, if applicable, will be calculated and displayed at checkout...',
+            },
+            {
+                key: 'ai_Generated_2',
+                title: 'AI Generated Article 2',
+                content: '<h1>AI Generated Article 2</h1>',
+                category: 'General',
+                type: ArticleTemplateType.AI,
+                excerpt:
+                    'Returns must be initiated within [x days] of receiving your order. Items must be unused and in the original packaging...',
+            },
+            {
+                key: 'ai_Generated_3',
+                title: 'How to cancel order',
+                content: '<h1>How to cancel order</h1>',
+                category: 'Ordering',
+                type: ArticleTemplateType.AI,
+                excerpt:
+                    'You will have the option to cancel your order within your confirmation email. You may also contact our customer service team at [email/phone #]...',
+            },
+        ],
+    }
 
 export const AIArticlesEmptyListFixture = []
 
