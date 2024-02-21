@@ -3,7 +3,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import * as activityTracker from 'services/activityTracker'
 import {ActivityEvents} from 'services/activityTracker'
 
-import {useTicketActivityTracking} from '../useTicketActivityTracking'
+import useTicketActivityTracking from '../useTicketActivityTracking'
 
 jest.mock('services/activityTracker')
 

@@ -79,7 +79,7 @@ import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTi
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
-import {useTicketActivityTracking} from './hooks/useTicketActivityTracking'
+import useTicketActivityTracking from './hooks/useTicketActivityTracking'
 import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
 
 export type SubmitArgs = {
@@ -155,9 +155,12 @@ export const TicketDetailContainer = ({
     const [isTicketHidden, setIsTicketHidden] = useState(false)
 
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
+    const ticketStatus = useMemo(() => ticket.get('status') as string, [ticket])
 
     useTicketActivityTracking(
-        ticketIdParam && Number(ticketIdParam) === ticketId
+        ticketIdParam &&
+            Number(ticketIdParam) === ticketId &&
+            ticketStatus !== TicketStatus.Closed
             ? ticketId
             : undefined
     )

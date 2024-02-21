@@ -11,7 +11,7 @@ import useTitle from 'hooks/useTitle'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import {useTicketActivityTracking} from './hooks/useTicketActivityTracking'
+import useTicketActivityTracking from './hooks/useTicketActivityTracking'
 import css from './TicketPrintContainer.less'
 
 const TicketPrintContainer = () => {

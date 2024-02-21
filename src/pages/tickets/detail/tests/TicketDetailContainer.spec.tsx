@@ -45,6 +45,7 @@ import * as ticketUtils from 'state/ticket/utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import TicketView from '../components/TicketView'
+import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 
 const mockedServer = new MockAdapter(client)
@@ -136,6 +137,9 @@ jest.mock(
     'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 )
 const mockUseGoToNextTicket = useGoToNextTicket as jest.Mock
+
+jest.mock('pages/tickets/detail/hooks/useTicketActivityTracking')
+const mockUseTicketActivityTracking = useTicketActivityTracking as jest.Mock
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
@@ -1514,5 +1518,59 @@ describe('TicketDetailContainer component', () => {
                 TicketMessageSourceType.Phone
             )
         })
+    })
+
+    it('should use ticket activity tracking', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        ticket={existingTicket}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(1)
+    })
+
+    it('should not use ticket activity tracking when the ticket is new', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} ticket={newTicket} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
+
+        expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(undefined)
+    })
+
+    it('should not use ticket activity tracking when ticket is closed', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        ticket={existingTicket.set('status', 'closed')}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(undefined)
     })
 })
