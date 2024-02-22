@@ -1,3 +1,5 @@
+import axios from 'axios'
+import {isEmpty} from 'lodash'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {
     EmailIntegrationDefaultProviderSetting,
@@ -10,6 +12,7 @@ import {
     IntegrationType,
     OutlookIntegration,
     OutboundVerificationStatusValue,
+    DomainDNSRecord,
 } from 'models/integration/types'
 
 export const isSingleSenderVerificationInProgress = (
@@ -100,8 +103,87 @@ export const outboundEmailProviderSettingByIntegrationType = {
         EmailIntegrationDefaultProviderSetting.SendViaOutlook,
 }
 
-export default function getOutboundEmailProviderSettingKey(
+export function getOutboundEmailProviderSettingKey(
     integrationType: IntegrationType.Gmail | IntegrationType.Outlook
 ) {
     return outboundEmailProviderSettingByIntegrationType[integrationType]
+}
+
+export function removeDomainFromDNSRecord(
+    record: DomainDNSRecord,
+    domain?: string
+): DomainDNSRecord {
+    if (!domain) {
+        return record
+    }
+    const host = record.host.replace(domain, '').replace(/\.$/, '') || '@'
+    return {...record, host}
+}
+
+export function removeDomainFromDNSRecords(
+    records: DomainDNSRecord[],
+    domain?: string
+): DomainDNSRecord[] {
+    return records.map((record) => removeDomainFromDNSRecord(record, domain))
+}
+
+export async function populateCurrentValuesForDNSRecords(
+    records: DomainDNSRecord[]
+): Promise<DomainDNSRecord[]> {
+    try {
+        return Promise.all(
+            records.map((record) => {
+                return getDNSRecord(record.host, record.record_type)
+                    .then((response) => {
+                        if (!isEmpty(response)) {
+                            return {
+                                ...record,
+                                current_values:
+                                    response?.map((answer) => answer.data) ??
+                                    [],
+                            }
+                        }
+
+                        return record
+                    })
+                    .catch(() => record)
+            })
+        )
+    } catch (e) {
+        return records
+    }
+}
+
+export type DNSQueryResponse = {
+    Status: number
+    Question: Array<{name: string; type: number}>
+    Answer: Array<DNSQueryAnswer>
+}
+
+export type DNSQueryAnswer = {
+    name: string
+    type: number
+    TTL: number
+    data: string
+}
+
+export async function getDNSRecord(
+    name: string,
+    type: string
+): Promise<DNSQueryAnswer[] | null> {
+    const GOOGLE_DNS_URL = 'https://dns.google/resolve'
+    try {
+        //eslint-disable-next-line no-restricted-properties
+        const response = await axios.get<DNSQueryResponse>(GOOGLE_DNS_URL, {
+            params: {name, type},
+        })
+
+        if (!response || response?.data?.Status !== 0) {
+            return null
+        }
+
+        return response.data.Answer
+    } catch (error) {
+        return null
+    }
 }

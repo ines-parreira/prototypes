@@ -7,18 +7,15 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {DomainDNSRecord} from 'models/integration/types'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
-import {EmailProvider} from 'models/integration/constants'
-
 import css from '../EmailDomainVerification.less'
 import RecordStatus from './RecordStatus'
 import CopyButton from './CopyButton'
 
 type Props = {
     record: DomainDNSRecord
-    provider?: string
 }
 
-const RecordItem = ({record, provider}: Props) => {
+const RecordItem = ({record}: Props) => {
     const id = useId()
     const hostID = 'record-host-' + id
     const valueID = 'record-value-' + id
@@ -44,15 +41,13 @@ const RecordItem = ({record, provider}: Props) => {
                 </div>
                 <CopyButton clipboardTarget={`#${valueID}`} />
             </BodyCell>
-            {provider !== EmailProvider.Sendgrid && (
-                <BodyCell
-                    className={classnames(css.cell, css['current-values-cell'])}
-                >
-                    {_isEmpty(record.current_values)
-                        ? 'None found'
-                        : record.current_values}
-                </BodyCell>
-            )}
+            <BodyCell
+                className={classnames(css.cell, css['current-values-cell'])}
+            >
+                {_isEmpty(record.current_values)
+                    ? 'None found'
+                    : record.current_values}
+            </BodyCell>
         </TableBodyRow>
     )
 }

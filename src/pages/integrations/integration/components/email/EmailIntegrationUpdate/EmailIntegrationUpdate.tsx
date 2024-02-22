@@ -45,7 +45,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import settingsCss from 'pages/settings/settings.less'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import InputField from 'pages/common/forms/input/InputField'
-import getOutboundEmailProviderSettingKey from 'pages/integrations/integration/components/email/helpers'
+import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
 
 import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
 import EmailIntegrationConnectStore from '../EmailToStoreMapping/EmailIntegrationConnectStore'

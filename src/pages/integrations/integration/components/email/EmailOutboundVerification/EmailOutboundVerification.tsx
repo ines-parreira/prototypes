@@ -22,9 +22,9 @@ export default function EmailOutboundVerification({
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
-            <Col lg={6} xl={7}>
-                <Switch>
-                    <Route exact path={baseURL}>
+            <Switch>
+                <Route exact path={baseURL}>
+                    <Col lg={6} xl={7}>
                         <EmailVerification
                             integration={integration}
                             baseURL={baseURL}
@@ -32,24 +32,26 @@ export default function EmailOutboundVerification({
                                 loading?.integration || loading?.emailDomain
                             }
                         />
-                    </Route>
-                    <Route exact path={`${baseURL}/domain`}>
-                        <>
-                            <BackButton baseURL={baseURL} />
-                            <EmailDomainVerification
-                                integration={integration}
-                                onDeleteDomain={() => history.push(baseURL)}
-                            />
-                        </>
-                    </Route>
-                    <Route exact path={`${baseURL}/single-sender`}>
+                    </Col>
+                </Route>
+                <Route exact path={`${baseURL}/domain`}>
+                    <>
+                        <BackButton baseURL={baseURL} />
+                        <EmailDomainVerification
+                            integration={integration}
+                            onDeleteDomain={() => history.push(baseURL)}
+                        />
+                    </>
+                </Route>
+                <Route exact path={`${baseURL}/single-sender`}>
+                    <Col lg={6} xl={7}>
                         <SingleSenderVerification
                             baseURL={baseURL}
                             integration={integration}
                         />
-                    </Route>
-                </Switch>
-            </Col>
+                    </Col>
+                </Route>
+            </Switch>
         </Container>
     )
 }

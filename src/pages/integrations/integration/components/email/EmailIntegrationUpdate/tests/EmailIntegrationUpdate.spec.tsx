@@ -22,7 +22,7 @@ import {
 } from 'models/integration/types'
 
 import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
-import getOutboundEmailProviderSettingKey from 'pages/integrations/integration/components/email/helpers'
+import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 

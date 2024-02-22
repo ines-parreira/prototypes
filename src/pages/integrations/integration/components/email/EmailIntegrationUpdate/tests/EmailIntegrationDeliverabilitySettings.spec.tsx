@@ -10,7 +10,7 @@ import {integrationBase, integrationsState} from 'fixtures/integrations'
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
 
 import {OutboundVerificationStatusValue} from 'models/integration/types'
-import getOutboundEmailProviderSettingKey from 'pages/integrations/integration/components/email/helpers'
+import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
 import EmailIntegrationDeliverabilitySettings from '../EmailIntegrationDeliverabilitySettings'
 
 type Props = {

@@ -87,7 +87,10 @@ export default function EmailDomainVerification({
             {emailDomain && (
                 <>
                     {emailDomain.verified && (
-                        <div>Your domain has been verified.</div>
+                        <div>
+                            The domain <strong>{domain}</strong> has been
+                            verified.
+                        </div>
                     )}
                     {!emailDomain.verified && (
                         <div>
@@ -96,19 +99,20 @@ export default function EmailDomainVerification({
                                     type={AlertType.Warning}
                                     className={settingsCss.mb16}
                                 >
-                                    This domain has not yet been verified. You
-                                    can still send emails from this address but
-                                    you may be more susceptible to
-                                    deliverability issues. Please verify your
-                                    domain to ensure the best possible
-                                    performance.
+                                    The domain <strong>{domain}</strong> has not
+                                    yet been verified. You can still send emails
+                                    from this address but you may be more
+                                    susceptible to deliverability issues. Please
+                                    verify your domain to ensure the best
+                                    possible performance.
                                 </Alert>
                             )}
                             <span>
-                                To enable DKIM signing for your domain, please
-                                add the information below to your DNS records
-                                via your DNS registrar. Note that verification
-                                of these settings{' '}
+                                To enable DKIM signing for the{' '}
+                                <strong>{domain}</strong> domain, please add the
+                                information below to your DNS records via your
+                                DNS registrar. Note that verification of these
+                                settings{' '}
                                 <strong>
                                     may take up to 72 hours after submission
                                 </strong>
@@ -126,6 +130,7 @@ export default function EmailDomainVerification({
                     <RecordsTable
                         records={emailDomain.data.sending_dns_records}
                         provider={provider}
+                        domain={domain}
                     />
 
                     {hasRole(currentUser, UserRole.Admin) && (

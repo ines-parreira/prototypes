@@ -3,7 +3,11 @@
 exports[`<EmailDomainVerification/> render() should render a delete button to account admins 1`] = `
 <div>
   <div>
-    Your domain has been verified.
+    The domain 
+    <strong>
+      gorgias.com
+    </strong>
+     has been verified.
   </div>
   <table
     class="table records-table"
@@ -162,12 +166,21 @@ exports[`<EmailDomainVerification/> render() should render the page when domain 
         <span
           class="label"
         >
-          This domain has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
+          The domain 
+          <strong>
+            gorgias.com
+          </strong>
+           has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
         </span>
       </div>
     </div>
     <span>
-      To enable DKIM signing for your domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings
+      To enable DKIM signing for the
+       
+      <strong>
+        gorgias.com
+      </strong>
+       domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings
        
       <strong>
         may take up to 72 hours after submission
@@ -323,12 +336,21 @@ exports[`<EmailDomainVerification/> render() should render the page when domain 
         <span
           class="label"
         >
-          This domain has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
+          The domain 
+          <strong>
+            gorgias.com
+          </strong>
+           has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
         </span>
       </div>
     </div>
     <span>
-      To enable DKIM signing for your domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings
+      To enable DKIM signing for the
+       
+      <strong>
+        gorgias.com
+      </strong>
+       domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings
        
       <strong>
         may take up to 72 hours after submission
