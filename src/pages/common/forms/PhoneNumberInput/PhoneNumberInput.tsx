@@ -179,25 +179,31 @@ const PhoneNumberInput = ({
                         </Button>
                     )}
                 </InputGroupContext.Consumer>
-                {isCountrySelectVisible && (
-                    <div className={css.selectContainer}>
-                        <SelectField
-                            value={currentCountry}
-                            options={options}
-                            onChange={(nextCountry) => {
-                                handleCountryChange(
-                                    formatAsNationalNumber(value),
-                                    nextCountry as CountryCode
-                                )
-                                inputRef.current?.focus()
-                            }}
-                            style={{width: '100%'}}
-                            fullWidth
-                            shouldFocus
-                            container={containerRef.current!}
-                        />
-                    </div>
-                )}
+                {/* Wrapped into Fragment to avoid the TextInput component from
+                remounting when the country select becomes visible (causing the
+                number input to be focused instead of the country one when
+                "autofocus" is true) */}
+                <>
+                    {isCountrySelectVisible && (
+                        <div className={css.selectContainer}>
+                            <SelectField
+                                value={currentCountry}
+                                options={options}
+                                onChange={(nextCountry) => {
+                                    handleCountryChange(
+                                        formatAsNationalNumber(value),
+                                        nextCountry as CountryCode
+                                    )
+                                    inputRef.current?.focus()
+                                }}
+                                style={{width: '100%'}}
+                                fullWidth
+                                shouldFocus
+                                container={containerRef.current!}
+                            />
+                        </div>
+                    )}
+                </>
                 <TextInput
                     {...other}
                     ref={inputRef}
