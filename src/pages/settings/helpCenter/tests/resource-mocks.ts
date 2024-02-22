@@ -122,12 +122,12 @@ export const mockResourceServerReplies = (
 
     if (options.getAIGeneratedArticles === 'success') {
         mockedServer
-            .onGet('/api/help-center/article-templates/ai')
+            .onGet('/api/help-center/help-centers/1/article-templates/ai')
             .reply(200, AIArticlesListFixture)
     }
     if (options.getAIGeneratedArticles === 'success-empty') {
         mockedServer
-            .onGet('/api/help-center/article-templates/ai')
+            .onGet('/api/help-center/help-centers/1/article-templates/ai')
             .reply(200, AIArticlesEmptyListFixture)
     }
 

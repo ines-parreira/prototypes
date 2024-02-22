@@ -208,6 +208,7 @@ export const useGetArticleTemplate = <
 export const useGetAIArticles = <
     TData = Awaited<ReturnType<typeof getAIGeneratedArticles>>
 >(
+    helpCenterId: Paths.ListAIArticleTemplates.Parameters.HelpCenterId,
     locale: Paths.ListArticleTemplates.Parameters.Locale,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAIGeneratedArticles>>,
@@ -227,7 +228,9 @@ export const useGetAIArticles = <
                 return []
             }
 
-            return getAIGeneratedArticles(client)
+            return getAIGeneratedArticles(client, {
+                help_center_id: helpCenterId,
+            })
         },
         enabled: !!client,
         ...overrides,

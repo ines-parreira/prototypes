@@ -3707,6 +3707,36 @@
                 "tags": ["contact-form-mailto-replacement-config"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/article-templates/ai": {
+            "get": {
+                "operationId": "listAIArticleTemplates",
+                "summary": "Retrieve AI article templates",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AIArticleTemplateDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-templates"]
+            }
+        },
         "/api/help-center/article-templates": {
             "get": {
                 "operationId": "listArticleTemplates",
@@ -3738,29 +3768,6 @@
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ArticleTemplateDto"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["article-templates"]
-            }
-        },
-        "/api/help-center/article-templates/ai": {
-            "get": {
-                "operationId": "listAIArticleTemplates",
-                "summary": "Retrieve AI article templates",
-                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "",
@@ -7842,6 +7849,39 @@
                     "shopifyShopName": {"type": "string"}
                 },
                 "required": ["emails", "contactFormUid", "shopifyShopName"]
+            },
+            "AIArticleTemplateDto": {
+                "type": "object",
+                "properties": {
+                    "key": {"type": "string"},
+                    "title": {"type": "string"},
+                    "html_content": {"type": "string"},
+                    "excerpt": {
+                        "type": "string",
+                        "description": "\n      A short summary of the article.\n      Usually the first paragraph of the article.\n    "
+                    },
+                    "category": {"type": "string"},
+                    "score": {
+                        "type": "number",
+                        "description": "\n      The relevancy of the article template.\n      The higher being the more relevant.\n      Static article templates have a score between 0 and -1.\n      Expecting AI articles to have a score between 0 and 1 in the future.\n    "
+                    },
+                    "related_tickets_count": {
+                        "type": "number",
+                        "description": "\n      The number of tickets used to generate the article.\n      Value can be -1 if this data is not available.\n    "
+                    },
+                    "generated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "key",
+                    "title",
+                    "html_content",
+                    "excerpt",
+                    "category",
+                    "score"
+                ]
             },
             "ArticleTemplateDto": {
                 "type": "object",

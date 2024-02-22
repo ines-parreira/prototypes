@@ -8,6 +8,36 @@ import {
 
 declare namespace Components {
   namespace Schemas {
+    export interface AIArticleTemplateDto {
+      key: string;
+      title: string;
+      html_content: string;
+      /**
+       * 
+       *       A short summary of the article.
+       *       Usually the first paragraph of the article.
+       *     
+       */
+      excerpt: string;
+      category: string;
+      /**
+       * 
+       *       The relevancy of the article template.
+       *       The higher being the more relevant.
+       *       Static article templates have a score between 0 and -1.
+       *       Expecting AI articles to have a score between 0 and 1 in the future.
+       *     
+       */
+      score: number;
+      /**
+       * 
+       *       The number of tickets used to generate the article.
+       *       Value can be -1 if this data is not available.
+       *     
+       */
+      related_tickets_count?: number;
+      generated_datetime?: string; // date-time
+    }
     export interface AccessTokenDto {
       access_token: string;
       token_type: string;
@@ -3300,8 +3330,14 @@ declare namespace Paths {
     }
   }
   namespace ListAIArticleTemplates {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
     namespace Responses {
-      export type $200 = Components.Schemas.ArticleTemplateDto[];
+      export type $200 = Components.Schemas.AIArticleTemplateDto[];
     }
   }
   namespace ListArticleTemplates {
@@ -4761,6 +4797,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
   /**
+   * listAIArticleTemplates - Retrieve AI article templates
+   */
+  'listAIArticleTemplates'(
+    parameters?: Parameters<Paths.ListAIArticleTemplates.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
+  /**
    * listArticleTemplates - List article templates
    */
   'listArticleTemplates'(
@@ -4768,14 +4812,6 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListArticleTemplates.Responses.$200>
-  /**
-   * listAIArticleTemplates - Retrieve AI article templates
-   */
-  'listAIArticleTemplates'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
   /**
    * getArticleTemplate - Retrieve article template
    */
@@ -5791,6 +5827,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
   }
+  ['/api/help-center/help-centers/{help_center_id}/article-templates/ai']: {
+    /**
+     * listAIArticleTemplates - Retrieve AI article templates
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListAIArticleTemplates.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
+  }
   ['/api/help-center/article-templates']: {
     /**
      * listArticleTemplates - List article templates
@@ -5800,16 +5846,6 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListArticleTemplates.Responses.$200>
-  }
-  ['/api/help-center/article-templates/ai']: {
-    /**
-     * listAIArticleTemplates - Retrieve AI article templates
-     */
-    'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
   }
   ['/api/help-center/article-templates/{template_key}']: {
     /**

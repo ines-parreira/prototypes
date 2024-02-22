@@ -236,6 +236,7 @@ describe('getArticleTemplate', () => {
 
 describe('getAIArticles', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const helpCenterId = 1
 
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()
@@ -247,7 +248,8 @@ describe('getAIArticles', () => {
         })
 
         const data = await helpCenterResourceMethods.getAIGeneratedArticles(
-            sdkMocks.client
+            sdkMocks.client,
+            {help_center_id: helpCenterId}
         )
         expect(data).toEqual(AIArticlesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -263,7 +265,9 @@ describe('getAIArticles', () => {
             .reply(500, AIArticlesGeneric500ErrorFixture)
 
         await expect(
-            helpCenterResourceMethods.getAIGeneratedArticles(sdkMocks.client)
+            helpCenterResourceMethods.getAIGeneratedArticles(sdkMocks.client, {
+                help_center_id: helpCenterId,
+            })
         ).rejects.toMatchInlineSnapshot(
             `[Error: Request failed with status code 404]`
         )

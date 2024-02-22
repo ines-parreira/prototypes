@@ -364,6 +364,7 @@ describe('useGetArticleTemplate', () => {
 describe('useGetAIArticles', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const locale = 'en-US'
+    const helpCenterId = 1
 
     mockFlags({
         [FeatureFlagKey.ObservabilityAIArticles]: true,
@@ -383,9 +384,12 @@ describe('useGetAIArticles', () => {
             getAIGeneratedArticles: 'success',
         })
 
-        const {result, waitFor} = renderHook(() => useGetAIArticles(locale), {
-            wrapper,
-        })
+        const {result, waitFor} = renderHook(
+            () => useGetAIArticles(helpCenterId, locale),
+            {
+                wrapper,
+            }
+        )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
@@ -399,9 +403,12 @@ describe('useGetAIArticles', () => {
             getAIGeneratedArticles: 'error',
         })
 
-        const {result, waitFor} = renderHook(() => useGetAIArticles(locale), {
-            wrapper,
-        })
+        const {result, waitFor} = renderHook(
+            () => useGetAIArticles(helpCenterId, locale),
+            {
+                wrapper,
+            }
+        )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()

@@ -171,7 +171,7 @@ export type HelpCenterPageEmbedment = Components.Schemas.PageEmbedmentDto
 export type ArticleTemplate = Components.Schemas.ArticleTemplateDto
 
 // AI ARTICLE
-export type AIArticle = Components.Schemas.ArticleTemplateDto
+export type AIArticle = Components.Schemas.AIArticleTemplateDto
 
 // HELP CENTER CREATION WIZARD
 export enum HelpCenterCreationWizardStep {
