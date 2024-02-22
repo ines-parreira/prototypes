@@ -182,12 +182,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         g.nodes[0].id,
         (node, {previousNode, incomingEdge}) => {
             if (node.type === 'trigger_button') {
-                // TODO remove condition once label and label_tkey become non nullable
-                if (node.data.label != null && node.data.label_tkey != null) {
-                    c.entrypoint = {
-                        label: node.data.label,
-                        label_tkey: node.data.label_tkey,
-                    }
+                c.entrypoint = {
+                    label: node.data.label,
+                    label_tkey: node.data.label_tkey,
                 }
                 return
             } else if (node.type === 'automated_message') {
@@ -201,18 +198,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        name: incomingEdge?.data?.name,
-                        event: incomingEdge?.data?.event,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'text_reply') {
                 const step: WorkflowStepTextInput = {
@@ -225,18 +210,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        name: incomingEdge?.data?.name,
-                        event: incomingEdge?.data?.event,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'file_upload') {
                 const step: WorkflowStepAttachmentsInput = {
@@ -249,18 +222,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        name: incomingEdge?.data?.name,
-                        event: incomingEdge?.data?.event,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'order_selection') {
                 const step: WorkflowStepOrderSelection = {
@@ -273,18 +234,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        name: incomingEdge?.data?.name,
-                        event: incomingEdge?.data?.event,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'multiple_choices') {
                 const step: WorkflowStepChoices = {
@@ -298,18 +247,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        name: incomingEdge?.data?.name,
-                        event: incomingEdge?.data?.event,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (
                 node.type === 'end' &&
@@ -325,18 +262,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        event: incomingEdge?.data?.event,
-                        name: incomingEdge?.data?.name,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (
                 node.type === 'end' &&
@@ -352,18 +277,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        event: incomingEdge?.data?.event,
-                        name: incomingEdge?.data?.name,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'end' && node.data.action === 'end') {
                 const step: WorkflowStepEnd = {
@@ -371,18 +284,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     kind: 'end',
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        event: incomingEdge?.data?.event,
-                        name: incomingEdge?.data?.name,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'conditions') {
                 const step: WorkflowStepConditions = {
@@ -393,18 +294,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        event: incomingEdge?.data?.event,
-                        name: incomingEdge?.data?.name,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'http_request') {
                 const headers = node.data.headers.reduce<
@@ -449,18 +338,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        event: incomingEdge?.data?.event,
-                        name: incomingEdge?.data?.name,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'shopper_authentication') {
                 const step: WorkflowStepShopperAuthentication = {
@@ -471,19 +348,22 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     },
                 }
                 c.steps.push(step)
-                if (previousNode && stepIdByNodeId[previousNode.id]) {
-                    c.transitions.push({
-                        id: ulid(),
-                        from_step_id: stepIdByNodeId[previousNode.id],
-                        to_step_id: step.id,
-                        event: incomingEdge?.data?.event,
-                        name: incomingEdge?.data?.name,
-                        conditions: incomingEdge?.data?.conditions,
-                    })
-                } else {
-                    c.initial_step_id = step.id
-                }
                 stepIdByNodeId[node.id] = step.id
+            } else {
+                return
+            }
+
+            if (previousNode && stepIdByNodeId[previousNode.id]) {
+                c.transitions.push({
+                    id: ulid(),
+                    from_step_id: stepIdByNodeId[previousNode.id],
+                    to_step_id: stepIdByNodeId[node.id],
+                    name: incomingEdge?.data?.name,
+                    event: incomingEdge?.data?.event,
+                    conditions: incomingEdge?.data?.conditions,
+                })
+            } else {
+                c.initial_step_id = stepIdByNodeId[node.id]
             }
         }
     )
