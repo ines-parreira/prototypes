@@ -1,0 +1,37 @@
+import React from 'react'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import css from './SecondaryReasons.less'
+import Instruction from './Instruction'
+
+type SecondaryReasonsProps = {
+    secondaryReasons: string[]
+    currentReason: string | null
+    handleSecondaryReasonSelection: (secondaryReason: string) => void
+}
+const SecondaryReasons = ({
+    secondaryReasons,
+    currentReason,
+    handleSecondaryReasonSelection,
+}: SecondaryReasonsProps) => {
+    const selectionOptions = secondaryReasons.map((secondaryReason) => ({
+        label: secondaryReason,
+        value: secondaryReason,
+    }))
+    return (
+        <div
+            data-testid="secondary-reasons-selector"
+            className={css.secondaryReasonsContainer}
+        >
+            <Instruction isRequired>
+                Could you please share more? Select all that applies
+            </Instruction>
+            <RadioFieldSet
+                onChange={handleSecondaryReasonSelection}
+                options={selectionOptions}
+                selectedValue={currentReason || ''}
+            />
+        </div>
+    )
+}
+
+export default SecondaryReasons
