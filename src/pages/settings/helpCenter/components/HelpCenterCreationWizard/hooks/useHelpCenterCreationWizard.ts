@@ -28,7 +28,9 @@ import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavi
 import history from 'pages/history'
 import {getNewHelpCenterTranslation} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {getCurrentDomain} from 'state/currentAccount/selectors'
 import {
+    getHelpCenterWizardInitialData,
     getUpdatedFields,
     handleOnError,
     mapApiHelpCenterToUIHelpCenter,
@@ -96,6 +98,7 @@ export const useHelpCenterCreationWizard = (
     helpCenter: HelpCenter | undefined,
     step: HelpCenterCreationWizardStep
 ): HelpCenterWizardOutput => {
+    const accountCurrentDomain = useAppSelector(getCurrentDomain)
     const dispatch = useAppDispatch()
     const enableArticleRecommendation = useEnableArticleRecommendation()
     const navigateWizardSteps = useNavigateWizardSteps()
@@ -127,11 +130,16 @@ export const useHelpCenterCreationWizard = (
     const isUpdate = !!helpCenter?.id
 
     useEffectOnce(() => {
-        const newHelpCenter = mapApiHelpCenterToUIHelpCenter(
-            helpCenter,
+        const newHelpCenter = mapApiHelpCenterToUIHelpCenter(helpCenter)
+
+        const initialData = getHelpCenterWizardInitialData(
+            accountCurrentDomain,
             allStoreIntegrations
         )
-        setNewHelpCenter(newHelpCenter)
+
+        setNewHelpCenter(
+            helpCenter ? newHelpCenter : {...newHelpCenter, ...initialData}
+        )
     })
 
     const handleAction = (

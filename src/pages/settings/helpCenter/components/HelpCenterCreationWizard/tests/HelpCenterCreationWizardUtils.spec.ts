@@ -23,6 +23,7 @@ import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticl
 import {
     findArticleByKey,
     getEnabledArticlesCount,
+    getHelpCenterWizardInitialData,
     getUpdatedFields,
     groupArticlesByCategory,
     isErrorRecord,
@@ -48,60 +49,42 @@ const articles = ArticlesListFixture
 describe('helpCenterCreationWizardUtils', () => {
     describe('mapApiHelpCenterToUIHelpCenter', () => {
         it('should correctly map API help center to UI help center', () => {
-            const result = mapApiHelpCenterToUIHelpCenter(
-                defaultApiHelpCenter,
-                []
-            )
+            const result = mapApiHelpCenterToUIHelpCenter(defaultApiHelpCenter)
             expect(result).toEqual(defaultUIHelpCenter)
         })
 
         it('should correctly map undefined help center to empty UI help center', () => {
-            const result = mapApiHelpCenterToUIHelpCenter(undefined, [])
+            const result = mapApiHelpCenterToUIHelpCenter(undefined)
             expect(result).toEqual(emptyUIHelpCenter)
         })
 
         it('should add default platform type and default step name if wrong ones are provided', () => {
             const result = mapApiHelpCenterToUIHelpCenter(
-                InvalidHelpCenterApiFixture,
-                []
+                InvalidHelpCenterApiFixture
             )
             expect(result).toEqual(defaultUIHelpCenter)
         })
 
         it('should return true for deactivated when deactivated_datetime provided', () => {
-            const result = mapApiHelpCenterToUIHelpCenter(
-                {
-                    ...defaultApiHelpCenter,
-                    deactivated_datetime: '2021-01-01T00:00:00Z',
-                },
-                []
-            )
+            const result = mapApiHelpCenterToUIHelpCenter({
+                ...defaultApiHelpCenter,
+                deactivated_datetime: '2021-01-01T00:00:00Z',
+            })
             expect(result.deactivated).toEqual(true)
         })
 
         it('should return false for deactivated when deactivated_datetime provided', () => {
-            const result = mapApiHelpCenterToUIHelpCenter(
-                {
-                    ...defaultApiHelpCenter,
-                    deactivated_datetime: null,
-                },
-                []
-            )
+            const result = mapApiHelpCenterToUIHelpCenter({
+                ...defaultApiHelpCenter,
+                deactivated_datetime: null,
+            })
             expect(result.deactivated).toEqual(false)
         })
+    })
 
-        it('should add shop name if only one integration and none provided from api', () => {
-            const result = mapApiHelpCenterToUIHelpCenter(undefined, [
-                {
-                    name: 'test-shop',
-                    type: IntegrationType.Shopify,
-                } as ShopifyIntegration,
-            ])
-            expect(result.shopName).toEqual('test-shop')
-        })
-
-        it('should not add shop name if there are multiple integrations', () => {
-            const result = mapApiHelpCenterToUIHelpCenter(undefined, [
+    describe('getHelpCenterWizardInitialData', () => {
+        it('should not return shop name if there are multiple integrations', () => {
+            const result = getHelpCenterWizardInitialData('test-subdomain', [
                 {
                     name: 'test-shop',
                     type: IntegrationType.Shopify,
@@ -112,6 +95,21 @@ describe('helpCenterCreationWizardUtils', () => {
                 } as ShopifyIntegration,
             ])
             expect(result.shopName).toEqual('')
+        })
+
+        it('should return shop name if there are one integrations', () => {
+            const result = getHelpCenterWizardInitialData('test-subdomain', [
+                {
+                    name: 'test-shop-2',
+                    type: IntegrationType.Shopify,
+                } as ShopifyIntegration,
+            ])
+            expect(result.shopName).toEqual('test-shop-2')
+        })
+
+        it('should return subdomain as initial name', () => {
+            const result = getHelpCenterWizardInitialData('test-subdomain', [])
+            expect(result.name).toEqual('test-subdomain')
         })
     })
 

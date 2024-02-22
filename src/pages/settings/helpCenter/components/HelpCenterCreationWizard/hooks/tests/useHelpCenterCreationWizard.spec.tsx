@@ -1,4 +1,5 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import {
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
@@ -17,6 +18,8 @@ import {
     HelpCenterApiBasicsFixture,
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
+import useAppSelector from 'hooks/useAppSelector'
+import {StoreState} from 'state/types'
 import {useHelpCenterCreationWizard} from '../useHelpCenterCreationWizard'
 
 jest.mock(
@@ -26,7 +29,7 @@ jest.mock(
     })
 )
 jest.mock('pages/history')
-jest.mock('hooks/useAppSelector', () => jest.fn().mockReturnValue([]))
+jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('hooks/useAppDispatch', () =>
     jest.fn().mockImplementation(() => jest.fn())
 )
@@ -43,9 +46,16 @@ const mockedUseDeleteHelpCenterTranslation = jest.mocked(
 
 const helpCenter = HelpCenterApiBasicsFixture
 const helpCenterUI = HelpCenterUiBasicsFixture
+const mockedUseAppSelector = jest.mocked(useAppSelector)
 
 describe('useHelpCenterCreationWizard', () => {
     beforeEach(() => {
+        mockedUseAppSelector.mockImplementation((selector) =>
+            selector({
+                currentAccount: fromJS({domain: 'test'}),
+                integrations: fromJS({integrations: []}),
+            } as unknown as StoreState)
+        )
         mockedUseCreateHelpCenter.mockReturnValue({
             mutateAsync: jest.fn().mockReturnValue({data: helpCenter}),
             isLoading: false,
@@ -65,6 +75,14 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should return default help center', () => {
+        const accountDomain = 'test-domain'
+        mockedUseAppSelector.mockImplementation((selector) =>
+            selector({
+                currentAccount: fromJS({domain: accountDomain}),
+                integrations: fromJS({integrations: []}),
+            } as unknown as StoreState)
+        )
+
         const {result} = renderHook(() =>
             useHelpCenterCreationWizard(
                 undefined,
@@ -72,9 +90,10 @@ describe('useHelpCenterCreationWizard', () => {
             )
         )
 
-        expect(result.current.helpCenter).toMatchObject(
-            EmptyHelpCenterUiFixture
-        )
+        expect(result.current.helpCenter).toMatchObject({
+            ...EmptyHelpCenterUiFixture,
+            name: accountDomain,
+        })
     })
 
     it('should map api help center to UI data', () => {

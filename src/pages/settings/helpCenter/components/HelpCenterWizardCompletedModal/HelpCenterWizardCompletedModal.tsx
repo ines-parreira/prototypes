@@ -26,7 +26,7 @@ const getModalParams = (state?: HELP_CENTER_WIZARD_COMPLETED_STATE) => {
                 icon: SuccessModalIcon.PartyPopper,
                 buttonLabel: 'Done',
                 description:
-                    'Add more articles using templates or by importing your own content, then Publish your Help Center.',
+                    'Help center is currently unpublished. Add more articles using templates or by importing your own content, then Publish your Help Center.',
             }
         default:
             return null

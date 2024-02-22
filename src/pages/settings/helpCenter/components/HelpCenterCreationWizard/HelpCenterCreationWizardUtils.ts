@@ -67,16 +67,8 @@ const replaceNewLines = (input: string | undefined): string | undefined =>
  * - If there is more than one store integration, the one that matches the shop_name will be selected by default
  */
 export const mapApiHelpCenterToUIHelpCenter = (
-    helpCenter: HelpCenter | undefined,
-    allStoreIntegrations: IntegrationFromType<
-        | IntegrationType.Shopify
-        | IntegrationType.BigCommerce
-        | IntegrationType.Magento2
-    >[]
+    helpCenter: HelpCenter | undefined
 ): HelpCenterCreationWizard => {
-    const integration =
-        allStoreIntegrations.length === 1 ? allStoreIntegrations[0] : undefined
-
     const platformType = helpCenter?.wizard?.step_data?.platform_type
     const stepName = helpCenter?.wizard?.step_name
 
@@ -93,13 +85,33 @@ export const mapApiHelpCenterToUIHelpCenter = (
         stepName: isHelpCenterCreationWizardStep(stepName)
             ? stepName
             : HelpCenterCreationWizardStep.Basics,
-        shopName: helpCenter?.shop_name || integration?.name || '',
+        shopName: helpCenter?.shop_name || '',
         brandLogoUrl: helpCenter?.brand_logo_url || null,
         primaryColor: helpCenter?.primary_color || '',
         primaryFontFamily: helpCenter?.primary_font_family || '',
         deactivated: helpCenter
             ? helpCenter.deactivated_datetime !== null
             : true, // when no help center we mark it as unpublished by default
+    }
+}
+
+/**
+ * Get initial data for the help center wizard
+ */
+export const getHelpCenterWizardInitialData = (
+    accountCurrentDomain: string,
+    allStoreIntegrations: IntegrationFromType<
+        | IntegrationType.Shopify
+        | IntegrationType.BigCommerce
+        | IntegrationType.Magento2
+    >[]
+) => {
+    const shopName =
+        allStoreIntegrations.length === 1 ? allStoreIntegrations[0].name : ''
+
+    return {
+        name: accountCurrentDomain,
+        shopName,
     }
 }
 
