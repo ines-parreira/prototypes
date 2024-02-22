@@ -109,6 +109,20 @@ describe('useHelpCenterArticlesForm', () => {
             })
             expect(result.current.selectedArticle?.content).toBe(content)
         })
+
+        it('should handle article hover', () => {
+            const {result} = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenterFixture, articles)
+            )
+
+            act(() => {
+                result.current.handleArticleHover('howToCancelOrder')
+            })
+
+            expect(result.current.hoveredArticle).toBe(
+                articles['orderManagement'][0]
+            )
+        })
     })
 
     describe('endpoints calls', () => {

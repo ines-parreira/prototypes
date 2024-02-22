@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     ArticleTemplateType,
     HelpCenter,
@@ -16,6 +17,7 @@ import {
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetHelpCenterArticles} from '../../hooks/useGetHelpCenterArticles'
 
 import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
@@ -23,6 +25,7 @@ import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArti
 import {useHelpCenterArticlesForm} from '../../hooks/useHelpCenterArticlesForm'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
 import {getEnabledArticlesCount} from '../../HelpCenterCreationWizardUtils'
+import HelpCenterWizardArticlePreview from '../HelpCenterWizardArticlePreview/HelpCenterWizardArticlePreview'
 
 type Props = {
     helpCenter: HelpCenter
@@ -51,7 +54,9 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     const {
         articles,
         selectedArticle,
+        hoveredArticle,
         isLoading: isSavingArticlesLoading,
+        handleArticleHover,
         handleArticleSelect,
         handleArticleEdit,
         handleEditorReady,
@@ -72,6 +77,10 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         isSavingArticlesLoading,
         isUpdatingHelpCenterLoading,
     ])
+
+    //TODO: remove this flag when AI articles are released, no matter if they are enabled for all merchants or not. It should be hidden until it's QAed.
+    const isAIArticlesEnabled =
+        useFlags()[FeatureFlagKey.ObservabilityAIArticles] || false
 
     const isAutomate = automateType === HelpCenterAutomateType.AUTOMATE
 
@@ -134,6 +143,14 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                         isDisabled={isLoading}
                     />
                 }
+                preview={
+                    isAIArticlesEnabled ? (
+                        <HelpCenterWizardArticlePreview
+                            title={hoveredArticle?.title}
+                            content={hoveredArticle?.content}
+                        />
+                    ) : null
+                }
             >
                 <div>
                     {Object.entries(articles).map(
@@ -149,6 +166,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                                 }
                                 onEdit={handleArticleEdit}
                                 onSelect={handleArticleSelect}
+                                onHover={handleArticleHover}
                             />
                         )
                     )}

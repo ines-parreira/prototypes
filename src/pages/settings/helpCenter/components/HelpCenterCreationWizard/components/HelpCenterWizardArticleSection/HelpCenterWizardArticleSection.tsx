@@ -17,9 +17,10 @@ type Props = {
     articles: HelpCenterArticleItem[]
     category: string
     isLimitEnabled: boolean
+    isLoading: boolean
     onEdit: (key: string) => void
     onSelect: (key: string) => void
-    isLoading: boolean
+    onHover: (key: string | undefined) => void
 }
 
 const ARTICLE_TEMPLATE_LIMIT = 1
@@ -31,6 +32,7 @@ const ArticleSection: React.FC<Props> = ({
     isLimitEnabled,
     onEdit,
     onSelect,
+    onHover,
 }) => {
     const [shouldDisplayShowMore, setShouldDisplayShowMore] =
         useState(isLimitEnabled)
@@ -99,7 +101,11 @@ const ArticleSection: React.FC<Props> = ({
                         <div className={css.articleDelimiter} />
                         {slicedArticles.map((item) => (
                             <div key={item.key}>
-                                <div className={css.article}>
+                                <div
+                                    className={css.article}
+                                    onMouseEnter={() => onHover(item.key)}
+                                    onMouseLeave={() => onHover(undefined)}
+                                >
                                     <CheckBox
                                         value={item.key}
                                         isChecked={item.isSelected}

@@ -1,0 +1,33 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .articlePreviewContainer {
+        width: 426px;
+        max-height: 796px;
+        background-color: var(--neutral-grey-0);
+        border-radius: 4px;
+        padding: @layout-spacing-xl;
+
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        overflow: hidden;
+    }
+
+    .previewContent {
+        margin: 0;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 29;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+
+        > p {
+            margin: 0;
+        }
+    }
+}

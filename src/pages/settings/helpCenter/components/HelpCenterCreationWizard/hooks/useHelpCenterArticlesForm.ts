@@ -26,8 +26,10 @@ import {logEvent, SegmentEvent} from '../../../../../../common/segment'
 type HelpCenterArticlesFormOutput = {
     articles: Record<string, HelpCenterArticleItem[]>
     selectedArticle: HelpCenterArticleItem | null
+    hoveredArticle: HelpCenterArticleItem | null
     isLoading: boolean
 
+    handleArticleHover: (key: string | undefined) => void
     handleArticleSelect: (key: string) => void
     handleArticleEdit: (key: string) => void
 
@@ -46,6 +48,9 @@ export const useHelpCenterArticlesForm = (
     >(DEFAULT_ARTICLE_GROUP)
 
     const [selectedArticle, setSelectedArticle] =
+        useState<HelpCenterArticleItem | null>(null)
+
+    const [hoveredArticle, setHoveredArticle] =
         useState<HelpCenterArticleItem | null>(null)
 
     const {setEditModal} = useEditionManager()
@@ -157,6 +162,21 @@ export const useHelpCenterArticlesForm = (
             }
         },
         [selectedArticle]
+    )
+
+    const handleArticleHover = useCallback(
+        (key: string | undefined) => {
+            if (!key) {
+                setHoveredArticle(null)
+                return
+            }
+
+            const article = findArticleByKey(newArticles, key)
+            if (article) {
+                setHoveredArticle(article)
+            }
+        },
+        [newArticles]
     )
 
     const createArticle = (
@@ -347,10 +367,12 @@ export const useHelpCenterArticlesForm = (
     return {
         articles: newArticles,
         selectedArticle,
+        hoveredArticle,
         isLoading:
             isCreateArticleLoading ||
             isCreateArticleTranslationLoading ||
             isUpdateArticleTranslationLoading,
+        handleArticleHover,
         handleArticleSelect,
         handleArticleEdit,
         handleEditorClose,
