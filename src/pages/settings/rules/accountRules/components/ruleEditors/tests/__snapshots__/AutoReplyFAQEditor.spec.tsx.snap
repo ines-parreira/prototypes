@@ -24,7 +24,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
       <span
         class="label"
       >
-        Your previously selected help center was deleted or deactivated. Please
+        Your previously selected help center was deleted. Please
          
         create
          a new one to reactivate this rule.

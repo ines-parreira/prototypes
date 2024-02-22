@@ -85,11 +85,6 @@ describe('<AutoReplyFAQEditor/>', () => {
                     categories: {},
                     helpCenters: {
                         helpCentersById: {
-                            '1': {
-                                id: 1,
-                                name: 'help center 1',
-                                deactivated_datetime: '2022-01-01',
-                            },
                             '2': {id: 2, name: 'help center 2'},
                         },
                     },
@@ -105,7 +100,7 @@ describe('<AutoReplyFAQEditor/>', () => {
         expect(getByText('help center 2'))
         expect(
             getByText(
-                'Your previously selected help center was deleted or deactivated. Please select a new one to reactivate this rule.'
+                'Your previously selected help center was deleted. Please select a new one to reactivate this rule.'
             )
         )
         expect(minProps.handleInstallationError).toHaveBeenCalled()
