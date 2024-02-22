@@ -112,7 +112,7 @@ describe('useHelpCenterArticlesForm', () => {
 
         it('should handle article hover', () => {
             const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenterFixture, articles)
+                useHelpCenterArticlesForm(helpCenter, articles)
             )
 
             act(() => {
