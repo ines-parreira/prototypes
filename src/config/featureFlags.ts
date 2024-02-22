@@ -83,7 +83,6 @@ export enum FeatureFlagKey {
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     SplitTicketView = 'split-ticket-view',
-    STVSortUpdated = 'stv-sort-updated',
     TicketNavigationArrows = 'ticket-navigation-arrows',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',

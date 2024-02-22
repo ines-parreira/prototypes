@@ -1,9 +1,4 @@
-import {useState} from 'react'
-
-export const oldSortOrderOptions = [
-    {value: 'created_datetime:asc', label: 'Oldest'},
-    {value: 'created_datetime:desc', label: 'Newest'},
-] as const
+import {useMemo, useRef, useState} from 'react'
 
 export const sortOrderOptions = [
     {
@@ -32,8 +27,26 @@ export const sortOrderOptions = [
     },
 ] as const
 
-export type SortOrder = typeof sortOrderOptions[number]['value']
+const sortOrderValues = sortOrderOptions.map((o) => o.value)
 
-export default function useSortOrder() {
-    return useState<SortOrder>('created_datetime:desc')
+export type SortOrder = typeof sortOrderValues[number]
+
+export default function useSortOrder(viewSortOrder: string) {
+    const defaultSortOrder = useMemo(
+        () =>
+            sortOrderValues.includes(viewSortOrder as SortOrder)
+                ? (viewSortOrder as SortOrder)
+                : sortOrderValues[0],
+        [viewSortOrder]
+    )
+
+    const currentSortOrder = useRef(defaultSortOrder)
+    const [order, setOrder] = useState<SortOrder>(defaultSortOrder)
+
+    if (defaultSortOrder !== currentSortOrder.current) {
+        currentSortOrder.current = defaultSortOrder
+        setOrder(defaultSortOrder)
+    }
+
+    return [order, setOrder] as const
 }

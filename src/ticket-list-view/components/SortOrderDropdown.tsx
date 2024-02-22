@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useRef, useState} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -9,11 +7,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import {
-    oldSortOrderOptions,
-    sortOrderOptions,
-    SortOrder,
-} from '../hooks/useSortOrder'
+import {sortOrderOptions, SortOrder} from '../hooks/useSortOrder'
 import css from './SortOrderDropdown.less'
 
 type Props = {
@@ -22,25 +16,13 @@ type Props = {
 }
 
 export default function SortingDropdown({onChange, value}: Props) {
-    const hasUpdatedSortOptions = useFlags()[FeatureFlagKey.STVSortUpdated]
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
     const [isOpen, setIsOpen] = useState(false)
 
-    const sortOptions = useMemo(
-        () => (hasUpdatedSortOptions ? sortOrderOptions : oldSortOrderOptions),
-        [hasUpdatedSortOptions]
-    )
-
     const selectedOption = useMemo(
-        () =>
-            // this ugly `as` is needed cause typescript does not realise that
-            // sortOrderOptions and oldSortOrderOptions share the same structure.
-            // This will be cleaned up when the flag is removed again.
-            (
-                sortOptions as unknown as {label: string; value: SortOrder}[]
-            ).find((opt) => opt.value === value),
-        [sortOptions, value]
+        () => sortOrderOptions.find((opt) => opt.value === value),
+        [value]
     )
 
     return (
@@ -63,7 +45,7 @@ export default function SortingDropdown({onChange, value}: Props) {
                         placement="bottom-end"
                     >
                         <DropdownBody>
-                            {sortOptions.map((option) => (
+                            {sortOrderOptions.map((option) => (
                                 <DropdownItem
                                     key={option.value}
                                     onClick={onChange}

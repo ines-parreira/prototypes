@@ -14,7 +14,7 @@ describe('<SortingDropdown />', () => {
             />
         )
 
-        expect(getByText(/Oldest/)).toBeInTheDocument()
+        expect(getByText('↑ Created')).toBeInTheDocument()
     })
 
     it('should update the selected value of the dropdown', () => {
@@ -27,7 +27,7 @@ describe('<SortingDropdown />', () => {
         )
 
         fireEvent.click(getByText(/arrow_drop_down/i))
-        fireEvent.click(getByText(/Newest/))
+        fireEvent.click(getByText('↓ Created'))
 
         expect(onChange).toHaveBeenCalledWith('created_datetime:desc')
     })
