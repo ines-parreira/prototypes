@@ -36,3 +36,5 @@ export const OUTBOUND_CALLS_FILTER_LABEL = 'Outbound calls'
 export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 export const DOWNLOAD_BUTTON_TITLE =
     'Download Caller Experience and Call Volume Data'
+
+export const MAX_VOICE_CALLS_PAGE_NUMBER = 500

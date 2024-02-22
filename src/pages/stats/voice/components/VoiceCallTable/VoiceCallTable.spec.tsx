@@ -297,4 +297,29 @@ describe('VoiceCallTable', () => {
             expect.arrayContaining([expectedSegment])
         )
     })
+
+    it('should should the correct number of total pages', () => {
+        useVoiceCallListMock.mockReturnValue({
+            data: [{}],
+            isFetching: false,
+        } as UseQueryResult<VoiceCallSummary[], unknown>)
+        useVoiceCallCountMock.mockReturnValue({total: 1220, totalPages: 123})
+
+        const {queryByText} = renderComponent()
+
+        expect(queryByText('123')).toBeInTheDocument()
+    })
+
+    it('should not show more than 500 pages', () => {
+        useVoiceCallListMock.mockReturnValue({
+            data: [{}],
+            isFetching: false,
+        } as UseQueryResult<VoiceCallSummary[], unknown>)
+        useVoiceCallCountMock.mockReturnValue({total: 5990, totalPages: 600})
+
+        const {queryByText} = renderComponent()
+
+        expect(queryByText('500')).toBeInTheDocument()
+        expect(queryByText('600')).not.toBeInTheDocument()
+    })
 })

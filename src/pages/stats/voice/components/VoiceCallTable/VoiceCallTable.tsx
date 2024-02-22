@@ -27,7 +27,10 @@ import {
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
-import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
+import {
+    CALL_LIST_PAGE_SIZE,
+    MAX_VOICE_CALLS_PAGE_NUMBER,
+} from 'pages/stats/voice/constants/voiceOverview'
 import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording'
 
 import css from './VoiceCallTable.less'
@@ -332,7 +335,11 @@ export const VoiceCallTable = ({
             {totalPages > 1 && (
                 <Pagination
                     currentPage={currentPage}
-                    pageCount={totalPages}
+                    pageCount={
+                        totalPages > MAX_VOICE_CALLS_PAGE_NUMBER
+                            ? MAX_VOICE_CALLS_PAGE_NUMBER
+                            : totalPages
+                    }
                     onChange={handlePageChange}
                     className={css.pagination}
                 />
