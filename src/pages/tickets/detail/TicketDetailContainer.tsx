@@ -385,8 +385,10 @@ export const TicketDetailContainer = ({
             await submitNewMessage({status, action, resetMessage})
         }
 
+        const callback = onCloseCallback || maybeGoToNextTicket
+
         if (status === TicketStatus.Closed) {
-            maybeGoToNextTicket()
+            callback()
         }
     }
 

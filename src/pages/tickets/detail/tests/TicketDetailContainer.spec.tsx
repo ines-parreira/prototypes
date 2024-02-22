@@ -404,6 +404,41 @@ describe('TicketDetailContainer component', () => {
         await waitFor(() => expect(minProps.goToNextTicket).toHaveBeenCalled())
     })
 
+    it('should use the close callback prop when setting status closed and history is closed', async () => {
+        const mockCallback = jest.fn()
+        const {getByTestId} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        currentUser={currentUser}
+                        canSendMessage
+                        ticket={existingTicket.setIn(
+                            ['_internal', 'displayHistory'],
+                            false
+                        )}
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    to: [],
+                                },
+                            },
+                        })}
+                        submitTicket={() => Promise.resolve()}
+                        onCloseCallback={mockCallback}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: `/foo/${existingTicket.get('id') as string}`,
+            }
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+        await waitFor(() => expect(mockCallback).toHaveBeenCalled())
+    })
+
     it('should set activeCustomer as receiver when receiver is in the location state', () => {
         const expectedReceiver = {
             name: 'Pizza Pepperoni',
