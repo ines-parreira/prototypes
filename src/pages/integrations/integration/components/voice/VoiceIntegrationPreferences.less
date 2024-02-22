@@ -1,9 +1,32 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xl;
+
+        .sectionHeader {
+            margin-bottom: -(@layout-spacing-l - @layout-spacing-m);
+        }
+
+        :global(.control-label) {
+            margin-bottom: @layout-spacing-s;
+        }
+    }
+
+    .formSection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-l;
+    }
+
     .appRow {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         height: 56px;
-        padding-left: 16px;
+        padding: @layout-spacing-s @layout-spacing-m;
         border-bottom: 1px solid var(--neutral-grey-3);
     }
 
