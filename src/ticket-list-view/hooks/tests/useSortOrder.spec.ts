@@ -1,10 +1,21 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 
+import usePersistedState from 'common/hooks/usePersistedState'
+
 import useSortOrder from '../useSortOrder'
 
+jest.mock('common/hooks/usePersistedState', () => jest.fn())
+const usePersistedStateMock = usePersistedState as jest.Mock
+
 describe('useSortOrder', () => {
+    beforeEach(() => {
+        usePersistedStateMock.mockReturnValue([{}, jest.fn()])
+    })
+
     it('should return the given sort order if it is supported', () => {
-        const {result} = renderHook(() => useSortOrder('created_datetime:desc'))
+        const {result} = renderHook(() =>
+            useSortOrder(1, 'created_datetime:desc')
+        )
         expect(result.current).toEqual([
             'created_datetime:desc',
             expect.any(Function),
@@ -12,7 +23,9 @@ describe('useSortOrder', () => {
     })
 
     it('should return the default sort order if the given order is not supported', () => {
-        const {result} = renderHook(() => useSortOrder('snoozed_datetime:desc'))
+        const {result} = renderHook(() =>
+            useSortOrder(1, 'snoozed_datetime:desc')
+        )
         expect(result.current).toEqual([
             'last_message_datetime:asc',
             expect.any(Function),
@@ -21,7 +34,7 @@ describe('useSortOrder', () => {
 
     it('should update the sort order if a new order is given', () => {
         const {rerender, result} = renderHook(
-            (sortOrder: string) => useSortOrder(sortOrder),
+            (sortOrder: string) => useSortOrder(1, sortOrder),
             {initialProps: ''}
         )
 
@@ -40,20 +53,29 @@ describe('useSortOrder', () => {
         ])
     })
 
-    it('should set a new sort order', () => {
-        const {result} = renderHook(() => useSortOrder(''))
+    it('should return the persisted sort order if one is defined', () => {
+        usePersistedStateMock.mockReturnValue([
+            {'1': 'last_received_message_datetime:asc'},
+            jest.fn(),
+        ])
+
+        const {result} = renderHook(() => useSortOrder(1, ''))
         expect(result.current).toEqual([
-            'last_message_datetime:asc',
+            'last_received_message_datetime:asc',
             expect.any(Function),
         ])
+    })
+
+    it('should persist the new sort order when set', () => {
+        const persist = jest.fn()
+        usePersistedStateMock.mockReturnValue([{}, persist])
+
+        const {result} = renderHook(() => useSortOrder(1, ''))
 
         act(() => {
-            result.current[1]('created_datetime:desc')
+            result.current[1]('last_message_datetime:asc')
         })
 
-        expect(result.current).toEqual([
-            'created_datetime:desc',
-            expect.any(Function),
-        ])
+        expect(persist).toHaveBeenCalledWith({1: 'last_message_datetime:asc'})
     })
 })

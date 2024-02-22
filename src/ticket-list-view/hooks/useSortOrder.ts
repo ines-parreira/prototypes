@@ -1,4 +1,6 @@
-import {useMemo, useRef, useState} from 'react'
+import {useCallback, useMemo} from 'react'
+
+import usePersistedState from 'common/hooks/usePersistedState'
 
 export const sortOrderOptions = [
     {
@@ -31,7 +33,9 @@ const sortOrderValues = sortOrderOptions.map((o) => o.value)
 
 export type SortOrder = typeof sortOrderValues[number]
 
-export default function useSortOrder(viewSortOrder: string) {
+const initialSortOrders: Record<number, SortOrder> = {}
+
+export default function useSortOrder(viewId: number, viewSortOrder: string) {
     const defaultSortOrder = useMemo(
         () =>
             sortOrderValues.includes(viewSortOrder as SortOrder)
@@ -40,13 +44,22 @@ export default function useSortOrder(viewSortOrder: string) {
         [viewSortOrder]
     )
 
-    const currentSortOrder = useRef(defaultSortOrder)
-    const [order, setOrder] = useState<SortOrder>(defaultSortOrder)
+    const [sortOrders, setSortOrders] = usePersistedState(
+        'ticket-list-view-sort-orders',
+        initialSortOrders
+    )
 
-    if (defaultSortOrder !== currentSortOrder.current) {
-        currentSortOrder.current = defaultSortOrder
-        setOrder(defaultSortOrder)
-    }
+    const sortOrder = useMemo(
+        () => sortOrders[viewId] || defaultSortOrder,
+        [defaultSortOrder, sortOrders, viewId]
+    )
 
-    return [order, setOrder] as const
+    const setSortOrder = useCallback(
+        (order: SortOrder) => {
+            setSortOrders({...sortOrders, [viewId]: order})
+        },
+        [setSortOrders, sortOrders, viewId]
+    )
+
+    return [sortOrder, setSortOrder] as const
 }

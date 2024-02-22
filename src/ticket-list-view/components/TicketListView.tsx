@@ -35,7 +35,7 @@ type Props = {
 export default function TicketListView({activeTicketId, viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
-    const [sortOrder, setSortOrder] = useSortOrder(defaultSortOrder)
+    const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
     const {
         loadMore,
         setElement,
