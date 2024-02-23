@@ -53,17 +53,17 @@ export default function useSplitTicketViewSwitcher() {
 
         if (!isSplitTicketViewEnabled) {
             if (ticketId) {
-                history.push(`/app/ticket/${ticketId}`)
+                history.replace(`/app/ticket/${ticketId}`)
                 return
             }
 
             if (viewId) {
-                history.push(`/app/tickets/${viewId}`)
+                history.replace(`/app/tickets/${viewId}`)
                 return
             }
 
             if (path.match(/^\/app\/views\/?$/)) {
-                history.push('/app')
+                history.replace('/app')
                 return
             }
 
@@ -76,18 +76,18 @@ export default function useSplitTicketViewSwitcher() {
 
         if (ticketId) {
             if (activeViewId) {
-                history.push(`/app/views/${activeViewId}/${ticketId}`)
+                history.replace(`/app/views/${activeViewId}/${ticketId}`)
             }
             return
         }
 
         if (viewId) {
-            history.push(`/app/views/${viewId}`)
+            history.replace(`/app/views/${viewId}`)
             return
         }
 
         if (path.match(/^\/app(?:\/tickets)?$/)) {
-            history.push('/app/views')
+            history.replace('/app/views')
         }
     }, [
         activeViewId,
