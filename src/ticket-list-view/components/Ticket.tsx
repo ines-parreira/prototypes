@@ -1,14 +1,13 @@
 import React, {ComponentProps, useMemo} from 'react'
 import cn from 'classnames'
-import moment from 'moment'
 import {CSSTransition} from 'react-transition-group'
 import {Link} from 'react-router-dom'
 import {Components} from 'react-virtuoso'
 
 import TicketIcon from 'pages/common/components/TicketIcon'
-import {shortenRelativeDurationLabel} from 'utils/date'
 
 import {TicketPartial, TicketSummary} from '../types'
+import RelativeTime from './RelativeTime'
 import TicketSkeleton from './TicketSkeleton'
 import css from './Ticket.less'
 
@@ -44,13 +43,13 @@ export default function Ticket({
     ['data-known-size']: dataKnownSize,
     ...transitionProps
 }: MergedProps) {
-    const datetime = useMemo(() => {
-        return 'channel' in ticket
-            ? ticket.last_message_datetime
-                ? moment(ticket.last_message_datetime).fromNow()
-                : moment(ticket.updated_datetime).fromNow()
-            : null
-    }, [ticket])
+    const datetime = useMemo(
+        () =>
+            'channel' in ticket
+                ? ticket.last_message_datetime || ticket.updated_datetime
+                : null,
+        [ticket]
+    )
 
     return (
         <CSSTransition
@@ -98,7 +97,9 @@ export default function Ticket({
                                         {ticket.excerpt}
                                     </div>
                                     <div className={css.time}>
-                                        {shortenRelativeDurationLabel(datetime)}
+                                        {!!datetime && (
+                                            <RelativeTime datetime={datetime} />
+                                        )}
                                     </div>
                                 </div>
                             </div>
