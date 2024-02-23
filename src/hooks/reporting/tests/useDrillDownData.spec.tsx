@@ -1,9 +1,12 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+import LD from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
@@ -47,6 +50,9 @@ jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(
     useMetricPerDimensionWithEnrichment
 )
+jest.mock('hooks/reporting/useEnrichedCubes')
+const useEnrichedCubesMock = assumeMock(useEnrichedCubes)
+useEnrichedCubesMock.mockImplementation((q) => q)
 
 describe('useDrillDownData', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -89,6 +95,9 @@ describe('useDrillDownData', () => {
             isFetching: false,
             isError: false,
         })
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewCubes]: false,
+        }))
     })
 
     it('should return formatted Data', () => {
@@ -275,5 +284,31 @@ describe('useDrillDownData', () => {
         })
 
         expect(result.current.currentPage).toEqual(2)
+    })
+
+    it('should use Enriched Cubes', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewCubes]: true,
+        }))
+
+        const start_datetime = '2023-12-19T00:00:00.000'
+        const end_datetime = '2023-12-20T00:00:00.000'
+        const metricData: DrillDownMetric = {
+            metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            customFieldId: 123,
+            customFieldValue: [],
+            dateRange: {
+                start_datetime,
+                end_datetime,
+            },
+        }
+
+        renderHook(() => useDrillDownData(metricData), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore({})}>{children}</Provider>
+            ),
+        })
+
+        expect(useEnrichedCubesMock).toHaveBeenCalled()
     })
 })
