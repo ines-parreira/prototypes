@@ -3,7 +3,10 @@ import React, {useMemo, useState} from 'react'
 import classNames from 'classnames'
 import CheckBox from 'pages/common/forms/CheckBox'
 import IconButton from 'pages/common/components/button/IconButton'
-import {HelpCenterArticleItem} from 'models/helpCenter/types'
+import {
+    ArticleTemplateType,
+    HelpCenterArticleItem,
+} from 'models/helpCenter/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Button from 'pages/common/components/button/Button'
@@ -119,7 +122,31 @@ const ArticleSection: React.FC<Props> = ({
                                         tabIndex={0}
                                         role="button"
                                     >
-                                        <span>{item.title}</span>
+                                        {item.type === ArticleTemplateType.AI &&
+                                        item.related_tickets_count &&
+                                        item.related_tickets_count > 0 ? (
+                                            <div
+                                                className={
+                                                    css.articleInfoContainer
+                                                }
+                                            >
+                                                <span
+                                                    className={css.articleTitle}
+                                                >
+                                                    {item.title}
+                                                </span>
+                                                <span
+                                                    className={
+                                                        css.articleTicketsCount
+                                                    }
+                                                >
+                                                    {item.related_tickets_count}{' '}
+                                                    tickets
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <span>{item.title}</span>
+                                        )}
                                         <IconButton
                                             className={css.articleEditButton}
                                             fillStyle="ghost"

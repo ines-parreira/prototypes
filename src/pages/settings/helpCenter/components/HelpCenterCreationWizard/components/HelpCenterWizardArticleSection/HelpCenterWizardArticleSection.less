@@ -20,11 +20,12 @@
     }
 
     .article {
+        .body-semibold();
         padding: @layout-spacing-s @layout-spacing-m;
         display: flex;
         flex: 1;
+        gap: @layout-spacing-xs;
         align-items: center;
-        .body-semibold();
     }
 
     .articleCheckboxContent {
@@ -33,7 +34,23 @@
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        margin-left: @layout-spacing-xs;
+    }
+
+    .articleInfoContainer {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: @layout-spacing-s;
+    }
+
+    .articleTitle {
+        max-width: 80%;
+        overflow: hidden;
+    }
+
+    .articleTicketsCount {
+        .body-regular();
+        color: var(--neutral-grey-4);
     }
 
     .articleEditButton {

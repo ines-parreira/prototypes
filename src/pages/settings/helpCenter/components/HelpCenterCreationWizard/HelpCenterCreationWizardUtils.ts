@@ -1,6 +1,6 @@
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
-import {chain, differenceBy, map} from 'lodash'
+import {chain, differenceBy, map, orderBy} from 'lodash'
 import {
     AIArticle,
     ArticleTemplate,
@@ -363,7 +363,7 @@ export const mapAIHelpCenterArticleData = (
     )
 
     const aiArticlesMapped: HelpCenterArticleItem[] = map(
-        aiArticlesFilter,
+        orderBy(aiArticlesFilter, ['related_tickets_count'], ['desc']),
         (aiArticle) => ({
             ...aiArticle,
             content: replaceNewLines(aiArticle.html_content),

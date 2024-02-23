@@ -204,13 +204,14 @@ export enum ArticleTemplateType {
     AI = 'ai',
 }
 
-export type HelpCenterArticleItem = Partial<LocalArticleTranslation> & {
-    key: string
-    id?: number
-    isSelected?: boolean
-    category?: string
-    isTouched?: boolean
-    availableLocales?: LocaleCode[]
-    shouldCreateTranslation?: boolean
-    type: ArticleTemplateType
-}
+export type HelpCenterArticleItem = Partial<LocalArticleTranslation> &
+    Partial<AIArticle> & {
+        key: string
+        id?: number
+        isSelected?: boolean
+        category?: string
+        isTouched?: boolean
+        availableLocales?: LocaleCode[]
+        shouldCreateTranslation?: boolean
+        type: ArticleTemplateType
+    }
