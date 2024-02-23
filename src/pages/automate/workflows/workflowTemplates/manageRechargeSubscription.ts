@@ -107,7 +107,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         const newEmailAddressTextInputStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: "Update customer's email address (make sure credentials are added)",
-            url: `https://api.rechargeapps.com/customers?{{steps_state.${rechargeCustomerIdHttpRequestStepId}.content.${rechargeCustomerIdVariableId}}}`,
+            url: `https://api.rechargeapps.com/customers/{{steps_state.${rechargeCustomerIdHttpRequestStepId}.content.${rechargeCustomerIdVariableId}}}`,
             method: 'PUT',
             headers: {
                 'x-recharge-version': '2021-11',
@@ -181,7 +181,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         const stateTextInputStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: "Update customer's shipping address",
-            url: `https://api.rechargeapps.com/customers?{{steps_state.${rechargeCustomerIdHttpRequestStepId}.content.${rechargeCustomerIdVariableId}}}`,
+            url: `https://api.rechargeapps.com/customers/{{steps_state.${rechargeCustomerIdHttpRequestStepId}.content.${rechargeCustomerIdVariableId}}}`,
             method: 'PUT',
             headers: {
                 'x-recharge-version': '2021-11',
@@ -232,7 +232,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         const cancellationReasonTextInputStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: 'Cancel subscription (make sure credentials are added)',
-            url: `https://api.rechargeapps.com/subscriptions?{{steps_state.${rechargeSubscriptionHttpRequestStepId}.content.${rechargeSubscriptionIdVariableId}}}/cancel`,
+            url: `https://api.rechargeapps.com/subscriptions/{{steps_state.${rechargeSubscriptionHttpRequestStepId}.content.${rechargeSubscriptionIdVariableId}}}/cancel`,
             method: 'POST',
             headers: {
                 'x-recharge-version': '2021-11',
