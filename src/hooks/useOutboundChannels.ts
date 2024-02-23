@@ -253,6 +253,21 @@ function getLegacyReplySourcesForTicket(
                 ]
             }
 
+            if (
+                !isNewTicket &&
+                validSources.includes(TicketMessageSourceType.YotpoReview)
+            ) {
+                return [
+                    ...acc,
+                    ...validSources.filter(
+                        (source) =>
+                            source !== TicketMessageSourceType.YotpoReview
+                    ),
+                    TicketMessageSourceType.YotpoReviewPublicComment,
+                    TicketMessageSourceType.YotpoReviewPrivateComment,
+                ]
+            }
+
             return [...acc, ...validSources]
         },
         []

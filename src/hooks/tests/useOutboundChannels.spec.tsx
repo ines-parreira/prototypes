@@ -474,6 +474,24 @@ describe('getLegacyReplySourcesForTicket()', () => {
             ).toEqual(emailSources)
         })
 
+        it('should split yotpo review into public and private replies', () => {
+            const yotpoSources = [
+                'yotpo-review-public-comment',
+                'yotpo-review-private-comment',
+            ]
+            const yotpoIntegration = [{type: 'yotpo'}] as Integration[]
+            const ticket = {
+                id: 3,
+                reply_options: {
+                    'yotpo-review': {answerable: true},
+                },
+            }
+
+            expect(
+                getLegacyReplySourcesForTicket(ticket, yotpoIntegration)
+            ).toEqual(yotpoSources)
+        })
+
         it('should not return duplicates', () => {
             const ticket = {
                 id: 3,

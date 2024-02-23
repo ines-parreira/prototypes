@@ -977,16 +977,20 @@ export function humanizeChannel(channelName: ChannelIdentifier): string {
         if (channelName === TicketMessageSourceType.InternalNote) {
             return humanize(channelName)
         }
-
-        if (channelName === TicketMessageSourceType.EmailForward) {
-            return 'Forward'
-        }
-
         const channelFromSource = sourceTypeToChannel(channelName)
-        return (
-            TICKET_CHANNEL_NAMES[channelFromSource] ??
-            humanize(channelFromSource)
-        )
+        switch (channelName) {
+            case TicketMessageSourceType.EmailForward:
+                return 'Forward'
+            case TicketMessageSourceType.YotpoReviewPublicComment:
+                return 'Public Yotpo reply'
+            case TicketMessageSourceType.YotpoReviewPrivateComment:
+                return 'Private Yotpo reply'
+            default:
+                return (
+                    TICKET_CHANNEL_NAMES[channelFromSource] ??
+                    humanize(channelFromSource)
+                )
+        }
     }
 
     const channel = toChannel(channelName)

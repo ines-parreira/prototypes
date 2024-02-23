@@ -1588,6 +1588,22 @@ describe('ticket utils', () => {
             ).toEqual('Internal Note')
 
             expect(
+                humanizeChannel(TicketMessageSourceType.EmailForward)
+            ).toEqual('Forward')
+
+            expect(
+                humanizeChannel(
+                    TicketMessageSourceType.YotpoReviewPublicComment
+                )
+            ).toEqual('Public Yotpo reply')
+
+            expect(
+                humanizeChannel(
+                    TicketMessageSourceType.YotpoReviewPrivateComment
+                )
+            ).toEqual('Private Yotpo reply')
+
+            expect(
                 humanizeChannel(TicketMessageSourceType.WhatsAppMessage)
             ).toEqual('WhatsApp')
         })
