@@ -336,6 +336,23 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 screen.queryByLabelText(/Article Recommendation/i)
             ).not.toBeInTheDocument()
         })
+
+        it('should not call article recomm update when article recomm is exist and not changed', async () => {
+            mockedUseSelfServiceConfiguration.mockReturnValue({
+                ...defaultUseSelfServiceConfiguration,
+                selfServiceConfiguration: {
+                    ...selfServiceConfiguration1,
+                    article_recommendation_help_center_id: 999,
+                },
+            })
+
+            renderComponent({})
+
+            fireEvent.click(screen.getByText('Finish'))
+
+            await waitFor(() => expect(mockOnSave).toBeCalled())
+            expect(mockSelfServiceConfigUpdate).not.toHaveBeenCalled()
+        })
     })
 
     describe('flows', () => {

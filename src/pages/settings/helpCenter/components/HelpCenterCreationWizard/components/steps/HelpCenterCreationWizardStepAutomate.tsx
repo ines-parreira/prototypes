@@ -129,10 +129,26 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         )
         await handleHelpCenterAutomationSettingsUpdate(automationSettings)
 
-        await handleSelfServiceConfigurationUpdate((draft) => {
-            draft.article_recommendation_help_center_id =
-                state.articleRecommendationEnabled ? helpCenter.id : undefined
-        })
+        // These 2 conditions help avoid the case when AR toggle disabled but we have different HC in the selfServiceConfiguration
+        if (
+            state.articleRecommendationEnabled &&
+            selfServiceConfiguration?.article_recommendation_help_center_id !==
+                helpCenter.id
+        ) {
+            await handleSelfServiceConfigurationUpdate((draft) => {
+                draft.article_recommendation_help_center_id = helpCenter.id
+            })
+        }
+
+        if (
+            !state.articleRecommendationEnabled &&
+            selfServiceConfiguration?.article_recommendation_help_center_id ===
+                helpCenter.id
+        ) {
+            await handleSelfServiceConfigurationUpdate((draft) => {
+                draft.article_recommendation_help_center_id = undefined
+            })
+        }
     }
 
     const onFooterAction = async (buttonClicked: FOOTER_BUTTONS) => {
