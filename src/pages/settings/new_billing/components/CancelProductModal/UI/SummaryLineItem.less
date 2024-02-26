@@ -1,0 +1,33 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        border-top: 1px dashed var(--neutral-grey-3);
+        padding: @layout-spacing-xs;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .title {
+        .body-semibold();
+    }
+
+    .strikeThrough {
+        color: var(--neutral-grey-4);
+        text-decoration: line-through;
+    }
+
+    .description {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .price {
+        span {
+            .body-semibold();
+        }
+        text-align: right;
+    }
+}

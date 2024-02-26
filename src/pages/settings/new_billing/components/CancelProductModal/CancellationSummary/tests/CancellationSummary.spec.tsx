@@ -1,0 +1,275 @@
+import React from 'react'
+import {render} from '@testing-library/react'
+import {
+    convertPrice0,
+    proYearlyAutomationPrice,
+    proYearlyHelpdeskPrice,
+    smsPrice0,
+    voicePrice0,
+} from 'fixtures/productPrices'
+import {PlanInterval, ProductType} from 'models/billing/types'
+import {assumeMock} from 'utils/testing'
+import CancellationSummary from '../CancellationSummary'
+import {HELPDESK_CANCELLATION_SCENARIO} from '../../scenarios'
+import SummaryBody from '../../UI/SummaryBody'
+import SummaryHeader from '../../UI/SummaryHeader'
+
+jest.mock('../../UI/SummaryBody')
+const SummaryBodyMock = assumeMock(SummaryBody)
+
+jest.mock('../../UI/SummaryHeader')
+const SummaryHeaderMock = assumeMock(SummaryHeader)
+const componentMockFactory = (testId: string) => () =>
+    <div data-testid={testId} />
+
+describe('CancellationSummary', () => {
+    SummaryBodyMock.mockImplementation(componentMockFactory('summary-body'))
+    SummaryHeaderMock.mockImplementation(componentMockFactory('summary-header'))
+
+    const subscriptionProducts = {
+        [ProductType.Helpdesk]: {
+            ...proYearlyHelpdeskPrice,
+            num_quota_tickets: 100,
+            amount: 100000,
+            currency: 'USD',
+            interval: PlanInterval.Year,
+        },
+        [ProductType.Automation]: {
+            ...proYearlyAutomationPrice,
+            num_quota_tickets: 100,
+            amount: 100000,
+            currency: 'USD',
+            interval: PlanInterval.Year,
+        },
+        [ProductType.SMS]: {
+            ...smsPrice0,
+            num_quota_tickets: 100,
+            amount: 100000,
+            currency: 'USD',
+            interval: PlanInterval.Year,
+        },
+        [ProductType.Voice]: {
+            ...voicePrice0,
+            num_quota_tickets: 100,
+            amount: 100000,
+            currency: 'USD',
+            interval: PlanInterval.Year,
+        },
+        [ProductType.Convert]: {
+            ...convertPrice0,
+            num_quota_tickets: 100,
+            amount: 100000,
+            currency: 'USD',
+            interval: PlanInterval.Year,
+        },
+    }
+
+    it('renders Helpdesk cancellation summary with all products', () => {
+        const {getByTestId} = render(
+            <CancellationSummary
+                subscriptionProducts={subscriptionProducts}
+                cancellingProducts={
+                    HELPDESK_CANCELLATION_SCENARIO.productsToCancel
+                }
+                periodEnd="February 14, 2024"
+            />
+        )
+        expect(getByTestId('summary-body')).toBeInTheDocument()
+        expect(SummaryBodyMock).toHaveBeenCalledWith(
+            {
+                items: [
+                    {
+                        title: 'Helpdesk',
+                        label: 'Pro - ',
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                    {
+                        title: 'Automate',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'automated interactions',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                    {
+                        title: 'SMS',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'SMS tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                    {
+                        title: 'Voice',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'voice tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                    {
+                        title: 'Convert',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'clicks',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                ],
+                interval: 'year',
+                total: 0,
+            },
+            {}
+        )
+
+        expect(getByTestId('summary-header')).toBeInTheDocument()
+        expect(SummaryHeaderMock).toHaveBeenCalledWith(
+            {
+                periodEnd: 'February 14, 2024',
+            },
+            {}
+        )
+    })
+
+    it('renders with only Voice product stricken out, total of 4000 and Voice product being at the bottom of summary', () => {
+        const cancellingProducts = [ProductType.Voice]
+
+        const {getByTestId} = render(
+            <CancellationSummary
+                subscriptionProducts={subscriptionProducts}
+                cancellingProducts={cancellingProducts}
+                periodEnd="February 14, 2024"
+            />
+        )
+
+        expect(getByTestId('summary-body')).toBeInTheDocument()
+        expect(SummaryBodyMock).toHaveBeenCalledWith(
+            {
+                items: [
+                    {
+                        title: 'Helpdesk',
+                        label: 'Pro - ',
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'tickets',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'Automate',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'automated interactions',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'SMS',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'SMS tickets',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'Convert',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'clicks',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'Voice',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'voice tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                ],
+                interval: 'year',
+                total: 4000,
+            },
+            {}
+        )
+        expect(getByTestId('summary-header')).toBeInTheDocument()
+        expect(SummaryHeaderMock).toHaveBeenCalledWith(
+            {
+                periodEnd: 'February 14, 2024',
+            },
+            {}
+        )
+    })
+
+    it('renders only the products that are present in the subscription, event if more products are requested to be cancelled', () => {
+        const cancellingProducts = [
+            ProductType.Helpdesk,
+            ProductType.Automation,
+            ProductType.SMS,
+            ProductType.Voice,
+            ProductType.Convert,
+        ]
+
+        const {getByTestId} = render(
+            <CancellationSummary
+                subscriptionProducts={{
+                    ...subscriptionProducts,
+                    [ProductType.SMS]: null,
+                    [ProductType.Voice]: null,
+                    [ProductType.Convert]: null,
+                }}
+                cancellingProducts={cancellingProducts}
+                periodEnd="February 14, 2024"
+            />
+        )
+
+        expect(SummaryBodyMock).toHaveBeenCalledWith(
+            {
+                items: [
+                    {
+                        title: 'Helpdesk',
+                        label: 'Pro - ',
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                    {
+                        title: 'Automate',
+                        label: null,
+                        interval: 'year',
+                        quotaAmount: 100,
+                        counter: 'automated interactions',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                ],
+                interval: 'year',
+                total: 0,
+            },
+            {}
+        )
+
+        expect(getByTestId('summary-header')).toBeInTheDocument()
+        expect(SummaryHeaderMock).toHaveBeenCalledWith(
+            {
+                periodEnd: 'February 14, 2024',
+            },
+            {}
+        )
+    })
+})

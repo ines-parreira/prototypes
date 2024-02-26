@@ -1,0 +1,27 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        padding: @layout-spacing-xs;
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+
+    .total {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .totalTitle {
+        .body-semibold();
+        color: var(--neutral-grey-6);
+    }
+
+    .totalPrice {
+        color: var(--neutral-grey-6);
+
+        span {
+            .body-semibold();
+        }
+    }
+}
