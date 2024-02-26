@@ -544,8 +544,9 @@ export class Navbar extends Component<Props, State> {
                                             Theme:
                                         </span>
                                         <span className={css.value}>
-                                            {Themes[savedTheme].settingsLabel ??
-                                                Themes[savedTheme].label}
+                                            {Themes[savedTheme]
+                                                ?.settingsLabel ??
+                                                Themes[savedTheme]?.label}
                                         </span>
                                     </DropdownItemLabel>
                                 </div>
