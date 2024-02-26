@@ -23,8 +23,8 @@ type SpotlightRowProps = {
 }
 
 const SpotlightRow = ({
-    title = '',
-    info = '',
+    title,
+    info,
     link,
     icon,
     onCloseModal,

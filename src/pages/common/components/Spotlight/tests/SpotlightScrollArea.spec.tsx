@@ -21,6 +21,7 @@ describe('<SpotlightScrollArea/>', () => {
         isLoading: false,
         scrollerRef: {current: null},
         itemContent: (index, data) => <div>{`${index} - item ${data.id}`}</div>,
+        header: () => null,
     }
 
     it('should render', () => {
@@ -58,6 +59,31 @@ describe('<SpotlightScrollArea/>', () => {
     it('should call loadMore when end area is reached', () => {
         const {getByText} = render(
             <SpotlightScrollArea {...minProps} canLoadMore={true} />
+        )
+
+        const endTrigger = getByText('end area')
+        userEvent.click(endTrigger)
+
+        expect(minProps.loadMore).toHaveBeenCalled()
+    })
+
+    it('should not call loadMore when end area is reached because of the prop canLoadMore set to false', () => {
+        const {getByText} = render(
+            <SpotlightScrollArea {...minProps} canLoadMore={false} />
+        )
+
+        const endTrigger = getByText('end area')
+        userEvent.click(endTrigger)
+
+        expect(minProps.loadMore).not.toHaveBeenCalled()
+    })
+
+    it('should call loadMore when end area is reached with no data', () => {
+        const {getByText} = render(
+            <SpotlightScrollArea
+                {...{...minProps, data: undefined}}
+                canLoadMore={true}
+            />
         )
 
         const endTrigger = getByText('end area')

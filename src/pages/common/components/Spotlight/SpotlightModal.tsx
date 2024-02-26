@@ -438,15 +438,13 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         }
     }
 
-    const activeTab: string = useMemo(() => {
-        if (searchItemsType === ViewType.CustomerList) {
-            return Tabs.Customers
-        } else if (searchItemsType === ViewType.TicketList) {
-            return Tabs.Tickets
-        }
-
-        return Tabs.Customers
-    }, [searchItemsType])
+    const activeTab: string = useMemo(
+        () =>
+            searchItemsType === ViewType.TicketList
+                ? Tabs.Tickets
+                : Tabs.Customers,
+        [searchItemsType]
+    )
 
     useLayoutEffect(() => {
         if (

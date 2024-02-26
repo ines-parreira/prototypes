@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -152,5 +152,40 @@ describe('<SpotlightTicketRow/>', () => {
         )
         userEvent.click(container.firstChild! as Element)
         expect(mockOnClick).toHaveBeenCalled()
+    })
+
+    it('should render title with item.excerpt value form props', () => {
+        const exceptValue = 'Excerpt test'
+        render(
+            <WrappedSpotlightTicketRow
+                {...{
+                    ...defaultProps,
+                    item: {
+                        ...defaultProps.item,
+                        subject: '',
+                        excerpt: exceptValue,
+                    },
+                }}
+            />
+        )
+
+        expect(screen.getByText(exceptValue)).toBeInTheDocument()
+    })
+
+    it('should render title as empty string', () => {
+        render(
+            <WrappedSpotlightTicketRow
+                {...{
+                    ...defaultProps,
+                    item: {
+                        ...defaultProps.item,
+                        subject: '',
+                        excerpt: '',
+                    },
+                }}
+            />
+        )
+
+        expect(document.querySelector('.title')?.textContent).toBe('')
     })
 })

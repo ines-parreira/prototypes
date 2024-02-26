@@ -1,6 +1,6 @@
 import React, {ComponentProps, ReactPortal} from 'react'
 import userEvent from '@testing-library/user-event'
-import {act} from '@testing-library/react'
+import {act, fireEvent, getByTestId} from '@testing-library/react'
 import ReactDOM from 'react-dom'
 import {stringify} from 'qs'
 import LD from 'launchdarkly-react-client-sdk'
@@ -27,9 +27,14 @@ import {mockSearchRank} from 'fixtures/searchRank'
 import {SearchEngine} from 'models/search/types'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
+import useSelectedIndex from 'hooks/useSelectedIndex'
+import * as platform from 'utils/platform'
 import SpotlightModal from '../SpotlightModal'
 import SpotlightTicketRow from '../SpotlightTicketRow'
 import SpotlightCustomerRow from '../SpotlightCustomerRow'
+
+const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
+const CUSTOMER_SPOTLIGHT_ROW_TEST_ID = 'spotlight-customer-row'
 
 jest.mock('pages/history')
 jest.mock('state/notifications/actions')
@@ -41,15 +46,31 @@ jest.mock('pages/common/components/SkeletonLoader', () => () => (
 jest.mock(
     'pages/common/components/Spotlight/SpotlightTicketRow',
     () =>
-        ({onClick}: ComponentProps<typeof SpotlightTicketRow>) =>
-            <div onClick={onClick}>SpotlightTicketRow</div>
+        ({onClick, onHover}: ComponentProps<typeof SpotlightTicketRow>) =>
+            (
+                <div
+                    onClick={onClick}
+                    onMouseEnter={onHover}
+                    data-testid={TICKET_SPOTLIGHT_ROW_TEST_ID}
+                >
+                    MockedSpotlightTicketRow
+                </div>
+            )
 )
 
 jest.mock(
     'pages/common/components/Spotlight/SpotlightCustomerRow',
     () =>
-        ({onClick}: ComponentProps<typeof SpotlightCustomerRow>) =>
-            <div onClick={onClick}>SpotlightCustomerRow</div>
+        ({onClick, onHover}: ComponentProps<typeof SpotlightCustomerRow>) =>
+            (
+                <div
+                    onClick={onClick}
+                    onMouseEnter={onHover}
+                    data-testid={CUSTOMER_SPOTLIGHT_ROW_TEST_ID}
+                >
+                    MockedSpotlightCustomerRow
+                </div>
+            )
 )
 
 jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
@@ -60,9 +81,7 @@ jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock('hooks/useSearchRankScenario')
-;(
-    useSearchRankScenario as jest.MockedFunction<typeof useSearchRankScenario>
-).mockImplementation(() => mockSearchRank)
+const mockUseSearchRankScenario = assumeMock(useSearchRankScenario)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -91,6 +110,9 @@ jest.mock(
         }
 )
 
+jest.mock('hooks/useSelectedIndex')
+const mockUseSelectedIndex = assumeMock(useSelectedIndex)
+
 describe('<SpotlightModal/>', () => {
     const mockCloseModal = jest.fn()
     const minProps: ComponentProps<typeof SpotlightModal> = {
@@ -116,6 +138,14 @@ describe('<SpotlightModal/>', () => {
             setRecentItem: jest.fn() as any,
             isGettingItems: false,
         })
+        mockUseSelectedIndex.mockReturnValue({
+            index: 0,
+            setIndex: jest.fn(),
+            next: jest.fn(),
+            previous: jest.fn(),
+            reset: jest.fn(),
+        })
+        mockUseSearchRankScenario.mockReturnValue(mockSearchRank)
     })
 
     afterEach(() => {
@@ -613,15 +643,15 @@ describe('<SpotlightModal/>', () => {
     })
 
     it.each([
-        ['Tickets', ticket, 'SpotlightTicketRow'],
-        ['Customers', customer, 'SpotlightCustomerRow'],
+        ['Tickets', ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
+        ['Customers', customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
     ])(
         'should render the fetched result set with SpotlightRow for %s tab',
         async (name, item, componentName) => {
             mockServer.onPost().reply(200, {data: [item]})
             jest.useFakeTimers()
 
-            const {rerender, getByPlaceholderText, getByText} =
+            const {rerender, getByPlaceholderText, getByText, container} =
                 renderWithRouter(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
             rerender(<WrappedSpotlightModal {...minProps} />)
@@ -635,7 +665,7 @@ describe('<SpotlightModal/>', () => {
             await userEvent.type(searchInput, '{enter}')
             await act(flushPromises)
 
-            expect(getByText(componentName)).toBeInTheDocument()
+            expect(getByTestId(container, componentName)).toBeInTheDocument()
         }
     )
 
@@ -790,8 +820,8 @@ describe('<SpotlightModal/>', () => {
     })
 
     it.each([
-        ['Tickets', ticket, 'SpotlightTicketRow'],
-        ['Customers', customer, 'SpotlightCustomerRow'],
+        ['Tickets', ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
+        ['Customers', customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
     ])(
         'should render the recent %s searches with SpotlightRow',
         async (name, item, componentName) => {
@@ -801,7 +831,7 @@ describe('<SpotlightModal/>', () => {
                 isGettingItems: false,
             })
 
-            const {rerender, getByText} = renderWithRouter(
+            const {rerender, getByText, container} = renderWithRouter(
                 <WrappedSpotlightModal {...minProps} />
             )
             await act(flushPromises)
@@ -811,13 +841,18 @@ describe('<SpotlightModal/>', () => {
             tab.parentElement!.focus()
 
             expect(getByText('Recently accessed')).toBeInTheDocument()
-            expect(getByText(componentName)).toBeInTheDocument()
+            expect(getByTestId(container, componentName)).toBeInTheDocument()
         }
     )
 
     it.each([
-        ['Tickets', ticket, 'SpotlightTicketRow', 'spotlight-ticket'],
-        ['Customers', customer, 'SpotlightCustomerRow', 'spotlight-customer'],
+        ['Tickets', ticket, TICKET_SPOTLIGHT_ROW_TEST_ID, 'spotlight-ticket'],
+        [
+            'Customers',
+            customer,
+            CUSTOMER_SPOTLIGHT_ROW_TEST_ID,
+            'spotlight-customer',
+        ],
     ])(
         'should log segment event when a recent %s row is clicked',
         async (name, item, componentName, segmentType) => {
@@ -827,7 +862,7 @@ describe('<SpotlightModal/>', () => {
                 isGettingItems: false,
             })
 
-            const {rerender, getByText} = renderWithRouter(
+            const {rerender, getByText, container} = renderWithRouter(
                 <WrappedSpotlightModal {...minProps} />
             )
             await act(flushPromises)
@@ -836,14 +871,17 @@ describe('<SpotlightModal/>', () => {
             const tab = getByText(name)
             tab.parentElement!.focus()
 
-            userEvent.click(getByText(componentName))
+            userEvent.click(getByTestId(container, componentName))
             expect(logEventMock).toHaveBeenNthCalledWith(
                 2,
                 SegmentEvent.RecentItemAccessed,
                 {type: segmentType, user_id: user.id}
             )
 
-            await userEvent.type(getByText(componentName), '{enter}')
+            await userEvent.type(
+                getByTestId(container, componentName),
+                '{enter}'
+            )
             expect(logEventMock).toHaveBeenNthCalledWith(
                 3,
                 SegmentEvent.RecentItemAccessed,
@@ -851,4 +889,322 @@ describe('<SpotlightModal/>', () => {
             )
         }
     )
+
+    it.each([
+        [
+            'Tickets',
+            ticket,
+            {
+                KBkey: '{enter}',
+                shouldCall: history.push,
+                expectedResult: [`/app/ticket/${ticket.id}`],
+            },
+        ],
+        [
+            'Customers',
+            customer,
+            {
+                KBkey: '{enter}',
+                shouldCall: history.push,
+                expectedResult: [`/app/customer/${customer.id}`],
+            },
+        ],
+        [
+            'Tickets',
+            ticket,
+            {
+                KBkey: '{ctrl}{enter}',
+                shouldCall: window.open,
+                expectedResult: [
+                    `/app/ticket/${ticket.id}`,
+                    '_blank',
+                    'noopener',
+                ],
+            },
+        ],
+        [
+            'Customers',
+            customer,
+            {
+                KBkey: '{ctrl}{enter}',
+                shouldCall: window.open,
+                expectedResult: [
+                    `/app/customer/${customer.id}`,
+                    '_blank',
+                    'noopener',
+                ],
+            },
+        ],
+    ])(
+        'should check enter/ctrl+enter hotkeys open searched entry in the same/new tab - platforms other than MacOs',
+        async (name, item, {KBkey, shouldCall, expectedResult}) => {
+            mockUseSearchRankScenario.mockImplementation((arg) => {
+                return {
+                    isRunning: arg === 'spotlight_customer' ? true : false,
+                    registerResultsRequest: jest.fn(),
+                    registerResultsResponse: jest.fn(),
+                    registerResultSelection: jest.fn(),
+                    endScenario: jest.fn(),
+                }
+            })
+            mockServer.onPost().reply(200, {
+                data: [item],
+                meta: {
+                    prev_cursor: 'bar',
+                    next_cursor: 'foo',
+                },
+            })
+            jest.useFakeTimers()
+
+            const {rerender, getByPlaceholderText, getByText} =
+                renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            const tab = getByText(name)
+            const searchInput = getByPlaceholderText('Search...')
+            tab.parentElement!.focus()
+
+            await userEvent.type(searchInput, 'foo')
+            jest.runOnlyPendingTimers()
+            await userEvent.type(searchInput, KBkey)
+            await act(flushPromises)
+
+            await userEvent.type(searchInput, 'bar')
+            jest.runOnlyPendingTimers()
+            await userEvent.type(searchInput, KBkey)
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            expect(shouldCall).toHaveBeenCalledWith(...expectedResult)
+
+            userEvent.clear(searchInput)
+
+            rerender(<WrappedSpotlightModal {...minProps} isOpen={false} />)
+        }
+    )
+
+    it.each([
+        [
+            'Tickets',
+            ticket,
+            {
+                KBkey: '{enter}',
+                shouldCall: history.push,
+                expectedResult: [`/app/ticket/${ticket.id}`],
+            },
+        ],
+        [
+            'Customers',
+            customer,
+            {
+                KBkey: '{enter}',
+                shouldCall: history.push,
+                expectedResult: [`/app/customer/${customer.id}`],
+            },
+        ],
+        [
+            'Tickets',
+            ticket,
+            {
+                KBkey: '{meta}{enter}',
+                shouldCall: window.open,
+                expectedResult: [
+                    `/app/ticket/${ticket.id}`,
+                    '_blank',
+                    'noopener',
+                ],
+            },
+        ],
+        [
+            'Customers',
+            customer,
+            {
+                KBkey: '{meta}{enter}',
+                shouldCall: window.open,
+                expectedResult: [
+                    `/app/customer/${customer.id}`,
+                    '_blank',
+                    'noopener',
+                ],
+            },
+        ],
+    ])(
+        'should check enter/ctrl+enter hotkeys open searched entry in the same/new tab - platform is MacOs',
+        async (name, item, {KBkey, shouldCall, expectedResult}) => {
+            Object.defineProperty(platform, 'isMacOs', {
+                value: true,
+                writable: true,
+            })
+            mockUseSearchRankScenario.mockImplementation((arg) => {
+                return {
+                    isRunning: arg === 'spotlight_customer' ? true : false,
+                    registerResultsRequest: jest.fn(),
+                    registerResultsResponse: jest.fn(),
+                    registerResultSelection: jest.fn(),
+                    endScenario: jest.fn(),
+                }
+            })
+            mockServer.onPost().reply(200, {
+                data: [item],
+                meta: {
+                    prev_cursor: 'bar',
+                    next_cursor: 'foo',
+                },
+            })
+            jest.useFakeTimers()
+
+            const {rerender, getByPlaceholderText, getByText} =
+                renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            const tab = getByText(name)
+            const searchInput = getByPlaceholderText('Search...')
+            tab.parentElement!.focus()
+
+            await userEvent.type(searchInput, 'foo')
+            jest.runOnlyPendingTimers()
+            await userEvent.type(searchInput, KBkey)
+            await act(flushPromises)
+
+            await userEvent.type(searchInput, 'bar')
+            jest.runOnlyPendingTimers()
+            await userEvent.type(searchInput, KBkey)
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            expect(shouldCall).toHaveBeenCalledWith(...expectedResult)
+
+            userEvent.clear(searchInput)
+
+            rerender(<WrappedSpotlightModal {...minProps} isOpen={false} />)
+        }
+    )
+
+    it('should check keyboard navigation actions set next and previous actions on useSelectedIndex hook', async () => {
+        mockUseSelectedIndex.mockReturnValue({
+            index: 0,
+            setIndex: jest.fn(),
+            next: jest.fn(),
+            previous: jest.fn(),
+            reset: jest.fn(),
+        })
+        const {rerender, getByPlaceholderText} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} isOpen={false} />
+        )
+        await act(flushPromises)
+        rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
+
+        const searchInput = getByPlaceholderText('Search...')
+
+        expect(searchInput).toEqual(document.activeElement)
+
+        fireEvent.keyDown(searchInput, {key: 'ArrowUp'})
+        expect(
+            (
+                mockUseSelectedIndex.mock.results[1].value as ReturnType<
+                    typeof useSelectedIndex
+                >
+            ).previous
+        ).toHaveBeenCalled()
+
+        fireEvent.keyDown(searchInput, {key: 'ArrowDown'})
+        expect(
+            (
+                mockUseSelectedIndex.mock.results[1].value as ReturnType<
+                    typeof useSelectedIndex
+                >
+            ).next
+        ).toHaveBeenCalled()
+    })
+
+    it('clearing the input after searching a few times should clear component internals', async () => {
+        mockUseSearchRankScenario.mockImplementation((arg) => {
+            return {
+                isRunning: arg === 'spotlight_customer' ? true : false,
+                registerResultsRequest: jest.fn(),
+                registerResultsResponse: jest.fn(),
+                registerResultSelection: jest.fn(),
+                endScenario: jest.fn(),
+            }
+        })
+        mockServer.onPost().reply(200, {
+            data: [customer],
+            meta: {
+                prev_cursor: 'bar',
+                next_cursor: 'foo',
+            },
+        })
+        jest.useFakeTimers()
+
+        const {rerender, getByPlaceholderText, getByText} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} />
+        )
+
+        await act(flushPromises)
+        rerender(<WrappedSpotlightModal {...minProps} />)
+
+        const tab = getByText('Customers')
+        const searchInput = getByPlaceholderText('Search...')
+        tab.parentElement!.focus()
+
+        await userEvent.type(searchInput, 'foo')
+        jest.runOnlyPendingTimers()
+        await userEvent.type(searchInput, '{enter}')
+        await act(flushPromises)
+
+        await userEvent.type(searchInput, 'bar')
+        await act(flushPromises)
+
+        userEvent.clear(searchInput)
+        await act(flushPromises)
+        jest.runOnlyPendingTimers()
+
+        expect(searchInput.textContent).toEqual('')
+    })
+
+    it('should test hover behavior when customer row is present in template', async () => {
+        mockServer.onPost().reply(200, {
+            data: [customer],
+            meta: {
+                prev_cursor: null,
+                next_cursor: 'foo',
+            },
+        })
+        jest.useFakeTimers()
+
+        const {rerender, getByPlaceholderText, getByText, container} =
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+
+        await act(flushPromises)
+        rerender(<WrappedSpotlightModal {...minProps} />)
+
+        const tab = getByText('Customers')
+        jest.runOnlyPendingTimers()
+        const searchInput = getByPlaceholderText('Search...')
+        tab.parentElement!.focus()
+
+        await userEvent.type(searchInput, 'asdf')
+        jest.runOnlyPendingTimers()
+        await userEvent.type(searchInput, '{enter}')
+
+        await act(flushPromises)
+
+        const spotlightCustomerRow = getByTestId(
+            container,
+            CUSTOMER_SPOTLIGHT_ROW_TEST_ID
+        )
+        fireEvent.mouseOver(spotlightCustomerRow)
+
+        expect(
+            (
+                mockUseSelectedIndex.mock.results[1].value as ReturnType<
+                    typeof useSelectedIndex
+                >
+            ).setIndex
+        ).toHaveBeenCalledWith(0)
+    })
 })
