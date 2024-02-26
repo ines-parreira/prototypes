@@ -1,5 +1,8 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {StatsFilters} from 'models/stat/types'
@@ -10,6 +13,13 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ) => {
+    const isAnalyticsNewCubes: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
+
+    const ticketCountField = isAnalyticsNewCubes
+        ? renameMemberEnriched(TicketMeasure.TicketCount)
+        : TicketMeasure.TicketCount
+
     const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
         statsFilters,
         timezone,
@@ -42,15 +52,15 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
             decile: closedTicketsPerAgent.data?.decile || null,
             allData: allData.map((item) => ({
                 ...item,
-                [TicketMeasure.TicketCount]:
-                    item[TicketMeasure.TicketCount] && data?.value
+                [ticketCountField]:
+                    item[ticketCountField] && data?.value
                         ? String(
                               calculatePercentage(
-                                  Number(item[TicketMeasure.TicketCount]),
+                                  Number(item[ticketCountField]),
                                   data.value
                               )
                           )
-                        : item[TicketMeasure.TicketCount],
+                        : item[ticketCountField],
             })),
         },
     }
