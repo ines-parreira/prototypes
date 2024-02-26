@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import ReplyButtonItem from './ReplyButtonItem'
 
@@ -109,11 +110,11 @@ export default function ReplyButtonList({
                     onKeyDown={(e) => {
                         e.preventDefault()
                     }}
-                    intent="primary"
+                    intent="secondary"
                     onClick={() => onAddChoice()}
                     isDisabled={choicesDirty.length >= 6}
                 >
-                    Add option
+                    <ButtonIconLabel icon="add">Add option</ButtonIconLabel>
                 </Button>
             </div>
         </div>
