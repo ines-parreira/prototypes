@@ -291,6 +291,10 @@ export const HELP_CENTER_LANGUAGE_DEFAULT_UI = [
 
 export const DEFAULT_ARTICLE_GROUP: Record<string, HelpCenterArticleItem[]> = {}
 
+export const HELP_CENTER_CREATE_ARTICLE_QUERY_KEY = 'create_article'
+export const HELP_CENTER_CREATE_ARTICLE_FROM_SCRATCH_QUERY_VALUE =
+    'from_scratch'
+
 export const HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY = 'with_wizard_completed'
 export enum HELP_CENTER_WIZARD_COMPLETED_STATE {
     AllSet = 'all-set',

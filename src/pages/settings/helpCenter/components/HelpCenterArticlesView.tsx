@@ -3,6 +3,7 @@ import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,6 +31,8 @@ import {
     ArticleRowActionTypes,
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,
+    HELP_CENTER_CREATE_ARTICLE_QUERY_KEY,
+    HELP_CENTER_CREATE_ARTICLE_FROM_SCRATCH_QUERY_VALUE,
     MODALS,
 } from '../constants'
 import {useArticlesActions} from '../hooks/useArticlesActions'
@@ -79,6 +82,8 @@ export const HelpCenterArticlesView: React.FC = () => {
     const {setSearchInput} = useSearchContext()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
+    const [createArticleSeachParam, setCreateArticleSeachParam] =
+        useSearchParam(HELP_CENTER_CREATE_ARTICLE_QUERY_KEY)
 
     /**
      * EditionManagerContext
@@ -157,6 +162,16 @@ export const HelpCenterArticlesView: React.FC = () => {
         void getHelpCenterCustomDomain()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        if (
+            createArticleSeachParam ===
+            HELP_CENTER_CREATE_ARTICLE_FROM_SCRATCH_QUERY_VALUE
+        ) {
+            articleModal.openModal(MODALS.ARTICLE)
+            setCreateArticleSeachParam(null)
+        }
+    }, [articleModal, createArticleSeachParam, setCreateArticleSeachParam])
 
     useEffect(() => {
         async function updateSelectedArticleTranslations() {
