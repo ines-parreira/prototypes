@@ -1,0 +1,41 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        flex: 1;
+        padding: 0 @layout-spacing-m;
+        overflow: auto;
+
+        h3 {
+            margin-bottom: 0;
+        }
+    }
+    .description {
+        padding-top: @layout-spacing-xs;
+    }
+
+    .articleLink {
+        padding-top: @layout-spacing-xxs;
+        padding-bottom: @layout-spacing-m;
+        color: var(--main-primary);
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+
+        i {
+            font-size: 16px;
+        }
+    }
+
+    .listHeader {
+        display: flex;
+        border-bottom: 1px solid var(--neutral-grey-3);
+        padding: @layout-spacing-xs @layout-spacing-s;
+        margin-bottom: @layout-spacing-s;
+        color: var(--neutral-grey-3);
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: 600;
+        justify-content: space-between;
+    }
+}

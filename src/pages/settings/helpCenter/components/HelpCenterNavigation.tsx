@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {NavLink, useHistory} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import classNames from 'classnames'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -38,6 +39,9 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
+    const showAILibraryTab =
+        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
+
     const logHelpCenterEvent = (version: string) => {
         if (!changeAutomateSettingButtomPosition) return
         logEvent(SegmentEvent.AutomateSettingButtonClicked, {
@@ -55,6 +59,19 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/articles`} exact>
                 Articles
             </NavLink>
+            {showAILibraryTab && (
+                <NavLink to={`${baseURL}/ai-library`}>
+                    <i
+                        className={classNames(
+                            'material-icons',
+                            css.autoAwesome
+                        )}
+                    >
+                        auto_awesome
+                    </i>
+                    AI Library
+                </NavLink>
+            )}
             <NavLink to={`${baseURL}/contact`}>Contact</NavLink>
             <NavLink to={`${baseURL}/appearance`}>Appearance</NavLink>
             <NavLink to={`${baseURL}/preferences`} exact>

@@ -1,0 +1,44 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+:local {
+    .container {
+        display: flex;
+        width: 100%;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .preview {
+        flex: 1;
+        padding-left: @layout-spacing-m;
+    }
+
+    .previewHeader {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 @layout-spacing-m;
+    }
+
+    .previewActions {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .previewTextWrapper {
+        margin: @layout-spacing-s @layout-spacing-m;
+        background-color: var(--neutral-grey-1);
+        height: 100%;
+        padding: @layout-spacing-xl;
+        border-radius: @layout-spacing-xxs;
+    }
+
+    .textRows {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        padding-top: @layout-spacing-s;
+    }
+}

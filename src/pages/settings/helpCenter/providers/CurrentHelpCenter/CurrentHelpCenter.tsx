@@ -49,6 +49,7 @@ import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
 import HelpCenterPaywall from '../../components/Paywalls/HelpCenterPaywall'
 import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
 import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
+import AILibraryView from '../../components/AIArticlesLibraryView'
 
 const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -62,6 +63,9 @@ const CurrentHelpCenter: React.FC = () => {
 
     const helpCenterCreationWizard =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
+
+    const loadAILibrary =
+        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
 
     useEffect(() => {
         async function init() {
@@ -133,6 +137,13 @@ const CurrentHelpCenter: React.FC = () => {
                         </SearchContextProvider>
                     )}
                 />
+                {loadAILibrary && (
+                    <Route
+                        path={`${path}/ai-library`}
+                        exact
+                        component={AILibraryView}
+                    />
+                )}
                 <Route
                     path={`${path}/appearance`}
                     exact

@@ -40,6 +40,7 @@ type Props = {
     fluidContainer?: boolean
     showLanguageSelector?: boolean
     className?: string
+    pageWrapperClassName?: string
     wrapperClassName?: string
     isDirty?: boolean
     onSaveChanges?: () => Promise<void>
@@ -52,6 +53,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     fluidContainer = true,
     showLanguageSelector = false,
     className,
+    pageWrapperClassName,
     wrapperClassName = settingsCss.contentWrapper,
     isDirty,
     onSaveChanges,
@@ -109,7 +111,10 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     )
 
     return (
-        <div className="full-width" style={{position: 'relative'}}>
+        <div
+            className={classNames('full-width', pageWrapperClassName)}
+            style={{position: 'relative'}}
+        >
             <PageHeader
                 className={css.pageHeader}
                 title={

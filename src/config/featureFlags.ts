@@ -73,6 +73,7 @@ export enum FeatureFlagKey {
     NewBillingInterface = 'new-billing-interface',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
+    ObservabilityAIArticlesLibrary = 'observability-ai-articles-library',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',

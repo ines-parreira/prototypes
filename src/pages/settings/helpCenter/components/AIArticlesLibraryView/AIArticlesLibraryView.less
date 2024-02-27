@@ -1,0 +1,26 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .wrapper {
+        position: relative;
+        display: flex;
+        flex: 1;
+        max-height: 100%;
+        overflow: hidden;
+        flex-direction: column;
+        padding: @layout-spacing-m 0;
+    }
+
+    .container {
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .pageWrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+}

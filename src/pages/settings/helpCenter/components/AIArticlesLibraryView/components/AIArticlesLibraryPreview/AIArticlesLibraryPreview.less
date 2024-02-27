@@ -1,0 +1,47 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        flex: 1;
+        padding: 0 @layout-spacing-m;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        overflow: auto;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .title {
+        color: var(--neutral-grey-5);
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .actions {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
+    }
+
+    .iconEdit {
+        color: var(--neutral-grey-5);
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .descriptionContainer {
+        background-color: var(--neutral-grey-1);
+        padding: @layout-spacing-xl;
+        border-radius: @layout-spacing-xxs;
+
+        h3 {
+            margin-bottom: @layout-spacing-s;
+        }
+    }
+}
