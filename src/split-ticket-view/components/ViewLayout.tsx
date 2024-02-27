@@ -34,13 +34,13 @@ export const ViewLayout = ({
 }: RouteComponentProps<Params>) => {
     return (
         <Panels config={initialConfig()} onResize={handleResize}>
-            <Panel key="navbar-panel">
+            <Panel>
                 <TicketNavbar disableResize />
             </Panel>
-            <Panel key="ticket-list-panel">
+            <Panel>
                 <DefaultViewFallback viewId={viewId} />
             </Panel>
-            <Panel key="ticket-panel">
+            <Panel>
                 <EmptyTicket />
             </Panel>
         </Panels>

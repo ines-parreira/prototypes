@@ -237,8 +237,6 @@ export const TicketDetailContainer = ({
             if (customerId) {
                 socketManager.leave(JoinEventType.Customer, customerId)
             }
-
-            clearTicket()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

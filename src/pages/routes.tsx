@@ -44,6 +44,7 @@ import {
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_SETTINGS_PATH,
 } from 'pages/settings/contactForm/constants'
+import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
@@ -132,7 +133,6 @@ import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import ClickTrackingSettingsView from 'pages/settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
-import TicketDetailLayout from 'ticket-page/components/TicketDetailLayout'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
 import {CONVERT_ROUTING_PARAM} from 'pages/convert/common/constants'
 import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
@@ -409,7 +409,14 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
             <Route
                 path={`${path}/:ticketId`}
                 exact
-                render={TicketDetailLayout}
+                render={() => (
+                    <App
+                        content={TicketDetailContainer}
+                        navbar={TicketNavbar}
+                        infobar={TicketInfobarContainer}
+                        infobarOnMobile={true}
+                    />
+                )}
             />
             <Route
                 path={`${path}/:ticketId/edit-widgets`}
