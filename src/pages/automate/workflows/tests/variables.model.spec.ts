@@ -28,36 +28,36 @@ describe('parseWorkflowVariable', () => {
     test('should parse an available group flow variable', () => {
         const availableVariables: WorkflowVariableList = [
             {
-                nodeType: 'order_selection',
-                name: 'My order selection',
+                nodeType: 'shopper_authentication',
+                name: 'Customer login',
                 variables: [
                     {
                         name: 'Customer first name',
-                        value: '{{customer.firstname}}',
+                        value: '{{steps_state.shopper_authentication1.customer.firstname}}',
                     },
                 ],
             },
         ]
         const parsed = parseWorkflowVariable(
-            '{{customer.firstname}}',
+            '{{steps_state.shopper_authentication1.customer.firstname}}',
             availableVariables
         )
         expect(parsed).toEqual({
             name: 'Customer first name',
-            value: '{{customer.firstname}}',
+            value: '{{steps_state.shopper_authentication1.customer.firstname}}',
         })
     })
 
     test('should return an invalid flow variable if not found', () => {
         const availableVariables: WorkflowVariableList = []
         const parsed = parseWorkflowVariable(
-            '{{customer.firstname}}',
+            '{{steps_state.shopper_authentication1.customer.firstname}}',
             availableVariables
         )
         expect(parsed).toEqual({
             isInvalid: true,
             name: 'variable unavailable',
-            value: '{{customer.firstname}}',
+            value: '{{steps_state.shopper_authentication1.customer.firstname}}',
         })
     })
 })

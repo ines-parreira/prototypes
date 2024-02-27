@@ -3,6 +3,7 @@ import _omit from 'lodash/omit'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
+    replaceAliases,
 } from './visualBuilderGraph.model'
 import {
     AutomatedMessageNodeType,
@@ -305,13 +306,18 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         }
     })
 
-    return {
+    const g: VisualBuilderGraph = {
         name: c.name,
         available_languages: c.available_languages,
         nodes,
         edges,
         wfConfigurationOriginal: c,
     }
+
+    // TODO: remove once aliases are removed on the backend
+    replaceAliases(g)
+
+    return g
 }
 
 type ChoiceEventId = string

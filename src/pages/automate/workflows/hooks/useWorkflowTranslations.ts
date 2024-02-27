@@ -24,6 +24,7 @@ import {
     isPayloadTooLarge,
 } from '../utils/payloadSize'
 import {MAX_TRANSLATIONS_SIZE_IN_BYTES} from '../constants'
+import {replaceAliases} from '../models/visualBuilderGraph.model'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -106,12 +107,20 @@ export default function useWorkflowTranslations(
     )
 
     // to be used to compare against the initially fetched configuration to determine if it's dirty or not
-    // TODO make node ids and edge ids stable so that we can compare the graphes directly
+    // TODO make node ids and edge ids stable so that we can compare the graphs directly
     const translateWithSavedTranslations = useCallback(
-        (graph: VisualBuilderGraph) =>
-            translateDeep(graph, translationsByLang[currentLanguage] ?? {}, {
-                doNotFallback: false,
-            }),
+        (graph: VisualBuilderGraph) => {
+            const g = translateDeep(
+                graph,
+                translationsByLang[currentLanguage] ?? {},
+                {
+                    doNotFallback: false,
+                }
+            )
+            // TODO: remove once aliases are removed on the backend
+            replaceAliases(g)
+            return g
+        },
         [translationsByLang, currentLanguage]
     )
 
@@ -211,11 +220,14 @@ export default function useWorkflowTranslations(
             )
             setTranslationsByLangDirty(nextTranslationsByLangDirty)
             setCurrentLanguage(nextLanguage)
-            return translateDeep(
+            const g = translateDeep(
                 nextGraph,
                 nextTranslationsByLangDirty[nextLanguage] ?? {},
                 {doNotFallback: true}
             )
+            // TODO: remove once aliases are removed on the backend
+            replaceAliases(g)
+            return g
         },
         [availableLanguages, translationsByLangDirty, currentLanguage]
     )
@@ -231,9 +243,12 @@ export default function useWorkflowTranslations(
                     translationsByLangDirty
                 )
             }
-            return translateDeep(graph, translationsByLang[language] ?? {}, {
+            const g = translateDeep(graph, translationsByLang[language] ?? {}, {
                 doNotFallback: true,
             })
+            // TODO: remove once aliases are removed on the backend
+            replaceAliases(g)
+            return g
         },
         [translationsByLangDirty, currentLanguage]
     )

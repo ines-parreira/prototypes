@@ -32,6 +32,7 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
                 },
             },
         })
+        const shopperAuthenticationStepId = b.selection.id
         b.insertOrderSelectionStepAndSelect({
             message: {
                 content: {
@@ -45,7 +46,7 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
         const rewardsClaimedVariableId = ulid()
         b.insertHttpRequestStepAndSelect({
             name: 'Loyalty point balance (make sure credentials are added)',
-            url: 'https://api.loyaltylion.com/v2/customers?email={{customer.email}}',
+            url: `https://api.loyaltylion.com/v2/customers?email={{steps_state.${shopperAuthenticationStepId}.customer.email}}`,
             method: 'GET',
             headers: {
                 blank: '',

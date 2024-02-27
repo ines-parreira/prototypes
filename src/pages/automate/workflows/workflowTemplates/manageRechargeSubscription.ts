@@ -32,6 +32,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                 },
             },
         })
+        const shopperAuthenticationStepId = b.selection.id
         b.insertOrderSelectionStepAndSelect({
             message: {
                 content: {
@@ -43,7 +44,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         const rechargeCustomerIdVariableId = ulid()
         b.insertHttpRequestStepAndSelect({
             name: 'Get Recharge customer ID (make sure credentials are added)',
-            url: 'https://api.rechargeapps.com/customers?email={{customer.email}}',
+            url: `https://api.rechargeapps.com/customers?email={{steps_state.${shopperAuthenticationStepId}.customer.email}}`,
             method: 'GET',
             headers: {
                 'x-recharge-version': '2021-11',
@@ -251,8 +252,8 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         })
         b.insertMessageStepAndSelect({
             content: {
-                html: `<div>Your subscription has been canceled and we sent a confirmation to {{customer.email}}.</div><div><br></div><div><strong>Note:</strong> you will not receive a confirmation email if any of the following apply:</div><div>- Your subscription was created today </div><div>- Your subscription is for a membership</div><div>- You received an email about this subscription in the last 24 hours</div><div>- You have other active subscriptions</div>`,
-                text: `Your subscription has been canceled and we sent a confirmation to {{customer.email}}.
+                html: `<div>Your subscription has been canceled and we sent a confirmation to {{steps_state.${shopperAuthenticationStepId}.customer.email}}.</div><div><br></div><div><strong>Note:</strong> you will not receive a confirmation email if any of the following apply:</div><div>- Your subscription was created today </div><div>- Your subscription is for a membership</div><div>- You received an email about this subscription in the last 24 hours</div><div>- You have other active subscriptions</div>`,
+                text: `Your subscription has been canceled and we sent a confirmation to {{steps_state.${shopperAuthenticationStepId}.customer.email}}.
 
 Note: you will not receive a confirmation email if any of the following apply:
 - Your subscription was created today 

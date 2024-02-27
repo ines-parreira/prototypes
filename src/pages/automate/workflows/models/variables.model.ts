@@ -106,17 +106,17 @@ export const buildWorkflowVariableFromNode = (
             variables: [
                 {
                     name: 'Order number',
-                    value: '{{order.name}}',
+                    value: `{{steps_state.${node.id}.order.name}}`,
                     nodeType: 'order_selection',
                 },
                 {
                     name: 'Order total amount',
-                    value: '{{order.total_amount | format_currency: order.currency.code, order.currency.decimals}}',
+                    value: `{{steps_state.${node.id}.order.total_amount | format_currency: steps_state.${node.id}.order.currency.code, steps_state.${node.id}.order.currency.decimals}}`,
                     nodeType: 'order_selection',
                 },
                 {
                     name: 'Order date',
-                    value: '{{order.created_datetime | format_datetime}}',
+                    value: `{{steps_state.${node.id}.order.created_datetime | format_datetime}}`,
                     nodeType: 'order_selection',
                 },
             ],
@@ -128,27 +128,27 @@ export const buildWorkflowVariableFromNode = (
             variables: [
                 {
                     name: 'Customer first name',
-                    value: '{{customer.firstname}}',
+                    value: `{{steps_state.${node.id}.customer.firstname}}`,
                     nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer last name',
-                    value: '{{customer.lastname}}',
+                    value: `{{steps_state.${node.id}.customer.lastname}}`,
                     nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer full name',
-                    value: '{{customer.name}}',
+                    value: `{{steps_state.${node.id}.customer.name}}`,
                     nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer email',
-                    value: '{{customer.email}}',
+                    value: `{{steps_state.${node.id}.customer.email}}`,
                     nodeType: 'shopper_authentication',
                 },
                 {
                     name: 'Customer phone number',
-                    value: '{{customer.phone_number}}',
+                    value: `{{steps_state.${node.id}.customer.phone_number}}`,
                     nodeType: 'shopper_authentication',
                 },
             ],
@@ -379,4 +379,43 @@ function prerenderVariables(string: string) {
     } catch {
         return string
     }
+}
+
+const orderAliasRegex = /{{order\.[^{}]*}}/g
+const customerAliasRegex = /{{customer\.[^{}]*}}/g
+
+export function hasOrderAlias(string: string) {
+    return orderAliasRegex.test(string)
+}
+export function hasCustomerAlias(string: string) {
+    return customerAliasRegex.test(string)
+}
+
+export function replaceOrderAlias(string: string, nodeId: string) {
+    const match = string.match(orderAliasRegex)
+
+    if (!match) {
+        return string
+    }
+
+    const replaceValue = match[0].replace(
+        /order\./g,
+        `steps_state.${nodeId}.order.`
+    )
+
+    return string.replace(orderAliasRegex, replaceValue)
+}
+export function replaceCustomerAlias(string: string, nodeId: string) {
+    const match = string.match(customerAliasRegex)
+
+    if (!match) {
+        return string
+    }
+
+    const replaceValue = match[0].replace(
+        /customer\./g,
+        `steps_state.${nodeId}.customer.`
+    )
+
+    return string.replace(customerAliasRegex, replaceValue)
 }
