@@ -1,4 +1,5 @@
 import {ProductType} from 'models/billing/types'
+import {ProductFeature} from './ProductFeaturesFOMO/types'
 
 export type Reason = {
     label: string
@@ -11,6 +12,7 @@ export type CancellationReason = {
 export type CancellationScenario = {
     reasons: CancellationReason[]
     productsToCancel: ProductType[]
+    features: ProductFeature[]
 }
 
 export enum CancellationReasonsActionType {

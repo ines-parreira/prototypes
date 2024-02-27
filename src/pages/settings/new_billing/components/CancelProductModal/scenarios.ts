@@ -12,4 +12,24 @@ export const HELPDESK_CANCELLATION_SCENARIO: CancellationScenario = {
         ProductType.Voice,
         ProductType.Convert,
     ],
+    features: [
+        {
+            title: 'All-in-one support inbox',
+            description:
+                'Powerful inbox to respond to customer support tickets from all your channels',
+            icon: 'all_inbox',
+        },
+        {
+            title: 'Ecommerce control panel',
+            description:
+                'Ability to refund, cancel, or approve return requests — all from one place',
+            icon: 'shopping_cart',
+        },
+        {
+            title: 'Integrations with 100+ ecommerce tools',
+            description:
+                'All customer data at your fingertips in the support ticket sidebar',
+            icon: 'widgets',
+        },
+    ],
 }
