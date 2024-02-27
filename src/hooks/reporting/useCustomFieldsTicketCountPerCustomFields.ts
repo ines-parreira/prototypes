@@ -1,6 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 import _zip from 'lodash/zip'
+import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     TicketCustomFieldsDimension,
@@ -26,7 +27,7 @@ import {
     getCustomFieldsOrder,
     TicketInsightsOrder,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {getFilterDateRange, renameMember} from 'utils/reporting'
+import {getFilterDateRange} from 'utils/reporting'
 import {notUndefined} from 'utils/types'
 
 const breakdownTimeSeries = (
@@ -60,18 +61,10 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     const isAnalyticsNewCubes: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewCubes]
     const breakdownField = isAnalyticsNewCubes
-        ? renameMember<typeof BREAKDOWN_FIELD>(
-              BREAKDOWN_FIELD,
-              'TicketCustomFields',
-              'TicketCustomFieldsEnriched'
-          )
+        ? renameMemberEnriched(BREAKDOWN_FIELD)
         : BREAKDOWN_FIELD
     const valueField = isAnalyticsNewCubes
-        ? renameMember<typeof VALUE_FIELD>(
-              VALUE_FIELD,
-              'TicketCustomFields',
-              'TicketCustomFieldsEnriched'
-          )
+        ? renameMemberEnriched(VALUE_FIELD)
         : VALUE_FIELD
 
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(

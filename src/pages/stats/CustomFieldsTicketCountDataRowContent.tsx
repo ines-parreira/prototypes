@@ -1,5 +1,8 @@
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import heatmapCss from 'pages/stats/heatmap.less'
 import {
     BREAKDOWN_FIELD,
@@ -20,7 +23,6 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {formatDates, getUtcPeriodFromDateAndGranularity} from './utils'
 
 const EXPAND_COLUMN_WIDTH = 24
@@ -51,20 +53,30 @@ const formatAccordingToValueMode =
                   NOT_AVAILABLE_PLACEHOLDER
               )
 
-export const CustomFieldsTicketCountDataRowContent = ({
-    isTableScrolled = false,
-    timeSeries,
-    [BREAKDOWN_FIELD]: label,
-    [VALUE_FIELD]: value = 0,
-    initialCustomFieldValue,
-    selectedCustomField,
-    percentage,
-    decile,
-    totalsDecile,
-    level = 0,
-    onClick,
-    children,
-}: DataRowProps) => {
+export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
+    const {
+        isTableScrolled = false,
+        timeSeries,
+        initialCustomFieldValue,
+        selectedCustomField,
+        percentage,
+        decile,
+        totalsDecile,
+        level = 0,
+        onClick,
+        children,
+    } = props
+    const isAnalyticsNewCubes: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
+    const breakdownField = isAnalyticsNewCubes
+        ? renameMemberEnriched(BREAKDOWN_FIELD)
+        : BREAKDOWN_FIELD
+    const valueField = isAnalyticsNewCubes
+        ? renameMemberEnriched(VALUE_FIELD)
+        : VALUE_FIELD
+    const label = props[breakdownField]
+    const value = props[valueField] ?? 0
+
     const valueMode = useAppSelector(getValueMode)
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
@@ -119,8 +131,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
                         title: `${String(
                             selectedCustomField?.label
                         )} | ${label} | Total`,
-                        metricName:
-                            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                        metricName: valueField,
                         customFieldId: selectedCustomField?.id || null,
                         customFieldValue: initialCustomFieldValue,
                     }}
@@ -164,8 +175,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
                                 granularity,
                                 data.dateTime
                             )}`,
-                            metricName:
-                                TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                            metricName: valueField,
                             customFieldId: selectedCustomField?.id || null,
                             customFieldValue: initialCustomFieldValue,
                             dateRange: getUtcPeriodFromDateAndGranularity(
