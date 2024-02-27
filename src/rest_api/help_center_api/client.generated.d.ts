@@ -1298,6 +1298,7 @@ declare namespace Components {
         } | null;
         completed?: boolean | null;
       } | null;
+      type?: "faq" | "guidance";
       /**
        * Boolean indicating if the help center is deactivated.
        * example:
@@ -1567,6 +1568,7 @@ declare namespace Components {
         } | null;
         completed?: boolean | null;
       } | null;
+      type: "faq" | "guidance";
       account_id: number;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
@@ -1648,6 +1650,7 @@ declare namespace Components {
         } | null;
         completed?: boolean | null;
       } | null;
+      type: "faq" | "guidance";
     }
     export interface HelpCenterSiteMapUrlDto {
       url: string;
@@ -3575,6 +3578,7 @@ declare namespace Paths {
       export type PerPage = any;
       export type ShopName = string;
       export type Subdomain = string;
+      export type Type = "faq" | "guidance";
       export type WithWizard = boolean;
     }
     export interface QueryParameters {
@@ -3583,6 +3587,7 @@ declare namespace Paths {
       shop_name?: Parameters.ShopName;
       account_id?: Parameters.AccountId;
       with_wizard?: Parameters.WithWizard;
+      type?: Parameters.Type;
       active?: Parameters.Active;
       fields?: Parameters.Fields;
       per_page?: Parameters.PerPage;

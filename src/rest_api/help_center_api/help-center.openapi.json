@@ -244,6 +244,15 @@
                         "schema": {"type": "boolean"}
                     },
                     {
+                        "name": "type",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": ["faq", "guidance"],
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "active",
                         "required": false,
                         "in": "query",
@@ -4351,6 +4360,11 @@
                             {"$ref": "#/components/schemas/HelpCenterWizardDto"}
                         ]
                     },
+                    "type": {
+                        "default": "faq",
+                        "enum": ["faq", "guidance"],
+                        "type": "string"
+                    },
                     "deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if the help center is deactivated.",
@@ -4499,6 +4513,11 @@
                         "allOf": [
                             {"$ref": "#/components/schemas/HelpCenterWizardDto"}
                         ]
+                    },
+                    "type": {
+                        "enum": ["faq", "guidance"],
+                        "type": "string",
+                        "nullable": false
                     }
                 },
                 "required": [
@@ -4527,7 +4546,8 @@
                     "email_integration",
                     "automation_settings_id",
                     "code_snippet_template",
-                    "integration_id"
+                    "integration_id",
+                    "type"
                 ]
             },
             "AccountInfoDto": {
@@ -4945,6 +4965,11 @@
                             {"$ref": "#/components/schemas/HelpCenterWizardDto"}
                         ]
                     },
+                    "type": {
+                        "enum": ["faq", "guidance"],
+                        "type": "string",
+                        "nullable": false
+                    },
                     "account_id": {"type": "number"},
                     "translations": {
                         "minItems": 1,
@@ -4985,6 +5010,7 @@
                     "automation_settings_id",
                     "code_snippet_template",
                     "integration_id",
+                    "type",
                     "account_id"
                 ]
             },

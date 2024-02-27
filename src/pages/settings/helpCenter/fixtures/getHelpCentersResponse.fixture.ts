@@ -34,6 +34,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             wizard: {
                 step_name: 'automate',
             },
+            type: 'faq',
         },
         {
             id: 2,
@@ -64,6 +65,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             email_integration: null,
             automation_settings_id: null,
             account_id: 1,
+            type: 'faq',
         },
         {
             id: 3,
@@ -94,6 +96,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             email_integration: null,
             automation_settings_id: null,
             account_id: 1,
+            type: 'faq',
         },
         {
             id: 4,
@@ -124,6 +127,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             email_integration: null,
             automation_settings_id: null,
             account_id: 1,
+            type: 'faq',
         },
     ],
     object: 'list',
@@ -167,6 +171,7 @@ export const getSingleHelpCenterResponseFixture: HelpCenter = {
     deleted_datetime: null,
     email_integration: null,
     automation_settings_id: null,
+    type: 'faq',
 }
 
 export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {
