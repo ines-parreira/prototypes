@@ -1,0 +1,171 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import React from 'react'
+import {renderHook, act} from '@testing-library/react-hooks'
+
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import {
+    channelConnection,
+    channelConnectionId,
+} from 'fixtures/channelConnection'
+import {
+    ChannelConnectionCreatePayload,
+    ChannelConnectionListOptions,
+    ChannelConnectionParams,
+    ChannelConnectionUpdatePayload,
+} from 'models/convert/channelConnection/types'
+import * as resources from '../resources'
+import * as queries from '../queries'
+
+jest.mock('../resources', () => ({
+    getChannelConnection: jest.fn(),
+    listChannelConnections: jest.fn(),
+    createChannelConnection: jest.fn(),
+    updateChannelConnection: jest.fn(),
+    deleteChannelConnection: jest.fn(),
+}))
+
+const mockedResources = {
+    mockGetChannelConnection: assumeMock(resources.getChannelConnection),
+    mockListChannelConnections: assumeMock(resources.listChannelConnections),
+    mockCreateChannelConnection: assumeMock(resources.createChannelConnection),
+    mockUpdateChannelConnection: assumeMock(resources.updateChannelConnection),
+    mockDeleteChannelConnection: assumeMock(resources.deleteChannelConnection),
+}
+
+const queryClient = mockQueryClient()
+
+const wrapper = ({children}: any) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+)
+
+describe('Channel Connection queries', () => {
+    beforeEach(() => {
+        queryClient.clear()
+    })
+
+    describe('useGetChannelConnection', () => {
+        it('should return correct data on success', async () => {
+            mockedResources.mockGetChannelConnection.mockResolvedValueOnce(
+                channelConnection as any
+            )
+            const {result, waitFor} = renderHook(
+                () =>
+                    queries.useGetChannelConnection({
+                        channel_connection_id: channelConnectionId,
+                    }),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(channelConnection)
+        })
+
+        it('should return expected error on failure', async () => {
+            mockedResources.mockGetChannelConnection.mockRejectedValueOnce(
+                Error('test error')
+            )
+            const {result, waitFor} = renderHook(
+                () =>
+                    queries.useGetChannelConnection({
+                        channel_connection_id: channelConnectionId,
+                    }),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+    })
+
+    describe('useListChannelConnections', () => {
+        const options: ChannelConnectionListOptions = {
+            storeIntegrationId: 1,
+            externalId: 'test-ext-id',
+            channel: 'widget',
+        }
+
+        it('should return correct data on success', async () => {
+            mockedResources.mockListChannelConnections.mockResolvedValueOnce([
+                channelConnection,
+            ] as any)
+
+            const {result, waitFor} = renderHook(
+                () => queries.useListChannelConnections(options),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual([channelConnection])
+        })
+
+        it('should return expected error on failure', async () => {
+            mockedResources.mockListChannelConnections.mockRejectedValueOnce(
+                Error('test error')
+            )
+            const {result, waitFor} = renderHook(
+                () => queries.useListChannelConnections(options),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+    })
+
+    describe('Channel connection mutations: ', () => {
+        const id = {
+            channel_connection_id: channelConnectionId,
+        } as ChannelConnectionParams
+
+        it.each([
+            [
+                'useCreateChannelConnection',
+                'mockCreateChannelConnection',
+                undefined,
+                channelConnection as ChannelConnectionCreatePayload,
+            ],
+            [
+                'useUpdateChannelConnection',
+                'mockUpdateChannelConnection',
+                id,
+                channelConnection as ChannelConnectionUpdatePayload,
+            ],
+            [
+                'useDeleteChannelConnection',
+                'mockDeleteChannelConnection',
+                id,
+                undefined,
+            ],
+        ] as const)(
+            '%s return correct data on success',
+            async (hook, mockedResource, param, returnedData) => {
+                mockedResources[mockedResource].mockResolvedValueOnce(
+                    axiosSuccessResponse(returnedData) as any
+                )
+                const {result, waitFor} = renderHook(() => queries[hook](), {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                })
+
+                act(() => {
+                    result.current.mutate([param as any] as any)
+                })
+
+                await waitFor(() => {
+                    expect(result.current.isSuccess).toBe(true)
+                })
+                expect(result.current.data?.data).toEqual(returnedData)
+            }
+        )
+    })
+})

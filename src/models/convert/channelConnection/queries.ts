@@ -1,0 +1,88 @@
+import {useMutation, UseQueryOptions, useQuery} from '@tanstack/react-query'
+import {
+    createChannelConnection,
+    deleteChannelConnection,
+    getChannelConnection,
+    listChannelConnections,
+    updateChannelConnection,
+} from 'models/convert/channelConnection/resources'
+import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
+import {Paths} from 'rest_api/revenue_addon_api/client.generated'
+import {MutationOverrides} from 'types/query'
+import {ChannelConnectionListOptions} from 'models/convert/channelConnection/types'
+
+export const channelConnectionKeys = {
+    all: () => ['channelConnection'] as const,
+    lists: () => [...channelConnectionKeys.all(), 'list'] as const,
+    list: (params?: ChannelConnectionListOptions) =>
+        [...channelConnectionKeys.lists(), params] as const,
+    details: () => [...channelConnectionKeys.all(), 'detail'] as const,
+    detail: (params: Paths.GetChannelConnection.PathParameters) =>
+        [...channelConnectionKeys.details(), params] as const,
+}
+
+export const useGetChannelConnection = (
+    params: Paths.GetChannelConnection.PathParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getChannelConnection>>
+    >
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useQuery({
+        queryKey: channelConnectionKeys.detail(params),
+        queryFn: () => getChannelConnection(convertClient, params),
+        ...overrides,
+    })
+}
+
+export const useListChannelConnections = (
+    params?: ChannelConnectionListOptions,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof listChannelConnections>>
+    >
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useQuery({
+        queryKey: channelConnectionKeys.list(params),
+        queryFn: () => listChannelConnections(convertClient, params),
+        ...overrides,
+    })
+}
+
+export const useCreateChannelConnection = (
+    overrides?: MutationOverrides<typeof createChannelConnection>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useMutation({
+        mutationFn: ([client = convertClient, data]) =>
+            createChannelConnection(client, data),
+        ...overrides,
+    })
+}
+
+export const useUpdateChannelConnection = (
+    overrides?: MutationOverrides<typeof updateChannelConnection>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useMutation({
+        mutationFn: ([client = convertClient, pathParams, data]) =>
+            updateChannelConnection(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useDeleteChannelConnection = (
+    overrides?: MutationOverrides<typeof deleteChannelConnection>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useMutation({
+        mutationFn: ([client = convertClient, pathParams]) =>
+            deleteChannelConnection(client, pathParams),
+        ...overrides,
+    })
+}

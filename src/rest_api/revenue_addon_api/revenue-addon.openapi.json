@@ -92,12 +92,68 @@
                 "tags": ["configs"],
                 "summary": "Get Config",
                 "operationId": "get_config_by_revenue_id",
+                "deprecated": true,
                 "parameters": [
                     {
                         "name": "revenue_id",
                         "in": "path",
                         "required": true,
                         "schema": {"type": "string", "title": "Revenue Id"}
+                    },
+                    {
+                        "name": "widget-app-id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Widget-App-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConfigSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/configs/{revenue_id}": {
+            "get": {
+                "tags": ["configs"],
+                "summary": "Get Config",
+                "operationId": "get_config_by_revenue_id",
+                "parameters": [
+                    {
+                        "name": "revenue_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Revenue Id"}
+                    },
+                    {
+                        "name": "widget-app-id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Widget-App-Id"
+                        }
                     }
                 ],
                 "responses": {
@@ -790,6 +846,429 @@
                 "security": [{"HTTPBearer": []}]
             }
         },
+        "/campaigns/sync": {
+            "post": {
+                "tags": ["installations"],
+                "summary": "Update",
+                "operationId": "campaigns_sync",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CampaignSyncSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {"type": "string"},
+                                    "type": "array",
+                                    "title": "Response Campaigns Sync"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            }
+        },
+        "/campaigns": {
+            "post": {
+                "tags": ["campaigns"],
+                "summary": "Create Campaign",
+                "operationId": "create_campaign",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CampaignCreateRequestSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CampaignResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            }
+        },
+        "/campaigns/{campaign_id}": {
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get Campaign",
+                "operationId": "get_campaign",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CampaignResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["campaigns"],
+                "summary": "Patch Campaign",
+                "operationId": "patch_campaign",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CampaignPatchRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CampaignResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["campaigns"],
+                "summary": "Delete Campaign",
+                "operationId": "delete_campaign",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "responses": {
+                    "204": {"description": "Successful Response"},
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/channel-connections": {
+            "post": {
+                "tags": ["channel-connections"],
+                "summary": "Create Channel Connection",
+                "operationId": "create_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChannelConnectionCreateRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["channel-connections"],
+                "summary": "Get Channel Connections",
+                "operationId": "get_channel_connections",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "store_integration_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "integer"}, {"type": "null"}],
+                            "description": "Gorgias integration ID for the store",
+                            "title": "Store Integration Id"
+                        },
+                        "description": "Gorgias integration ID for the store"
+                    },
+                    {
+                        "name": "external_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "description": "External ID connected to the Channel connection, usually dependent on the channel type",
+                            "title": "External Id"
+                        },
+                        "description": "External ID connected to the Channel connection, usually dependent on the channel type"
+                    },
+                    {
+                        "name": "channel",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {"$ref": "#/components/schemas/ChannelType"},
+                                {"type": "null"}
+                            ],
+                            "description": "Channel type, e.g. widget",
+                            "title": "Channel"
+                        },
+                        "description": "Channel type, e.g. widget"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChannelConnectionWithCampaignsResponseSchema"
+                                    },
+                                    "title": "Response Get Channel Connections"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/channel-connections/{channel_connection_id}": {
+            "get": {
+                "tags": ["channel-connections"],
+                "summary": "Get Channel Connection",
+                "operationId": "get_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["channel-connections"],
+                "summary": "Patch Channel Connection",
+                "operationId": "patch_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChannelPatchRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["channel-connections"],
+                "summary": "Delete Channel Connection",
+                "operationId": "delete_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {"description": "Successful Response"},
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/billing/health-check": {
             "get": {
                 "tags": ["healthcheck"],
@@ -943,6 +1422,358 @@
                 "enum": ["installed", "not_installed"],
                 "title": "BundleOnboardingStatus"
             },
+            "CampaignCreateRequestSchema": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 1024},
+                            {"type": "null"}
+                        ],
+                        "title": "Description"
+                    },
+                    "message_text": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "language": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Language"
+                    },
+                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
+                    "trigger_rule": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "title": "Trigger Rule"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {"items": {"type": "object"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "meta": {
+                        "anyOf": [{"type": "object"}, {"type": "null"}],
+                        "title": "Meta"
+                    },
+                    "triggers": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignTriggerSchema"
+                        },
+                        "type": "array",
+                        "title": "Triggers"
+                    },
+                    "channel_connection_id": {
+                        "type": "string",
+                        "title": "Channel Connection Id"
+                    },
+                    "external_tag_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "External Tag Id"
+                    },
+                    "template_id": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 36},
+                            {"type": "null"}
+                        ],
+                        "title": "Template Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "message_text",
+                    "status",
+                    "trigger_rule",
+                    "triggers",
+                    "channel_connection_id"
+                ],
+                "title": "CampaignCreateRequestSchema"
+            },
+            "CampaignIdSchema": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 1024},
+                            {"type": "null"}
+                        ],
+                        "title": "Description"
+                    },
+                    "message_text": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "language": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Language"
+                    },
+                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
+                    "trigger_rule": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "title": "Trigger Rule"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {"items": {"type": "object"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "meta": {
+                        "anyOf": [{"type": "object"}, {"type": "null"}],
+                        "title": "Meta"
+                    },
+                    "triggers": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignTriggerSchema"
+                        },
+                        "type": "array",
+                        "title": "Triggers"
+                    },
+                    "id": {"type": "string", "title": "Id"},
+                    "external_tag_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "External Tag Id"
+                    },
+                    "deleted_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Deleted Datetime"
+                    },
+                    "created_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Created Datetime"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "message_text",
+                    "status",
+                    "trigger_rule",
+                    "triggers",
+                    "id"
+                ],
+                "title": "CampaignIdSchema"
+            },
+            "CampaignPatchRequestSchema": {
+                "properties": {
+                    "name": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 255},
+                            {"type": "null"}
+                        ],
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 1024},
+                            {"type": "null"}
+                        ],
+                        "title": "Description"
+                    },
+                    "message_text": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 2048},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "language": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Language"
+                    },
+                    "status": {
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/CampaignStatus"},
+                            {"type": "null"}
+                        ]
+                    },
+                    "trigger_rule": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 4096,
+                                "minLength": 1
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Trigger Rule"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {"items": {"type": "object"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "meta": {
+                        "anyOf": [{"type": "object"}, {"type": "null"}],
+                        "title": "Meta"
+                    },
+                    "triggers": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/CampaignTriggerSchema"
+                                },
+                                "type": "array"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Triggers"
+                    },
+                    "external_tag_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "External Tag Id"
+                    },
+                    "template_id": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 36},
+                            {"type": "null"}
+                        ],
+                        "title": "Template Id"
+                    }
+                },
+                "type": "object",
+                "title": "CampaignPatchRequestSchema",
+                "description": "Defines the fields that can be patched and accepts any subset of the fields.\nSkips advanced validation, it will be handled in PATCH endpoint:\n    see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch"
+            },
+            "CampaignResponseSchema": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 1024},
+                            {"type": "null"}
+                        ],
+                        "title": "Description"
+                    },
+                    "message_text": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "language": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Language"
+                    },
+                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
+                    "trigger_rule": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "title": "Trigger Rule"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {"items": {"type": "object"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "meta": {
+                        "anyOf": [{"type": "object"}, {"type": "null"}],
+                        "title": "Meta"
+                    },
+                    "triggers": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignTriggerSchema"
+                        },
+                        "type": "array",
+                        "title": "Triggers"
+                    },
+                    "id": {"type": "string", "title": "Id"},
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "updated_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Updated Datetime"
+                    },
+                    "deleted_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Deleted Datetime"
+                    },
+                    "template_id": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 36},
+                            {"type": "null"}
+                        ],
+                        "title": "Template Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "message_text",
+                    "status",
+                    "trigger_rule",
+                    "triggers",
+                    "id",
+                    "created_datetime",
+                    "updated_datetime"
+                ],
+                "title": "CampaignResponseSchema"
+            },
             "CampaignSchema": {
                 "properties": {
                     "id": {"type": "string", "title": "Id"},
@@ -956,14 +1787,251 @@
                 "required": ["id", "rules"],
                 "title": "CampaignSchema"
             },
+            "CampaignStatus": {
+                "type": "string",
+                "enum": ["active", "inactive"],
+                "title": "CampaignStatus"
+            },
+            "CampaignSyncSchema": {
+                "properties": {
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "external_id": {"type": "string", "title": "External Id"},
+                    "external_installation_status": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Installation Status"
+                    },
+                    "store_integration_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Store Integration Id"
+                    },
+                    "campaigns": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignIdSchema"
+                        },
+                        "type": "array",
+                        "title": "Campaigns"
+                    }
+                },
+                "type": "object",
+                "required": ["account_id", "external_id", "campaigns"],
+                "title": "CampaignSyncSchema"
+            },
+            "CampaignTriggerOperator": {
+                "type": "string",
+                "enum": [
+                    "eq",
+                    "neq",
+                    "gt",
+                    "gte",
+                    "lt",
+                    "lte",
+                    "in",
+                    "notIn",
+                    "startsWith",
+                    "endsWith",
+                    "contains",
+                    "containsAll",
+                    "containsAny",
+                    "notContains"
+                ],
+                "title": "CampaignTriggerOperator"
+            },
+            "CampaignTriggerSchema": {
+                "properties": {
+                    "id": {"type": "string", "title": "Id"},
+                    "type": {
+                        "$ref": "#/components/schemas/CampaignTriggerType"
+                    },
+                    "operator": {
+                        "$ref": "#/components/schemas/CampaignTriggerOperator"
+                    },
+                    "value": {
+                        "anyOf": [
+                            {"type": "integer"},
+                            {"type": "boolean"},
+                            {"type": "string"},
+                            {"items": {}, "type": "array"},
+                            {"type": "object"}
+                        ],
+                        "title": "Value"
+                    }
+                },
+                "type": "object",
+                "required": ["id", "type", "operator", "value"],
+                "title": "CampaignTriggerSchema"
+            },
+            "CampaignTriggerType": {
+                "type": "string",
+                "enum": [
+                    "time_spent_on_page",
+                    "current_url",
+                    "business_hours",
+                    "cart_value",
+                    "product_tags",
+                    "cart_product_tags",
+                    "visit_count",
+                    "session_time",
+                    "single_in_view",
+                    "exit_intent",
+                    "device_type",
+                    "orders_count",
+                    "amount_spent",
+                    "ordered_products",
+                    "customer_tags",
+                    "country_code"
+                ],
+                "title": "CampaignTriggerType"
+            },
+            "ChannelConnectionCreateRequestSchema": {
+                "properties": {
+                    "store_integration_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Store Integration Id"
+                    },
+                    "external_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Id"
+                    },
+                    "external_installation_status": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Installation Status"
+                    },
+                    "is_setup": {
+                        "type": "boolean",
+                        "title": "Is Setup",
+                        "default": false
+                    },
+                    "is_onboarded": {
+                        "type": "boolean",
+                        "title": "Is Onboarded",
+                        "default": false
+                    },
+                    "channel": {"$ref": "#/components/schemas/ChannelType"}
+                },
+                "type": "object",
+                "required": ["channel"],
+                "title": "ChannelConnectionCreateRequestSchema"
+            },
+            "ChannelConnectionResponseSchema": {
+                "properties": {
+                    "store_integration_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Store Integration Id"
+                    },
+                    "external_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Id"
+                    },
+                    "external_installation_status": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Installation Status"
+                    },
+                    "is_setup": {
+                        "type": "boolean",
+                        "title": "Is Setup",
+                        "default": false
+                    },
+                    "is_onboarded": {
+                        "type": "boolean",
+                        "title": "Is Onboarded",
+                        "default": false
+                    },
+                    "channel": {"$ref": "#/components/schemas/ChannelType"},
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "id": {"type": "string", "title": "Id"}
+                },
+                "type": "object",
+                "required": ["channel", "account_id", "id"],
+                "title": "ChannelConnectionResponseSchema"
+            },
+            "ChannelConnectionWithCampaignsResponseSchema": {
+                "properties": {
+                    "store_integration_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Store Integration Id"
+                    },
+                    "external_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Id"
+                    },
+                    "external_installation_status": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Installation Status"
+                    },
+                    "is_setup": {
+                        "type": "boolean",
+                        "title": "Is Setup",
+                        "default": false
+                    },
+                    "is_onboarded": {
+                        "type": "boolean",
+                        "title": "Is Onboarded",
+                        "default": false
+                    },
+                    "channel": {"$ref": "#/components/schemas/ChannelType"},
+                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "id": {"type": "string", "title": "Id"},
+                    "campaigns": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignResponseSchema"
+                        },
+                        "type": "array",
+                        "title": "Campaigns"
+                    }
+                },
+                "type": "object",
+                "required": ["channel", "account_id", "id", "campaigns"],
+                "title": "ChannelConnectionWithCampaignsResponseSchema"
+            },
+            "ChannelPatchRequestSchema": {
+                "properties": {
+                    "store_integration_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Store Integration Id"
+                    },
+                    "external_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Id"
+                    },
+                    "external_installation_status": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "External Installation Status"
+                    },
+                    "is_setup": {
+                        "type": "boolean",
+                        "title": "Is Setup",
+                        "default": false
+                    },
+                    "is_onboarded": {
+                        "type": "boolean",
+                        "title": "Is Onboarded",
+                        "default": false
+                    }
+                },
+                "type": "object",
+                "title": "ChannelPatchRequestSchema",
+                "description": "Defines the fields that can be patched and accepts any subset of the fields.\nSkips advanced validation, it will be handled in PATCH endpoint:\n    see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch"
+            },
+            "ChannelType": {
+                "type": "string",
+                "const": "widget",
+                "title": "ChannelType"
+            },
             "ConfigSchema": {
                 "properties": {
                     "subscription": {
                         "$ref": "#/components/schemas/SubscriptionStatusSchema"
+                    },
+                    "campaigns": {
+                        "items": {
+                            "$ref": "#/components/schemas/PublicCampaignResponseSchema"
+                        },
+                        "type": "array",
+                        "title": "Campaigns"
                     }
                 },
                 "type": "object",
-                "required": ["subscription"],
+                "required": ["subscription", "campaigns"],
                 "title": "ConfigSchema"
             },
             "CustomDomainOperationSchema": {
@@ -1095,7 +2163,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-nicolae.ngrok.io/loader.js"
+                        "default": "https://bundle-janbalaz.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -1126,6 +2194,94 @@
                 "type": "string",
                 "enum": ["one_click", "manual"],
                 "title": "MethodEnum"
+            },
+            "PublicCampaignResponseSchema": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 1024},
+                            {"type": "null"}
+                        ],
+                        "title": "Description"
+                    },
+                    "message_text": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "language": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Language"
+                    },
+                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
+                    "trigger_rule": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "title": "Trigger Rule"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {"items": {"type": "object"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "meta": {
+                        "anyOf": [{"type": "object"}, {"type": "null"}],
+                        "title": "Meta"
+                    },
+                    "triggers": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignTriggerSchema"
+                        },
+                        "type": "array",
+                        "title": "Triggers"
+                    },
+                    "id": {"type": "string", "title": "Id"},
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "updated_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Updated Datetime"
+                    },
+                    "deleted_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Deleted Datetime"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "message_text",
+                    "status",
+                    "trigger_rule",
+                    "triggers",
+                    "id",
+                    "created_datetime",
+                    "updated_datetime"
+                ],
+                "title": "PublicCampaignResponseSchema",
+                "description": "Contains only fields allowed to be seen by the public, e.g. no channel_connection_id."
             },
             "RuleOperator": {
                 "type": "string",

@@ -13,6 +13,233 @@ declare namespace Components {
          */
         export type BundleOnboardingStatus = 'installed' | 'not_installed'
         /**
+         * CampaignCreateRequestSchema
+         */
+        export interface CampaignCreateRequestSchema {
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Description
+             */
+            description?: string | null
+            /**
+             * Message Text
+             */
+            message_text: string
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Language
+             */
+            language?: string | null
+            status: CampaignStatus
+            /**
+             * Trigger Rule
+             */
+            trigger_rule: string
+            /**
+             * Attachments
+             */
+            attachments?: any
+            /**
+             * Meta
+             */
+            meta?: any
+            /**
+             * Triggers
+             */
+            triggers: CampaignTriggerSchema[]
+            /**
+             * Channel Connection Id
+             */
+            channel_connection_id: string
+            /**
+             * External Tag Id
+             */
+            external_tag_id?: number | null
+            /**
+             * Template Id
+             */
+            template_id?: string | null
+        }
+        /**
+         * CampaignIdSchema
+         */
+        export interface CampaignIdSchema {
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Description
+             */
+            description?: string | null
+            /**
+             * Message Text
+             */
+            message_text: string
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Language
+             */
+            language?: string | null
+            status: CampaignStatus
+            /**
+             * Trigger Rule
+             */
+            trigger_rule: string
+            /**
+             * Attachments
+             */
+            attachments?: any
+            /**
+             * Meta
+             */
+            meta?: any
+            /**
+             * Triggers
+             */
+            triggers: CampaignTriggerSchema[]
+            /**
+             * Id
+             */
+            id: string
+            /**
+             * External Tag Id
+             */
+            external_tag_id?: number | null
+            /**
+             * Deleted Datetime
+             */
+            deleted_datetime?: string /* date-time */ | null
+            /**
+             * Created Datetime
+             */
+            created_datetime?: string /* date-time */ | null
+        }
+        /**
+         * CampaignPatchRequestSchema
+         * Defines the fields that can be patched and accepts any subset of the fields.
+         * Skips advanced validation, it will be handled in PATCH endpoint:
+         *     see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch
+         */
+        export interface CampaignPatchRequestSchema {
+            /**
+             * Name
+             */
+            name?: string | null
+            /**
+             * Description
+             */
+            description?: string | null
+            /**
+             * Message Text
+             */
+            message_text?: string | null
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Language
+             */
+            language?: string | null
+            status?: CampaignStatus | null
+            /**
+             * Trigger Rule
+             */
+            trigger_rule?: string | null
+            /**
+             * Attachments
+             */
+            attachments?: any
+            /**
+             * Meta
+             */
+            meta?: any
+            /**
+             * Triggers
+             */
+            triggers?: CampaignTriggerSchema[] | null
+            /**
+             * External Tag Id
+             */
+            external_tag_id?: number | null
+            /**
+             * Template Id
+             */
+            template_id?: string | null
+        }
+        /**
+         * CampaignResponseSchema
+         */
+        export interface CampaignResponseSchema {
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Description
+             */
+            description?: string | null
+            /**
+             * Message Text
+             */
+            message_text: string
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Language
+             */
+            language?: string | null
+            status: CampaignStatus
+            /**
+             * Trigger Rule
+             */
+            trigger_rule: string
+            /**
+             * Attachments
+             */
+            attachments?: any
+            /**
+             * Meta
+             */
+            meta?: any
+            /**
+             * Triggers
+             */
+            triggers: CampaignTriggerSchema[]
+            /**
+             * Id
+             */
+            id: string
+            /**
+             * Created Datetime
+             */
+            created_datetime: string // date-time
+            /**
+             * Updated Datetime
+             */
+            updated_datetime: string // date-time
+            /**
+             * Deleted Datetime
+             */
+            deleted_datetime?: string /* date-time */ | null
+            /**
+             * Template Id
+             */
+            template_id?: string | null
+        }
+        /**
          * CampaignSchema
          */
         export interface CampaignSchema {
@@ -26,10 +253,226 @@ declare namespace Components {
             rules: RuleSchema[]
         }
         /**
+         * CampaignStatus
+         */
+        export type CampaignStatus = 'active' | 'inactive'
+        /**
+         * CampaignSyncSchema
+         */
+        export interface CampaignSyncSchema {
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * External Id
+             */
+            external_id: string
+            /**
+             * External Installation Status
+             */
+            external_installation_status?: string | null
+            /**
+             * Store Integration Id
+             */
+            store_integration_id?: number | null
+            /**
+             * Campaigns
+             */
+            campaigns: CampaignIdSchema[]
+        }
+        /**
+         * CampaignTriggerOperator
+         */
+        export type CampaignTriggerOperator =
+            | 'eq'
+            | 'neq'
+            | 'gt'
+            | 'gte'
+            | 'lt'
+            | 'lte'
+            | 'in'
+            | 'notIn'
+            | 'startsWith'
+            | 'endsWith'
+            | 'contains'
+            | 'containsAll'
+            | 'containsAny'
+            | 'notContains'
+        /**
+         * CampaignTriggerSchema
+         */
+        export interface CampaignTriggerSchema {
+            /**
+             * Id
+             */
+            id: string
+            type: CampaignTriggerType
+            operator: CampaignTriggerOperator
+            /**
+             * Value
+             */
+            value: number | boolean | string | any[] | any
+        }
+        /**
+         * CampaignTriggerType
+         */
+        export type CampaignTriggerType =
+            | 'time_spent_on_page'
+            | 'current_url'
+            | 'business_hours'
+            | 'cart_value'
+            | 'product_tags'
+            | 'cart_product_tags'
+            | 'visit_count'
+            | 'session_time'
+            | 'single_in_view'
+            | 'exit_intent'
+            | 'device_type'
+            | 'orders_count'
+            | 'amount_spent'
+            | 'ordered_products'
+            | 'customer_tags'
+            | 'country_code'
+        /**
+         * ChannelConnectionCreateRequestSchema
+         */
+        export interface ChannelConnectionCreateRequestSchema {
+            /**
+             * Store Integration Id
+             */
+            store_integration_id?: number | null
+            /**
+             * External Id
+             */
+            external_id?: string | null
+            /**
+             * External Installation Status
+             */
+            external_installation_status?: string | null
+            /**
+             * Is Setup
+             */
+            is_setup?: boolean
+            /**
+             * Is Onboarded
+             */
+            is_onboarded?: boolean
+            channel: ChannelType
+        }
+        /**
+         * ChannelConnectionResponseSchema
+         */
+        export interface ChannelConnectionResponseSchema {
+            /**
+             * Store Integration Id
+             */
+            store_integration_id?: number | null
+            /**
+             * External Id
+             */
+            external_id?: string | null
+            /**
+             * External Installation Status
+             */
+            external_installation_status?: string | null
+            /**
+             * Is Setup
+             */
+            is_setup?: boolean
+            /**
+             * Is Onboarded
+             */
+            is_onboarded?: boolean
+            channel: ChannelType
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Id
+             */
+            id: string
+        }
+        /**
+         * ChannelConnectionWithCampaignsResponseSchema
+         */
+        export interface ChannelConnectionWithCampaignsResponseSchema {
+            /**
+             * Store Integration Id
+             */
+            store_integration_id?: number | null
+            /**
+             * External Id
+             */
+            external_id?: string | null
+            /**
+             * External Installation Status
+             */
+            external_installation_status?: string | null
+            /**
+             * Is Setup
+             */
+            is_setup?: boolean
+            /**
+             * Is Onboarded
+             */
+            is_onboarded?: boolean
+            channel: ChannelType
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Id
+             */
+            id: string
+            /**
+             * Campaigns
+             */
+            campaigns: CampaignResponseSchema[]
+        }
+        /**
+         * ChannelPatchRequestSchema
+         * Defines the fields that can be patched and accepts any subset of the fields.
+         * Skips advanced validation, it will be handled in PATCH endpoint:
+         *     see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch
+         */
+        export interface ChannelPatchRequestSchema {
+            /**
+             * Store Integration Id
+             */
+            store_integration_id?: number | null
+            /**
+             * External Id
+             */
+            external_id?: string | null
+            /**
+             * External Installation Status
+             */
+            external_installation_status?: string | null
+            /**
+             * Is Setup
+             */
+            is_setup?: boolean
+            /**
+             * Is Onboarded
+             */
+            is_onboarded?: boolean
+        }
+        /**
+         * ChannelType
+         */
+        export type ChannelType = 'widget'
+        /**
          * ConfigSchema
          */
         export interface ConfigSchema {
             subscription: SubscriptionStatusSchema
+            /**
+             * Campaigns
+             */
+            campaigns: PublicCampaignResponseSchema[]
         }
         /**
          * CustomDomainOperationSchema
@@ -185,6 +628,65 @@ declare namespace Components {
          * MethodEnum
          */
         export type MethodEnum = 'one_click' | 'manual'
+        /**
+         * PublicCampaignResponseSchema
+         * Contains only fields allowed to be seen by the public, e.g. no channel_connection_id.
+         */
+        export interface PublicCampaignResponseSchema {
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Description
+             */
+            description?: string | null
+            /**
+             * Message Text
+             */
+            message_text: string
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Language
+             */
+            language?: string | null
+            status: CampaignStatus
+            /**
+             * Trigger Rule
+             */
+            trigger_rule: string
+            /**
+             * Attachments
+             */
+            attachments?: any
+            /**
+             * Meta
+             */
+            meta?: any
+            /**
+             * Triggers
+             */
+            triggers: CampaignTriggerSchema[]
+            /**
+             * Id
+             */
+            id: string
+            /**
+             * Created Datetime
+             */
+            created_datetime: string // date-time
+            /**
+             * Updated Datetime
+             */
+            updated_datetime: string // date-time
+            /**
+             * Deleted Datetime
+             */
+            deleted_datetime?: string /* date-time */ | null
+        }
         /**
          * RuleOperator
          */
@@ -469,6 +971,16 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
+    namespace CampaignsSync {
+        export type RequestBody = Components.Schemas.CampaignSyncSchema
+        namespace Responses {
+            /**
+             * Response Campaigns Sync
+             */
+            export type $200 = string[]
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace CheckCustomDomain {
         namespace Responses {
             export type $200 = Components.Schemas.CustomDomainSchema
@@ -483,6 +995,22 @@ declare namespace Paths {
         export type RequestBody = Components.Schemas.JWTTokenSchema
         namespace Responses {
             export type $201 = Components.Schemas.URLBulkSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace CreateCampaign {
+        export type RequestBody = Components.Schemas.CampaignCreateRequestSchema
+        namespace Responses {
+            export type $201 = Components.Schemas.CampaignResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace CreateChannelConnection {
+        export type RequestBody =
+            Components.Schemas.ChannelConnectionCreateRequestSchema
+        namespace Responses {
+            export type $201 =
+                Components.Schemas.ChannelConnectionResponseSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -504,6 +1032,34 @@ declare namespace Paths {
         export type RequestBody = Components.Schemas.CustomDomainOperationSchema
         namespace Responses {
             export type $201 = Components.Schemas.CustomDomainSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace DeleteCampaign {
+        namespace Parameters {
+            /**
+             * Campaign Id
+             */
+            export type CampaignId = string
+        }
+        export interface PathParameters {
+            campaign_id: Parameters.CampaignId
+        }
+        namespace Responses {
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace DeleteChannelConnection {
+        namespace Parameters {
+            /**
+             * Channel Connection Id
+             */
+            export type ChannelConnectionId = string
+        }
+        export interface PathParameters {
+            channel_connection_id: Parameters.ChannelConnectionId
+        }
+        namespace Responses {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -529,15 +1085,85 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace GetCampaign {
+        namespace Parameters {
+            /**
+             * Campaign Id
+             */
+            export type CampaignId = string
+        }
+        export interface PathParameters {
+            campaign_id: Parameters.CampaignId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.CampaignResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetChannelConnection {
+        namespace Parameters {
+            /**
+             * Channel Connection Id
+             */
+            export type ChannelConnectionId = string
+        }
+        export interface PathParameters {
+            channel_connection_id: Parameters.ChannelConnectionId
+        }
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ChannelConnectionResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetChannelConnections {
+        namespace Parameters {
+            /**
+             * Channel
+             * Channel type, e.g. widget
+             */
+            export type Channel = Components.Schemas.ChannelType | null
+            /**
+             * External Id
+             * External ID connected to the Channel connection, usually dependent on the channel type
+             */
+            export type ExternalId = string | null
+            /**
+             * Store Integration Id
+             * Gorgias integration ID for the store
+             */
+            export type StoreIntegrationId = number | null
+        }
+        export interface QueryParameters {
+            store_integration_id?: Parameters.StoreIntegrationId
+            external_id?: Parameters.ExternalId
+            channel?: Parameters.Channel
+        }
+        namespace Responses {
+            /**
+             * Response Get Channel Connections
+             */
+            export type $200 =
+                Components.Schemas.ChannelConnectionWithCampaignsResponseSchema[]
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace GetConfigByRevenueId {
         namespace Parameters {
             /**
              * Revenue Id
              */
             export type RevenueId = string
+            /**
+             * Widget-App-Id
+             */
+            export type WidgetAppId = string | null
         }
         export interface PathParameters {
             revenue_id: Parameters.RevenueId
+        }
+        export interface QueryParameters {
+            'widget-app-id'?: Parameters.WidgetAppId
         }
         namespace Responses {
             export type $200 = Components.Schemas.ConfigSchema
@@ -651,6 +1277,39 @@ declare namespace Paths {
              * Response List Bundle Installation
              */
             export type $200 = Components.Schemas.InstallationSchema[]
+        }
+    }
+    namespace PatchCampaign {
+        namespace Parameters {
+            /**
+             * Campaign Id
+             */
+            export type CampaignId = string
+        }
+        export interface PathParameters {
+            campaign_id: Parameters.CampaignId
+        }
+        export type RequestBody = Components.Schemas.CampaignPatchRequestSchema
+        namespace Responses {
+            export type $200 = Components.Schemas.CampaignResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace PatchChannelConnection {
+        namespace Parameters {
+            /**
+             * Channel Connection Id
+             */
+            export type ChannelConnectionId = string
+        }
+        export interface PathParameters {
+            channel_connection_id: Parameters.ChannelConnectionId
+        }
+        export type RequestBody = Components.Schemas.ChannelPatchRequestSchema
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ChannelConnectionResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
         }
     }
     namespace RedirectR_Alias_Get {
@@ -781,7 +1440,24 @@ export interface OperationMethods {
      * get_config_by_revenue_id - Get Config
      */
     'get_config_by_revenue_id'(
-        parameters?: Parameters<Paths.GetConfigByRevenueId.PathParameters> | null,
+        parameters?: Parameters<
+            Paths.GetConfigByRevenueId.PathParameters &
+                Paths.GetConfigByRevenueId.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByRevenueId.Responses.$200
+        | Paths.GetConfigByRevenueId.Responses.$422
+    >
+    /**
+     * get_config_by_revenue_id - Get Config
+     */
+    'get_config_by_revenue_id'(
+        parameters?: Parameters<
+            Paths.GetConfigByRevenueId.PathParameters &
+                Paths.GetConfigByRevenueId.QueryParameters
+        > | null,
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<
@@ -1004,6 +1680,107 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     /**
+     * campaigns_sync - Update
+     */
+    'campaigns_sync'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CampaignsSync.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.CampaignsSync.Responses.$200 | Paths.CampaignsSync.Responses.$422
+    >
+    /**
+     * create_campaign - Create Campaign
+     */
+    'create_campaign'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateCampaign.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateCampaign.Responses.$201
+        | Paths.CreateCampaign.Responses.$422
+    >
+    /**
+     * get_campaign - Get Campaign
+     */
+    'get_campaign'(
+        parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
+    >
+    /**
+     * patch_campaign - Patch Campaign
+     */
+    'patch_campaign'(
+        parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+        data?: Paths.PatchCampaign.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.PatchCampaign.Responses.$200 | Paths.PatchCampaign.Responses.$422
+    >
+    /**
+     * delete_campaign - Delete Campaign
+     */
+    'delete_campaign'(
+        parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
+    /**
+     * get_channel_connections - Get Channel Connections
+     */
+    'get_channel_connections'(
+        parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetChannelConnections.Responses.$200
+        | Paths.GetChannelConnections.Responses.$422
+    >
+    /**
+     * create_channel_connection - Create Channel Connection
+     */
+    'create_channel_connection'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateChannelConnection.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateChannelConnection.Responses.$201
+        | Paths.CreateChannelConnection.Responses.$422
+    >
+    /**
+     * get_channel_connection - Get Channel Connection
+     */
+    'get_channel_connection'(
+        parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetChannelConnection.Responses.$200
+        | Paths.GetChannelConnection.Responses.$422
+    >
+    /**
+     * patch_channel_connection - Patch Channel Connection
+     */
+    'patch_channel_connection'(
+        parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+        data?: Paths.PatchChannelConnection.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.PatchChannelConnection.Responses.$200
+        | Paths.PatchChannelConnection.Responses.$422
+    >
+    /**
+     * delete_channel_connection - Delete Channel Connection
+     */
+    'delete_channel_connection'(
+        parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+    /**
      * health_check_billing_health_check_get - Health Check
      */
     'health_check_billing_health_check_get'(
@@ -1090,7 +1867,26 @@ export interface PathsDictionary {
          * get_config_by_revenue_id - Get Config
          */
         'get'(
-            parameters?: Parameters<Paths.GetConfigByRevenueId.PathParameters> | null,
+            parameters?: Parameters<
+                Paths.GetConfigByRevenueId.PathParameters &
+                    Paths.GetConfigByRevenueId.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetConfigByRevenueId.Responses.$200
+            | Paths.GetConfigByRevenueId.Responses.$422
+        >
+    }
+    ['/assistant/configs/{revenue_id}']: {
+        /**
+         * get_config_by_revenue_id - Get Config
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetConfigByRevenueId.PathParameters &
+                    Paths.GetConfigByRevenueId.QueryParameters
+            > | null,
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<
@@ -1344,6 +2140,119 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
+    }
+    ['/campaigns/sync']: {
+        /**
+         * campaigns_sync - Update
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CampaignsSync.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CampaignsSync.Responses.$200
+            | Paths.CampaignsSync.Responses.$422
+        >
+    }
+    ['/campaigns']: {
+        /**
+         * create_campaign - Create Campaign
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateCampaign.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateCampaign.Responses.$201
+            | Paths.CreateCampaign.Responses.$422
+        >
+    }
+    ['/campaigns/{campaign_id}']: {
+        /**
+         * get_campaign - Get Campaign
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
+        >
+        /**
+         * patch_campaign - Patch Campaign
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+            data?: Paths.PatchCampaign.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PatchCampaign.Responses.$200
+            | Paths.PatchCampaign.Responses.$422
+        >
+        /**
+         * delete_campaign - Delete Campaign
+         */
+        'delete'(
+            parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
+    }
+    ['/channel-connections']: {
+        /**
+         * create_channel_connection - Create Channel Connection
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateChannelConnection.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateChannelConnection.Responses.$201
+            | Paths.CreateChannelConnection.Responses.$422
+        >
+        /**
+         * get_channel_connections - Get Channel Connections
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetChannelConnections.Responses.$200
+            | Paths.GetChannelConnections.Responses.$422
+        >
+    }
+    ['/channel-connections/{channel_connection_id}']: {
+        /**
+         * get_channel_connection - Get Channel Connection
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetChannelConnection.Responses.$200
+            | Paths.GetChannelConnection.Responses.$422
+        >
+        /**
+         * patch_channel_connection - Patch Channel Connection
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+            data?: Paths.PatchChannelConnection.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PatchChannelConnection.Responses.$200
+            | Paths.PatchChannelConnection.Responses.$422
+        >
+        /**
+         * delete_channel_connection - Delete Channel Connection
+         */
+        'delete'(
+            parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     }
     ['/billing/health-check']: {
         /**
