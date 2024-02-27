@@ -8,7 +8,7 @@ import AIArticlesLibraryList from './components/AIArticlesLibraryList'
 import css from './AIArticlesLibraryView.less'
 import AIArticlesLibraryPreview from './components/AIArticlesLibraryPreview'
 
-const AILibraryComponent = () => {
+const AIArticlesLibraryView = () => {
     const helpCenter = useCurrentHelpCenter()
     const [isLoading, setIsLoading] = useState(true)
 
@@ -41,15 +41,15 @@ const AILibraryComponent = () => {
     )
 }
 
-const AILibraryView = () => (
+const AIArticlesLibraryViewWithErrorBoundary = () => (
     <ErrorBoundary
         sentryTags={{
             section: 'help-center-ai-library',
             team: 'automate-obs',
         }}
     >
-        <AILibraryComponent />
+        <AIArticlesLibraryView />
     </ErrorBoundary>
 )
 
-export default AILibraryView
+export default AIArticlesLibraryViewWithErrorBoundary

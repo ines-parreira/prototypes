@@ -39,9 +39,10 @@ export const Wrapper: React.FC<ToggleButtonContextType> = ({
 
 type OptionProps = {
     value?: any
+    className?: string
 }
 
-export const Option: React.FC<OptionProps> = ({children, value}) => {
+export const Option: React.FC<OptionProps> = ({children, value, className}) => {
     const {
         value: currentValue,
         type,
@@ -56,7 +57,7 @@ export const Option: React.FC<OptionProps> = ({children, value}) => {
             tabIndex={0}
             aria-checked={isSelected}
             role="radio"
-            className={classnames(css.option, css[size], {
+            className={classnames(css.option, css[size], className, {
                 [css.active]: isSelected,
                 [css.withLabel]: type === Type.Label,
                 [css.withIcon]: type === Type.Icon,

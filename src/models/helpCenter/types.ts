@@ -215,3 +215,14 @@ export type HelpCenterArticleItem = Partial<LocalArticleTranslation> &
         shouldCreateTranslation?: boolean
         type: ArticleTemplateType
     }
+
+export enum AIArticleToggleOptionValue {
+    New = 'new',
+    Old = 'old',
+    All = 'all',
+}
+
+export type AIArticleToggleOption = {
+    label: string | JSX.Element
+    value: AIArticleToggleOptionValue
+}

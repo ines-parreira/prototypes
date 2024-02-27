@@ -1,0 +1,18 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .option {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        color: var(--neutral-grey-5);
+
+        &.active {
+            color: var(--neutral-grey-6);
+        }
+
+        i {
+            font-size: 20px;
+        }
+    }
+}
