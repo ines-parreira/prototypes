@@ -38,16 +38,16 @@ export default function TicketLayout({
 }: RouteComponentProps<Params>) {
     return (
         <Panels config={initialConfig()} onResize={handleResize}>
-            <Panel>
+            <Panel key="navbar-panel">
                 <TicketNavbar disableResize />
             </Panel>
-            <Panel>
+            <Panel key="ticket-list-panel">
                 <DefaultViewFallback viewId={viewId} ticketId={ticketId} />
             </Panel>
-            <Panel className={css.container}>
-                <TicketWrapper />
+            <Panel key="ticket-panel" className={css.container}>
+                <TicketWrapper isOnSplitTicketView />
             </Panel>
-            <Panel>
+            <Panel key="infobar-panel">
                 <TicketInfobarContainer isOnNewLayout />
             </Panel>
         </Panels>

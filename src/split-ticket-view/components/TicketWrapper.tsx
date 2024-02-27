@@ -5,7 +5,11 @@ import history from 'pages/history'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 
-export default function TicketWrapper() {
+type Props = {
+    isOnSplitTicketView?: boolean
+}
+
+export default function TicketWrapper({isOnSplitTicketView}: Props) {
     const {viewId} = useParams<{viewId: string}>()
     const {nextTicketId} = useSplitTicketView()
 
@@ -21,5 +25,11 @@ export default function TicketWrapper() {
         history.push(nextUrl)
     }, [nextUrl])
 
-    return <TicketDetailContainer onCloseCallback={handleCloseCallback} />
+    return (
+        <TicketDetailContainer
+            onCloseCallback={
+                isOnSplitTicketView ? handleCloseCallback : undefined
+            }
+        />
+    )
 }
