@@ -17,6 +17,7 @@ import {
 import * as utils from 'utils'
 import {AcceptedThemes, Theme} from 'theme'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {Navbar} from '../Navbar'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
@@ -43,7 +44,9 @@ describe('<Navbar />', () => {
         isTrialing: false,
         submitSetting: jest.fn(),
         isPreferencesLoading: false,
-        flags: {},
+        flags: {
+            [FeatureFlagKey.ConvertDecouplingUi]: true,
+        },
         savedTheme: Theme.Modern,
         theme: Theme.Modern as AcceptedThemes,
         setTheme: jest.fn(),
@@ -227,5 +230,33 @@ describe('<Navbar />', () => {
         const {queryByText} = render(<Navbar {...minProps} />)
 
         expect(queryByText('Automate')).not.toBeInTheDocument()
+    })
+
+    it('should render Convert', () => {
+        jest.spyOn(utils, 'hasRole').mockReturnValue(true)
+
+        const {getByText} = render(<Navbar {...minProps} />)
+
+        expect(getByText('Convert')).toBeInTheDocument()
+    })
+
+    it('should not render Convert if not have Admin privilege', () => {
+        jest.spyOn(utils, 'hasRole').mockReturnValue(false)
+        const {queryByText} = render(<Navbar {...minProps} />)
+
+        expect(queryByText('Convert')).not.toBeInTheDocument()
+    })
+
+    it('should not render Convert if flag is not enabled', () => {
+        jest.spyOn(utils, 'hasRole').mockReturnValue(true)
+        const props = {
+            ...minProps,
+            flags: {
+                [FeatureFlagKey.ConvertDecouplingUi]: false,
+            },
+        }
+        const {queryByText} = render(<Navbar {...props} />)
+
+        expect(queryByText('Convert')).not.toBeInTheDocument()
     })
 })

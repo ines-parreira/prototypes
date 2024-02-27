@@ -12,6 +12,7 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -24,6 +25,7 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
     const isConvertSubscriber = useIsConvertSubscriber()
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     return (
         <>
@@ -125,7 +127,7 @@ export default function StatsNavbarView() {
                             Satisfaction
                         </NavbarLink>
                     </div>
-                    {!isConvertSubscriber && (
+                    {(!isConvertSubscriber || isConvertUiDecouplingEnabled) && (
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],

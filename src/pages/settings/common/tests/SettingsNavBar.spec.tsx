@@ -54,6 +54,10 @@ describe('<SettingsNavbar />', () => {
     })
 
     it('should render Convert links', () => {
+        mockFlags({
+            [FeatureFlagKey.ConvertDecouplingUi]: false,
+        })
+
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ThemeProvider>
@@ -65,5 +69,23 @@ describe('<SettingsNavbar />', () => {
 
         expect(screen.getByText('Click Tracking')).toBeInTheDocument()
         expect(screen.getByText('Installations')).toBeInTheDocument()
+    })
+
+    it('should not render Convert links if UI decoupling is enabled', () => {
+        mockFlags({
+            [FeatureFlagKey.ConvertDecouplingUi]: true,
+        })
+
+        const {queryByText} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <ThemeProvider>
+                    <SettingsNavbar />
+                </ThemeProvider>
+            </Provider>,
+            {path: '/'}
+        )
+
+        expect(queryByText('Click Tracking')).not.toBeInTheDocument()
+        expect(queryByText('Installations')).not.toBeInTheDocument()
     })
 })

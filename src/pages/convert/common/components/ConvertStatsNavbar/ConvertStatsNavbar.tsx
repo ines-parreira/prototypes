@@ -10,6 +10,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import useAppSelector from 'hooks/useAppSelector'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import ConvertNavbarAddOnPaywallNavbarLink from '../ConvertNavbarAddOnPaywallNavbarLink'
 
 export type ConvertNavbarLink = {
@@ -29,28 +30,36 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
 
     const isConvertSubscriber = useIsConvertSubscriber()
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
     const hasRevenueStatisticsFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.RevenueStatistics)
     )
 
     const convertLinks: ConvertNavbarLink[] = useMemo(() => {
-        return [
-            {
+        const links = []
+        if (!isConvertUiDecouplingEnabled) {
+            links.push({
                 label: 'Overview',
                 to: '/app/stats/revenue',
                 isPaywalled: !hasRevenueStatisticsFeature,
                 hasModal: false,
                 requiresSubscriptionToBeSeen: true,
-            },
-            {
-                label: 'Campaigns',
-                to: '/app/stats/convert/campaigns',
-                isPaywalled: !isConvertSubscriber,
-                hasModal: !isConvertSubscriber,
-                requiresSubscriptionToBeSeen: false,
-            },
-        ]
-    }, [hasRevenueStatisticsFeature, isConvertSubscriber])
+            })
+        }
+
+        links.push({
+            label: 'Campaigns',
+            to: '/app/stats/convert/campaigns',
+            isPaywalled: !isConvertSubscriber,
+            hasModal: !isConvertSubscriber,
+            requiresSubscriptionToBeSeen: false,
+        })
+        return links
+    }, [
+        hasRevenueStatisticsFeature,
+        isConvertSubscriber,
+        isConvertUiDecouplingEnabled,
+    ])
 
     const isModalNeeded = useMemo(() => {
         return (

@@ -46,7 +46,7 @@ import {reportError} from 'utils/errors'
 import {Theme, useSavedTheme, useSetTheme, useTheme, withTheme} from 'theme'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {AGENT_ROLE} from 'config/user'
+import {AGENT_ROLE, ADMIN_ROLE} from 'config/user'
 import {UserRole} from 'config/types/user'
 import {Themes} from 'theme/types'
 import {
@@ -121,6 +121,14 @@ const mainMenu: MenuItem[] = [
         icon: 'bolt',
         segmentProp: {link: 'automation'},
         requiredRole: AGENT_ROLE,
+    },
+    {
+        url: '/app/convert',
+        label: 'Convert',
+        icon: 'monetization_on',
+        segmentProp: {link: 'convert'},
+        requiredRole: ADMIN_ROLE,
+        requiredFeatureFlag: FeatureFlagKey.ConvertDecouplingUi,
     },
     {
         url: '/app/customers',

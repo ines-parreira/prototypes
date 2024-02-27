@@ -96,9 +96,10 @@ describe('StatsNavbarView', () => {
         })
     })
 
-    it('should render the link to the Revenue Campaign when having access to the beta', () => {
+    it('should render the link to the Convert Campaigns when having access to the beta', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.RevenueBetaTesters]: true,
+            [FeatureFlagKey.ConvertDecouplingUi]: true,
         }))
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>

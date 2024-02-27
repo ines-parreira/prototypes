@@ -133,6 +133,10 @@ import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import ClickTrackingSettingsView from 'pages/settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
+import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
+import {CONVERT_ROUTING_PARAM} from 'pages/convert/common/constants'
+import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
+import {useIsConvertUiDecouplingEnabled} from './convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {
     BundlesView,
     BundleInstallView,
@@ -177,6 +181,8 @@ export function AppRoutes() {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
 
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
+
     return (
         <Switch>
             <Route
@@ -201,6 +207,9 @@ export function AppRoutes() {
                 <StatsRoutes />
             </Route>
             <Route path={`${path}/automation`} render={AutomationRoutes} />
+            {isConvertUiDecouplingEnabled && (
+                <Route path={`${path}/convert`} render={ConvertRoutes} />
+            )}
             <Route path={`${path}/settings`}>
                 <SettingsRoutes />
             </Route>
@@ -777,6 +786,8 @@ export function SettingsRoutes() {
     const isHelpCenterCreationWizardEnabled: boolean =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
 
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
+
     return (
         <Switch>
             <Route
@@ -880,7 +891,18 @@ export function SettingsRoutes() {
             />
             <Route path={`${path}/teams`} render={TeamsSettingsRoutes} />
             <Route path={`${path}/users`} render={UsersSettingsRoutes} />
-            <Route path={`${path}/convert`} render={RevenueSettingsRoutes} />
+            {!isConvertUiDecouplingEnabled && (
+                <Route
+                    path={`${path}/convert`}
+                    render={RevenueSettingsRoutes}
+                />
+            )}
+            {isConvertUiDecouplingEnabled && (
+                <Route
+                    path={`${path}/convert`}
+                    render={ConvertSettingsRedirectRoutes}
+                />
+            )}
             {/* TODO(@Irinel) remove this when new billing is fully released */}
             <Route path={`${path}/billing`} render={NewBillingSettingsRoutes} />
             <Route
@@ -1640,6 +1662,99 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
+export function ConvertRoutes() {
+    return (
+        <RevenueAddonApiClientProvider>
+            <Switch>
+                <Route
+                    render={() => (
+                        <App content={ConvertContent} navbar={ConvertNavbar} />
+                    )}
+                />
+            </Switch>
+        </RevenueAddonApiClientProvider>
+    )
+}
+
+export function ConvertContent() {
+    const {path} = useRouteMatch()
+    const convertPathPrefix = `${path}/${CONVERT_ROUTING_PARAM}`
+    return (
+        <Switch>
+            <Route
+                exact
+                path={`${convertPathPrefix}/performance`}
+                component={memoizedWithUserRoleRequired(
+                    RevenueCampaignsStats as any,
+                    ADMIN_ROLE,
+                    PageSection.Users
+                )}
+            />
+            <Route
+                path={`${convertPathPrefix}/performance/subscribe`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    CampaignStatsPaywallView as any,
+                    ADMIN_ROLE,
+                    PageSection.Users
+                )}
+            />
+            <Route
+                path={`${convertPathPrefix}/click-tracking`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    ClickTrackingSettingsView as any,
+                    ADMIN_ROLE,
+                    PageSection.Users
+                )}
+            />
+            <Route
+                path={`${convertPathPrefix}/click-tracking/subscribe`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    ClickTrackingPaywallView as any,
+                    ADMIN_ROLE,
+                    PageSection.Users
+                )}
+            />
+            <Route
+                path={`${convertPathPrefix}/installation`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    BundlesView as any,
+                    ADMIN_ROLE,
+                    PageSection.Users
+                )}
+            />
+            <Route
+                path={`${convertPathPrefix}/installation/new`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    BundleInstallView as any,
+                    ADMIN_ROLE,
+                    PageSection.Users
+                )}
+            />
+            <Route
+                path={`${convertPathPrefix}/installation/:bundleId`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    BundleDetailView as any,
+                    ADMIN_ROLE,
+                    PageSection.Users
+                )}
+            />
+
+            <Route path={`${path}`} exact>
+                <ConvertRoute />
+            </Route>
+            <Route>
+                <Redirect to={`${path}`} />
+            </Route>
+        </Switch>
+    )
+}
+
 export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <RevenueAddonApiClientProvider>
@@ -1714,6 +1829,32 @@ export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
                         />
                     )}
                 />
+            </Switch>
+        </RevenueAddonApiClientProvider>
+    )
+}
+
+export function ConvertSettingsRedirectRoutes({
+    match: {path},
+}: RouteComponentProps) {
+    return (
+        <RevenueAddonApiClientProvider>
+            <Switch>
+                <Route exact path={`${path}/click-tracking`}>
+                    <Redirect to={'/app/convert'} />
+                </Route>
+                <Route exact path={`${path}/click-tracking/subscribe`}>
+                    <Redirect to={'/app/convert'} />
+                </Route>
+                <Route exact path={`${path}/installations`}>
+                    <Redirect to={'/app/convert'} />
+                </Route>
+                <Route exact path={`${path}/installations/new`}>
+                    <Redirect to={'/app/convert'} />
+                </Route>
+                <Route exact path={`${path}/installations/:bundleId`}>
+                    <Redirect to={'/app/convert'} />
+                </Route>
             </Switch>
         </RevenueAddonApiClientProvider>
     )
