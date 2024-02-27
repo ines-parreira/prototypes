@@ -1,0 +1,64 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s
+            @layout-spacing-xs;
+        justify-content: space-between;
+        border-radius: @layout-spacing-xxs;
+        cursor: pointer;
+        border-left: @layout-spacing-xxs solid var(--neutral-grey-0);
+
+        &:not(.active):hover {
+            background-color: var(--neutral-grey-1);
+        }
+    }
+
+    .titleContainer {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-s;
+        color: var(--neutral-grey-6);
+
+        i {
+            font-size: 16px;
+            padding: @layout-spacing-xxs;
+            background-color: var(--neutral-grey-1);
+            color: var(--neutral-grey-4);
+            border-radius: @layout-spacing-xxs;
+        }
+    }
+
+    .title {
+        max-width: 248px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .new {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--accessory-blue-3);
+        background-color: var(--accessory-blue-1);
+        border-radius: 100px;
+        padding: 2px @layout-spacing-xs;
+    }
+
+    .active {
+        &.container {
+            background-color: var(--ultraLightBlue);
+            border-color: var(--main-primary);
+        }
+
+        .titleContainer i {
+            background-color: var(--main-primary);
+            color: var(--neutral-grey-0);
+        }
+    }
+}

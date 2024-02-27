@@ -19,6 +19,7 @@ const AIArticlesLibraryList = () => {
                 <div>Generated Article</div>
                 <div># of ticket inquiries</div>
             </div>
+            <div className={css.articlesList}></div>
         </div>
     )
 }
