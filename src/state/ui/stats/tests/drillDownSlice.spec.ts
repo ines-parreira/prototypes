@@ -1,5 +1,7 @@
+import {act} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {appQueryClient} from 'api/queryClient'
 import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -31,6 +33,9 @@ const store = mockStore({
         [drillDownSlice.name]: initialState,
     },
 } as RootState)
+
+jest.mock('api/queryClient')
+const mockAppQueryClient = assumeMock(appQueryClient as any)
 
 describe('drillDownSlice', () => {
     describe('reducers', () => {
@@ -249,25 +254,39 @@ describe('drillDownSlice', () => {
     })
 
     describe('createExportTicketDrillDownJob', () => {
+        const exampleQuery = closedTicketsQueryFactory(
+            {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+            },
+            'someTimeZone'
+        )
         createJobMock.mockResolvedValue({id: 123} as unknown as Job)
 
         it('should fire request with export Job', async () => {
-            const exampleQuery = closedTicketsQueryFactory(
-                {
-                    period: {
-                        start_datetime: '1970-01-01T00:00:00+00:00',
-                        end_datetime: '1970-01-01T00:00:00+00:00',
-                    },
-                },
-                'someTimeZone'
-            )
-
             await store.dispatch(createExportTicketDrillDownJob(exampleQuery))
 
             expect(createJobMock).toHaveBeenCalledWith({
                 type: JobType.ExportTicketDrilldown,
                 params: {reporting_query: exampleQuery},
             })
+        })
+
+        it('should invalidate Jobs query cache', async () => {
+            const invalidateQueryMock = jest.spyOn(
+                mockAppQueryClient,
+                'invalidateQueries' as any
+            )
+
+            await act(async () => {
+                await store.dispatch(
+                    createExportTicketDrillDownJob(exampleQuery)
+                )
+            })
+
+            expect(invalidateQueryMock).toHaveBeenCalled()
         })
     })
 

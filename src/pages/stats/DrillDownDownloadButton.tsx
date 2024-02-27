@@ -1,5 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
 import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
@@ -34,11 +35,14 @@ export const DrillDownDownloadButton = ({
     const dispatch = useAppDispatch()
     const {isLoading, isError, isRequested} = useAppSelector(getDrillDownExport)
     const currentUser = useAppSelector(getCurrentUser)
+    const {running} = useRunningJobs()
     const isDisabled =
         !(
             hasRole(currentUser, UserRole.Admin) ||
             hasRole(currentUser, UserRole.Agent)
-        ) || isLoading
+        ) ||
+        isLoading ||
+        running !== false
     const query = useDrillDownQueryWithoutLimit(metricData)
 
     const clickHandler = () => {

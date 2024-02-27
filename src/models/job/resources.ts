@@ -1,9 +1,12 @@
-import client from '../api/resources'
-import {Job, JobRequestPayload} from './types'
+import client from 'models/api/resources'
+import {Job, JobRequestPayload} from 'models/job/types'
+
+export const JOBS_PATH = '/api/jobs/'
 
 export const createJob = async (
     requestPayload: JobRequestPayload
 ): Promise<Job> => {
-    const res = await client.post('/api/jobs/', requestPayload)
-    return res.data as Job
+    const response = await client.post<Job>(JOBS_PATH, requestPayload)
+
+    return response.data
 }

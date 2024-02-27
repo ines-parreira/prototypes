@@ -1,4 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {queryKeys} from '@gorgias/api-queries'
+import {appQueryClient} from 'api/queryClient'
 import {User} from 'config/types/user'
 import {OrderDirection} from 'models/api/types'
 import {createJob} from 'models/job/resources'
@@ -123,6 +125,10 @@ export const createExportTicketDrillDownJob = createAsyncThunk<
             return response
         } catch (error) {
             return rejectWithValue(error)
+        } finally {
+            void appQueryClient.invalidateQueries({
+                queryKey: queryKeys['jobs']['listJobs'](),
+            })
         }
     }
 )

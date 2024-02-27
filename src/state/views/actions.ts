@@ -5,6 +5,7 @@ import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 import {isEmpty} from 'lodash'
+import {JOBS_PATH} from 'models/job/resources'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
 import * as viewsConfig from 'config/views'
@@ -644,7 +645,7 @@ export function createJob(
         ) as unknown as UpsertNotificationAction
 
         return client
-            .post<Job>('/api/jobs/', requestPayload)
+            .post<Job>(JOBS_PATH, requestPayload)
             .then((json) => json?.data)
             .then(
                 (job) => {
@@ -756,6 +757,7 @@ export const fetchVisibleViewsCounts =
                 .toJS() as number[],
             10
         )
+
         function sendNextChunk(chunks: number[][]) {
             socketManager.send(SocketEventType.ViewsCountExpired, {
                 viewIds: chunks.shift(),
@@ -765,6 +767,7 @@ export const fetchVisibleViewsCounts =
                 setTimeout(() => sendNextChunk(chunks), 500)
             }
         }
+
         sendNextChunk(viewIdsChunks)
     }
 

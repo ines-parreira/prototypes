@@ -25,7 +25,7 @@ const getTheInfoLabel = (totalResults: number) => {
 
 export const TOTAL_RESULTS_PLACEHOLDER = 'Fetching tickets...'
 
-export const DrillDownInfobar = ({
+export const DrillDownInfoBar = ({
     metricData,
 }: {
     metricData: DrillDownMetric

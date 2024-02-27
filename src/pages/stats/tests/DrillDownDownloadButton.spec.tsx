@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
 import {ReportingGranularity} from 'models/reporting/types'
 import {user} from 'fixtures/users'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -36,6 +37,9 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
 
+jest.mock('hooks/jobs/useRunningJobs')
+const mockUseRunningJobs = assumeMock(useRunningJobs)
+
 describe('<DrillDownDownloadButton />', () => {
     const cleanStatsFilters = {
         period: {
@@ -52,6 +56,12 @@ describe('<DrillDownDownloadButton />', () => {
             userTimezone: 'someTimezone',
             cleanStatsFilters,
             granularity: ReportingGranularity.Day,
+        })
+
+        mockUseRunningJobs.mockReturnValue({
+            running: false,
+            jobs: [],
+            refetch: jest.fn(),
         })
     })
     const metricData: AgentsMetrics = {
@@ -90,13 +100,38 @@ describe('<DrillDownDownloadButton />', () => {
         expect(screen.queryByRole('button')).not.toBeInTheDocument()
     })
 
-    it('should render disabled button', () => {
+    it('should render disabled button when user is not allowed', () => {
         render(
             <Provider
                 store={mockStore({
                     currentUser: fromJS({
                         ...agents[0],
                         role: {name: UserRole.ObserverAgent},
+                    }),
+                    ui: {
+                        [drillDownSlice.name]: initialState,
+                    },
+                } as unknown as RootState)}
+            >
+                <DrillDownDownloadButton metricData={metricData} />
+            </Provider>
+        )
+
+        expect(screen.getByRole('button')).toHaveClass('isDisabled')
+    })
+
+    it('should render disabled button when background Jobs are running', () => {
+        mockUseRunningJobs.mockReturnValue({
+            running: true,
+            refetch: jest.fn(),
+            jobs: [],
+        })
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS({
+                        ...agents[0],
+                        role: {name: UserRole.Admin},
                     }),
                     ui: {
                         [drillDownSlice.name]: initialState,

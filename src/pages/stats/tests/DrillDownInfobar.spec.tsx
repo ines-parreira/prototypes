@@ -10,9 +10,9 @@ import {
     useDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import {
-    DrillDownInfobar,
+    DrillDownInfoBar,
     TOTAL_RESULTS_PLACEHOLDER,
-} from 'pages/stats/DrillDownInfobar'
+} from 'pages/stats/DrillDownInfoBar'
 
 jest.mock('pages/stats/DrillDownDownloadButton', () => ({
     DrillDownDownloadButton: () => null,
@@ -31,7 +31,7 @@ describe('<DrillDownInfobar />', () => {
     } as any)
 
     it('should render the infobar with current number of results', () => {
-        render(<DrillDownInfobar metricData={metricData} />)
+        render(<DrillDownInfoBar metricData={metricData} />)
 
         expect(
             screen.getByText(`${totalResults}`, {exact: false})
@@ -45,7 +45,7 @@ describe('<DrillDownInfobar />', () => {
             totalResults,
             isFetching: false,
         } as any)
-        render(<DrillDownInfobar metricData={metricData} />)
+        render(<DrillDownInfoBar metricData={metricData} />)
 
         expect(
             screen.getByText(String(DRILLDOWN_QUERY_LIMIT), {exact: false})
@@ -59,7 +59,7 @@ describe('<DrillDownInfobar />', () => {
             isFetching: true,
         } as any)
 
-        render(<DrillDownInfobar metricData={metricData} />)
+        render(<DrillDownInfoBar metricData={metricData} />)
 
         expect(
             screen.getByText(TOTAL_RESULTS_PLACEHOLDER, {exact: false})
