@@ -37,6 +37,9 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
     return (
         <div className={css.container}>
             <div className={css.contentContainer}>
+                {previewUrl ? (
+                    <PreviewChannelButton channel={channel} url={previewUrl} />
+                ) : null}
                 <div className={css.content}>
                     {channels && onChange && (
                         <div className={css.controlsContainer}>
@@ -72,10 +75,6 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
                               </Alert>
                           )}
                 </div>
-
-                {previewUrl ? (
-                    <PreviewChannelButton channel={channel} url={previewUrl} />
-                ) : null}
             </div>
         </div>
     )
