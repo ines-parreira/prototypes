@@ -48,6 +48,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
 
 import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
+import Tooltip from 'pages/common/components/Tooltip'
 import EmailIntegrationConnectStore from '../EmailToStoreMapping/EmailIntegrationConnectStore'
 import css from './EmailIntegrationUpdate.less'
 import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'
@@ -483,6 +484,33 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const nameHelp = `The display name appears on outgoing emails. It cannot contain the following characters: ${displayRestrictedSymbols(
             EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
         )}`
+        const outlookDisplayNameLimitationTooltip = (
+            <>
+                <i
+                    className="material-icons"
+                    id="outlook-display-name-limitation-info-icon"
+                >
+                    info_outline
+                </i>
+                <Tooltip
+                    target="outlook-display-name-limitation-info-icon"
+                    autohide={false}
+                >
+                    Display name can only be changed through{' '}
+                    <a
+                        href={
+                            'https://learn.microsoft.com/en-us/microsoft-365/admin/add-users/' +
+                            'change-a-user-name-and-email-address?view=o365-worldwide' +
+                            '#watch-change-a-users-email-address-display-name-or-email-alias'
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Outlook
+                    </a>
+                </Tooltip>
+            </>
+        )
 
         return (
             <div className="mt-4">
@@ -494,13 +522,20 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     <InputField
                         type="text"
                         name="name"
-                        label="Display name"
+                        label={
+                            <div>
+                                Display name {''}
+                                {isOutlook &&
+                                    outlookDisplayNameLimitationTooltip}
+                            </div>
+                        }
                         placeholder={`${_capitalize(domain)} Support`}
-                        isRequired
+                        isRequired={!isOutlook}
                         caption={nameHelp}
                         error={errors.name ?? ''}
                         value={name}
                         onChange={(name) => this._setName(name)}
+                        isDisabled={isOutlook}
                     />
                     <FormGroup className={css.textEditor}>
                         <RichFieldWithVariables

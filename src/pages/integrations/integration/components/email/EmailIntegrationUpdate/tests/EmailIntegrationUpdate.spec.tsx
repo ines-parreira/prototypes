@@ -1,5 +1,11 @@
 import React, {ComponentProps} from 'react'
-import {render, fireEvent, RenderResult} from '@testing-library/react'
+import {
+    render,
+    fireEvent,
+    RenderResult,
+    waitFor,
+    screen,
+} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -264,50 +270,73 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         expect(saveButton).toHaveAttribute('aria-disabled', 'true')
     })
 
-    it.each([
-        {
-            selector: ({getByRole}: RenderResult) =>
-                getByRole('textbox', {
-                    name: /display name required/i,
-                }),
-            newValue: 'Some New Name',
-            finalValue: INTEGRATION_NAME,
-        },
-    ])(
-        'should enable the submit button only if form values changed [outlook]',
-        (selector) => {
+    it('should not allow editing the display name and provide a tooltip [outlook]', async () => {
+        const props = {
+            integration: fromJS({
+                id: 1,
+                name: INTEGRATION_NAME,
+                type: OUTLOOK_INTEGRATION_TYPE,
+                meta: {
+                    address: 'support@gorgias.com',
+                    signature: {
+                        text: '',
+                        html: '<div><br></div>',
+                    },
+                },
+            }),
+        }
+
+        const {getByPlaceholderText, queryByText, container} =
+            renderWithStore(props)
+
+        const displayNameInput = getByPlaceholderText('Test Support')
+        expect(displayNameInput).toBeDisabled()
+        expect(queryByText('*')).toBeNull() // making sure that field is not required
+
+        const displayNameInfoIcon = container.querySelector(
+            '#outlook-display-name-limitation-info-icon'
+        )
+        expect(displayNameInfoIcon).toBeInTheDocument()
+
+        fireEvent.mouseOver(displayNameInfoIcon as Element)
+        await waitFor(() => {
+            const tooltip_ = screen.getByRole('tooltip')
+            expect(tooltip_).toBeInTheDocument()
+            const expectedTooltipLink =
+                'https://learn.microsoft.com/en-us/microsoft-365/admin/add-users/' +
+                'change-a-user-name-and-email-address?view=o365-worldwide' +
+                '#watch-change-a-users-email-address-display-name-or-email-alias'
+            expect(tooltip_.innerHTML).toContain(
+                `href="${expectedTooltipLink}"`
+            )
+        })
+    })
+
+    it.each([IntegrationType.Gmail, IntegrationType.Email])(
+        'should allow editing the display name [%s]',
+        (integrationType) => {
             const props = {
                 integration: fromJS({
                     id: 1,
                     name: INTEGRATION_NAME,
-                    type: OUTLOOK_INTEGRATION_TYPE,
+                    type: integrationType,
                     meta: {
-                        address: 'myintegration@gorgias.io',
-                        signature: {
-                            text: '',
-                            html: '<div><br></div>',
-                        },
-                        use_gmail_categories: false,
-                        enable_outlook_sending: true,
+                        address: 'support@gorgias.com',
                     },
                 }),
             }
 
-            const helpers = renderWithStore(props)
-            const {getByText} = helpers
-            const saveButton = getByText('Save changes')
+            const {getByText, getByPlaceholderText, container} =
+                renderWithStore(props)
+            const displayNameInput = getByPlaceholderText('Test Support')
+            expect(displayNameInput).toBeEnabled()
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
-
-            fireEvent.change(selector.selector(helpers), {
-                target: {value: selector.newValue},
-            })
-            expect(saveButton).not.toHaveAttribute('aria-disabled', 'true')
-
-            fireEvent.change(selector.selector(helpers), {
-                target: {value: selector.finalValue},
-            })
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            // checking that display name field is required.
+            expect(getByText('*')).toHaveAttribute('aria-label', 'required')
+            const displayNameInfoIcon = container.querySelector(
+                '#outlook-display-name-limitation-info-icon'
+            )
+            expect(displayNameInfoIcon).not.toBeInTheDocument()
         }
     )
 })
