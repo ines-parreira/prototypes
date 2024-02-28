@@ -8,9 +8,11 @@ import type {Integration} from '.'
 export type AppIntegration = IntegrationBase & {
     type: IntegrationType.App
     application_id: string
-    meta: {
-        address: string
-    }
+    meta: AppIntegrationMeta
+}
+
+export type AppIntegrationMeta = {
+    address: string
 }
 
 export enum Category {

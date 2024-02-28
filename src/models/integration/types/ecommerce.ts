@@ -4,6 +4,7 @@ import type {IntegrationBase} from './base'
 export type EcommerceIntegration = IntegrationBase & {
     type: IntegrationType.Ecommerce
     meta: EcommerceIntegrationMeta
+    application_id: string
 }
 
 export type EcommerceIntegrationMeta = {

@@ -1008,6 +1008,48 @@ describe('integrations selectors', () => {
         ])
     })
 
+    describe('getIntegrationsByAppId()', () => {
+        it('should return integrations with ecom type', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 123,
+                            type: 'ecom',
+                            application_id: '64785607477d0a11fc731bfa',
+                            name: 'The Shop',
+                            meta: {
+                                store_uuid: 'uuid',
+                            },
+                        },
+                        {
+                            id: 1234,
+                            type: 'ecom',
+                            application_id: 'nope',
+                            name: 'Another Shop',
+                            meta: {
+                                store_uuid: 'nope uuid',
+                            },
+                        },
+                    ],
+                }),
+            } as RootState
+            expect(
+                getIntegrationsByAppId('64785607477d0a11fc731bfa')(state)
+            ).toEqual([
+                {
+                    id: 123,
+                    type: 'ecom',
+                    application_id: '64785607477d0a11fc731bfa',
+                    name: 'The Shop',
+                    meta: {
+                        store_uuid: 'uuid',
+                    },
+                },
+            ])
+        })
+    })
+
     describe('getStandardPhoneIntegrations()', () => {
         it('should return only the standard phone integrations', () => {
             const standardIntegration = {

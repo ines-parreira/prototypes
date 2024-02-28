@@ -145,7 +145,10 @@ export default function AppDetail() {
             {extra === Tab.Advanced && <AppAdvanced {...appItem} />}
             {extra === Tab.Details && <Detail {...detailProps} />}
             {extra === Tab.Connections && (
-                <ConnectionsList appId={appItem.appId} />
+                <ConnectionsList
+                    appId={appItem.appId}
+                    connectUrl={appItem.connectUrl}
+                />
             )}
         </div>
     )

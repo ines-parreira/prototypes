@@ -161,7 +161,10 @@ export const getIntegrationsByType = <T extends Integration>(
 
 export const getIntegrationsByAppId = (appId: string) =>
     createSelector(
-        getIntegrationsByType<AppIntegration>(IntegrationType.App),
+        getIntegrationsByTypes([
+            IntegrationType.App,
+            IntegrationType.Ecommerce,
+        ]),
         (integrations) => {
             return integrations.filter(
                 (integration) => integration.application_id === appId
