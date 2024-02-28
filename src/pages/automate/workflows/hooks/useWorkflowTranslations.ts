@@ -24,7 +24,6 @@ import {
     isPayloadTooLarge,
 } from '../utils/payloadSize'
 import {MAX_TRANSLATIONS_SIZE_IN_BYTES} from '../constants'
-import {replaceAliases} from '../models/visualBuilderGraph.model'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -110,16 +109,13 @@ export default function useWorkflowTranslations(
     // TODO make node ids and edge ids stable so that we can compare the graphs directly
     const translateWithSavedTranslations = useCallback(
         (graph: VisualBuilderGraph) => {
-            const g = translateDeep(
+            return translateDeep(
                 graph,
                 translationsByLang[currentLanguage] ?? {},
                 {
                     doNotFallback: false,
                 }
             )
-            // TODO: remove once aliases are removed on the backend
-            replaceAliases(g)
-            return g
         },
         [translationsByLang, currentLanguage]
     )
@@ -220,14 +216,11 @@ export default function useWorkflowTranslations(
             )
             setTranslationsByLangDirty(nextTranslationsByLangDirty)
             setCurrentLanguage(nextLanguage)
-            const g = translateDeep(
+            return translateDeep(
                 nextGraph,
                 nextTranslationsByLangDirty[nextLanguage] ?? {},
                 {doNotFallback: true}
             )
-            // TODO: remove once aliases are removed on the backend
-            replaceAliases(g)
-            return g
         },
         [availableLanguages, translationsByLangDirty, currentLanguage]
     )
@@ -243,12 +236,9 @@ export default function useWorkflowTranslations(
                     translationsByLangDirty
                 )
             }
-            const g = translateDeep(graph, translationsByLang[language] ?? {}, {
+            return translateDeep(graph, translationsByLang[language] ?? {}, {
                 doNotFallback: true,
             })
-            // TODO: remove once aliases are removed on the backend
-            replaceAliases(g)
-            return g
         },
         [translationsByLangDirty, currentLanguage]
     )
