@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
@@ -7,10 +7,14 @@ import AIArticlesLibraryList from './components/AIArticlesLibraryList'
 
 import css from './AIArticlesLibraryView.less'
 import AIArticlesLibraryPreview from './components/AIArticlesLibraryPreview'
+import AIArticleArchiveModal, {
+    AIArticleArchiveModalHandle,
+} from './components/AIArticleArchiveModal/AIArticleArchiveModal'
 
 const AIArticlesLibraryView = () => {
     const helpCenter = useCurrentHelpCenter()
     const [isLoading, setIsLoading] = useState(true)
+    const archiveModal = useRef<AIArticleArchiveModalHandle>(null)
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -21,23 +25,26 @@ const AIArticlesLibraryView = () => {
     }, [])
 
     return (
-        <HelpCenterPageWrapper
-            helpCenter={helpCenter}
-            isDirty={false}
-            fluidContainer={false}
-            pageWrapperClassName={css.pageWrapper}
-        >
-            <div className={css.wrapper}>
-                {isLoading ? (
-                    <LibrarySkeleton />
-                ) : (
-                    <div className={css.container}>
-                        <AIArticlesLibraryList />
-                        <AIArticlesLibraryPreview />
-                    </div>
-                )}
-            </div>
-        </HelpCenterPageWrapper>
+        <>
+            <HelpCenterPageWrapper
+                helpCenter={helpCenter}
+                isDirty={false}
+                fluidContainer={false}
+                pageWrapperClassName={css.pageWrapper}
+            >
+                <div className={css.wrapper}>
+                    {isLoading ? (
+                        <LibrarySkeleton />
+                    ) : (
+                        <div className={css.container}>
+                            <AIArticlesLibraryList />
+                            <AIArticlesLibraryPreview />
+                        </div>
+                    )}
+                </div>
+            </HelpCenterPageWrapper>
+            <AIArticleArchiveModal ref={archiveModal} onArchive={() => ({})} />
+        </>
     )
 }
 
