@@ -1,5 +1,6 @@
 import {queryCache} from 'api/queryClient'
 import {store} from 'common/store'
+import {voiceCallsKeys} from 'models/voiceCall/queries'
 import {updateQueryTimestamp} from 'state/queries/actions'
 
 jest.mock('api/queryClient', () => ({
@@ -25,21 +26,36 @@ describe('initQueryClient', () => {
         updateQueryTimestampMock.mockReturnValue({type: 'updateQueryTimestamp'})
     })
 
-    it('should update query timestamp when query cache updates', () => {
+    it('should update query timestamp when query cache updates for subscribed query keys', () => {
         require('../initQueryClient')
         expect(queryCache.subscribe).toHaveBeenCalledWith(expect.any(Function))
 
         const [[subscribe]] = (queryCache.subscribe as jest.Mock).mock.calls
-        const event = {
-            query: {queryKey: 'test'},
+        const subscribedQueryEvent = {
+            query: {queryKey: [voiceCallsKeys.all()[0]]},
             type: 'added',
         }
 
-        ;(subscribe as (e: typeof event) => void)(event)
+        ;(subscribe as (e: typeof subscribedQueryEvent) => void)(
+            subscribedQueryEvent
+        )
 
-        expect(updateQueryTimestampMock).toHaveBeenCalledWith('test')
+        expect(updateQueryTimestampMock).toHaveBeenCalledWith(
+            voiceCallsKeys.all()
+        )
         expect(store.dispatch).toHaveBeenCalledWith({
             type: 'updateQueryTimestamp',
         })
+
+        const unsubscribedQueryEvent = {
+            query: {queryKey: ['non-subscribed-query-key']},
+            type: 'added',
+        }
+        ;(subscribe as (e: typeof unsubscribedQueryEvent) => void)(
+            unsubscribedQueryEvent
+        )
+        expect(updateQueryTimestampMock).not.toHaveBeenCalledWith(
+            unsubscribedQueryEvent.query.queryKey
+        )
     })
 })
