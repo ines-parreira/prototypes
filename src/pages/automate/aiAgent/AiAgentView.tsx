@@ -265,8 +265,8 @@ export const AiAgentView = () => {
                 </div>
 
                 <div className={css.knowledgeSection}>
-                    <HeaderTitle title="Knowledge" />
-                    <Label>
+                    <HeaderTitle className={css.header} title="Knowledge" />
+                    <Label className={css.label}>
                         Select which Help Center should be used by the AI Agent
                     </Label>
                     <HelpCenterSelect
@@ -276,8 +276,8 @@ export const AiAgentView = () => {
                     />
                 </div>
                 <div className={css.customizeSection}>
-                    <HeaderTitle title="Customize" />
-                    <Label className="control-label">
+                    <HeaderTitle className={css.header} title="Customize" />
+                    <Label className={css.label}>
                         Select which email address should trigger the AI Agent
                     </Label>
                     <SelectField
@@ -295,7 +295,7 @@ export const AiAgentView = () => {
                             setEmailIntegration(integrationId as number)
                         }
                     />
-                    <Label>
+                    <Label className={css.label}>
                         Enter the signature that should be used by the AI Agent
                     </Label>
                     <TextArea
@@ -304,7 +304,7 @@ export const AiAgentView = () => {
                         onChange={setSignature}
                         maxLength={SIGNATURE_MAX_LENGTH}
                     />
-                    <Label>
+                    <Label className={css.label}>
                         Select the tone of voice that should be used by the AI
                         Agent
                     </Label>
@@ -324,8 +324,8 @@ export const AiAgentView = () => {
                     />
                 </div>
                 <div className={css.handoffSection}>
-                    <HeaderTitle title="Handoff" />
-                    <Label>
+                    <HeaderTitle className={css.header} title="Handoff" />
+                    <Label className={css.label}>
                         Select whether the AI Agent should send a message to the
                         customer before handing over the ticket to your team
                     </Label>
@@ -337,7 +337,7 @@ export const AiAgentView = () => {
                     >
                         Send message before handover
                     </ToggleInput>
-                    <Label>
+                    <Label className={css.label}>
                         List the topics which should not be handled by the AI
                         Agent
                     </Label>
