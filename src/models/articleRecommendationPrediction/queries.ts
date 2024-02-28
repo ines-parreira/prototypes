@@ -3,13 +3,16 @@ import {getGorgiasSSPApiClient} from 'rest_api/ssp_api/client'
 import {OperationMethods} from 'rest_api/ssp_api/client.generated'
 import {MutationOverrides} from 'types/query'
 
+export const ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY =
+    'article-recommendation-prediction'
+
 export const articleRecommendationdDefinitionKeys = {
     list: (params: {
         page: number
         helpCenterId?: number | null
         shopName?: string
         shopType?: string
-    }) => ['article-recommendation-prediction', params],
+    }) => [ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY, params],
 }
 
 export const useArticleRecommendationPredictions = ({
@@ -45,6 +48,7 @@ export const useArticleRecommendationPredictions = ({
                 meta: response?.data.meta,
             }
         },
+        cacheTime: 0,
         keepPreviousData: true,
         enabled: !!helpCenterId,
     })

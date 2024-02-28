@@ -2,11 +2,15 @@ import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 
+import {useQueryClient} from '@tanstack/react-query'
 import Button from 'pages/common/components/button/Button'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import Loader from 'pages/common/components/Loader/Loader'
 import AutomateView from 'pages/automate/common/components/AutomateView'
-import {useArticleRecommendationPredictions} from 'models/articleRecommendationPrediction/queries'
+import {
+    ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY,
+    useArticleRecommendationPredictions,
+} from 'models/articleRecommendationPrediction/queries'
 import {SegmentEvent} from 'common/segment'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
@@ -85,6 +89,8 @@ const TrainMyAiView = () => {
         useHelpCenterPublishedArticlesCount(helpCenterId)
 
     const [currentPage, setCurrentPage] = useState(1)
+    const queryClient = useQueryClient()
+
     const {
         data: articleRecommendationsData,
         isInitialLoading: isInitialLoadingArticleRecommndations,
@@ -152,12 +158,15 @@ const TrainMyAiView = () => {
             articleRecommendationsData,
             selectedRecommendationIndex
         )
-
         setSelectedRecommendationIndex(nextIndex)
+        void queryClient.invalidateQueries({
+            queryKey: [ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY],
+        })
     }, [
         articleRecommendationsData,
         selectedRecommendationIndex,
         nextUnansweredRecommendationIndex,
+        queryClient,
     ])
 
     useEffect(() => {
