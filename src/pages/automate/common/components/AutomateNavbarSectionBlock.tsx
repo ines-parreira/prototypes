@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import cssNavbar from 'assets/css/navbar.less'
 import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
@@ -11,9 +12,11 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {FeatureFlagKey} from '../../../../config/featureFlags'
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import css from './AutomateNavbarSectionBlock.less'
 import {
+    AI_AGENT,
     ARTICLE_RECOMMENDATION,
     CHANNELS,
     FLOWS,
@@ -32,6 +35,8 @@ type Props = {
 const FROM_LOCATION = 'automate-left-menu'
 const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
+    const showAiAgentSettings: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentSettings]
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -56,6 +61,25 @@ const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
         >
             {hasAutomate ? (
                 <>
+                    {!!showAiAgentSettings && shopType === 'shopify' && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                to={{
+                                    pathname: `/app/automation/shopify/${shopName}/ai-agent`,
+                                    state: {from: FROM_LOCATION},
+                                }}
+                            >
+                                <span className={cssNavbar['item-name']}>
+                                    {AI_AGENT}
+                                </span>
+                            </NavbarLink>
+                        </div>
+                    )}
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],

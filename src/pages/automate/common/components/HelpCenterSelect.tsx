@@ -2,11 +2,11 @@ import React, {useRef, useState} from 'react'
 
 import SelectInputBox, {
     SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {HelpCenter} from 'models/helpCenter/types'
+} from '../../../common/forms/input/SelectInputBox'
+import Dropdown from '../../../common/components/dropdown/Dropdown'
+import DropdownBody from '../../../common/components/dropdown/DropdownBody'
+import DropdownItem from '../../../common/components/dropdown/DropdownItem'
+import {HelpCenter} from '../../../../models/helpCenter/types'
 
 type Props = {
     helpCenter: HelpCenter | undefined
@@ -14,7 +14,7 @@ type Props = {
     setHelpCenterId: (id: number) => void
 }
 
-const ArticleRecommendationHelpCenter = ({
+const HelpCenterSelect = ({
     helpCenter,
     helpCenters,
     setHelpCenterId,
@@ -61,4 +61,4 @@ const ArticleRecommendationHelpCenter = ({
     )
 }
 
-export default ArticleRecommendationHelpCenter
+export default HelpCenterSelect

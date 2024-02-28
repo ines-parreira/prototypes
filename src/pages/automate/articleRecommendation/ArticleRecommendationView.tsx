@@ -18,7 +18,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
-import ArticleRecommendationHelpCenter from './components/ArticleRecommendationHelpCenter'
+import HelpCenterSelect from '../common/components/HelpCenterSelect'
 import {
     ConnectedChannelsInfoAlert,
     EmptyHelpCenterAlert,
@@ -112,7 +112,7 @@ const ArticleRecommendationView = () => {
                 )}
 
                 <Label className={css.selectorTitle}>Help Center</Label>
-                <ArticleRecommendationHelpCenter
+                <HelpCenterSelect
                     helpCenter={helpCenter}
                     setHelpCenterId={setDirtyHelpCenterId}
                     helpCenters={helpCenters}

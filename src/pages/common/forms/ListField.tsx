@@ -14,6 +14,7 @@ type Props = {
     maxItems: number
     addLabel?: string
     disabled?: boolean
+    placeholder?: string
 }
 
 export default class ListField extends Component<Props> {
@@ -41,8 +42,15 @@ export default class ListField extends Component<Props> {
     }
 
     render() {
-        const {addLabel, className, disabled, items, maxLength, maxItems} =
-            this.props
+        const {
+            addLabel,
+            className,
+            disabled,
+            items,
+            maxLength,
+            maxItems,
+            placeholder,
+        } = this.props
 
         return (
             <div className={className}>
@@ -52,7 +60,11 @@ export default class ListField extends Component<Props> {
                             <TextInput
                                 className="my-0"
                                 name={`item-${index!}`}
-                                placeholder={`Type something (limited to ${maxLength} characters)`}
+                                placeholder={
+                                    placeholder
+                                        ? placeholder
+                                        : `Type something (limited to ${maxLength} characters)`
+                                }
                                 value={item}
                                 maxLength={maxLength}
                                 onChange={(value) =>

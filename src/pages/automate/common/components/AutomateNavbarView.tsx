@@ -27,6 +27,7 @@ const getSectionKeyFromStoreIntegration = (
 const AutomateNavbarView = () => {
     const match = useRouteMatch<{shopType?: string; shopName: string}>({
         path: [
+            '/app/automation/:shopType/:shopName/ai-agent',
             '/app/automation/:shopType/:shopName/flows',
             '/app/automation/:shopType/:shopName/quick-responses',
             '/app/automation/:shopType/:shopName/order-management',

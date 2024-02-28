@@ -36,8 +36,8 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import SelfServiceChatIntegrationQuickResponsePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationQuickResponsePage'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
-import ArticleRecommendationHelpCenter from 'pages/automate/articleRecommendation/components/ArticleRecommendationHelpCenter'
 
+import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
@@ -615,7 +615,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                                         <Label isRequired>
                                             Connect a Help Center
                                         </Label>
-                                        <ArticleRecommendationHelpCenter
+                                        <HelpCenterSelect
                                             setHelpCenterId={setHelpCenterId}
                                             helpCenter={activeHelpCenters.find(
                                                 ({id}) => helpCenterId === id

@@ -12,6 +12,7 @@ export const QUICK_RESPONSES = 'Quick Responses'
 export const FLOWS = 'Flows'
 export const CHANNELS = 'Channels'
 export const TRAIN_MY_AI = 'Train My AI'
+export const AI_AGENT = 'AI Agent'
 
 export type PaywallFeature = {
     headerTitle: string

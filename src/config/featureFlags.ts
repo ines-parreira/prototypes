@@ -1,6 +1,7 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
     AgentActivityTracking = 'agent-activity-tracking',
+    AiAgentSettings = 'ai-agent-settings',
     AnalyticsDrillDown = 'analytics-drill-down',
     AnalyticsDrillDownExport = 'analytics-drill-down-export',
     AnalyticsNewCubes = 'analytics-new-cubes',

@@ -164,6 +164,7 @@ import TrainMyAiViewContainer from './automate/trainMyAi/TrainMyAiViewContainer'
 import AutomateRoute from './automate/common/components/AutomateRoute'
 import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrationApi'
 import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCenterCreationWizard'
+import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1391,8 +1392,26 @@ export function AutomationRoutes() {
 
 function AutomationContent() {
     const {path} = useRouteMatch()
+
+    const showAiAgentSettings: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentSettings]
+
     return (
         <Switch>
+            {!!showAiAgentSettings && (
+                <Route path={`${path}/:shopType/:shopName/ai-agent`}>
+                    <SelfServiceHelpCentersProvider>
+                        <Route
+                            path={`${path}/:shopType/:shopName/ai-agent`}
+                            exact
+                            component={memoizedWithUserRoleRequired(
+                                AiAgentViewContainer,
+                                AGENT_ROLE
+                            )}
+                        />
+                    </SelfServiceHelpCentersProvider>
+                </Route>
+            )}
             <Route
                 path={`${path}/:shopType/:shopName/quick-responses`}
                 exact
