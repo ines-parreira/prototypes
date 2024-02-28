@@ -10,6 +10,7 @@ import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonAp
 import {Paths} from 'rest_api/revenue_addon_api/client.generated'
 import {MutationOverrides} from 'types/query'
 import {ChannelConnectionListOptions} from 'models/convert/channelConnection/types'
+import {CONVERT_DEFAULT_OPTIONS} from '../constants'
 
 export const channelConnectionKeys = {
     all: () => ['channelConnection'] as const,
@@ -32,7 +33,9 @@ export const useGetChannelConnection = (
     return useQuery({
         queryKey: channelConnectionKeys.detail(params),
         queryFn: () => getChannelConnection(convertClient, params),
+        ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
+        enabled: !!convertClient && (overrides?.enabled ?? true),
     })
 }
 
@@ -47,7 +50,9 @@ export const useListChannelConnections = (
     return useQuery({
         queryKey: channelConnectionKeys.list(params),
         queryFn: () => listChannelConnections(convertClient, params),
+        ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
+        enabled: !!convertClient && (overrides?.enabled ?? true),
     })
 }
 
@@ -59,6 +64,7 @@ export const useCreateChannelConnection = (
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
             createChannelConnection(client, data),
+        ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
     })
 }
@@ -71,6 +77,7 @@ export const useUpdateChannelConnection = (
     return useMutation({
         mutationFn: ([client = convertClient, pathParams, data]) =>
             updateChannelConnection(client, pathParams, data),
+        ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
     })
 }
@@ -83,6 +90,7 @@ export const useDeleteChannelConnection = (
     return useMutation({
         mutationFn: ([client = convertClient, pathParams]) =>
             deleteChannelConnection(client, pathParams),
+        ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
     })
 }

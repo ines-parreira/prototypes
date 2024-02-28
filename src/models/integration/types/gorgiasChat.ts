@@ -73,6 +73,9 @@ export type GorgiasChatIntegrationMeta = {
         quick_response_ids?: string[]
     }
     installation?: GorgiasChatMetaInstallation
+    one_click_installation_method?: GorgiasChatInstallationMethod
+    one_click_installation_datetime?: string
+    one_click_uninstallation_datetime?: string
 }
 
 export enum GorgiasChatInstallationMethod {

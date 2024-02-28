@@ -1,5 +1,5 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
-import axios, {AxiosResponse} from 'axios'
+import {AxiosResponse} from 'axios'
 
 import {
     Cube,
@@ -9,20 +9,7 @@ import {
     ReportingResponse,
 } from 'models/reporting/types'
 import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
-
-export const doNotRetry40XErrorsHandler = (
-    failureCount: number,
-    error: unknown
-) => {
-    if (axios.isAxiosError(error)) {
-        const statusCode = error?.response?.status
-        if (statusCode && statusCode >= 400 && statusCode < 500) {
-            return false
-        }
-    }
-
-    return failureCount < 3
-}
+import {doNotRetry40XErrorsHandler} from 'api/utils'
 
 const defaultOptions = {
     staleTime: 5 * 60 * 1000, // 5 minutes

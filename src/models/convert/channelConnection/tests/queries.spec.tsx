@@ -19,6 +19,12 @@ import {
 import * as resources from '../resources'
 import * as queries from '../queries'
 
+jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => ({
+    useRevenueAddonApi: jest.fn(() => ({
+        client: jest.fn(),
+    })),
+}))
+
 jest.mock('../resources', () => ({
     getChannelConnection: jest.fn(),
     listChannelConnections: jest.fn(),
@@ -42,6 +48,12 @@ const wrapper = ({children}: any) => (
 )
 
 describe('Channel Connection queries', () => {
+    const testOverrides = {
+        staleTime: 0,
+        cacheTime: 0,
+        retry: 0,
+    }
+
     beforeEach(() => {
         queryClient.clear()
     })
@@ -53,9 +65,12 @@ describe('Channel Connection queries', () => {
             )
             const {result, waitFor} = renderHook(
                 () =>
-                    queries.useGetChannelConnection({
-                        channel_connection_id: channelConnectionId,
-                    }),
+                    queries.useGetChannelConnection(
+                        {
+                            channel_connection_id: channelConnectionId,
+                        },
+                        testOverrides
+                    ),
                 {
                     wrapper,
                 }
@@ -70,15 +85,38 @@ describe('Channel Connection queries', () => {
             )
             const {result, waitFor} = renderHook(
                 () =>
-                    queries.useGetChannelConnection({
-                        channel_connection_id: channelConnectionId,
-                    }),
+                    queries.useGetChannelConnection(
+                        {
+                            channel_connection_id: channelConnectionId,
+                        },
+                        testOverrides
+                    ),
                 {
                     wrapper,
                 }
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+
+        it('should respect the enabled setting', async () => {
+            const {waitFor} = renderHook(
+                () =>
+                    queries.useGetChannelConnection(
+                        {
+                            channel_connection_id: channelConnectionId,
+                        },
+                        {...testOverrides, enabled: false}
+                    ),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() =>
+                expect(
+                    mockedResources.mockGetChannelConnection
+                ).not.toHaveBeenCalled()
+            )
         })
     })
 
@@ -109,13 +147,31 @@ describe('Channel Connection queries', () => {
                 Error('test error')
             )
             const {result, waitFor} = renderHook(
-                () => queries.useListChannelConnections(options),
+                () => queries.useListChannelConnections(options, testOverrides),
                 {
                     wrapper,
                 }
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+
+        it('should respect the enabled setting', async () => {
+            const {waitFor} = renderHook(
+                () =>
+                    queries.useListChannelConnections(options, {
+                        ...testOverrides,
+                        enabled: false,
+                    }),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() =>
+                expect(
+                    mockedResources.mockListChannelConnections
+                ).not.toHaveBeenCalled()
+            )
         })
     })
 
