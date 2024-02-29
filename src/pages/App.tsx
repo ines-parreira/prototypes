@@ -7,15 +7,12 @@ import 'assets/css/main.less'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
-import PhoneIntegrationBar from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
-import {hasIntegrationOfTypes} from 'state/integrations/selectors'
 
 import css from './App.less'
 
@@ -44,9 +41,6 @@ const App = ({
     const dispatch = useAppDispatch()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
-    const hasPhoneIntegration = useAppSelector(
-        hasIntegrationOfTypes(IntegrationType.Phone)
-    )
 
     const Wrapper = containerPadding ? FullPage : Container
     const wrapperProps = containerPadding
@@ -105,7 +99,6 @@ const App = ({
                         <Infobar isEditingWidgets={!!isEditingWidgets} />
                     )}
                 </div>
-                {hasPhoneIntegration && <PhoneIntegrationBar />}
             </div>
 
             <div
