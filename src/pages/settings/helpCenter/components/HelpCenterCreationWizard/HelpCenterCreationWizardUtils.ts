@@ -105,7 +105,7 @@ export const getHelpCenterWizardInitialData = (
         | IntegrationType.BigCommerce
         | IntegrationType.Magento2
     >[]
-) => {
+): Partial<HelpCenterCreationWizard> => {
     const shopName =
         allStoreIntegrations.length === 1 ? allStoreIntegrations[0].name : ''
 
@@ -136,7 +136,10 @@ export const mapUIHelpCenterToApiHelpCenter = (
         brand_logo_url: data.brandLogoUrl,
         primary_color: data.primaryColor,
         primary_font_family: data.primaryFontFamily,
-        self_service_deactivated: !data.orderManagementEnabled,
+        self_service_deactivated:
+            data.orderManagementEnabled === undefined
+                ? undefined
+                : !data.orderManagementEnabled,
         deactivated: data.deactivated,
     }
 

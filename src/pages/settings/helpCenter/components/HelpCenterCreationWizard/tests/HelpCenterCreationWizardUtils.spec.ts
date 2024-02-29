@@ -120,6 +120,24 @@ describe('helpCenterCreationWizardUtils', () => {
             expect(result).toMatchObject(PartialHelpCenterApiFixture)
         })
 
+        it('should not return self_service_deactivated when no order management boolean provided', () => {
+            const result = mapUIHelpCenterToApiHelpCenter({
+                ...defaultUIHelpCenter,
+                orderManagementEnabled: undefined,
+            })
+
+            expect(result.self_service_deactivated).toBeUndefined()
+        })
+
+        it('should return self_service_deactivated false when no order management enabled', () => {
+            const result = mapUIHelpCenterToApiHelpCenter({
+                ...defaultUIHelpCenter,
+                orderManagementEnabled: true,
+            })
+
+            expect(result.self_service_deactivated).toBeFalsy()
+        })
+
         it('should correctly map help center locales to UI', () => {
             const result = mapHelpCenterLocalesToLanguagePicker([
                 {code: 'en-US', name: 'English'},
