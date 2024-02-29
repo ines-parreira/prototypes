@@ -33,14 +33,6 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             },
         })
         const shopperAuthenticationStepId = b.selection.id
-        b.insertOrderSelectionStepAndSelect({
-            message: {
-                content: {
-                    html: '<div>Select an order associated with your subscription to continue.</div>',
-                    text: 'Select an order associated with your subscription to continue.',
-                },
-            },
-        })
         const rechargeCustomerIdVariableId = ulid()
         b.insertHttpRequestStepAndSelect({
             name: 'Get Recharge customer ID (make sure credentials are added)',
@@ -182,7 +174,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         const stateTextInputStepId = b.selection.id
         b.insertHttpRequestStepAndSelect({
             name: "Update customer's shipping address",
-            url: `https://api.rechargeapps.com/customers/{{steps_state.${rechargeCustomerIdHttpRequestStepId}.content.${rechargeCustomerIdVariableId}}}`,
+            url: `https://api.rechargeapps.com/addresses/{{steps_state.${rechargeSubscriptionHttpRequestStepId}.content.${rechargeAddressIdVariableId}}}`,
             method: 'PUT',
             headers: {
                 'x-recharge-version': '2021-11',
@@ -194,12 +186,12 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                     'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
-          "address1": "{{steps_state.${address1TextInputStepId}.content.text}}",
-          "address2": "{{steps_state.${address2TextInputStepId}.content.text}}",
-          "city": " {{steps_state.${cityTextInputStepId}.content.text}}",
-          "province": "{{steps_state.${stateTextInputStepId}.content.text}}",
-          "zip": "{{steps_state.${zipTextInputStepId}.content.text}}"
-        }`,
+    "address1": "{{steps_state.${address1TextInputStepId}.content.text}}",
+    "address2": "{{steps_state.${address2TextInputStepId}.content.text}}",
+    "city": "{{steps_state.${cityTextInputStepId}.content.text}}",
+    "province": "{{steps_state.${stateTextInputStepId}.content.text}}",
+    "zip": "{{steps_state.${zipTextInputStepId}.content.text}}"
+}`,
             variables: [],
         })
         b.insertMessageStepAndSelect({
@@ -245,9 +237,9 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                     'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
-          "cancellation_reason": "{{steps_state.${cancellationReasonTextInputStepId}.content.text}}",
-          "send_email": "true"
-        }`,
+    "cancellation_reason": "{{steps_state.${cancellationReasonTextInputStepId}.content.text}}",
+    "send_email": "true"
+}`,
             variables: [],
         })
         b.insertMessageStepAndSelect({
