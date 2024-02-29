@@ -1,37 +1,24 @@
 import React, {ComponentProps, ReactNode} from 'react'
 import {fromJS} from 'immutable'
-import userEvent from '@testing-library/user-event'
-import {act, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {user} from 'fixtures/users'
 import {view as fixtureView} from 'fixtures/views'
 import useShortcuts from 'hooks/useShortcuts'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import {SHORTCUT_MANAGER_COMPONENT_NAME} from 'pages/tickets/list/components/TicketListActions'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 import {fetchTags} from 'state/tags/actions'
-import {flushPromises, renderWithRouter} from 'utils/testing'
+
+import {renderWithRouter} from 'utils/testing'
 
 jest.mock('state/tags/actions')
-
 import TicketList from '../TicketList'
-
-const mockSetItem = jest.fn()
-const mockGetItem = jest.fn()
-const mockGetTableObject = {
-    getItem: mockGetItem,
-    setItem: mockSetItem,
-} as unknown as LocalForage
 
 const fetchTagsMock = (
     fetchTags as jest.MockedFunction<typeof fetchTags>
 ).mockReturnValue(() => Promise.resolve(undefined))
-
-jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(mockGetTableObject)
 
 jest.mock(
     'pages/common/components/ViewTable/ViewTable',
@@ -85,11 +72,8 @@ jest.mock(
 
 jest.mock('common/segment')
 
-const logEventMock = logEvent as jest.Mock
-
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
-    currentUser: fromJS(user),
     tickets: fromJS({items: []}),
     views: fromJS({
         active: fixtureView,
@@ -102,7 +86,16 @@ const store = mockStore({
 jest.mock('hooks/useShortcuts')
 const useShortcutsMock = useShortcuts as jest.Mock
 
+jest.mock('pages/common/components/CreateTicket/CreateTicketButton')
+const MockCreateTicketButton = CreateTicketButton as jest.Mock
+
 describe('<TicketList />', () => {
+    beforeEach(() => {
+        MockCreateTicketButton.mockImplementation(() => (
+            <div>CreateTicketButton</div>
+        ))
+    })
+
     it('should display with default props', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
@@ -169,80 +162,6 @@ describe('<TicketList />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render draft dropdown when there is a draft', async () => {
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
-            ...mockGetTableObject,
-            getItem: jest.fn().mockResolvedValue({subject: 'title'}),
-        })
-
-        const {getByText} = renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>
-        )
-        await act(flushPromises)
-        const createTicketButton = getByText('Create ticket')
-        userEvent.click(createTicketButton)
-        expect(document.body.children).toMatchSnapshot()
-    })
-
-    it('should handle draft resuming', async () => {
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
-            ...mockGetTableObject,
-            getItem: jest.fn().mockResolvedValue({subject: 'title'}),
-        })
-
-        const {getByText} = renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>
-        )
-        await act(flushPromises)
-        const createTicketButton = getByText('Create ticket')
-        userEvent.click(createTicketButton)
-        const resumeDraftButton = getByText('Resume draft')
-        userEvent.click(resumeDraftButton)
-        expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.DraftTicket,
-            expect.objectContaining({
-                type: 'resume',
-                user_id: user.id,
-            })
-        )
-    })
-
-    it('should handle draft discarding', async () => {
-        const mockClear = jest.fn().mockResolvedValue(true)
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
-            ...mockGetTableObject,
-            getItem: jest.fn().mockResolvedValue({subject: 'title'}),
-            clear: mockClear,
-        })
-
-        const {getByText} = renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>
-        )
-        await act(flushPromises)
-        const createTicketButton = getByText('Create ticket')
-        userEvent.click(createTicketButton)
-        const discardDraftButton = getByText('Discard and create new ticket')
-        userEvent.click(discardDraftButton)
-        await waitFor(() => {
-            expect(mockClear).toHaveBeenCalled()
-            expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
-        })
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.DraftTicket,
-            expect.objectContaining({
-                type: 'discard',
-                user_id: user.id,
-            })
-        )
-    })
-
     it('should bind keyboard shortcuts', () => {
         renderWithRouter(
             <Provider store={store}>
@@ -257,5 +176,35 @@ describe('<TicketList />', () => {
                 },
             }
         )
+    })
+
+    it('should render CreateTicketButton when not in edit mode', () => {
+        const {queryByText} = renderWithRouter(
+            <Provider store={store}>
+                <TicketList />
+            </Provider>
+        )
+
+        expect(queryByText('CreateTicketButton')).toBeInTheDocument()
+    })
+
+    it('should not render CreateTicketButton when in edit mode', () => {
+        const {queryByText} = renderWithRouter(
+            <Provider
+                store={mockStore({
+                    tickets: fromJS({items: []}),
+                    views: fromJS({
+                        active: {...fixtureView, editMode: true},
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                })}
+            >
+                <TicketList />
+            </Provider>
+        )
+
+        expect(queryByText('CreateTicketButton')).not.toBeInTheDocument()
     })
 })

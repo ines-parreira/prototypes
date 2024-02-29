@@ -4,16 +4,15 @@ import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {within} from '@testing-library/dom'
 
+import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_PREFERENCES} from 'config'
 import {user} from 'fixtures/users'
 import {getLDClient} from 'utils/launchDarkly'
-
 import {
     advancedMonthlyHelpdeskPrice,
     proMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
-
 import * as utils from 'utils'
 import {AcceptedThemes, Theme} from 'theme'
 
@@ -23,10 +22,15 @@ import {Navbar} from '../Navbar'
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 jest.mock('common/segment')
 jest.mock('utils/launchDarkly')
+jest.mock('pages/common/components/CreateTicket/CreateTicketNavbarButton')
+const MockedCreateTicketNavbarButton = CreateTicketNavbarButton as jest.Mock
+
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
 
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
+
+const pageTitleTestCases = [['Tickets'], ['Customers']]
 
 describe('<Navbar />', () => {
     const minProps = {
@@ -58,6 +62,12 @@ describe('<Navbar />', () => {
         render: jest.fn(() => Promise.resolve()),
         destroy: jest.fn(() => Promise.resolve()),
     }
+
+    beforeEach(() => {
+        MockedCreateTicketNavbarButton.mockImplementation(() => (
+            <div>CreateTicketNavbarButton</div>
+        ))
+    })
 
     afterEach(() => {
         allFlagsMock.mockReturnValue({})
@@ -259,4 +269,27 @@ describe('<Navbar />', () => {
 
         expect(queryByText('Convert')).not.toBeInTheDocument()
     })
+
+    it.each(pageTitleTestCases)(
+        'should render CreateTicketNavbarButton if on a ticket page',
+        (title) => {
+            const {queryByText} = render(
+                <Navbar
+                    {...minProps}
+                    activeContent={title}
+                    flags={{
+                        [FeatureFlagKey.SplitTicketView]: true,
+                    }}
+                />
+            )
+
+            title === 'Tickets'
+                ? expect(
+                      queryByText(`CreateTicketNavbarButton`)
+                  ).toBeInTheDocument()
+                : expect(
+                      queryByText(`CreateTicketNavbarButton`)
+                  ).not.toBeInTheDocument()
+        }
+    )
 })

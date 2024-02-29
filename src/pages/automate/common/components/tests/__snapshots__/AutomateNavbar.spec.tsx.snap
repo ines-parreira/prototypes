@@ -117,7 +117,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         />
         <button
           aria-disabled="false"
-          class="wrapper button ghost primary medium"
+          class="wrapper navbarButton ghost primary medium"
           id="spotlight-button-6"
           type="button"
         >
@@ -125,7 +125,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             class="wrapper"
           >
             <i
-              class="material-icons icon isLeft icon medium"
+              class="material-icons icon isLeft buttonIcon medium"
             >
               search
             </i>
@@ -538,7 +538,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         />
         <button
           aria-disabled="false"
-          class="wrapper button ghost primary medium"
+          class="wrapper navbarButton ghost primary medium"
           id="spotlight-button-5"
           type="button"
         >
@@ -546,7 +546,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             class="wrapper"
           >
             <i
-              class="material-icons icon isLeft icon medium"
+              class="material-icons icon isLeft buttonIcon medium"
             >
               search
             </i>
@@ -875,7 +875,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         />
         <button
           aria-disabled="false"
-          class="wrapper button ghost primary medium"
+          class="wrapper navbarButton ghost primary medium"
           id="spotlight-button-4"
           type="button"
         >
@@ -883,7 +883,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             class="wrapper"
           >
             <i
-              class="material-icons icon isLeft icon medium"
+              class="material-icons icon isLeft buttonIcon medium"
             >
               search
             </i>
@@ -1054,7 +1054,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         />
         <button
           aria-disabled="false"
-          class="wrapper button ghost primary medium"
+          class="wrapper navbarButton ghost primary medium"
           id="spotlight-button-3"
           type="button"
         >
@@ -1062,7 +1062,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             class="wrapper"
           >
             <i
-              class="material-icons icon isLeft icon medium"
+              class="material-icons icon isLeft buttonIcon medium"
             >
               search
             </i>
@@ -1475,7 +1475,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         />
         <button
           aria-disabled="false"
-          class="wrapper button ghost primary medium"
+          class="wrapper navbarButton ghost primary medium"
           id="spotlight-button-2"
           type="button"
         >
@@ -1483,7 +1483,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             class="wrapper"
           >
             <i
-              class="material-icons icon isLeft icon medium"
+              class="material-icons icon isLeft buttonIcon medium"
             >
               search
             </i>
@@ -1812,7 +1812,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         />
         <button
           aria-disabled="false"
-          class="wrapper button ghost primary medium"
+          class="wrapper navbarButton ghost primary medium"
           id="spotlight-button-1"
           type="button"
         >
@@ -1820,7 +1820,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             class="wrapper"
           >
             <i
-              class="material-icons icon isLeft icon medium"
+              class="material-icons icon isLeft buttonIcon medium"
             >
               search
             </i>

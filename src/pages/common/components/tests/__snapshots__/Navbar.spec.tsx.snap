@@ -129,7 +129,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper button ghost primary medium"
+        class="wrapper navbarButton ghost primary medium"
         id="spotlight-button-42"
         type="button"
       >
@@ -137,7 +137,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
           class="wrapper"
         >
           <i
-            class="material-icons icon isLeft icon medium"
+            class="material-icons icon isLeft buttonIcon medium"
           >
             search
           </i>
@@ -319,7 +319,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper button ghost primary medium"
+        class="wrapper navbarButton ghost primary medium"
         id="spotlight-button-42"
         type="button"
       >
@@ -327,7 +327,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
           class="wrapper"
         >
           <i
-            class="material-icons icon isLeft icon medium"
+            class="material-icons icon isLeft buttonIcon medium"
           >
             search
           </i>
@@ -512,7 +512,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper button ghost primary medium"
+        class="wrapper navbarButton ghost primary medium"
         id="spotlight-button-42"
         type="button"
       >
@@ -520,7 +520,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
           class="wrapper"
         >
           <i
-            class="material-icons icon isLeft icon medium"
+            class="material-icons icon isLeft buttonIcon medium"
           >
             search
           </i>
@@ -702,7 +702,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper button ghost primary medium"
+        class="wrapper navbarButton ghost primary medium"
         id="spotlight-button-42"
         type="button"
       >
@@ -710,7 +710,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
           class="wrapper"
         >
           <i
-            class="material-icons icon isLeft icon medium"
+            class="material-icons icon isLeft buttonIcon medium"
           >
             search
           </i>

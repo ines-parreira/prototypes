@@ -24,11 +24,7 @@ export const HomePageLink = () => {
                 <NavLink
                     to="/app/home"
                     data-testid="home-page-link"
-                    className={classnames(
-                        css.link,
-                        navBarCss.link,
-                        navBarCss['category-title']
-                    )}
+                    className={classnames(css.link, navBarCss.link)}
                 >
                     <span className={css.title}>
                         <i

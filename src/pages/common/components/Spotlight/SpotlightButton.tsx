@@ -7,9 +7,8 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import Tooltip from 'pages/common/components/Tooltip'
 import {SpotlightContext} from 'providers/ui/SpotlightContext'
+import navbarCss from 'assets/css/navbar.less'
 import {isMacOs} from 'utils/platform'
-
-import css from './SpotlightButton.less'
 
 const SpotlightButton = () => {
     const {isOpen, setIsOpen} = useContext(SpotlightContext)
@@ -25,11 +24,14 @@ const SpotlightButton = () => {
         <>
             <Button
                 id={buttonId}
-                className={css.button}
+                className={navbarCss.navbarButton}
                 fillStyle="ghost"
                 onClick={handleClick}
             >
-                <ButtonIconLabel icon="search" iconClassName={css.icon} />
+                <ButtonIconLabel
+                    icon="search"
+                    iconClassName={navbarCss.buttonIcon}
+                />
                 Search
             </Button>
             <Tooltip
@@ -37,9 +39,8 @@ const SpotlightButton = () => {
                 boundariesElement="viewport"
                 offset="0, 8"
                 placement="right"
-                className={css.tooltip}
             >
-                <div className={css.tooltipContent}>
+                <div className={navbarCss.tooltipContent}>
                     <span>Global search</span>
                     <ShortcutIcon type="dark">
                         {isMacOs ? '⌘' : 'ctrl'}

@@ -3,7 +3,7 @@
 exports[`<SpotlightSearchButton /> should render a search button 1`] = `
 <button
   aria-disabled="false"
-  class="wrapper button ghost primary medium"
+  class="wrapper navbarButton ghost primary medium"
   id="spotlight-button-1"
   type="button"
 >
@@ -11,7 +11,7 @@ exports[`<SpotlightSearchButton /> should render a search button 1`] = `
     class="wrapper"
   >
     <i
-      class="material-icons icon isLeft icon medium"
+      class="material-icons icon isLeft buttonIcon medium"
     >
       search
     </i>

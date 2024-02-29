@@ -59,6 +59,7 @@ import Avatar from './Avatar/Avatar'
 import DropdownBody from './dropdown/DropdownBody'
 import DropdownHeader from './dropdown/DropdownHeader'
 import DropdownItemLabel from './dropdown/DropdownItemLabel'
+import CreateTicketNavbarButton from './CreateTicket/CreateTicketNavbarButton'
 import Screens from './screens/Screens'
 import Screen from './screens/Screen'
 import css from './Navbar.less'
@@ -374,6 +375,8 @@ export class Navbar extends Component<Props, State> {
             currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
 
+        const hasSplitTicketView = !!flags?.[FeatureFlagKey.SplitTicketView]
+
         return (
             <div
                 className={classnames(css.sidebar, {
@@ -461,6 +464,14 @@ export class Navbar extends Component<Props, State> {
                         <div data-candu-id="navbar-home-spacer" />
 
                         <SpotlightButton />
+                        {this.state.title === 'Tickets' &&
+                        hasSplitTicketView ? (
+                            <CreateTicketNavbarButton
+                                isDisabled={window.location.pathname.includes(
+                                    '/ticket/new'
+                                )}
+                            />
+                        ) : null}
                     </div>
 
                     <div
