@@ -226,3 +226,7 @@ export type AIArticleToggleOption = {
     label: string | JSX.Element
     value: AIArticleToggleOptionValue
 }
+
+export type AILibraryArticleItem = AIArticle & {
+    isNew: boolean
+}

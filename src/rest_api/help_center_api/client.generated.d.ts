@@ -37,6 +37,7 @@ declare namespace Components {
        */
       related_tickets_count?: number;
       generated_datetime?: string; // date-time
+      review_action?: "publish" | "saveAsDraft" | "archive";
     }
     export interface AccessTokenDto {
       access_token: string;
@@ -346,6 +347,9 @@ declare namespace Components {
        * }
        */
       order_management: {
+        /**
+         * Is order management enabled
+         */
         enabled: boolean;
       };
     }
@@ -889,6 +893,11 @@ declare namespace Components {
       category_id?: number | null;
       template_key?: string | null;
     }
+    export interface CreateArticleTemplateReviewDto {
+      template_key: string;
+      action: "publish" | "saveAsDraft" | "archive";
+      reason?: string | null;
+    }
     export interface CreateArticleTranslationDto {
       /**
        * The locale of the translation.
@@ -1252,17 +1261,6 @@ declare namespace Components {
        * false
        */
       self_service_deactivated?: boolean;
-      /**
-       * Contains the integration email and id which will be used to create tickets from the contact form.
-       */
-      contact_form?: {
-        card_enabled?: boolean;
-        helpdesk_integration_email: string | null;
-        helpdesk_integration_id: number | null;
-        subject_lines?: {
-          [name: string]: SubjectLineDto;
-        };
-      };
       source?: "manual" | "automation";
       gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
       /**
@@ -1294,7 +1292,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: "ecommerce" | "website";
+          platform_type?: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -1564,7 +1562,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: "ecommerce" | "website";
+          platform_type?: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -1646,7 +1644,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: "ecommerce" | "website";
+          platform_type?: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -1738,7 +1736,7 @@ declare namespace Components {
          * example:
          * ecommerce
          */
-        platform_type: "ecommerce" | "website";
+        platform_type?: "ecommerce" | "website";
       } | null;
       completed?: boolean | null;
     }
@@ -1892,6 +1890,9 @@ declare namespace Components {
       is_current: boolean;
     }
     export interface OrderManagementVo {
+      /**
+       * Is order management enabled
+       */
       enabled: boolean;
     }
     export interface PageEmbedmentDto {
@@ -2054,10 +2055,6 @@ declare namespace Components {
       url: string;
       fields: {
       };
-    }
-    export interface SubjectLineDto {
-      allow_other: boolean;
-      options: string[];
     }
     export interface SubjectLinesDto {
       /**
@@ -2320,14 +2317,6 @@ declare namespace Components {
        */
       custom_footer_deactivated?: boolean;
     }
-    export interface UpdateHelpCenterContactFormDto {
-      card_enabled?: boolean;
-      helpdesk_integration_email: string | null;
-      helpdesk_integration_id: number | null;
-      subject_lines?: {
-        [name: string]: SubjectLineDto;
-      };
-    }
     export interface UpdateHelpCenterDto {
       /**
        * example:
@@ -2377,17 +2366,6 @@ declare namespace Components {
        * false
        */
       self_service_deactivated?: boolean;
-      /**
-       * Contains the integration email and id which will be used to create tickets from the contact form.
-       */
-      contact_form?: {
-        card_enabled?: boolean;
-        helpdesk_integration_email: string | null;
-        helpdesk_integration_id: number | null;
-        subject_lines?: {
-          [name: string]: SubjectLineDto;
-        };
-      };
       gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
       /**
        * Email integration used to receive this contact form inquiries
@@ -2418,7 +2396,7 @@ declare namespace Components {
            * example:
            * ecommerce
            */
-          platform_type: "ecommerce" | "website";
+          platform_type?: "ecommerce" | "website";
         } | null;
         completed?: boolean | null;
       } | null;
@@ -2552,6 +2530,9 @@ declare namespace Components {
        * }
        */
       order_management?: {
+        /**
+         * Is order management enabled
+         */
         enabled: boolean;
       };
     }
@@ -2563,7 +2544,7 @@ declare namespace Components {
        * example:
        * ecommerce
        */
-      platform_type: "ecommerce" | "website";
+      platform_type?: "ecommerce" | "website";
     }
     export interface WorkflowHandoverDto {
       contact_form_uid?: string;
@@ -2602,7 +2583,13 @@ declare namespace Components {
       from_agent: boolean;
     }
     export interface WorkflowVo {
+      /**
+       * Workflow identifier
+       */
       id: string;
+      /**
+       * Is workflow enabled
+       */
       enabled: boolean;
     }
   }
@@ -3649,6 +3636,15 @@ declare namespace Paths {
     export interface PathParameters {
       shop_name: Parameters.ShopName;
     }
+  }
+  namespace ReviewArticleTemplate {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.CreateArticleTemplateReviewDto;
   }
   namespace SetArticlesPositionsInCategory {
     namespace Parameters {
@@ -4802,6 +4798,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
   /**
+   * reviewArticleTemplate - Review an AI article template
+   */
+  'reviewArticleTemplate'(
+    parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
+    data?: Paths.ReviewArticleTemplate.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
    * listAIArticleTemplates - Retrieve AI article templates
    */
   'listAIArticleTemplates'(
@@ -5831,6 +5835,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/article-templates/review']: {
+    /**
+     * reviewArticleTemplate - Review an AI article template
+     */
+    'post'(
+      parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
+      data?: Paths.ReviewArticleTemplate.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/article-templates/ai']: {
     /**

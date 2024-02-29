@@ -4,8 +4,7 @@
     .container {
         display: flex;
         align-items: center;
-        padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s
-            @layout-spacing-xs;
+        padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s 12px;
         justify-content: space-between;
         border-radius: @layout-spacing-xxs;
         cursor: pointer;
@@ -13,7 +12,9 @@
 
         &:not(.active):hover {
             background-color: var(--neutral-grey-1);
+            border-left-color: var(--neutral-grey-1);
         }
+        gap: @layout-spacing-s;
     }
 
     .titleContainer {

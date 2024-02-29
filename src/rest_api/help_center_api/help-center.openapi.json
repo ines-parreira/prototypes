@@ -3716,6 +3716,32 @@
                 "tags": ["contact-form-mailto-replacement-config"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/article-templates/review": {
+            "post": {
+                "operationId": "reviewArticleTemplate",
+                "summary": "Review an AI article template",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateArticleTemplateReviewDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["article-templates"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/article-templates/ai": {
             "get": {
                 "operationId": "listAIArticleTemplates",
@@ -4190,41 +4216,6 @@
                 },
                 "required": ["progress"]
             },
-            "SubjectLineDto": {
-                "type": "object",
-                "properties": {
-                    "allow_other": {"type": "boolean"},
-                    "options": {
-                        "type": "array",
-                        "items": {"type": "string", "maxLength": 50}
-                    }
-                },
-                "required": ["allow_other", "options"]
-            },
-            "UpdateHelpCenterContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "card_enabled": {"type": "boolean"},
-                    "helpdesk_integration_email": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "helpdesk_integration_id": {
-                        "type": "number",
-                        "nullable": true
-                    },
-                    "subject_lines": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "$ref": "#/components/schemas/SubjectLineDto"
-                        }
-                    }
-                },
-                "required": [
-                    "helpdesk_integration_email",
-                    "helpdesk_integration_id"
-                ]
-            },
             "EmailIntegrationDto": {
                 "type": "object",
                 "properties": {
@@ -4241,12 +4232,12 @@
                 "type": "object",
                 "properties": {
                     "platform_type": {
+                        "nullable": true,
                         "type": "string",
                         "example": "ecommerce",
                         "enum": ["ecommerce", "website"]
                     }
-                },
-                "required": ["platform_type"]
+                }
             },
             "HelpCenterWizardDto": {
                 "type": "object",
@@ -4327,15 +4318,6 @@
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
                         "example": false
-                    },
-                    "contact_form": {
-                        "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
-                        "deprecated": true,
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/UpdateHelpCenterContactFormDto"
-                            }
-                        ]
                     },
                     "source": {
                         "enum": ["manual", "automation"],
@@ -5098,15 +5080,6 @@
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
                         "example": false
                     },
-                    "contact_form": {
-                        "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
-                        "deprecated": true,
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/UpdateHelpCenterContactFormDto"
-                            }
-                        ]
-                    },
                     "gaid": {
                         "type": "string",
                         "nullable": true,
@@ -5153,14 +5126,25 @@
             "WorkflowVo": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "string"},
-                    "enabled": {"type": "boolean"}
+                    "id": {
+                        "type": "string",
+                        "description": "Workflow identifier"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Is workflow enabled"
+                    }
                 },
                 "required": ["id", "enabled"]
             },
             "OrderManagementVo": {
                 "type": "object",
-                "properties": {"enabled": {"type": "boolean"}},
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Is order management enabled"
+                    }
+                },
                 "required": ["enabled"]
             },
             "AutomationSettingsDto": {
@@ -7876,6 +7860,22 @@
                 },
                 "required": ["emails", "contactFormUid", "shopifyShopName"]
             },
+            "CreateArticleTemplateReviewDto": {
+                "type": "object",
+                "properties": {
+                    "template_key": {"type": "string"},
+                    "action": {
+                        "enum": ["publish", "saveAsDraft", "archive"],
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "nullable": true,
+                        "default": null
+                    }
+                },
+                "required": ["template_key", "action"]
+            },
             "AIArticleTemplateDto": {
                 "type": "object",
                 "properties": {
@@ -7897,6 +7897,10 @@
                     },
                     "generated_datetime": {
                         "format": "date-time",
+                        "type": "string"
+                    },
+                    "review_action": {
+                        "enum": ["publish", "saveAsDraft", "archive"],
                         "type": "string"
                     }
                 },

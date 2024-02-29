@@ -27,6 +27,7 @@ const AIArticlesToggleButton = ({
             type={ToggleButton.Type.Label}
             value={selectedOption}
             onChange={setSelectedOption}
+            className={css.container}
         >
             {options.map((option) => (
                 <ToggleButton.Option
