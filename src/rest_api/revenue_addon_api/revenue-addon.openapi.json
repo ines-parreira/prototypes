@@ -893,15 +893,16 @@
                 "tags": ["campaigns"],
                 "summary": "Create Campaign",
                 "operationId": "create_campaign",
+                "security": [{"HTTPBearer": []}],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/CampaignCreateRequestSchema"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "responses": {
                     "201": {
@@ -924,8 +925,52 @@
                             }
                         }
                     }
-                },
-                "security": [{"HTTPBearer": []}]
+                }
+            },
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get Campaigns",
+                "operationId": "get_campaigns",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Channel connection ID to which campaigns belong",
+                            "title": "Channel Connection Id"
+                        },
+                        "description": "Channel connection ID to which campaigns belong"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CampaignResponseSchema"
+                                    },
+                                    "title": "Response Get Campaigns"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/campaigns/{campaign_id}": {
@@ -1129,7 +1174,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/ChannelConnectionWithCampaignsResponseSchema"
+                                        "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
                                     },
                                     "title": "Response Get Channel Connections"
                                 }
@@ -1943,45 +1988,6 @@
                 "type": "object",
                 "required": ["channel", "account_id", "id"],
                 "title": "ChannelConnectionResponseSchema"
-            },
-            "ChannelConnectionWithCampaignsResponseSchema": {
-                "properties": {
-                    "store_integration_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
-                        "title": "Store Integration Id"
-                    },
-                    "external_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "External Id"
-                    },
-                    "external_installation_status": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "External Installation Status"
-                    },
-                    "is_setup": {
-                        "type": "boolean",
-                        "title": "Is Setup",
-                        "default": false
-                    },
-                    "is_onboarded": {
-                        "type": "boolean",
-                        "title": "Is Onboarded",
-                        "default": false
-                    },
-                    "channel": {"$ref": "#/components/schemas/ChannelType"},
-                    "account_id": {"type": "integer", "title": "Account Id"},
-                    "id": {"type": "string", "title": "Id"},
-                    "campaigns": {
-                        "items": {
-                            "$ref": "#/components/schemas/CampaignResponseSchema"
-                        },
-                        "type": "array",
-                        "title": "Campaigns"
-                    }
-                },
-                "type": "object",
-                "required": ["channel", "account_id", "id", "campaigns"],
-                "title": "ChannelConnectionWithCampaignsResponseSchema"
             },
             "ChannelPatchRequestSchema": {
                 "properties": {

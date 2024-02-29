@@ -395,44 +395,6 @@ declare namespace Components {
             id: string
         }
         /**
-         * ChannelConnectionWithCampaignsResponseSchema
-         */
-        export interface ChannelConnectionWithCampaignsResponseSchema {
-            /**
-             * Store Integration Id
-             */
-            store_integration_id?: number | null
-            /**
-             * External Id
-             */
-            external_id?: string | null
-            /**
-             * External Installation Status
-             */
-            external_installation_status?: string | null
-            /**
-             * Is Setup
-             */
-            is_setup?: boolean
-            /**
-             * Is Onboarded
-             */
-            is_onboarded?: boolean
-            channel: ChannelType
-            /**
-             * Account Id
-             */
-            account_id: number
-            /**
-             * Id
-             */
-            id: string
-            /**
-             * Campaigns
-             */
-            campaigns: CampaignResponseSchema[]
-        }
-        /**
          * ChannelPatchRequestSchema
          * Defines the fields that can be patched and accepts any subset of the fields.
          * Skips advanced validation, it will be handled in PATCH endpoint:
@@ -1100,6 +1062,25 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace GetCampaigns {
+        namespace Parameters {
+            /**
+             * Channel Connection Id
+             * Channel connection ID to which campaigns belong
+             */
+            export type ChannelConnectionId = string
+        }
+        export interface QueryParameters {
+            channel_connection_id: Parameters.ChannelConnectionId
+        }
+        namespace Responses {
+            /**
+             * Response Get Campaigns
+             */
+            export type $200 = Components.Schemas.CampaignResponseSchema[]
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace GetChannelConnection {
         namespace Parameters {
             /**
@@ -1144,7 +1125,7 @@ declare namespace Paths {
              * Response Get Channel Connections
              */
             export type $200 =
-                Components.Schemas.ChannelConnectionWithCampaignsResponseSchema[]
+                Components.Schemas.ChannelConnectionResponseSchema[]
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -1690,6 +1671,16 @@ export interface OperationMethods {
         Paths.CampaignsSync.Responses.$200 | Paths.CampaignsSync.Responses.$422
     >
     /**
+     * get_campaigns - Get Campaigns
+     */
+    'get_campaigns'(
+        parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetCampaigns.Responses.$200 | Paths.GetCampaigns.Responses.$422
+    >
+    /**
      * create_campaign - Create Campaign
      */
     'create_campaign'(
@@ -2165,6 +2156,17 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.CreateCampaign.Responses.$201
             | Paths.CreateCampaign.Responses.$422
+        >
+        /**
+         * get_campaigns - Get Campaigns
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetCampaigns.Responses.$200
+            | Paths.GetCampaigns.Responses.$422
         >
     }
     ['/campaigns/{campaign_id}']: {

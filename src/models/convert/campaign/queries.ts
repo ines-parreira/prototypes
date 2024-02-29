@@ -1,0 +1,91 @@
+import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
+import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
+import {CONVERT_DEFAULT_OPTIONS} from 'models/convert/constants'
+import {MutationOverrides} from 'types/query'
+import {
+    createCampaign,
+    deleteCampaign,
+    getCampaign,
+    listCampaigns,
+    updateCampaign,
+} from './resources'
+import {CampaignListOptions, CampaignParams} from './types'
+
+export const campaignKeys = {
+    all: () => ['campaign'] as const,
+    lists: () => [...campaignKeys.all(), 'list'] as const,
+    list: (params: CampaignListOptions) =>
+        [...campaignKeys.lists(), params] as const,
+    details: () => [...campaignKeys.all(), 'detail'] as const,
+    detail: (params: CampaignParams) =>
+        [...campaignKeys.details(), params] as const,
+}
+
+export const useGetCampaign = (
+    params: CampaignParams,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getCampaign>>>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useQuery({
+        queryKey: campaignKeys.detail(params),
+        queryFn: () => getCampaign(convertClient, params),
+        ...CONVERT_DEFAULT_OPTIONS,
+        ...overrides,
+        enabled: !!convertClient && (overrides?.enabled ?? true),
+    })
+}
+
+export const useListCampaigns = (
+    params: CampaignListOptions,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listCampaigns>>>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useQuery({
+        queryKey: campaignKeys.list(params),
+        queryFn: () => listCampaigns(convertClient, params),
+        ...CONVERT_DEFAULT_OPTIONS,
+        ...overrides,
+        enabled: !!convertClient && (overrides?.enabled ?? true),
+    })
+}
+
+export const useCreateCampaign = (
+    overrides?: MutationOverrides<typeof createCampaign>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useMutation({
+        mutationFn: ([client = convertClient, data]) =>
+            createCampaign(client, data),
+        ...CONVERT_DEFAULT_OPTIONS,
+        ...overrides,
+    })
+}
+
+export const useUpdateCampaign = (
+    overrides?: MutationOverrides<typeof updateCampaign>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useMutation({
+        mutationFn: ([client = convertClient, pathParams, data]) =>
+            updateCampaign(client, pathParams, data),
+        ...CONVERT_DEFAULT_OPTIONS,
+        ...overrides,
+    })
+}
+
+export const useDeleteCampaign = (
+    overrides?: MutationOverrides<typeof deleteCampaign>
+) => {
+    const {client: convertClient} = useRevenueAddonApi()
+
+    return useMutation({
+        mutationFn: ([client = convertClient, pathParams]) =>
+            deleteCampaign(client, pathParams),
+        ...CONVERT_DEFAULT_OPTIONS,
+        ...overrides,
+    })
+}

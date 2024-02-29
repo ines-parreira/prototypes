@@ -1,5 +1,6 @@
 import {useQueryClient} from '@tanstack/react-query'
 import {useMemo, useState} from 'react'
+import {AxiosResponse} from 'axios'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {
     ChannelConnection,
@@ -59,6 +60,20 @@ export const useGetOrCreateChannelConnection = (
             return data
         }, [integration.meta, installationStatus])
 
+    const handleSuccessCallback = (
+        data: AxiosResponse<ChannelConnection[] | any, any> | null
+    ) => {
+        const statusCode = data?.status ?? 200
+
+        if (statusCode === 200) {
+            const channelConnections = (data?.data ?? []) as ChannelConnection[]
+            if (channelConnections.length === 0 && !createTriggered) {
+                mutateCreate([undefined, channelConnectionData])
+                setCreateTriggered(true)
+            }
+        }
+    }
+
     const {
         data: listData,
         isLoading: listLoading,
@@ -67,18 +82,7 @@ export const useGetOrCreateChannelConnection = (
     } = useListChannelConnections(options, {
         enabled: shouldFetchList,
         retry: retries,
-        onSuccess: (data) => {
-            const statusCode = data?.status ?? 200
-
-            if (statusCode === 200) {
-                const channelConnections = (data?.data ??
-                    []) as ChannelConnection[]
-                if (channelConnections.length === 0 && !createTriggered) {
-                    mutateCreate([undefined, channelConnectionData])
-                    setCreateTriggered(true)
-                }
-            }
-        },
+        onSuccess: handleSuccessCallback,
     })
 
     const {
