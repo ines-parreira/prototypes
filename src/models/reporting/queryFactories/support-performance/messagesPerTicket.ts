@@ -1,54 +1,73 @@
 import {OrderDirection} from 'models/api/types'
 import {
-    HelpdeskMessageCubeWithJoins,
-    HelpdeskMessageMember,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketSegment} from 'models/reporting/cubes/TicketCube'
+    TicketDimension,
+    TicketSegment,
+    TicketCubeWithJoins,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
+    TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
-    getFilterDateRange,
+    formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
-    PublicHelpdeskAndApiMessagesFilter,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
+import {subtractDaysFromDate} from 'utils/date'
+
+export const MESSAGES_MAX_DAYS_INTO_THE_PAST = 180
 
 export const messagesPerTicketQueryFactory = (
     filters: StatsFilters,
     timezone: string
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    measures: [TicketMessagesMeasure.MessagesAverage],
-    dimensions: [],
-    timezone,
-    filters: [
-        {
-            member: HelpdeskMessageMember.SentDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(filters),
-        },
-        ...PublicHelpdeskAndApiMessagesFilter,
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
-    ],
-    segments: [
-        TicketSegment.ClosedTickets,
-        TicketMessagesSegment.ConversationStarted,
-    ],
-})
+): ReportingQuery<TicketCubeWithJoins> => {
+    const hardPeriodStart = formatReportingQueryDate(
+        subtractDaysFromDate(
+            filters.period.start_datetime,
+            MESSAGES_MAX_DAYS_INTO_THE_PAST
+        )
+    )
+    return {
+        measures: [TicketMessagesMeasure.MessagesAverage],
+        dimensions: [],
+        timezone,
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: TicketMessagesMember.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [hardPeriodStart],
+            },
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [hardPeriodStart],
+            },
+        ],
+        segments: [
+            TicketSegment.ClosedTickets,
+            TicketMessagesSegment.ConversationStarted,
+        ],
+    }
+}
 
 export const messagesPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+): ReportingQuery<TicketCubeWithJoins> => {
     const baseQuery = messagesPerTicketQueryFactory(filters, timezone)
     return {
         ...baseQuery,

@@ -1,6 +1,5 @@
 import moment from 'moment/moment'
 import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMember,
@@ -9,6 +8,7 @@ import {
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
+    TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {
@@ -21,9 +21,9 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
-    PublicHelpdeskAndApiMessagesFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
+import {subtractDaysFromDate} from 'utils/date'
 
 describe('messagesPerTicketQueryFactory', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -39,16 +39,14 @@ describe('messagesPerTicketQueryFactory', () => {
     it('should create a query', () => {
         const query = messagesPerTicketQueryFactory(statsFilters, timezone)
 
+        const hardPeriodStart = formatReportingQueryDate(
+            subtractDaysFromDate(periodStart, 180)
+        )
+
         expect(query).toEqual({
             measures: [TicketMessagesMeasure.MessagesAverage],
             dimensions: [],
             filters: [
-                {
-                    member: HelpdeskMessageMember.SentDatetime,
-                    operator: ReportingFilterOperator.InDateRange,
-                    values: [periodStart, periodEnd],
-                },
-                ...PublicHelpdeskAndApiMessagesFilter,
                 ...NotSpamNorTrashedTicketsFilter,
                 {
                     member: TicketMember.PeriodStart,
@@ -59,6 +57,16 @@ describe('messagesPerTicketQueryFactory', () => {
                     member: TicketMember.PeriodEnd,
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [periodEnd],
+                },
+                {
+                    member: TicketMessagesMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [hardPeriodStart],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [hardPeriodStart],
                 },
             ],
             timezone,
