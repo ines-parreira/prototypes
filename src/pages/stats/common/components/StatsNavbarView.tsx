@@ -221,7 +221,7 @@ export default function StatsNavbarView() {
                 />
             </NavbarBlock>
             {isConvertSubscriber && (
-                <NavbarBlock icon="attach_money" title="Convert">
+                <NavbarBlock icon="monetization_on" title="Convert">
                     <div className={cssNavbar.menu}>
                         <ConvertStatsNavbar
                             commonNavLinkProps={COMMON_NAV_LINK_PROPS}
