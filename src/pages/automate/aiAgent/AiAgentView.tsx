@@ -40,6 +40,7 @@ import {
     SIGNATURE_MAX_LENGTH,
     DEFAULT_STORE_CONFIGURATION,
 } from './constants'
+import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 
 export const AiAgentView = () => {
     const {shopName} = useParams<{shopName: string}>()
@@ -113,32 +114,38 @@ export const AiAgentView = () => {
         }
     }
 
-    // TODO: Support multiple concurrent monitored email integrations
-    const emailIntegration = useMemo(() => {
-        return emailIntegrations.find(
-            (emailIntegration) =>
-                emailIntegration.id ===
-                storeConfiguration.monitoredEmailIntegrations[0].id
-        )
-    }, [emailIntegrations, storeConfiguration])
+    /**
+     * Email selection state management
+     */
 
-    const setEmailIntegration = (id: number) => {
-        const dirtyEmailIntegration = emailIntegrations.find(
-            (integration) => integration.id === id
-        )
+    const emailItems = useMemo(() => {
+        return emailIntegrations.map((integration) => ({
+            email: integration.meta.address,
+            id: integration.id,
+        }))
+    }, [emailIntegrations])
 
-        if (dirtyEmailIntegration) {
-            setStoreConfiguration((prevState) => ({
-                ...prevState,
-                monitoredEmailIntegrations: [
-                    {
-                        id: dirtyEmailIntegration.id,
-                        email: dirtyEmailIntegration.meta.address,
-                    },
-                ],
-            }))
-            setIsDirty(true)
+    const handleEmailSelectionChange = (nextSelectedIds: number[]) => {
+        // preserving the order of the selection
+        const monitoredEmailIntegrations: StoreConfiguration['monitoredEmailIntegrations'] =
+            []
+        for (const id of nextSelectedIds) {
+            const emailIntegration = emailIntegrations.find(
+                (integration) => integration.id === id
+            )
+            if (emailIntegration) {
+                monitoredEmailIntegrations.push({
+                    id: emailIntegration.id,
+                    email: emailIntegration.meta.address,
+                })
+            }
         }
+
+        setStoreConfiguration((prevState) => ({
+            ...prevState,
+            monitoredEmailIntegrations,
+        }))
+        setIsDirty(true)
     }
 
     // The typing of onChange for TextInput is wrong. It's typed as event, but it actually passes the input value
@@ -277,24 +284,15 @@ export const AiAgentView = () => {
                 </div>
                 <div className={css.customizeSection}>
                     <HeaderTitle className={css.header} title="Customize" />
-                    <Label className={css.label}>
-                        Select which email address should trigger the AI Agent
-                    </Label>
-                    <SelectField
-                        className={css.emailIntegrationSelect}
-                        placeholder="Select an email integration"
-                        value={emailIntegration?.id}
-                        options={emailIntegrations.map((integration) => ({
-                            label:
-                                `${integration.name} ` +
-                                `<${integration.meta.address}>`,
-                            value: integration.id,
-                        }))}
-                        fullWidth
-                        onChange={(integrationId) =>
-                            setEmailIntegration(integrationId as number)
-                        }
+
+                    <EmailIntegrationListSelection
+                        selectedIds={storeConfiguration.monitoredEmailIntegrations.map(
+                            (integration) => integration.id
+                        )}
+                        onSelectionChange={handleEmailSelectionChange}
+                        emailItems={emailItems}
                     />
+
                     <Label className={css.label}>
                         Enter the signature that should be used by the AI Agent
                     </Label>
