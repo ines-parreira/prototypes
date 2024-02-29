@@ -1,4 +1,4 @@
-import React, {ComponentProps, useEffect, useState} from 'react'
+import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 
 import CheckBox from '../CheckBox'
 import DEPRECATED_InputField, {InputFieldProps} from '../DEPRECATED_InputField'
@@ -22,7 +22,6 @@ const AutoPopulateInput = ({
     ...inputProps
 }: Props): JSX.Element => {
     const [isChecked, setIsChecked] = useState(value === null)
-    const [inputValue, setInputValue] = useState(value ?? populateValue)
     const [storedValue, setStoredValue] = useState(value || '')
 
     const handleCheckboxTick = (isTicked: boolean) => {
@@ -31,11 +30,14 @@ const AutoPopulateInput = ({
 
     useEffect(() => {
         setIsChecked(value === null)
-        setInputValue(value ?? populateValue)
 
         if (value !== null) {
             setStoredValue(value)
         }
+    }, [value, populateValue])
+
+    const inputValue = useMemo(() => {
+        return value ?? populateValue
     }, [value, populateValue])
 
     return (
