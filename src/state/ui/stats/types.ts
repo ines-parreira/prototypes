@@ -49,6 +49,10 @@ export enum TableColumn {
     OnlineTime = 'agent_online_time',
 }
 
+export enum TicketFieldsMetric {
+    TicketCustomFieldsTicketCount = 'ticket_custom_fields_ticket_count',
+}
+
 export enum TableViewIdentifier {
     AgentPerformanceMetrics = 'agent_performance_metrics',
 }

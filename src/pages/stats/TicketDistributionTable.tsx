@@ -14,7 +14,7 @@ import {
 } from 'pages/stats/common/utils'
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {TicketFieldsMetric} from 'state/ui/stats/types'
 
 import {
     DistributionCategoryCell,
@@ -100,7 +100,7 @@ export const TicketDistributionTable = ({
                                                 item.category
                                             )}`,
                                             metricName:
-                                                TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                                                TicketFieldsMetric.TicketCustomFieldsTicketCount,
                                             customFieldId:
                                                 selectedCustomField.id,
                                             customFieldValue: [item.category],
@@ -160,7 +160,7 @@ export const TicketDistributionTable = ({
                                     metricData={{
                                         title: `${selectedCustomField.label} | Total`,
                                         metricName:
-                                            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                                            TicketFieldsMetric.TicketCustomFieldsTicketCount,
                                         customFieldId: selectedCustomField.id,
                                         customFieldValue: null,
                                     }}

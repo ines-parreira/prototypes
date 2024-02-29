@@ -23,6 +23,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {TicketFieldsMetric} from 'state/ui/stats/types'
 import {formatDates, getUtcPeriodFromDateAndGranularity} from './utils'
 
 const EXPAND_COLUMN_WIDTH = 24
@@ -131,7 +132,8 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                         title: `${String(
                             selectedCustomField?.label
                         )} | ${label} | Total`,
-                        metricName: valueField,
+                        metricName:
+                            TicketFieldsMetric.TicketCustomFieldsTicketCount,
                         customFieldId: selectedCustomField?.id || null,
                         customFieldValue: initialCustomFieldValue,
                     }}
@@ -175,7 +177,8 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                                 granularity,
                                 data.dateTime
                             )}`,
-                            metricName: valueField,
+                            metricName:
+                                TicketFieldsMetric.TicketCustomFieldsTicketCount,
                             customFieldId: selectedCustomField?.id || null,
                             customFieldValue: initialCustomFieldValue,
                             dateRange: getUtcPeriodFromDateAndGranularity(

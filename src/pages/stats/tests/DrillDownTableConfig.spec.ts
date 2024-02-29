@@ -1,10 +1,13 @@
 import moment from 'moment/moment'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {StatsFilters} from 'models/stat/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {AgentsMetrics, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
+import {
+    OverviewMetric,
+    TableColumn,
+    TicketFieldsMetric,
+} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 jest.mock(
@@ -26,7 +29,7 @@ describe('getDrillDownQuery', () => {
     ]
     const supportedMetrics: DrillDownMetric[] = [
         {
-            metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: ['some::customField'],
         },

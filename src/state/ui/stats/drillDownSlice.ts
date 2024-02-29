@@ -6,7 +6,6 @@ import {OrderDirection} from 'models/api/types'
 import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {ReportingQuery} from 'models/reporting/types'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
@@ -15,7 +14,11 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
+import {
+    OverviewMetric,
+    TableColumn,
+    TicketFieldsMetric,
+} from 'state/ui/stats/types'
 
 type CommonMetrics = {
     title?: string
@@ -51,7 +54,7 @@ export type AgentsMetrics = {
 } & CommonMetrics
 
 export type TicketFieldsMetrics = {
-    metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+    metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount
     customFieldId: number | null
     customFieldValue: string[] | null
     dateRange?: {
@@ -82,7 +85,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     OverviewMetric.TicketsReplied,
     OverviewMetric.MessagesSent,
     OverviewMetric.OneTouchTickets,
-    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+    TicketFieldsMetric.TicketCustomFieldsTicketCount,
     TableColumn.ClosedTickets,
     TableColumn.PercentageOfClosedTickets,
     TableColumn.RepliedTickets,

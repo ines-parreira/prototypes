@@ -6,7 +6,11 @@ import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {RootState, StoreDispatch} from 'state/types'
-import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
+import {
+    OverviewMetric,
+    TableColumn,
+    TicketFieldsMetric,
+} from 'state/ui/stats/types'
 import {OrderDirection} from 'models/api/types'
 import {
     initialState,
@@ -22,7 +26,6 @@ import {
 import {User} from 'config/types/user'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('models/job/resources')
@@ -235,7 +238,7 @@ describe('drillDownSlice', () => {
                         [drillDownSlice.name]: {
                             metricData: {
                                 metricName:
-                                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                                    TicketFieldsMetric.TicketCustomFieldsTicketCount,
                                 customFieldValue: 'customFieldValue',
                             },
                         },

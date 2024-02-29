@@ -7,10 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {
-    TicketCustomFieldsMeasure,
-    TicketCustomFieldsMember,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {OrderDirection} from 'models/api/types'
 import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
@@ -34,7 +31,7 @@ import {getAgentsJS} from 'state/agents/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {OverviewMetric} from 'state/ui/stats/types'
+import {OverviewMetric, TicketFieldsMetric} from 'state/ui/stats/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
@@ -129,7 +126,7 @@ describe('useDrillDownData', () => {
         const start_datetime = '2023-12-19T00:00:00.000'
         const end_datetime = '2023-12-20T00:00:00.000'
         const metricData: DrillDownMetric = {
-            metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: [],
             dateRange: {
@@ -159,7 +156,7 @@ describe('useDrillDownData', () => {
 
     it('should apply default period filters for CustomField Metrics', () => {
         const metricData: DrillDownMetric = {
-            metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: [],
         }
@@ -294,7 +291,7 @@ describe('useDrillDownData', () => {
         const start_datetime = '2023-12-19T00:00:00.000'
         const end_datetime = '2023-12-20T00:00:00.000'
         const metricData: DrillDownMetric = {
-            metricName: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: [],
             dateRange: {

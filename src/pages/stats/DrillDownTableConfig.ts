@@ -1,6 +1,5 @@
 import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {firstResponseTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -15,7 +14,11 @@ import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/repo
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
+import {
+    OverviewMetric,
+    TableColumn,
+    TicketFieldsMetric,
+} from 'state/ui/stats/types'
 
 type QueryBuilder = (
     statsFilters: StatsFilters,
@@ -89,7 +92,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                 metricName.perAgentId,
                 oneTouchTicketsPerTicketQueryFactory
             )
-        case TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount:
+        case TicketFieldsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
