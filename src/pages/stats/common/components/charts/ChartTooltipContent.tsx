@@ -1,13 +1,13 @@
 import React from 'react'
 import {TooltipLabelStyle, TooltipModel} from 'chart.js'
 
-import css from './LineChartTooltip.less'
+import css from './ChartTooltip.less'
 
 type Props = {
     tooltip: TooltipModel
 }
 
-export const LineChartTooltip = ({
+export const ChartTooltipContent = ({
     tooltip: {labelColors, dataPoints},
 }: Props) => {
     return (

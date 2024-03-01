@@ -13,10 +13,10 @@ import {OneDimensionalDataItem} from 'pages/stats/types'
 import Legend from 'pages/stats/Legend'
 import {renderTickLabelAsNumber} from 'pages/stats/utils'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {useCustomTooltip} from '../../../../useCustomTooltip'
-import {ChartTooltip} from '../../../../ChartTooltip'
+import css from 'pages/stats/common/components/charts/Chart.less'
+import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
+import {ChartTooltip} from 'pages/stats/ChartTooltip'
 import {DonutChartTooltip} from './DonutChartTooltip'
-import css from './DonutChart.less'
 
 const STAT_COLORS = [
     colors['📺 Classic'].Main.Primary.value,

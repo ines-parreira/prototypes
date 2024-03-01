@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 
 import ChartCard from './ChartCard'
-import LineChart from './LineChart'
+import LineChart from './common/components/charts/LineChart/LineChart'
 
 const storyConfig: Meta = {
     title: 'Stats/ChartCard',

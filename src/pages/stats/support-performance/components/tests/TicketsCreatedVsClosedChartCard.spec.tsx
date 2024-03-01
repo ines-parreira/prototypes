@@ -1,6 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
-import LineChart from 'pages/stats/LineChart'
+import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import {assumeMock} from 'utils/testing'
@@ -11,7 +11,7 @@ const createdVsClosedTicketsTimeSeriesMock = assumeMock(
     useCreatedVsClosedTicketsTimeSeries
 )
 
-jest.mock('pages/stats/LineChart')
+jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart as unknown as jest.Mock)
 
 describe('<TicketsCreatedVsClosedChartCard />', () => {

@@ -4,7 +4,7 @@ import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
 import ChartCard from './ChartCard'
-import LineChart from './LineChart'
+import LineChart from './common/components/charts/LineChart/LineChart'
 import css from './TicketInsightsFieldTrend.less'
 
 const LINES_COLORS = [

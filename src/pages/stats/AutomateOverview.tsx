@@ -68,7 +68,7 @@ import ChannelsStatsFilter from './ChannelsStatsFilter'
 import ChartCard from './ChartCard'
 import DashboardGridCell from './DashboardGridCell'
 import DashboardSection from './DashboardSection'
-import LineChart from './LineChart'
+import LineChart from './common/components/charts/LineChart/LineChart'
 
 import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'

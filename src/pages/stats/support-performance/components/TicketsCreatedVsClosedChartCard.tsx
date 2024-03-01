@@ -1,6 +1,6 @@
 import React from 'react'
+import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import ChartCard from 'pages/stats/ChartCard'
-import LineChart from 'pages/stats/LineChart'
 import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
 import {TICKETS_CREATED_VS_CLOSED_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'

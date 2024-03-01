@@ -1,7 +1,5 @@
 import {
     Chart,
-    ChartArea,
-    ChartData,
     ChartOptions,
     Scale,
     ScriptableScaleContext,
@@ -9,45 +7,28 @@ import {
 } from 'chart.js'
 
 import classNames from 'classnames'
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {fromJS, Map} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Line} from 'react-chartjs-2'
+import {Bar} from 'react-chartjs-2'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import Legend from 'pages/stats/Legend'
 import {withThemedColorTokens} from 'theme/withThemedColorTokens'
-import {GreyArea} from './ChartPluginGreyArea'
-import {ChartTooltip} from './ChartTooltip'
-import css from './LineChart.less'
-import {LineChartTooltip} from './LineChartTooltip'
-import {TwoDimensionalDataItem} from './types'
-import {useCustomTooltip} from './useCustomTooltip'
-import {getGradient, renderTickLabelAsNumber} from './utils'
-
-interface ChartColors {
-    Main: {
-        Primary: {
-            value: string
-        }
-    }
-    Feedback: {
-        Error: {value: string}
-        Success: {value: string}
-        Warning: {value: string}
-    }
-    Neutral: {
-        Grey_2: {
-            value: string
-        }
-        Grey_5: {
-            value: string
-        }
-    }
-}
+import {GreyArea} from 'pages/stats/ChartPluginGreyArea'
+import {ChartTooltip} from 'pages/stats/ChartTooltip'
+import {TwoDimensionalDataItem} from 'pages/stats/types'
+import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
+import {renderTickLabelAsNumber} from 'pages/stats/utils'
+import {ChartTooltipContent} from 'pages/stats/common/components/charts/ChartTooltipContent'
+import {ChartLegend} from 'pages/stats/common/components/charts/ChartLegend'
+import {ChartColors} from 'pages/stats/common/components/charts/types'
+import {
+    OPTIONS,
+    chartColorsFallbackTokens,
+} from 'pages/stats/common/components/charts/config'
+import css from 'pages/stats/common/components/charts/Chart.less'
 
 type Props = {
     data: TwoDimensionalDataItem[]
-    options?: ChartOptions<'line'>
+    options?: ChartOptions<'bar'>
     hasBackground?: boolean
     yLabel?: string
     renderYTickLabel?: (value: number | string) => string
@@ -56,7 +37,7 @@ type Props = {
     toggleLegend?: boolean
     defaultDatasetVisibility?: Record<number, boolean | undefined> | null
     _displayLegacyTooltip?: boolean
-    _renderLegacyTooltipLabel?: (tooltipItem: TooltipItem<'line'>) => string
+    _renderLegacyTooltipLabel?: (tooltipItem: TooltipItem<'bar'>) => string
     greyArea?: GreyArea
     customColors?: string[]
     isCurvedLine?: boolean
@@ -74,109 +55,12 @@ type Props = {
     wrapperclassNames?: string
     skeletonHeight?: number
     colorTokens?: ChartColors
+    isStacked?: boolean
 }
 
-const fallbackColorTokens = {
-    Main: {
-        Primary: {
-            value: colors['📺 Classic'].Main.Primary.value,
-        },
-    },
-    Feedback: {
-        Error: {value: colors['📺 Classic'].Feedback.Error.value},
-        Success: {value: colors['📺 Classic'].Feedback.Success.value},
-        Warning: {value: colors['📺 Classic'].Feedback.Warning.value},
-    },
-    Neutral: {
-        Grey_2: {
-            value: colors['📺 Classic'].Neutral.Grey_2.value,
-        },
-        Grey_5: {
-            value: colors['📺 Classic'].Neutral.Grey_5.value,
-        },
-    },
-}
+export const CHART_TOOLTIP_TARGET = 'barChartTooltip'
 
-const LINE_OPTIONS = (
-    colorTokens: ChartColors
-): DeepPartial<ChartOptions<'line'>> =>
-    fromJS({
-        elements: {
-            point: {
-                pointStyle: 'circle',
-            },
-            line: {
-                borderWidth: 1,
-                cubicInterpolationMode: 'default',
-                tension: 0.5,
-            },
-        },
-        layout: {
-            padding: {
-                bottom: -8,
-            },
-        },
-        responsive: true,
-        scales: {
-            x: {
-                grid: {
-                    display: false,
-                },
-                ticks: {
-                    color: colorTokens.Neutral.Grey_5.value,
-                    font: {
-                        size: 12,
-                    },
-                    padding: 8,
-                    autoSkipPadding: 24,
-                    maxRotation: 0,
-                    includeBounds: false,
-                },
-            },
-            y: {
-                title: {
-                    display: false,
-                },
-                border: {
-                    display: false,
-                },
-                grid: {
-                    color: colorTokens.Neutral.Grey_2.value,
-                    tickColor: 'transparent',
-                    tickLength: 16,
-                },
-                ticks: {
-                    color: colorTokens.Neutral.Grey_5.value,
-                    font: {
-                        size: 12,
-                    },
-                    maxTicksLimit: 10,
-                },
-                suggestedMin: 0,
-                beginAtZero: true,
-            },
-        },
-        plugins: {
-            filler: {
-                propagate: false,
-            },
-            legend: {
-                display: false,
-            },
-            tooltip: {
-                enabled: false,
-                callbacks: {
-                    title: () => undefined, // reset legacy tooltip title
-                },
-            },
-        },
-        maintainAspectRatio: false,
-        resizeDelay: 1000,
-    }) as DeepPartial<ChartOptions<'line'>>
-
-export const CHART_TOOLTIP_TARGET = 'lineChartTooltip'
-
-function LineChart({
+function BarChart({
     data,
     options,
     hasBackground,
@@ -197,11 +81,9 @@ function LineChart({
     wrapperclassNames,
     defaultDatasetVisibility = null,
     skeletonHeight = 250,
-    colorTokens = fallbackColorTokens,
+    colorTokens = chartColorsFallbackTokens,
 }: Props) {
     const [chart, setChart] = useState<Chart>()
-    const [chartArea, setChartArea] = useState<ChartArea>()
-    const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
     const {customTooltip, tooltipData, tooltipStyle} = useCustomTooltip()
 
     const statColors: string[] = useMemo(
@@ -223,6 +105,7 @@ function LineChart({
         (index: number) => customColors?.[index] || statColors[index],
         [customColors, statColors]
     )
+
     const [linesVisibility, setLinesVisibility] = useState<Record<
         number,
         boolean | undefined
@@ -233,7 +116,7 @@ function LineChart({
         [defaultDatasetVisibility]
     )
 
-    const formattedData = useMemo<ChartData<'line'>>(() => {
+    const formattedData = useMemo(() => {
         const labels = Array.from(
             new Set(
                 data.reduce(
@@ -250,9 +133,7 @@ function LineChart({
             labels,
             datasets: data.map((item, index) => {
                 const color = chartColors(index)
-                const background = hasBackground
-                    ? getGradient(color, chartArea, chartContext)
-                    : 'transparent'
+                const background = hasBackground ? color : 'transparent'
 
                 return {
                     borderColor: color,
@@ -264,21 +145,16 @@ function LineChart({
                     ...(defaultDatasetVisibility && {
                         hidden: !defaultDatasetVisibility[index],
                     }),
+                    borderRadius: 4,
+                    minBarLength: 2,
                 }
             }),
         }
-    }, [
-        chartArea,
-        chartContext,
-        data,
-        hasBackground,
-        chartColors,
-        defaultDatasetVisibility,
-    ])
+    }, [data, hasBackground, chartColors, defaultDatasetVisibility])
 
-    const lineOptions = useMemo(
+    const barOptions = useMemo(
         () =>
-            (LINE_OPTIONS(colorTokens) as Map<any, any>).mergeDeep(
+            (OPTIONS(colorTokens) as Map<any, any>).mergeDeep(
                 {
                     scales: {
                         y: {
@@ -329,13 +205,12 @@ function LineChart({
                         line: {
                             tension: !isCurvedLine
                                 ? 0
-                                : LINE_OPTIONS(colorTokens).elements?.line
-                                      ?.tension,
+                                : (
+                                      OPTIONS(colorTokens) as DeepPartial<
+                                          ChartOptions<'bar'>
+                                      >
+                                  ).elements?.line?.tension,
                         },
-                    },
-                    onResize: (chart: Chart) => {
-                        setChartArea(chart.chartArea)
-                        setChartContext(chart.ctx)
                     },
                 },
                 fromJS(options)
@@ -364,13 +239,11 @@ function LineChart({
     return (
         <div className={classNames(css.wrapper, wrapperclassNames)}>
             <div className={css.container}>
-                <Line
+                <Bar
                     id={CHART_TOOLTIP_TARGET}
                     data={formattedData}
-                    options={lineOptions.toJS()}
-                    ref={(chart: Chart<'line'> | null | undefined) => {
-                        setChartContext(chart?.ctx)
-                        setChartArea(chart?.chartArea)
+                    options={barOptions.toJS()}
+                    ref={(chart: Chart<'bar'> | null | undefined) => {
                         chart && setChart(chart)
                     }}
                 />
@@ -381,42 +254,23 @@ function LineChart({
                         title={tooltipData?.title}
                     >
                         {tooltipData && (
-                            <LineChartTooltip tooltip={tooltipData} />
+                            <ChartTooltipContent tooltip={tooltipData} />
                         )}
                     </ChartTooltip>
                 )}
             </div>
-            {displayLegend && (
-                <Legend
-                    toggleLegend={toggleLegend}
-                    className={classNames(css.legend, {
-                        [css.legendOnLeft]: legendOnLeft,
-                    })}
-                    items={data.map(({label, tooltip}, index) => ({
-                        label,
-                        tooltip,
-                        color: chartColors(index),
-                        ...(toggleLegend && {
-                            isChecked:
-                                linesVisibility?.[index] ??
-                                chart?.isDatasetVisible(index),
-                            onChange: () => {
-                                chart?.setDatasetVisibility(
-                                    index,
-                                    !chart.isDatasetVisible(index)
-                                )
-                                setLinesVisibility((prevValue) => ({
-                                    ...prevValue,
-                                    [index]: chart?.isDatasetVisible(index),
-                                }))
-                                chart?.update()
-                            },
-                        }),
-                    }))}
-                />
-            )}
+            <ChartLegend
+                data={data}
+                chartColors={chartColors}
+                linesVisibility={linesVisibility}
+                setLinesVisibility={setLinesVisibility}
+                chart={chart}
+                displayLegend={displayLegend}
+                toggleLegend={toggleLegend}
+                legendOnLeft={legendOnLeft}
+            />
         </div>
     )
 }
 
-export default withThemedColorTokens<Props>(LineChart)
+export default withThemedColorTokens<Props>(BarChart)

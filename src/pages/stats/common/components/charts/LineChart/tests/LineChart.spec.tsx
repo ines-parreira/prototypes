@@ -7,8 +7,8 @@ import {ticketsCreatedDataItem} from 'fixtures/chart'
 import {ThemeProvider} from 'theme'
 import {assumeMock} from 'utils/testing'
 
+import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
 import LineChart, {CHART_TOOLTIP_TARGET} from '../LineChart'
-import {useCustomTooltip} from '../useCustomTooltip'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />
@@ -114,7 +114,7 @@ describe('<LineChart />', () => {
         expect(queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
-    it('should render chart grid with right color', () => {
+    it('should render chart grid with theme provider colors', () => {
         render(
             <ThemeProvider>
                 <LineChart data={[]} />
@@ -132,6 +132,23 @@ describe('<LineChart />', () => {
 
         expect(color({tick: {value: 1}})).toEqual(
             colors['🖥 Modern'].Neutral.Grey_2.value
+        )
+    })
+
+    it('should render chart grid with theme wrapped colors', () => {
+        render(<LineChart data={[]} />)
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const color = lastCall?.options?.scales?.y?.grid?.color as (
+            ctx: unknown
+        ) => undefined
+
+        expect(color({tick: {value: 0}})).toEqual(
+            colors['📺 Classic'].Main.Primary.value
+        )
+
+        expect(color({tick: {value: 1}})).toEqual(
+            colors['📺 Classic'].Neutral.Grey_2.value
         )
     })
 

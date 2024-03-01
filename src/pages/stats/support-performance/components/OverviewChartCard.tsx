@@ -1,9 +1,9 @@
 import React from 'react'
+import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
-import LineChart from 'pages/stats/LineChart'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {TooltipData} from 'pages/stats/types'
 

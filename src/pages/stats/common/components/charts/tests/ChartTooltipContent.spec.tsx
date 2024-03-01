@@ -1,9 +1,9 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 
-import {LineChartTooltip} from '../LineChartTooltip'
+import {ChartTooltipContent} from '../ChartTooltipContent'
 
-describe('<LineChartTooltip />', () => {
+describe('<ChartTooltipContent />', () => {
     const tooltip = {
         labelColors: [
             {
@@ -24,7 +24,7 @@ describe('<LineChartTooltip />', () => {
     } as any
 
     it('should render the chart line tooltip', () => {
-        render(<LineChartTooltip tooltip={tooltip} />)
+        render(<ChartTooltipContent tooltip={tooltip} />)
 
         expect(screen.getByText(/Label/)).toBeInTheDocument()
     })
