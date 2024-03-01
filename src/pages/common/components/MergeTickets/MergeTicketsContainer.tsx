@@ -77,6 +77,13 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             (customer: Map<any, any>) =>
                 fromJS({id: customer.get('id')}) as Map<any, any>
         )
+        if (finalTicket.get('assignee_user')) {
+            finalTicket = finalTicket.update(
+                'assignee_user',
+                (assignee: Map<any, any>) =>
+                    fromJS({id: assignee.get('id')}) as Map<any, any>
+            )
+        }
 
         this.setState({targetTicket, finalTicket})
     }
