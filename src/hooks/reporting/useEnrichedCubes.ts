@@ -1,6 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
+import {HandleTimeMeasure} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
@@ -54,13 +55,17 @@ export const combinedAgentIdFields = [
     ...enrichedAgentIdFields,
 ]
 
+const isHandleTimeQuery = (query: ReportingQuery) =>
+    query.measures.includes(HandleTimeMeasure.HandleTime) ||
+    query.measures.includes(HandleTimeMeasure.AverageHandleTime)
+
 export const useEnrichedCubes = <T extends ReportingQuery>(
     originalQuery: T
 ): T => {
     const isAnalyticsNewCubes: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewCubes]
 
-    return isAnalyticsNewCubes
+    return isAnalyticsNewCubes && !isHandleTimeQuery(originalQuery)
         ? renameCubesEnriched(originalQuery)
         : originalQuery
 }

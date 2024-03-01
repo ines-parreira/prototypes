@@ -13,6 +13,7 @@ import {
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
+    useTicketHandleTimeTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
@@ -29,6 +30,7 @@ import {
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
     ONE_TOUCH_TICKETS_LABEL,
+    TICKET_HANDLE_TIME_LABEL,
 } from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
@@ -136,6 +138,16 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'more-is-better',
         useTrend: useOneTouchTicketsPercentageMetricTrend,
         metricFormat: 'percent',
+    },
+    [OverviewMetric.TicketHandleTime]: {
+        title: TICKET_HANDLE_TIME_LABEL,
+        hint: {
+            title: 'Average amount of time spent by any agent on tickets closed during the selected time.',
+            link: 'https://link.gorgias.com/eq6',
+        },
+        interpretAs: 'less-is-better',
+        useTrend: useTicketHandleTimeTrend,
+        metricFormat: 'duration',
     },
 }
 

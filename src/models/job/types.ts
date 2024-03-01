@@ -1,3 +1,4 @@
+import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {ReportingQuery} from 'models/reporting/types'
 
@@ -44,7 +45,9 @@ export type JobParams =
     | ReportingQueryJobParams
 
 export type ReportingQueryJobParams = {
-    reporting_query: ReportingQuery<HelpdeskMessageCubeWithJoins>
+    reporting_query: ReportingQuery<
+        HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins
+    >
 }
 
 export type Job = {

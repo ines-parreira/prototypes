@@ -1,10 +1,21 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
+import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
+import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
+import {decreaseInResolutionTimeQueryFactory} from 'models/reporting/queryFactories/automate/decreaseInResolutionTime'
+import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
+import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
+import {ticketHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {messagesPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {TicketChannel} from 'business/types/ticket'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -26,43 +37,13 @@ import {
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
     useOneTouchTicketsTrend,
+    useTicketHandleTimeTrend,
 } from '../metricTrends'
 
 jest.mock('../useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
 
 describe('metric trends', () => {
-    useMetricTrendMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
-    )
-    describe.each([
-        ['useCustomerSatisfactionTrend', useCustomerSatisfactionTrend],
-        ['useMedianFirstResponseTimeTrend', useMedianFirstResponseTimeTrend],
-        ['useMedianResolutionTimeTrend', useMedianResolutionTimeTrend],
-        ['useClosedTicketsTrend', useClosedTicketsTrend],
-        ['useTicketsCreatedTrend', useTicketsCreatedTrend],
-        ['useOneTouchTicketsTrend', useOneTouchTicketsTrend],
-    ])('%s', (_testName, useTrendFn) => {
-        it('should create reporting filters', () => {
-            const {result} = renderHook(() =>
-                useTrendFn(
-                    {
-                        period: {
-                            start_datetime: '2021-05-29T00:00:00+02:00',
-                            end_datetime: '2021-06-04T23:59:59+02:00',
-                        },
-                        channels: [TicketChannel.Email, TicketChannel.Chat],
-                        integrations: [1],
-                        agents: [2],
-                        tags: [1, 2],
-                    },
-                    'UTC'
-                )
-            )
-            expect(result.current).toMatchSnapshot()
-        })
-    })
-
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
@@ -73,60 +54,69 @@ describe('metric trends', () => {
     }
     const timezone = 'someTimeZone'
 
-    describe('useOpenTicketsTrend', () => {
-        it('should call useMetricTrend with two queries', () => {
-            renderHook(() => useOpenTicketsTrend(statsFilters, timezone))
-            expect(useMetricTrendMock).toHaveBeenCalledWith(
-                openTicketsQueryFactory(statsFilters, timezone),
-                openTicketsQueryFactory(
-                    {
-                        ...statsFilters,
-                        period: getPreviousPeriod(statsFilters.period),
-                    },
-                    timezone
-                )
-            )
-        })
-    })
+    useMetricTrendMock.mockImplementation(
+        ((queryCreator: ReportingQuery) => queryCreator) as any
+    )
+    describe.each([
+        ['useOpenTicketsTrend', useOpenTicketsTrend, openTicketsQueryFactory],
+        [
+            'useCustomerSatisfactionTrend',
+            useCustomerSatisfactionTrend,
+            customerSatisfactionQueryFactory,
+        ],
+        [
+            'useMedianFirstResponseTimeTrend',
+            useMedianFirstResponseTimeTrend,
+            medianFirstResponseTimeQueryFactory,
+        ],
+        [
+            'useMedianResolutionTimeTrend',
+            useMedianResolutionTimeTrend,
+            medianResolutionTimeQueryFactory,
+        ],
+        [
+            'useClosedTicketsTrend',
+            useClosedTicketsTrend,
+            closedTicketsQueryFactory,
+        ],
+        [
+            'useTicketsCreatedTrend',
+            useTicketsCreatedTrend,
+            ticketsCreatedQueryFactory,
+        ],
+        [
+            'useOneTouchTicketsTrend',
+            useOneTouchTicketsTrend,
+            oneTouchTicketsQueryFactory,
+        ],
+        ['useOpenTicketsTrend', useOpenTicketsTrend, openTicketsQueryFactory],
+        [
+            'useTicketsRepliedTrend',
+            useTicketsRepliedTrend,
+            ticketsRepliedQueryFactory,
+        ],
+        [
+            'useMessagesSentTrend',
+            useMessagesSentTrend,
+            messagesSentQueryFactory,
+        ],
+        [
+            'useMessagesPerTicketTrend',
+            useMessagesPerTicketTrend,
+            messagesPerTicketQueryFactory,
+        ],
+        [
+            'useTicketHandleTimeTrend',
+            useTicketHandleTimeTrend,
+            ticketHandleTimeQueryFactory,
+        ],
+    ])('%s', (_testName, useTrendFn, queryFactory) => {
+        it('should create reporting filters', () => {
+            renderHook(() => useTrendFn(statsFilters, timezone))
 
-    describe('useTicketsRepliedTrend', () => {
-        it('should call useMetricTrend with two queries', () => {
-            renderHook(() => useTicketsRepliedTrend(statsFilters, timezone))
             expect(useMetricTrendMock).toHaveBeenCalledWith(
-                ticketsRepliedQueryFactory(statsFilters, timezone),
-                ticketsRepliedQueryFactory(
-                    {
-                        ...statsFilters,
-                        period: getPreviousPeriod(statsFilters.period),
-                    },
-                    timezone
-                )
-            )
-        })
-    })
-
-    describe('useMessagesSentTrend', () => {
-        it('should call useMetricTrend with two queries', () => {
-            renderHook(() => useMessagesSentTrend(statsFilters, timezone))
-            expect(useMetricTrendMock).toHaveBeenCalledWith(
-                messagesSentQueryFactory(statsFilters, timezone),
-                messagesSentQueryFactory(
-                    {
-                        ...statsFilters,
-                        period: getPreviousPeriod(statsFilters.period),
-                    },
-                    timezone
-                )
-            )
-        })
-    })
-
-    describe('useMessagesPerTicketTrend', () => {
-        it('should call useMetricTrend with two queries', () => {
-            renderHook(() => useMessagesPerTicketTrend(statsFilters, timezone))
-            expect(useMetricTrendMock).toHaveBeenCalledWith(
-                messagesPerTicketQueryFactory(statsFilters, timezone),
-                messagesPerTicketQueryFactory(
+                queryFactory(statsFilters, timezone),
+                queryFactory(
                     {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
@@ -142,35 +132,42 @@ describe('metric trends', () => {
             [
                 'useFirstResponseTimeWithAutomationTrend',
                 useFirstResponseTimeWithAutomationTrend,
+                firstResponseTimeWithAutomateFeaturesQueryFactory,
             ],
             [
                 'useResolutionTimeWithAutomationTrend',
                 useResolutionTimeWithAutomationTrend,
+                resolutionTimeWithAutomateFeaturesQueryFactory,
             ],
             [
                 'useDecreaseInResolutionTimeWithAutomationTrend',
                 useDecreaseInResolutionTimeWithAutomationTrend,
+                decreaseInResolutionTimeQueryFactory,
             ],
-            ['useAutomationRateTrend', useAutomationRateTrend],
-            ['useAutomatedInteractionTrend', useAutomatedInteractionsTrend],
-        ])('%s', (_testName, useTrendFn) => {
-            it('should create automation filters', () => {
-                const {result} = renderHook(() =>
-                    useTrendFn(
+            [
+                'useAutomationRateTrend',
+                useAutomationRateTrend,
+                automationRateQueryFactory,
+            ],
+            [
+                'useAutomatedInteractionTrend',
+                useAutomatedInteractionsTrend,
+                automatedInteractionsQueryFactory,
+            ],
+        ])('%s', (_testName, useTrendFn, queryFactory) => {
+            it('should create reporting filters', () => {
+                renderHook(() => useTrendFn(statsFilters, timezone))
+
+                expect(useMetricTrendMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone),
+                    queryFactory(
                         {
-                            period: {
-                                start_datetime: '2021-05-29T00:00:00+02:00',
-                                end_datetime: '2021-06-04T23:59:59+02:00',
-                            },
-                            channels: [],
-                            integrations: [],
-                            agents: [],
-                            tags: [],
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
                         },
-                        'UTC'
+                        timezone
                     )
                 )
-                expect(result.current).toMatchSnapshot()
             })
         })
     })

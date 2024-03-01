@@ -351,7 +351,12 @@ export default function SupportPerformanceOverview() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(3)}>
-                            <div></div>
+                            <TrendCard
+                                {...OverviewMetricConfig[
+                                    OverviewMetric.TicketHandleTime
+                                ]}
+                                overviewMetric={OverviewMetric.TicketHandleTime}
+                            />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(3)}>
                             <TrendCard

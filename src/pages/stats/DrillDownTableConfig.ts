@@ -1,5 +1,7 @@
 import {OrderDirection} from 'models/api/types'
+import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {ticketHandleTimePerTicketQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {firstResponseTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -24,7 +26,7 @@ type QueryBuilder = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-) => ReportingQuery<HelpdeskMessageCubeWithJoins>
+) => ReportingQuery<HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins>
 
 const queryBuilderWithAgentFilter =
     (agentId: number, queryBuilder: QueryBuilder): QueryBuilder =>
@@ -53,6 +55,8 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
             return ticketsCreatedPerTicketDrillDownQueryFactory
         case OverviewMetric.OneTouchTickets:
             return oneTouchTicketsPerTicketQueryFactory
+        case OverviewMetric.TicketHandleTime:
+            return ticketHandleTimePerTicketQueryFactory
         case TableColumn.CustomerSatisfaction:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,

@@ -11,6 +11,7 @@ import {
     withEnrichment,
 } from 'hooks/reporting/withEnrichment'
 import {Cubes} from 'models/reporting/cubes'
+import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
@@ -156,7 +157,9 @@ export function useMetricPerDimensionWithBreakdown(
 }
 
 export function useMetricPerDimensionWithEnrichment(
-    originalQuery: ReportingQuery<HelpdeskMessageCubeWithJoins>,
+    originalQuery: ReportingQuery<
+        HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins
+    >,
     enrichmentFields: EnrichmentFields[]
 ): MetricWithEnrichment<
     typeof query['measures'][0],

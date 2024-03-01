@@ -1,3 +1,4 @@
+import {ticketHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -148,6 +149,18 @@ export const useMessagesSentTrend = (filters: StatsFilters, timezone: string) =>
     useMetricTrend(
         messagesSentQueryFactory(filters, timezone),
         messagesSentQueryFactory(
+            {...filters, period: getPreviousPeriod(filters.period)},
+            timezone
+        )
+    )
+
+export const useTicketHandleTimeTrend = (
+    filters: StatsFilters,
+    timezone: string
+) =>
+    useMetricTrend(
+        ticketHandleTimeQueryFactory(filters, timezone),
+        ticketHandleTimeQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )

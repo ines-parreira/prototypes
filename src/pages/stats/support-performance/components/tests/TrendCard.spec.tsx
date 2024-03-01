@@ -14,6 +14,7 @@ import {
     useOpenTicketsTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
+    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
@@ -64,6 +65,7 @@ const useClosedTicketsTrendMock = assumeMock(useClosedTicketsTrend)
 const useTicketsCreatedTrendMock = assumeMock(useTicketsCreatedTrend)
 const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(useMessagesSentTrend)
+const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
 const useOneTouchTicketTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend
 )
@@ -147,6 +149,9 @@ describe('<TrendCard />', () => {
     const messagesSentMetricTrend = {
         ...defaultMetricTrend,
     }
+    const ticketHandleTimeTrend = {
+        ...defaultMetricTrend,
+    }
     const oneTouchTicketsMetricTrend = {
         ...defaultMetricTrend,
         data: {
@@ -176,6 +181,7 @@ describe('<TrendCard />', () => {
         useTicketsRepliedTrendMock.mockReturnValue(repliedTicketsMetricTrend)
         useMessagesSentTrendMock.mockReturnValue(messagesSentMetricTrend)
         useOneTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
+        useTicketHandleTimeTrendMock.mockReturnValue(ticketHandleTimeTrend)
 
         trendBadgeMock.mockImplementation(() => <>{DEFAULT_BADGE_TEXT}</>)
     })

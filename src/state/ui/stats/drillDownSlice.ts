@@ -1,10 +1,11 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {queryKeys} from '@gorgias/api-queries'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {appQueryClient} from 'api/queryClient'
 import {User} from 'config/types/user'
 import {OrderDirection} from 'models/api/types'
 import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
+import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {ReportingQuery} from 'models/reporting/types'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
@@ -36,6 +37,7 @@ type PerformanceOverviewMetrics = {
         | OverviewMetric.MedianFirstResponseTime
         | OverviewMetric.CustomerSatisfaction
         | OverviewMetric.OneTouchTickets
+        | OverviewMetric.TicketHandleTime
 } & CommonMetrics
 
 export type AgentMetricColumn =
@@ -107,12 +109,14 @@ export const EXPORT_TICKET_DRILL_DOWN_JOB_ACTION = 'exportTicketDrillDownJob'
 
 export const createExportTicketDrillDownJob = createAsyncThunk<
     Job,
-    ReportingQuery<HelpdeskMessageCubeWithJoins>,
+    ReportingQuery<HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins>,
     {dispatch: StoreDispatch; state: RootState}
 >(
     EXPORT_TICKET_DRILL_DOWN_JOB_ACTION,
     async (
-        query: ReportingQuery<HelpdeskMessageCubeWithJoins>,
+        query: ReportingQuery<
+            HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins
+        >,
         {dispatch, getState, rejectWithValue}
     ) => {
         const currentUser = getCurrentUser(getState())
@@ -192,7 +196,8 @@ const getMetricValueFormat = (
         metricName === TableColumn.MedianFirstResponseTime ||
         metricName === TableColumn.MedianResolutionTime ||
         metricName === OverviewMetric.MedianFirstResponseTime ||
-        metricName === OverviewMetric.MedianResolutionTime
+        metricName === OverviewMetric.MedianResolutionTime ||
+        metricName === OverviewMetric.TicketHandleTime
     ) {
         return 'duration'
     }

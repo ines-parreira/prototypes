@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {User} from 'config/types/user'
 import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
@@ -120,7 +121,7 @@ function withoutLimit<Cube extends Cubes>(
 
 export const useDrillDownQueryWithoutLimit = (
     metricData: DrillDownMetric
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+): ReportingQuery<HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins> => {
     const query = useDrillDownQuery(metricData)
 
     return withoutLimit(query)
@@ -155,7 +156,7 @@ export const useDrillDownData = (
                 formatDrillDownRowData(
                     row,
                     agents,
-                    query.dimensions[1],
+                    query.dimensions[1] ?? query.measures[0],
                     query.dimensions[0]
                 )
             )
