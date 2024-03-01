@@ -11,8 +11,8 @@ import {RootState} from 'state/types'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {getTrackingUrl} from 'utils/delivery'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import StaticField from 'infobar/components/StaticField'
 
-import {StaticField} from '../StaticField'
 import cardCss from '../Card.less'
 import css from './Order.less'
 

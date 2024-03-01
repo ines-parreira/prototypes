@@ -4,10 +4,10 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
 <div>
   <div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <span
           aria-label="subscription emoji"
@@ -21,10 +21,10 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         foo
          (
@@ -33,10 +33,10 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         bar
          (
@@ -47,10 +47,10 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
   </div>
   <div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <span
           aria-label="subscription emoji"
@@ -64,10 +64,10 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         baz
          (
@@ -204,17 +204,16 @@ exports[`Charge AfterTitle should return null if we are in edition mode, or if t
 exports[`Charge BeforeContent should display default color if there's no matching status 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Status
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -229,17 +228,16 @@ exports[`Charge BeforeContent should display default color if there's no matchin
 exports[`Charge BeforeContent should display the appropriate color if there's a matching status 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Status
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"

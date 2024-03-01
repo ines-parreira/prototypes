@@ -5,6 +5,8 @@ import {
     Button,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
+import {LEAF_TYPES} from './constants'
+
 export type Source = {
     [key: string]:
         | Source
@@ -17,20 +19,11 @@ export type Source = {
     [THIRD_PARTY_APP_NAME_KEY]?: string
 }
 
-export type LeafTypes =
-    | 'text'
-    | 'boolean'
-    | 'date'
-    | 'array'
-    | 'email'
-    | 'age'
-    | 'url'
-    | 'email'
-    | 'sentiment'
-    | 'rating'
-    | 'points'
-    | 'percent'
-    | 'editableList'
+export type LeafTypes = typeof LEAF_TYPES[keyof typeof LEAF_TYPES]
+
+export function isLeafType(type: string): type is LeafTypes {
+    return Object.values(LEAF_TYPES).includes(type as LeafTypes)
+}
 
 export type WrapperMeta = {
     color?: string

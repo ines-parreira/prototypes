@@ -1,0 +1,46 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .field {
+        &:hover {
+            .copyButton {
+                display: inline-block;
+            }
+        }
+    }
+
+    .copyButton {
+        display: none;
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .overflow {
+        overflow: visible;
+    }
+
+    .fieldTools {
+        display: none;
+        font-size: 1.3rem;
+    }
+
+    .fieldToolIcon {
+        padding: 0 4px;
+        cursor: pointer;
+    }
+
+    .fieldEditing {
+        .fieldLabel {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        &.field {
+            &:hover {
+                border: 1px dashed var(--neutral-grey-4);
+                .fieldTools {
+                    display: flex;
+                }
+            }
+        }
+    }
+}

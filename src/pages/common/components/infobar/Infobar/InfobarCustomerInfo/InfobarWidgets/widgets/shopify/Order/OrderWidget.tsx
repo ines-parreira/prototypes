@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
+import CopyButton from 'infobar/components/CopyButton'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
@@ -19,7 +20,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import DraftOrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/DraftOrderModal'
-import {StaticField} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/StaticField'
+import StaticField from 'infobar/components/StaticField'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
@@ -27,7 +28,6 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 
-import {Copy} from '../../CopyButton'
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
 import EditOrderModal from './EditOrderModal/EditOrderModal'
@@ -300,12 +300,12 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
                     <>{children}</>
                 </a>
                 {!isEditing && (
-                    <Copy
-                        value={source.get('name')}
-                        className={css.copyButton}
-                        name="Order Name"
-                        onCopyMessage="Order Number copied to clipboard"
-                    />
+                    <span className={css.copyButton}>
+                        <CopyButton
+                            value={source.get('name')}
+                            onCopyMessage="Order Number copied to clipboard"
+                        />
+                    </span>
                 )}
             </div>
             <div>

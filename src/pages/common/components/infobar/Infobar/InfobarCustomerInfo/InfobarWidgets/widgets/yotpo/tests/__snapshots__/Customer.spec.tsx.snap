@@ -16,7 +16,7 @@ exports[`<TitleWrapper/> render() should render empty state cause no data is ava
 
 exports[`<TitleWrapper/> render() should render empty state cause no data is available 2`] = `
 <StaticField
-  noBold={true}
+  isNotBold={true}
 >
   No statistic data are available right now.
 </StaticField>

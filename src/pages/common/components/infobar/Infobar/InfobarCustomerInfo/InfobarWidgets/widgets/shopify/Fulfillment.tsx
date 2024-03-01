@@ -1,9 +1,9 @@
 import React from 'react'
 import {Map} from 'immutable'
 
+import StaticField from 'infobar/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {humanizeString} from 'utils'
-import {StaticField} from '../StaticField'
 
 export default function Fulfillment() {
     return {

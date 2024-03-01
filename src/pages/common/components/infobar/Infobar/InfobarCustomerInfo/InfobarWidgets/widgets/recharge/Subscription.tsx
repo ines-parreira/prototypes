@@ -19,14 +19,15 @@ import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
+import StaticField from 'infobar/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {renderTemplate} from 'pages/common/utils/template'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import {StaticField} from '../StaticField'
 
 export default function Subscription() {
     return {

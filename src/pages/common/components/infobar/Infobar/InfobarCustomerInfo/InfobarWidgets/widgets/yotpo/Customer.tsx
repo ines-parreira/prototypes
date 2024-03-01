@@ -2,13 +2,13 @@ import React, {ContextType} from 'react'
 import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
-
+import StaticField from 'infobar/components/StaticField'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
-import {StaticField} from '../StaticField'
 import {CardHeaderYotpoBadge} from './custom/CardHeaderYotpoBadge'
 
 import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs'
@@ -32,7 +32,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
         return (
             <>
-                <StaticField noBold>
+                <StaticField isNotBold>
                     <CardHeaderYotpoRatingThumbs
                         label="Avg. rating"
                         value={source.getIn([
@@ -95,7 +95,7 @@ class BeforeContent extends React.Component<BeforeContentProps> {
         const {source} = this.props
         if (source.size < 2) {
             return (
-                <StaticField noBold>
+                <StaticField isNotBold>
                     No statistic data are available right now.
                 </StaticField>
             )

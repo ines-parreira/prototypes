@@ -2,9 +2,9 @@ import React from 'react'
 import ReactStars from 'react-rating-stars-component'
 import {List, Map} from 'immutable'
 
+import StaticField from 'infobar/components/StaticField'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {StarRatingColors} from 'pages/common/components/infobar/utils'
-import {StaticField} from '../StaticField'
 
 import css from './Reviews.less'
 
@@ -106,7 +106,7 @@ class BeforeContent extends React.Component<BeforeContentReviewsProps> {
             <>
                 <div>
                     <StaticField>{source.get('title')}</StaticField>
-                    <StaticField noBold>{source.get('content')}</StaticField>
+                    <StaticField isNotBold>{source.get('content')}</StaticField>
                 </div>
                 {imagesData.size > 0 && (
                     <StaticField>

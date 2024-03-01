@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {act, render, fireEvent, screen} from '@testing-library/react'
 
 import FileField from 'pages/common/forms/FileField'
 import {assumeMock, getLastMockCall} from 'utils/testing'
@@ -28,7 +28,11 @@ describe('<CardEditForm/>', () => {
     it('should call `onCancel` and not `onSubmit` when clicking cancel button', () => {
         render(<CardEditForm {...props} />)
 
-        fireEvent.click(screen.getByText(CardEditExports.CANCEL_BUTTON_TEXT))
+        act(() => {
+            fireEvent.click(
+                screen.getByText(CardEditExports.CANCEL_BUTTON_TEXT)
+            )
+        })
 
         expect(props.onCancel).toHaveBeenCalledTimes(1)
         expect(props.onSubmit).not.toHaveBeenCalled()
@@ -56,11 +60,14 @@ describe('<CardEditForm/>', () => {
                 target: {value: 'https://link.com'},
             }
         )
-        ;(
-            getLastMockCall(mockedFileField)[0].onChange as (
-                value: string
-            ) => void
-        )(pictureUrl)
+
+        act(() => {
+            ;(
+                getLastMockCall(mockedFileField)[0].onChange as (
+                    value: string
+                ) => void
+            )(pictureUrl)
+        })
 
         fireEvent.click(screen.getByText('Pick a color'))
         await screen.findByPlaceholderText('ex: #eeeeee')

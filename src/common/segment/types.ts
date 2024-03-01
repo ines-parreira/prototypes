@@ -113,7 +113,6 @@ export enum SegmentEvent {
     WizardArticleEditViewed = 'wizard/article-edit-viewed',
     WizardArticleEdited = 'wizard/article-edited',
     WizardArticleSaved = 'wizard/article-saved',
-    InfobarFieldCopied = 'infobar-field-copied',
     InfobarIntegrationAddClicked = 'infobar-integration-add-clicked',
     InsertDiscountCodeAdded = 'insert-discount-code/added',
     InsertDiscountCodeCreated = 'insert-discount-code/created',

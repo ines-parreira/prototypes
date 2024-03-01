@@ -27,17 +27,16 @@ exports[`<TitleWrapper/> should match snapshot 1`] = `
     </button>
   </span>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Total spent
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <span>
         £100.00
@@ -45,17 +44,16 @@ exports[`<TitleWrapper/> should match snapshot 1`] = `
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Orders
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     />
   </div>
 </div>

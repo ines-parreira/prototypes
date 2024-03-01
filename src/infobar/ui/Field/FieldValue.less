@@ -1,0 +1,24 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .fieldValue {
+        flex-grow: 1;
+        align-self: flex-end;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        // the property belows prevents subcomponents (e.g. MultiSelectOptionsField) from auto-overflowing
+        // without preventing elements to overflow when desired (with absolute positioning)
+        min-width: 0;
+    }
+
+    .isDisabled {
+        cursor: not-allowed;
+        color: var(--neutral-grey-4);
+    }
+
+    .isNotBold {
+        font-weight: normal;
+    }
+}

@@ -11,6 +11,7 @@ import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
 import {LineItem} from 'constants/integrations/types/shopify'
+import StaticField from 'infobar/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {renderTemplate} from 'pages/common/utils/template'
@@ -21,7 +22,6 @@ import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from 'utils'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import {StaticField} from '../StaticField'
 
 export default function Charge() {
     return {

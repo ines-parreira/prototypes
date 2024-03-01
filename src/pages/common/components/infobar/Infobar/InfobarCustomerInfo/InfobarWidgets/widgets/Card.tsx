@@ -16,6 +16,7 @@ import {
     Template,
 } from 'models/widget/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import StaticField from 'infobar/components/StaticField'
 import {
     removeEditedWidget,
     updateEditedWidget,
@@ -40,7 +41,6 @@ import CardEditForm, {
 } from 'infobar/ui/CardEditForm'
 import {widgetReference} from '../widgetReference'
 import {getWidgetTitle} from '../helpers'
-import {StaticField} from './StaticField'
 import CustomActions from './customActions'
 import css from './Card.less'
 

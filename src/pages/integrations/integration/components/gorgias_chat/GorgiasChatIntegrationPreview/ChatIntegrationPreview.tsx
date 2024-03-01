@@ -304,7 +304,7 @@ const ChatIntegrationPreview = (props: Props) => {
                 >
                     <div
                         className={css.dialog}
-                        data-testId={'previewHeader'}
+                        data-testid={'previewHeader'}
                         style={{
                             backgroundColor: currentColor,
                         }}
@@ -312,7 +312,7 @@ const ChatIntegrationPreview = (props: Props) => {
                         {backgroundColorStyle ===
                             GorgiasChatBackgroundColorStyle.Gradient && (
                             <Gradient
-                                data-testId={'gradientColor'}
+                                data-testid={'gradientColor'}
                                 color={currentColor}
                             ></Gradient>
                         )}

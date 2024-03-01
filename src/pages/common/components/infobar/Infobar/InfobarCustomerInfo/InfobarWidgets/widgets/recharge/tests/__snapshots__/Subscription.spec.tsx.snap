@@ -27,17 +27,16 @@ exports[`Subscription AfterTitle should display only the cancel action because t
     </button>
   </span>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     />
   </div>
 </div>

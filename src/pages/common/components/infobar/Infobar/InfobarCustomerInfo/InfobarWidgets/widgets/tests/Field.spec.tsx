@@ -1,49 +1,37 @@
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {Action} from 'redux'
 import {Map, fromJS} from 'immutable'
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import {render} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
-import {LeafTypes} from 'models/widget/types'
 import {idTemplate, shopifyWidget} from 'fixtures/widgets'
 import {RootState} from 'state/types'
-import {SHOPIFY_WIDGET_TYPE} from 'state/widgets/constants'
 import {
     removeEditedWidget,
     startWidgetEdition,
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import FieldEditForm, {FormData} from 'infobar/ui/FieldEditForm'
+import CopyButton from 'infobar/components/CopyButton'
+import UIField from 'infobar/ui/Field'
 
-import Field, {
-    DELETE_BUTTON_TEXT,
-    EDIT_BUTTON_TEXT,
-    TYPE_OPTIONS,
-} from '../Field'
-import {Copy} from '../CopyButton'
+import {LEAF_TYPES} from 'models/widget/constants'
+import Field, {TYPE_OPTIONS} from '../Field'
 
 const mockStore = configureMockStore()
 
-const COPY_BUTTON_TEST_ID = 'copy-button'
-jest.mock('../CopyButton', () => ({
-    Copy: jest.fn(() => {
-        return <span data-testid={COPY_BUTTON_TEST_ID}>copy button</span>
-    }),
-}))
-const CopyMock = assumeMock(Copy)
+jest.mock('infobar/components/CopyButton', () =>
+    jest.fn(() => <span>copy button</span>)
+)
+const CopyButtonMock = assumeMock(CopyButton)
 
-const FIELD_EDIT_FORM_TEST_ID = 'field-edit-form'
-jest.mock('infobar/ui/FieldEditForm', () =>
-    jest.fn(() => {
-        return (
-            <span data-testid={FIELD_EDIT_FORM_TEST_ID}>field edit form</span>
-        )
+jest.mock('infobar/ui/Field', () =>
+    jest.fn(({copyButton}: {copyButton: React.ReactNode}) => {
+        return <span>ui field {copyButton}</span>
     })
 )
-const FieldEditFormMock = assumeMock(FieldEditForm)
+const UIFieldMock = assumeMock(UIField)
 
 describe('Field', () => {
     const defaultState = {
@@ -58,250 +46,139 @@ describe('Field', () => {
         'absolutePath',
         defaultAbsolutePath
     )
-    const defaultValue = 'foo value'
-    const defaultCopyableValue = 'copyable value'
     const defaultProps: ComponentProps<typeof Field> = {
-        value: defaultValue,
-        template: defaultTemplate,
+        value: 'foo value',
+        type: LEAF_TYPES.TEXT,
         isEditing: false,
-        type: SHOPIFY_WIDGET_TYPE,
         widget: fromJS(shopifyWidget),
-        copyableValue: defaultCopyableValue,
+        template: defaultTemplate,
+        copyableValue: 'copyable value',
     }
 
-    it('should render title and value', () => {
-        const {container} = render(
-            <Provider store={mockStore(defaultState)}>
+    const store = mockStore(defaultState)
+
+    it('should default type to text if type is not an existing leaf type', () => {
+        render(
+            <Provider store={store}>
+                <Field
+                    {...defaultProps}
+                    type={'someone messed with the API again'}
+                />
+            </Provider>
+        )
+        expect(getLastMockCall(UIFieldMock)[0].type).toEqual(LEAF_TYPES.TEXT)
+    })
+
+    it('should pass template title, value, type, isEditing to the UI field', () => {
+        render(
+            <Provider store={store}>
                 <Field {...defaultProps} />
             </Provider>
         )
 
-        expect(container.firstChild).toHaveTextContent(
-            `${idTemplate.title}:${defaultValue}`
+        expect(getLastMockCall(UIFieldMock)[0]).toEqual(
+            expect.objectContaining({
+                title: idTemplate.title,
+                value: defaultProps.value,
+                type: defaultProps.type,
+                isEditionMode: defaultProps.isEditing,
+            })
         )
     })
 
-    it('should render copy button when copyable value is defined', () => {
-        const {queryByTestId} = render(
-            <Provider store={mockStore(defaultState)}>
+    it('should exclude editable list from type options', () => {
+        render(
+            <Provider store={store}>
                 <Field {...defaultProps} />
             </Provider>
         )
 
-        expect(queryByTestId(COPY_BUTTON_TEST_ID)).toBeInTheDocument()
-        expect(CopyMock).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                name: idTemplate.title,
-                value: defaultCopyableValue,
-                onCopyMessage: `${idTemplate.title} copied to clipboard`,
-            }),
-            expect.anything()
-        )
-    })
-
-    it('should not render the copy button when editing', () => {
-        const {queryByTestId} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Field {...defaultProps} isEditing />
-            </Provider>
-        )
-
-        expect(queryByTestId(COPY_BUTTON_TEST_ID)).not.toBeInTheDocument()
-    })
-
-    it('should render edit and delete buttons when editing', () => {
-        const {queryByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Field {...defaultProps} isEditing />
-            </Provider>
-        )
-
-        expect(queryByText(EDIT_BUTTON_TEXT)).toBeInTheDocument()
-        expect(queryByText(DELETE_BUTTON_TEXT)).toBeInTheDocument()
-    })
-
-    it('should dispatch edit widget action on edit button click', () => {
-        const store = mockStore(defaultState)
-        const {getByText} = render(
-            <Provider store={store}>
-                <Field {...defaultProps} isEditing />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-
-        expect(store.getActions()).toContainEqual(
-            startWidgetEdition(idTemplate.templatePath!)
-        )
-    })
-
-    it('should dispatch delete widget action on delete button click', () => {
-        const store = mockStore(defaultState)
-        const {getByText} = render(
-            <Provider store={store}>
-                <Field {...defaultProps} isEditing />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(DELETE_BUTTON_TEXT))
-
-        expect(store.getActions()).toContainEqual(
-            removeEditedWidget(idTemplate.templatePath, defaultAbsolutePath)
-        )
-    })
-
-    it('should display edit form on edit button click', () => {
-        const {getByText, queryByTestId} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Field {...defaultProps} isEditing />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-
-        expect(queryByTestId(FIELD_EDIT_FORM_TEST_ID)).toBeInTheDocument()
-    })
-
-    it('should pass template title and type to the edit form', () => {
-        const expectedInitialData: FormData<LeafTypes> = {
-            title: idTemplate.title,
-            type: idTemplate.type,
-        }
-        const store = mockStore(defaultState)
-        const {getByText} = render(
-            <Provider store={store}>
-                <Field {...defaultProps} isEditing />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-
-        expect(FieldEditFormMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                initialData: expectedInitialData,
-            }),
-            expect.anything()
-        )
-    })
-
-    it('should exclude editableList from type options', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Field {...defaultProps} isEditing />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-
-        const {availableTypes} = getLastMockCall(FieldEditFormMock)[0]
+        const {availableTypes} = getLastMockCall(UIFieldMock)[0]
         expect(availableTypes).toEqual(
-            TYPE_OPTIONS.filter((option) => option.value !== 'editableList')
+            TYPE_OPTIONS.filter(
+                (option) => option.value !== LEAF_TYPES.EDITABLE_LIST
+            )
         )
     })
 
     it('should include editableList in the type options for the tags path of a shopify widget ', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
+        render(
+            <Provider store={store}>
                 <Field
                     {...defaultProps}
                     template={defaultTemplate.set('path', 'tags')}
-                    isEditing
                 />
             </Provider>
         )
 
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-
-        const {availableTypes} = getLastMockCall(FieldEditFormMock)[0]
+        const {availableTypes} = getLastMockCall(UIFieldMock)[0]
         expect(availableTypes).toEqual(TYPE_OPTIONS)
     })
 
-    it('should include editableList in the type options for the array tags path of a shopify widget', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Field
-                    {...defaultProps}
-                    template={defaultTemplate.set('path', ['tags'])}
-                    isEditing
-                />
+    it('should set `valueShouldOverflow` to true if type is an editable list', () => {
+        render(
+            <Provider store={store}>
+                <Field {...defaultProps} type={LEAF_TYPES.EDITABLE_LIST} />
             </Provider>
         )
 
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-
-        const {availableTypes} = getLastMockCall(FieldEditFormMock)[0]
-        expect(availableTypes).toEqual(TYPE_OPTIONS)
+        expect(getLastMockCall(UIFieldMock)[0].valueShouldOverflow).toBeTruthy()
     })
 
-    it('should hide edit form and dispatch stop widget edit on onCancel callback', async () => {
-        const store = mockStore(defaultState)
-        const {getByText, queryByTestId} = render(
+    it('should call correct actions with appropriate value', () => {
+        render(
             <Provider store={store}>
                 <Field {...defaultProps} isEditing />
             </Provider>
         )
 
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-        act(() => getLastMockCall(FieldEditFormMock)[0].onCancel())
-
-        await waitFor(() =>
-            expect(
-                queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).not.toBeInTheDocument()
+        getLastMockCall(UIFieldMock)[0].onEditionStart()
+        let actions = store.getActions()
+        expect(actions).toHaveLength(1)
+        expect(actions).toContainEqual(
+            startWidgetEdition(idTemplate.templatePath!)
         )
-        expect(store.getActions()).toContainEqual(stopWidgetEdition())
+
+        getLastMockCall(UIFieldMock)[0].onEditionStop()
+        actions = store.getActions()
+        expect(actions).toHaveLength(2)
+        expect(actions).toContainEqual(stopWidgetEdition())
+
+        getLastMockCall(UIFieldMock)[0].onDelete()
+        actions = store.getActions()
+        expect(actions).toHaveLength(3)
+        expect(actions).toContainEqual(
+            removeEditedWidget(idTemplate.templatePath, defaultAbsolutePath)
+        )
+
+        const formData = {title: 'ok', type: LEAF_TYPES.BOOLEAN}
+        getLastMockCall(UIFieldMock)[0].onSubmit(formData)
+        actions = store.getActions()
+        expect(actions).toHaveLength(4)
+        expect(actions).toContainEqual(updateEditedWidget(formData))
     })
 
-    it('should hide edit form, dispatch update widget and stop edit on onSubmit callback', async () => {
-        const formData: FormData<LeafTypes> = {title: 'Url', type: 'url'}
-        const store = mockStore(defaultState)
-        const {getByText, queryByTestId} = render(
+    it("should not render a copy button if it's editing", () => {
+        render(
             <Provider store={store}>
                 <Field {...defaultProps} isEditing />
             </Provider>
         )
 
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-        act(() => getLastMockCall(FieldEditFormMock)[0].onSubmit(formData))
-
-        await waitFor(() =>
-            expect(
-                queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).not.toBeInTheDocument()
-        )
-
-        const actions = store.getActions()
-        const updateWidgetAction = updateEditedWidget(formData)
-        expect(actions).toContainEqual(updateWidgetAction)
-
-        const stopEditAction = stopWidgetEdition()
-        expect(actions).toContainEqual(stopEditAction)
-
-        expect(
-            actions.findIndex(
-                ({type}: Action) => type === updateWidgetAction.type
-            )
-        ).toBeLessThan(
-            actions.findIndex(({type}: Action) => type === stopEditAction.type)
-        )
+        expect(getLastMockCall(UIFieldMock)[0].copyButton).toBeNull()
     })
 
-    it('should hide edit form and dispatch stop widget on click outside of the popover', async () => {
-        const store = mockStore(defaultState)
-        const {getByText, queryByTestId, container} = render(
+    it("should render a copy button  with correct props if it's not editing and there is a copyable value", () => {
+        render(
             <Provider store={store}>
-                <Field {...defaultProps} isEditing />
+                <Field {...defaultProps} isEditing={false} />
             </Provider>
         )
 
-        fireEvent.click(getByText(EDIT_BUTTON_TEXT))
-        fireEvent.click(container)
-
-        await waitFor(() =>
-            expect(
-                queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).not.toBeInTheDocument()
-        )
-        expect(store.getActions()).toContainEqual(stopWidgetEdition())
+        expect(getLastMockCall(UIFieldMock)[0].copyButton).not.toBeNull()
+        expect(getLastMockCall(CopyButtonMock)[0]).toEqual({
+            value: defaultProps.copyableValue,
+            onCopyMessage: `${idTemplate.title} copied to clipboard`,
+        })
     })
 })

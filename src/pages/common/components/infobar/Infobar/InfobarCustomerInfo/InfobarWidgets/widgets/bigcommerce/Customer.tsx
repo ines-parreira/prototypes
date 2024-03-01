@@ -13,7 +13,8 @@ import {
     BigCommerceActionType,
     BigCommerceCustomer,
 } from 'models/integration/types'
-import {StaticField} from '../StaticField'
+import StaticField from 'infobar/components/StaticField'
+
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'

@@ -160,7 +160,7 @@ exports[`<BeforeContent/> render() should render images correctly 1`] = `
       Review title
     </StaticField>
     <StaticField
-      noBold={true}
+      isNotBold={true}
     >
       Long review content lorem ipsum dolor sit amen...
     </StaticField>
@@ -211,7 +211,7 @@ exports[`<BeforeContent/> render() should render votes down correctly 1`] = `
       Review title
     </StaticField>
     <StaticField
-      noBold={true}
+      isNotBold={true}
     >
       Long review content lorem ipsum dolor sit amen...
     </StaticField>
@@ -248,7 +248,7 @@ exports[`<BeforeContent/> render() should render votes up correctly 1`] = `
       Review title
     </StaticField>
     <StaticField
-      noBold={true}
+      isNotBold={true}
     >
       Long review content lorem ipsum dolor sit amen...
     </StaticField>
@@ -285,7 +285,7 @@ exports[`<BeforeContent/> render() should render with both votes up and down cor
       Review title
     </StaticField>
     <StaticField
-      noBold={true}
+      isNotBold={true}
     >
       Long review content lorem ipsum dolor sit amen...
     </StaticField>
@@ -322,7 +322,7 @@ exports[`<BeforeContent/> render() should render with no images 1`] = `
       Review title
     </StaticField>
     <StaticField
-      noBold={true}
+      isNotBold={true}
     >
       Long review content lorem ipsum dolor sit amen...
     </StaticField>

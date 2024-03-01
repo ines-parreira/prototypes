@@ -11,10 +11,10 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
       target="_blank"
     >
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           <i
             class="material-icons"
@@ -23,28 +23,26 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
           </i>
            
           Credit memo
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
            
         </span>
       </div>
     </a>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2018-11-07 05:22"
@@ -52,10 +50,10 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         4
          x 
@@ -63,10 +61,10 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         1
          x 
@@ -83,10 +81,10 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
       target="_blank"
     >
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           <i
             class="material-icons"
@@ -95,28 +93,26 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
           </i>
            
           Credit memo
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
            
         </span>
       </div>
     </a>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2018-11-07 05:22"
@@ -138,10 +134,10 @@ exports[`Order <AfterContent/> render() should display credit memos without link
       target="_blank"
     >
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           <i
             class="material-icons"
@@ -150,28 +146,26 @@ exports[`Order <AfterContent/> render() should display credit memos without link
           </i>
            
           Credit memo
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
            
         </span>
       </div>
     </a>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2018-11-07 05:22"
@@ -179,10 +173,10 @@ exports[`Order <AfterContent/> render() should display credit memos without link
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         4
          x 
@@ -190,10 +184,10 @@ exports[`Order <AfterContent/> render() should display credit memos without link
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         1
          x 
@@ -210,10 +204,10 @@ exports[`Order <AfterContent/> render() should display credit memos without link
       target="_blank"
     >
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           <i
             class="material-icons"
@@ -222,28 +216,26 @@ exports[`Order <AfterContent/> render() should display credit memos without link
           </i>
            
           Credit memo
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
            
         </span>
       </div>
     </a>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2018-11-07 05:22"
@@ -259,17 +251,16 @@ exports[`Order <AfterContent/> render() should return null because the order has
 exports[`Order <BeforeContent/> render() should display shipments with links because there is an admin url suffix 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -279,17 +270,16 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -319,17 +309,16 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       </a>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2019-03-04 11:12"
@@ -338,59 +327,56 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     </div>
     <div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Carrier code
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           UPS
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking number
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           123ABC
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking URL
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           -
         </span>
       </div>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         4
          x 
@@ -398,10 +384,10 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         1
          x 
@@ -432,17 +418,16 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       </a>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2019-02-04 11:12"
@@ -451,49 +436,46 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     </div>
     <div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Carrier code
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           LaPoste
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking number
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           789GHJ
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking URL
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           -
         </span>
@@ -506,17 +488,16 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
 exports[`Order <BeforeContent/> render() should display shipments without links because there is no admin url suffix 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -526,17 +507,16 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -566,17 +546,16 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       </a>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2019-03-04 11:12"
@@ -585,59 +564,56 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     </div>
     <div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Carrier code
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           UPS
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking number
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           123ABC
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking URL
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           -
         </span>
       </div>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         4
          x 
@@ -645,10 +621,10 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       </span>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         1
          x 
@@ -679,17 +655,16 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       </a>
     </div>
     <div
-      class="widgetField staticWidgetField"
+      class="fieldContainer staticField"
     >
       <span
-        class="widgetFieldLabel"
+        class="fieldLabel"
       >
         Last updated
-        :
-         
+        : 
       </span>
       <span
-        class="widgetFieldValue"
+        class="fieldValue"
       >
         <time
           datetime="2019-02-04 11:12"
@@ -698,49 +673,46 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     </div>
     <div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Carrier code
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           LaPoste
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking number
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           789GHJ
         </span>
       </div>
       <div
-        class="widgetField staticWidgetField"
+        class="fieldContainer staticField"
       >
         <span
-          class="widgetFieldLabel"
+          class="fieldLabel"
         >
           Tracking URL
-          :
-           
+          : 
         </span>
         <span
-          class="widgetFieldValue"
+          class="fieldValue"
         >
           -
         </span>
@@ -753,17 +725,16 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
 exports[`Order <BeforeContent/> render() should render the state and an empty created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -773,17 +744,16 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time />
     </span>
@@ -794,17 +764,16 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
 exports[`Order <BeforeContent/> render() should render with a label for the canceled state and a created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -814,17 +783,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -837,17 +805,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
 exports[`Order <BeforeContent/> render() should render with a label for the closed state and a created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -857,17 +824,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -880,17 +846,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
 exports[`Order <BeforeContent/> render() should render with a label for the complete state and a created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -900,17 +865,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -923,17 +887,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
 exports[`Order <BeforeContent/> render() should render with a label for the new state and a created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -943,17 +906,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -966,17 +928,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
 exports[`Order <BeforeContent/> render() should render with a label for the on_hold state and a created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -986,17 +947,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -1009,17 +969,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
 exports[`Order <BeforeContent/> render() should render with a label for the pending state and a created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -1029,17 +988,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""
@@ -1052,17 +1010,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
 exports[`Order <BeforeContent/> render() should render with a label for the processing state and a created at date but no shipments because there are none 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       State
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <div
         class="badge upperCase"
@@ -1072,17 +1029,16 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
     </span>
   </div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Created at
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <time
         datetime=""2020-10-07 09:30:03""

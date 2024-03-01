@@ -3,17 +3,16 @@
 exports[`Shipping <AfterTitle/> should match snapshot - fedex tracking link 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Tracking Link
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       <a
         href="https://www.fedex.com/apps/fedextrack/?tracknumbers=111111111"
@@ -28,17 +27,16 @@ exports[`Shipping <AfterTitle/> should match snapshot - fedex tracking link 1`] 
 exports[`Shipping <AfterTitle/> should match snapshot - no tracking link 1`] = `
 <div>
   <div
-    class="widgetField staticWidgetField"
+    class="fieldContainer staticField"
   >
     <span
-      class="widgetFieldLabel"
+      class="fieldLabel"
     >
       Tracking Link
-      :
-       
+      : 
     </span>
     <span
-      class="widgetFieldValue"
+      class="fieldValue"
     >
       N/A
     </span>

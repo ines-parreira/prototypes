@@ -5,14 +5,14 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {DatetimeLabel} from 'pages/common/utils/labels'
-import {StaticField} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/StaticField'
+import StaticField from 'infobar/components/StaticField'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {Copy} from '../../CopyButton'
+import CopyButton from 'infobar/components/CopyButton'
 import css from './DraftOrderWidget.less'
 
 export default function DraftOrderWidget() {
@@ -95,12 +95,12 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
                     <>{children}</>
                 </a>
                 {!isEditing && (
-                    <Copy
-                        value={source.get('name')}
-                        className={css.copyButton}
-                        name="Draft Order Name"
-                        onCopyMessage="Draft Order Number copied to clipboard"
-                    />
+                    <span className={css.copyButton}>
+                        <CopyButton
+                            value={source.get('name')}
+                            onCopyMessage="Draft Order Number copied to clipboard"
+                        />
+                    </span>
                 )}
             </div>
             <div>{invoiceSent ? <InvoiceSentStatus /> : <OpenStatus />}</div>
