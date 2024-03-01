@@ -1,7 +1,4 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
 import {StatsFilters} from 'models/stat/types'
-
-import {FETCH_STAT_ENDED, FETCH_STAT_STARTED} from './constants'
 
 export type StatsState = {
     fetchingMap: {
@@ -10,18 +7,6 @@ export type StatsState = {
     isFilterDirty: boolean
     cleanStatsFilters: StatsFilters | null
 }
-
-export type StatsAction = FetchStatEndedAction | FetchStatStartedAction
-
-export type FetchStatEndedAction = PayloadActionCreator<
-    {statName: string; resourceName: string},
-    typeof FETCH_STAT_ENDED
->
-
-export type FetchStatStartedAction = PayloadActionCreator<
-    {statName: string; resourceName: string},
-    typeof FETCH_STAT_STARTED
->
 
 export enum OverviewMetric {
     CustomerSatisfaction = 'customer_satisfaction',
@@ -47,6 +32,7 @@ export enum TableColumn {
     RepliedTickets = 'agent_replied_tickets',
     OneTouchTickets = 'agent_one_touch_tickets',
     OnlineTime = 'agent_online_time',
+    MessagesSentPerHour = 'agent_messages_sent_per_hour',
 }
 
 export enum TicketFieldsMetric {

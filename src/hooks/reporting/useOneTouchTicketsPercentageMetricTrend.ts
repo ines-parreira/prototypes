@@ -1,12 +1,13 @@
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
 import {useClosedTicketsTrend, useOneTouchTicketsTrend} from './metricTrends'
 
 const calculatePercentage = (x: number, y: number) => (x / y) * 100
 
-export const useOneTouchTicketsPercentageMetric = (
+export const useOneTouchTicketsPercentageMetricTrend = (
     statsFilters: StatsFilters,
     timezone: string
-) => {
+): MetricTrend => {
     const {data, isFetching, isError} = useOneTouchTicketsTrend(
         statsFilters,
         timezone

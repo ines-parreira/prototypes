@@ -1,7 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
-import {useOneTouchTicketsPercentageMetric} from 'hooks/reporting/useOneTouchTicketsPercentageMetric'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {
     useClosedTicketsTrend,
     useOneTouchTicketsTrend,
@@ -38,11 +38,38 @@ describe('useOneTouchTicketsPercentageMetric', () => {
         )
 
         const {result} = renderHook(() =>
-            useOneTouchTicketsPercentageMetric(statsFilters, timezone)
+            useOneTouchTicketsPercentageMetricTrend(statsFilters, timezone)
         )
 
         expect(result?.current?.data?.value).toBe(25)
         expect(result?.current?.data?.prevValue).toBe(30)
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.isError).toBe(false)
+    })
+
+    it('should return null on missing data', () => {
+        const mockData = {
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        }
+        const mockClosedTicketsPerAgent = {
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        }
+
+        mockUseOneTicketsTrend.mockImplementationOnce(() => mockData)
+        mockUseClosedTicketsTrend.mockImplementationOnce(
+            () => mockClosedTicketsPerAgent
+        )
+
+        const {result} = renderHook(() =>
+            useOneTouchTicketsPercentageMetricTrend(statsFilters, timezone)
+        )
+
+        expect(result?.current?.data?.value).toBe(undefined)
+        expect(result?.current?.data?.prevValue).toBe(undefined)
         expect(result.current.isFetching).toBe(false)
         expect(result.current.isError).toBe(false)
     })

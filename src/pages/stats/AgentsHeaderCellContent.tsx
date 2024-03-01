@@ -23,10 +23,8 @@ export const AgentsHeaderCellContent = ({
     width,
     justifyContent,
 }: AgentsHeaderCellContentProps) => {
-    const {sortCallback, direction, field} = useSortingQuery(
-        column,
-        getQuery(column)
-    )
+    const query = getQuery(column)
+    const {sortCallback, direction, field} = useSortingQuery(column, query)
     const tooltip = HeaderTooltips[column]
     const isOrderedBy = column === field
 

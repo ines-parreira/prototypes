@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, {PropsWithRef, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {OnlineTimeCellSummary} from 'pages/stats/OnlineTimeCellSummary'
+import {MessagesSentPerHourCellContent} from 'pages/stats/MessagesSentPerHourCellContent'
 import {User} from 'config/types/user'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppSelector from 'hooks/useAppSelector'
@@ -17,26 +17,22 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import css from 'pages/stats/AgentsTable.less'
-import {getColumnAlignment, getColumnWidth} from 'pages/stats/AgentsTableConfig'
+import {
+    getColumnAlignment,
+    getColumnWidth,
+    getSummaryQuery,
+} from 'pages/stats/AgentsTableConfig'
+import {AgentsTableSummaryCell} from 'pages/stats/AgentsTableSummaryCell'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
-import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
-import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
 import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
-import {MedianFirstResponseTimeCellSummary} from 'pages/stats/MedianFirstResponseTimeCellSummary'
 import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
-import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeCellSummary'
 import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
-import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
-import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
 import {OnlineTimeCellContent} from 'pages/stats/OnlineTimeCellContent'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
-import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
-import {SummaryCell} from 'pages/stats/SummaryCell'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
-import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 import {
     getPaginatedAgents,
     getSortedAgents,
@@ -72,31 +68,8 @@ const getCell = (
             return OneTouchTicketsCellContent
         case TableColumn.OnlineTime:
             return OnlineTimeCellContent
-    }
-}
-
-const getSummaryCell = (column: TableColumn): React.FC => {
-    switch (column) {
-        case TableColumn.RepliedTickets:
-            return TicketsRepliedCellSummary
-        case TableColumn.ClosedTickets:
-            return ClosedTicketsCellSummary
-        case TableColumn.PercentageOfClosedTickets:
-            return PercentageOfClosedTicketsCellSummary
-        case TableColumn.MessagesSent:
-            return MessagesSentCellSummary
-        case TableColumn.MedianFirstResponseTime:
-            return MedianFirstResponseTimeCellSummary
-        case TableColumn.CustomerSatisfaction:
-            return CustomerSatisfactionCellSummary
-        case TableColumn.MedianResolutionTime:
-            return MedianResolutionTimeCellSummary
-        case TableColumn.OneTouchTickets:
-            return OneTouchTicketsCellSummary
-        case TableColumn.OnlineTime:
-            return OnlineTimeCellSummary
-        case TableColumn.AgentName:
-            return SummaryCell
+        case TableColumn.MessagesSentPerHour:
+            return MessagesSentPerHourCellContent
     }
 }
 
@@ -156,9 +129,10 @@ export const AgentsTable = () => {
                                     })}
                                     innerClassName={css.BodyCellContent}
                                 >
-                                    {React.createElement(
-                                        getSummaryCell(column)
-                                    )}
+                                    <AgentsTableSummaryCell
+                                        useMetric={getSummaryQuery(column)}
+                                        column={column}
+                                    />
                                 </BodyCell>
                             ))}
                         </TableBodyRow>

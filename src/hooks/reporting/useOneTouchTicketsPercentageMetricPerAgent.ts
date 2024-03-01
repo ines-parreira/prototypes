@@ -2,6 +2,11 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import _difference from 'lodash/difference'
 import _orderBy from 'lodash/orderBy'
 import {useMemo} from 'react'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    MetricWithDecile,
+    QueryReturnType,
+} from 'hooks/reporting/useMetricPerDimension'
 import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -14,14 +19,59 @@ import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {StatsFilters} from 'models/stat/types'
 import {calculateDecile} from './useCustomFieldsTicketCountPerCustomFields'
 
-const calculatePercentage = (x: number, y: number) => (x / y) * 100
+export const calculatePercentage = (x: number, y: number) => (x / y) * 100
+
+export const matchAndCalculateAllEntries = (
+    data: MetricWithDecile,
+    dataB: MetricWithDecile,
+    calculatePercentage: (a: number, b: number) => number,
+    dataAssigneeIdField: string,
+    dataBAssigneeIdField: string,
+    dataMeasureField: string,
+    dataBMeasureField: string
+): QueryReturnType<HelpdeskMessageCubeWithJoins> =>
+    data.data?.allData.map((item) => {
+        const matchingValue = dataB.data?.allData.find(
+            (value) => value[dataBAssigneeIdField] === item[dataAssigneeIdField]
+        )?.[dataBMeasureField]
+
+        return {
+            ...item,
+            [dataMeasureField]: matchingValue
+                ? String(
+                      calculatePercentage(
+                          Number(item[dataMeasureField]),
+                          Number(matchingValue)
+                      )
+                  )
+                : null,
+        }
+    }) ?? []
+
+export const sortAllData = (
+    allData: QueryReturnType<HelpdeskMessageCubeWithJoins>,
+    ticketCountField: string,
+    sorting?: OrderDirection
+) => {
+    const nonNullValues = allData.filter(
+        (item) => item[ticketCountField] !== null
+    )
+
+    const sortedArray = _orderBy(
+        nonNullValues,
+        (v) => Number(v[ticketCountField]),
+        sorting
+    )
+
+    return sortedArray.concat(_difference(allData, nonNullValues))
+}
 
 export const useOneTouchTicketsPercentageMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-) => {
+): MetricWithDecile => {
     const isAnalyticsNewCubes: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewCubes]
     const assigneeIdField = isAnalyticsNewCubes
@@ -31,7 +81,7 @@ export const useOneTouchTicketsPercentageMetricPerAgent = (
         ? renameMemberEnriched(TicketMeasure.TicketCount)
         : TicketMeasure.TicketCount
 
-    const {data, isFetching, isError} = useOneTouchTicketsMetricPerAgent(
+    const oneTouchTickets = useOneTouchTicketsMetricPerAgent(
         statsFilters,
         timezone,
         sorting,
@@ -47,64 +97,40 @@ export const useOneTouchTicketsPercentageMetricPerAgent = (
 
     let metricValue: number | null = null
 
-    if (closedTicketsPerAgent.data?.value && data?.value) {
+    if (closedTicketsPerAgent.data?.value && oneTouchTickets.data?.value) {
         metricValue = calculatePercentage(
-            data.value,
+            oneTouchTickets.data.value,
             closedTicketsPerAgent.data.value
         )
     }
 
-    const allData = useMemo(
-        () =>
-            data?.allData.map((item) => {
-                const closedTicketsValue =
-                    closedTicketsPerAgent.data?.allData.find(
-                        (value) =>
-                            value[assigneeIdField] === item[assigneeIdField]
-                    )?.[ticketCountField]
-
-                return {
-                    ...item,
-                    [ticketCountField]: closedTicketsValue
-                        ? String(
-                              calculatePercentage(
-                                  Number(item[ticketCountField]),
-                                  Number(closedTicketsValue)
-                              )
-                          )
-                        : null,
-                }
-            }),
-        [
+    const sortedData = useMemo(() => {
+        const allData = matchAndCalculateAllEntries(
+            oneTouchTickets,
+            closedTicketsPerAgent,
+            calculatePercentage,
             assigneeIdField,
-            closedTicketsPerAgent.data?.allData,
-            data?.allData,
+            assigneeIdField,
             ticketCountField,
-        ]
+            ticketCountField
+        )
+        return sortAllData(allData, ticketCountField, sorting)
+    }, [
+        assigneeIdField,
+        closedTicketsPerAgent,
+        oneTouchTickets,
+        sorting,
+        ticketCountField,
+    ])
+
+    const maxValue = Math.max(
+        ...sortedData.map((item) => Number(item[ticketCountField]))
     )
 
-    const sortAllData = () => {
-        const nonNullValues =
-            allData?.filter((item) => item[ticketCountField] !== null) || []
-
-        const sortedArray = _orderBy(
-            nonNullValues,
-            (v) => Number(v[ticketCountField]),
-            sorting
-        )
-
-        return sortedArray.concat(_difference(allData, nonNullValues))
-    }
-
-    const sortedData = sortAllData()
-
-    const maxValue = sortedData.length
-        ? Math.max(...sortedData.map((item) => Number(item[ticketCountField])))
-        : 0
-
     return {
-        isFetching: isFetching || closedTicketsPerAgent.isFetching,
-        isError: isError || closedTicketsPerAgent.isError,
+        isFetching:
+            oneTouchTickets.isFetching || closedTicketsPerAgent.isFetching,
+        isError: oneTouchTickets.isError || closedTicketsPerAgent.isError,
         data: {
             allData: sortedData,
             value: metricValue,

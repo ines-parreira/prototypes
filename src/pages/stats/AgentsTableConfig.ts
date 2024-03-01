@@ -1,4 +1,14 @@
 import {
+    Metric,
+    useClosedTicketsMetric,
+    useCustomerSatisfactionMetric,
+    useMedianFirstResponseTimeMetric,
+    useMedianResolutionTimeMetric,
+    useMessagesSentMetric,
+    useOnlineTimeMetric,
+    useTicketsRepliedMetric,
+} from 'hooks/reporting/metrics'
+import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
@@ -7,11 +17,15 @@ import {
     useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
+import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
+import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
 import {isExtraLargeScreen} from 'pages/common/utils/mobile'
+import {MetricValueFormat} from 'pages/stats/common/utils'
 import {
     TableColumn,
     TableSetting,
@@ -34,6 +48,7 @@ export const TableColumnsOrder: TableColumn[] = [
 export const TableColumnsOrderWithOnlineTime = [
     ...TableColumnsOrder,
     TableColumn.OnlineTime,
+    TableColumn.MessagesSentPerHour,
 ]
 
 export const agentPerformanceMetrics = TableColumnsOrder.map((column) => ({
@@ -63,6 +78,7 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.MessagesSent]: 'Messages Sent',
     [TableColumn.OneTouchTickets]: 'One-touch Tickets',
     [TableColumn.OnlineTime]: 'Online time',
+    [TableColumn.MessagesSentPerHour]: 'Messages sent per hour',
 }
 
 export const AGENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 200 : 300
@@ -106,6 +122,32 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
         title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
         link: 'https://link.gorgias.com/qdx',
     },
+    [TableColumn.MessagesSentPerHour]: {
+        title: 'Number of messages sent by the agent divided by the number of online hours ',
+    },
+}
+
+export const MetricFormat: Record<
+    TableColumn,
+    {format: MetricValueFormat; perAgent: boolean}
+> = {
+    [TableColumn.AgentName]: {format: 'integer', perAgent: false},
+    [TableColumn.CustomerSatisfaction]: {format: 'decimal', perAgent: false},
+    [TableColumn.MedianFirstResponseTime]: {
+        format: 'duration',
+        perAgent: false,
+    },
+    [TableColumn.MedianResolutionTime]: {format: 'duration', perAgent: false},
+    [TableColumn.MessagesSent]: {format: 'integer', perAgent: true},
+    [TableColumn.PercentageOfClosedTickets]: {
+        format: 'percent',
+        perAgent: true,
+    },
+    [TableColumn.ClosedTickets]: {format: 'integer', perAgent: true},
+    [TableColumn.RepliedTickets]: {format: 'integer', perAgent: true},
+    [TableColumn.OneTouchTickets]: {format: 'percent', perAgent: true},
+    [TableColumn.OnlineTime]: {format: 'duration', perAgent: true},
+    [TableColumn.MessagesSentPerHour]: {format: 'decimal', perAgent: false},
 }
 
 export const getColumnWidth = (column: TableColumn) =>
@@ -116,14 +158,20 @@ export const getColumnWidth = (column: TableColumn) =>
 export const getColumnAlignment = (column: TableColumn) =>
     column === TableColumn.AgentName ? 'left' : 'right'
 
-export const getQuery = (
-    column: TableColumn
-): ((
+export type MetricQueryPerAgentQuery = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-) => MetricWithDecile) => {
+) => MetricWithDecile
+
+export type MetricQuery = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => Metric
+
+export const getQuery = (column: TableColumn): MetricQueryPerAgentQuery => {
     switch (column) {
         case TableColumn.AgentName:
             return () => ({
@@ -148,5 +196,42 @@ export const getQuery = (
             return useOneTouchTicketsPercentageMetricPerAgent
         case TableColumn.OnlineTime:
             return useOnlineTimePerAgent
+        case TableColumn.MessagesSentPerHour:
+            return useMessagesSentPerHourPerAgent
+    }
+}
+
+export const getSummaryQuery = (column: TableColumn): MetricQuery => {
+    switch (column) {
+        case TableColumn.AgentName:
+            return () => ({
+                isFetching: false,
+                isError: false,
+                data: undefined,
+            })
+        case TableColumn.MedianFirstResponseTime:
+            return useMedianFirstResponseTimeMetric
+        case TableColumn.RepliedTickets:
+            return useTicketsRepliedMetric
+        case TableColumn.PercentageOfClosedTickets:
+            return () => ({
+                data: {value: 100},
+                isError: false,
+                isFetching: false,
+            })
+        case TableColumn.ClosedTickets:
+            return useClosedTicketsMetric
+        case TableColumn.MessagesSent:
+            return useMessagesSentMetric
+        case TableColumn.MedianResolutionTime:
+            return useMedianResolutionTimeMetric
+        case TableColumn.CustomerSatisfaction:
+            return useCustomerSatisfactionMetric
+        case TableColumn.OneTouchTickets:
+            return useOneTouchTicketsPercentageMetricTrend
+        case TableColumn.OnlineTime:
+            return useOnlineTimeMetric
+        case TableColumn.MessagesSentPerHour:
+            return useMessagesSentPerHour
     }
 }

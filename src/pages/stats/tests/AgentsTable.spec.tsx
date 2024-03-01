@@ -5,37 +5,30 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {MessagesSentPerHourCellContent} from 'pages/stats/MessagesSentPerHourCellContent'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {OnlineTimeCellSummary} from 'pages/stats/OnlineTimeCellSummary'
-import {OnlineTimeCellContent} from 'pages/stats/OnlineTimeCellContent'
 import {agents} from 'fixtures/agents'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import {AgentsTable} from 'pages/stats/AgentsTable'
-import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
-import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
-import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
-import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
-import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
-import {MedianFirstResponseTimeCellSummary} from 'pages/stats/MedianFirstResponseTimeCellSummary'
-import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
-import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
-import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
-import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
-import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
-import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeCellSummary'
 import {TableColumnsOrderWithOnlineTime} from 'pages/stats/AgentsTableConfig'
-import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
-import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
-import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
-import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
+import {AgentsTableSummaryCell} from 'pages/stats/AgentsTableSummaryCell'
+import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
+import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
+import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
+import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
+import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
+import {OnlineTimeCellContent} from 'pages/stats/OnlineTimeCellContent'
+import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
+import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
+import {getPageStatsFilters} from 'state/stats/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     getPaginatedAgents,
     getSortedAgents,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {getPageStatsFilters} from 'state/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -95,37 +88,17 @@ const OneTouchTicketsCellContentMock = assumeMock(OneTouchTicketsCellContent)
 jest.mock('pages/stats/OnlineTimeCellContent.tsx')
 const OnlineTimeCellContentMock = assumeMock(OnlineTimeCellContent)
 
-jest.mock('pages/stats/MedianFirstResponseTimeCellSummary.tsx')
-const MedianFirstResponseTimeCellSummaryMock = assumeMock(
-    MedianFirstResponseTimeCellSummary
-)
-jest.mock('pages/stats/TicketsRepliedCellSummary.tsx')
-const TicketsRepliedCellSummaryMock = assumeMock(TicketsRepliedCellSummary)
-
-jest.mock('pages/stats/ClosedTicketsCellSummary.tsx')
-const ClosedTicketsCellSummaryMock = assumeMock(ClosedTicketsCellSummary)
-
-jest.mock('pages/stats/MessagesSentCellSummary.tsx')
-const MessagesSentCellSummaryMock = assumeMock(MessagesSentCellSummary)
-jest.mock('pages/stats/MedianResolutionTimeCellSummary.tsx')
-const MedianResolutionTimeCellSummaryMock = assumeMock(
-    MedianResolutionTimeCellSummary
-)
-jest.mock('pages/stats/CustomerSatisfactionCellSummary.tsx')
-const CustomerSatisfactionCellSummaryMock = assumeMock(
-    CustomerSatisfactionCellSummary
-)
-jest.mock('pages/stats/PercentageOfClosedTicketsCellSummary.tsx')
-const PercentageOfClosedTicketsCellSummaryMock = assumeMock(
-    PercentageOfClosedTicketsCellSummary
-)
-jest.mock('pages/stats/OneTouchTicketsCellSummary.tsx')
-const OneTouchTicketsCellSummaryMock = assumeMock(OneTouchTicketsCellSummary)
-jest.mock('pages/stats/OnlineTimeCellSummary.tsx')
-const OnlineTimeCellSummaryMock = assumeMock(OnlineTimeCellSummary)
-
 jest.mock('pages/stats/AgentsHeaderCellContent.tsx')
 const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
+
+jest.mock('pages/stats/MessagesSentPerHourCellContent.tsx')
+const MessagesSentPerHourCellContentMock = assumeMock(
+    MessagesSentPerHourCellContent
+)
+
+jest.mock('pages/stats/AgentsTableSummaryCell.tsx')
+const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
+
 const cellMock = () => <div />
 
 describe('<AgentTable>', () => {
@@ -153,24 +126,12 @@ describe('<AgentTable>', () => {
         PercentageOfClosedTicketsCellContentMock,
         OneTouchTicketsCellContentMock,
         OnlineTimeCellContentMock,
+        MessagesSentPerHourCellContentMock,
     ]
     metricCells.forEach((metricCell) => metricCell.mockImplementation(cellMock))
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
+    AgentsTableSummaryCellMock.mockImplementation(cellMock)
 
-    const metricSummaryCells = [
-        MedianFirstResponseTimeCellSummaryMock,
-        TicketsRepliedCellSummaryMock,
-        ClosedTicketsCellSummaryMock,
-        MessagesSentCellSummaryMock,
-        MedianResolutionTimeCellSummaryMock,
-        CustomerSatisfactionCellSummaryMock,
-        PercentageOfClosedTicketsCellSummaryMock,
-        OneTouchTicketsCellSummaryMock,
-        OnlineTimeCellSummaryMock,
-    ]
-    metricSummaryCells.forEach((metricCell) =>
-        metricCell.mockImplementation(cellMock)
-    )
     jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
         [FeatureFlagKey.AnalyticsTimeBasedMetrics]: true,
     }))
@@ -202,15 +163,6 @@ describe('<AgentTable>', () => {
         })
     })
 
-    it('should render the table summary row', () => {
-        render(
-            <Provider store={mockStore({})}>
-                <AgentsTable />
-            </Provider>
-        )
-        expect(screen.getByText('Average')).toBeInTheDocument()
-    })
-
     it('should handle table scrolling', async () => {
         render(
             <Provider store={mockStore({})}>
@@ -223,11 +175,23 @@ describe('<AgentTable>', () => {
         })
 
         await waitFor(() => {
-            expect(
-                screen.getByRole('cell', {
-                    name: new RegExp('Average'),
-                })
-            ).toHaveClass('withShadow')
+            expect(screen.getAllByRole('cell')[0]).toHaveClass('withShadow')
+        })
+    })
+
+    it('should handle table scrolling to the left border', async () => {
+        render(
+            <Provider store={mockStore({})}>
+                <AgentsTable />
+            </Provider>
+        )
+        act(() => {
+            const tableRow = document.getElementsByClassName('container')[0]
+            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+        })
+
+        await waitFor(() => {
+            expect(screen.getAllByRole('cell')[0]).not.toHaveClass('withShadow')
         })
     })
 

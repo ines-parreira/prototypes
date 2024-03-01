@@ -28,7 +28,7 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {useOneTouchTicketsPercentageMetric} from 'hooks/reporting/useOneTouchTicketsPercentageMetric'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 
@@ -47,7 +47,7 @@ const trendBadgeMock = assumeMock(TrendBadge)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('hooks/reporting/metricTrends')
-jest.mock('hooks/reporting/useOneTouchTicketsPercentageMetric')
+jest.mock('hooks/reporting/useOneTouchTicketsPercentageMetricTrend')
 
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend
@@ -65,7 +65,7 @@ const useTicketsCreatedTrendMock = assumeMock(useTicketsCreatedTrend)
 const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(useMessagesSentTrend)
 const useOneTouchTicketTrendMock = assumeMock(
-    useOneTouchTicketsPercentageMetric
+    useOneTouchTicketsPercentageMetricTrend
 )
 
 describe('<TrendCard />', () => {

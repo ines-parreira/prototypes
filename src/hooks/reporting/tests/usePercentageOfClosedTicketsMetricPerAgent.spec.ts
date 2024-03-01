@@ -136,4 +136,82 @@ describe('usePercentageOfClosedTicketsMetricPerAgent', () => {
             isError: false,
         })
     })
+
+    it('should return null when missing data', () => {
+        useClosedTicketsMetricPerAgentMock.mockReturnValue({
+            data: null,
+            isError: false,
+            isFetching: false,
+        })
+
+        useClosedTicketsMetricMock.mockReturnValue({
+            data: undefined,
+            isError: false,
+            isFetching: false,
+        })
+
+        const {result} = renderHook(
+            () =>
+                usePercentageOfClosedTicketsMetricPerAgent(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    agentId
+                ),
+            {}
+        )
+
+        expect(result.current).toEqual({
+            data: {
+                allData: [],
+                value: null,
+                decile: null,
+            },
+            isFetching: false,
+            isError: false,
+        })
+    })
+
+    it('should return something on partial data', () => {
+        useClosedTicketsMetricPerAgentMock.mockReturnValue({
+            data: {
+                allData: [{[TicketMeasure.TicketCount]: `${ticketCount}`}],
+                value: ticketCount,
+                decile: null,
+            },
+            isError: false,
+            isFetching: false,
+        })
+
+        useClosedTicketsMetricMock.mockReturnValue({
+            data: undefined,
+            isError: false,
+            isFetching: false,
+        })
+
+        const {result} = renderHook(
+            () =>
+                usePercentageOfClosedTicketsMetricPerAgent(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    agentId
+                ),
+            {}
+        )
+
+        expect(result.current).toEqual({
+            data: {
+                allData: [
+                    {
+                        [TicketMeasure.TicketCount]: `${ticketCount}`,
+                    },
+                ],
+                value: null,
+                decile: null,
+            },
+            isFetching: false,
+            isError: false,
+        })
+    })
 })

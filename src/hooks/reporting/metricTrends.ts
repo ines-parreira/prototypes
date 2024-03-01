@@ -13,10 +13,10 @@ import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
 import {decreaseInResolutionTimeQueryFactory} from 'models/reporting/queryFactories/automate/decreaseInResolutionTime'
 import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {resolutionTimeWithAutomateFeaturesQueryFactory} from '../../models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
+import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
 
-import {automationRateQueryFactory} from '../../models/reporting/queryFactories/automate/automationRate'
-import {automatedInteractionsQueryFactory} from '../../models/reporting/queryFactories/automate/automatedInteractions'
+import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
+import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
 
 export const useCustomerSatisfactionTrend = (
     filters: StatsFilters,

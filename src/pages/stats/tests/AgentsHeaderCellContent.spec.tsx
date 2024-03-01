@@ -4,7 +4,10 @@ import React from 'react'
 import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
 import {OrderDirection} from 'models/api/types'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
-import {TableLabels} from 'pages/stats/AgentsTableConfig'
+import {
+    TableColumnsOrderWithOnlineTime,
+    TableLabels,
+} from 'pages/stats/AgentsTableConfig'
 import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
@@ -19,13 +22,14 @@ describe('<AgentsHeaderCellContent>', () => {
         field: TableColumn.AgentName,
     })
 
-    it('should render column label', () => {
-        const column = TableColumn.AgentName
+    it.each(TableColumnsOrderWithOnlineTime)(
+        'should render %column label',
+        (column) => {
+            render(<AgentsHeaderCellContent column={column} />)
 
-        render(<AgentsHeaderCellContent column={column} />)
-
-        expect(screen.getByText(TableLabels[column]))
-    })
+            expect(screen.getByText(TableLabels[column]))
+        }
+    )
 
     it('should render trigger sorting action on click', () => {
         const sortableColumn = TableColumn.MedianFirstResponseTime

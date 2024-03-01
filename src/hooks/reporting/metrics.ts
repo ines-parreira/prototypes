@@ -108,4 +108,4 @@ export const useOnlineTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-) => useMetric(onlineTimeQueryFactory(statsFilters, timezone, sorting))
+): Metric => useMetric(onlineTimeQueryFactory(statsFilters, timezone, sorting))

@@ -31,7 +31,7 @@ import {
     ONE_TOUCH_TICKETS_LABEL,
 } from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
-import {useOneTouchTicketsPercentageMetric} from 'hooks/reporting/useOneTouchTicketsPercentageMetric'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {TooltipData} from './types'
 
 export const OverviewMetricConfig: Record<
@@ -134,7 +134,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/dk7',
         },
         interpretAs: 'more-is-better',
-        useTrend: useOneTouchTicketsPercentageMetric,
+        useTrend: useOneTouchTicketsPercentageMetricTrend,
         metricFormat: 'percent',
     },
 }

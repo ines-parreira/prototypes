@@ -1,23 +1,37 @@
 import React from 'react'
-import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {MetricFormat, MetricQuery} from 'pages/stats/AgentsTableConfig'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {TableColumn} from 'state/ui/stats/types'
 
-export const PercentageOfClosedTicketsCellSummary = () => {
+export const AGENT_SUMMARY_CELL_LABEL = 'Average'
+
+export const AgentsTableSummaryCell = ({
+    useMetric,
+    column,
+}: {
+    useMetric: MetricQuery
+    column: TableColumn
+}) => {
+    const {format, perAgent} = MetricFormat[column]
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
     const agents = useAppSelector(getSortedAgents)
 
-    const {isFetching} = useClosedTicketsMetric(cleanStatsFilters, userTimezone)
+    const {data, isFetching} = useMetric(cleanStatsFilters, userTimezone)
+    const metricValue =
+        perAgent && data?.value ? data.value / agents.length : data?.value
 
-    const metricValue = 100 / agents.length
+    if (column === TableColumn.AgentName) {
+        return <>{AGENT_SUMMARY_CELL_LABEL}</>
+    }
 
     return (
         <>
@@ -26,7 +40,7 @@ export const PercentageOfClosedTicketsCellSummary = () => {
             ) : (
                 formatMetricValue(
                     metricValue,
-                    'percent',
+                    format,
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}
