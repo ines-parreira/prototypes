@@ -1,10 +1,7 @@
 import {useQuery, UseQueryOptions, useMutation} from '@tanstack/react-query'
 
 import {MutationOverrides} from 'types/query'
-import {
-    GetAccountConfigurationParams,
-    GetStoreConfigurationParams,
-} from './types'
+import {GetStoreConfigurationParams} from './types'
 import {
     getAccountConfiguration,
     getStoreConfiguration,
@@ -50,21 +47,21 @@ export const accountConfigurationKeys = {
 }
 
 export const useGetAccountConfiguration = (
-    params: GetAccountConfigurationParams,
+    accountDomain: string,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAccountConfiguration>>
     >
 ) => {
     return useQuery({
         queryKey: accountConfigurationKeys.accountConfiguration(),
-        queryFn: () => getAccountConfiguration(params),
+        queryFn: () => getAccountConfiguration(accountDomain),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         ...overrides,
     })
 }
 
-export const useUpsertAccountConfiguration = (
+export const useUpsertAccountConfigurationPure = (
     overrides?: MutationOverrides<typeof upsertAccountConfiguration>
 ) => {
     return useMutation({

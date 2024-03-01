@@ -2,11 +2,10 @@ import axios from 'axios'
 import {isProduction, isStaging} from '../../utils/environment'
 
 import {
-    GetAccountConfigurationParams,
+    AccountConfiguration,
     GetAccountConfigurationResponse,
     GetStoreConfigurationParams,
     GetStoreConfigurationResponse,
-    PutAccountConfigurationParams,
     PutStoreConfigurationParams,
 } from './types'
 
@@ -46,11 +45,7 @@ export async function upsertStoreConfiguration(
     return response
 }
 
-export const getAccountConfiguration = async (
-    params: GetAccountConfigurationParams
-) => {
-    const {accountDomain} = params
-
+export const getAccountConfiguration = async (accountDomain: string) => {
     const res = await aiAgentApiClient.get<GetAccountConfigurationResponse>(
         `/accounts/${accountDomain}`
     )
@@ -58,9 +53,9 @@ export const getAccountConfiguration = async (
 }
 
 export async function upsertAccountConfiguration(
-    params: PutAccountConfigurationParams
+    accountConfiguration: AccountConfiguration
 ) {
-    const {accountDomain, accountConfiguration} = params
+    const accountDomain = accountConfiguration.gorgiasDomain
 
     const response = await aiAgentApiClient.put(
         `/accounts/${accountDomain}`,

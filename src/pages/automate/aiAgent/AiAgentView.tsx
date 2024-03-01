@@ -1,17 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import {List} from 'immutable'
-import axios from 'axios'
 import {useUpsertStoreConfiguration} from '../../../hooks/aiAgent/useUpsertStoreConfiguration'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import ToggleInput from '../../common/forms/ToggleInput'
 import useId from '../../../hooks/useId'
 import HeaderTitle from '../../common/components/HeaderTitle'
-import {
-    useGetAccountConfiguration,
-    useUpsertAccountConfiguration,
-} from '../../../models/aiAgent/queries'
 import useAppSelector from '../../../hooks/useAppSelector'
 import {
     getCurrentAccountState,
@@ -27,9 +22,9 @@ import {EmailIntegration} from '../../../models/integration/types'
 import SelectField from '../../common/forms/SelectField/SelectField'
 import ListField from '../../common/forms/ListField'
 import UnsavedChangesPrompt from '../../common/components/UnsavedChangesPrompt'
-import {useGetStoreConfiguration} from '../../../hooks/aiAgent/useGetStoreConfiguration'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
 import TextArea from '../../common/forms/TextArea'
+import {useGetOrUpsertAiAgentConfiguration} from '../../../hooks/aiAgent/useGetOrUpsertAccountConfiguration'
 import css from './AiAgentView.less'
 import {
     TONE_OF_VOICE_LABEL_TO_VALUE,
@@ -44,7 +39,6 @@ import {EmailIntegrationListSelection} from './components/EmailIntegrationListSe
 
 export const AiAgentView = () => {
     const {shopName} = useParams<{shopName: string}>()
-    const history = useHistory()
 
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
@@ -56,30 +50,30 @@ export const AiAgentView = () => {
         getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
     ) as EmailIntegration[]
 
-    useGetAccountConfiguration({
-        accountDomain,
-    })
-    const {
-        mutateAsync: mutateAccountConfiguration,
-        isError: accountConfigurationMutationFailed,
-    } = useUpsertAccountConfiguration()
+    const {mutateAsync: mutateStoreConfiguration} =
+        useUpsertStoreConfiguration(shopName)
+
+    const defaultAccountConfiguration = {
+        accountId: accountId,
+        gorgiasDomain: accountDomain,
+        helpdeskOAuth: null,
+    }
+
+    const defaultStoreConfiguration = {
+        ...DEFAULT_STORE_CONFIGURATION,
+        storeName: shopName,
+    }
+
     const {
         isFetching: storeConfigurationIsLoading,
-        isError: storeConfigurationRequestFailed,
-        error: storeConfigurationRequestError,
         data: storeConfigurationResponse,
-    } = useGetStoreConfiguration({
+    } = useGetOrUpsertAiAgentConfiguration(
         accountDomain,
-        storeName: shopName,
-    })
-    const {
-        mutateAsync: mutateStoreConfiguration,
-        isError: storeConfigurationMutationFailed,
-    } = useUpsertStoreConfiguration(shopName)
+        shopName,
+        defaultAccountConfiguration,
+        defaultStoreConfiguration
+    )
 
-    const defaultStoreConfiguration = useMemo(() => {
-        return {...DEFAULT_STORE_CONFIGURATION, storeName: shopName}
-    }, [shopName])
     const [storeConfiguration, setStoreConfiguration] =
         useState<StoreConfiguration>(defaultStoreConfiguration)
     const [isDirty, setIsDirty] = useState<boolean>(false)
@@ -201,58 +195,6 @@ export const AiAgentView = () => {
             setIsDirty(false)
         }
     }, [storeConfigurationResponse])
-
-    useEffect(() => {
-        const upsertConfigurations = async () => {
-            const accountConfiguration = {
-                accountId: accountId,
-                gorgiasDomain: accountDomain,
-                helpdeskOAuth: null,
-            }
-
-            await mutateAccountConfiguration([
-                {accountDomain, accountConfiguration},
-            ])
-
-            await mutateStoreConfiguration([
-                {
-                    accountDomain,
-                    storeName: shopName,
-                    storeConfiguration: defaultStoreConfiguration,
-                },
-            ])
-
-            if (
-                storeConfigurationMutationFailed ||
-                accountConfigurationMutationFailed
-            ) {
-                history.push('/app/automation')
-            }
-        }
-
-        // configuration not found, initialize it
-        if (
-            storeConfigurationRequestFailed &&
-            axios.isAxiosError(storeConfigurationRequestError) &&
-            storeConfigurationRequestError.response?.status === 404
-        ) {
-            void upsertConfigurations()
-        } else if (storeConfigurationRequestFailed) {
-            history.push('/app/automation')
-        }
-    }, [
-        accountDomain,
-        accountId,
-        defaultStoreConfiguration,
-        history,
-        mutateAccountConfiguration,
-        mutateStoreConfiguration,
-        shopName,
-        storeConfigurationRequestFailed,
-        storeConfigurationRequestError,
-        storeConfigurationMutationFailed,
-        accountConfigurationMutationFailed,
-    ])
 
     return (
         <AutomateView title={AI_AGENT} isLoading={storeConfigurationIsLoading}>
