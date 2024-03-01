@@ -155,7 +155,7 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
                                 target={targetRef}
                                 value={value}
                                 contained
-                                shouldFlip={false}
+                                shouldFlip
                             >
                                 {!isAtRootLevel && (
                                     <DropdownHeader
