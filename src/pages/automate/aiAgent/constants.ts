@@ -43,5 +43,5 @@ export const DEFAULT_STORE_CONFIGURATION = {
     dryRun: false,
     isDraft: false,
     silentHandover: false,
-    ticketSampleRate: 0.3,
+    ticketSampleRate: 0,
 }
