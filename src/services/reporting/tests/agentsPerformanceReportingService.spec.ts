@@ -167,7 +167,32 @@ describe('agentsPerformanceReportingService', () => {
 
             const zipperMock = jest.spyOn(files, 'saveZippedFiles')
 
-            await saveReport(data, summaryData, period)
+            await saveReport(data, summaryData, false, period)
+
+            expect(zipperMock).toHaveBeenCalledWith(
+                {
+                    [`${period.start_datetime}_${
+                        period.end_datetime
+                    }-agents-metrics-${moment().format(DATE_TIME_FORMAT)}.csv`]:
+                        fakeReport1,
+                },
+                `${period.start_datetime}_${
+                    period.end_datetime
+                }-agents-metrics-${moment().format(DATE_TIME_FORMAT)}`
+            )
+        }
+    )
+
+    it.each(testCasesData)(
+        'should call saveReport with $testName with Enriched Cubes',
+        async ({data, summaryData, period}) => {
+            const fakeReport1 = 'someString'
+
+            jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport1)
+
+            const zipperMock = jest.spyOn(files, 'saveZippedFiles')
+
+            await saveReport(data, summaryData, true, period)
 
             expect(zipperMock).toHaveBeenCalledWith(
                 {

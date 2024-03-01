@@ -90,6 +90,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
         expect(saveReportMock).toHaveBeenCalledWith(
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
+            false,
             agentsMetricsReturnValue.period
         )
     })

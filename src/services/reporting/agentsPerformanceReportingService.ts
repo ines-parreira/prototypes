@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
     TicketMessagesDimension,
@@ -17,6 +18,7 @@ import {
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {
     HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
@@ -46,9 +48,33 @@ const formatMetric = {
         formatMetricValue(value, 'percent', NOT_AVAILABLE_PLACEHOLDER),
 }
 
+const getAgentMetric = (
+    agentId: number,
+    data: MetricWithDecile,
+    agentIdField:
+        | TicketDimension.AssigneeUserId
+        | TicketMessagesDimension.FirstHelpdeskMessageUserId
+        | HelpdeskMessageMember.SenderId
+        | HelpdeskMessageDimension.SenderId,
+    metricField: `${
+        | HelpdeskMessageCubeWithJoins['dimensions']
+        | HelpdeskMessageCubeWithJoins['measures']}`
+) => {
+    const metricValue = (
+        data.data?.allData as {
+            [Property in
+                | HelpdeskMessageCubeWithJoins['dimensions']
+                | HelpdeskMessageCubeWithJoins['measures']]: string
+        }[]
+    ).find((item) => Number(item[agentIdField]) === agentId)?.[metricField]
+
+    return typeof metricValue === 'string' ? Number(metricValue) : metricValue
+}
+
 export const saveReport = async (
-    data: AgentsPerformanceReportData<MetricWithDecile>,
+    data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
+    useEnrichedCubes: boolean,
     period?: Period
 ) => {
     const {
@@ -63,39 +89,43 @@ export const saveReport = async (
         oneTouchTicketsMetric,
     } = data
 
-    const getAgentMetric = (
-        agentId: number,
-        data: MetricWithDecile,
-        accessItem: `${
-            | HelpdeskMessageCubeWithJoins['dimensions']
-            | HelpdeskMessageCubeWithJoins['measures']}`
-    ) => {
-        const metricValue = (
-            data.data?.allData as {
-                [Property in
-                    | HelpdeskMessageCubeWithJoins['dimensions']
-                    | HelpdeskMessageCubeWithJoins['measures']]: string
-            }[]
-        ).find(
-            (item) =>
-                Number(item[TicketDimension.AssigneeUserId]) === agentId ||
-                Number(
-                    item[TicketMessagesDimension.FirstHelpdeskMessageUserId]
-                ) === agentId ||
-                Number(item[HelpdeskMessageMember.SenderId]) === agentId
-        )?.[accessItem]
-
-        return typeof metricValue === 'string'
-            ? Number(metricValue)
-            : metricValue
-    }
+    const AssigneeUserId = useEnrichedCubes
+        ? renameMemberEnriched(TicketDimension.AssigneeUserId)
+        : TicketDimension.AssigneeUserId
+    const AvgSurveyScore = useEnrichedCubes
+        ? renameMemberEnriched(TicketSatisfactionSurveyMeasure.AvgSurveyScore)
+        : TicketSatisfactionSurveyMeasure.AvgSurveyScore
+    const FirstHelpdeskMessageUserId = useEnrichedCubes
+        ? renameMemberEnriched(
+              TicketMessagesDimension.FirstHelpdeskMessageUserId
+          )
+        : TicketMessagesDimension.FirstHelpdeskMessageUserId
+    const MedianFirstResponseTime = useEnrichedCubes
+        ? renameMemberEnriched(TicketMessagesMeasure.MedianFirstResponseTime)
+        : TicketMessagesMeasure.MedianFirstResponseTime
+    const MedianResolutionTime = useEnrichedCubes
+        ? renameMemberEnriched(TicketMessagesMeasure.MedianResolutionTime)
+        : TicketMessagesMeasure.MedianResolutionTime
+    const TicketCount = useEnrichedCubes
+        ? renameMemberEnriched(TicketMeasure.TicketCount)
+        : TicketMeasure.TicketCount
+    const SenderId = useEnrichedCubes
+        ? renameMemberEnriched(HelpdeskMessageDimension.SenderId)
+        : HelpdeskMessageDimension.SenderId
+    const HelpdeskTicketCount = useEnrichedCubes
+        ? renameMemberEnriched(HelpdeskMessageMeasure.TicketCount)
+        : HelpdeskMessageMeasure.TicketCount
+    const MessageCount = useEnrichedCubes
+        ? renameMemberEnriched(HelpdeskMessageMeasure.MessageCount)
+        : HelpdeskMessageMeasure.MessageCount
 
     const getCustomerSatisfactionAgentMetric = (agentId: number) =>
         formatMetric.decimal(
             getAgentMetric(
                 agentId,
                 customerSatisfactionMetric,
-                TicketSatisfactionSurveyMeasure.AvgSurveyScore
+                AssigneeUserId,
+                AvgSurveyScore
             )
         )
 
@@ -103,14 +133,16 @@ export const saveReport = async (
         getAgentMetric(
             agentId,
             medianFirstResponseTimeMetric,
-            TicketMessagesMeasure.MedianFirstResponseTime
+            FirstHelpdeskMessageUserId,
+            MedianFirstResponseTime
         ) || NOT_AVAILABLE_PLACEHOLDER
 
     const getMedianResolutionTimeAgentMetric = (agentId: number) =>
         getAgentMetric(
             agentId,
             medianResolutionTimeMetric,
-            TicketMessagesMeasure.MedianResolutionTime
+            AssigneeUserId,
+            MedianResolutionTime
         ) || NOT_AVAILABLE_PLACEHOLDER
 
     const getClosedTicketsMetricAgentMetric = (agentId: number) =>
@@ -118,7 +150,8 @@ export const saveReport = async (
             getAgentMetric(
                 agentId,
                 closedTicketsMetric,
-                TicketMeasure.TicketCount
+                AssigneeUserId,
+                TicketCount
             )
         )
 
@@ -127,7 +160,8 @@ export const saveReport = async (
             getAgentMetric(
                 agentId,
                 percentageOfClosedTicketsMetric,
-                TicketMeasure.TicketCount
+                AssigneeUserId,
+                TicketCount
             )
         )
 
@@ -136,17 +170,14 @@ export const saveReport = async (
             getAgentMetric(
                 agentId,
                 ticketsRepliedMetric,
-                HelpdeskMessageMeasure.TicketCount
+                SenderId,
+                HelpdeskTicketCount
             )
         )
 
     const getMessagesSentAgentMetric = (agentId: number) =>
         formatMetric.decimal(
-            getAgentMetric(
-                agentId,
-                messagesSentMetric,
-                HelpdeskMessageMeasure.MessageCount
-            )
+            getAgentMetric(agentId, messagesSentMetric, SenderId, MessageCount)
         )
 
     const getOneTouchTicketsAgentMetric = (agentId: number) =>
@@ -154,7 +185,8 @@ export const saveReport = async (
             getAgentMetric(
                 agentId,
                 oneTouchTicketsMetric,
-                TicketMeasure.TicketCount
+                AssigneeUserId,
+                TicketCount
             )
         )
 
