@@ -12,11 +12,13 @@ import css from './StatsPage.less'
 type Props = {
     children: ReactNode
     filters?: ReactNode
+    headerCanduId?: string
 } & ComponentProps<typeof HeaderTitle>
 
 export default function StatsPage({
     children,
     filters,
+    headerCanduId,
     ...headerTitleProps
 }: Props) {
     const ref = useRef(null)
@@ -27,7 +29,7 @@ export default function StatsPage({
             <div
                 ref={ref}
                 className={css.header}
-                data-candu-id="stat-header-container"
+                data-candu-id={headerCanduId || 'stat-header-container'}
             >
                 <PageHeader
                     title={<HeaderTitle {...headerTitleProps} />}

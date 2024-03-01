@@ -2,6 +2,7 @@ import React, {ReactNode, useRef, useState} from 'react'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import classnames from 'classnames'
 import {useDrag} from 'react-dnd'
+import _kebabCase from 'lodash/kebabCase'
 
 import navbarCss from 'assets/css/navbar.less'
 
@@ -64,7 +65,10 @@ export default function NavbarBlock({
         >
             <div className={classnames(navbarCss.category, className)}>
                 <h4 ref={categoryRef} className={navbarCss['category-title']}>
-                    <div className={css.title}>
+                    <div
+                        className={css.title}
+                        data-candu-id={`navbar-block-${_kebabCase(title)}`}
+                    >
                         {icon && (
                             <i
                                 className={classnames(

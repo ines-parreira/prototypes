@@ -53,7 +53,9 @@ const WorkflowTemplatesView = ({
                     </Link>
                 </div>
 
-                <h1 className={css.title}>Flow templates</h1>
+                <h1 className={css.title} data-candu-id="flow-templates">
+                    Flow templates
+                </h1>
 
                 <div className={css.description}>
                     Start with a Flow template that you can customize to fit

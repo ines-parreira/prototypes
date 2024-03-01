@@ -6,6 +6,7 @@ exports[`<TicketSubmitButtons /> should render buttons with a filled ticket 1`] 
 >
   <div
     class="buttons"
+    data-candu-id="ticket-send-and-close-buttons"
     id="submit-button-div"
   >
     <button

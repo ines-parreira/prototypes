@@ -19,6 +19,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             aria-expanded="false"
             aria-haspopup="true"
             class="dropdown-toggle btn btn-transparent"
+            data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
@@ -172,6 +173,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-flows"
           >
             <a
               class="link"
@@ -187,6 +189,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-quick-responses"
           >
             <a
               class="link"
@@ -202,6 +205,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-order-management"
           >
             <a
               class="link"
@@ -217,6 +221,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-article-recommendation"
           >
             <a
               class="link"
@@ -232,6 +237,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-connected-channels"
           >
             <a
               class="link"
@@ -247,6 +253,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-train-my-ai"
           >
             <a
               class="link"
@@ -383,6 +390,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       />
       <button
         class="dropdown-toggle dropdown-toggle-dropup"
+        data-candu-id="navbar-user-menu"
       >
         <div>
           Alex Plugaru
@@ -440,6 +448,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             aria-expanded="false"
             aria-haspopup="true"
             class="dropdown-toggle btn btn-transparent"
+            data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
@@ -641,6 +650,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-order-management"
           >
             <a
               class="link"
@@ -680,6 +690,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-connected-channels"
           >
             <a
               class="link"
@@ -695,6 +706,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-train-my-ai"
           >
             <a
               class="link"
@@ -720,6 +732,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       />
       <button
         class="dropdown-toggle dropdown-toggle-dropup"
+        data-candu-id="navbar-user-menu"
       >
         <div>
           Alex Plugaru
@@ -777,6 +790,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             aria-expanded="false"
             aria-haspopup="true"
             class="dropdown-toggle btn btn-transparent"
+            data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
@@ -899,6 +913,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       />
       <button
         class="dropdown-toggle dropdown-toggle-dropup"
+        data-candu-id="navbar-user-menu"
       >
         <div>
           Alex Plugaru
@@ -956,6 +971,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             aria-expanded="false"
             aria-haspopup="true"
             class="dropdown-toggle btn btn-transparent"
+            data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
@@ -1109,6 +1125,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-flows"
           >
             <a
               class="link"
@@ -1124,6 +1141,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-quick-responses"
           >
             <a
               class="link"
@@ -1139,6 +1157,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-order-management"
           >
             <a
               class="link"
@@ -1154,6 +1173,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-article-recommendation"
           >
             <a
               class="link"
@@ -1169,6 +1189,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-connected-channels"
           >
             <a
               class="link"
@@ -1184,6 +1205,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-train-my-ai"
           >
             <a
               class="link"
@@ -1320,6 +1342,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       />
       <button
         class="dropdown-toggle dropdown-toggle-dropup"
+        data-candu-id="navbar-user-menu"
       >
         <div>
           Alex Plugaru
@@ -1377,6 +1400,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             aria-expanded="false"
             aria-haspopup="true"
             class="dropdown-toggle btn btn-transparent"
+            data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
@@ -1578,6 +1602,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-order-management"
           >
             <a
               class="link"
@@ -1617,6 +1642,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-connected-channels"
           >
             <a
               class="link"
@@ -1632,6 +1658,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-train-my-ai"
           >
             <a
               class="link"
@@ -1657,6 +1684,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       />
       <button
         class="dropdown-toggle dropdown-toggle-dropup"
+        data-candu-id="navbar-user-menu"
       >
         <div>
           Alex Plugaru
@@ -1714,6 +1742,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             aria-expanded="false"
             aria-haspopup="true"
             class="dropdown-toggle btn btn-transparent"
+            data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
@@ -1836,6 +1865,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       />
       <button
         class="dropdown-toggle dropdown-toggle-dropup"
+        data-candu-id="navbar-user-menu"
       >
         <div>
           Alex Plugaru

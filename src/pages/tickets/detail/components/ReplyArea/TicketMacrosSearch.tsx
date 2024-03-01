@@ -51,6 +51,7 @@ const TicketMacrosSearch = ({
                     <IconInput
                         className={classnames(css.bolt, 'md-2 text-info')}
                         icon="bolt"
+                        data-candu-id="ticket-macros-search"
                     />
                 }
                 value={query}

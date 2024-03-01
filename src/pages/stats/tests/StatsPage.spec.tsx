@@ -20,4 +20,21 @@ describe('StatsPage', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should render custom candu header id', () => {
+        const {container} = render(
+            <StatsPage
+                title="Foo"
+                description="Foo statistic page"
+                helpUrl="http://example.com"
+                filters={<p>Filters</p>}
+                headerCanduId="foo-id"
+            >
+                Children
+            </StatsPage>
+        )
+        expect(
+            container.querySelector(`div[data-candu-id="foo-id"]`)
+        ).toBeInTheDocument()
+    })
 })

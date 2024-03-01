@@ -2,6 +2,7 @@ import {flatMap} from 'lodash'
 import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import {useLocation} from 'react-router-dom'
+import _kebabCase from 'lodash/kebabCase'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import css from 'assets/css/navbar.less'
@@ -329,6 +330,9 @@ const SettingsNavbar = () => {
                                         css['link-wrapper'],
                                         css.isNested
                                     )}
+                                    data-candu-id={`settings-link-${_kebabCase(
+                                        computedText
+                                    )}`}
                                 >
                                     <SettingsNavbarLink
                                         to={to}
@@ -360,7 +364,11 @@ const SettingsNavbar = () => {
                 }
 
                 return (
-                    <div className={css.category} key={index}>
+                    <div
+                        className={css.category}
+                        key={index}
+                        data-candu-id={`settings-category-${_kebabCase(name)}`}
+                    >
                         <h4 className={css['category-title']}>
                             <i
                                 className={classnames(

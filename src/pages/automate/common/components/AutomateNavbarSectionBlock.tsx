@@ -31,9 +31,15 @@ type Props = {
     onToggle: () => void
     name: string
     isExpanded: boolean
+    shouldRenderCanduIds: boolean
 }
 const FROM_LOCATION = 'automate-left-menu'
-const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
+const AutomateNavbarSectionBlock = ({
+    shopType,
+    shopName,
+    shouldRenderCanduIds,
+    ...props
+}: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const showAiAgentSettings: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSettings]
@@ -85,6 +91,9 @@ const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
                             cssNavbar['link-wrapper'],
                             cssNavbar.isNested
                         )}
+                        {...(shouldRenderCanduIds && {
+                            ['data-candu-id']: 'automate-link-flows',
+                        })}
                     >
                         <NavbarLink
                             to={{
@@ -102,6 +111,9 @@ const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
                             cssNavbar['link-wrapper'],
                             cssNavbar.isNested
                         )}
+                        {...(shouldRenderCanduIds && {
+                            ['data-candu-id']: 'automate-link-quick-responses',
+                        })}
                     >
                         <NavbarLink
                             to={{
@@ -139,6 +151,9 @@ const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
                         cssNavbar['link-wrapper'],
                         cssNavbar.isNested
                     )}
+                    {...(shouldRenderCanduIds && {
+                        ['data-candu-id']: 'automate-link-order-management',
+                    })}
                 >
                     <NavbarLink
                         to={{
@@ -158,6 +173,10 @@ const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
                         cssNavbar['link-wrapper'],
                         cssNavbar.isNested
                     )}
+                    {...(shouldRenderCanduIds && {
+                        ['data-candu-id']:
+                            'automate-link-article-recommendation',
+                    })}
                 >
                     <NavbarLink
                         to={{
@@ -185,6 +204,9 @@ const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
                     cssNavbar['link-wrapper'],
                     cssNavbar.isNested
                 )}
+                {...(shouldRenderCanduIds && {
+                    ['data-candu-id']: 'automate-link-connected-channels',
+                })}
             >
                 <NavbarLink
                     to={{
@@ -200,6 +222,9 @@ const AutomateNavbarSectionBlock = ({shopType, shopName, ...props}: Props) => {
                     cssNavbar['link-wrapper'],
                     cssNavbar.isNested
                 )}
+                {...(shouldRenderCanduIds && {
+                    ['data-candu-id']: 'automate-link-train-my-ai',
+                })}
             >
                 <NavbarLink
                     to={{

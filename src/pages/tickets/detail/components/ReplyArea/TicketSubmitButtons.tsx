@@ -119,7 +119,11 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
                 'd-flex align-items-center justify-content-between'
             )}
         >
-            <div className={classnames(css.buttons)} id="submit-button-div">
+            <div
+                className={classnames(css.buttons)}
+                id="submit-button-div"
+                data-candu-id="ticket-send-and-close-buttons"
+            >
                 {!showConfirm ? (
                     <Button
                         id="submit-button"

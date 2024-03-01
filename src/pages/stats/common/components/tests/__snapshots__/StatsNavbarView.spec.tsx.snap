@@ -12,6 +12,7 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <div
         class="title"
+        data-candu-id="navbar-block-live"
       >
         <i
           class="material-icons icon"

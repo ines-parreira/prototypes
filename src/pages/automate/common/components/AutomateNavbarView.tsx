@@ -90,6 +90,13 @@ const AutomateNavbarView = () => {
         setCollapsedSections(newCollapsedSections)
     }
 
+    const firstShopifyIntegration = useMemo(
+        () =>
+            sortedStoreIntegrations.find(
+                (integration) => integration.type === IntegrationType.Shopify
+            ),
+        [sortedStoreIntegrations]
+    )
     return (
         <div className={navbarCss.category}>
             {sortedStoreIntegrations.map((storeIntegration) => {
@@ -97,6 +104,8 @@ const AutomateNavbarView = () => {
                 const shopName =
                     getShopNameFromStoreIntegration(storeIntegration)
                 const key: SectionKey = `${shopType}:${shopName}`
+                const isFirstShopifyIntegration =
+                    firstShopifyIntegration?.id === storeIntegration.id
 
                 return (
                     <AutomateNavbarSectionBlock
@@ -111,6 +120,7 @@ const AutomateNavbarView = () => {
                             !!collapsedSections &&
                             !collapsedSections.includes(key)
                         }
+                        shouldRenderCanduIds={isFirstShopifyIntegration}
                     />
                 )
             })}

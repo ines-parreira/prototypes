@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {ReactNode} from 'react'
+import _kebabCase from 'lodash/kebabCase'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
@@ -49,12 +50,16 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
     const automateRoutes: {
         label: ReactNode
         to: string
+        text: string
     }[] = [
         {
             label: isNewAutomateEnabled
                 ? PAGE_TITLE_PERFORMANCE_BY_FEATURES
                 : PAGE_TITLE_OVERVIEW,
             to: PERFORMANCE_BY_FEATURE_PATH,
+            text: isNewAutomateEnabled
+                ? PAGE_TITLE_PERFORMANCE_BY_FEATURES
+                : PAGE_TITLE_OVERVIEW,
         },
     ]
     isNewAutomateEnabled &&
@@ -73,6 +78,7 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                 </>
             ),
             to: OVERVIEW_PATH,
+            text: PAGE_TITLE_OVERVIEW,
         })
     return (
         <div className={cssNavbar.menu}>
@@ -95,6 +101,9 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                                 cssNavbar['link-wrapper'],
                                 cssNavbar.isNested
                             )}
+                            data-candu-id={`statistics-automate-link-${_kebabCase(
+                                automateRoute.text
+                            )}`}
                         >
                             <NavbarLink
                                 {...commonNavLinkProps}

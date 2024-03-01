@@ -32,6 +32,7 @@ exports[`<HomePageLink /> should render the link if candu has some nodes injecte
     />
     <a
       class="link link"
+      data-candu-id="home-page-button"
       data-testid="home-page-link"
       href="/app/home"
     >

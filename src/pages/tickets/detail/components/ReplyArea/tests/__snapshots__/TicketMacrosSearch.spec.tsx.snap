@@ -12,6 +12,7 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch focused 1`] = `
     >
       <i
         class="material-icons icon bolt md-2 text-info"
+        data-candu-id="ticket-macros-search"
       >
         bolt
       </i>
@@ -52,6 +53,7 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch unfocused 1`] =
     >
       <i
         class="material-icons icon bolt md-2 text-info"
+        data-candu-id="ticket-macros-search"
       >
         bolt
       </i>

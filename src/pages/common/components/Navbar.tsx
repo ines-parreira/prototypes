@@ -19,6 +19,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 import * as Sentry from '@sentry/react'
+import _kebabCase from 'lodash/kebabCase'
 
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
@@ -394,6 +395,11 @@ export class Navbar extends Component<Props, State> {
                             <DropdownToggle
                                 color="transparent"
                                 className={css['dropdown-toggle']}
+                                {...(this.state.title && {
+                                    ['data-candu-id']: `navbar-section-${_kebabCase(
+                                        this.state.title!
+                                    )}`,
+                                })}
                             >
                                 <div>
                                     {this.state.title || ''}
@@ -491,6 +497,7 @@ export class Navbar extends Component<Props, State> {
                             {[css.active]: this.state.bottomDropdownOpen}
                         )}
                         onClick={this._toggleBottomDropdown}
+                        data-candu-id="navbar-user-menu"
                     >
                         <div>
                             {currentUser.get('name') ||

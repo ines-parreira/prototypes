@@ -32,6 +32,7 @@ const AutomateNavbar = () => {
                                 navbarCss['link-wrapper'],
                                 automateNavbarCss.automate
                             )}
+                            data-candu-id="automate-link-my-automate"
                         >
                             <NavbarLink to="/app/automation" exact>
                                 <span>

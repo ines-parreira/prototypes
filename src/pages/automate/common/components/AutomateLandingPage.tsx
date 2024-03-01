@@ -104,7 +104,7 @@ const AutomateLandingPage = () => {
     }
 
     return (
-        <StatsPage title="Automate">
+        <StatsPage title="Automate" headerCanduId="header-my-automate">
             <DashboardSection
                 title="Impact"
                 titleExtra={

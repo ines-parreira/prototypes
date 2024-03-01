@@ -92,6 +92,7 @@ export default function StatsNavbarView() {
                             cssNavbar['link-wrapper'],
                             cssNavbar.isNested
                         )}
+                        data-candu-id="statistics-link-busiest-times-of-days"
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
@@ -105,6 +106,7 @@ export default function StatsNavbarView() {
                             cssNavbar['link-wrapper'],
                             cssNavbar.isNested
                         )}
+                        data-candu-id="statistics-link-channels"
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
@@ -148,6 +150,7 @@ export default function StatsNavbarView() {
                                 cssNavbar['link-wrapper'],
                                 cssNavbar.isNested
                             )}
+                            data-candu-id="statistics-link-help-center"
                         >
                             <NavbarLink
                                 {...COMMON_NAV_LINK_PROPS}
@@ -209,6 +212,7 @@ export default function StatsNavbarView() {
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/intents"
+                            data-candu-id="statistics-link-intents"
                         >
                             Intents
                         </NavbarLink>
