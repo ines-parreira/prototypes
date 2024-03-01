@@ -24,6 +24,7 @@ import {
     NotSpamNorTrashedTicketsFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
+import {subtractDaysFromDate} from 'utils/date'
 
 describe('oneTouchTicketsPerAgentQueryFactory', () => {
     const periodStart = moment()
@@ -71,6 +72,30 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.tags?.map(String),
+                },
+                {
+                    member: TicketDimension.CreatedDatetime,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(
+                            subtractDaysFromDate(
+                                statsFilters.period.start_datetime,
+                                180
+                            )
+                        ),
+                    ],
+                },
+                {
+                    member: TicketMessagesMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(
+                            subtractDaysFromDate(
+                                statsFilters.period.start_datetime,
+                                180
+                            )
+                        ),
+                    ],
                 },
             ],
             measures: [TicketMeasure.TicketCount],
@@ -125,6 +150,30 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.tags?.map(String),
+                },
+                {
+                    member: TicketDimension.CreatedDatetime,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(
+                            subtractDaysFromDate(
+                                statsFilters.period.start_datetime,
+                                180
+                            )
+                        ),
+                    ],
+                },
+                {
+                    member: TicketMessagesMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(
+                            subtractDaysFromDate(
+                                statsFilters.period.start_datetime,
+                                180
+                            )
+                        ),
+                    ],
                 },
             ],
             measures: [TicketMeasure.TicketCount],
