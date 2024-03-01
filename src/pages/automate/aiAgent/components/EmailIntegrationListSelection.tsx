@@ -71,7 +71,7 @@ export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelecti
                     floating={floatingRef}
                     label={selectedEmailLabels}
                     onToggle={setIsDropdownOpened}
-                    placeholder="Add at least 1 team member"
+                    placeholder="Select one or more email addresses"
                     ref={targetRef}
                 >
                     <SelectInputBoxContext.Consumer>
