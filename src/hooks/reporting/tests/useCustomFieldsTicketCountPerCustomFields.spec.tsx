@@ -348,7 +348,7 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
         }
 
         it('should calculate percentages and deciles', () => {
-            const result = enrichWithPercentagesAndDeciles(input)
+            const result = enrichWithPercentagesAndDeciles(input, VALUE_FIELD)
             const maximumTopLevelValue = Math.max(
                 ...[...tag1DailyValues, ...tag2DailyValues]
             )

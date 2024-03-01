@@ -92,7 +92,8 @@ export const useCustomFieldsTicketCountPerCustomFields = (
                           order,
                           breakdownField,
                           valueField
-                      )
+                      ),
+                      valueField
                   )
                 : [],
         [timeSeriesData, order, breakdownField, valueField]
@@ -108,6 +109,7 @@ export const useCustomFieldsTicketCountPerCustomFields = (
 
 export function enrichWithPercentagesAndDeciles(
     data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[],
+    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     totalsSum?: number,
     topLevelTimeSeriesSums?: TimeSeriesDataItem[],
     totalsMax?: number
@@ -115,7 +117,7 @@ export function enrichWithPercentagesAndDeciles(
     const currentLevelTotalSum =
         totalsSum ||
         data.reduce(
-            (acc, currentValue) => acc + (currentValue[VALUE_FIELD] || 0),
+            (acc, currentValue) => acc + (currentValue[valueField] || 0),
             0
         )
     const columnsSum = _zip(...data.map((item) => item.timeSeries))
@@ -137,9 +139,9 @@ export function enrichWithPercentagesAndDeciles(
 
     return data.map((item) => ({
         ...item,
-        percentage: ((item[VALUE_FIELD] || 0) / currentLevelTotalSum) * 100,
-        decile: calculateDecile(item[VALUE_FIELD], currentLevelTotalSum),
-        totalsDecile: calculateDecile(item[VALUE_FIELD], currentLevelMax),
+        percentage: ((item[valueField] || 0) / currentLevelTotalSum) * 100,
+        decile: calculateDecile(item[valueField], currentLevelTotalSum),
+        totalsDecile: calculateDecile(item[valueField], currentLevelMax),
         timeSeries: item.timeSeries.map((item, index) => ({
             ...item,
             percentage:
@@ -151,6 +153,7 @@ export function enrichWithPercentagesAndDeciles(
         })),
         children: enrichWithPercentagesAndDeciles(
             item.children,
+            valueField,
             currentLevelTotalSum,
             sums,
             currentLevelMax
