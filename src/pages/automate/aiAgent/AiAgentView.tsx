@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {List} from 'immutable'
+import _ from 'lodash'
 import {useUpsertStoreConfiguration} from '../../../hooks/aiAgent/useUpsertStoreConfiguration'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
@@ -12,7 +13,7 @@ import {
     getCurrentAccountState,
     getCurrentDomain,
 } from '../../../state/currentAccount/selectors'
-import {StoreConfiguration} from '../../../models/aiAgent/types'
+import {StoreConfiguration, Tag} from '../../../models/aiAgent/types'
 import Button from '../../common/components/button/Button'
 import {getHelpCenterList} from '../../../state/entities/helpCenter/helpCenters'
 import Label from '../../common/forms/Label/Label'
@@ -36,6 +37,7 @@ import {
     DEFAULT_STORE_CONFIGURATION,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
+import {AutoTagList} from './components/AutoTagList'
 
 export const AiAgentView = () => {
     const {shopName} = useParams<{shopName: string}>()
@@ -76,6 +78,11 @@ export const AiAgentView = () => {
 
     const [storeConfiguration, setStoreConfiguration] =
         useState<StoreConfiguration>(defaultStoreConfiguration)
+    const [updatedTags, setUpdatedTags] = useState<{
+        tags: Tag[]
+        tagsValid: boolean
+        hasUpdated: boolean
+    }>({tags: [], tagsValid: true, hasUpdated: false})
     const [isDirty, setIsDirty] = useState<boolean>(false)
 
     const toggleAiAgent = (value: boolean) => {
@@ -179,9 +186,27 @@ export const AiAgentView = () => {
         setIsDirty(true)
     }
 
+    const handleTagUpdate = (tags: Tag[]) => {
+        const hasInputError = tags.some((tag) => {
+            return !tag.name.trim().length || !tag.description.trim().length
+        })
+
+        if (!_.isEqual(tags, storeConfiguration.tags)) {
+            setIsDirty(true)
+            setUpdatedTags({tags, tagsValid: !hasInputError, hasUpdated: true})
+        }
+    }
+
     const saveStoreConfiguration = async () => {
         await mutateStoreConfiguration([
-            {accountDomain, storeName: shopName, storeConfiguration},
+            {
+                accountDomain,
+                storeName: shopName,
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    tags: updatedTags.tags,
+                },
+            },
         ])
         setIsDirty(false)
     }
@@ -195,6 +220,14 @@ export const AiAgentView = () => {
             setIsDirty(false)
         }
     }, [storeConfigurationResponse])
+
+    useEffect(() => {
+        setUpdatedTags({
+            tags: storeConfiguration.tags,
+            tagsValid: true,
+            hasUpdated: false,
+        })
+    }, [storeConfiguration.tags])
 
     return (
         <AutomateView title={AI_AGENT} isLoading={storeConfigurationIsLoading}>
@@ -291,9 +324,19 @@ export const AiAgentView = () => {
                         placeholder=" "
                     />
                 </div>
+                <div className={css.autoTagSection}>
+                    <HeaderTitle className={css.header} title="Auto Tag" />
+                    <AutoTagList
+                        tags={updatedTags.tags}
+                        onTagUpdate={handleTagUpdate}
+                    />
+                </div>
                 <Button
                     onClick={saveStoreConfiguration}
-                    isDisabled={!isDirty}
+                    isDisabled={
+                        !isDirty ||
+                        (updatedTags.hasUpdated && !updatedTags.tagsValid)
+                    }
                     className="mb-3"
                 >
                     Save Changes

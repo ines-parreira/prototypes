@@ -52,7 +52,7 @@ export type StoreConfiguration = {
     ticketSampleRate: number
 }
 
-type Tag = {
+export type Tag = {
     name: string
     description: string
 }
