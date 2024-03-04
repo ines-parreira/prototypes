@@ -84,6 +84,7 @@ export enum FeatureFlagKey {
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
+    ShopifyMetafields = 'shopify-metafields',
     SplitTicketView = 'split-ticket-view',
     TicketNavigationArrows = 'ticket-navigation-arrows',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
