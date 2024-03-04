@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {List} from 'immutable'
-import _ from 'lodash'
+import {isEqual} from 'lodash'
 import {useUpsertStoreConfiguration} from '../../../hooks/aiAgent/useUpsertStoreConfiguration'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
@@ -191,9 +191,11 @@ export const AiAgentView = () => {
             return !tag.name.trim().length || !tag.description.trim().length
         })
 
-        if (!_.isEqual(tags, storeConfiguration.tags)) {
+        if (!isEqual(tags, storeConfiguration.tags)) {
             setIsDirty(true)
             setUpdatedTags({tags, tagsValid: !hasInputError, hasUpdated: true})
+        } else {
+            setUpdatedTags({tags, tagsValid: !hasInputError, hasUpdated: false})
         }
     }
 

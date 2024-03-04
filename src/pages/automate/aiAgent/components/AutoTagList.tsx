@@ -1,6 +1,6 @@
 import React from 'react'
 import {Button} from 'reactstrap'
-import _ from 'lodash'
+import {map, cloneDeep} from 'lodash'
 import {Tag} from 'models/aiAgent/types'
 import {AutoTagItem} from './AutoTagInput'
 import css from './AutoTagList.less'
@@ -12,7 +12,6 @@ interface IProps {
 
 export function AutoTagList(props: IProps) {
     const {tags, onTagUpdate} = props
-
     return (
         <div>
             {!!tags.length && (
@@ -30,7 +29,7 @@ export function AutoTagList(props: IProps) {
                         onInputUpdate={(value) => {
                             // This is specific to the usage of lodash. I did not find something to get around it
                             // eslint-disable-next-line @typescript-eslint/unbound-method
-                            const newItems = _.map(tags, _.cloneDeep)
+                            const newItems = map(tags, cloneDeep)
                             newItems[index].name = value
                             onTagUpdate(newItems)
                         }}
@@ -42,7 +41,7 @@ export function AutoTagList(props: IProps) {
                         value={tag.description}
                         onInputUpdate={(value) => {
                             // eslint-disable-next-line @typescript-eslint/unbound-method
-                            const newItems = _.map(tags, _.cloneDeep)
+                            const newItems = map(tags, cloneDeep)
                             newItems[index].description = value
                             onTagUpdate(newItems)
                         }}
@@ -51,7 +50,8 @@ export function AutoTagList(props: IProps) {
                     <i
                         className="material-icons"
                         onClick={() => {
-                            const newItems = [...tags.map((tag) => ({...tag}))]
+                            // eslint-disable-next-line @typescript-eslint/unbound-method
+                            const newItems = map(tags, cloneDeep)
                             newItems.splice(index, 1)
                             onTagUpdate(newItems)
                         }}
