@@ -1,0 +1,28 @@
+import {useMemo} from 'react'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {useListChannelConnections} from 'models/convert/channelConnection/queries'
+import {ChannelConnectionChannel} from 'models/convert/channelConnection/types'
+
+export const useGetOnboardingStatusMap = () => {
+    const isSubscriber = useIsConvertSubscriber()
+
+    const {data: channelConnections} = useListChannelConnections({
+        channel: ChannelConnectionChannel.Widget,
+    })
+
+    return useMemo(() => {
+        const list = channelConnections?.data
+        const map: {[key: string]: boolean} = {}
+        if (!!list && Array.isArray(list)) {
+            list.map((channelConnection) => {
+                if (!!channelConnection.external_id) {
+                    map[channelConnection.external_id] = Boolean(
+                        (isSubscriber && channelConnection.is_onboarded) ||
+                            (!isSubscriber && channelConnection.is_setup)
+                    )
+                }
+            })
+        }
+        return map
+    }, [isSubscriber, channelConnections])
+}

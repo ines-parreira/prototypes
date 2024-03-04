@@ -12,6 +12,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
 import navbarCss from 'assets/css/navbar.less'
 import {useGetSortedIntegrations} from 'pages/convert/common/hooks/useGetSortedIntegrations'
+import {useGetOnboardingStatusMap} from '../../../channelConnections/hooks/useGetOnboardingStatusMap'
 import ConvertNavbarSectionBlock from './ConvertNavbarSectionBlock'
 
 type SectionKey = `${IntegrationType.GorgiasChat}:${string}`
@@ -26,6 +27,7 @@ const ConvertNavbarView = () => {
     const convertPathPrefix = `/app/convert/${CONVERT_ROUTING_PARAM}`
     const match = useRouteMatch<{id: string}>({
         path: [
+            `${convertPathPrefix}/setup`,
             `${convertPathPrefix}/performance`,
             `${convertPathPrefix}/campaigns`,
             `${convertPathPrefix}/click-tracking`,
@@ -33,6 +35,7 @@ const ConvertNavbarView = () => {
         ],
         exact: false,
     })
+    const onboardingMap = useGetOnboardingStatusMap()
 
     const sortedIntegrations = useGetSortedIntegrations()
     const initialCollapsedSections = useMemo(
@@ -101,6 +104,10 @@ const ConvertNavbarView = () => {
                         isExpanded={
                             !!collapsedSections &&
                             !collapsedSections.includes(key)
+                        }
+                        isOnboarded={
+                            !!integration.meta.app_id &&
+                            (onboardingMap[integration.meta.app_id] ?? false)
                         }
                     />
                 )

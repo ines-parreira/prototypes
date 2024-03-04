@@ -164,6 +164,7 @@ import TrainMyAiViewContainer from './automate/trainMyAi/TrainMyAiViewContainer'
 import AutomateRoute from './automate/common/components/AutomateRoute'
 import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrationApi'
 import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCenterCreationWizard'
+import ConvertOnboardingView from './convert/common/components/ConvertOnboardingView'
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
@@ -1702,11 +1703,26 @@ export function ConvertContent() {
         <Switch>
             <Route
                 exact
+                path={`${path}/setup`}
+                component={memoizedWithUserRoleRequired(
+                    ConvertOnboardingView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
+                path={`${convertPathPrefix}/setup`}
+                component={memoizedWithUserRoleRequired(
+                    ConvertOnboardingView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
                 path={`${convertPathPrefix}/performance`}
                 component={memoizedWithUserRoleRequired(
                     RevenueCampaignsStats as any,
-                    ADMIN_ROLE,
-                    PageSection.Users
+                    ADMIN_ROLE
                 )}
             />
             <Route
@@ -1714,8 +1730,7 @@ export function ConvertContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     CampaignStatsPaywallView as any,
-                    ADMIN_ROLE,
-                    PageSection.Users
+                    ADMIN_ROLE
                 )}
             />
             <Route
@@ -1723,8 +1738,7 @@ export function ConvertContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     ClickTrackingSettingsView as any,
-                    ADMIN_ROLE,
-                    PageSection.Users
+                    ADMIN_ROLE
                 )}
             />
             <Route
@@ -1732,8 +1746,7 @@ export function ConvertContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     ClickTrackingPaywallView as any,
-                    ADMIN_ROLE,
-                    PageSection.Users
+                    ADMIN_ROLE
                 )}
             />
             <Route
@@ -1741,8 +1754,7 @@ export function ConvertContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     BundlesView as any,
-                    ADMIN_ROLE,
-                    PageSection.Users
+                    ADMIN_ROLE
                 )}
             />
             <Route
@@ -1750,8 +1762,7 @@ export function ConvertContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     BundleInstallView as any,
-                    ADMIN_ROLE,
-                    PageSection.Users
+                    ADMIN_ROLE
                 )}
             />
             <Route
@@ -1759,8 +1770,7 @@ export function ConvertContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     BundleDetailView as any,
-                    ADMIN_ROLE,
-                    PageSection.Users
+                    ADMIN_ROLE
                 )}
             />
 

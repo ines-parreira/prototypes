@@ -104,8 +104,10 @@ export const useGetOrCreateChannelConnection = (
             return createDataResponse as ChannelConnection | null
         }
 
-        return Array.isArray(listData) && listData.length > 0
-            ? (listData[0] as ChannelConnection)
+        return !!listData?.data &&
+            Array.isArray(listData?.data) &&
+            listData?.data.length > 0
+            ? listData?.data[0]
             : null
     }, [createTriggered, createDataResponse, listData])
 

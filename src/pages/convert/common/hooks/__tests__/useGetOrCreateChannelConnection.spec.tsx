@@ -25,7 +25,7 @@ const wrapper = ({children}: any) => (
 describe('useGetOrCreateChannelConnection', () => {
     it('should fetch the channel connection and not create a new connection when existing connections are found', () => {
         useListChannelConnectionsSpy.mockReturnValue({
-            data: [channelConnection],
+            data: axiosSuccessResponse([channelConnection]),
             isLoading: false,
             isError: false,
         } as any)
@@ -49,10 +49,6 @@ describe('useGetOrCreateChannelConnection', () => {
                     },
                 } as any),
             {wrapper}
-        )
-
-        useListChannelConnectionsSpy.mock.calls[0][1]?.onSuccess!(
-            axiosSuccessResponse([channelConnection]) as any
         )
 
         expect(useListChannelConnectionsSpy).toHaveBeenCalled()
