@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback} from 'react'
-import classnames from 'classnames'
 
 import {
     VoiceMessage,
@@ -9,13 +8,11 @@ import {
 } from 'models/integration/types'
 import {TEXT_TO_SPEECH_MAX_LENGTH} from 'models/integration/constants'
 import RadioButton from 'pages/common/components/RadioButton'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Textarea from 'pages/common/forms/TextArea'
 import {countLines} from 'utils/string'
-import {replaceAttachmentURL} from 'utils'
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 
+import VoiceRecordingInput from './VoiceRecordingInput'
 import css from './VoiceMessageField.less'
 
 type Props = {
@@ -117,7 +114,7 @@ const VoiceMessageField = ({
                     VoiceMessageType.VoiceRecording && (
                     <VoiceRecordingInput
                         voiceRecordingPath={voiceRecordingPath}
-                        handleVoiceRecordingUpload={handleVoiceRecordingUpload}
+                        onVoiceRecordingUpload={handleVoiceRecordingUpload}
                         className={css.optionContentHorizontal}
                         replaceLabel={'Replace File'}
                         uploadLabel={'Upload File'}
@@ -144,7 +141,7 @@ const VoiceMessageField = ({
             {value.voice_message_type === VoiceMessageType.VoiceRecording && (
                 <VoiceRecordingInput
                     voiceRecordingPath={voiceRecordingPath}
-                    handleVoiceRecordingUpload={handleVoiceRecordingUpload}
+                    onVoiceRecordingUpload={handleVoiceRecordingUpload}
                 />
             )}
             <TextToSpeechRadioButton
@@ -275,63 +272,6 @@ const TextToSpeechRecordingInput = ({
                         : ''
                 }
             />
-        </div>
-    )
-}
-
-type PropsVoiceRecordingInput = {
-    voiceRecordingPath: Maybe<string>
-    handleVoiceRecordingUpload: (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => Promise<void>
-    uploadLabel?: string
-    replaceLabel?: string
-    className?: string
-}
-
-const VoiceRecordingInput = ({
-    voiceRecordingPath,
-    handleVoiceRecordingUpload,
-    uploadLabel = 'Select file',
-    replaceLabel = 'Select file',
-    className = css.optionContent,
-}: PropsVoiceRecordingInput) => {
-    const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
-
-    const handleUploadButtonClick = () => {
-        voiceRecordingFileInput?.current?.click()
-    }
-    return (
-        <div className={className}>
-            {voiceRecordingPath && (
-                // eslint-disable-next-line jsx-a11y/media-has-caption
-                <audio
-                    controls
-                    src={replaceAttachmentURL(voiceRecordingPath)}
-                    aria-label={'voice-recording'}
-                />
-            )}
-
-            <div>
-                <input
-                    className={'d-none'}
-                    type="file"
-                    accept=".mp3"
-                    ref={voiceRecordingFileInput}
-                    onChange={handleVoiceRecordingUpload}
-                />
-                <Button
-                    intent="secondary"
-                    onClick={handleUploadButtonClick}
-                    className={classnames({
-                        [css.replaceFileButton]: !!voiceRecordingPath,
-                    })}
-                >
-                    <ButtonIconLabel icon="backup">
-                        {voiceRecordingPath ? replaceLabel : uploadLabel}
-                    </ButtonIconLabel>
-                </Button>
-            </div>
         </div>
     )
 }
