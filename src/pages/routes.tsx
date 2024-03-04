@@ -44,7 +44,6 @@ import {
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_SETTINGS_PATH,
 } from 'pages/settings/contactForm/constants'
-import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
@@ -136,6 +135,7 @@ import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
 import {CONVERT_ROUTING_PARAM} from 'pages/convert/common/constants'
 import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
+import TicketDetailLayout from 'ticket-page/components/TicketDetailLayout'
 import {useIsConvertUiDecouplingEnabled} from './convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {
     BundlesView,
@@ -411,14 +411,7 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
             <Route
                 path={`${path}/:ticketId`}
                 exact
-                render={() => (
-                    <App
-                        content={TicketDetailContainer}
-                        navbar={TicketNavbar}
-                        infobar={TicketInfobarContainer}
-                        infobarOnMobile={true}
-                    />
-                )}
+                render={TicketDetailLayout}
             />
             <Route
                 path={`${path}/:ticketId/edit-widgets`}

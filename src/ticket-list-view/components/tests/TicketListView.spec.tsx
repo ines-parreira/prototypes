@@ -3,12 +3,16 @@ import React, {ComponentProps, ReactElement} from 'react'
 import {Virtuoso} from 'react-virtuoso'
 
 import {ticket} from 'fixtures/ticket'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useTickets from '../../hooks/useTickets'
 import {TicketPartial} from '../../types'
 import Ticket from '../Ticket'
 import TicketListView from '../TicketListView'
+
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = useAppDispatch as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
@@ -27,6 +31,7 @@ describe('<TicketListView />', () => {
     let setElement: jest.Mock
 
     beforeEach(() => {
+        useAppDispatchMock.mockReturnValue(jest.fn())
         useAppSelectorMock.mockReturnValue({
             name: 'view name',
         })

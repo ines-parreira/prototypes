@@ -1,13 +1,14 @@
 import {fireEvent, render} from '@testing-library/react'
 import React, {MouseEvent as ReactMouseEvent, ReactNode} from 'react'
 
-import {usePanels} from '../../hooks'
+import {usePanels, useScreenSize} from '../../hooks'
 import type {Config} from '../../types'
 import Panel from '../Panel'
 import Panels from '../Panels'
 
 jest.mock('../../hooks', () => ({
     usePanels: jest.fn(),
+    useScreenSize: jest.fn(),
 }))
 jest.mock(
     '../Handle',
@@ -28,6 +29,7 @@ jest.mock(
 )
 
 const usePanelsMock = usePanels as jest.Mock
+const useScreenSizeMock = useScreenSize as jest.Mock
 
 describe('Panels', () => {
     const config: Config = [[200], [Infinity]]
@@ -45,6 +47,7 @@ describe('Panels', () => {
             panelWidths: [200, 800],
             resizeStartHandlers: [resizeStartHandler1],
         })
+        useScreenSizeMock.mockReturnValue([1200, 1024])
     })
 
     it('should render a handle between each panel', () => {

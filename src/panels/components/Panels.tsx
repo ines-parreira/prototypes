@@ -8,7 +8,7 @@ import React, {
 import _isEqual from 'lodash/isEqual'
 
 import usePrevious from 'hooks/usePrevious'
-import {usePanels} from '../hooks'
+import {usePanels, useScreenSize} from '../hooks'
 import type {Config} from '../types'
 
 import Handle from './Handle'
@@ -17,10 +17,19 @@ import css from './Panels.less'
 type Props = {
     children: ReactElement | ReactElement[]
     config: Config
+    fallbackComponent?: ReactElement
+    fallbackWidth?: number
     onResize?: (widths: number[]) => void
 }
 
-export default function Panels({children, config, onResize}: Props) {
+export default function Panels({
+    children,
+    config,
+    fallbackComponent,
+    fallbackWidth,
+    onResize,
+}: Props) {
+    const [screenWidth] = useScreenSize()
     const {panelWidths, resizeStartHandlers} = usePanels(config)
     const previousPanelWidths = usePrevious(panelWidths)
 
@@ -29,6 +38,10 @@ export default function Panels({children, config, onResize}: Props) {
             onResize?.(panelWidths)
         }
     }, [panelWidths, previousPanelWidths, onResize])
+
+    if (fallbackWidth && fallbackComponent && screenWidth < fallbackWidth) {
+        return fallbackComponent
+    }
 
     return (
         <div className={css.panels}>

@@ -1,3 +1,4 @@
+import {fromJS} from 'immutable'
 import React, {
     Children,
     cloneElement,
@@ -13,7 +14,9 @@ import React, {
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {setViewActive} from 'state/views/actions'
 import {getViewPlainJS} from 'state/views/selectors'
 
 import {TICKET_HEIGHT} from '../constants'
@@ -33,6 +36,7 @@ type Props = {
 }
 
 export default function TicketListView({activeTicketId, viewId}: Props) {
+    const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
     const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
@@ -49,6 +53,10 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
     useEffect(() => {
         initialLoadedRef.current = initialLoaded
     }, [initialLoaded])
+
+    useEffect(() => {
+        dispatch(setViewActive(fromJS(view)))
+    }, [dispatch, view])
 
     const getItemContent = useCallback(
         (_index: number, ticket: TicketSummary) => (
