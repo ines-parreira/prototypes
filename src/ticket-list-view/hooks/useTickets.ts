@@ -6,7 +6,7 @@ import usePrevious from 'hooks/usePrevious'
 
 import useTicketIds from '../hooks/useTicketIds'
 import {TICKET_HEIGHT} from '../constants'
-import {TicketPartial} from '../types'
+import {SortField, TicketPartial} from '../types'
 import useElementSize from './useElementSize'
 import useScrollOffset from './useScrollOffset'
 import {SortOrder} from './useSortOrder'
@@ -87,12 +87,17 @@ export default function useTickets(
     const data = useTicketData(visibleStaleTicketIds, markUpdated, ticketId)
     const tickets = partials.map((partial) => data[partial.id] || partial)
 
+    const sortField = useMemo(
+        () => sortOrder.split(':')[0] as SortField,
+        [sortOrder]
+    )
+
     const latestDatetime = useMemo(() => {
         const lastVisiblePartial = visiblePartials[visiblePartials.length - 1]
         return lastVisiblePartial && data[lastVisiblePartial.id]
-            ? data[lastVisiblePartial.id].created_datetime
+            ? data[lastVisiblePartial.id][sortField]
             : null
-    }, [data, visiblePartials])
+    }, [data, sortField, visiblePartials])
 
     useEffect(() => {
         setLatest(endIndex, latestDatetime)
