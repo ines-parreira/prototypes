@@ -50,7 +50,7 @@ describe('<AIArticleArchiveModal />', () => {
             category: 'Test Category',
             score: 1,
             related_tickets_count: 1,
-            generated_datetime: '2021-01-01T00:00:00Z',
+            batch_datetime: '2021-01-01T00:00:00Z',
         }
 
         const ref = createRef<AIArticleArchiveModalHandle>()
@@ -71,7 +71,7 @@ describe('<AIArticleArchiveModal />', () => {
             category: 'Test Category',
             score: 1,
             related_tickets_count: 1,
-            generated_datetime: '2021-01-01T00:00:00Z',
+            batch_datetime: '2021-01-01T00:00:00Z',
         }
 
         const onArchiveMock = jest.fn()
@@ -107,7 +107,7 @@ describe('<AIArticleArchiveModal />', () => {
             category: 'Test Category',
             score: 1,
             related_tickets_count: 1,
-            generated_datetime: '2021-01-01T00:00:00Z',
+            batch_datetime: '2021-01-01T00:00:00Z',
         }
 
         const onArchiveMock = jest.fn()

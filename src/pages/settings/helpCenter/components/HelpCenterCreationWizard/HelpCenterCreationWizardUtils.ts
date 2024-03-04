@@ -29,13 +29,6 @@ import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 import {Components} from 'rest_api/help_center_api/client.generated'
-import {slugify} from '../../utils/helpCenter.utils'
-
-type HelpCenterArticleParams = {
-    article: HelpCenterArticleItem
-    locale: LocaleCode
-    shouldPublish: boolean
-}
 
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
@@ -388,37 +381,6 @@ export const findArticleByKey = (
         .flatten()
         .find((item) => item.key === key)
         .value() as HelpCenterArticleItem | undefined
-}
-
-/**
- * Map articles UI to API Help Center articles
- */
-export const mapHelpCenterArticleItemToArticle = (
-    params: HelpCenterArticleParams
-) => {
-    const {article, locale, shouldPublish} = params
-
-    if (!article.title || !article.content) return null
-
-    const hcArticle = {
-        translation: {
-            title: article.title,
-            content: article.content,
-            seo_meta: article.seo_meta || {
-                title: null,
-                description: null,
-            },
-            excerpt: '',
-            slug: slugify(article.title),
-            locale,
-            is_current: shouldPublish,
-        },
-    }
-
-    return {
-        ...hcArticle,
-        template_key: article.key,
-    }
 }
 
 export const getEnabledArticlesCount = (

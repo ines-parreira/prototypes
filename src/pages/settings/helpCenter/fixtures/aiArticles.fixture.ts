@@ -13,7 +13,7 @@ export const AIArticlesListFixture: AIArticle[] = [
         category: 'General',
         excerpt:
             'Our standard shipping time within [country/region] is [# of days] business days. Shipping charges, if applicable, will be calculated and displayed at checkout...',
-        generated_datetime: '1709110371702',
+        batch_datetime: '1709110371702',
     },
     {
         key: 'ai_Generated_2',
@@ -23,7 +23,7 @@ export const AIArticlesListFixture: AIArticle[] = [
         category: 'General',
         excerpt:
             'Returns must be initiated within [x days] of receiving your order. Items must be unused and in the original packaging...',
-        generated_datetime: '1709110371702',
+        batch_datetime: '1709110371702',
     },
     {
         key: 'ai_Generated_3',
@@ -33,7 +33,7 @@ export const AIArticlesListFixture: AIArticle[] = [
         category: 'Ordering',
         excerpt:
             'You will have the option to cancel your order within your confirmation email. You may also contact our customer service team at [email/phone #]...',
-        generated_datetime: '1709110371700',
+        batch_datetime: '1709110371700',
     },
 ]
 

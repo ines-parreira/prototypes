@@ -8,18 +8,14 @@ import {
 } from 'models/helpCenter/types'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
-import {
-    useCreateArticle,
-    useCreateArticleTranslation,
-    useUpdateArticleTranslation,
-} from 'models/helpCenter/queries'
+import {useCreateArticleUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleUsingTemplate'
+import {useCreateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleTranslationUsingTemplate'
+import {useUpdateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useUpdateArticleTranslationUsingTemplate'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {slugify} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {
     findArticleByKey,
     handleOnError,
     handleOnSuccess,
-    mapHelpCenterArticleItemToArticle,
 } from '../HelpCenterCreationWizardUtils'
 import {logEvent, SegmentEvent} from '../../../../../../common/segment'
 
@@ -56,19 +52,6 @@ export const useHelpCenterArticlesForm = (
     const {setEditModal} = useEditionManager()
 
     const dispatch = useAppDispatch()
-
-    const {
-        mutateAsync: createArticleMutateAsync,
-        isLoading: isCreateArticleLoading,
-    } = useCreateArticle()
-    const {
-        mutateAsync: updateArticleTranslationMutateAsync,
-        isLoading: isUpdateArticleTranslationLoading,
-    } = useUpdateArticleTranslation()
-    const {
-        mutateAsync: createArticleTranslationMutateAsync,
-        isLoading: isCreateArticleTranslationLoading,
-    } = useCreateArticleTranslation()
 
     useEffect(() => {
         setArticles(articles)
@@ -179,73 +162,14 @@ export const useHelpCenterArticlesForm = (
         [newArticles]
     )
 
-    const createArticle = (
-        articleTemplate: HelpCenterArticleItem,
-        shouldPublish = false
-    ) => {
-        const payload = mapHelpCenterArticleItemToArticle({
-            article: articleTemplate,
-            locale: helpCenter.default_locale,
-            shouldPublish,
-        })
-        if (!payload)
-            return Promise.reject(
-                'No payload provided during article creation.'
-            )
+    const {isCreateArticleLoading, createArticle} =
+        useCreateArticleUsingTemplate(helpCenter)
 
-        return createArticleMutateAsync([
-            undefined,
-            {help_center_id: helpCenter.id},
-            payload,
-        ])
-    }
+    const {isCreateArticleTranslationLoading, createArticleTranslation} =
+        useCreateArticleTranslationUsingTemplate(helpCenter)
 
-    const updateArticleTranslation = (
-        article: HelpCenterArticleItem,
-        shouldPublish = false
-    ) => {
-        if (!article.id)
-            return Promise.reject('No article provided during article update.')
-
-        return updateArticleTranslationMutateAsync([
-            undefined,
-            {
-                help_center_id: helpCenter.id,
-                article_id: article.id,
-                locale: helpCenter.default_locale,
-            },
-            {
-                title: article.title,
-                content: article.content,
-                slug: slugify(article.title!),
-                is_current: shouldPublish,
-            },
-        ])
-    }
-
-    const createArticleTranslation = (
-        articleTemplate: HelpCenterArticleItem,
-        shouldPublish = false
-    ) => {
-        const payload = mapHelpCenterArticleItemToArticle({
-            article: articleTemplate,
-            locale: helpCenter.default_locale,
-            shouldPublish,
-        })
-        if (!payload || !articleTemplate.id)
-            return Promise.reject(
-                'No payload provided during article creation.'
-            )
-
-        return createArticleTranslationMutateAsync([
-            undefined,
-            {
-                help_center_id: helpCenter.id,
-                article_id: articleTemplate.id,
-            },
-            {...payload?.translation},
-        ])
-    }
+    const {isUpdateArticleTranslationLoading, updateArticleTranslation} =
+        useUpdateArticleTranslationUsingTemplate(helpCenter)
 
     const handleEditorSave = async (title: string, content: string) => {
         if (!selectedArticle?.key) return

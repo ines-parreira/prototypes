@@ -8,6 +8,7 @@ import {
     CreateArticleTranslationDto,
     CreateHelpCenterTranslationDto,
     HelpCenter,
+    HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
 import {HELP_CENTER_DOMAIN, EMOJI_REGEX} from '../constants'
@@ -212,4 +213,38 @@ export const isArticleTemplateKey = (
     key: unknown
 ): key is ArticleTemplateKey => {
     return ARTICLE_TEMPLATES_KEYS.includes(key as any)
+}
+
+type HelpCenterArticleParams = {
+    article: HelpCenterArticleItem
+    locale: LocaleCode
+    shouldPublish: boolean
+}
+
+export const mapHelpCenterArticleItemToArticle = (
+    params: HelpCenterArticleParams
+) => {
+    const {article, locale, shouldPublish} = params
+
+    if (!article.title || !article.content) return null
+
+    const hcArticle = {
+        translation: {
+            title: article.title,
+            content: article.content,
+            seo_meta: article.seo_meta || {
+                title: null,
+                description: null,
+            },
+            excerpt: '',
+            slug: slugify(article.title),
+            locale,
+            is_current: shouldPublish,
+        },
+    }
+
+    return {
+        ...hcArticle,
+        template_key: article.key,
+    }
 }

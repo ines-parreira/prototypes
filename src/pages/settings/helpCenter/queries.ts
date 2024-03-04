@@ -14,6 +14,7 @@ import {
     getArticleTemplates,
     getArticleTemplate,
     getAIGeneratedArticles,
+    reviewArticleTemplate,
 } from './resources'
 
 /**
@@ -272,6 +273,18 @@ export const useDeletePageEmbedment = (
     return useMutation({
         mutationFn: ([, pathParameters]) =>
             deletePageEmbedment(client, pathParameters),
+        ...overrides,
+    })
+}
+
+export const useReviewArticleTemplate = (
+    overrides?: MutationOverrides<typeof reviewArticleTemplate>
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([, pathParameters, body]) =>
+            reviewArticleTemplate(client, pathParameters, body),
         ...overrides,
     })
 }

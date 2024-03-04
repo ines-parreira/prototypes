@@ -3,6 +3,7 @@ import {
     AIArticle,
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
+    ArticleTemplateReviewAction,
 } from 'models/helpCenter/types'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
@@ -10,28 +11,31 @@ import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTempla
 export const useHelpCenterAIArticlesLibrary = (
     fetchedArticles?: AIArticle[] | null
 ) => {
-    const [articles, setArticles] = useState<AILibraryArticleItem[]>([])
+    const [articles, setArticles] = useState<AIArticle[] | null>()
+    const [mappedArticleItems, setMappedArticleItems] = useState<
+        AILibraryArticleItem[]
+    >([])
     const [selectedArticle, setSelectedArticle] =
         useState<AILibraryArticleItem>()
 
     const latestBatchDate = useMemo(() => {
-        const newestArticle = (fetchedArticles || []).sort(
+        const newestArticle = (articles || []).sort(
             (a, b) =>
-                new Date(b.generated_datetime || '').getTime() -
-                new Date(a.generated_datetime || '').getTime()
+                new Date(b.batch_datetime || '').getTime() -
+                new Date(a.batch_datetime || '').getTime()
         )?.[0]
 
-        return newestArticle?.generated_datetime
-    }, [fetchedArticles])
+        return newestArticle?.batch_datetime
+    }, [articles])
 
     const articlesNotReviewed = useMemo(() => {
-        return fetchedArticles?.filter((article) => !article.review_action)
-    }, [fetchedArticles])
+        return articles?.filter((article) => !article.review_action)
+    }, [articles])
 
     const newArticles = useMemo(
         () =>
             articlesNotReviewed?.filter(
-                (article) => article.generated_datetime === latestBatchDate
+                (article) => article.batch_datetime === latestBatchDate
             ) || [],
         [articlesNotReviewed, latestBatchDate]
     )
@@ -39,7 +43,7 @@ export const useHelpCenterAIArticlesLibrary = (
     const oldArticles = useMemo(
         () =>
             articlesNotReviewed?.filter(
-                (article) => article.generated_datetime !== latestBatchDate
+                (article) => article.batch_datetime !== latestBatchDate
             ) || [],
         [articlesNotReviewed, latestBatchDate]
     )
@@ -48,17 +52,21 @@ export const useHelpCenterAIArticlesLibrary = (
         useState<AIArticleToggleOptionValue>(AIArticleToggleOptionValue.New)
 
     useEffect(() => {
-        const articleItems = mapAILibraryArticlesData(
+        setArticles(fetchedArticles)
+    }, [fetchedArticles])
+
+    useEffect(() => {
+        const mappedArticleItems = mapAILibraryArticlesData(
             articlesNotReviewed || [],
             selectedArticleType,
             latestBatchDate
         )
-        setArticles(articleItems)
-        setSelectedArticle(articleItems?.[0])
+        setMappedArticleItems(mappedArticleItems)
+        setSelectedArticle(mappedArticleItems?.[0])
     }, [articlesNotReviewed, selectedArticleType, latestBatchDate])
 
     return {
-        articles,
+        articles: mappedArticleItems,
         counters: {
             [AIArticleToggleOptionValue.New]: newArticles.length,
             [AIArticleToggleOptionValue.Old]: oldArticles.length,
@@ -71,5 +79,23 @@ export const useHelpCenterAIArticlesLibrary = (
         setSelectedArticle,
         showLinkToArticleTemplates:
             (fetchedArticles?.length ?? 0) < MINIMUM_AI_ARTICLES,
+        markArticleAsReviewed: (
+            templateKey: string,
+            reviewAction: ArticleTemplateReviewAction
+        ) => {
+            if (!articles) return
+
+            const articleIndex = articles.findIndex(
+                (item) => item.key === templateKey
+            )
+
+            const newArticles = [...articles]
+            newArticles[articleIndex] = {
+                ...newArticles[articleIndex],
+                review_action: reviewAction,
+            }
+
+            setArticles(newArticles)
+        },
     }
 }

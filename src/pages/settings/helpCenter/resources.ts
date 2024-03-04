@@ -116,3 +116,15 @@ export const getAIGeneratedArticles = async (
 
     return res.data
 }
+
+export const reviewArticleTemplate = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.ReviewArticleTemplate.PathParameters,
+    body: Paths.ReviewArticleTemplate.RequestBody
+) => {
+    if (!client) return null
+
+    await client.reviewArticleTemplate(pathParameters, body)
+
+    return null
+}

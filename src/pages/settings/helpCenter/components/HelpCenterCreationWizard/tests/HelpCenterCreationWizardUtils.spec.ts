@@ -20,6 +20,7 @@ import {
     ArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import {mapHelpCenterArticleItemToArticle} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {
     findArticleByKey,
     getEnabledArticlesCount,
@@ -31,7 +32,6 @@ import {
     mapApiHelpCenterToUIHelpCenter,
     mapEntrypointsToAutomationSettings,
     mapHelpCenterArticleData,
-    mapHelpCenterArticleItemToArticle,
     mapHelpCenterLanguagesToLanguagePicker,
     mapHelpCenterLocalesToLanguagePicker,
     mapUIHelpCenterToApiHelpCenter,

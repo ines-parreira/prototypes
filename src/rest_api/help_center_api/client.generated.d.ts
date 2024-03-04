@@ -36,8 +36,8 @@ declare namespace Components {
        *     
        */
       related_tickets_count?: number;
-      generated_datetime?: string; // date-time
-      review_action?: "publish" | "saveAsDraft" | "archive";
+      batch_datetime?: string; // date-time
+      review_action?: "archive" | "publish" | "saveAsDraft";
     }
     export interface AccessTokenDto {
       access_token: string;
@@ -77,7 +77,7 @@ declare namespace Components {
        * FAILED
        */
       status: "FAILED";
-      error: "MALFORMED_FILE" | "FILE_OVER_400_ROWS" | "INTERNAL";
+      error: "FILE_OVER_400_ROWS" | "INTERNAL" | "MALFORMED_FILE";
     }
     export interface AnalyseCsvResponseSuccessDto {
       /**
@@ -111,7 +111,7 @@ declare namespace Components {
        */
       deleted_datetime?: string | null; // date-time
       category_id: number | null;
-      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       help_center_id: number;
       template_key?: string | null;
       id: number;
@@ -125,7 +125,7 @@ declare namespace Components {
       category_id: number | null;
       help_center_id: number;
       template_key?: string | null;
-      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       rating: {
         up: number;
         down: number;
@@ -138,7 +138,7 @@ declare namespace Components {
         excerpt: string;
         content: string;
         slug: string;
-        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+        locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         article_id: number;
         category_id: number | null;
         article_unlisted_id: string;
@@ -155,7 +155,7 @@ declare namespace Components {
          * - `default`: the translation is in help center's default locale
          * - `available`: the translation corresponds to the first available one
          */
-        locale_fallback?: "default" | "available";
+        locale_fallback?: "available" | "default";
       };
     }
     export interface ArticleListDataTranslationDto {
@@ -166,7 +166,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -183,7 +183,7 @@ declare namespace Components {
        * - `default`: the translation is in help center's default locale
        * - `available`: the translation corresponds to the first available one
        */
-      locale_fallback?: "default" | "available";
+      locale_fallback?: "available" | "default";
     }
     export interface ArticleLocaleColumns {
       title: ColumnSourceCsvOnly;
@@ -227,7 +227,7 @@ declare namespace Components {
        */
       deleted_datetime?: string | null; // date-time
       id: number;
-      rating: "1" | "-1";
+      rating: "-1" | "1";
       context: RatingContextDto;
     }
     export interface ArticleTranslationResponseDto {
@@ -238,7 +238,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -261,7 +261,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -283,7 +283,7 @@ declare namespace Components {
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
       unlisted_id: string;
-      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       category_id: number | null;
       help_center_id: number;
       template_key?: string | null;
@@ -384,7 +384,7 @@ declare namespace Components {
       category_id: number;
       category_unlisted_id: string;
       parent_category_id: number | null;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       seo_meta: {
         title: string | null;
         description: string | null;
@@ -425,7 +425,7 @@ declare namespace Components {
       category_id: number | null;
       help_center_id: number;
       template_key?: string | null;
-      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       translation_versions: {
         current: {
           created_datetime: string; // date-time
@@ -434,7 +434,7 @@ declare namespace Components {
           title: string;
           excerpt: string;
           slug: string;
-          locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+          locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
           article_id: number;
           category_id: number | null;
           article_unlisted_id: string;
@@ -452,7 +452,7 @@ declare namespace Components {
           title: string;
           excerpt: string;
           slug: string;
-          locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+          locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
           article_id: number;
           category_id: number | null;
           article_unlisted_id: string;
@@ -474,7 +474,7 @@ declare namespace Components {
         title: string;
         excerpt: string;
         slug: string;
-        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+        locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         article_id: number;
         category_id: number | null;
         article_unlisted_id: string;
@@ -492,7 +492,7 @@ declare namespace Components {
         title: string;
         excerpt: string;
         slug: string;
-        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+        locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         article_id: number;
         category_id: number | null;
         article_unlisted_id: string;
@@ -519,7 +519,7 @@ declare namespace Components {
       deleted_datetime?: string | null; // date-time
       unlisted_id: string;
       help_center_id: number;
-      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       translation: {
         /**
          * Creation date
@@ -536,7 +536,7 @@ declare namespace Components {
         category_id: number;
         category_unlisted_id: string;
         parent_category_id: number | null;
-        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+        locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         seo_meta: {
           title: string | null;
           description: string | null;
@@ -570,7 +570,7 @@ declare namespace Components {
       deleted_datetime?: string | null; // date-time
       unlisted_id: string;
       help_center_id: number;
-      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       translation: LocalCategoryTranslation;
       id: number;
     }
@@ -674,13 +674,13 @@ declare namespace Components {
        * example:
        * en-US
        */
-      default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      default_locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * Source of the creation of the contact form
        * example:
        * manual
        */
-      source: "manual" | "help_center" | "migration";
+      source: "help_center" | "manual" | "migration";
       /**
        * Custom subject lines
        * example:
@@ -835,7 +835,7 @@ declare namespace Components {
          * example:
          * fr-FR
          */
-        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+        locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         /**
          * The title of the article in the `locale`'s translation.
          * example:
@@ -895,7 +895,7 @@ declare namespace Components {
     }
     export interface CreateArticleTemplateReviewDto {
       template_key: string;
-      action: "publish" | "saveAsDraft" | "archive";
+      action: "archive" | "publish" | "saveAsDraft";
       reason?: string | null;
     }
     export interface CreateArticleTranslationDto {
@@ -906,7 +906,7 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * The title of the article in the `locale`'s translation.
        * example:
@@ -967,7 +967,7 @@ declare namespace Components {
        * example:
        * -1
        */
-      rating: "1" | "-1";
+      rating: "-1" | "1";
       context: {
       };
     }
@@ -995,7 +995,7 @@ declare namespace Components {
          * example:
          * fr-FR
          */
-        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+        locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         /**
          * If the parent_category_is set to null change the category's parent to the root category
          * If it's set to a number set it to that specific category
@@ -1055,7 +1055,7 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * If the parent_category_is set to null change the category's parent to the root category
        * If it's set to a number set it to that specific category
@@ -1128,7 +1128,7 @@ declare namespace Components {
        * example:
        * en-US
        */
-      default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      default_locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * Email integration used to receive this contact form inquiries
        * example:
@@ -1186,7 +1186,7 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * The SEO meta attributes of the help center in the `locale`'s translation.
        */
@@ -1232,7 +1232,7 @@ declare namespace Components {
        * mysubdomain
        */
       subdomain?: string;
-      default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      default_locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * Should be a valid URL.
        */
@@ -1261,7 +1261,7 @@ declare namespace Components {
        * false
        */
       self_service_deactivated?: boolean;
-      source?: "manual" | "automation";
+      source?: "automation" | "manual";
       gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
       /**
        * Email integration used to receive this contact form inquiries
@@ -1325,11 +1325,11 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * The group of the navigation link.
        */
-      group: "header" | "footer";
+      group: "footer" | "header";
       meta?: NavigationLinkMeta;
     }
     export interface CreateRedirectDto {
@@ -1347,7 +1347,7 @@ declare namespace Components {
        * /pages/my-new-page
        */
       page_url_path?: string; // SHOPIFY_PAGE_HANDLE_REGEX
-      position?: "TOP" | "BOTTOM";
+      position?: "BOTTOM" | "TOP";
       /**
        * example:
        * My new page
@@ -1512,8 +1512,8 @@ declare namespace Components {
       name: string;
       subdomain: string;
       deactivated_datetime: string | null; // date-time
-      readonly default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
-      supported_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      readonly default_locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
+      supported_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       favicon_url?: string | null;
       brand_logo_url?: string | null;
       brand_logo_light_url?: string | null;
@@ -1528,7 +1528,7 @@ declare namespace Components {
       shop_name: string | null;
       self_service_deactivated_datetime: string | null; // date-time
       hotswap_session_token: string | null;
-      source: "manual" | "automation";
+      source: "automation" | "manual";
       gaid: string | null;
       email_integration: {
         /**
@@ -1594,8 +1594,8 @@ declare namespace Components {
       name: string;
       subdomain: string;
       deactivated_datetime: string | null; // date-time
-      readonly default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
-      supported_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      readonly default_locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
+      supported_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       favicon_url?: string | null;
       brand_logo_url?: string | null;
       brand_logo_light_url?: string | null;
@@ -1610,7 +1610,7 @@ declare namespace Components {
       shop_name: string | null;
       self_service_deactivated_datetime: string | null; // date-time
       hotswap_session_token: string | null;
-      source: "manual" | "automation";
+      source: "automation" | "manual";
       gaid: string | null;
       email_integration: {
         /**
@@ -1657,7 +1657,7 @@ declare namespace Components {
       localized_urls: HelpCenterSiteMapUrlLocalizedUrlDto[];
     }
     export interface HelpCenterSiteMapUrlLocalizedUrlDto {
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       url: string;
     }
     export interface HelpCenterStorePageDto {
@@ -1683,7 +1683,7 @@ declare namespace Components {
       banner_text: string | null;
       banner_image_url?: string | null;
       banner_image_vertical_offset: number;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       seo_meta: {
         title: string | null;
         description: string | null;
@@ -1746,7 +1746,7 @@ declare namespace Components {
       data: GetHelpCenterDto[];
     }
     export interface HotswapProgressDto {
-      progress: "NOT_STARTED" | "IN_PROGRESS" | "SUCCESS" | "FAILURE";
+      progress: "FAILURE" | "IN_PROGRESS" | "NOT_STARTED" | "SUCCESS";
     }
     export interface HotswapResponseDto {
       /**
@@ -1764,7 +1764,7 @@ declare namespace Components {
       /**
        * Status of import
        */
-      progress: "NOT_STARTED" | "IN_PROGRESS" | "SUCCESS" | "FAILURE";
+      progress: "FAILURE" | "IN_PROGRESS" | "NOT_STARTED" | "SUCCESS";
     }
     export interface LocalArticleTranslation {
       created_datetime: string; // date-time
@@ -1774,7 +1774,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -1790,7 +1790,7 @@ declare namespace Components {
        * - `default`: the translation is in help center's default locale
        * - `available`: the translation corresponds to the first available one
        */
-      locale_fallback?: "default" | "available";
+      locale_fallback?: "available" | "default";
     }
     export interface LocalCategoryTranslation {
       /**
@@ -1808,7 +1808,7 @@ declare namespace Components {
       category_id: number;
       category_unlisted_id: string;
       parent_category_id: number | null;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       seo_meta: {
         title: string | null;
         description: string | null;
@@ -1825,14 +1825,14 @@ declare namespace Components {
        * - `default`: the translation is in help center's default locale
        * - `available`: the translation corresponds to the first available one
        */
-      locale_fallback?: "default" | "available";
+      locale_fallback?: "available" | "default";
       title: string;
       description: string | null;
       slug: string;
     }
     export interface LocaleDto {
       name: string;
-      code: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      code: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
     }
     export interface MailtoReplacementConfigDto {
       emails: string[];
@@ -1858,13 +1858,13 @@ declare namespace Components {
       id: number;
       label: string;
       value: string;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
-      group: "header" | "footer";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
+      group: "footer" | "header";
       meta?: NavigationLinkMeta;
       help_center_id: number;
     }
     export interface NavigationLinkMeta {
-      network?: "facebook" | "twitter" | "instagram";
+      network?: "facebook" | "instagram" | "twitter";
     }
     export interface NavigationLinksListPageDto {
       meta: PageMetaDto;
@@ -1878,7 +1878,7 @@ declare namespace Components {
       title: string;
       excerpt: string;
       slug: string;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -1916,7 +1916,7 @@ declare namespace Components {
        * my-page-title
        */
       page_path_url: string;
-      position: "TOP" | "BOTTOM";
+      position: "BOTTOM" | "TOP";
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
     }
@@ -2132,7 +2132,7 @@ declare namespace Components {
        * example:
        * -1
        */
-      rating: "1" | "-1";
+      rating: "-1" | "1";
       context: {
       };
     }
@@ -2199,7 +2199,7 @@ declare namespace Components {
        * example:
        * en-US
        */
-      default_locale?: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      default_locale?: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * Email integration used to receive this contact form inquiries
        * example:
@@ -2337,7 +2337,7 @@ declare namespace Components {
        * mysubdomain
        */
       subdomain?: string;
-      default_locale?: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      default_locale?: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       /**
        * Should be a valid URL.
        */
@@ -2502,11 +2502,11 @@ declare namespace Components {
       /**
        * The group of the navigation link.
        */
-      group?: "header" | "footer";
+      group?: "footer" | "header";
       meta?: NavigationLinkMeta;
     }
     export interface UpdatePageEmbedmentDto {
-      position: "TOP" | "BOTTOM";
+      position: "BOTTOM" | "TOP";
     }
     export interface UploadAttachmentDto {
       file: AttachmentFileDto;
@@ -2549,7 +2549,7 @@ declare namespace Components {
     export interface WorkflowHandoverDto {
       contact_form_uid?: string;
       help_center_id?: number;
-      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       workflow_entrypoint_label: string;
       workflow_configuration_id: string;
       workflow_execution_id: string;
@@ -3000,9 +3000,9 @@ declare namespace Paths {
     namespace Parameters {
       export type HelpCenterId = number;
       export type Id = number;
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       export type LocaleFallback = boolean;
-      export type VersionStatus = "latest_draft" | "current";
+      export type VersionStatus = "current" | "latest_draft";
     }
     export interface PathParameters {
       id: Parameters.Id;
@@ -3019,8 +3019,8 @@ declare namespace Paths {
   }
   namespace GetArticleTemplate {
     namespace Parameters {
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
-      export type TemplateKey = "shippingPolicy" | "howToReturn" | "howToCancelOrder" | "howToTrackOrder" | "refundsOrExchanges" | "packageLostOrDamaged";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
+      export type TemplateKey = "howToCancelOrder" | "howToReturn" | "howToTrackOrder" | "packageLostOrDamaged" | "refundsOrExchanges" | "shippingPolicy";
     }
     export interface PathParameters {
       template_key: Parameters.TemplateKey;
@@ -3053,7 +3053,7 @@ declare namespace Paths {
     namespace Parameters {
       export type HelpCenterId = number;
       export type Id = number;
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       export type LocaleFallback = boolean;
     }
     export interface PathParameters {
@@ -3086,7 +3086,7 @@ declare namespace Paths {
       export type Depth = number;
       export type Fields = string[];
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type ParentCategoryId = number;
@@ -3267,9 +3267,9 @@ declare namespace Paths {
   }
   namespace GetNavigationLinksPositions {
     namespace Parameters {
-      export type Group = "header" | "footer";
+      export type Group = "footer" | "header";
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
@@ -3332,7 +3332,7 @@ declare namespace Paths {
   }
   namespace ListArticleTemplates {
     namespace Parameters {
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
     }
     export interface QueryParameters {
       locale: Parameters.Locale;
@@ -3347,7 +3347,7 @@ declare namespace Paths {
       export type HelpCenterId = number;
       export type Page = any;
       export type PerPage = any;
-      export type VersionStatus = "latest_draft" | "current";
+      export type VersionStatus = "current" | "latest_draft";
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
@@ -3367,12 +3367,12 @@ declare namespace Paths {
       export type HasCategory = boolean;
       export type HelpCenterId = number;
       export type Ids = number[];
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
       export type PerPage = any;
-      export type VersionStatus = "latest_draft" | "current";
+      export type VersionStatus = "current" | "latest_draft";
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
@@ -3395,7 +3395,7 @@ declare namespace Paths {
     namespace Parameters {
       export type HasArticles = boolean;
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
@@ -3421,12 +3421,12 @@ declare namespace Paths {
       export type CategoryId = number;
       export type HelpCenterId = number;
       export type Ids = number[];
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
       export type PerPage = any;
-      export type VersionStatus = "latest_draft" | "current";
+      export type VersionStatus = "current" | "latest_draft";
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
@@ -3591,9 +3591,9 @@ declare namespace Paths {
   }
   namespace ListNavigationLinks {
     namespace Parameters {
-      export type Group = "header" | "footer";
+      export type Group = "footer" | "header";
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
@@ -3674,9 +3674,9 @@ declare namespace Paths {
   }
   namespace SetNavigationLinksPositions {
     namespace Parameters {
-      export type Group = "header" | "footer";
+      export type Group = "footer" | "header";
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;

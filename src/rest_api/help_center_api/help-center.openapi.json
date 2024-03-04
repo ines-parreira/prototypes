@@ -1197,21 +1197,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -1357,21 +1357,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -1610,21 +1610,21 @@
                         "description": "Defines the local in which the categories will be translated to. A translation fallback will be provided if the asked locale is not found.",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -1777,21 +1777,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -1802,7 +1802,7 @@
                         "in": "query",
                         "description": "This query parameter filters article translation data based on their version, and it defaults to current. Current means the translation data is coming from its published version; latest_draft means the translation data is coming from its latest draft version.",
                         "schema": {
-                            "enum": ["latest_draft", "current"],
+                            "enum": ["current", "latest_draft"],
                             "type": "string"
                         }
                     },
@@ -1981,21 +1981,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -2006,7 +2006,7 @@
                         "in": "query",
                         "description": "This query parameter filters article translation data based on their version, and it defaults to current. Current means the translation data is coming from its published version; latest_draft means the translation data is coming from its latest draft version.",
                         "schema": {
-                            "enum": ["latest_draft", "current"],
+                            "enum": ["current", "latest_draft"],
                             "type": "string"
                         }
                     },
@@ -2188,7 +2188,7 @@
                         "in": "query",
                         "description": "This query parameter filters article translation data based on their version, and it defaults to current. Current means the translation data is coming from its published version; latest_draft means the translation data is coming from its latest draft version.",
                         "schema": {
-                            "enum": ["latest_draft", "current"],
+                            "enum": ["current", "latest_draft"],
                             "type": "string"
                         }
                     },
@@ -2198,21 +2198,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -2324,7 +2324,7 @@
                         "in": "query",
                         "description": "This query parameter filters article translations based on their version, and it defaults to current. Current means the translation data is coming from its published version; latest_draft means the translation data is coming from its latest draft version.",
                         "schema": {
-                            "enum": ["latest_draft", "current"],
+                            "enum": ["current", "latest_draft"],
                             "type": "string"
                         }
                     },
@@ -3328,21 +3328,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -3352,7 +3352,7 @@
                         "required": false,
                         "in": "query",
                         "schema": {
-                            "enum": ["header", "footer"],
+                            "enum": ["footer", "header"],
                             "type": "string"
                         }
                     },
@@ -3483,21 +3483,21 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -3507,7 +3507,7 @@
                         "in": "path",
                         "schema": {
                             "type": "string",
-                            "enum": ["header", "footer"]
+                            "enum": ["footer", "header"]
                         }
                     }
                 ],
@@ -3544,21 +3544,21 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -3568,7 +3568,7 @@
                         "in": "path",
                         "schema": {
                             "type": "string",
-                            "enum": ["header", "footer"]
+                            "enum": ["footer", "header"]
                         }
                     }
                 ],
@@ -3783,21 +3783,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -3833,12 +3833,12 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "shippingPolicy",
-                                "howToReturn",
                                 "howToCancelOrder",
+                                "howToReturn",
                                 "howToTrackOrder",
+                                "packageLostOrDamaged",
                                 "refundsOrExchanges",
-                                "packageLostOrDamaged"
+                                "shippingPolicy"
                             ]
                         }
                     },
@@ -3848,21 +3848,21 @@
                         "in": "query",
                         "schema": {
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ],
                             "type": "string"
                         }
@@ -4145,9 +4145,9 @@
                     },
                     "error": {
                         "enum": [
-                            "MALFORMED_FILE",
                             "FILE_OVER_400_ROWS",
-                            "INTERNAL"
+                            "INTERNAL",
+                            "MALFORMED_FILE"
                         ],
                         "type": "string"
                     }
@@ -4191,10 +4191,10 @@
                     "progress": {
                         "description": "Status of import",
                         "enum": [
-                            "NOT_STARTED",
+                            "FAILURE",
                             "IN_PROGRESS",
-                            "SUCCESS",
-                            "FAILURE"
+                            "NOT_STARTED",
+                            "SUCCESS"
                         ],
                         "type": "string"
                     }
@@ -4207,10 +4207,10 @@
                     "progress": {
                         "type": "string",
                         "enum": [
-                            "NOT_STARTED",
+                            "FAILURE",
                             "IN_PROGRESS",
-                            "SUCCESS",
-                            "FAILURE"
+                            "NOT_STARTED",
+                            "SUCCESS"
                         ]
                     }
                 },
@@ -4269,21 +4269,21 @@
                     },
                     "default_locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -4320,7 +4320,7 @@
                         "example": false
                     },
                     "source": {
-                        "enum": ["manual", "automation"],
+                        "enum": ["automation", "manual"],
                         "type": "string"
                     },
                     "gaid": {
@@ -4392,21 +4392,21 @@
                         "type": "string",
                         "readOnly": true,
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ]
                     },
                     "supported_locales": {
@@ -4414,21 +4414,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -4469,7 +4469,7 @@
                     },
                     "source": {
                         "nullable": false,
-                        "enum": ["manual", "automation"],
+                        "enum": ["automation", "manual"],
                         "type": "string"
                     },
                     "gaid": {"type": "string", "nullable": true},
@@ -4722,21 +4722,21 @@
                     "banner_image_vertical_offset": {"type": "number"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -4843,21 +4843,21 @@
                         "type": "string",
                         "readOnly": true,
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ]
                     },
                     "supported_locales": {
@@ -4865,21 +4865,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -4920,7 +4920,7 @@
                     },
                     "source": {
                         "nullable": false,
-                        "enum": ["manual", "automation"],
+                        "enum": ["automation", "manual"],
                         "type": "string"
                     },
                     "gaid": {"type": "string", "nullable": true},
@@ -5030,21 +5030,21 @@
                     },
                     "default_locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -5185,21 +5185,21 @@
                 "properties": {
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -5274,21 +5274,21 @@
                         "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -5524,21 +5524,21 @@
                     "name": {"type": "string"},
                     "code": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     }
@@ -5576,21 +5576,21 @@
                         "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -5690,21 +5690,21 @@
                     "parent_category_id": {"type": "number", "nullable": true},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -5727,7 +5727,7 @@
                     },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
-                        "enum": ["default", "available"],
+                        "enum": ["available", "default"],
                         "type": "string"
                     },
                     "title": {"type": "string"},
@@ -5775,21 +5775,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -5850,21 +5850,21 @@
                     "parent_category_id": {"type": "number", "nullable": true},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -5997,21 +5997,21 @@
                     "slug": {"type": "string"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -6092,21 +6092,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -6156,21 +6156,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -6238,21 +6238,21 @@
                     "slug": {"type": "string"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -6275,7 +6275,7 @@
                     "rating": {"$ref": "#/components/schemas/Rating"},
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
-                        "enum": ["default", "available"],
+                        "enum": ["available", "default"],
                         "type": "string"
                     }
                 },
@@ -6322,21 +6322,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -6403,21 +6403,21 @@
                     "slug": {"type": "string"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -6439,7 +6439,7 @@
                     "is_current": {"type": "boolean"},
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
-                        "enum": ["default", "available"],
+                        "enum": ["available", "default"],
                         "type": "string"
                     }
                 },
@@ -6481,21 +6481,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -6554,21 +6554,21 @@
                         "items": {
                             "type": "string",
                             "enum": [
-                                "en-US",
-                                "en-GB",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
                                 "cs-CZ",
                                 "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE",
+                                "nl-NL",
+                                "en-GB",
+                                "en-US",
                                 "fi-FI",
+                                "fr-CA",
+                                "fr-FR",
+                                "de-DE",
+                                "it-IT",
                                 "ja-JP",
-                                "pt-BR"
+                                "no-NO",
+                                "pt-BR",
+                                "es-ES",
+                                "sv-SE"
                             ]
                         }
                     },
@@ -6610,21 +6610,21 @@
                         "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -6731,21 +6731,21 @@
                     "slug": {"type": "string"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -6824,21 +6824,21 @@
                     "slug": {"type": "string"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -6932,7 +6932,7 @@
                     "rating": {
                         "description": "The rating of the article translation.",
                         "example": -1,
-                        "enum": ["1", "-1"],
+                        "enum": ["-1", "1"],
                         "type": "string"
                     },
                     "context": {"type": "object"}
@@ -6967,7 +6967,7 @@
                         "description": "Deletion date"
                     },
                     "id": {"type": "number"},
-                    "rating": {"enum": ["1", "-1"], "type": "string"},
+                    "rating": {"enum": ["-1", "1"], "type": "string"},
                     "context": {"$ref": "#/components/schemas/RatingContextDto"}
                 },
                 "required": [
@@ -6984,7 +6984,7 @@
                     "rating": {
                         "description": "The rating of the article translation.",
                         "example": -1,
-                        "enum": ["1", "-1"],
+                        "enum": ["-1", "1"],
                         "type": "string"
                     },
                     "context": {"type": "object"}
@@ -7089,21 +7089,21 @@
                         "description": "Contact Form default locale",
                         "example": "en-US",
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -7201,28 +7201,28 @@
                         "description": "Default supported locale",
                         "example": "en-US",
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
                     "source": {
                         "description": "Source of the creation of the contact form",
                         "example": "manual",
-                        "enum": ["manual", "help_center", "migration"],
+                        "enum": ["help_center", "manual", "migration"],
                         "type": "string"
                     },
                     "subject_lines": {
@@ -7323,21 +7323,21 @@
                         "description": "Contact Form default locale",
                         "example": "en-US",
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -7509,7 +7509,7 @@
                         "maxLength": 255,
                         "pattern": "SHOPIFY_PAGE_HANDLE_REGEX"
                     },
-                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"},
+                    "position": {"enum": ["BOTTOM", "TOP"], "type": "string"},
                     "title": {
                         "type": "string",
                         "example": "My new page",
@@ -7534,7 +7534,7 @@
                         "type": "string",
                         "example": "my-page-title"
                     },
-                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"},
+                    "position": {"enum": ["BOTTOM", "TOP"], "type": "string"},
                     "created_datetime": {
                         "format": "date-time",
                         "type": "string"
@@ -7556,7 +7556,7 @@
             "UpdatePageEmbedmentDto": {
                 "type": "object",
                 "properties": {
-                    "position": {"enum": ["TOP", "BOTTOM"], "type": "string"}
+                    "position": {"enum": ["BOTTOM", "TOP"], "type": "string"}
                 },
                 "required": ["position"]
             },
@@ -7584,7 +7584,7 @@
                 "type": "object",
                 "properties": {
                     "network": {
-                        "enum": ["facebook", "twitter", "instagram"],
+                        "enum": ["facebook", "instagram", "twitter"],
                         "type": "string"
                     }
                 }
@@ -7605,27 +7605,27 @@
                         "description": "The locale of the navigation link.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
                     "group": {
                         "description": "The group of the navigation link.",
-                        "enum": ["header", "footer"],
+                        "enum": ["footer", "header"],
                         "type": "string"
                     },
                     "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
@@ -7656,25 +7656,25 @@
                     "value": {"type": "string"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
-                    "group": {"enum": ["header", "footer"], "type": "string"},
+                    "group": {"enum": ["footer", "header"], "type": "string"},
                     "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"},
                     "help_center_id": {"type": "number"}
                 },
@@ -7703,7 +7703,7 @@
                     },
                     "group": {
                         "description": "The group of the navigation link.",
-                        "enum": ["header", "footer"],
+                        "enum": ["footer", "header"],
                         "type": "string"
                     },
                     "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
@@ -7780,21 +7780,21 @@
                     "help_center_id": {"type": "number"},
                     "locale": {
                         "enum": [
-                            "en-US",
-                            "en-GB",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
                             "cs-CZ",
                             "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
                             "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
                             "ja-JP",
-                            "pt-BR"
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
                         ],
                         "type": "string"
                     },
@@ -7865,7 +7865,7 @@
                 "properties": {
                     "template_key": {"type": "string"},
                     "action": {
-                        "enum": ["publish", "saveAsDraft", "archive"],
+                        "enum": ["archive", "publish", "saveAsDraft"],
                         "type": "string"
                     },
                     "reason": {
@@ -7895,12 +7895,9 @@
                         "type": "number",
                         "description": "\n      The number of tickets used to generate the article.\n      Value can be -1 if this data is not available.\n    "
                     },
-                    "generated_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
+                    "batch_datetime": {"format": "date-time", "type": "string"},
                     "review_action": {
-                        "enum": ["publish", "saveAsDraft", "archive"],
+                        "enum": ["archive", "publish", "saveAsDraft"],
                         "type": "string"
                     }
                 },

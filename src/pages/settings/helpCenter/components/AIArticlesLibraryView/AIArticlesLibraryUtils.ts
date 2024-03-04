@@ -15,7 +15,7 @@ export const mapAILibraryArticlesData = (
                 (b.related_tickets_count ?? 0) - (a.related_tickets_count ?? 0)
         )
         .map((article) => {
-            const isNew = article.generated_datetime === latestBatchDate
+            const isNew = article.batch_datetime === latestBatchDate
 
             return {
                 ...article,
