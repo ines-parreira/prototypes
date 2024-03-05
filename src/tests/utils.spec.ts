@@ -324,6 +324,17 @@ describe('global utils', () => {
         })
     })
 
+    describe('isDirectTicketPath', () => {
+        it('should return true when on a direct ticket path', () => {
+            expect(utils.isDirectTicketPath('/app/ticket/1')).toBe(true)
+        })
+
+        it('should return false when on a non-direct ticket path or any other path', () => {
+            expect(utils.isDirectTicketPath('/app/ticket/1/')).toBe(false)
+            expect(utils.isDirectTicketPath('/app/foo')).toBe(false)
+        })
+    })
+
     describe('isCurrentlyOnCustomerPage', () => {
         it("should return true when the current location is the customer's URL", () => {
             window.location.pathname = '/app/customer/1'

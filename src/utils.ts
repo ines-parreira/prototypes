@@ -807,6 +807,11 @@ export const isStrictTicketPath = (path: string) => {
     return regex.test(path)
 }
 
+export const isDirectTicketPath = (path: string) => {
+    const regex = /^\/app\/ticket\/\d+$/
+    return regex.test(path)
+}
+
 export const isCurrentlyOnCustomerPage = (customerId: string | number) => {
     return (
         window.location.pathname === `/app/customer/${customerId}` ||

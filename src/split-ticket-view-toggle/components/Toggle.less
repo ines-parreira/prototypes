@@ -27,8 +27,17 @@
         }
     }
 
+    .disabled {
+        cursor: not-allowed;
+        background-color: var(--neutral-grey-5);
+    }
+
     .active {
         -webkit-mask-image: url(../assets/dock_to_right_active.svg);
         mask-image: url(../assets/dock_to_right_active.svg);
+    }
+
+    .tooltip {
+        width: 180px;
     }
 }
