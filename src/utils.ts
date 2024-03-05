@@ -720,13 +720,22 @@ export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
 export const isCurrentlyOnTicket = (
     ticketId?: Maybe<string | number>
 ): boolean => {
+    const {pathname} = window.location
     let matchUrl = '/app/ticket/'
 
     if (ticketId) {
         matchUrl += ticketId
     }
 
-    return window.location.pathname.startsWith(matchUrl)
+    if (pathname.startsWith(matchUrl)) {
+        return true
+    }
+
+    const match = pathname.match(/\/app\/views\/\d+\/(\d+)/)
+    if (!match || !match[1]) return false
+
+    const ticketIdParam = parseInt(match[1], 10)
+    return ticketId === ticketIdParam
 }
 
 /**
