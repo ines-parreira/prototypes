@@ -23,6 +23,7 @@ import {
 } from 'pages/stats/AgentsTableConfig'
 import {AgentsTableSummaryCell} from 'pages/stats/AgentsTableSummaryCell'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
+import {ClosedTicketsPerHourCellContent} from 'pages/stats/ClosedTicketsPerHourCellContent'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
 import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
@@ -31,7 +32,6 @@ import {MessagesSentPerHourCellContent} from 'pages/stats/MessagesSentPerHourCel
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
 import {OnlineTimeCellContent} from 'pages/stats/OnlineTimeCellContent'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
-
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedPerHourCellContent} from 'pages/stats/TicketsRepliedPerHourCellContent'
 import {
@@ -41,7 +41,7 @@ import {
 } from 'state/ui/stats/agentPerformanceSlice'
 import {TableColumn} from 'state/ui/stats/types'
 
-const getCell = (
+export const getCell = (
     column: TableColumn
 ): React.FunctionComponent<{
     agent: User
@@ -73,6 +73,8 @@ const getCell = (
             return MessagesSentPerHourCellContent
         case TableColumn.RepliedTicketsPerHour:
             return TicketsRepliedPerHourCellContent
+        case TableColumn.ClosedTicketsPerHour:
+            return ClosedTicketsPerHourCellContent
     }
 }
 

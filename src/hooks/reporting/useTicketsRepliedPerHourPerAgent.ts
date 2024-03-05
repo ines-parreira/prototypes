@@ -4,7 +4,7 @@ import {HelpdeskMessageDimension} from 'models/reporting/cubes/HelpdeskMessageCu
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
-    calculateMessagesPerHour,
+    calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -62,7 +62,7 @@ export const useTicketsRepliedPerHourPerAgent = (
     let metricValue: number | null = null
 
     if (repliedTickets.data?.value && onlineTime.data?.value) {
-        metricValue = calculateMessagesPerHour(
+        metricValue = calculateMetricPerHour(
             repliedTickets.data.value,
             onlineTime.data.value
         )
@@ -74,7 +74,7 @@ export const useTicketsRepliedPerHourPerAgent = (
                 ? matchAndCalculateAllEntries(
                       repliedTickets,
                       onlineTime,
-                      calculateMessagesPerHour,
+                      calculateMetricPerHour,
                       senderId,
                       userIdField,
                       ticketCountField,

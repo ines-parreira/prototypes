@@ -1,7 +1,7 @@
 import {
     Metric,
+    useClosedTicketsMetric,
     useOnlineTimeMetric,
-    useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import {
     calculateMetricPerHour,
@@ -10,11 +10,11 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
-export const useTicketsRepliedPerHour = (): Metric => {
+export const useTicketsClosedPerHour = (): Metric => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const repliedTickets = useTicketsRepliedMetric(
+    const closedTickets = useClosedTicketsMetric(
         periodAndAgentOnlyFilters(cleanStatsFilters),
         userTimezone
     )
@@ -25,16 +25,16 @@ export const useTicketsRepliedPerHour = (): Metric => {
 
     let metricValue: number | null = null
 
-    if (repliedTickets.data?.value && onlineTime.data?.value) {
+    if (closedTickets.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
-            repliedTickets.data.value,
+            closedTickets.data.value,
             onlineTime.data.value
         )
     }
 
     return {
-        isFetching: repliedTickets.isFetching || onlineTime.isFetching,
-        isError: repliedTickets.isError || onlineTime.isError,
+        isFetching: closedTickets.isFetching || onlineTime.isFetching,
+        isError: closedTickets.isError || onlineTime.isError,
         data: {
             value: metricValue,
         },

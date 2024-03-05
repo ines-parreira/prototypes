@@ -1,5 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     calculateMetricPerHour,
@@ -7,7 +8,7 @@ import {
 } from 'hooks/reporting/useMessagesSentPerHour'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
-    useMessagesSentMetricPerAgent,
+    useClosedTicketsMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
@@ -21,13 +22,9 @@ import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {StatsFilters} from 'models/stat/types'
 
-export const useMessagesSentPerHourPerAgent = (
+export const useTicketsClosedPerHourPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
@@ -35,20 +32,20 @@ export const useMessagesSentPerHourPerAgent = (
 ): MetricWithDecile => {
     const isAnalyticsNewCubes: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const senderIdField = isAnalyticsNewCubes
-        ? renameMemberEnriched(HelpdeskMessageDimension.SenderId)
-        : HelpdeskMessageDimension.SenderId
+    const assigneeUserId = isAnalyticsNewCubes
+        ? renameMemberEnriched(TicketDimension.AssigneeUserId)
+        : TicketDimension.AssigneeUserId
     const userIdField = isAnalyticsNewCubes
         ? renameMemberEnriched(AgentTimeTrackingDimension.UserId)
         : AgentTimeTrackingDimension.UserId
-    const messageCountField = isAnalyticsNewCubes
-        ? renameMemberEnriched(HelpdeskMessageMeasure.MessageCount)
-        : HelpdeskMessageMeasure.MessageCount
+    const ticketCountField = isAnalyticsNewCubes
+        ? renameMemberEnriched(TicketMeasure.TicketCount)
+        : TicketMeasure.TicketCount
     const onlineTimeField = isAnalyticsNewCubes
         ? renameMemberEnriched(AgentTimeTrackingMeasure.OnlineTime)
         : AgentTimeTrackingMeasure.OnlineTime
 
-    const messagesSent = useMessagesSentMetricPerAgent(
+    const closedTickets = useClosedTicketsMetricPerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
         sorting,
@@ -63,45 +60,45 @@ export const useMessagesSentPerHourPerAgent = (
 
     let metricValue: number | null = null
 
-    if (messagesSent.data?.value && onlineTime.data?.value) {
+    if (closedTickets.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
-            messagesSent.data.value,
+            closedTickets.data.value,
             onlineTime.data.value
         )
     }
 
     const sortedData = useMemo(() => {
         const data =
-            messagesSent.data && onlineTime.data
+            closedTickets.data && onlineTime.data
                 ? matchAndCalculateAllEntries(
-                      messagesSent,
+                      closedTickets,
                       onlineTime,
                       calculateMetricPerHour,
-                      senderIdField,
+                      assigneeUserId,
                       userIdField,
-                      messageCountField,
+                      ticketCountField,
                       onlineTimeField
                   )
                 : []
 
-        return sortAllData(data, messageCountField, sorting)
+        return sortAllData(data, ticketCountField, sorting)
     }, [
-        messageCountField,
+        ticketCountField,
         onlineTimeField,
-        senderIdField,
+        assigneeUserId,
         userIdField,
-        messagesSent,
+        closedTickets,
         onlineTime,
         sorting,
     ])
 
     const maxValue = Math.max(
-        ...sortedData.map((item) => Number(item[messageCountField]))
+        ...sortedData.map((item) => Number(item[ticketCountField]))
     )
 
     return {
-        isFetching: messagesSent.isFetching || onlineTime.isFetching,
-        isError: messagesSent.isError || onlineTime.isError,
+        isFetching: closedTickets.isFetching || onlineTime.isFetching,
+        isError: closedTickets.isError || onlineTime.isError,
         data: {
             allData: sortedData,
             value: metricValue,

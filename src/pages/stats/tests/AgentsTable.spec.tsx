@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {TicketsRepliedPerHourCellContent} from 'pages/stats/TicketsRepliedPerHourCellContent'
+import {ClosedTicketsPerHourCellContent} from 'pages/stats/ClosedTicketsPerHourCellContent'
 import {MessagesSentPerHourCellContent} from 'pages/stats/MessagesSentPerHourCellContent'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {agents} from 'fixtures/agents'
@@ -102,6 +103,11 @@ const TicketsRepliedPerHourCellContentMock = assumeMock(
     TicketsRepliedPerHourCellContent
 )
 
+jest.mock('pages/stats/ClosedTicketsPerHourCellContent.tsx')
+const ClosedTicketsPerHourCellContentMock = assumeMock(
+    ClosedTicketsPerHourCellContent
+)
+
 jest.mock('pages/stats/AgentsTableSummaryCell.tsx')
 const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
 
@@ -134,6 +140,7 @@ describe('<AgentTable>', () => {
         OnlineTimeCellContentMock,
         MessagesSentPerHourCellContentMock,
         TicketsRepliedPerHourCellContentMock,
+        ClosedTicketsPerHourCellContentMock,
     ]
     metricCells.forEach((metricCell) => metricCell.mockImplementation(cellMock))
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
