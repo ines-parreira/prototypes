@@ -410,3 +410,9 @@ export const getTicketCustomer = createImmutableSelector(
     getTicketState,
     (state) => state.get('customer' || fromJS({})) as Map<any, any>
 )
+
+export const getHasAttemptedToCloseTicket = createImmutableSelector(
+    getTicketState,
+    (state) =>
+        state.getIn(['state', 'hasAttemptedToCloseTicket'], false) as boolean
+)

@@ -4,7 +4,10 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {triggerTicketFieldsErrors} from 'state/ticket/actions'
+import {
+    setHasAttemptedToCloseTicket,
+    triggerTicketFieldsErrors,
+} from 'state/ticket/actions'
 import {getAppliedMacro, getTicketFieldState} from 'state/ticket/selectors'
 import {
     getInvalidTicketFieldIds,
@@ -48,8 +51,10 @@ export function useTicketFieldsCheck(ticketId: number) {
                     }
                 )
                 dispatch(triggerTicketFieldsErrors(invalidFields))
+                dispatch(setHasAttemptedToCloseTicket(true))
                 return true
             }
+            dispatch(setHasAttemptedToCloseTicket(false))
             return false
         },
         [

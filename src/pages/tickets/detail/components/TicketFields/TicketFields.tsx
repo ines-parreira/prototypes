@@ -2,19 +2,28 @@ import React, {memo, useEffect, useState} from 'react'
 import classNames from 'classnames'
 
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
-import useHasWrapped from 'hooks/useHasWrapped'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasWrapped from 'hooks/useHasWrapped'
 import Button from 'pages/common/components/button/Button'
-import {getTicketFieldState} from 'state/ticket/selectors'
-
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {setHasAttemptedToCloseTicket} from 'state/ticket/actions'
+import {
+    getHasAttemptedToCloseTicket,
+    getTicketFieldState,
+} from 'state/ticket/selectors'
+
 import TicketField from './TicketField'
 import css from './TicketFields.less'
 
 function TicketFields() {
+    const dispatch = useAppDispatch()
     const ticketFieldState = useAppSelector(getTicketFieldState)
     const [showAllFields, setShowAllFields] = useState(false)
     const [ref, hasWrapped] = useHasWrapped<HTMLDivElement>()
+    const hasAttemptedToCloseTicket = useAppSelector(
+        getHasAttemptedToCloseTicket
+    )
 
     const {data: {data: ticketFieldDefinitions = []} = {}, isLoading} =
         useCustomFieldDefinitions({
@@ -22,14 +31,25 @@ function TicketFields() {
             object_type: 'Ticket',
         })
 
-    const hasErroredHiddenTicketFields = ticketFieldDefinitions.some(
+    const hasErroredTicketFields = ticketFieldDefinitions.some(
         ({id}) => ticketFieldState[id]?.hasError
     )
+
     useEffect(() => {
-        if (hasErroredHiddenTicketFields) {
+        if (
+            hasAttemptedToCloseTicket &&
+            hasErroredTicketFields &&
+            !showAllFields
+        ) {
             setShowAllFields(true)
+            dispatch(setHasAttemptedToCloseTicket(false))
         }
-    }, [hasErroredHiddenTicketFields])
+    }, [
+        dispatch,
+        hasAttemptedToCloseTicket,
+        hasErroredTicketFields,
+        showAllFields,
+    ])
 
     if (isLoading || !ticketFieldDefinitions.length) {
         return null
@@ -48,13 +68,15 @@ function TicketFields() {
                     [css.isExpanded]: showAllFields,
                 })}
             >
-                {ticketFieldDefinitions.map((fieldDefinition) => (
-                    <TicketField
-                        key={fieldDefinition.id}
-                        fieldDefinition={fieldDefinition}
-                        fieldState={ticketFieldState[fieldDefinition.id]}
-                    />
-                ))}
+                {ticketFieldDefinitions.map((fieldDefinition) => {
+                    return (
+                        <TicketField
+                            key={fieldDefinition.id}
+                            fieldDefinition={fieldDefinition}
+                            fieldState={ticketFieldState[fieldDefinition.id]}
+                        />
+                    )
+                })}
             </div>
 
             <div className={css.buttonWrapper}>

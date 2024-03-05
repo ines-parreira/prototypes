@@ -6,12 +6,12 @@ import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import client from 'models/api/resources'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import TicketFields from '../TicketFields'
 

@@ -36,6 +36,7 @@ export const initialState: TicketState = fromJS({
         dirty: false,
         latestEventDatetime: null,
         appliedMacro: null,
+        hasAttemptedToCloseTicket: false,
     },
     _internal: {
         displayHistory: false,
@@ -965,6 +966,13 @@ export default function reducer(
             return state.setIn(
                 ['state', 'appliedMacro'],
                 fromJS(action.payload)
+            )
+        }
+
+        case types.SET_HAS_ATTEMPTED_TO_CLOSE_TICKET: {
+            return state.setIn(
+                ['state', 'hasAttemptedToCloseTicket'],
+                action.payload
             )
         }
 

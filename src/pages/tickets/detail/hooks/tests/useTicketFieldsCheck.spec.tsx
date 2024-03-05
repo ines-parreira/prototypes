@@ -1,7 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {Map as mockMap} from 'immutable'
 
-import {triggerTicketFieldsErrors} from 'state/ticket/actions'
+import {
+    setHasAttemptedToCloseTicket,
+    triggerTicketFieldsErrors,
+} from 'state/ticket/actions'
 import {getAppliedMacro, getTicketFieldState} from 'state/ticket/selectors'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
@@ -16,6 +19,7 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
 jest.mock('state/ticket/actions', () => ({
+    setHasAttemptedToCloseTicket: jest.fn(),
     triggerTicketFieldsErrors: jest.fn(),
 }))
 
@@ -105,7 +109,9 @@ describe('useTicketFieldsCheck', () => {
         expect(mockedTriggerTicketFieldsErrors).toHaveBeenCalledWith([
             mockTicketInputFieldDefinition.id,
         ])
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(setHasAttemptedToCloseTicket).toHaveBeenCalledWith(true)
+
+        expect(mockedDispatch).toHaveBeenCalledTimes(2)
     })
 
     it('should ignore invalid fields if custom field definitions is loading', () => {
@@ -125,7 +131,8 @@ describe('useTicketFieldsCheck', () => {
         expect(
             result.current.checkTicketFieldErrors({includeMacro: true})
         ).toEqual(false)
-        expect(mockedDispatch).not.toHaveBeenCalled()
+        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(setHasAttemptedToCloseTicket).toHaveBeenCalledWith(false)
     })
 
     it('should no break if there is no applied macro', () => {
@@ -136,7 +143,7 @@ describe('useTicketFieldsCheck', () => {
                     data: {
                         data: [mockTicketInputFieldDefinition],
                     },
-                    isLoading: true,
+                    isLoading: false,
                 } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
         )
 
@@ -145,6 +152,7 @@ describe('useTicketFieldsCheck', () => {
         expect(
             result.current.checkTicketFieldErrors({includeMacro: true})
         ).toEqual(false)
-        expect(mockedDispatch).not.toHaveBeenCalled()
+        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(setHasAttemptedToCloseTicket).toHaveBeenCalledWith(false)
     })
 })

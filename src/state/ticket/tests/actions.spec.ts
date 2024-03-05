@@ -1400,4 +1400,9 @@ describe('ticket actions', () => {
             }
         )
     })
+
+    it('setHasAttemptedToCloseTicket', () => {
+        store.dispatch(actions.setHasAttemptedToCloseTicket(true))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
 })

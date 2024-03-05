@@ -1486,3 +1486,8 @@ export const restoreTicketDraft = createAction<
 export const restoreTicketDraftApplyMacro = createAction<MacroModel | null>(
     types.RESTORE_TICKET_DRAFT_APPLY_MACRO
 )
+
+export const setHasAttemptedToCloseTicket = (value: boolean) => ({
+    type: types.SET_HAS_ATTEMPTED_TO_CLOSE_TICKET,
+    payload: value,
+})

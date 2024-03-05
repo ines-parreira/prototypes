@@ -2427,6 +2427,7 @@ exports[`actions new message sendTicketMessage should submit new message 1`] = `
         "dirty": false,
         "latestEventDatetime": null,
         "appliedMacro": null,
+        "hasAttemptedToCloseTicket": false,
       },
       "status": "open",
       "tags": Immutable.List [],
