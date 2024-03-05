@@ -1,6 +1,6 @@
 import React from 'react'
 import {Button} from 'reactstrap'
-import {map, cloneDeep} from 'lodash'
+import {cloneDeep} from 'lodash'
 import {Tag} from 'models/aiAgent/types'
 import {AutoTagItem} from './AutoTagInput'
 import css from './AutoTagList.less'
@@ -17,7 +17,7 @@ export function AutoTagList(props: IProps) {
             {!!tags.length && (
                 <div className={css.autoTagListHeaders}>
                     <span>Tag name</span>
-                    <span>Tag Description</span>
+                    <span>Tag description</span>
                 </div>
             )}
 
@@ -29,7 +29,7 @@ export function AutoTagList(props: IProps) {
                         onInputUpdate={(value) => {
                             // This is specific to the usage of lodash. I did not find something to get around it
                             // eslint-disable-next-line @typescript-eslint/unbound-method
-                            const newItems = map(tags, cloneDeep)
+                            const newItems = tags.map(cloneDeep)
                             newItems[index].name = value
                             onTagUpdate(newItems)
                         }}
@@ -41,7 +41,7 @@ export function AutoTagList(props: IProps) {
                         value={tag.description}
                         onInputUpdate={(value) => {
                             // eslint-disable-next-line @typescript-eslint/unbound-method
-                            const newItems = map(tags, cloneDeep)
+                            const newItems = tags.map(cloneDeep)
                             newItems[index].description = value
                             onTagUpdate(newItems)
                         }}
@@ -51,7 +51,7 @@ export function AutoTagList(props: IProps) {
                         className="material-icons"
                         onClick={() => {
                             // eslint-disable-next-line @typescript-eslint/unbound-method
-                            const newItems = map(tags, cloneDeep)
+                            const newItems = tags.map(cloneDeep)
                             newItems.splice(index, 1)
                             onTagUpdate(newItems)
                         }}
@@ -69,7 +69,7 @@ export function AutoTagList(props: IProps) {
                 }}
             >
                 <i className="material-icons md-2">add</i>
-                <span>Add tag</span>
+                <span>Add a tag</span>
             </Button>
         </div>
     )
