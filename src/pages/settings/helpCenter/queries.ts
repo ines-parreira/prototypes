@@ -100,7 +100,8 @@ export const articleTemplateKeys = {
  */
 export const aiArticleKeys = {
     all: () => ['aiArticle'] as const,
-    list: () => [...aiArticleKeys.all(), 'list'] as const,
+    lists: () => [...aiArticleKeys.all(), 'list'],
+    list: (helpCenterId: number) => [...aiArticleKeys.lists(), helpCenterId],
 }
 
 /**
@@ -222,7 +223,7 @@ export const useGetAIArticles = <
         useFlags()[FeatureFlagKey.ObservabilityAIArticles] || false
 
     return useQuery({
-        queryKey: aiArticleKeys.list(),
+        queryKey: aiArticleKeys.list(helpCenterId),
         queryFn: async () => {
             // Enforcing locale here because API doesn't support locale as param and AI articles are only availables in english
             if (!isAIArticlesEnabled || locale !== 'en-US') {

@@ -48,6 +48,13 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     ]),
 }))
 
+jest.mock(
+    'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary',
+    () => ({
+        useHelpCenterAIArticlesLibrary: () => ({hasNewArticles: false}),
+    })
+)
+
 const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
 const mockedLogEvent = jest.mocked(logEvent)

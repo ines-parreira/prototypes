@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react'
 import moment from 'moment'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser, getTimezone} from 'state/currentUser/selectors'
@@ -19,6 +20,9 @@ import {getSortByName} from 'utils/getSortByName'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {DEFAULT_LOCALE} from 'pages/stats/common/utils'
+import {useHelpCenterAIArticlesLibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
@@ -34,6 +38,7 @@ import UnpublishedHelpCenterAlert from '../components/UnpublishedHelpCenterAlert
 import {HelpCenterStatsEmptyState} from '../components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
 import HelpCenterStatsLanguageFilter from '../components/HelpCenterStatsLanguageFilter/HelpCenterStatsLanguageFilter'
 import PartialDataAlert from '../components/PartialDataAlert/PartialDataAlert'
+import AIBanner from '../components/AIBanner'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -67,6 +72,14 @@ const HelpCenterStatsComponent = ({
     const isEndDateBeforeStartCollectionEvents = moment(
         statsFilters.period.start_datetime
     ).isBefore(DATE_WHEN_START_COLLECTION_EVENTS)
+
+    const {hasNewArticles: showAIBanner} = useHelpCenterAIArticlesLibrary(
+        selectedHelpCenter.id,
+        DEFAULT_LOCALE
+    )
+
+    const hasAccessToAILibrary =
+        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
 
     return (
         <div className="full-width">
@@ -137,6 +150,11 @@ const HelpCenterStatsComponent = ({
                             helpCenterId={selectedHelpCenter.id}
                         />
                     </DashboardGridCell>
+                    {hasAccessToAILibrary && showAIBanner && (
+                        <DashboardGridCell size={12}>
+                            <AIBanner helpCenterId={selectedHelpCenter.id} />
+                        </DashboardGridCell>
+                    )}
                 </DashboardSection>
                 <DashboardSection title="Help Center searches">
                     <DashboardGridCell size={6}>

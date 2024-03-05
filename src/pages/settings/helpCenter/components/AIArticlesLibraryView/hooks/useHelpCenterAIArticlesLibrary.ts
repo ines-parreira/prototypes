@@ -4,17 +4,29 @@ import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
     ArticleTemplateReviewAction,
+    Locale,
 } from 'models/helpCenter/types'
+import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
 export const useHelpCenterAIArticlesLibrary = (
-    fetchedArticles?: AIArticle[] | null
+    helpCenterId: number,
+    locale: Locale['code']
 ) => {
     const [articles, setArticles] = useState<AIArticle[] | null>()
     const [mappedArticleItems, setMappedArticleItems] = useState<
         AILibraryArticleItem[]
     >([])
+    const {data: fetchedArticles, isLoading} = useGetAIArticles(
+        helpCenterId,
+        locale,
+        {
+            refetchOnWindowFocus: false,
+        }
+    )
+    const fetchedArticlesCount = fetchedArticles?.length ?? 0
+
     const [selectedArticle, setSelectedArticle] =
         useState<AILibraryArticleItem>()
 
@@ -67,6 +79,7 @@ export const useHelpCenterAIArticlesLibrary = (
 
     return {
         articles: mappedArticleItems,
+        isLoading,
         counters: {
             [AIArticleToggleOptionValue.New]: newArticles.length,
             [AIArticleToggleOptionValue.Old]: oldArticles.length,
@@ -77,8 +90,10 @@ export const useHelpCenterAIArticlesLibrary = (
         setSelectedArticleType,
         selectedArticle,
         setSelectedArticle,
-        showLinkToArticleTemplates:
-            (fetchedArticles?.length ?? 0) < MINIMUM_AI_ARTICLES,
+        hasNewArticles:
+            newArticles.length > 0 &&
+            fetchedArticlesCount >= MINIMUM_AI_ARTICLES,
+        showLinkToArticleTemplates: fetchedArticlesCount < MINIMUM_AI_ARTICLES,
         markArticleAsReviewed: (
             templateKey: string,
             reviewAction: ArticleTemplateReviewAction

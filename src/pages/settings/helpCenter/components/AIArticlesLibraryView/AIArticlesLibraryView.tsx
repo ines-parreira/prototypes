@@ -14,7 +14,7 @@ import {
 import {useCreateArticleUsingTemplate} from '../../hooks/useCreateArticleUsingTemplate'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import {useGetAIArticles, useReviewArticleTemplate} from '../../queries'
+import {useReviewArticleTemplate} from '../../queries'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import LibrarySkeleton from './components/AIArticlesLibrarySkeleton/AIArticlesLibrarySkeleton'
 import AIArticlesLibraryList from './components/AIArticlesLibraryList'
@@ -31,18 +31,9 @@ const AIArticlesLibraryView = () => {
     const helpCenter = useCurrentHelpCenter()
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const archiveModal = useRef<AIArticleArchiveModalHandle>(null)
-
     const appDispatch = useAppDispatch()
-
-    const {data: fetchedArticles, isLoading} = useGetAIArticles(
-        helpCenter.id,
-        locale,
-        {
-            refetchOnWindowFocus: false,
-        }
-    )
-
     const {
+        isLoading,
         articles,
         counters,
         selectedArticle,
@@ -51,7 +42,7 @@ const AIArticlesLibraryView = () => {
         setSelectedArticleType,
         showLinkToArticleTemplates,
         markArticleAsReviewed,
-    } = useHelpCenterAIArticlesLibrary(fetchedArticles)
+    } = useHelpCenterAIArticlesLibrary(helpCenter.id, locale)
 
     const {createArticle} = useCreateArticleUsingTemplate(helpCenter)
 
