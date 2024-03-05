@@ -1,0 +1,25 @@
+@import '~css/typography';
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+
+        .caption-regular();
+    }
+
+    .disclaimerAgreement {
+        text-align: left;
+
+        a {
+            color: inherit;
+            text-decoration: underline !important;
+        }
+        .disclaimerCheckbox label {
+            .caption-regular();
+            letter-spacing: normal;
+        }
+    }
+}

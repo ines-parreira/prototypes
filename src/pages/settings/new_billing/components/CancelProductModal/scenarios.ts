@@ -1,5 +1,8 @@
 import {ProductType} from '../../../../../models/billing/types'
-import {HELPDESK_CANCELLATION_REASONS} from './constants'
+import {
+    HELPDESK_CANCELLATION_REASONS,
+    HELPDESK_REASONS_TO_CANDU_CONTENTS,
+} from './constants'
 
 import {CancellationScenario} from './types'
 
@@ -32,4 +35,5 @@ export const HELPDESK_CANCELLATION_SCENARIO: CancellationScenario = {
             icon: 'widgets',
         },
     ],
+    reasonsToCanduContents: HELPDESK_REASONS_TO_CANDU_CONTENTS,
 }

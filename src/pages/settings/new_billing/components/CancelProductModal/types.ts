@@ -13,6 +13,7 @@ export type CancellationScenario = {
     reasons: CancellationReason[]
     productsToCancel: ProductType[]
     features: ProductFeature[]
+    reasonsToCanduContents: ReasonsToCanduContent[]
 }
 
 export enum CancellationReasonsActionType {
@@ -42,4 +43,11 @@ export type CancellationReasonsState = {
     primaryReason: Reason | null
     secondaryReason: Reason | null
     otherReason: Reason | null
+    completed: boolean
+}
+
+export type ReasonsToCanduContent = {
+    primaryReasonLabel: string
+    secondaryReasonLabel: string | null
+    canduContentID: string
 }

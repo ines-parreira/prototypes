@@ -1,4 +1,11 @@
-import {CancellationReason} from './types'
+import {CancellationReason, ReasonsToCanduContent} from './types'
+
+export enum CancellationFlowStep {
+    productFeaturesFOMO,
+    cancellationReasons,
+    churnMitigationOffer,
+    cancellationSummary,
+}
 
 export enum CommonReasonLabel {
     Other = 'Other',
@@ -83,3 +90,6 @@ export const HELPDESK_CANCELLATION_REASONS: CancellationReason[] = [
         secondaryReasons: [],
     },
 ]
+
+// fixme(@illia): add  actual content mapping as soon as provided by CSM team.
+export const HELPDESK_REASONS_TO_CANDU_CONTENTS: ReasonsToCanduContent[] = []
