@@ -87,6 +87,7 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                 closedTicketsPerTicketDrillDownQueryFactory
             )
         case TableColumn.RepliedTickets:
+        case TableColumn.RepliedTicketsPerHour:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 ticketsRepliedMetricPerTicketDrillDownQueryFactory

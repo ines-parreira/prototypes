@@ -34,6 +34,7 @@ export enum TableColumn {
     OneTouchTickets = 'agent_one_touch_tickets',
     OnlineTime = 'agent_online_time',
     MessagesSentPerHour = 'agent_messages_sent_per_hour',
+    RepliedTicketsPerHour = 'agent_replied_tickets_per_hour',
 }
 
 export enum TicketFieldsMetric {

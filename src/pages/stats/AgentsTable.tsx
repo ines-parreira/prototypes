@@ -1,7 +1,6 @@
 import classNames from 'classnames'
-import React, {PropsWithRef, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {MessagesSentPerHourCellContent} from 'pages/stats/MessagesSentPerHourCellContent'
+import React, {PropsWithRef, UIEventHandler, useState} from 'react'
 import {User} from 'config/types/user'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppSelector from 'hooks/useAppSelector'
@@ -28,11 +27,13 @@ import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionC
 import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
 import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
 import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
+import {MessagesSentPerHourCellContent} from 'pages/stats/MessagesSentPerHourCellContent'
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
 import {OnlineTimeCellContent} from 'pages/stats/OnlineTimeCellContent'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
+import {TicketsRepliedPerHourCellContent} from 'pages/stats/TicketsRepliedPerHourCellContent'
 import {
     getPaginatedAgents,
     getSortedAgents,
@@ -70,6 +71,8 @@ const getCell = (
             return OnlineTimeCellContent
         case TableColumn.MessagesSentPerHour:
             return MessagesSentPerHourCellContent
+        case TableColumn.RepliedTicketsPerHour:
+            return TicketsRepliedPerHourCellContent
     }
 }
 

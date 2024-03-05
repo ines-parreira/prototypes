@@ -49,6 +49,7 @@ export type AgentMetricColumn =
     | TableColumn.ClosedTickets
     | TableColumn.RepliedTickets
     | TableColumn.OneTouchTickets
+    | TableColumn.RepliedTicketsPerHour
 
 export type AgentsMetrics = {
     metricName: AgentMetricColumn
@@ -93,6 +94,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     TableColumn.RepliedTickets,
     TableColumn.MessagesSent,
     TableColumn.OneTouchTickets,
+    TableColumn.RepliedTicketsPerHour,
 ]
 
 export const initialState: DrillDownState = {
