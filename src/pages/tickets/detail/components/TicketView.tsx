@@ -19,6 +19,7 @@ type Props = {
     isTicketHidden: boolean
     submit: (params: SubmitArgs) => any
     setStatus: (status: string) => any
+    onGoToNextTicket?: () => void
 }
 
 export const TicketView = ({
@@ -26,6 +27,7 @@ export const TicketView = ({
     isTicketHidden,
     setStatus,
     submit,
+    onGoToNextTicket,
 }: Props) => {
     const dispatch = useAppDispatch()
     const pageRef = useRef<HTMLDivElement>(null)
@@ -138,6 +140,7 @@ export const TicketView = ({
                         (ticket.getIn(['customer', 'name']) as string) ??
                         'Customer'
                     }
+                    onGoToNextTicket={onGoToNextTicket}
                 />
             </div>
         </div>

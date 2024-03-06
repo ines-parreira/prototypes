@@ -94,9 +94,14 @@ const CollisionDetection = () => {
 type Props = {
     hideTicket: () => Promise<void>
     setStatus: (status: string) => any
+    onGoToNextTicket?: () => void
 }
 
-const TicketHeaderWrapper = ({hideTicket, setStatus}: Props) => {
+const TicketHeaderWrapper = ({
+    hideTicket,
+    setStatus,
+    onGoToNextTicket,
+}: Props) => {
     const ticket = useAppSelector((state) => state.ticket)
 
     const isExistingTicket = !!ticket.get('id')
@@ -109,6 +114,7 @@ const TicketHeaderWrapper = ({hideTicket, setStatus}: Props) => {
                     hideTicket={hideTicket}
                     setStatus={setStatus}
                     className="flex-grow"
+                    onGoToNextTicket={onGoToNextTicket}
                 />
                 <TicketFields />
                 <CollisionDetection />

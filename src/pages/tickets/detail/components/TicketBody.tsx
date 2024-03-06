@@ -31,6 +31,7 @@ interface Props {
     setStatus: (s: string) => void
     shopperName: string
     submit: (params: SubmitArgs) => any
+    onGoToNextTicket?: () => void
 }
 
 export default function TicketBody({
@@ -41,6 +42,7 @@ export default function TicketBody({
     setStatus,
     shopperName,
     submit,
+    onGoToNextTicket,
 }: Props) {
     const virtuosoRef = useRef<VirtuosoHandle | null>(null)
     const [expandedMessages, toggleMessage] = useExpandedMessages()
@@ -80,6 +82,7 @@ export default function TicketBody({
                 <TicketHeaderWrapper
                     hideTicket={hideTicket}
                     setStatus={setStatus}
+                    onGoToNextTicket={onGoToNextTicket}
                 />
             ) : (
                 <TicketBodyElement
@@ -103,6 +106,7 @@ export default function TicketBody({
             selectedIndex,
             setHighlightedElements,
             setStatus,
+            onGoToNextTicket,
         ]
     )
 

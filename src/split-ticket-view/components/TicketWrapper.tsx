@@ -21,14 +21,14 @@ export default function TicketWrapper({isOnSplitTicketView}: Props) {
         [nextTicketId, viewId]
     )
 
-    const handleCloseCallback = useCallback(() => {
+    const handleGoToNextTicket = useCallback(() => {
         history.push(nextUrl)
     }, [nextUrl])
 
     return (
         <TicketDetailContainer
-            onCloseCallback={
-                isOnSplitTicketView ? handleCloseCallback : undefined
+            onGoToNextTicket={
+                isOnSplitTicketView ? handleGoToNextTicket : undefined
             }
         />
     )

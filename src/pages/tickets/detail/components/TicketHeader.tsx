@@ -50,6 +50,7 @@ type Props = {
     className: string
     hideTicket: () => Promise<void>
     setStatus: (status: string) => any
+    onGoToNextTicket?: () => void
 } & ConnectedProps<typeof connector> &
     WithAppNodeProps
 
@@ -82,10 +83,21 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
     }
 
     _goToNextTicket = () => {
-        const {hideTicket, goToNextTicket, clearTicket, ticket} = this.props
+        const {
+            hideTicket,
+            goToNextTicket,
+            clearTicket,
+            ticket,
+            onGoToNextTicket,
+        } = this.props
 
         // If the history is open, we don't want to go to the next ticket
         if (ticket.getIn(['_internal', 'displayHistory'])) {
+            return
+        }
+
+        if (onGoToNextTicket) {
+            onGoToNextTicket()
             return
         }
 

@@ -89,7 +89,7 @@ export type SubmitArgs = {
 }
 
 type Props = {
-    onCloseCallback?: () => void
+    onGoToNextTicket?: () => void
 } & ConnectedProps<typeof connector>
 
 export const TicketDetailContainer = ({
@@ -118,7 +118,7 @@ export const TicketDetailContainer = ({
     submitTicket,
     ticket,
     updateCursor,
-    onCloseCallback,
+    onGoToNextTicket,
 }: Props) => {
     const dispatch = useAppDispatch()
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
@@ -387,7 +387,7 @@ export const TicketDetailContainer = ({
             await submitNewMessage({status, action, resetMessage})
         }
 
-        const callback = onCloseCallback || maybeGoToNextTicket
+        const callback = onGoToNextTicket || maybeGoToNextTicket
 
         if (status === TicketStatus.Closed) {
             callback()
@@ -649,7 +649,7 @@ export const TicketDetailContainer = ({
                 })
             )
 
-            const callback = onCloseCallback || maybeGoToNextTicket
+            const callback = onGoToNextTicket || maybeGoToNextTicket
             callback()
         })
     }
@@ -664,6 +664,7 @@ export const TicketDetailContainer = ({
             isTicketHidden={isTicketHidden}
             submit={submit}
             setStatus={handleStatusChange}
+            onGoToNextTicket={onGoToNextTicket}
         />
     )
 }

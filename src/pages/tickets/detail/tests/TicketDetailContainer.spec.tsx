@@ -425,7 +425,7 @@ describe('TicketDetailContainer component', () => {
                             },
                         })}
                         submitTicket={() => Promise.resolve()}
-                        onCloseCallback={mockCallback}
+                        onGoToNextTicket={mockCallback}
                     />
                 </Provider>
             </QueryClientProvider>,
