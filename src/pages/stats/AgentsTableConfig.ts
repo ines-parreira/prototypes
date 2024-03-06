@@ -6,6 +6,7 @@ import {
     useMedianResolutionTimeMetric,
     useMessagesSentMetric,
     useOnlineTimeMetric,
+    useTicketAverageHandleTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import {
@@ -15,6 +16,7 @@ import {
     useMedianResolutionTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
+    useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
@@ -55,6 +57,7 @@ export const TableColumnsOrderWithOnlineTime = [
     TableColumn.MessagesSentPerHour,
     TableColumn.RepliedTicketsPerHour,
     TableColumn.ClosedTicketsPerHour,
+    TableColumn.TicketHandleTime,
 ]
 
 export const agentPerformanceMetrics = TableColumnsOrder.map((column) => ({
@@ -87,6 +90,7 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.MessagesSentPerHour]: 'Messages sent per hour',
     [TableColumn.RepliedTicketsPerHour]: 'Tickets replied per hour',
     [TableColumn.ClosedTicketsPerHour]: 'Closed Tickets per hour',
+    [TableColumn.TicketHandleTime]: 'Ticket Handle time',
 }
 
 export const AGENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 200 : 300
@@ -139,6 +143,10 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
     [TableColumn.ClosedTicketsPerHour]: {
         title: 'Number of closed tickets assigned to the agent divided by the number of online hours',
     },
+    [TableColumn.TicketHandleTime]: {
+        title: 'Average amount of time spent by any agent on the closed tickets assigned to the agent',
+        link: 'https://link.gorgias.com/611',
+    },
 }
 
 export const MetricFormat: Record<
@@ -164,6 +172,7 @@ export const MetricFormat: Record<
     [TableColumn.MessagesSentPerHour]: {format: 'decimal', perAgent: false},
     [TableColumn.RepliedTicketsPerHour]: {format: 'decimal', perAgent: false},
     [TableColumn.ClosedTicketsPerHour]: {format: 'decimal', perAgent: false},
+    [TableColumn.TicketHandleTime]: {format: 'duration', perAgent: false},
 }
 
 export const getColumnWidth = (column: TableColumn) =>
@@ -218,6 +227,8 @@ export const getQuery = (column: TableColumn): MetricQueryPerAgentQuery => {
             return useTicketsRepliedPerHourPerAgent
         case TableColumn.ClosedTicketsPerHour:
             return useTicketsClosedPerHourPerAgent
+        case TableColumn.TicketHandleTime:
+            return useTicketAverageHandleTimePerAgent
     }
 }
 
@@ -257,5 +268,7 @@ export const getSummaryQuery = (column: TableColumn): MetricQuery => {
             return useTicketsRepliedPerHour
         case TableColumn.ClosedTicketsPerHour:
             return useTicketsClosedPerHour
+        case TableColumn.TicketHandleTime:
+            return useTicketAverageHandleTimeMetric
     }
 }

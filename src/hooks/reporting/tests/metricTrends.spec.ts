@@ -5,7 +5,7 @@ import {automationRateQueryFactory} from 'models/reporting/queryFactories/automa
 import {decreaseInResolutionTimeQueryFactory} from 'models/reporting/queryFactories/automate/decreaseInResolutionTime'
 import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
-import {ticketHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -108,7 +108,7 @@ describe('metric trends', () => {
         [
             'useTicketHandleTimeTrend',
             useTicketHandleTimeTrend,
-            ticketHandleTimeQueryFactory,
+            ticketAverageHandleTimeQueryFactory,
         ],
     ])('%s', (_testName, useTrendFn, queryFactory) => {
         it('should create reporting filters', () => {

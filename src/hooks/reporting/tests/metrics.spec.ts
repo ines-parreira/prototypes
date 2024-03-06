@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
+import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -22,6 +23,7 @@ import {
     useTicketsRepliedMetric,
     useOneTouchTicketsMetric,
     useOnlineTimeMetric,
+    useTicketAverageHandleTimeMetric,
 } from 'hooks/reporting/metrics'
 import {useMetric} from 'hooks/reporting/useMetric'
 
@@ -82,6 +84,11 @@ describe('metrics', () => {
             'useOneTouchTicketsMetric',
             useOneTouchTicketsMetric,
             oneTouchTicketsQueryFactory,
+        ],
+        [
+            'useTicketHandleTimeMetric',
+            useTicketAverageHandleTimeMetric,
+            ticketAverageHandleTimeQueryFactory,
         ],
     ])(
         '%s',

@@ -6,6 +6,7 @@ import {
 } from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {onlineTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
+import {ticketAverageHandleTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -147,5 +148,20 @@ export const useOnlineTimePerAgent = (
 ) =>
     useMetricPerDimension(
         onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
+        agentAssigneeId
+    )
+
+export const useTicketAverageHandleTimePerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+) =>
+    useMetricPerDimension(
+        ticketAverageHandleTimePerAgentQueryFactory(
+            statsFilters,
+            timezone,
+            sorting
+        ),
         agentAssigneeId
     )

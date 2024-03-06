@@ -9,8 +9,9 @@ import {
 } from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
+    ticketAverageHandleTimePerAgentQueryFactory,
     ticketHandleTimePerTicketQueryFactory,
-    ticketHandleTimeQueryFactory,
+    ticketAverageHandleTimeQueryFactory,
 } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -39,7 +40,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
     describe('ticketHandleTimeQueryFactory', () => {
         it('should build the query', () => {
             expect(
-                ticketHandleTimeQueryFactory(statsFilters, timezone)
+                ticketAverageHandleTimeQueryFactory(statsFilters, timezone)
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -84,7 +85,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
 
         it('should build the query with sorting', () => {
             expect(
-                ticketHandleTimeQueryFactory(statsFilters, timezone, sorting)
+                ticketAverageHandleTimeQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting
+                )
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -224,6 +229,110 @@ describe('onlineTimePerAgentQueryFactory', () => {
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [HandleTimeMeasure.HandleTime],
                 order: [[HandleTimeMeasure.HandleTime, sorting]],
+                segments: [TicketSegment.ClosedTickets],
+                timezone: timezone,
+            })
+        })
+    })
+
+    describe('ticketAverageHandleTimePerAgentQueryFactory', () => {
+        it('should build the query', () => {
+            expect(
+                ticketAverageHandleTimePerAgentQueryFactory(
+                    statsFilters,
+                    timezone
+                )
+            ).toEqual({
+                dimensions: [TicketDimension.AssigneeUserId],
+                filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [formatReportingQueryDate(periodEnd)],
+                    },
+                    {
+                        member: TicketMessagesMember.Integration,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.integrations?.map((i) =>
+                            String(i)
+                        ),
+                    },
+                    {
+                        member: TicketMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.channels?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.AssigneeUserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.agents?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.Tags,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.tags?.map((i) => String(i)),
+                    },
+                    TicketDrillDownFilter,
+                ],
+                limit: DRILLDOWN_QUERY_LIMIT,
+                measures: [HandleTimeMeasure.AverageHandleTime],
+                segments: [TicketSegment.ClosedTickets],
+                timezone: timezone,
+            })
+        })
+
+        it('should build the query with sorting', () => {
+            expect(
+                ticketAverageHandleTimePerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting
+                )
+            ).toEqual({
+                dimensions: [TicketDimension.AssigneeUserId],
+                filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [formatReportingQueryDate(periodEnd)],
+                    },
+                    {
+                        member: TicketMessagesMember.Integration,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.integrations?.map((i) =>
+                            String(i)
+                        ),
+                    },
+                    {
+                        member: TicketMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.channels?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.AssigneeUserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.agents?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.Tags,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.tags?.map((i) => String(i)),
+                    },
+                    TicketDrillDownFilter,
+                ],
+                limit: DRILLDOWN_QUERY_LIMIT,
+                measures: [HandleTimeMeasure.AverageHandleTime],
+                order: [[HandleTimeMeasure.AverageHandleTime, sorting]],
                 segments: [TicketSegment.ClosedTickets],
                 timezone: timezone,
             })

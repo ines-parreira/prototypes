@@ -2,6 +2,7 @@ import {useMetric} from 'hooks/reporting/useMetric'
 import {OrderDirection} from 'models/api/types'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
+import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -100,6 +101,22 @@ export const useOneTouchTicketsMetric = (
     useMetric(
         withFilter(
             oneTouchTicketsQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter
+        )
+    )
+
+export const useTicketAverageHandleTimeMetric = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): Metric =>
+    useMetric(
+        withFilter(
+            ticketAverageHandleTimeQueryFactory(
+                statsFilters,
+                timezone,
+                sorting
+            ),
             ignoreNotAssignedTicketsFilter
         )
     )

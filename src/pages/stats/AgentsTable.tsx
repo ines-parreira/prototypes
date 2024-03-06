@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import {useDispatch} from 'react-redux'
 import React, {PropsWithRef, UIEventHandler, useState} from 'react'
+import {TicketHandleTimeCellContent} from 'pages/stats/TicketHandleTimeCellContent'
 import {User} from 'config/types/user'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppSelector from 'hooks/useAppSelector'
@@ -75,6 +76,8 @@ export const getCell = (
             return TicketsRepliedPerHourCellContent
         case TableColumn.ClosedTicketsPerHour:
             return ClosedTicketsPerHourCellContent
+        case TableColumn.TicketHandleTime:
+            return TicketHandleTimeCellContent
     }
 }
 

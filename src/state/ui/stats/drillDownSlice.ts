@@ -51,6 +51,7 @@ export type AgentMetricColumn =
     | TableColumn.OneTouchTickets
     | TableColumn.RepliedTicketsPerHour
     | TableColumn.ClosedTicketsPerHour
+    | TableColumn.TicketHandleTime
 
 export type AgentsMetrics = {
     metricName: AgentMetricColumn
@@ -199,6 +200,7 @@ const getMetricValueFormat = (
     if (
         metricName === TableColumn.MedianFirstResponseTime ||
         metricName === TableColumn.MedianResolutionTime ||
+        metricName === TableColumn.TicketHandleTime ||
         metricName === OverviewMetric.MedianFirstResponseTime ||
         metricName === OverviewMetric.MedianResolutionTime ||
         metricName === OverviewMetric.TicketHandleTime

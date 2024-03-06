@@ -13,7 +13,7 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-export const ticketHandleTimeQueryFactory = (
+export const ticketAverageHandleTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
@@ -32,16 +32,56 @@ export const ticketHandleTimeQueryFactory = (
         : {}),
 })
 
+export const ticketAverageHandleTimePerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HandleTimeCubeWithJoins> => ({
+    ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting),
+    measures: [HandleTimeMeasure.AverageHandleTime],
+    dimensions: [TicketDimension.AssigneeUserId],
+    filters: [
+        ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting)
+            .filters,
+        TicketDrillDownFilter,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[HandleTimeMeasure.AverageHandleTime, sorting]],
+          }
+        : {}),
+})
+
+export const ticketHandleTimeQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HandleTimeCubeWithJoins> => ({
+    filters: [
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+    ],
+    measures: [HandleTimeMeasure.HandleTime],
+    dimensions: [],
+    segments: [TicketSegment.ClosedTickets],
+    timezone,
+    ...(sorting
+        ? {
+              order: [[HandleTimeMeasure.HandleTime, sorting]],
+          }
+        : {}),
+})
+
 export const ticketHandleTimePerTicketQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     ...ticketHandleTimeQueryFactory(filters, timezone, sorting),
-    measures: [HandleTimeMeasure.HandleTime],
     dimensions: [TicketDimension.TicketId],
     filters: [
-        ...ticketHandleTimeQueryFactory(filters, timezone, sorting).filters,
+        ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting)
+            .filters,
         TicketDrillDownFilter,
     ],
     limit: DRILLDOWN_QUERY_LIMIT,
