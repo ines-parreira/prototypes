@@ -114,7 +114,9 @@ export default function TrainMyAiPreview({
             />
             <div className={css.preview}>
                 {noRelevantArticles ? (
-                    <NoRelevantArticlePreview />
+                    <NoRelevantArticlePreview
+                        helpCenterId={recommendations?.helpCenterId}
+                    />
                 ) : previewArticleData === null ? (
                     <DeletedArticlePreview />
                 ) : previewArticleData ? (

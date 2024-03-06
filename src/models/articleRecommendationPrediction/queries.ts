@@ -63,7 +63,6 @@ export const useArticleRecommendationPredictions = ({
                 meta: response?.data.meta,
             }
         },
-        cacheTime: 0,
         keepPreviousData: true,
         enabled: !!helpCenterId,
     })

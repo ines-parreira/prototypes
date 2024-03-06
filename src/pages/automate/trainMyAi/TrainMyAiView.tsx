@@ -237,6 +237,7 @@ const TrainMyAiView = () => {
         setSelectedRecommendationId(nextRecommendationId)
         void queryClient.invalidateQueries({
             queryKey: [ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY],
+            type: 'all',
         })
     }, [
         articleRecommendationsData,
