@@ -30,6 +30,7 @@ export enum ColorType {
     LightWarning = 'light-warning',
     LightError = 'light-error',
     LightPurple = 'light-purple',
+    Magenta = 'magenta',
 }
 
 const Badge = ({

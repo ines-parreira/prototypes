@@ -82,9 +82,7 @@ describe('<ArticleLandingPage />', () => {
         expect(screen.getByText('Create Article')).toBeInTheDocument()
 
         expect(
-            screen.getByText(
-                'Start with an article template that you can customize to fit your needs:'
-            )
+            screen.getByText('Choose a customizable article template:')
         ).toBeInTheDocument()
     })
 

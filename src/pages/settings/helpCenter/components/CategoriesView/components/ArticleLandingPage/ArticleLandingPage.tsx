@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Container} from 'reactstrap'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Button from 'pages/common/components/button/Button'
 import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
@@ -8,19 +9,26 @@ import {validLocaleCode} from 'models/helpCenter/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
-import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
+import {
+    useGetAIArticles,
+    useGetArticleTemplates,
+} from 'pages/settings/helpCenter/queries'
 import {ArticleTemplate} from 'models/helpCenter/types'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
 import ArticleTemplateCard from '../ArticleTemplateCard'
 import ArticleTemplateCardSkeleton from '../ArticleTemplateCard/ArticleTemplateCardSkeleton'
 import AddArticleCard from '../AddArticleCard'
+import {MINIMUM_AI_ARTICLES} from '../ArticleTemplateCard/constants'
+import AILibraryBanner from '../AILibraryBanner'
 
 import css from './ArticleLandingPage.less'
 
@@ -45,11 +53,35 @@ const ArticleLandingPageComponent = ({
     const helpCenter = useCurrentHelpCenter()
     const supportedLocales = helpCenter.supported_locales
 
+    const {data: aiArticles, isLoading: isAIArticlesLoading} = useGetAIArticles(
+        helpCenter.id,
+        viewLanguage,
+        {
+            refetchOnWindowFocus: false,
+        }
+    )
+
+    const hasAIArticlesNotReviewed = useMemo(() => {
+        return aiArticles?.some((aiArticle) => !aiArticle.review_action)
+    }, [aiArticles])
+
+    const isEmptyStateMode = !showBackButton
+
+    const hasAccessToAILibrary =
+        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
+    const showAIBanner =
+        hasAccessToAILibrary &&
+        isEmptyStateMode &&
+        (aiArticles?.length ?? 0) >= MINIMUM_AI_ARTICLES &&
+        hasAIArticlesNotReviewed
+
     const {setSelectedArticleLanguage} = useEditionManager()
 
     const dispatch = useAppDispatch()
 
-    const isEmptyStateMode = !showBackButton
+    const showArticleTemplatesBanner =
+        (isEmptyStateMode && !hasAccessToAILibrary) ||
+        (!showAIBanner && !isAIArticlesLoading)
 
     const handleOnChangeLocale = (value: React.ReactText) => {
         dispatch(changeViewLanguage(validLocaleCode(value)))
@@ -71,7 +103,13 @@ const ArticleLandingPageComponent = ({
 
     return (
         <Container fluid className={css.container}>
-            {isEmptyStateMode && <ArticleTemplatesBanner />}
+            {isEmptyStateMode &&
+                hasAccessToAILibrary &&
+                (isAIArticlesLoading || isArticleTemplatesLoading) && (
+                    <Skeleton height={300} width={'100%'} />
+                )}
+            {showAIBanner && <AILibraryBanner />}
+            {showArticleTemplatesBanner && <ArticleTemplatesBanner />}
             <div className={css.wrapper}>
                 <div className={css.topNav}>
                     <div className={css.buttons}>
@@ -106,8 +144,7 @@ const ArticleLandingPageComponent = ({
                 >
                     {isEmptyStateMode ? (
                         <div className={css.title}>
-                            Start with an article template that you can
-                            customize to fit your needs:
+                            Choose a customizable article template:
                         </div>
                     ) : (
                         <div>
