@@ -1,0 +1,26 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .containerFlex {
+        display: flex;
+    }
+
+    .container {
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+        padding: 20px;
+        column-gap: @layout-spacing-s;
+        align-items: center;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .title {
+        .body-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .actionButton {
+        margin-left: auto;
+    }
+}

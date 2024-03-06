@@ -1,0 +1,36 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .pageContainer {
+        padding: @layout-spacing-m;
+    }
+
+    .content {
+        max-width: 680px;
+    }
+
+    .section {
+        margin-bottom: @layout-spacing-xl;
+    }
+
+    .sectionHeading {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        letter-spacing: -0.02em;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .radioButtonGroup {
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: @layout-spacing-s;
+        column-gap: @layout-spacing-s;
+        margin-bottom: @layout-spacing-l;
+
+        @media (min-width: 1280px) {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+}

@@ -8,10 +8,14 @@ import configureMockStore from 'redux-mock-store'
 
 import {render, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {IntegrationType} from 'models/integration/types'
 
 import client from 'models/api/resources'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {BundleDetailView} from '../BundleDetailView'
+
+const queryClient = mockQueryClient()
 
 const mockStore = configureMockStore([thunk])
 
@@ -58,12 +62,18 @@ describe('<BundleDetailView />', () => {
         mockedServer.reset()
     })
 
+    beforeEach(() => {
+        queryClient.clear()
+    })
+
     it('show bundle details', async () => {
         const {getByText} = render(
             <MemoryRouter>
-                <Provider store={mockStore(defaultState)}>
-                    <BundleDetailView />
-                </Provider>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <BundleDetailView />
+                    </Provider>
+                </QueryClientProvider>
             </MemoryRouter>
         )
 

@@ -10,7 +10,7 @@ import history from 'pages/history'
 export const transformBundleError = (
     error: AxiosError,
     errorMessage: string,
-    integration_id: number
+    integration_id?: number
 ): Notification => {
     const responseError = error as AxiosError<{
         error?: {msg: string}

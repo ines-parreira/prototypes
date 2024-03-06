@@ -166,6 +166,7 @@ import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrati
 import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCenterCreationWizard'
 import ConvertOnboardingView from './convert/common/components/ConvertOnboardingView'
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
+import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1746,23 +1747,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/installation`}
                 exact
                 component={memoizedWithUserRoleRequired(
-                    BundlesView as any,
-                    ADMIN_ROLE
-                )}
-            />
-            <Route
-                path={`${convertPathPrefix}/installation/new`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    BundleInstallView as any,
-                    ADMIN_ROLE
-                )}
-            />
-            <Route
-                path={`${convertPathPrefix}/installation/:bundleId`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    BundleDetailView as any,
+                    ConvertBundleView as any,
                     ADMIN_ROLE
                 )}
             />
