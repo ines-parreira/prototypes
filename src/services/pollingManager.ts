@@ -5,6 +5,7 @@ import {
     fetchRecentViewsCounts,
 } from 'state/views/actions'
 import {store as reduxStore} from 'common/store'
+import {isFullWidthViewPath} from 'common/utils'
 
 type Intervals = {
     activeViewTickets: ReturnType<typeof setTimeout>
@@ -27,9 +28,11 @@ class PollingManager {
         this.stop()
 
         this.intervals.activeViewTickets = setInterval(() => {
-            this.store.dispatch(
-                fetchActiveViewTickets() as unknown as AnyAction
-            )
+            if (isFullWidthViewPath(window.location.pathname)) {
+                this.store.dispatch(
+                    fetchActiveViewTickets() as unknown as AnyAction
+                )
+            }
         }, this.activeViewInterval)
 
         this.intervals.recentViewsCounts = setInterval(() => {
@@ -38,7 +41,11 @@ class PollingManager {
             )
         }, this.recentViewsCountsInterval)
 
-        this.store.dispatch(fetchActiveViewTickets() as unknown as AnyAction)
+        if (isFullWidthViewPath(window.location.pathname)) {
+            this.store.dispatch(
+                fetchActiveViewTickets() as unknown as AnyAction
+            )
+        }
     }
 
     stop = () => {

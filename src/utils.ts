@@ -747,6 +747,7 @@ export const isCurrentlyOnView = (
 ): boolean => {
     const prefix = [
         '/app/tickets',
+        '/app/views',
         '/app/customers',
         // TODO(customers-migration): remove this path when we updated all links in email templates.
         '/app/users',
