@@ -25,7 +25,12 @@ import {useHelpCenterPublishedArticlesCount} from '../common/hooks/useHelpCenter
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import {assetsUrl} from '../../../utils'
 import RecommendationDivisor from './components/RecommendationDivisor'
+import RecommendationFilters, {
+    FeedbackOptions,
+    DEFAULT_FEEDBACK_OPTIONS,
+} from './components/RecommendationFilters'
 import {StatefulMessageCard as MessageCard} from './components/MessageCard'
+import RecommendationFilterNoResults from './components/RecommendationFilterNoResults'
 import Header from './components/Header'
 import RecommendationPagination from './components/RecommendationPagination'
 import PreviewSection from './components/PreviewSection'
@@ -91,6 +96,17 @@ const TrainMyAiView = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const queryClient = useQueryClient()
 
+    const [recommendationFilterArticleId, setRecommendationFilterArticleId] =
+        useState<number | null>(null)
+    const [
+        recommendationFilterShowCompleted,
+        setRecommendationFilterShowCompleted,
+    ] = useState<boolean>(true)
+    const [
+        recommendationFilterFeedbackOptions,
+        setRecommendationFilterFeedbackOptions,
+    ] = useState(DEFAULT_FEEDBACK_OPTIONS)
+
     const {
         data: articleRecommendationsData,
         isInitialLoading: isInitialLoadingArticleRecommndations,
@@ -100,7 +116,47 @@ const TrainMyAiView = () => {
         shopName,
         shopType,
         helpCenterId,
+        articleId: recommendationFilterArticleId ?? undefined,
+        feedbackOptions: recommendationFilterFeedbackOptions,
+        showCompleted: recommendationFilterShowCompleted,
     })
+
+    const handleShowCompletedFilter = useCallback(
+        (value: boolean) => setRecommendationFilterShowCompleted(value),
+        []
+    )
+
+    const handleArticleFilter = useCallback((articleId: number | null) => {
+        setRecommendationFilterArticleId(articleId || null)
+    }, [])
+
+    const handleFeedbackFilter = useCallback(
+        (feedbackOption: FeedbackOptions) => {
+            if (
+                recommendationFilterFeedbackOptions.length === 1 &&
+                recommendationFilterFeedbackOptions[0] === feedbackOption
+            ) {
+                return
+            }
+
+            setRecommendationFilterFeedbackOptions((options) => {
+                const newOptions = options.includes(feedbackOption)
+                    ? options.filter((option) => option !== feedbackOption)
+                    : options.concat(feedbackOption)
+                return newOptions
+            })
+        },
+        [recommendationFilterFeedbackOptions]
+    )
+
+    useEffect(() => {
+        resetCurrectPagination()
+    }, [
+        recommendationFilterArticleId,
+        recommendationFilterFeedbackOptions,
+        recommendationFilterShowCompleted,
+    ])
+    const isNoRelevantArticleFilter = recommendationFilterArticleId === -1
 
     const isLoading =
         !selfServiceConfiguration ||
@@ -117,68 +173,103 @@ const TrainMyAiView = () => {
         articleRecommendationsData?.meta?.pagination.totalSize
     )
 
-    const [selectedRecommendationIndex, setSelectedRecommendationIndex] =
-        useState<number | null>(null)
+    const [selectedRecommendationId, setSelectedRecommendationId] = useState<
+        number | null
+    >(null)
 
     const selectedRecommendationData = useMemo(() => {
-        if (selectedRecommendationIndex === null) {
+        if (selectedRecommendationId === null) {
             return null
         }
         const articleRecommendationData =
-            articleRecommendationsData?.data?.[selectedRecommendationIndex]
+            articleRecommendationsData?.data?.find(
+                (data) => data.id === selectedRecommendationId
+            )
 
         return articleRecommendationData
-    }, [articleRecommendationsData, selectedRecommendationIndex])
+    }, [articleRecommendationsData, selectedRecommendationId])
 
     const isAllFeedbacksProvided =
-        typeof articleRecommendationsData?.meta?.pagination.totalSize ===
-            'number' &&
-        typeof articleRecommendationsData?.meta?.totalLabeledArticles ===
-            'number' &&
-        articleRecommendationsData.meta.pagination.totalSize ===
-            articleRecommendationsData.meta.totalLabeledArticles
+        articleRecommendationsData?.meta?.completed === true
 
-    const nextUnansweredRecommendationIndex = useCallback(
-        (data: typeof articleRecommendationsData, startFrom = -1) => {
+    const nextUnansweredRecommendationId = useCallback(
+        (
+            data: typeof articleRecommendationsData,
+            selectedArticleId: number | null
+        ) => {
             if (!data || !data.data) {
                 return null
             }
-            const index = data.data.findIndex(
-                (item, i) => item.articleIdFeedback === null && i > startFrom
+            const selectedRecommendationIndex = data.data.findIndex(
+                (item) => item.id === selectedArticleId
             )
-
-            return typeof index === 'number' && index >= 0 ? index : null
+            const articlePrediction = data.data.find(
+                (item, i) =>
+                    item.articleIdFeedback === null &&
+                    i > selectedRecommendationIndex
+            )
+            return articlePrediction ? articlePrediction.id : null
         },
         []
     )
 
+    const resetCurrectPagination = () => {
+        setCurrentPage(1)
+        leftColRef.current?.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    }
+
+    const handleResetFilters = () => {
+        setRecommendationFilterArticleId(null)
+        setRecommendationFilterShowCompleted(true)
+        setRecommendationFilterFeedbackOptions(DEFAULT_FEEDBACK_OPTIONS)
+    }
+
     const handleConfirmFeedback = useCallback(() => {
-        if (selectedRecommendationIndex === null) return
-        const nextIndex = nextUnansweredRecommendationIndex(
+        if (selectedRecommendationId === null) return
+        const nextRecommendationId = nextUnansweredRecommendationId(
             articleRecommendationsData,
-            selectedRecommendationIndex
+            selectedRecommendationId
         )
-        setSelectedRecommendationIndex(nextIndex)
+
+        setSelectedRecommendationId(nextRecommendationId)
         void queryClient.invalidateQueries({
             queryKey: [ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY],
         })
     }, [
         articleRecommendationsData,
-        selectedRecommendationIndex,
-        nextUnansweredRecommendationIndex,
+        selectedRecommendationId,
+        nextUnansweredRecommendationId,
         queryClient,
     ])
+
+    const hasAppliedFilters =
+        typeof recommendationFilterArticleId === 'number' ||
+        recommendationFilterFeedbackOptions.length < 3 ||
+        recommendationFilterShowCompleted === false
+
+    useEffect(() => {
+        if (
+            !articleRecommendationsData?.data?.some(
+                (item) => item.id === selectedRecommendationId
+            )
+        ) {
+            setSelectedRecommendationId(null)
+        }
+    }, [articleRecommendationsData, selectedRecommendationId])
 
     useEffect(() => {
         rightColRef.current?.scrollTo({
             top: 0,
             behavior: 'auto',
         })
-    }, [selectedRecommendationIndex])
+    }, [selectedRecommendationId])
 
     useEffect(() => {
         if (isAllFeedbacksProvided) {
-            setSelectedRecommendationIndex(null)
+            setSelectedRecommendationId(null)
         }
     }, [isAllFeedbacksProvided])
 
@@ -245,56 +336,90 @@ const TrainMyAiView = () => {
                     }
                 >
                     {articleRecommendationsData?.meta &&
-                        hasArticleRecommendations && (
+                        (hasArticleRecommendations || hasAppliedFilters) && (
                             <div className={css.headerContent}>
                                 <ProgressBar
                                     value={
-                                        articleRecommendationsData.meta
-                                            .totalLabeledArticles
+                                        articleRecommendationsData.meta.progress
+                                            .value
                                     }
-                                    maxValue={Math.min(
-                                        articleRecommendationsData.meta
-                                            .pagination.totalSize,
-                                        25 *
-                                            articleRecommendationsData.meta
-                                                .totalDistinctArticles
-                                    )}
+                                    maxValue={
+                                        articleRecommendationsData.meta.progress
+                                            .maxValue
+                                    }
                                     labelType="fraction"
                                 />
+                                {helpCenterId && (
+                                    <RecommendationFilters
+                                        helpCenterId={helpCenterId}
+                                        articleId={
+                                            recommendationFilterArticleId
+                                        }
+                                        feedbackOptions={
+                                            recommendationFilterFeedbackOptions
+                                        }
+                                        showCompleted={
+                                            recommendationFilterShowCompleted
+                                        }
+                                        onHandleArticleChange={
+                                            handleArticleFilter
+                                        }
+                                        onHandleShowCompletedChange={
+                                            handleShowCompletedFilter
+                                        }
+                                        onHandleFeedbackOptionChange={
+                                            handleFeedbackFilter
+                                        }
+                                    />
+                                )}
                                 <RecommendationDivisor />
                             </div>
                         )}
                 </Header>
                 {isFetchedArticleRecommendations && !hasArticleRecommendations && (
-                    <div
-                        className={classNames(css.content, css.empty, {
-                            [css.withButton]: isHelpCenterEmpty,
-                        })}
-                    >
-                        <div className={css.description}>
-                            {isHelpCenterEmpty
-                                ? `There are no articles published in ${shopName} Help Center.`
-                                : 'No recommendations have been sent yet'}
-                        </div>
-                        {typeof helpCenterId === 'number' &&
-                        isHelpCenterEmpty ? (
-                            <LinkButton
-                                target=""
-                                href={`/app/settings/help-center/${helpCenterId}/articles`}
-                            >
-                                Add articles to your help center
-                            </LinkButton>
+                    <>
+                        {hasAppliedFilters ? (
+                            <RecommendationFilterNoResults
+                                onResetButtonClick={handleResetFilters}
+                            />
                         ) : (
-                            <a
-                                href="https://link.gorgias.com/m1k"
-                                rel="noopener noreferrer"
-                                target="_blank"
+                            <div
+                                className={classNames(css.content, css.empty, {
+                                    [css.withButton]: isHelpCenterEmpty,
+                                })}
                             >
-                                Learn about Article Recommendation and AI
-                                training
-                            </a>
+                                <div
+                                    className={classNames({
+                                        [css.withButton]: isHelpCenterEmpty,
+                                    })}
+                                >
+                                    <div className={css.description}>
+                                        {isHelpCenterEmpty
+                                            ? `There are no articles published in ${shopName} Help Center.`
+                                            : 'No recommendations have been sent yet'}
+                                    </div>
+                                    {typeof helpCenterId === 'number' &&
+                                    isHelpCenterEmpty ? (
+                                        <LinkButton
+                                            target=""
+                                            href={`/app/settings/help-center/${helpCenterId}/articles`}
+                                        >
+                                            Add articles to your help center
+                                        </LinkButton>
+                                    ) : (
+                                        <a
+                                            href="https://link.gorgias.com/m1k"
+                                            rel="noopener noreferrer"
+                                            target="_blank"
+                                        >
+                                            Learn about Article Recommendation
+                                            and AI training
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
                         )}
-                    </div>
+                    </>
                 )}
 
                 <div className={css.content}>
@@ -304,16 +429,13 @@ const TrainMyAiView = () => {
                     ) : (
                         articleRecommendationsData?.data &&
                         articleRecommendationsData.data.map(
-                            (
-                                {
-                                    id,
-                                    message,
-                                    articleIdFeedback,
-                                    articleId,
-                                    locale,
-                                },
-                                index
-                            ) => {
+                            ({
+                                id,
+                                message,
+                                articleIdFeedback,
+                                articleId,
+                                locale,
+                            }) => {
                                 return (
                                     <MessageCard
                                         articleId={
@@ -322,13 +444,10 @@ const TrainMyAiView = () => {
                                         helpCenterId={helpCenterId}
                                         locale={locale}
                                         isSelected={
-                                            selectedRecommendationIndex ===
-                                            index
+                                            selectedRecommendationId === id
                                         }
                                         onSelect={() =>
-                                            setSelectedRecommendationIndex(
-                                                index
-                                            )
+                                            setSelectedRecommendationId(id)
                                         }
                                         message={message}
                                         key={id}
@@ -351,7 +470,7 @@ const TrainMyAiView = () => {
                                 }
                                 onChange={(page) => {
                                     setCurrentPage(page)
-                                    setSelectedRecommendationIndex(null)
+                                    setSelectedRecommendationId(null)
                                     leftColRef.current?.scrollTo({
                                         top: 0,
                                         behavior: 'smooth',
@@ -369,7 +488,9 @@ const TrainMyAiView = () => {
             >
                 {!selectedRecommendationData ? (
                     <div className={css.container}>
-                        {hasArticleRecommendations && isAllFeedbacksProvided ? (
+                        {hasArticleRecommendations &&
+                        isAllFeedbacksProvided &&
+                        !isNoRelevantArticleFilter ? (
                             <span
                                 role="img"
                                 aria-label="party popper"
@@ -381,58 +502,63 @@ const TrainMyAiView = () => {
                             <img src={gorgiasLogo} alt="Gorgias" />
                         )}
 
-                        {hasArticleRecommendations && (
-                            <>
-                                {isAllFeedbacksProvided ? (
-                                    <div className={css.description}>
-                                        <div className={css.title}>
-                                            Great work!
-                                        </div>
-                                        <div className={css.subtitle}>
-                                            You’ve provided feedback on every
-                                            Article Recommendation.
-                                            <br />
-                                            Check again later for more.
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <>
+                        {hasArticleRecommendations &&
+                            !isNoRelevantArticleFilter && (
+                                <>
+                                    {isAllFeedbacksProvided ? (
                                         <div className={css.description}>
                                             <div className={css.title}>
-                                                Provide feedback on Article
-                                                Recommendations.
+                                                Great work!
                                             </div>
                                             <div className={css.subtitle}>
-                                                Start by providing feedback for
-                                                articles that could deflect the
-                                                most tickets and aim to match 25
-                                                messages to each article for
-                                                best results.
+                                                You’ve provided feedback on
+                                                every Article Recommendation.
+                                                <br />
+                                                Check again later for more.
                                             </div>
                                         </div>
-                                        <Button
-                                            onClick={() => {
-                                                setSelectedRecommendationIndex(
-                                                    nextUnansweredRecommendationIndex(
-                                                        articleRecommendationsData
+                                    ) : (
+                                        <>
+                                            <div className={css.description}>
+                                                <div className={css.title}>
+                                                    Provide feedback on Article
+                                                    Recommendations.
+                                                </div>
+                                                <div className={css.subtitle}>
+                                                    Start by providing feedback
+                                                    for articles that could
+                                                    deflect the most tickets and
+                                                    aim to match 25 messages to
+                                                    each article for best
+                                                    results.
+                                                </div>
+                                            </div>
+                                            <Button
+                                                onClick={() => {
+                                                    setSelectedRecommendationId(
+                                                        nextUnansweredRecommendationId(
+                                                            articleRecommendationsData,
+                                                            selectedRecommendationId
+                                                        )
                                                     )
-                                                )
-                                                leftColRef.current?.scrollTo({
-                                                    top: 0,
-                                                    behavior: 'smooth',
-                                                })
-                                            }}
-                                        >
-                                            Provide feedback
-                                        </Button>
-                                    </>
-                                )}
-                            </>
-                        )}
+                                                    leftColRef.current?.scrollTo(
+                                                        {
+                                                            top: 0,
+                                                            behavior: 'smooth',
+                                                        }
+                                                    )
+                                                }}
+                                            >
+                                                Provide feedback
+                                            </Button>
+                                        </>
+                                    )}
+                                </>
+                            )}
                     </div>
                 ) : (
                     <PreviewSection
-                        key={selectedRecommendationIndex}
+                        key={selectedRecommendationId}
                         page={currentPage}
                         recommendations={selectedRecommendationData}
                         onConfirmFeedback={handleConfirmFeedback}

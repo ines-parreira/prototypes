@@ -88,6 +88,11 @@ export const articleRecommendationPredictionsResponseFixture: Paths.GetArticleRe
                 pageSize: 5,
                 pageLimit: 50,
             },
+            completed: false,
+            progress: {
+                maxValue: 4,
+                value: 2,
+            },
             totalDistinctArticles: 3,
             totalLabeledArticles: 4,
         },

@@ -1,0 +1,22 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding-top: @layout-spacing-m;
+        gap: @layout-spacing-xs;
+
+        .header {
+            .heading-section-semibold();
+            color: var(--neutral-grey-5);
+        }
+
+        .description {
+            .body-regular();
+            color: var(--neutral-grey-5);
+        }
+    }
+}

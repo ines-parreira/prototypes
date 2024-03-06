@@ -1,0 +1,59 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .dropDownGroup {
+        gap: @layout-spacing-xs;
+        display: flex;
+    }
+
+    .selectInput {
+        background-color: var(--neutral-grey-2);
+        text-overflow: ellipsis;
+
+        & > div:only-child {
+            height: 24px;
+            border-color: var(--neutral-grey-3);
+            box-shadow: none;
+            padding: 2px 7px;
+
+            gap: 4px;
+            div:first-child {
+                .component-button-small();
+                color: var(--neutral-grey-6);
+                padding: 0;
+                text-transform: inherit;
+            }
+
+            i {
+                color: var(--neutral-grey-6);
+                padding: 0;
+            }
+        }
+    }
+
+    .feedbackSelectInput {
+        text-transform: none;
+        max-width: 220px;
+        .selectInput;
+    }
+
+    .articleSelectInput {
+        text-transform: capitalize;
+        max-width: 200px;
+        .selectInput;
+    }
+
+    .completed {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        .body-regular();
+    }
+}

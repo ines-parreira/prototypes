@@ -26,6 +26,7 @@ const filterTreeByLocale = (
 ) => {
     const map = new Map<number, string>()
     map.set(-1, 'No relevant articles')
+    map.set(0, 'All Articles')
     if (!data) return {map}
 
     const tree = {...data}

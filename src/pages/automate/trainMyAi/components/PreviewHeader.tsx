@@ -4,7 +4,7 @@ import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
 import Button from 'pages/common/components/button/Button'
 import {Components as ComponentsSSP} from '../../../../rest_api/ssp_api/client.generated'
 import css from './PreviewHeader.less'
-import ArticleSelect from './ArticleSelect'
+import ArticleSelectPreview from './ArticleSelectPreview'
 
 interface Props {
     noRelevantArticles: boolean
@@ -82,7 +82,7 @@ export default function PreviewHeader({
 
                         <div className={css.editor}>
                             {showDropdown ? (
-                                <ArticleSelect
+                                <ArticleSelectPreview
                                     helpCenterId={recommendations.helpCenterId}
                                     onSelect={onSelectArticle}
                                     onChange={onChange}

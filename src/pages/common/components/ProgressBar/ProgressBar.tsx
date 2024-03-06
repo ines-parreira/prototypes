@@ -68,7 +68,7 @@ const ProgressBar = ({
     thresholds = defaultThresholds,
     className,
 }: Props) => {
-    const percent = Math.floor((value / maxValue) * 100)
+    const percent = maxValue !== 0 ? Math.floor((value / maxValue) * 100) : 0
 
     const isSuccess = checkBarType(percent, barType, 'success', thresholds)
     const isError = checkBarType(percent, barType, 'error', thresholds)

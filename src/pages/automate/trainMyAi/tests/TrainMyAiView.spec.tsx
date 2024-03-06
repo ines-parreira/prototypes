@@ -251,6 +251,11 @@ describe('<TrainMyAiView />', () => {
                             pageSize: 0,
                             totalPages: 1,
                         },
+                        progress: {
+                            value: 0,
+                            maxValue: 0,
+                        },
+                        completed: false,
                         totalDistinctArticles: 0,
                         totalLabeledArticles: 0,
                     },
@@ -331,6 +336,10 @@ describe('<TrainMyAiView />', () => {
                             pageLimit: 50,
                             pageSize: 0,
                             totalPages: 1,
+                        },
+                        progress: {
+                            value: 0,
+                            maxValue: 0,
                         },
                         totalDistinctArticles: 0,
                         totalLabeledArticles: 0,
@@ -604,7 +613,11 @@ describe('<TrainMyAiView />', () => {
                             totalPages: 1,
                             totalSize: 1,
                         },
-
+                        progress: {
+                            value: 1,
+                            maxValue: 1,
+                        },
+                        completed: true,
                         totalDistinctArticles: 1,
                         totalLabeledArticles: 1,
                     },
@@ -698,7 +711,10 @@ describe('<TrainMyAiView />', () => {
                     totalPages: 1,
                     totalSize: 1,
                 },
-
+                progress: {
+                    value: 1,
+                    maxValue: 1,
+                },
                 totalDistinctArticles: 1,
                 totalLabeledArticles: 1,
             },
@@ -806,7 +822,10 @@ describe('<TrainMyAiView />', () => {
                     totalPages: 1,
                     totalSize: 1,
                 },
-
+                progress: {
+                    value: 1,
+                    maxValue: 1,
+                },
                 totalDistinctArticles: 1,
                 totalLabeledArticles: 1,
             },
@@ -914,6 +933,10 @@ describe('<TrainMyAiView />', () => {
                     totalSize: 1,
                 },
 
+                progress: {
+                    value: 1,
+                    maxValue: 1,
+                },
                 totalDistinctArticles: 1,
                 totalLabeledArticles: 1,
             },
@@ -1020,7 +1043,10 @@ describe('<TrainMyAiView />', () => {
                     totalPages: 1,
                     totalSize: 1,
                 },
-
+                progress: {
+                    value: 1,
+                    maxValue: 1,
+                },
                 totalDistinctArticles: 1,
                 totalLabeledArticles: 1,
             },

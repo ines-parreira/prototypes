@@ -108,6 +108,23 @@ declare namespace Components {
          */
         pageLimit: number;
       };
+      progress: {
+        /**
+         * example:
+         * 10
+         */
+        value: number;
+        /**
+         * example:
+         * 100
+         */
+        maxValue: number;
+      };
+      /**
+       * example:
+       * false
+       */
+      completed?: boolean;
       /**
        * example:
        * 5
@@ -128,8 +145,11 @@ declare namespace Paths {
       Authorization?: Parameters.Authorization;
     }
     namespace Parameters {
+      export type ArticleId = number;
       export type Authorization = string;
+      export type Completed = boolean;
       export type ContentType = string;
+      export type FeedbackOptions = ("helpful" | "not-helpful" | "no-feedback")[];
       export type HelpCenterId = number;
       export type Page = number;
       export type ShopName = string;
@@ -140,6 +160,9 @@ declare namespace Paths {
       shop_type: Parameters.ShopType;
       shop_name: Parameters.ShopName;
       help_center_id: Parameters.HelpCenterId;
+      article_id?: Parameters.ArticleId;
+      completed?: Parameters.Completed;
+      feedback_options?: Parameters.FeedbackOptions;
     }
     namespace Responses {
       export interface $200 {

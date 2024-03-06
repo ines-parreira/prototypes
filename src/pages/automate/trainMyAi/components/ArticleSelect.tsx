@@ -11,7 +11,6 @@ import {
     Components,
     Paths,
 } from '../../../../rest_api/help_center_api/client.generated'
-import Button from '../../../common/components/button/Button'
 import DropdownSearch from '../../../common/components/dropdown/DropdownSearch'
 import DropdownSection from '../../../common/components/dropdown/DropdownSection'
 import SelectInputBox, {
@@ -21,9 +20,12 @@ import css from './ArticleSelect.less'
 
 type Props = {
     helpCenterId: number
-    onSelect: (id: number) => void
     onChange: (id: number) => void
     locale?: Paths.GetCategoryTree.Parameters.Locale
+    includeAllArticles?: boolean
+    contained?: boolean
+    selectInputClassName?: string
+    autoFocus?: boolean
 }
 
 const ArticleRow = ({
@@ -79,7 +81,15 @@ const CategoryRow = ({
     )
 }
 
-const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
+const ArticleSelect = ({
+    helpCenterId,
+    onChange,
+    locale,
+    includeAllArticles,
+    autoFocus = true,
+    contained = true,
+    selectInputClassName = '',
+}: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const searchRef = useRef<HTMLInputElement>(null)
@@ -110,11 +120,6 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
         [path, setPath]
     )
 
-    const handleSubmit = useCallback(() => {
-        if (!value) return
-        onSelect(value)
-    }, [value, onSelect])
-
     const isAtRootLevel = path === ''
 
     const currentTreeNode: Components.Schemas.CategoryTreeDto | null = get(
@@ -123,18 +128,24 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
         data
     )
 
+    useEffect(() => {
+        if (includeAllArticles) {
+            setValue(0)
+        }
+    }, [includeAllArticles])
+
     const categories = currentTreeNode?.children
     const articles = currentTreeNode?.articles
     return (
         <div className={css.container}>
             <SelectInputBox
-                className={css.selectInput}
+                className={classNames(css.selectInput, selectInputClassName)}
                 floating={floatingRef}
                 placeholder="Select an article..."
-                label={value ? map.get(value) : ''}
+                label={value !== undefined ? map.get(value) : ''}
                 onToggle={setIsOpen}
                 ref={targetRef}
-                autoFocus
+                autoFocus={autoFocus}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => {
@@ -147,14 +158,14 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
                         }
                         return (
                             <Dropdown
-                                placement="bottom"
+                                placement="bottom-start"
                                 className={css.dropdown}
                                 isOpen={isOpen}
                                 onToggle={() => context!.onBlur()}
                                 ref={floatingRef}
                                 target={targetRef}
                                 value={value}
-                                contained
+                                contained={contained}
                                 shouldFlip
                             >
                                 {!isAtRootLevel && (
@@ -176,6 +187,32 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
                                     autoFocus
                                 />
                                 <DropdownBody>
+                                    {isAtRootLevel && !search && (
+                                        <DropdownSection
+                                            title={
+                                                includeAllArticles
+                                                    ? ''
+                                                    : 'No Response'
+                                            }
+                                        >
+                                            {includeAllArticles && (
+                                                <DropdownItem
+                                                    onClick={handleArticleClick}
+                                                    option={{
+                                                        label: 'All Articles',
+                                                        value: 0,
+                                                    }}
+                                                />
+                                            )}
+                                            <DropdownItem
+                                                onClick={handleArticleClick}
+                                                option={{
+                                                    label: 'No relevant articles',
+                                                    value: -1,
+                                                }}
+                                            />
+                                        </DropdownSection>
+                                    )}
                                     {!!categories?.length && (
                                         <DropdownSection title="Categories">
                                             {categories.map((category, i) => (
@@ -216,17 +253,6 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
                                             />
                                         ))}
 
-                                    {isAtRootLevel && !search && (
-                                        <DropdownSection title="No Response">
-                                            <DropdownItem
-                                                onClick={handleArticleClick}
-                                                option={{
-                                                    label: 'No relevant articles',
-                                                    value: -1,
-                                                }}
-                                            />
-                                        </DropdownSection>
-                                    )}
                                     {!!search &&
                                         allArticles.map(([id, title]) => (
                                             <ArticleRow
@@ -242,9 +268,6 @@ const ArticleSelect = ({helpCenterId, onSelect, onChange, locale}: Props) => {
                     }}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
-            <Button isDisabled={!value} onClick={handleSubmit}>
-                Select Article
-            </Button>
         </div>
     )
 }

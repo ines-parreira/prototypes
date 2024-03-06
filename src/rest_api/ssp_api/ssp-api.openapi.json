@@ -57,6 +57,38 @@
                             "type": "number"
                         },
                         "required": true
+                    },
+                    {
+                        "name": "article_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "required": false
+                    },
+                    {
+                        "name": "completed",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "required": false
+                    },
+                    {
+                        "name": "feedback_options",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "helpful",
+                                    "not-helpful",
+                                    "no-feedback"
+                                ]
+                            }
+                        },
+                        "required": false
                     }
                 ],
                 "responses": {
@@ -178,7 +210,8 @@
                 "required": [
                     "pagination",
                     "totalDistinctArticles",
-                    "totalLabeledArticles"
+                    "totalLabeledArticles",
+                    "progress"
                 ],
                 "properties": {
                     "pagination": {
@@ -218,6 +251,27 @@
                                 "example": 50
                             }
                         }
+                    },
+                    "progress": {
+                        "type": "object",
+                        "required": [
+                            "value",
+                            "maxValue"
+                        ],
+                        "properties": {
+                            "value": {
+                                "type": "number",
+                                "example": 10
+                            },
+                            "maxValue": {
+                                "type": "number",
+                                "example": 100
+                            }
+                        }
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "example": false
                     },
                     "totalDistinctArticles": {
                         "type": "number",
