@@ -15,8 +15,12 @@ import InputGroup, {
 } from 'pages/common/forms/input/InputGroup'
 import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
 import Tooltip from 'pages/common/components/Tooltip'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {
+    WorkflowVariable,
+    WorkflowVariableList,
+} from 'pages/automate/workflows/models/variables.types'
 
+import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
 import css from './TextInputWithVariables.less'
 
 type Props = {
@@ -68,8 +72,20 @@ const TextInputWithVariables = ({
         },
         [onChange]
     )
-    const handleVariableSelect = (value: string) => {
-        const newEditorState = insertText(editorState, value)
+    const handleVariableSelect = (variable: WorkflowVariable) => {
+        const newEditorState = insertText(
+            editorState,
+            toLiquidSyntax({
+                value: variable.value,
+                filter:
+                    variable.type === 'date'
+                        ? 'date'
+                        : variable.type === 'array'
+                        ? 'json'
+                        : undefined,
+            })
+        )
+
         handleChange(
             EditorState.forceSelection(
                 newEditorState,

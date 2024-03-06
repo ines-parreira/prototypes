@@ -15,7 +15,9 @@ import useThrottledValue from 'hooks/useThrottledValue'
 import {
     LanguageCode,
     WorkflowConfiguration,
+    WorkflowStep,
     WorkflowStepHttpRequest,
+    WorkflowTransition,
 } from '../models/workflowConfiguration.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {
@@ -43,6 +45,8 @@ import {
     isPayloadTooLarge,
 } from '../utils/payloadSize'
 import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
+import {ConditionSchema} from '../models/conditions.types'
+import {WorkflowVariableList} from '../models/variables.types'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -65,6 +69,9 @@ export type WorkflowEditorContext = {
     handleSave: () => Promise<string | undefined>
     handlePublish: () => Promise<string | undefined>
     handleDiscard: () => void
+    checkInvalidConditionsForNode: (
+        node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
+    ) => boolean
     checkInvalidVariablesForNode: (
         node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
     ) => boolean
@@ -289,7 +296,25 @@ export function useWorkflowEditor(
                     visualBuilderGraphDirty
                 )
 
-            const error = validate(configurationDirty, isPublishing)
+            const availableVariablesByStepId =
+                visualBuilderGraphDirty.nodes.reduce<
+                    Record<WorkflowStep['id'], WorkflowVariableList>
+                >(
+                    (acc, node) => ({
+                        ...acc,
+                        [node.id]: getWorkflowVariableListForNode(
+                            visualBuilderGraphDirty,
+                            node.id
+                        ),
+                    }),
+                    {}
+                )
+
+            const error = validate(
+                configurationDirty,
+                isPublishing,
+                availableVariablesByStepId
+            )
 
             if (error) return error
             if (configurationDirty.is_draft && !isPublishing) return null
@@ -462,9 +487,32 @@ export function useWorkflowEditor(
                 visualBuilderGraphDirty,
                 node.id
             )
+
             return variables
-                .map((v) => parseWorkflowVariable(v, availableVariables))
-                .some((v) => v.isInvalid)
+                .map((variable) =>
+                    parseWorkflowVariable(variable, availableVariables)
+                )
+                .some((v) => v === null)
+        },
+        [visualBuilderGraphDirty]
+    )
+
+    const checkInvalidConditionsForNode = useCallback(
+        (node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>) => {
+            const conditions = visualBuilderGraphDirty.edges
+                .filter(
+                    (edge) => edge.source === node.id && edge.data?.conditions
+                )
+                .map((edge) => ({
+                    conditions: edge?.data?.conditions?.and
+                        ? edge?.data.conditions?.and
+                        : edge.data?.conditions?.or ?? [],
+                    name: edge.data?.name,
+                }))
+
+            const errors = validateConditionSteps(conditions)
+
+            return errors
         },
         [visualBuilderGraphDirty]
     )
@@ -585,6 +633,7 @@ export function useWorkflowEditor(
         isDirty: isVisualBuilderGraphDirty,
         checkInvalidVariablesForNode,
         checkNodeHasVariablesUsedInChildren,
+        checkInvalidConditionsForNode,
         handleValidate,
         handleSave,
         handlePublish,
@@ -639,9 +688,39 @@ function isHttpRequestStepIncomplete({
     return false
 }
 
+function validateConditionSteps(
+    transition: Array<
+        Pick<WorkflowTransition, 'name'> & {
+            conditions: Array<ConditionSchema>
+        }
+    >
+): boolean {
+    return transition.some(({conditions, name}) => {
+        if (!name) return true
+
+        if (conditions.length === 0) return true
+
+        return conditions.some((condition) => {
+            const key = Object.keys(condition)[0] as AllKeys<typeof condition>
+            const schema = condition[key]
+
+            if (!schema) {
+                return true
+            }
+
+            if (key === 'exists' || key === 'doesNotExist') {
+                return false
+            }
+
+            return schema[1] == null
+        })
+    })
+}
+
 function validate(
     conf: WorkflowConfiguration,
-    isPublishing: boolean
+    isPublishing: boolean,
+    availableVariablesByStepId: Record<WorkflowStep['id'], WorkflowVariableList>
 ): Maybe<string> {
     const action = isPublishing ? 'publish' : 'save'
     if (!conf.name.trim()) {
@@ -654,6 +733,25 @@ function validate(
     if (conf.is_draft && !isPublishing) return null
     if (conf.steps.length === 1) {
         return 'You must add at least one step after the trigger button in order to publish'
+    }
+
+    const conditions = conf.transitions.filter(
+        (transition) =>
+            Array.isArray(transition.conditions?.and) ||
+            Array.isArray(transition.conditions?.or)
+    )
+
+    const invalidConditions = validateConditionSteps(
+        conditions.map((transition) => ({
+            name: transition.name,
+            conditions: transition.conditions?.and
+                ? transition?.conditions?.and
+                : transition.conditions?.or ?? [],
+        }))
+    )
+
+    if (invalidConditions) {
+        return 'Fix errors in conditional step in order to save'
     }
 
     const httpRequestSteps = conf.steps.filter(
@@ -692,7 +790,13 @@ function validate(
         .filter(
             (s) => s.settings.headers?.['content-type'] === 'application/json'
         )
-        .some((s) => !validateJSONWithVariables(s.settings.body || ''))
+        .some(
+            (s) =>
+                !validateJSONWithVariables(
+                    s.settings.body || '',
+                    availableVariablesByStepId[s.id] ?? []
+                )
+        )
     if (jsonInvalid) {
         return 'Invalid JSON'
     }
@@ -727,6 +831,7 @@ export function createWorkflowEditorContextForPreview(
         isDirty: false,
         checkInvalidVariablesForNode: () => false,
         checkNodeHasVariablesUsedInChildren: () => false,
+        checkInvalidConditionsForNode: () => false,
         handleValidate: () => null,
         handleSave: () => Promise.resolve(''),
         handlePublish: () => Promise.resolve(''),

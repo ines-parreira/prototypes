@@ -2,7 +2,7 @@ import {createContext, useContext} from 'react'
 import _noop from 'lodash/noop'
 
 export type AccordionContextType = {
-    expandedItem: string | null
+    expandedItem: string | string[] | null
     toggleItem: (itemId: string) => void
     onHoveredItemChange: (itemId: string | null) => void
 }

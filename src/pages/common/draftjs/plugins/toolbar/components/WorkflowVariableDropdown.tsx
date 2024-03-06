@@ -6,7 +6,10 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
+import {
+    WorkflowVariable,
+    WorkflowVariableGroup,
+} from 'pages/automate/workflows/models/variables.types'
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import {useToolbarContext} from '../ToolbarContext'
 
@@ -14,8 +17,10 @@ import css from './WorkflowVariableDropdown.less'
 
 type Props = {
     target: RefObject<HTMLElement | null>
-    onSelect: (value: string) => void
+    onSelect: (value: WorkflowVariable) => void
     isOpen: boolean
+    dropdownPlacement?: React.ComponentProps<typeof Dropdown>['placement']
+    noSelectedCategoryText?: string
     onToggle: (isOpen: boolean) => void
 }
 
@@ -24,6 +29,8 @@ const WorkflowVariableDropdown = ({
     onSelect,
     isOpen,
     onToggle,
+    dropdownPlacement = 'bottom-end',
+    noSelectedCategoryText = 'Insert variable from previous steps',
 }: Props) => {
     const {
         workflowVariables: workflowVariablesProp = [],
@@ -54,6 +61,7 @@ const WorkflowVariableDropdown = ({
             ),
         [workflowVariablesProp, workflowVariablesNodeTypes]
     )
+
     const filteredOptions = selectedCategory
         ? selectedCategory.variables
         : workflowVariables
@@ -63,7 +71,7 @@ const WorkflowVariableDropdown = ({
             isOpen={isOpen}
             target={target}
             className={css.dropdown}
-            placement="bottom-end"
+            placement={dropdownPlacement}
             onToggle={onToggle}
             safeDistance={0}
         >
@@ -89,9 +97,7 @@ const WorkflowVariableDropdown = ({
             )}
             <DropdownBody>
                 {!selectedCategory && (
-                    <span className={css.header}>
-                        Insert variable from previous steps
-                    </span>
+                    <span className={css.header}>{noSelectedCategoryText}</span>
                 )}
                 {workflowVariables.length === 0 && (
                     <div>
@@ -116,7 +122,8 @@ const WorkflowVariableDropdown = ({
                                     setSelectedCategory(option)
                                 } else {
                                     onToggle(false)
-                                    onSelect(option.value)
+
+                                    onSelect(option)
                                 }
                             }}
                             className={css.item}

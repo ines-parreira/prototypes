@@ -4,6 +4,7 @@ import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
 import {HttpRequestNodeType} from '../models/visualBuilderGraph.types'
 import {
+    getWorkflowVariableListForNode,
     isValidLiquidSyntaxInNode,
     validateJSONWithVariables,
 } from '../models/variables.model'
@@ -22,7 +23,8 @@ export default function useIsHttpRequestNodeErrored(
         bodyContentType,
         variables,
     } = node.data
-    const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
+    const {checkInvalidVariablesForNode, visualBuilderGraph} =
+        useWorkflowEditorContext()
     const hasInvalidVariables = useMemo(
         () =>
             checkInvalidVariablesForNode({
@@ -31,6 +33,10 @@ export default function useIsHttpRequestNodeErrored(
                 type: 'http_request',
             }),
         [node.id, node.data, checkInvalidVariablesForNode]
+    )
+    const workflowVariables = useMemo(
+        () => getWorkflowVariableListForNode(visualBuilderGraph, node.id),
+        [visualBuilderGraph, node.id]
     )
     const isErrored =
         !name ||
@@ -48,7 +54,7 @@ export default function useIsHttpRequestNodeErrored(
         !isValidLiquidSyntaxInNode({data: node.data, type: 'http_request'}) ||
         !!validateWebhookURL(url) ||
         (bodyContentType === 'application/json' &&
-            !validateJSONWithVariables(json ?? ''))
+            !validateJSONWithVariables(json ?? '', workflowVariables))
 
     return {
         isErrored,

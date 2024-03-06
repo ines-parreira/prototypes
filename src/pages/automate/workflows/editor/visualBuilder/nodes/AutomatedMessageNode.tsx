@@ -90,6 +90,7 @@ export default function AutomatedMessageNodeWrapper(
         content.text.length === 0 ||
         hasInvalidVariables ||
         !isValidLiquidSyntaxInNode({type: 'automated_message', data: node.data})
+
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (

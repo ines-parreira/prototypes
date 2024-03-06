@@ -1,0 +1,34 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        width: 100%;
+    }
+
+    .conditionLabel {
+        .body-semibold();
+        border-radius: @layout-spacing-xxs;
+        background-color: var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-3);
+        padding: @layout-spacing-xxs @layout-spacing-s;
+        min-width: min-content;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+    }
+
+    .type {
+        background-color: var(--feedback-warning-3) !important;
+        border: 1px solid var(--feedback-warning-4) !important;
+    }
+
+    .deleteIcon {
+        font-size: 18px;
+        color: var(--feedback-error-3);
+    }
+}

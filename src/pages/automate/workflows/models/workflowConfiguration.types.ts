@@ -1,4 +1,5 @@
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {ConditionsSchema} from './conditions.types'
 
 export type MessageContent = {
     html: string
@@ -136,8 +137,7 @@ export type WorkflowTransition = {
         kind: 'choices'
     }>
     name?: string
-    //TODO: change to ConditionsSchema later
-    conditions?: Maybe<Record<string, string>>
+    conditions?: ConditionsSchema
 }
 
 export const supportedLanguages = [

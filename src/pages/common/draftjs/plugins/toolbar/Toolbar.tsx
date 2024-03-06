@@ -5,6 +5,8 @@ import {EditorState} from 'draft-js'
 import {UploadType} from 'common/types'
 import Button from 'pages/common/components/button/Button'
 import {insertText} from 'utils'
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
 import {
     AddDiscountCode,
     AddEmoji,
@@ -96,9 +98,11 @@ const Toolbar = ({
         setIsHovered(false)
     }
 
-    const handleVariableSelection = (value: string) => {
+    const handleVariableSelection = (variable: WorkflowVariable) => {
         const editorState = getEditorState()
-        const newEditorState = insertText(editorState, `${value} `)
+
+        const newEditorState = insertText(editorState, toLiquidSyntax(variable))
+
         // restore focus after insertText
         setEditorState(
             EditorState.forceSelection(

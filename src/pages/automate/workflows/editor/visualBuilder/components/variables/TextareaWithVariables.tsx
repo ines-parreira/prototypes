@@ -10,8 +10,12 @@ import {contentStateFromTextOrHTML, EditorHandledNotHandled} from 'utils/editor'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 import {insertText} from 'utils'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {
+    WorkflowVariable,
+    WorkflowVariableList,
+} from 'pages/automate/workflows/models/variables.types'
 
+import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
 import css from './TextareaWithVariables.less'
 
 type Props = {
@@ -60,8 +64,19 @@ const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
         },
         [onChange]
     )
-    const handleVariableSelect = (value: string) => {
-        const newEditorState = insertText(editorState, value)
+    const handleVariableSelect = (variable: WorkflowVariable) => {
+        const newEditorState = insertText(
+            editorState,
+            toLiquidSyntax({
+                value: variable.value,
+                filter:
+                    variable.type === 'date'
+                        ? 'date'
+                        : variable.type === 'array'
+                        ? 'json'
+                        : undefined,
+            })
+        )
         handleChange(
             EditorState.forceSelection(
                 newEditorState,

@@ -22,14 +22,30 @@ type GraphVariablesValidationResult = {
     lang: LanguageCode
 } | null
 
-const templateEngine = new Liquid()
+const templateEngine = new Liquid({
+    timezoneOffset: 0,
+    dateFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+})
 
 // any text starting with {{ and ending with }} will be interpreted as a variable by the API template engine
 export const workflowVariableRegex = /{{[^{}]*}}/g
-function extractVariablesFromText(text: string): string[] {
+export function extractVariablesFromText(text: string): {
+    value: string
+    filter?: string
+}[] {
     const match = text.match(workflowVariableRegex)
     if (match) {
-        return match
+        return match.map((variable) => {
+            const [value, filter] = variable
+                .slice(2, -2)
+                .trim()
+                .split(/\s*\|\s*/)
+
+            return {
+                value,
+                filter,
+            }
+        })
     }
     return []
 }
@@ -56,14 +72,16 @@ export function findVariable(
 export function parseWorkflowVariable(
     value: string,
     availableVariables: WorkflowVariableList
-): WorkflowVariable {
+): WorkflowVariable | null {
     const variable = findVariable(availableVariables, (v) => {
         if ('value' in v && v.value === value) {
             return v
         }
     })
 
-    return variable ?? {isInvalid: true, value, name: 'variable unavailable'}
+    if (!variable) return null
+
+    return variable
 }
 
 export const buildWorkflowVariableFromNode = (
@@ -80,8 +98,9 @@ export const buildWorkflowVariableFromNode = (
         } = node
         return {
             name: formatVariableName(text.length > 0 ? text : 'Message'),
-            value: `{{steps_state.${node.id}.content.text}}`,
+            value: `steps_state.${node.id}.content.text`,
             nodeType: 'text_reply',
+            type: 'string',
         }
     } else if (node.type === 'multiple_choices') {
         const {
@@ -91,8 +110,9 @@ export const buildWorkflowVariableFromNode = (
         } = node
         return {
             name: formatVariableName(text.length > 0 ? text : 'Question'),
-            value: `{{steps_state.${node.id}.selected_choice.label}}`,
+            value: `steps_state.${node.id}.selected_choice.label`,
             nodeType: 'multiple_choices',
+            type: 'string',
         }
     } else if (node.type === 'order_selection') {
         const {
@@ -106,18 +126,23 @@ export const buildWorkflowVariableFromNode = (
             variables: [
                 {
                     name: 'Order number',
-                    value: `{{steps_state.${node.id}.order.name}}`,
+                    value: `steps_state.${node.id}.order.name`,
                     nodeType: 'order_selection',
+                    type: 'number',
                 },
                 {
                     name: 'Order total amount',
-                    value: `{{steps_state.${node.id}.order.total_amount | format_currency: steps_state.${node.id}.order.currency.code, steps_state.${node.id}.order.currency.decimals}}`,
+                    value: `steps_state.${node.id}.order.total_amount`,
+                    filter: `format_currency: steps_state.${node.id}.order.currency.code, steps_state.${node.id}.order.currency.decimals`,
                     nodeType: 'order_selection',
+                    type: 'string',
                 },
                 {
                     name: 'Order date',
-                    value: `{{steps_state.${node.id}.order.created_datetime | format_datetime}}`,
+                    value: `steps_state.${node.id}.order.created_datetime`,
+                    filter: 'format_datetime',
                     nodeType: 'order_selection',
+                    type: 'date',
                 },
             ],
         }
@@ -128,28 +153,33 @@ export const buildWorkflowVariableFromNode = (
             variables: [
                 {
                     name: 'Customer first name',
-                    value: `{{steps_state.${node.id}.customer.firstname}}`,
+                    value: `steps_state.${node.id}.customer.firstname`,
                     nodeType: 'shopper_authentication',
+                    type: 'string',
                 },
                 {
                     name: 'Customer last name',
-                    value: `{{steps_state.${node.id}.customer.lastname}}`,
+                    value: `steps_state.${node.id}.customer.lastname`,
                     nodeType: 'shopper_authentication',
+                    type: 'string',
                 },
                 {
                     name: 'Customer full name',
-                    value: `{{steps_state.${node.id}.customer.name}}`,
+                    value: `steps_state.${node.id}.customer.name`,
                     nodeType: 'shopper_authentication',
+                    type: 'string',
                 },
                 {
                     name: 'Customer email',
-                    value: `{{steps_state.${node.id}.customer.email}}`,
+                    value: `steps_state.${node.id}.customer.email`,
                     nodeType: 'shopper_authentication',
+                    type: 'string',
                 },
                 {
                     name: 'Customer phone number',
-                    value: `{{steps_state.${node.id}.customer.phone_number}}`,
+                    value: `steps_state.${node.id}.customer.phone_number`,
                     nodeType: 'shopper_authentication',
+                    type: 'string',
                 },
             ],
         }
@@ -162,8 +192,10 @@ export const buildWorkflowVariableFromNode = (
             name: formatVariableName(name.length > 0 ? name : 'Request name'),
             variables: variables.map((variable) => ({
                 name: variable.name,
-                value: `{{steps_state.${node.id}.content.${variable.id}}}`,
+                value: `steps_state.${node.id}.content.${variable.id}`,
                 nodeType: 'http_request',
+                // TODO: change this to the correct type
+                type: 'string',
             })),
         }
     } else if (node.type === 'file_upload') {
@@ -174,7 +206,8 @@ export const buildWorkflowVariableFromNode = (
         } = node
         return {
             name: formatVariableName(text.length > 0 ? text : 'Message'),
-            value: `{{steps_state.${node.id}.attachments | json}}`,
+            value: `steps_state.${node.id}.attachments`,
+            type: 'array',
             nodeType: 'file_upload',
         }
     }
@@ -220,26 +253,43 @@ export function extractVariablesFromNode(
         case 'text_reply':
         case 'file_upload':
         case 'order_selection':
-            variables = extractVariablesFromText(node.data.content.text)
+            variables = extractVariablesFromText(node.data.content.text).map(
+                (variable) => variable.value
+            )
             break
         case 'http_request':
             variables = [
-                ...extractVariablesFromText(node.data.url),
+                ...extractVariablesFromText(node.data.url).map(
+                    (variable) => variable.value
+                ),
                 ..._flatten(
                     node.data.headers.map((header) =>
-                        extractVariablesFromText(header.value)
+                        extractVariablesFromText(header.value).map(
+                            (variable) => variable.value
+                        )
                     )
                 ),
-                ...extractVariablesFromText(node.data.json ?? ''),
+                ...extractVariablesFromText(node.data.json ?? '').map(
+                    (variable) => variable.value
+                ),
                 ..._flatten(
                     node.data.formUrlencoded?.map((item) =>
-                        extractVariablesFromText(item.value)
+                        extractVariablesFromText(item.value).map(
+                            (variable) => variable.value
+                        )
                     )
                 ),
             ]
     }
 
     return variables
+}
+
+export function toLiquidSyntax(variable: {value: string; filter?: string}) {
+    if (variable.filter) {
+        return `{{${variable.value} | ${variable.filter}}}`
+    }
+    return `{{${variable.value}}}`
 }
 
 export function hasNodesWithInvalidVariables(g: VisualBuilderGraph) {
@@ -251,8 +301,8 @@ export function hasNodesWithInvalidVariables(g: VisualBuilderGraph) {
         const variables = extractVariablesFromNode(node)
         return variables.some(
             (variable) =>
-                parseWorkflowVariable(variable, availableVariablesForNode)
-                    .isInvalid
+                parseWorkflowVariable(variable, availableVariablesForNode) ===
+                null
         )
     })
 }
@@ -336,11 +386,17 @@ export function unescapeUrlEncodedVariables(text: string) {
     return text.replace(urlEncodedVariableRegex, '{{$1}}')
 }
 
-export function validateJSONWithVariables(string: string) {
-    return validateJSON(prerenderVariables(string))
+export function validateJSONWithVariables(
+    string: string,
+    availableVariables: WorkflowVariableList
+) {
+    return validateJSON(prerenderVariables(string, availableVariables))
 }
 
-function prerenderVariables(string: string) {
+function prerenderVariables(
+    string: string,
+    availableVariables: WorkflowVariableList
+) {
     const context: Record<string, unknown> = {}
 
     try {
@@ -358,19 +414,32 @@ function prerenderVariables(string: string) {
                     propertyAccessToken.props as IdentifierToken[]
                 const props = identifierTokens.map((token) => token.content)
 
-                if (
-                    props.length === 3 &&
-                    props[props.length - 1] === 'attachments'
-                ) {
-                    // https://github.com/gorgias/workflows/blob/0b763486a5f07b9c6c06246059d07de41168ba8d/libs/wf-execution/src/lib/schemas/wf-execution-state.schema.ts#L32
-                    _set(context, props, [
-                        {
-                            content_type: 'image/jpeg',
-                            url: 'https://uploads.gorgias.io/asset.jpeg',
-                        },
-                    ])
-                } else {
-                    _set(context, props, '')
+                const value = props.join('.')
+                const variable = parseWorkflowVariable(
+                    value,
+                    availableVariables
+                )
+
+                if (!variable) {
+                    continue
+                }
+
+                switch (variable.type) {
+                    case 'string':
+                        _set(context, props, '')
+                        break
+                    case 'number':
+                        _set(context, props, 0)
+                        break
+                    case 'date':
+                        _set(context, props, new Date())
+                        break
+                    case 'boolean':
+                        _set(context, props, true)
+                        break
+                    case 'array':
+                        _set(context, props, [{test: 'test'}])
+                        break
                 }
             }
         }

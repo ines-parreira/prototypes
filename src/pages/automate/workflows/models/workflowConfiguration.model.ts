@@ -280,27 +280,25 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             return
         }
         // linking from previous node to the one just added
+        const n = nodes[nodes.length - 1]
         if (previousStep) {
-            const n = nodes[nodes.length - 1]
             edges.push({
                 ...buildEdgeCommonProperties(),
                 id: `${nodeIdByStepId[previousStep.id]}-${n.id}`,
                 source: nodeIdByStepId[previousStep.id],
                 target: n.id,
-                ...(incomingTransition?.event?.id
-                    ? {data: {event: incomingTransition.event}}
-                    : {}),
+                data: {
+                    event: incomingTransition?.event,
+                    name: incomingTransition?.name,
+                    conditions: incomingTransition?.conditions,
+                },
             })
         } else {
-            const n = nodes[nodes.length - 1]
             edges.push({
                 ...buildEdgeCommonProperties(),
                 id: `${triggerButtonNode.id}-${n.id}`,
                 source: triggerButtonNode.id,
                 target: n.id,
-                ...(incomingTransition?.event?.id
-                    ? {data: {event: incomingTransition.event}}
-                    : {}),
             })
         }
     })

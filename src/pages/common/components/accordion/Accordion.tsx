@@ -1,56 +1,77 @@
-import React, {ReactNode, useEffect, useMemo, useState} from 'react'
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
 import AccordionContext, {AccordionContextType} from './AccordionContext'
 
 import css from './Accordion.less'
 
-export type AccordionProps = {
-    defaultExpandedItem?: string | null
-    expandedItem?: string | null
-    onChange?: (expandedItem: string | null) => void
+export type AccordionProps<T = string | string[] | null> = {
+    defaultExpandedItem?: T
+    expandedItem?: T
+    isMulti?: boolean // A flag to enable multiple expanded items when in uncontrolled mode
+    onChange?: (expandedItem: T) => void
     onHoveredItemChange?: (hoveredItem: string | null) => void
     children?: ReactNode
 }
 
-const Accordion = ({
-    defaultExpandedItem = null,
+const Accordion = <T extends string | string[] | null>({
+    defaultExpandedItem = null as T,
     expandedItem: expandedItemProp,
+    isMulti,
     onHoveredItemChange,
     onChange,
     children,
-}: AccordionProps) => {
-    const isControlled = typeof expandedItemProp !== 'undefined'
-
-    const [expandedItem, setExpandedItem] = useState<
-        AccordionContextType['expandedItem']
-    >(
-        typeof expandedItemProp !== 'undefined'
+}: AccordionProps<T>) => {
+    const isControlled = expandedItemProp !== undefined
+    const [expandedItem, setExpandedItem] = useState<T>(
+        expandedItemProp !== undefined
             ? expandedItemProp
+            : isMulti
+            ? ([''] as T)
             : defaultExpandedItem
     )
 
     useEffect(() => {
-        if (typeof expandedItemProp !== 'undefined') {
+        if (expandedItemProp !== undefined) {
             setExpandedItem(expandedItemProp)
         }
     }, [expandedItemProp])
 
+    const toggleItem = useCallback(
+        (itemId: string) => {
+            let newExpandedItem: T
+            if (Array.isArray(expandedItem)) {
+                newExpandedItem = (
+                    expandedItem.includes(itemId)
+                        ? expandedItem.filter((id) => id !== itemId)
+                        : [...expandedItem, itemId]
+                ) as T
+            } else {
+                newExpandedItem = (expandedItem === itemId ? null : itemId) as T
+            }
+
+            if (!isControlled) {
+                setExpandedItem(newExpandedItem)
+            }
+            onChange?.(newExpandedItem)
+        },
+        [expandedItem, isControlled, onChange]
+    )
+
     const accordionContext = useMemo<AccordionContextType>(
         () => ({
             expandedItem,
-            toggleItem: (itemId) => {
-                const newExpandedItem = expandedItem === itemId ? null : itemId
-
-                if (!isControlled) {
-                    setExpandedItem(newExpandedItem)
-                }
-                onChange?.(newExpandedItem)
-            },
+            toggleItem,
             onHoveredItemChange: (itemId) => {
                 onHoveredItemChange?.(itemId)
             },
         }),
-        [expandedItem, isControlled, onChange, onHoveredItemChange]
+        [expandedItem, onHoveredItemChange, toggleItem]
     )
 
     return (

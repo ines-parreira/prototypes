@@ -67,6 +67,12 @@ export const DatePicker = ({
     })
 
     useEffect(() => {
+        if (datePickerRef.current && timePicker === false) {
+            datePickerRef.current?.$picker?.find('.calendar').hide()
+        }
+    }, [timePicker])
+
+    useEffect(() => {
         isOpen && triggerDateRangePickerClick()
         return endHandlingTooltipHover
         // eslint-disable-next-line react-hooks/exhaustive-deps

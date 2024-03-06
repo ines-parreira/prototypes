@@ -28,7 +28,13 @@ import {
     isMultipleChoicesNodeType,
     isConditionsNodeType,
 } from './visualBuilderGraph.types'
-import {unescapeUrlEncodedVariables} from './variables.model'
+import {
+    getWorkflowVariableListForNode,
+    parseWorkflowVariable,
+    unescapeUrlEncodedVariables,
+} from './variables.model'
+import {ConditionSchema, ConditionsSchema, VarSchema} from './conditions.types'
+import {WorkflowVariableList} from './variables.types'
 
 export const buildEdgeCommonProperties: () => Pick<
     Edge,
@@ -162,6 +168,39 @@ export function walkVisualBuilderGraph(
             }
         )
     }
+}
+
+function cleanConditionsFromEmptyVariables(
+    conditions: ConditionsSchema,
+    availableVariables: WorkflowVariableList
+) {
+    const clear = (condition: ConditionSchema) => {
+        const operator = Object.keys(condition)?.[0] as keyof ConditionSchema
+
+        const schema = condition[operator] as [VarSchema, string]
+
+        const [variable] = schema
+
+        return parseWorkflowVariable(variable.var, availableVariables) != null
+    }
+
+    if (!conditions.and && !conditions.or) {
+        return conditions
+    }
+
+    if (conditions.and) {
+        return {
+            ...conditions,
+            and: conditions.and.filter(clear),
+        }
+    } else if (conditions.or) {
+        return {
+            ...conditions,
+            or: conditions.or.filter(clear),
+        }
+    }
+
+    return conditions
 }
 
 export function transformVisualBuilderGraphIntoWfConfiguration(
@@ -360,7 +399,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     to_step_id: stepIdByNodeId[node.id],
                     name: incomingEdge?.data?.name,
                     event: incomingEdge?.data?.event,
-                    conditions: incomingEdge?.data?.conditions,
+                    conditions: incomingEdge?.data?.conditions
+                        ? cleanConditionsFromEmptyVariables(
+                              incomingEdge.data.conditions,
+                              getWorkflowVariableListForNode(g, node.id)
+                          )
+                        : undefined,
                 })
             } else {
                 c.initial_step_id = stepIdByNodeId[node.id]
@@ -409,7 +453,6 @@ export function getIncoming(
         }
         case 'conditions': {
             const branchName = incomingEdge?.data?.name
-
             if (previousNode && isConditionsNodeType(previousNode)) {
                 return {
                     label: branchName,

@@ -29,7 +29,9 @@ const AccordionItem = ({
 
     const accordionItemContext: AccordionItemContextType = useMemo(
         () => ({
-            isExpanded: expandedItem === id,
+            isExpanded: Array.isArray(expandedItem)
+                ? !!expandedItem.find((itemId) => itemId === id)
+                : expandedItem === id,
             isDisabled,
             toggleItem: () => {
                 if (!isDisabled) {

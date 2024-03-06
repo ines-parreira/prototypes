@@ -11,17 +11,19 @@ describe('parseWorkflowVariable', () => {
             {
                 nodeType: 'text_reply',
                 name: 'My text reply',
-                value: '{{steps_state.text_reply1.content.text}}',
+                value: 'steps_state.text_reply1.content.text',
+                type: 'string',
             },
         ]
         const parsed = parseWorkflowVariable(
-            '{{steps_state.text_reply1.content.text}}',
+            'steps_state.text_reply1.content.text',
             availableVariables
         )
         expect(parsed).toEqual({
             nodeType: 'text_reply',
             name: 'My text reply',
-            value: '{{steps_state.text_reply1.content.text}}',
+            value: 'steps_state.text_reply1.content.text',
+            type: 'string',
         })
     })
 
@@ -33,32 +35,32 @@ describe('parseWorkflowVariable', () => {
                 variables: [
                     {
                         name: 'Customer first name',
-                        value: '{{steps_state.shopper_authentication1.customer.firstname}}',
+                        value: 'steps_state.shopper_authentication1.customer.firstname',
+                        type: 'string',
+                        nodeType: 'shopper_authentication',
                     },
                 ],
             },
         ]
         const parsed = parseWorkflowVariable(
-            '{{steps_state.shopper_authentication1.customer.firstname}}',
+            'steps_state.shopper_authentication1.customer.firstname',
             availableVariables
         )
         expect(parsed).toEqual({
             name: 'Customer first name',
-            value: '{{steps_state.shopper_authentication1.customer.firstname}}',
+            value: 'steps_state.shopper_authentication1.customer.firstname',
+            type: 'string',
+            nodeType: 'shopper_authentication',
         })
     })
 
     test('should return an invalid flow variable if not found', () => {
         const availableVariables: WorkflowVariableList = []
         const parsed = parseWorkflowVariable(
-            '{{steps_state.shopper_authentication1.customer.firstname}}',
+            'steps_state.shopper_authentication1.customer.firstname',
             availableVariables
         )
-        expect(parsed).toEqual({
-            isInvalid: true,
-            name: 'variable unavailable',
-            value: '{{steps_state.shopper_authentication1.customer.firstname}}',
-        })
+        expect(parsed).toEqual(null)
     })
 })
 
@@ -75,12 +77,14 @@ describe('getAvailableFlowVariables', () => {
             {
                 nodeType: 'multiple_choices',
                 name: 'Choices text',
-                value: '{{steps_state.multiple_choices1.selected_choice.label}}',
+                value: 'steps_state.multiple_choices1.selected_choice.label',
+                type: 'string',
             },
             {
                 nodeType: 'text_reply',
                 name: 'Text reply text',
-                value: '{{steps_state.text_reply1.content.text}}',
+                value: 'steps_state.text_reply1.content.text',
+                type: 'string',
             },
         ])
     })
@@ -91,7 +95,8 @@ describe('getAvailableFlowVariables', () => {
                 {
                     nodeType: 'multiple_choices',
                     name: 'Choices text',
-                    value: '{{steps_state.multiple_choices1.selected_choice.label}}',
+                    value: 'steps_state.multiple_choices1.selected_choice.label',
+                    type: 'string',
                 },
             ]
         )

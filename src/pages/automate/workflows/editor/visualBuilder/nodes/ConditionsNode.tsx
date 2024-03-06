@@ -63,7 +63,8 @@ const ConditionsNode = memo(function ConditionsNode({
 export default function ConditionsNodeWrapper(
     node: NodeProps<ConditionsNodeType['data']>
 ) {
-    const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
+    const {checkInvalidVariablesForNode, checkInvalidConditionsForNode} =
+        useWorkflowEditorContext()
 
     const hasInvalidVariables = useMemo(
         () =>
@@ -75,16 +76,24 @@ export default function ConditionsNodeWrapper(
         [node.id, node.data, checkInvalidVariablesForNode]
     )
 
-    const isErrored = hasInvalidVariables
+    const hasInvalidConditions = useMemo(
+        () =>
+            checkInvalidConditionsForNode({
+                id: node.id,
+                data: node.data,
+                type: 'conditions',
+            }),
+        [node.id, node.data, checkInvalidConditionsForNode]
+    )
+
+    const isErrored = hasInvalidVariables || hasInvalidConditions
 
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (
         <ConditionsNode
             {...commonProps}
-            shouldShowErrors={
-                commonProps.shouldShowErrors || hasInvalidVariables
-            }
+            shouldShowErrors={commonProps.shouldShowErrors && isErrored}
             isErrored={isErrored}
         />
     )

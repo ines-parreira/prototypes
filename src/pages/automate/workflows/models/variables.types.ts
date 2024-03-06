@@ -1,21 +1,24 @@
+export type WorkflowVariableType =
+    | 'string'
+    | 'number'
+    | 'date'
+    | 'boolean'
+    | 'array'
+
 export type WorkflowVariable = {
-    isInvalid?: boolean
     name: string
     value: string
-} & (
-    | {
-          nodeType:
-              | 'text_reply'
-              | 'multiple_choices'
-              | 'file_upload'
-              | 'order_selection'
-              | 'http_request'
-              | 'shopper_authentication'
-      }
-    | {
-          nodeType?: never
-      }
-)
+} & {
+    nodeType:
+        | 'text_reply'
+        | 'multiple_choices'
+        | 'file_upload'
+        | 'order_selection'
+        | 'http_request'
+        | 'shopper_authentication'
+    type: WorkflowVariableType
+    filter?: string
+}
 
 export type WorkflowVariableGroup = {
     name: string

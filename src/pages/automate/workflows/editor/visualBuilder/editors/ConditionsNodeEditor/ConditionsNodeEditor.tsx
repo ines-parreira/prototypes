@@ -1,0 +1,371 @@
+import React, {useCallback, useMemo, useRef} from 'react'
+import classNames from 'classnames'
+import {Drawer} from 'pages/common/components/Drawer'
+import {
+    ConditionsNodeType,
+    VisualBuilderEdge,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import InputField from 'pages/common/forms/input/InputField'
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
+import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import Button from 'pages/common/components/button/Button'
+import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Tooltip from 'pages/common/components/Tooltip'
+import css from '../NodeEditor.less'
+import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
+import {ConditionsBranchItem} from './ConditionsBranchItem'
+import conditionsCss from './ConditionsNodeEditor.less'
+
+const buildConditionSchemaByVariableType = (
+    type: WorkflowVariable['type'],
+    variable: string
+): ConditionSchema => {
+    switch (type) {
+        case 'string':
+            return {
+                equals: [{var: variable}, ''],
+            }
+        case 'number':
+            return {
+                equals: [{var: variable}, 0],
+            }
+        case 'boolean':
+            return {
+                exists: [{var: variable}],
+            }
+        case 'date':
+            return {
+                lessThan: [{var: variable}, null],
+            }
+        default:
+            return {
+                exists: [{var: variable}],
+            }
+    }
+}
+
+export default function ConditionsNodeEditor({
+    nodeInEdition,
+}: {
+    nodeInEdition: ConditionsNodeType
+}) {
+    const {visualBuilderGraph, dispatch, shouldShowErrors} =
+        useWorkflowEditorContext()
+
+    const edges = visualBuilderGraph.edges.filter(
+        (edge) => edge.source === nodeInEdition.id
+    )
+    const tooltipTargetRef = useRef<HTMLButtonElement>(null)
+    const workflowVariables = useMemo(
+        () =>
+            getWorkflowVariableListForNode(
+                visualBuilderGraph,
+                nodeInEdition.id
+            ),
+        [visualBuilderGraph, nodeInEdition.id]
+    )
+
+    const handleAddConditionBranch = () => {
+        dispatch({
+            type: 'ADD_CONDITIONS_NODE_BRANCH',
+            conditionNodeId: nodeInEdition.id,
+        })
+    }
+
+    const handleBranchDelete = (edgeId: string) => () => {
+        dispatch({
+            type: 'DELETE_CONDITIONS_NODE_BRANCH',
+            edgeId,
+        })
+    }
+
+    const handleStepNameChange = (newName: string) => {
+        dispatch({
+            type: 'UPDATE_CONDITIONS_NODE_NAME',
+            nodeId: nodeInEdition.id,
+            name: newName,
+        })
+    }
+
+    const handleConditionChange = (
+        branchId: string,
+        data: VisualBuilderEdge['data']
+    ) => {
+        dispatch({
+            type: 'UPDATE_CONDITIONS_NODE_BRANCH',
+            nodeId: branchId,
+            data: {
+                conditions: data?.conditions,
+                name: data?.name,
+            },
+        })
+    }
+
+    const handleReorderBranchItems = (newOrder: string[]) => {
+        dispatch({
+            type: 'REORDER_CONDITIONS_NODE_BRANCHES',
+            nodeId: nodeInEdition.id,
+            newOrder,
+        })
+    }
+
+    const handleConditionTypeChange = useCallback(
+        (conditions: ConditionSchema[]) =>
+            (branchId: string, type: 'and' | 'or') => {
+                const branch = edges.find((e) => e.id === branchId)
+
+                if (!branch) return
+
+                dispatch({
+                    type: 'UPDATE_CONDITIONS_NODE_BRANCH',
+                    nodeId: branch.id,
+
+                    data: {
+                        ...branch.data,
+                        conditions:
+                            type === 'and'
+                                ? {
+                                      and: conditions,
+                                  }
+                                : {
+                                      or: conditions,
+                                  },
+                    },
+                })
+            },
+        [edges, dispatch]
+    )
+
+    const handleDeleteCondition =
+        (branchId: string, type: 'and' | 'or', conditions: ConditionSchema[]) =>
+        (conditionIndex: number) => {
+            const edge = edges.find((e) => e.id === branchId)
+
+            if (!edge) return
+
+            const updatedConditions = conditions.filter(
+                (_, index) => index !== conditionIndex
+            )
+
+            dispatch({
+                type: 'UPDATE_CONDITIONS_NODE_BRANCH',
+                nodeId: edge.id,
+                data: {
+                    name: edge?.data?.name,
+                    conditions: {
+                        ...(type === 'and'
+                            ? {and: updatedConditions}
+                            : {or: updatedConditions}),
+                    },
+                },
+            })
+        }
+
+    const handleVariableSelect =
+        (
+            item: VisualBuilderEdge,
+            type: 'and' | 'or',
+            conditions: ConditionSchema[]
+        ) =>
+        (variable: WorkflowVariable) => {
+            const newCondition = buildConditionSchemaByVariableType(
+                variable.type,
+                variable.value
+            )
+
+            dispatch({
+                type: 'UPDATE_CONDITIONS_NODE_BRANCH',
+                nodeId: item.id,
+                data: {
+                    ...item.data,
+                    conditions: {
+                        ...(type === 'and'
+                            ? {and: [...conditions, newCondition]}
+                            : {or: [...conditions, newCondition]}),
+                    },
+                },
+            })
+        }
+
+    const branches = edges.slice(0, edges.length - 1)
+
+    return (
+        <>
+            <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
+            <Drawer.Content className={conditionsCss.conditions}>
+                <ToolbarProvider workflowVariables={workflowVariables}>
+                    <div className={css.container}>
+                        <a
+                            href="https://link.gorgias.com/noh"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            <i className="material-icons mr-2">menu_book</i>
+                            Learn About Conditions in Flows
+                        </a>
+
+                        <InputField
+                            id="conditions"
+                            maxLength={50}
+                            label={
+                                <>
+                                    <span>Step Name</span>
+                                    <HintTooltip title="Used to help you better understand your Flow, not visible to customers." />
+                                </>
+                            }
+                            placeholder="Check order date"
+                            value={nodeInEdition.data?.name}
+                            onChange={handleStepNameChange}
+                            className={conditionsCss.input}
+                        />
+                        <div className={conditionsCss.header}>
+                            <i
+                                className={classNames(
+                                    'material-icons',
+                                    conditionsCss.icon
+                                )}
+                            >
+                                arrow_downward
+                            </i>
+                            <h4 className={conditionsCss.title}>
+                                branches evaluated in the order, names not
+                                visible to customers
+                            </h4>
+                        </div>
+                        {edges.length > 0 && (
+                            <SortableAccordion
+                                onReorder={handleReorderBranchItems}
+                                isMulti
+                            >
+                                {branches.map((item) => {
+                                    const type =
+                                        item.data?.conditions &&
+                                        'or' in item.data.conditions
+                                            ? 'or'
+                                            : 'and'
+                                    const conditions =
+                                        item.data?.conditions?.and ??
+                                        item.data?.conditions?.or ??
+                                        []
+
+                                    if (!conditions) return null
+
+                                    return (
+                                        <SortableAccordionItem
+                                            id={item.id}
+                                            key={item.id}
+                                            isDisabled={false}
+                                        >
+                                            <ConditionsBranchItem
+                                                name={item.data?.name}
+                                                branchId={item.id}
+                                                availableVariables={
+                                                    workflowVariables
+                                                }
+                                                shouldShowErrors={
+                                                    shouldShowErrors
+                                                }
+                                                canDeleteBranch={
+                                                    item.id !== branches[0].id
+                                                }
+                                                onConditionDelete={handleDeleteCondition(
+                                                    item.id,
+                                                    type,
+                                                    conditions
+                                                )}
+                                                onVariableSelect={handleVariableSelect(
+                                                    item,
+                                                    type,
+                                                    conditions
+                                                )}
+                                                onConditionTypeChange={handleConditionTypeChange(
+                                                    conditions
+                                                )}
+                                                onNameChange={(newName) =>
+                                                    handleConditionChange(
+                                                        item.id,
+                                                        {
+                                                            conditions:
+                                                                item.data
+                                                                    ?.conditions,
+                                                            name: newName,
+                                                        }
+                                                    )
+                                                }
+                                                onDeleteBranch={handleBranchDelete(
+                                                    item.id
+                                                )}
+                                                onConditionChange={(
+                                                    updatedCondition: ConditionSchema,
+                                                    index: number
+                                                ) => {
+                                                    const updatedConditions = [
+                                                        ...conditions,
+                                                    ]
+                                                    updatedConditions[index] =
+                                                        updatedCondition
+
+                                                    handleConditionChange(
+                                                        item.id,
+                                                        {
+                                                            name: item?.data
+                                                                ?.name,
+                                                            conditions: {
+                                                                ...(type ===
+                                                                'and'
+                                                                    ? {
+                                                                          and: updatedConditions,
+                                                                      }
+                                                                    : {
+                                                                          or: updatedConditions,
+                                                                      }),
+                                                            },
+                                                        }
+                                                    )
+                                                }}
+                                                type={type}
+                                                conditions={conditions}
+                                            />
+                                        </SortableAccordionItem>
+                                    )
+                                })}
+                            </SortableAccordion>
+                        )}
+
+                        <div className={conditionsCss.fallback}>
+                            <h4>Fallback</h4>
+                            <p>
+                                If no branches apply to a customer they will be
+                                routed to the fallback branch
+                            </p>
+                        </div>
+                        <div>
+                            <Button
+                                intent="secondary"
+                                onClick={handleAddConditionBranch}
+                                isDisabled={branches.length >= 5}
+                                ref={tooltipTargetRef}
+                            >
+                                <ButtonIconLabel icon="add">
+                                    Add Branch
+                                </ButtonIconLabel>
+                            </Button>
+                            {branches.length >= 5 && (
+                                <Tooltip target={tooltipTargetRef}>
+                                    You've reached the maximum number of
+                                    branches for this step
+                                </Tooltip>
+                            )}
+                        </div>
+                    </div>
+                </ToolbarProvider>
+            </Drawer.Content>
+        </>
+    )
+}

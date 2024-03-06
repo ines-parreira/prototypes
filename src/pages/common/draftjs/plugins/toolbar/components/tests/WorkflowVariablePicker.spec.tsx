@@ -11,11 +11,13 @@ const workflowVariables: WorkflowVariableList = [
         nodeType: 'text_reply',
         name: 'Customer first name',
         value: 'customer_first_name',
+        type: 'string',
     },
     {
         nodeType: 'multiple_choices',
         name: 'Customer last name',
         value: 'customer_last_name',
+        type: 'string',
     },
     {
         nodeType: 'order_selection',
@@ -25,16 +27,19 @@ const workflowVariables: WorkflowVariableList = [
                 nodeType: 'text_reply',
                 name: 'Order ID',
                 value: 'order_id',
+                type: 'number',
             },
             {
                 nodeType: 'text_reply',
                 name: 'Order date',
                 value: 'order_date',
+                type: 'date',
             },
             {
                 nodeType: 'text_reply',
                 name: 'Order total',
                 value: 'order_total',
+                type: 'number',
             },
         ],
     },
@@ -106,6 +111,11 @@ describe('WorkflowVariablePicker', () => {
         screen.getByRole('button').click()
         screen.getByText('Which order are you contacting us about?').click()
         screen.getByText('Order ID').click()
-        expect(onSelect).toHaveBeenCalledWith('order_id')
+        expect(onSelect).toHaveBeenCalledWith({
+            nodeType: 'text_reply',
+            name: 'Order ID',
+            value: 'order_id',
+            type: 'number',
+        })
     })
 })

@@ -1,16 +1,31 @@
 import React, {useRef, useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import Button, {ButtonSize} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import WorkflowVariableDropdown from './WorkflowVariableDropdown'
 
 export type WorkflowVariablePickerProps = {
-    onSelect: (value: string) => void
+    onSelect: (value: WorkflowVariable) => void
+    label?: string
+    disabled?: boolean
+    size?: ButtonSize
+    tooltipMessage?: string
+    variableDropdownProps?: Partial<
+        React.ComponentProps<typeof WorkflowVariableDropdown>
+    >
 }
 
-const WorkflowVariablePicker = ({onSelect}: WorkflowVariablePickerProps) => {
+const WorkflowVariablePicker = ({
+    onSelect,
+    label = `{+} variables`,
+    size = 'small',
+    variableDropdownProps,
+    tooltipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
+    disabled,
+}: WorkflowVariablePickerProps) => {
     const anchorEl = useRef<HTMLButtonElement>(null)
     const [isOpen, setIsOpen] = useState(false)
 
@@ -21,23 +36,24 @@ const WorkflowVariablePicker = ({onSelect}: WorkflowVariablePickerProps) => {
     return (
         <>
             <Button
-                size="small"
+                size={size}
                 intent="secondary"
                 ref={anchorEl}
+                disabled={disabled}
+                isDisabled={disabled}
                 onClick={handleToggle}
             >
-                {`{+}`} variables
-                <ButtonIconLabel icon="arrow_drop_down" position="right" />
+                <ButtonIconLabel icon="arrow_drop_down" position="right">
+                    {label}
+                </ButtonIconLabel>
             </Button>
-            <Tooltip target={anchorEl}>
-                Variables are automatically created and can be used to recall
-                information from previous steps in a flow
-            </Tooltip>
+            <Tooltip target={anchorEl}>{tooltipMessage}</Tooltip>
             <WorkflowVariableDropdown
                 target={anchorEl}
                 onSelect={onSelect}
                 isOpen={isOpen}
                 onToggle={setIsOpen}
+                {...variableDropdownProps}
             />
         </>
     )

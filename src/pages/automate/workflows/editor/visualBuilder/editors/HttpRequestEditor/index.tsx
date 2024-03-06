@@ -17,6 +17,7 @@ import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHtt
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
@@ -243,7 +244,8 @@ export default function HttpRequestEditor({
                                     variables={workflowVariables}
                                     error={
                                         validateJSONWithVariables(
-                                            nodeInEdition.data.json ?? ''
+                                            nodeInEdition.data.json ?? '',
+                                            workflowVariables
                                         )
                                             ? undefined
                                             : 'Invalid JSON'
@@ -333,7 +335,10 @@ export default function HttpRequestEditor({
                     }}
                     variables={nodeInEdition.data.variables}
                     result={nodeInEdition.data.testRequestResult}
-                    inputs={variables}
+                    inputs={variables.filter(
+                        (variable): variable is WorkflowVariable =>
+                            variable != null
+                    )}
                     onChangeVariable={handleChangeVariable}
                     onDeleteVariable={handleDeleteVariable}
                     onAddVariable={handleAddVariable}

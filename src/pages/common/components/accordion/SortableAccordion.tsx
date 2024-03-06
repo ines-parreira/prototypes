@@ -15,11 +15,11 @@ import SortableAccordionContext, {
     SortableAccordionContextType,
 } from './SortableAccordionContext'
 
-type Props = {
+type Props<T extends string | string[] | null> = {
     type?: string
     isDisabled?: boolean
     onReorder: (reorderedItems: string[]) => void
-} & AccordionProps
+} & AccordionProps<T>
 
 type SortableAccordionItemComponent = ReactComponentElement<
     typeof SortableAccordionItem
@@ -31,17 +31,19 @@ const isSortableAccordionItem = (
     return isValidElement(item)
 }
 
-const SortableAccordion = ({
+const SortableAccordion = <T extends string | string[] | null>({
     type = 'sortable-accordion',
     isDisabled = false,
     onReorder,
     children,
     ...props
-}: Props) => {
+}: Props<T>) => {
     const items = Children.toArray(children).filter(isSortableAccordionItem)
+
     const itemsById = items.reduce<
         Record<string, SortableAccordionItemComponent>
     >((acc, item) => ({...acc, [item.props.id]: item}), {})
+
     const nextOrderedItems = items.map((item) => item.props.id)
     const orderedItems = useRef(nextOrderedItems)
     const [dirtyOrderedItems, setDirtyOrderedItems] = useState(

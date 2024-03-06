@@ -1,0 +1,103 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        width: 100%;
+    }
+
+    .conditions {
+        height: 100%;
+    }
+
+    .conditionList {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .errorMessage {
+        color: var(--feedback-error-2);
+        margin: 0;
+    }
+
+    .inputError {
+        > div:not(:first-child) {
+            position: absolute;
+        }
+    }
+
+    .input {
+        width: 100%;
+    }
+
+    .numberInput {
+        min-width: 80px;
+    }
+
+    .fallback {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: @layout-spacing-m;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: @layout-spacing-xxs;
+
+        h4 {
+            .body-semibold();
+            margin: 0;
+        }
+        p {
+            .body-regular();
+            margin: 0;
+        }
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        color: var(--neutral-grey-5);
+        gap: @layout-spacing-xs;
+        .title {
+            .caption-allcaps();
+            margin: 0;
+        }
+    }
+    .conditionTypeList {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        justify-content: center;
+        width: 100%;
+
+        .conditionType {
+            width: 100%;
+        }
+    }
+
+    .conditionListWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+    .conditionList {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        align-items: center;
+    }
+
+    .accordionBody {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .cta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .deleteIcon {
+        font-size: 18px;
+    }
+}

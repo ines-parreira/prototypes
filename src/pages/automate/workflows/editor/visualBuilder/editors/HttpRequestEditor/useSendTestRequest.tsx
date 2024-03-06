@@ -41,6 +41,7 @@ const useSendTestRequest = (
                 switch (config.bodyContentType) {
                     case 'application/json':
                         body = renderWithVariables(config.json ?? '', variables)
+
                         break
                     case 'application/x-www-form-urlencoded': {
                         const entries = config.formUrlencoded?.map((entry) => [

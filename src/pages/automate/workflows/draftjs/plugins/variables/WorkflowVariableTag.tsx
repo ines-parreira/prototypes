@@ -2,7 +2,10 @@ import React, {ReactNode, useMemo} from 'react'
 import classNames from 'classnames'
 
 import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import {parseWorkflowVariable} from 'pages/automate/workflows/models/variables.model'
+import {
+    extractVariablesFromText,
+    parseWorkflowVariable,
+} from 'pages/automate/workflows/models/variables.model'
 
 import css from './WorkflowVariableTag.less'
 
@@ -19,22 +22,25 @@ export default function WorkflowVariableTag({
 }: WorkflowVariableTagProps) {
     const {workflowVariables} = useToolbarContext()
     const variable = useMemo(
-        () => parseWorkflowVariable(value, workflowVariables || []),
+        () =>
+            parseWorkflowVariable(
+                extractVariablesFromText(value)?.[0]?.value ?? '',
+                workflowVariables || []
+            ),
         [value, workflowVariables]
     )
     return (
         <span className={css.wrapper}>
             <span
                 className={classNames(css.container, {
-                    [css.invalid]: variable.isInvalid,
+                    [css.invalid]: !variable,
                 })}
                 contentEditable={false}
             >
                 <span
                     className={classNames(css.content, css[size])}
-                    aria-label={variable.name}
+                    aria-label={variable?.name ?? 'Invalid variable'}
                 />
-                <span className={css.copyPlaceholder}>{value}</span>
             </span>
             <span className={css.children}>{children}</span>
         </span>
