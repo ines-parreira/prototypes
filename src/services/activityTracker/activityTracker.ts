@@ -1,11 +1,10 @@
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
 
 import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {isDevelopment} from 'utils/environment'
 
 import {ActivityEvents, AGENT_ACTIVITY_HEALTHCHECK_INTERVAL} from './constants'
+import {checkIfTrackerIsEnabled} from './utils'
 
 const ingestionEndpoint = isDevelopment()
     ? 'http://localhost:8076/private/track'
@@ -40,7 +39,7 @@ activityTrackerInstance.createUserContext({
 let activityTrackerHealthCheckInterval: number | null = null
 let unregisterBrowserHooks: (() => void) | null = null
 
-export const startActivityHealthCheck = () => {
+const startActivityHealthCheck = () => {
     if (activityTrackerHealthCheckInterval) return
 
     activityTrackerHealthCheckInterval = window.setInterval(() => {
@@ -53,19 +52,10 @@ export const startActivityHealthCheck = () => {
     }, AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
 }
 
-export const stopActivityHealthCheck = () => {
+const stopActivityHealthCheck = () => {
     if (!activityTrackerHealthCheckInterval) return
 
     window.clearInterval(activityTrackerHealthCheckInterval)
-}
-
-const checkIfTrackerIsEnabled = async () => {
-    const launchDarklyClient = getLDClient()
-    await launchDarklyClient.waitForInitialization()
-    const isActivityTrackerEnabled = !!launchDarklyClient.variation(
-        FeatureFlagKey.AgentActivityTracking
-    )
-    return isActivityTrackerEnabled
 }
 
 // after feature flags are removed, these helper functions can be removed
