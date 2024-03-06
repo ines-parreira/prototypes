@@ -37,7 +37,7 @@ export const ViewLayout = ({
             <Panel key="navbar-panel">
                 <TicketNavbar disableResize />
             </Panel>
-            <Panel key="ticket-list-panel">
+            <Panel key={`ticket-list-panel-${viewId || 'default'}`}>
                 <DefaultViewFallback viewId={viewId} />
             </Panel>
             <Panel key="ticket-panel">

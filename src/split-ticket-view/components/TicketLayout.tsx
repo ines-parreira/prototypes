@@ -41,7 +41,7 @@ export default function TicketLayout({
             <Panel key="navbar-panel">
                 <TicketNavbar disableResize />
             </Panel>
-            <Panel key="ticket-list-panel">
+            <Panel key={`ticket-list-panel-${viewId || 'default'}`}>
                 <DefaultViewFallback viewId={viewId} ticketId={ticketId} />
             </Panel>
             <Panel key="ticket-panel" className={css.container}>
