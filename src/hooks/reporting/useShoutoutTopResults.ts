@@ -1,21 +1,20 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _takeWhile from 'lodash/takeWhile'
 import {useMemo} from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {User} from 'config/types/user'
 import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import useAppSelector from 'hooks/useAppSelector'
 import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {User} from 'config/types/user'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import useAppSelector from 'hooks/useAppSelector'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {formatMetricValue, isMetricForAgent} from 'pages/stats/common/utils'
 import {getFilteredAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {renameMember} from 'utils/reporting'
 import {notUndefined} from 'utils/types'
 
 interface GetShoutoutTopResultsArgs {
@@ -79,11 +78,7 @@ export const useShoutoutTopResults = (
     const isAnalyticsNewCubes: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewCubes]
     const currentMeasure = isAnalyticsNewCubes
-        ? renameMember<typeof measure>(
-              measure,
-              'HelpdeskMessage',
-              'HelpdeskMessageEnriched'
-          )
+        ? renameMemberEnriched(measure)
         : measure
 
     const agentIdFields = [
