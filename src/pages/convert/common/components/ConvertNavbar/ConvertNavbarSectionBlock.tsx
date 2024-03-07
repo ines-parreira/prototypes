@@ -5,6 +5,7 @@ import cssNavbar from 'assets/css/navbar.less'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {useIsConvertOnboardingUiEnabled} from '../../hooks/useIsConvertOnboardingUiEnabled'
 import css from './ConvertNavbarSectionBlock.less'
 import ConvertNavbarPaywallNavbarLink from './ConvertNavbarPaywallNavbarLink'
 
@@ -22,6 +23,7 @@ const ConvertNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
+    const isOnboardingEnabled = useIsConvertOnboardingUiEnabled()
 
     return (
         <NavbarSectionBlock
@@ -29,36 +31,37 @@ const ConvertNavbarSectionBlock = ({
             className={css.section}
             {...props}
         >
-            {isOnboarded ? (
+            {isOnboarded || !isOnboardingEnabled ? (
                 <>
-                    {isConvertSubscriber ? (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                        >
-                            <NavbarLink
-                                to={{
-                                    pathname: `/app/convert/${chatIntegrationId}/performance`,
-                                    state: {from: FROM_LOCATION},
-                                }}
+                    {isOnboardingEnabled &&
+                        (isConvertSubscriber ? (
+                            <div
+                                className={classNames(
+                                    cssNavbar['link-wrapper'],
+                                    cssNavbar.isNested
+                                )}
+                            >
+                                <NavbarLink
+                                    to={{
+                                        pathname: `/app/convert/${chatIntegrationId}/performance`,
+                                        state: {from: FROM_LOCATION},
+                                    }}
+                                >
+                                    <span className={cssNavbar['item-name']}>
+                                        Performance
+                                    </span>
+                                </NavbarLink>
+                            </div>
+                        ) : (
+                            <ConvertNavbarPaywallNavbarLink
+                                to={`/app/convert/${chatIntegrationId}/performance/subscribe`}
+                                isNested
                             >
                                 <span className={cssNavbar['item-name']}>
                                     Performance
                                 </span>
-                            </NavbarLink>
-                        </div>
-                    ) : (
-                        <ConvertNavbarPaywallNavbarLink
-                            to={`/app/convert/${chatIntegrationId}/performance/subscribe`}
-                            isNested
-                        >
-                            <span className={cssNavbar['item-name']}>
-                                Performance
-                            </span>
-                        </ConvertNavbarPaywallNavbarLink>
-                    )}
+                            </ConvertNavbarPaywallNavbarLink>
+                        ))}
 
                     <div
                         className={classNames(

@@ -8,7 +8,12 @@ import {RedirectProps} from 'react-router-dom'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
+import {useIsConvertOnboardingUiEnabled} from 'pages/convert/common/hooks/useIsConvertOnboardingUiEnabled'
 import ConvertRoute from '../ConvertRoute'
+
+jest.mock('pages/convert/common/hooks/useIsConvertOnboardingUiEnabled')
+const isConvertOnboardingUiEnabledMock =
+    useIsConvertOnboardingUiEnabled as jest.Mock
 
 jest.mock('pages/convert/channelConnections/hooks/useGetOnboardingStatusMap')
 const useGetOnboardingStatusMapMock = assumeMock(useGetOnboardingStatusMap)
@@ -43,6 +48,10 @@ describe('ConvertRoute', () => {
         jest.resetAllMocks()
     })
 
+    beforeEach(() => {
+        isConvertOnboardingUiEnabledMock.mockReturnValue(true)
+    })
+
     it('redirects to /app/convert/setup when there are no sorted integrations', () => {
         const state: Partial<RootState> = {
             integrations: fromJS({
@@ -60,6 +69,29 @@ describe('ConvertRoute', () => {
 
         expect(
             getByText('Redirected to /app/convert/setup')
+        ).toBeInTheDocument()
+    })
+
+    it('redirects to chat wizard when there are no sorted integrations and no onboarding', () => {
+        const state: Partial<RootState> = {
+            integrations: fromJS({
+                integrations: [],
+            }),
+        }
+
+        isConvertOnboardingUiEnabledMock.mockReturnValue(false)
+        useGetOnboardingStatusMapMock.mockReturnValueOnce({})
+
+        const {getByText} = render(
+            <Provider store={mockStore(state)}>
+                <ConvertRoute />
+            </Provider>
+        )
+
+        expect(
+            getByText(
+                'Redirected to /app/settings/channels/gorgias_chat/new/create-wizard'
+            )
         ).toBeInTheDocument()
     })
 
@@ -96,6 +128,25 @@ describe('ConvertRoute', () => {
 
         expect(
             getByText('Redirected to /app/convert/2/setup')
+        ).toBeInTheDocument()
+    })
+
+    it('redirects to installation page of first integration', () => {
+        const state: Partial<RootState> = {
+            integrations: fromJS({integrations}),
+        }
+
+        useGetOnboardingStatusMapMock.mockReturnValueOnce({})
+        isConvertOnboardingUiEnabledMock.mockReturnValue(false)
+
+        const {getByText} = render(
+            <Provider store={mockStore(state)}>
+                <ConvertRoute />
+            </Provider>
+        )
+
+        expect(
+            getByText('Redirected to /app/convert/2/installation')
         ).toBeInTheDocument()
     })
 })
