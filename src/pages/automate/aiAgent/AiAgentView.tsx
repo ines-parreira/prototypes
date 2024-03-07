@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {List} from 'immutable'
 import {isEqual} from 'lodash'
+
 import {useUpsertStoreConfiguration} from '../../../hooks/aiAgent/useUpsertStoreConfiguration'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
@@ -26,6 +27,7 @@ import UnsavedChangesPrompt from '../../common/components/UnsavedChangesPrompt'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
 import TextArea from '../../common/forms/TextArea'
 import {useGetOrUpsertAiAgentConfiguration} from '../../../hooks/aiAgent/useGetOrUpsertAccountConfiguration'
+import NumberInput from '../../common/forms/input/NumberInput'
 import css from './AiAgentView.less'
 import {
     TONE_OF_VOICE_LABEL_TO_VALUE,
@@ -84,12 +86,19 @@ export const AiAgentView = () => {
         hasUpdated: boolean
     }>({tags: [], tagsValid: true, hasUpdated: false})
     const [isDirty, setIsDirty] = useState<boolean>(false)
+    const [isAiAgentEnabled, setIsAiAgentEnabled] = useState<boolean>(false)
+    const [sampleRateInPerc, setSampleRateInPerc] = useState<number>(50)
 
     const toggleAiAgent = (value: boolean) => {
-        setStoreConfiguration((prevState) => ({
-            ...prevState,
-            ticketSampleRate: value ? 0.3 : 0,
-        }))
+        setIsAiAgentEnabled(value)
+        setSampleRateInPerc(value ? 30 : 0)
+        setIsDirty(true)
+    }
+
+    const handleTicketSampleRateChange = (value?: number) => {
+        if (!value) return
+        setSampleRateInPerc(value)
+        setIsAiAgentEnabled(value > 0 ? true : false)
         setIsDirty(true)
     }
 
@@ -207,6 +216,7 @@ export const AiAgentView = () => {
                 storeConfiguration: {
                     ...storeConfiguration,
                     tags: updatedTags.tags,
+                    ticketSampleRate: +(sampleRateInPerc / 100).toFixed(2),
                 },
             },
         ])
@@ -231,6 +241,33 @@ export const AiAgentView = () => {
         })
     }, [storeConfiguration.tags])
 
+    // FIXME: we need to refactor the way the initial value of the form is set, but for now, I'll just continue to follow the existing pattern
+    // until we refactor this and set form values as soon as a refetch is performed
+    useEffect(() => {
+        setIsAiAgentEnabled(
+            storeConfiguration.ticketSampleRate > 0 ? true : false
+        )
+        if (
+            storeConfiguration.ticketSampleRate === 1 ||
+            storeConfiguration.ticketSampleRate === 0
+        ) {
+            setSampleRateInPerc(storeConfiguration.ticketSampleRate * 100)
+            return
+        }
+        const rateStr = storeConfiguration.ticketSampleRate.toString()
+        // ex. "0.1" / "0.2" / "0.3"
+        if (rateStr.split('.')[1]?.length === 1) {
+            setSampleRateInPerc(parseInt(rateStr.split('.')[1] + '0'))
+            return
+        }
+
+        // ex. "0.01" / "0.12"
+        if (rateStr.split('.')[1]?.length === 2) {
+            setSampleRateInPerc(parseInt(rateStr.split('.')[1]))
+            return
+        }
+    }, [storeConfiguration.ticketSampleRate])
+
     return (
         <AutomateView title={AI_AGENT} isLoading={storeConfigurationIsLoading}>
             <UnsavedChangesPrompt
@@ -240,12 +277,32 @@ export const AiAgentView = () => {
             <div className={css.automateView}>
                 <div className={css.aiAgentToggle}>
                     <ToggleInput
-                        isToggled={!!storeConfiguration.ticketSampleRate}
+                        isToggled={isAiAgentEnabled}
                         onClick={toggleAiAgent}
                         name={toggleAiAgentId}
                     >
                         Enable AI Agent
                     </ToggleInput>
+                </div>
+
+                <div>
+                    <Label className={css.label}>
+                        Select the desired percentage of emails managed by the
+                        AI Agent
+                    </Label>
+                    <NumberInput
+                        className={css.numberInput}
+                        onChange={handleTicketSampleRateChange}
+                        value={sampleRateInPerc}
+                        min={0}
+                        max={100}
+                        placeholder="30"
+                        suffix={
+                            <div style={{color: '#99A5B6', lineHeight: '20px'}}>
+                                /100%
+                            </div>
+                        }
+                    />
                 </div>
 
                 <div className={css.knowledgeSection}>
