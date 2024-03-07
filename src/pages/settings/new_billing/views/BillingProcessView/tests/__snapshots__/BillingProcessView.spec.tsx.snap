@@ -67,15 +67,23 @@ exports[`UsageAndPlansView should render 1`] = `
                   >
                     desktop_mac
                   </i>
-                  <div>
+                  <div
+                    class="heading-subsection-semibold"
+                  >
                     Helpdesk
                   </div>
                 </div>
-                <i
-                  class="material-icons closeButton"
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost secondary small"
+                  type="button"
                 >
-                  close
-                </i>
+                  <i
+                    class="material-icons closeButton"
+                  >
+                    close
+                  </i>
+                </button>
               </div>
               <div
                 class="details"
@@ -205,12 +213,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   >
                     bolt
                   </i>
-                  <div>
+                  <div
+                    class="heading-subsection-semibold"
+                  >
                     Automate
                   </div>
                 </div>
-                <div
-                  class="addProduct"
+                <button
+                  aria-disabled="false"
+                  class="wrapper addProduct ghost primary small"
+                  type="button"
                 >
                   <i
                     class="material-icons"
@@ -218,7 +230,7 @@ exports[`UsageAndPlansView should render 1`] = `
                     add
                   </i>
                   Add Product
-                </div>
+                </button>
               </div>
             </div>
             <div
@@ -235,12 +247,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   >
                     phone
                   </i>
-                  <div>
+                  <div
+                    class="heading-subsection-semibold"
+                  >
                     Voice
                   </div>
                 </div>
-                <div
-                  class="addProduct"
+                <button
+                  aria-disabled="false"
+                  class="wrapper addProduct ghost primary small"
+                  type="button"
                 >
                   <i
                     class="material-icons"
@@ -248,7 +264,7 @@ exports[`UsageAndPlansView should render 1`] = `
                     add
                   </i>
                   Add Product
-                </div>
+                </button>
               </div>
             </div>
             <div
@@ -265,12 +281,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   >
                     textsms
                   </i>
-                  <div>
+                  <div
+                    class="heading-subsection-semibold"
+                  >
                     SMS
                   </div>
                 </div>
-                <div
-                  class="addProduct"
+                <button
+                  aria-disabled="false"
+                  class="wrapper addProduct ghost primary small"
+                  type="button"
                 >
                   <i
                     class="material-icons"
@@ -278,7 +298,7 @@ exports[`UsageAndPlansView should render 1`] = `
                     add
                   </i>
                   Add Product
-                </div>
+                </button>
               </div>
             </div>
             <div
@@ -295,12 +315,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   >
                     paid
                   </i>
-                  <div>
+                  <div
+                    class="heading-subsection-semibold"
+                  >
                     Convert
                   </div>
                 </div>
-                <div
-                  class="addProduct"
+                <button
+                  aria-disabled="false"
+                  class="wrapper addProduct ghost primary small"
+                  type="button"
                 >
                   <i
                     class="material-icons"
@@ -308,7 +332,7 @@ exports[`UsageAndPlansView should render 1`] = `
                     add
                   </i>
                   Add Product
-                </div>
+                </button>
               </div>
             </div>
           </div>

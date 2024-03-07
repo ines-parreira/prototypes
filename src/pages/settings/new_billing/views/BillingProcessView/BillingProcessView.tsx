@@ -205,7 +205,6 @@ const BillingProcessView = ({
         }
         return 'Voice'
     }, [selectedPlans])
-
     return (
         <div className={css.container}>
             <div className={css.header}>
@@ -232,6 +231,7 @@ const BillingProcessView = ({
                             product={helpdeskProduct}
                             prices={helpdeskPrices}
                             selectedPlans={selectedPlans}
+                            periodEnd={periodEnd}
                             setSelectedPlans={setSelectedPlans}
                         />
                         <ProductPlanSelection

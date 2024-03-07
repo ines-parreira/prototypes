@@ -127,7 +127,8 @@ const AutoUpgradeToggle = ({
                 {!isEnterprisePlan && (
                     <div>
                         <Button
-                            fillStyle="fill"
+                            fillStyle="ghost"
+                            size="small"
                             intent="secondary"
                             onClick={() => setIsModalOpen(true)}
                         >

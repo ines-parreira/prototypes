@@ -1,6 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import classNames from 'classnames'
-
 import {
     AutomationPrice,
     ConvertPrice,
@@ -11,10 +10,12 @@ import {
 } from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {isStarterTierPrice, getProductLabel} from 'models/billing/utils'
+import {getProductLabel, isStarterTierPrice} from 'models/billing/utils'
 import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages} from 'state/billing/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentProducts} from 'state/billing/selectors'
 import CounterText from '../CounterText'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
@@ -22,6 +23,8 @@ import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {formatNumTickets} from '../../utils/formatAmount'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
+import CancelProductModal from '../CancelProductModal/CancelProductModal'
+import useAutomatedHelpdeskCancellationFlowAvailable from '../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
 import css from './ProductPlanSelection.less'
 
 export type ProductPlanSelectionProps = {
@@ -64,6 +67,7 @@ const ProductPlanSelection = ({
     const selectedPlan = selectedPlans[type].plan
 
     const [isCancelAAOModalOpen, setIsCancelAAOModalOpen] = useState(false)
+    const [isCancellationFlowOpen, setIsCancellationFlowOpen] = useState(false)
 
     const isStarterHelpdeskPlanDisabled = useCallback(
         (price) => {
@@ -143,6 +147,21 @@ const ProductPlanSelection = ({
         }))
     }, [setSelectedPlans, type])
 
+    const currentProducts = useAppSelector(getCurrentProducts)
+    const currentSubscriptionProducts = currentProducts
+        ? {
+              [ProductType.Helpdesk]: currentProducts.helpdesk,
+              [ProductType.Automation]: currentProducts.automation || null,
+              [ProductType.Voice]: currentProducts.voice || null,
+              [ProductType.SMS]: currentProducts.sms || null,
+              [ProductType.Convert]: currentProducts.convert || null,
+          }
+        : null
+    const isAutomatedHelpdeskCancellationFlowAvailable =
+        useAutomatedHelpdeskCancellationFlowAvailable(
+            currentSubscriptionProducts?.helpdesk || null
+        )
+
     const handleOpen = useCallback(() => {
         const initialPlan =
             initialIndex === -1
@@ -175,6 +194,82 @@ const ProductPlanSelection = ({
         }))
     }
 
+    const renderHeader = () => {
+        if (!selectedPlans[type].isSelected) {
+            return (
+                <Button
+                    className={css.addProduct}
+                    fillStyle="ghost"
+                    intent="primary"
+                    size="small"
+                    onClick={handleOpen}
+                >
+                    <i className="material-icons">add</i>Add Product
+                </Button>
+            )
+        }
+
+        if (!isActive) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    intent="secondary"
+                    size="small"
+                    onClick={handleClose}
+                >
+                    <i
+                        className={classNames(
+                            'material-icons',
+                            css.closeButton
+                        )}
+                        onClick={handleClose}
+                    >
+                        close
+                    </i>
+                </Button>
+            )
+        }
+        if (
+            type === ProductType.Helpdesk &&
+            isAutomatedHelpdeskCancellationFlowAvailable
+        ) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    intent="destructive"
+                    size="small"
+                    onClick={() => setIsCancellationFlowOpen(true)}
+                >
+                    Cancel auto-renewal
+                </Button>
+            )
+        } else if (type === ProductType.Automation) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    intent="secondary"
+                    size="small"
+                    onClick={() => setIsCancelAAOModalOpen(true)}
+                >
+                    Remove product
+                </Button>
+            )
+        } else if (type === ProductType.Convert) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    intent="secondary"
+                    size="small"
+                    onClick={handleClose}
+                >
+                    Remove product
+                </Button>
+            )
+        }
+
+        return null
+    }
+
     return (
         <div className={css.container}>
             <div className={css.header}>
@@ -186,48 +281,14 @@ const ProductPlanSelection = ({
                     >
                         {PRODUCT_INFO[type].icon}
                     </i>
-                    <div>{PRODUCT_INFO[type].title}</div>
+                    <div className="heading-subsection-semibold">
+                        {PRODUCT_INFO[type].title}
+                    </div>
                     {isActive && (
                         <Badge text="Active" type={BadgeType.Success} />
                     )}
                 </div>
-                {selectedPlans[type].isSelected ? (
-                    isActive ? (
-                        type === ProductType.Automation ? (
-                            <Button
-                                intent="secondary"
-                                className={css.cancelButton}
-                                onClick={() => setIsCancelAAOModalOpen(true)}
-                            >
-                                Remove product
-                            </Button>
-                        ) : (
-                            type === ProductType.Convert && (
-                                <Button
-                                    intent="secondary"
-                                    className={css.cancelButton}
-                                    onClick={handleClose}
-                                >
-                                    Remove product
-                                </Button>
-                            )
-                        )
-                    ) : (
-                        <i
-                            className={classNames(
-                                'material-icons',
-                                css.closeButton
-                            )}
-                            onClick={handleClose}
-                        >
-                            close
-                        </i>
-                    )
-                ) : (
-                    <div className={css.addProduct} onClick={handleOpen}>
-                        <i className="material-icons">add</i>Add Product
-                    </div>
-                )}
+                {renderHeader()}
             </div>
             {selectedPlans[type].isSelected && (
                 <div className={css.details}>
@@ -306,6 +367,19 @@ const ProductPlanSelection = ({
                     currentUsage={currentUsage}
                 />
             )}
+            {isAutomatedHelpdeskCancellationFlowAvailable &&
+                currentSubscriptionProducts &&
+                periodEnd && (
+                    <CancelProductModal
+                        onClose={() => {
+                            setIsCancellationFlowOpen(false)
+                        }}
+                        isOpen={isCancellationFlowOpen}
+                        productType={ProductType.Helpdesk}
+                        subscriptionProducts={currentSubscriptionProducts}
+                        periodEnd={periodEnd}
+                    />
+                )}
         </div>
     )
 }

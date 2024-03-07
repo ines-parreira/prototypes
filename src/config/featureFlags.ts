@@ -91,4 +91,5 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    HelpdeskProductAutomatedCancellation = 'helpdesk-product-automated-cancellation',
 }
