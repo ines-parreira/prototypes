@@ -15,6 +15,7 @@ export default function CreateTicketNavbarButton({
     return (
         <CreateTicketButton
             isDisabled={isDisabled}
+            shouldBindKeys
             trigger={
                 <Button
                     className={classnames(navbarCss.navbarButton, 'flex-grow')}

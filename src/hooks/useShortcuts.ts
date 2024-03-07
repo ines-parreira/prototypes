@@ -1,17 +1,7 @@
-import {useEffect} from 'react'
+import useConditionalShortcuts from './useConditionalShortcuts'
 
-import shortcutManager from 'services/shortcutManager'
-import {KeyboardAction} from 'services/shortcutManager/shortcutManager'
+type Params = Parameters<typeof useConditionalShortcuts>
 
-export default function useShortcuts(
-    component = 'global',
-    actions: Record<string, Partial<KeyboardAction>>
-) {
-    useEffect(() => {
-        shortcutManager.bind(component, actions)
-
-        return () => {
-            shortcutManager.unbind(component)
-        }
-    }, [component, actions])
+export default function useShortcuts(component: Params[1], actions: Params[2]) {
+    useConditionalShortcuts(true, component, actions)
 }

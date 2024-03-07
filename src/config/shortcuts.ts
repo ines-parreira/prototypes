@@ -84,13 +84,18 @@ const shortcuts: Record<string, KeyMap> = {
             },
         },
     },
-    TicketListActions: {
-        description: 'Views (Tickets)',
+    CreateTicketButton: {
+        description: 'Create Ticket button',
         actions: {
             CREATE_TICKET: {
                 key: 'n',
                 description: 'Create a new ticket.',
             },
+        },
+    },
+    TicketListActions: {
+        description: 'Views (Tickets)',
+        actions: {
             OPEN_ASSIGNEE: {
                 key: 'a',
                 description: 'Open the assignee dropdown.',

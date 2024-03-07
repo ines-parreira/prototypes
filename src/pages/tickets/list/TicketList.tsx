@@ -1,7 +1,9 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
+import {useLocation, useParams} from 'react-router-dom'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {fetchTags} from 'state/tags/actions'
 import {getTickets} from 'state/tickets/selectors'
 import {
@@ -20,13 +22,12 @@ import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
-import useShortcuts from 'hooks/useShortcuts'
-import TicketListActions, {
-    SHORTCUT_MANAGER_COMPONENT_NAME,
-} from './components/TicketListActions'
+import TicketListActions from './components/TicketListActions'
 import css from './TicketList.less'
 
 const TicketList = () => {
+    const hasSplitTicketView = useFlags()[FeatureFlagKey.SplitTicketView]
+
     const dispatch = useAppDispatch()
 
     const activeView = useAppSelector(getActiveView)
@@ -37,7 +38,6 @@ const TicketList = () => {
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 
     const {pathname} = useLocation()
-    const history = useHistory()
     const params = useParams<{viewId?: string}>()
     const isSearch = useMemo(() => isSearchUrl(pathname, 'tickets'), [pathname])
     const isUpdate = useMemo(
@@ -76,15 +76,6 @@ const TicketList = () => {
         return title
     }, [activeView, hasActiveView, isSearch, isUpdate])
 
-    useShortcuts(SHORTCUT_MANAGER_COMPONENT_NAME, {
-        CREATE_TICKET: {
-            action: (e: Event) => {
-                e.preventDefault()
-                history.push('/app/ticket/new')
-            },
-        },
-    })
-
     useTitle(title)
 
     const viewTable = (
@@ -101,7 +92,11 @@ const TicketList = () => {
             >(TicketListActions, {
                 openMacroModal: () => setIsMacroModalOpen(true),
             })}
-            viewButtons={!isEditMode && <CreateTicketButton />}
+            viewButtons={
+                !isEditMode && (
+                    <CreateTicketButton shouldBindKeys={!hasSplitTicketView} />
+                )
+            }
         />
     )
 

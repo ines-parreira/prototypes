@@ -3,10 +3,13 @@ import React, {forwardRef} from 'react'
 import {act} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
+
+jest.mock('hooks/useConditionalShortcuts', () => jest.fn())
 
 jest.mock('../useHandleTicketDraft')
 const mockUseHandleTicketDraft = useHandleTicketDraft as jest.Mock
@@ -19,6 +22,7 @@ describe('<CreateTicketButton />', () => {
             onDiscardDraft: jest.fn(),
         })
     })
+
     it('should render draft dropdown when there is a draft', () => {
         const {getByText, queryByText} = renderWithRouter(
             <CreateTicketButton />
@@ -70,5 +74,31 @@ describe('<CreateTicketButton />', () => {
         await act(flushPromises)
 
         expect(getByText('{"current":null}')).toBeInTheDocument()
+    })
+
+    it('should bind keyboard shortcuts', () => {
+        renderWithRouter(<CreateTicketButton shouldBindKeys />)
+        expect(useConditionalShortcuts).toHaveBeenCalledWith(
+            true,
+            'CreateTicketButton',
+            expect.objectContaining({
+                CREATE_TICKET: {
+                    action: expect.any(Function),
+                },
+            })
+        )
+    })
+
+    it('should not bind keyboard shortcuts', () => {
+        renderWithRouter(<CreateTicketButton />)
+        expect(useConditionalShortcuts).toHaveBeenCalledWith(
+            false,
+            'CreateTicketButton',
+            expect.objectContaining({
+                CREATE_TICKET: {
+                    action: expect.any(Function),
+                },
+            })
+        )
     })
 })

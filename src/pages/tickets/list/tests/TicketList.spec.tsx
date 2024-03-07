@@ -5,10 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {view as fixtureView} from 'fixtures/views'
-import useShortcuts from 'hooks/useShortcuts'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
-import {SHORTCUT_MANAGER_COMPONENT_NAME} from 'pages/tickets/list/components/TicketListActions'
 import {fetchTags} from 'state/tags/actions'
 
 import {renderWithRouter} from 'utils/testing'
@@ -82,9 +80,6 @@ const store = mockStore({
         },
     }),
 })
-
-jest.mock('hooks/useShortcuts')
-const useShortcutsMock = useShortcuts as jest.Mock
 
 jest.mock('pages/common/components/CreateTicket/CreateTicketButton')
 const MockCreateTicketButton = CreateTicketButton as jest.Mock
@@ -160,22 +155,6 @@ describe('<TicketList />', () => {
             }
         )
         expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should bind keyboard shortcuts', () => {
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>
-        )
-        expect(useShortcutsMock).toHaveBeenCalledWith(
-            SHORTCUT_MANAGER_COMPONENT_NAME,
-            {
-                CREATE_TICKET: {
-                    action: expect.any(Function),
-                },
-            }
-        )
     })
 
     it('should render CreateTicketButton when not in edit mode', () => {

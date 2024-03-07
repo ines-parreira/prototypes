@@ -1,7 +1,8 @@
-import React, {cloneElement, ReactElement, useRef} from 'react'
 import _noop from 'lodash/noop'
+import React, {cloneElement, ReactElement, useMemo, useRef} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 
-import {Link} from 'react-router-dom'
+import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
@@ -10,15 +11,32 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 
 type CreateTicketButtonProps = {
-    trigger?: ReactElement
     isDisabled?: boolean
+    shouldBindKeys?: boolean
+    trigger?: ReactElement
 }
 export default function CreateTicketButton({
-    trigger,
     isDisabled,
+    shouldBindKeys = false,
+    trigger,
 }: CreateTicketButtonProps) {
+    const history = useHistory()
     const {hasDraft, onResumeDraft, onDiscardDraft} = useHandleTicketDraft()
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
+
+    const actions = useMemo(
+        () => ({
+            CREATE_TICKET: {
+                action: (e: Event) => {
+                    e.preventDefault()
+                    history.push('/app/ticket/new')
+                },
+            },
+        }),
+        [history]
+    )
+
+    useConditionalShortcuts(shouldBindKeys, 'CreateTicketButton', actions)
 
     return !hasDraft ? (
         <Link to="/app/ticket/new" className="d-inline-flex">
