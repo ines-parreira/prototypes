@@ -5,14 +5,13 @@ import logo from 'assets/img/infobar/recharge.svg'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import StaticField from 'infobar/components/StaticField'
 import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import ExpandAllButton from '../ExpandAllButton'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import StaticField from 'infobar/components/StaticField'
+import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
+import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
+import ExpandAllButton from 'infobar/components/ExpandAllButton'
+import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
 
 export default function Customer() {
     return {

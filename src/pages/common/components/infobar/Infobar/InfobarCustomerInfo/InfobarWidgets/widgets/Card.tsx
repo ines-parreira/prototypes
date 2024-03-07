@@ -3,6 +3,11 @@ import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 
+import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
+import CardEditForm, {
+    CardEditFormState,
+    HiddenField,
+} from 'infobar/ui/Card/CardEditForm'
 import {useAppNode} from 'appNode'
 import {updateRecord} from 'utils/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -31,14 +36,10 @@ import {
     canDrop,
     isSimpleTemplateWidget,
 } from 'pages/common/components/infobar/utils'
-import {CardHeaderIcon} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderIcon'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER} from 'infobar/ui/List'
 
 // This is to avoid circular dependencies while doing recursion
-import CardEditForm, {
-    CardEditFormState,
-    HiddenField,
-} from 'infobar/ui/CardEditForm'
 import {widgetReference} from '../widgetReference'
 import {getWidgetTitle} from '../helpers'
 import CustomActions from './customActions'
@@ -302,28 +303,20 @@ export default function Card(props: Props) {
         enrichedEditionHiddenField.push('pictureUrl', 'color')
     }
 
-    // existing data might have it stored as a string, though it should always be a number
-    const limit = parent.getIn(['meta', 'limit'], undefined) as
-        | number
-        | string
-        | undefined
-
     const initialData = {
         title: template.get('title', '') as string,
-        link: template.getIn(['meta', 'link'], undefined) as string | undefined,
-        pictureUrl: template.getIn(['meta', 'pictureUrl'], undefined) as
-            | string
-            | undefined,
-        color: template.getIn(['meta', 'color'], undefined) as
-            | string
-            | undefined,
-        displayCard: template.getIn(['meta', 'displayCard'], undefined) as
-            | boolean
-            | undefined,
-        limit: limit === undefined ? limit : Number(limit),
-        orderBy: parent.getIn(['meta', 'orderBy'], undefined) as
-            | string
-            | undefined,
+        link: template.getIn(['meta', 'link'], '') as string,
+        pictureUrl: template.getIn(['meta', 'pictureUrl'], '') as string,
+        color: template.getIn(['meta', 'color'], '') as string,
+        displayCard: template.getIn(['meta', 'displayCard'], true) as boolean,
+        // some legacy template could have a string in there
+        limit: Number(
+            parent.getIn(
+                ['meta', 'limit'],
+                DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER
+            ) as number | string
+        ),
+        orderBy: parent.getIn(['meta', 'orderBy'], '') as string,
     }
 
     const orderByOptions = (childWidgets.toJS() as Template[])

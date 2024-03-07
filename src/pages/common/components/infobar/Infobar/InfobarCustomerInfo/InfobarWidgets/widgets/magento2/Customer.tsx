@@ -5,11 +5,10 @@ import logo from 'assets/img/infobar/magento.svg'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import StaticField from 'infobar/components/StaticField'
-
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import ExpandAllButton from '../ExpandAllButton'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
+import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
+import ExpandAllButton from 'infobar/components/ExpandAllButton'
+import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
 
 export default function Customer() {
     return {

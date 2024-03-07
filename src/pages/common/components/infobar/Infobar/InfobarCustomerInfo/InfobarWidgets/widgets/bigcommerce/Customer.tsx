@@ -13,16 +13,15 @@ import {
     BigCommerceActionType,
     BigCommerceCustomer,
 } from 'models/integration/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import StaticField from 'infobar/components/StaticField'
+import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
+import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
+import ExpandAllButton from 'infobar/components/ExpandAllButton'
+import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
 
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import ExpandAllButton from '../ExpandAllButton'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
-import ButtonIconLabel from '../../../../../../button/ButtonIconLabel'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {InfobarAction} from '../types'
-
 import OrderModal from './AddOrderModal/OrderModal'
 
 export default function Customer() {

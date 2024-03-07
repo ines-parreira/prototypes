@@ -14,7 +14,7 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import CardEditForm from 'infobar/ui/CardEditForm'
+import CardEditForm, {CardEditFormState} from 'infobar/ui/Card/CardEditForm'
 
 import Card, {
     DELETE_BUTTON_TEXT,
@@ -25,7 +25,7 @@ import Card, {
 const mockStore = configureMockStore()
 
 const CARD_EDIT_FORM_TEST_ID = 'card-edit-form'
-jest.mock('infobar/ui/CardEditForm', () =>
+jest.mock('infobar/ui/Card/CardEditForm', () =>
     jest.fn(() => {
         return <span data-testid={CARD_EDIT_FORM_TEST_ID}>card edit form</span>
     })
@@ -179,7 +179,7 @@ describe('Card', () => {
             act(() => {
                 CardEditFormMock.mock.calls
                     .slice(-1)[0][0]
-                    .onSubmit({title: 'ok'})
+                    .onSubmit({title: 'ok'} as CardEditFormState)
             })
 
             await waitFor(() =>

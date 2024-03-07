@@ -13,7 +13,6 @@ import {getTrackingUrl} from 'utils/delivery'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import StaticField from 'infobar/components/StaticField'
 
-import cardCss from '../Card.less'
 import css from './Order.less'
 
 export default function Order() {
@@ -58,7 +57,6 @@ export const statusColors: Record<string, ColorType> = {
 
 type BeforeContentProps = ConnectedProps<typeof connectorBeforeContent> & {
     source: Map<any, any>
-    currentUserTimezone: string
 }
 
 class BeforeContentContainer extends Component<BeforeContentProps> {
@@ -167,7 +165,7 @@ export class Shipments extends Component<{
 
             return (
                 <div key={shipment.get('entity_id')} className={css.section}>
-                    <div className={cardCss.widgetCardHeader}>
+                    <div className={css.linkWrapper}>
                         <a
                             target="_blank"
                             rel="noopener noreferrer"

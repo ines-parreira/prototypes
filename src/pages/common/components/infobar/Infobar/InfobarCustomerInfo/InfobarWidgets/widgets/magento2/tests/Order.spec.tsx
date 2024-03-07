@@ -109,7 +109,6 @@ describe('Order', () => {
                                 }}
                             >
                                 <BeforeContent
-                                    currentUserTimezone="US/Pacific"
                                     source={fromJS({
                                         customer_id: customerId,
                                         entity_id: orderId,
@@ -149,7 +148,6 @@ describe('Order', () => {
                             }}
                         >
                             <BeforeContent
-                                currentUserTimezone="US/Pacific"
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,
@@ -192,7 +190,6 @@ describe('Order', () => {
                             }}
                         >
                             <BeforeContent
-                                currentUserTimezone="US/Pacific"
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,
@@ -236,7 +233,6 @@ describe('Order', () => {
                             }}
                         >
                             <BeforeContent
-                                currentUserTimezone="US/Pacific"
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,

@@ -2,9 +2,9 @@ import React, {ReactNode} from 'react'
 
 import {Map} from 'immutable'
 import logo from 'assets/img/infobar/woocommerce.svg'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
+import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
+import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
+import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
 import {useStore} from './useStore'
 
 export default function Shopper() {

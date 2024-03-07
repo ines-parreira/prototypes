@@ -2,9 +2,9 @@ import React, {useCallback, useContext, useRef, useState} from 'react'
 import classnames from 'classnames'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
+import cssWrapper from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Wrapper.less'
+import cssCard from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Card.less'
 
-import cssWrapper from './Wrapper.less'
-import cssCard from './Card.less'
 import css from './ExpandAllButton.less'
 
 export default function ExpandAllButton() {

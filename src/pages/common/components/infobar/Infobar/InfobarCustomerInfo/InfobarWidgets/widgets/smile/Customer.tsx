@@ -3,10 +3,10 @@ import {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/smile.svg'
 
-import {renderTemplate} from '../../../../../../../utils/template'
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import {renderTemplate} from 'pages/common/utils/template'
+import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
+import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
+import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
 
 export default function Customer() {
     return {

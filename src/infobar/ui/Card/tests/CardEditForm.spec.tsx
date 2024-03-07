@@ -14,7 +14,12 @@ describe('<CardEditForm/>', () => {
     const props: ComponentProps<typeof CardEditForm> = {
         initialData: {
             title: 'Some Title',
+            link: '',
+            pictureUrl: '',
+            color: '',
             displayCard: true,
+            limit: 3,
+            orderBy: '',
         },
         hiddenFields: [],
         orderByOptions: [

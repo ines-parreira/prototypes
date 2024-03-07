@@ -290,7 +290,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     class="section"
   >
     <div
-      class="widgetCardHeader"
+      class="linkWrapper"
     >
       <a
         href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
@@ -399,7 +399,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     class="section"
   >
     <div
-      class="widgetCardHeader"
+      class="linkWrapper"
     >
       <a
         href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
@@ -527,7 +527,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     class="section"
   >
     <div
-      class="widgetCardHeader"
+      class="linkWrapper"
     >
       <a
         href=""
@@ -636,7 +636,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     class="section"
   >
     <div
-      class="widgetCardHeader"
+      class="linkWrapper"
     >
       <a
         href=""

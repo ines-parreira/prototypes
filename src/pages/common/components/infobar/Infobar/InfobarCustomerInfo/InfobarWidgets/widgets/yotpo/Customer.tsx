@@ -2,15 +2,14 @@ import React, {ContextType} from 'react'
 import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
-import StaticField from 'infobar/components/StaticField'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import StaticField from 'infobar/components/StaticField'
+import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
+import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
+import ExpandAllButton from 'infobar/components/ExpandAllButton'
 
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import ExpandAllButton from '../ExpandAllButton'
-import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
+import {CardHeaderStatusLabel} from './custom/CardHeaderStatusLabel'
 import {CardHeaderYotpoBadge} from './custom/CardHeaderYotpoBadge'
-
 import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs'
 
 export default function Customer() {

@@ -1,6 +1,6 @@
 import React, {memo} from 'react'
 import classnames from 'classnames'
-import {List, Map} from 'immutable'
+import {List, Map, fromJS} from 'immutable'
 
 import Links from './Links'
 import ActionButtons from './ActionButtons'
@@ -8,12 +8,12 @@ import css from './CustomActions.less'
 
 type Props = {
     template: Map<string, unknown>
-    source: Map<string, unknown>
+    source: Map<string, unknown> | undefined
     isEditing: boolean
 }
 
 function CustomActions(props: Props) {
-    const {template, source, isEditing} = props
+    const {template, source = fromJS({}), isEditing} = props
     const templatePath = template.get('templatePath', '') as string
     const templateAbsolutePath = template.get('absolutePath', '') as string[]
     const immutableLinks = template.getIn(

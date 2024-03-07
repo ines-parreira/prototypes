@@ -10,6 +10,7 @@ import FileField from 'pages/common/forms/FileField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
 
+import {DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER} from '../List'
 import css from './CardEditForm.less'
 
 export const TITLE_FIELD_LABEL = 'Title'
@@ -24,12 +25,12 @@ export const CANCEL_BUTTON_TEXT = 'Cancel'
 
 export type CardEditFormState = {
     title: string
-    link?: string
-    pictureUrl?: string
-    color?: string
-    displayCard?: boolean
-    limit?: number
-    orderBy?: string
+    link: string
+    pictureUrl: string
+    color: string
+    displayCard: boolean
+    limit: number
+    orderBy: string
 }
 
 export type HiddenField = keyof CardEditFormState
@@ -144,13 +145,11 @@ const CardEdit = ({
                             id="list.meta.limit"
                             className={css.field}
                             min={0}
-                            value={
-                                formState.limit
-                                    ? Number(formState.limit)
-                                    : undefined
-                            }
+                            value={formState.limit}
                             placeholder="0"
-                            onChange={(limit) =>
+                            onChange={(
+                                limit = DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER
+                            ) =>
                                 setFormState((formState) => ({
                                     ...formState,
                                     limit,
