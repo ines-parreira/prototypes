@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHelpcenterListByTypes} from 'state/entities/helpCenter/helpCenters'
+import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import {IntegrationType} from 'models/integration/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -15,7 +15,7 @@ const useSelfServiceHelpCenterChannels = (
     shopType: string,
     shopName: string
 ) => {
-    const helpCenters = useAppSelector(getHelpcenterListByTypes(['faq']))
+    const helpCenters = useAppSelector(getHelpCenterList)
 
     return useMemo<SelfServiceHelpCenterChannel[]>(() => {
         if (shopType !== IntegrationType.Shopify) {

@@ -55,8 +55,8 @@ describe('<AutoReplyFAQEditor/>', () => {
                     categories: {},
                     helpCenters: {
                         helpCentersById: {
-                            '1': {id: 1, name: 'help center 1', type: 'faq'},
-                            '2': {id: 2, name: 'help center 2', type: 'faq'},
+                            '1': {id: 1, name: 'help center 1'},
+                            '2': {id: 2, name: 'help center 2'},
                         },
                     },
                 },
@@ -85,7 +85,7 @@ describe('<AutoReplyFAQEditor/>', () => {
                     categories: {},
                     helpCenters: {
                         helpCentersById: {
-                            '2': {id: 2, name: 'help center 2', type: 'faq'},
+                            '2': {id: 2, name: 'help center 2'},
                         },
                     },
                 },

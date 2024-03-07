@@ -45,7 +45,7 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {DateAndTimeFormatting} from 'constants/datetime'
 
-import {getHelpcenterListByTypes} from 'state/entities/helpCenter/helpCenters'
+import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import Tooltip from 'pages/common/components/Tooltip'
 import css from './RuleRow.less'
 import {getRuleActions} from './ruleEditors/utils'
@@ -71,7 +71,7 @@ export function RuleRow({
     const [error, setError] = useState<string>()
     const hasAutomate = useAppSelector(getHasAutomate)
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
-    const helpCenters = useAppSelector(getHelpcenterListByTypes(['faq']))
+    const helpCenters = useAppSelector(getHelpCenterList)
     const hasAgentPrivileges = useHasAgentPrivileges()
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate

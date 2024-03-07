@@ -9,7 +9,7 @@ import {waitFor} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {
-    getHelpcenterListByTypes,
+    getHelpCenters,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
 
@@ -35,27 +35,18 @@ jest.mock('../useHelpCenterApi', () => {
     }
 })
 
-jest.mock('state/entities/helpCenter/helpCenters', () => {
-    const actual = jest.requireActual('state/entities/helpCenter/helpCenters')
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return {
-        ...actual,
-        helpCentersFetched: jest.fn().mockReturnValue({
-            type: 'HELPCENTER/HELPCENTERS_FETCHED',
-            payload: {},
-        }),
-        getHelpcenterListByTypes: jest.fn().mockReturnValue(() => []),
-    }
-})
+jest.mock('state/entities/helpCenter/helpCenters', () => ({
+    getHelpCenters: jest.fn(() => ({})),
+    helpCentersFetched: jest.fn().mockReturnValue({
+        type: 'HELPCENTER/HELPCENTERS_FETCHED',
+        payload: {},
+    }),
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     entities: {
-        helpCenter: {
-            helpCenters: {
-                helpCentersById: {},
-            },
-        },
+        helpCenter: {},
     } as any,
     ui: {helpCenter: uiState} as any,
 }
@@ -78,7 +69,6 @@ describe('useHelpCenterList', () => {
                 wrapper: dependencyWrapper,
             }
         )
-
         expect(result.current.isLoading).toBeTruthy()
         expect(result.current.hasMore).toEqual(true)
         await waitFor(() => {
@@ -102,7 +92,7 @@ describe('useHelpCenterList', () => {
         })
     })
 
-    it('uses the getHelpcenterListByTypes selector', () => {
+    it('uses the getHelpCenters selector', () => {
         renderHook(
             () =>
                 useHelpCenterList({
@@ -112,6 +102,6 @@ describe('useHelpCenterList', () => {
                 wrapper: dependencyWrapper,
             }
         )
-        expect(getHelpcenterListByTypes).toHaveBeenCalled()
+        expect(getHelpCenters).toHaveBeenCalled()
     })
 })

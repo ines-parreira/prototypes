@@ -15,7 +15,7 @@ import {
 } from '../../../state/currentAccount/selectors'
 import {StoreConfiguration, Tag} from '../../../models/aiAgent/types'
 import Button from '../../common/components/button/Button'
-import {getHelpcenterListByTypes} from '../../../state/entities/helpCenter/helpCenters'
+import {getHelpCenterList} from '../../../state/entities/helpCenter/helpCenters'
 import Label from '../../common/forms/Label/Label'
 import {getIntegrationsByTypes} from '../../../state/integrations/selectors'
 import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
@@ -47,7 +47,7 @@ export const AiAgentView = () => {
 
     const accountDomain = useAppSelector(getCurrentDomain)
     const accountId = useAppSelector(getCurrentAccountState).get('id')
-    const helpCenters = useAppSelector(getHelpcenterListByTypes(['faq']))
+    const helpCenters = useAppSelector(getHelpCenterList)
     const emailIntegrations = useAppSelector(
         getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
     ) as EmailIntegration[]

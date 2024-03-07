@@ -7,7 +7,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {
-    getHelpcenterListByTypes,
+    getHelpCenters,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
 import useAppSelector from 'hooks/useAppSelector'
@@ -31,7 +31,11 @@ export const useHelpCenterList = (
     params: Omit<Paths.ListHelpCenters.QueryParameters, 'page'>
 ): HelpCenterListHook => {
     const dispatch = useAppDispatch()
-    const helpCenters = useAppSelector(getHelpcenterListByTypes())
+    const helpCenterByid = useAppSelector(getHelpCenters)
+    const helpCenters = useMemo(
+        () => Object.values(helpCenterByid).map((hc) => hc),
+        [helpCenterByid]
+    )
 
     const {client} = useHelpCenterApi()
     const [isLoading, setLoading] = useState(true)
