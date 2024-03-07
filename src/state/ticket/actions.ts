@@ -533,9 +533,6 @@ export const snoozeTicket =
             ...data,
         })
 
-        // execute callback immediately, do not wait for server answer
-        callback()
-
         return dispatch(ticketPartialUpdate(data)).then(() => {
             if (datetime) {
                 void dispatch(
@@ -545,6 +542,8 @@ export const snoozeTicket =
                     })
                 )
             }
+
+            callback()
         })
     }
 
