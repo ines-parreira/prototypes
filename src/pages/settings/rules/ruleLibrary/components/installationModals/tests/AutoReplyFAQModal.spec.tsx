@@ -43,7 +43,9 @@ describe('<AutoReplyFAQModal/>', () => {
         return store
     }
     it('should render the autoclose spam body when Automate is subscribed', () => {
-        const store = createStoreWithHelpCenter({'1': {id: 1} as HelpCenter})
+        const store = createStoreWithHelpCenter({
+            '1': {id: 1, type: 'faq'} as HelpCenter,
+        })
         const {container} = render(
             <Provider store={store}>
                 <AutoReplyFAQModal {...minProps} />

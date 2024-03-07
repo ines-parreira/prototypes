@@ -91,7 +91,11 @@ describe('useEnableArticleRecommendation', () => {
                     helpCenter: {
                         helpCenters: {
                             helpCentersById: {
-                                '28': {id: 28, shop_name: 'test-shop'},
+                                '28': {
+                                    id: 28,
+                                    shop_name: 'test-shop',
+                                    type: 'faq',
+                                },
                             },
                         },
                     },
@@ -99,7 +103,11 @@ describe('useEnableArticleRecommendation', () => {
             }),
         })
 
-        void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
+        void result.current({
+            id: 999,
+            shop_name: 'test-shop',
+            type: 'faq',
+        } as HelpCenter)
 
         await waitFor(() => {
             expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()

@@ -19,12 +19,19 @@ export const getCurrentHelpCenter = createSelector(
     }
 )
 
-export const getHelpCenterList = createSelector(getHelpCenters, (helpCenters) =>
-    Object.values(helpCenters)
-)
+export const getHelpcenterListByTypes = (types?: HelpCenter['type'][]) =>
+    createSelector(getHelpCenters, (helpCenters) => {
+        if (!types) {
+            return Object.values(helpCenters)
+        }
+
+        return Object.values(helpCenters).filter((helpCenter) =>
+            types.includes(helpCenter.type)
+        )
+    })
 
 export const getActiveHelpCenterList = createSelector(
-    getHelpCenterList,
+    getHelpcenterListByTypes(),
     (helpCenters) =>
         helpCenters.filter((helpCenter) => !helpCenter.deactivated_datetime)
 )

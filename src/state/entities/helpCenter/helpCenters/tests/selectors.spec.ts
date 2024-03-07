@@ -12,7 +12,7 @@ import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/
 import {
     getActiveHelpCenterList,
     getCurrentHelpCenter,
-    getHelpCenterList,
+    getHelpcenterListByTypes,
 } from '../selectors'
 
 describe('Entities/Help Center', () => {
@@ -55,24 +55,100 @@ describe('Entities/Help Center', () => {
         })
     })
 
-    describe('getHelpCenterList', () => {
-        it('returns the list', () => {
+    describe('getHelpcenterListByTypes', () => {
+        const helpCentersById = _keyBy(
+            getHelpCentersResponseFixture.data.map((helpCenter, index) => {
+                if (index === 0) {
+                    // faking the type of 'guidance' for the first help center
+                    return {...helpCenter, type: 'guidance'}
+                }
+
+                return helpCenter
+            }),
+            'id'
+        )
+
+        it('returns the list of all help center regardless of their types', () => {
             const dataStore: Partial<StoreState> = {
                 entities: {
                     helpCenter: {
                         helpCenters: {
-                            helpCentersById: _keyBy(
-                                getHelpCentersResponseFixture.data,
-                                'id'
-                            ),
+                            helpCentersById,
                         },
                     },
                 } as any,
             }
 
-            expect(getHelpCenterList(dataStore as StoreState)).toEqual(
-                getHelpCentersResponseFixture.data
+            const selectedHelpCenters = getHelpcenterListByTypes()(
+                dataStore as StoreState
             )
+
+            expect(selectedHelpCenters).toEqual(Object.values(helpCentersById))
+
+            expect(
+                Object.values(helpCentersById).some(
+                    (helpCenter) => helpCenter.type === 'faq'
+                )
+            ).toEqual(true)
+            expect(
+                Object.values(helpCentersById).some(
+                    (helpCenter) => helpCenter.type === 'guidance'
+                )
+            ).toEqual(true)
+        })
+
+        it('returns the list of all help center of type "faq"', () => {
+            const dataStore: Partial<StoreState> = {
+                entities: {
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById,
+                        },
+                    },
+                } as any,
+            }
+
+            const selectedHelpCenters = getHelpcenterListByTypes(['faq'])(
+                dataStore as StoreState
+            )
+
+            expect(
+                Object.values(selectedHelpCenters).every(
+                    (helpCenter) => helpCenter.type === 'faq'
+                )
+            ).toBeTruthy()
+            expect(
+                Object.values(selectedHelpCenters).some(
+                    (helpCenter) => helpCenter.type === 'guidance'
+                )
+            ).toBeFalsy()
+        })
+
+        it('returns the list of all help center of type "guidance"', () => {
+            const dataStore: Partial<StoreState> = {
+                entities: {
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById,
+                        },
+                    },
+                } as any,
+            }
+
+            const selectedHelpCenters = getHelpcenterListByTypes(['guidance'])(
+                dataStore as StoreState
+            )
+
+            expect(
+                Object.values(selectedHelpCenters).every(
+                    (helpCenter) => helpCenter.type === 'guidance'
+                )
+            ).toBeTruthy()
+            expect(
+                Object.values(selectedHelpCenters).some(
+                    (helpCenter) => helpCenter.type === 'faq'
+                )
+            ).toBeFalsy()
         })
     })
     describe('getActiveHelpCenterList', () => {

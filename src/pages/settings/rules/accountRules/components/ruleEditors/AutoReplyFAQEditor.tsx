@@ -9,7 +9,7 @@ import {MacroActionName} from 'models/macroAction/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
+import {getHelpcenterListByTypes} from 'state/entities/helpCenter/helpCenters'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
@@ -57,7 +57,7 @@ export const AutoReplyFAQEditor = ({
     handleInstallationError,
 }: Props) => {
     const handleChange = onChange()
-    const helpCenters = useAppSelector(getHelpCenterList)
+    const helpCenters = useAppSelector(getHelpcenterListByTypes(['faq']))
     const [initialHelpCenterId] = useState(settings.help_center_id)
     useHelpCenterList({per_page: 900})
 
