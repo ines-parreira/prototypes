@@ -18,9 +18,11 @@ import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
+    name: string
 }
 
 const ConditionsNode = memo(function ConditionsNode({
+    name,
     isErrored,
     shouldShowErrors,
     isGreyedOut,
@@ -46,7 +48,11 @@ const ConditionsNode = memo(function ConditionsNode({
                 <div className={css.nodeContainer}>
                     <VisualBuilderActionTag nodeType="conditions" />
                     <Label className={css.nodeTitle}>
-                        Route customers using variables
+                        {name || (
+                            <span className={css.clickToAdd}>
+                                Route customers using variables
+                            </span>
+                        )}
                     </Label>
                     <NodeDeleteIcon {...deleteProps} />
                 </div>
@@ -93,6 +99,7 @@ export default function ConditionsNodeWrapper(
     return (
         <ConditionsNode
             {...commonProps}
+            name={node.data.name}
             shouldShowErrors={commonProps.shouldShowErrors && isErrored}
             isErrored={isErrored}
         />
