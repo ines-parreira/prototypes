@@ -5,26 +5,26 @@ import {withCanduPaywall} from 'pages/common/components/Paywall/CanduPaywall'
 
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
-import ConvertPaywallView from 'pages/convert/common/components/ConvertPaywallView'
 import {ConvertFeatures} from 'pages/convert/common/components/ConvertPaywallView/constants'
+import ConvertPaywallView from 'pages/convert/common/components/ConvertPaywallView'
 
-const TITLE = 'Performance'
+const TITLE = 'Click tracking'
 
-const CampaignStatsPaywallView = () => {
+const ClickTrackingPaywallView = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
         useParams<ConvertRouteParams>()
 
     const redirectUrl = useMemo(() => {
         if (!!integrationId) {
-            return `/app/convert/${integrationId}/performance`
+            return `/app/convert/${integrationId}/click-tracking`
         }
-        return `/app/stats/convert/campaigns`
+        return `/app/settings/convert/click-tracking`
     }, [integrationId])
 
     return (
         <ConvertPaywallView
             convertFeature={ConvertFeatures.Default}
-            modalCanduId={'campaign-stats-paywall-modal'}
+            modalCanduId={'click-tracking-paywall-modal'}
             onSubscribedRedirectPath={redirectUrl}
             pageHeaderTitle={TITLE}
         />
@@ -33,5 +33,5 @@ const CampaignStatsPaywallView = () => {
 
 export default withCanduPaywall({
     title: TITLE,
-    canduId: 'campaign-stats-paywall',
-})(CampaignStatsPaywallView)
+    canduId: 'click-tracking-paywall',
+})(ClickTrackingPaywallView)

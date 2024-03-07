@@ -8,8 +8,8 @@ import LD from 'launchdarkly-react-client-sdk'
 import {MemoryRouter, Route} from 'react-router-dom'
 import {RootState, StoreDispatch} from 'state/types'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import ClickTrackingPaywallView from 'pages/settings/revenue/components/ClickTrackingPaywallView'
 import {getStateWithPrice} from 'utils/paywallTesting'
+import ClickTrackingPaywallView from '../../ClickTrackingPaywallView'
 import ClickTrackingSettingsView from '../ClickTrackingSettingsView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -19,6 +19,11 @@ const store = mockStore(getStateWithPrice())
 const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
     <Provider store={store}>{children}</Provider>
 )
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
+    useParams: jest.fn().mockReturnValue({}),
+}))
 
 jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => {
     return {
@@ -59,7 +64,7 @@ describe('<ClickTrackingSettingsView />', () => {
         )
 
         expect(queryByTestId('click-tracking-settings')).toBe(null)
-        expect(getByText('Get Convert')).toBeInTheDocument()
+        expect(getByText('Select plan to get started')).toBeInTheDocument()
     })
 
     it('should render if the account has the feature flag', () => {

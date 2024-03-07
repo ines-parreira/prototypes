@@ -224,15 +224,13 @@ export default function StatsNavbarView() {
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />
             </NavbarBlock>
-            {isConvertSubscriber && (
-                <NavbarBlock icon="monetization_on" title="Convert">
-                    <div className={cssNavbar.menu}>
-                        <ConvertStatsNavbar
-                            commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                        />
-                    </div>
-                </NavbarBlock>
-            )}
+            <NavbarBlock icon="monetization_on" title="Convert">
+                <div className={cssNavbar.menu}>
+                    <ConvertStatsNavbar
+                        commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                    />
+                </div>
+            </NavbarBlock>
             <NavbarBlock title={'Voice'} icon={'phone'}>
                 <VoiceStatsNavbarItem
                     to={'/app/stats/voice-overview'}

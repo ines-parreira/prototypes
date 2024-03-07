@@ -18,7 +18,7 @@ import {ConnectionStatus} from 'pages/common/components/ConnectionStatus'
 import {StatusCheck} from 'pages/common/components/StatusCheck'
 import {isDomain} from 'utils'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
+import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
 
 import {HelpText} from './components/HelpText'
 

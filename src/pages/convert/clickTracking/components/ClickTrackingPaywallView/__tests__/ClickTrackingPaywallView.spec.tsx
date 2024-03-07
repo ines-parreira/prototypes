@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
 import {getStateWithPrice} from 'utils/paywallTesting'
-import ClickTrackingPaywallView from '..'
+import ClickTrackingPaywallView from '../index'
 
 jest.mock(
     'pages/settings/new_billing/components/ConvertSubscriptionModal',
@@ -14,6 +14,10 @@ jest.mock(
         })
     }
 )
+
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn().mockReturnValue({}),
+}))
 
 describe('ClickTrackingPaywallView', () => {
     const renderWithStore = (state: Partial<RootState>) =>
@@ -28,6 +32,10 @@ describe('ClickTrackingPaywallView', () => {
 
         const {getByText} = renderWithStore(mockedState)
 
-        expect(getByText('Track clicks on chat campaigns')).toBeInTheDocument()
+        expect(
+            getByText(
+                'Meet Gorgias Convert - Your on-site revenue generation toolkit 🤩'
+            )
+        ).toBeInTheDocument()
     })
 })

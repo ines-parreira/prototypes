@@ -1,75 +1,101 @@
-import React, {useMemo, useState} from 'react'
+import React, {useState} from 'react'
 
+import classNames from 'classnames'
 import {Redirect} from 'react-router-dom'
-import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
-import UpgradeButton from 'pages/common/components/UpgradeButton'
+import PageHeader from 'pages/common/components/PageHeader'
+import LinkButton from 'pages/common/components/button/LinkButton'
+import convertIcon from 'assets/img/convert/convert-logo.svg'
+import Button from 'pages/common/components/button/Button'
+
+import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import css from './ConvertPaywallView.less'
+import {ConvertFeatures, PaywallConfig} from './constants'
 
 type Props = {
-    pageHeader: string
-    header: string
-    description: string
-    previewImage: string
-    modalCanduId: string
+    convertFeature: ConvertFeatures
     onSubscribedRedirectPath: string
+    modalCanduId: string
+    pageHeaderTitle?: string
 }
 
 const ConvertPaywallView = ({
-    pageHeader,
-    header,
-    description,
-    previewImage,
-    modalCanduId,
+    convertFeature,
     onSubscribedRedirectPath,
+    modalCanduId,
+    pageHeaderTitle,
 }: Props) => {
+    const {
+        headerTitle,
+        paywallTitle,
+        descriptions,
+        greyButtonText,
+        primaryButtonText,
+        slidesData,
+    } = PaywallConfig[convertFeature]
     const [isModalOpened, setIsModalOpened] = useState(false)
 
     const isConvertSubscriber = useIsConvertSubscriber()
 
-    const customCta = useMemo(() => {
-        return (
-            <UpgradeButton
-                onClick={() => {
-                    setIsModalOpened(true)
-                }}
-                hasIcon={false}
-                label="Get Convert"
-            />
-        )
-    }, [])
+    return isConvertSubscriber ? (
+        <Redirect to={onSubscribedRedirectPath} />
+    ) : (
+        <div className={css.layout}>
+            <PageHeader title={pageHeaderTitle || headerTitle}></PageHeader>
 
-    const modal = useMemo(() => {
-        return (
+            <div className={css.wrapper}>
+                <div className={css.leftContainer}>
+                    <img
+                        className={css.headerIcon}
+                        src={convertIcon}
+                        alt="Gorgias Convert"
+                    />
+                    <div className={css.title}>{paywallTitle}</div>
+
+                    {descriptions.map((description, i) => (
+                        <div key={i} className={css.description}>
+                            <i
+                                className={classNames(
+                                    'material-icons',
+                                    css.checkIcon
+                                )}
+                            >
+                                check
+                            </i>
+                            <span>{description}</span>
+                        </div>
+                    ))}
+
+                    <div className={css.actionButton}>
+                        <Button
+                            data-candu-id="convert-paywall-select-plan"
+                            onClick={() => setIsModalOpened(true)}
+                        >
+                            {primaryButtonText}
+                        </Button>
+                        <LinkButton
+                            target="blank"
+                            data-candu-id="convert-paywall-learn-more"
+                            intent="secondary"
+                            href="https://www.gorgias.com/products/convert"
+                        >
+                            {greyButtonText}
+                        </LinkButton>
+                    </div>
+                </div>
+                <div className={css.rightContainer}>
+                    <HeroImageCarousel slides={slidesData} />
+                </div>
+            </div>
             <ConvertSubscriptionModal
-                canduId={modalCanduId}
                 isOpen={isModalOpened}
                 onClose={() => setIsModalOpened(false)}
+                canduId={modalCanduId}
                 onSubscribe={() => setIsModalOpened(false)}
                 redirectPath={onSubscribedRedirectPath}
             />
-        )
-    }, [modalCanduId, isModalOpened, onSubscribedRedirectPath])
-
-    return (
-        <>
-            {!isConvertSubscriber && (
-                <Paywall
-                    pageHeader={pageHeader}
-                    header={header}
-                    description={description}
-                    previewImage={previewImage}
-                    requiredUpgrade={'Convert'}
-                    upgradeType={UpgradeType.None}
-                    showUpgradeCta
-                    renderFilterShadow
-                    customCta={customCta}
-                    modal={modal}
-                />
-            )}
-            {isConvertSubscriber && <Redirect to={onSubscribedRedirectPath} />}
-        </>
+        </div>
     )
 }
-
 export default ConvertPaywallView

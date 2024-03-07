@@ -15,6 +15,10 @@ jest.mock(
     }
 )
 
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn().mockReturnValue({}),
+}))
+
 describe('CampaignStatsPaywallView', () => {
     const renderWithStore = (state: Partial<RootState>, props = {}) =>
         render(
@@ -28,7 +32,11 @@ describe('CampaignStatsPaywallView', () => {
 
         const {getByText, queryByTestId} = renderWithStore(mockedState)
 
-        expect(getByText('Get Convert')).toBeInTheDocument()
+        expect(
+            getByText(
+                'Meet Gorgias Convert - Your on-site revenue generation toolkit 🤩'
+            )
+        ).toBeInTheDocument()
         const mockModal = queryByTestId('mock-convert-subscription-modal')
         expect(mockModal).toBeInTheDocument()
     })

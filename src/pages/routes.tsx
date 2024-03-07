@@ -25,7 +25,7 @@ import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
 } from 'config/paywalls'
-import ClickTrackingPaywallView from 'pages/settings/revenue/components/ClickTrackingPaywallView/ClickTrackingPaywallView'
+import ClickTrackingPaywallView from 'pages/convert/clickTracking/components/ClickTrackingPaywallView/ClickTrackingPaywallView'
 import App from 'pages/App'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import AppDetail from 'pages/integrations/App'
@@ -130,7 +130,7 @@ import CampaignStatsPaywallView from 'pages/stats/revenue/pages/CampaignsStats/C
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
-import ClickTrackingSettingsView from 'pages/settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
+import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
 import {CONVERT_ROUTING_PARAM} from 'pages/convert/common/constants'

@@ -1,0 +1,69 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .layout {
+        width: 100%;
+    }
+    .wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: calc(100% - 60px);
+        padding: 0 24px;
+        min-height: 600px;
+        @media @mobiles {
+            flex-direction: column;
+            gap: 64px;
+            margin: 64px 0;
+        }
+
+        .leftContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0 64px;
+            width: 481px;
+            align-items: flex-start;
+            @media (max-width: 1240px) {
+                margin: 0 32px;
+            }
+            .headerIcon {
+                height: 46px;
+                margin-bottom: 32px;
+            }
+            .title {
+                font-weight: @body-semibold-font-weight;
+                font-size: @heading-section-medium-font-size;
+                line-height: @heading-section-medium-line-height;
+                margin-bottom: @layout-spacing-s;
+                color: #222222;
+            }
+            .description {
+                .heading-subsection-regular();
+                display: flex;
+                margin-bottom: @layout-spacing-xs;
+                color: var(--neutral-grey-5);
+
+                .checkIcon {
+                    color: var(--feedback-success-3);
+                    margin-right: 8px;
+                    font-size: 24px;
+                }
+            }
+            .actionButton {
+                display: flex;
+                margin-top: 32px;
+                gap: 8px;
+            }
+        }
+        .rightContainer {
+            margin: 0 64px;
+            width: 420px;
+            @media @mobiles {
+                padding-bottom: 64px;
+            }
+        }
+    }
+}

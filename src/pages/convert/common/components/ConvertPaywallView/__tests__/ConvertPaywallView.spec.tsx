@@ -3,8 +3,9 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
-import ConvertPaywallView from 'pages/convert/common/components/ConvertPaywallView/ConvertPaywallView'
 import {getStateWithPrice} from 'utils/paywallTesting'
+import {ConvertFeatures} from '../constants'
+import ConvertPaywallView from '../ConvertPaywallView'
 
 jest.mock(
     'pages/settings/new_billing/components/ConvertSubscriptionModal',
@@ -16,19 +17,16 @@ jest.mock(
 )
 
 describe('ConvertPaywallView', () => {
-    const defaultProps = {
-        pageHeader: 'Paywall page header',
-        header: 'Paywall header',
-        description: 'Paywall description',
-        previewImage: '/some/path/to/image.png',
-        modalCanduId: 'paywall-modal-candu-id',
-        onSubscribedRedirectPath: '/some/path/to/redirect',
-    }
-
     const renderWithStore = (state: Partial<RootState>) =>
         render(
             <Provider store={mockStore(state as any)}>
-                <ConvertPaywallView {...defaultProps} />
+                <ConvertPaywallView
+                    convertFeature={ConvertFeatures.Default}
+                    modalCanduId={'click-tracking-paywall-modal'}
+                    onSubscribedRedirectPath={
+                        '/app/settings/convert/click-tracking'
+                    }
+                />
             </Provider>
         )
 
@@ -37,9 +35,14 @@ describe('ConvertPaywallView', () => {
 
         const {getByText} = renderWithStore(mockedState)
 
-        expect(getByText('Paywall page header')).toBeInTheDocument()
-        expect(getByText('Paywall header')).toBeInTheDocument()
-        expect(getByText('Paywall description')).toBeInTheDocument()
+        expect(
+            getByText(
+                'Meet Gorgias Convert - Your on-site revenue generation toolkit 🤩'
+            )
+        ).toBeInTheDocument()
+        expect(
+            getByText('Transform visitors into loyal customers.')
+        ).toBeInTheDocument()
     })
 
     it('always has custom CTA and modal', () => {
@@ -47,7 +50,7 @@ describe('ConvertPaywallView', () => {
 
         const {getByText, queryByTestId} = renderWithStore(mockedState)
 
-        expect(getByText('Get Convert')).toBeInTheDocument()
+        expect(getByText('Select plan to get started')).toBeInTheDocument()
         const mockModal = queryByTestId('mock-convert-subscription-modal')
         expect(mockModal).toBeInTheDocument()
     })
