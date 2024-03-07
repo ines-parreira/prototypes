@@ -1,7 +1,10 @@
 import {produce} from 'immer'
 
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {buildEdgeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {
+    buildEdgeCommonProperties,
+    cleanConditionsFromEmptyVariables,
+} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 
 import {
     AutomatedMessageNodeType,
@@ -13,6 +16,7 @@ import {
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
+import {getWorkflowVariableListForNode} from '../../models/variables.model'
 import {
     buildAutomatedMessageNode,
     buildEndNode,
@@ -252,11 +256,26 @@ export function baseReducer(
                     )
                     if (incomingEdge && outgoingEdges.length === 1) {
                         incomingEdge.target = outgoingEdges[0].target
+
                         // preserve edge ordering
                         draft.edges = [
-                            ...draft.edges.filter(
-                                (e) => e.source !== action.nodeId
-                            ),
+                            ...draft.edges
+                                .filter((e) => e.source !== action.nodeId)
+                                .map((edge) => {
+                                    // Removes variables from conditions that are associated with the deleted choice
+                                    if (edge.data?.conditions) {
+                                        edge.data.conditions =
+                                            cleanConditionsFromEmptyVariables(
+                                                edge.data.conditions,
+                                                getWorkflowVariableListForNode(
+                                                    draft,
+                                                    edge.target
+                                                )
+                                            )
+                                        return edge
+                                    }
+                                    return edge
+                                }),
                         ]
                     }
                 })

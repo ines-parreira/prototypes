@@ -33,23 +33,26 @@ export const STRING_CONDITION_OPERATORS: ConditionOperator[] = [
         key: 'doesNotContain',
     },
     {
-        label: 'Is empty',
+        label: 'Does not exist',
         key: 'doesNotExist',
     },
     {
-        label: 'Is not empty',
+        label: 'Exists',
         key: 'exists',
     },
 ]
-
 export const BOOLEAN_CONDITION_OPERATORS: ConditionOperator[] = [
     {
-        label: 'Is true',
+        label: 'Is',
         key: 'equals',
     },
     {
-        label: 'Is false',
-        key: 'notEqual',
+        label: 'Does not exist',
+        key: 'doesNotExist',
+    },
+    {
+        label: 'Exists',
+        key: 'exists',
     },
 ]
 

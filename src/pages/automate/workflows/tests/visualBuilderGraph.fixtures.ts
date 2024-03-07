@@ -18,6 +18,22 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildNodeCommonProperties(),
+            id: 'conditions1',
+            type: 'conditions',
+            data: {
+                name: 'conditions1',
+            },
+        },
+        {
+            ...buildNodeCommonProperties(),
+            id: 'conditions_end1',
+            type: 'end',
+            data: {
+                action: 'ask-for-feedback',
+            },
+        },
+        {
+            ...buildNodeCommonProperties(),
             id: 'multiple_choices1',
             type: 'multiple_choices',
             data: {
@@ -116,6 +132,26 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'trigger_button1_multiple_choices1',
             source: 'trigger_button1',
             target: 'multiple_choices1',
+        },
+        {
+            ...buildEdgeCommonProperties(),
+            id: 'conditions1_branch1',
+            source: 'conditions1',
+            target: 'conditions_end1',
+            data: {
+                conditions: {
+                    and: [
+                        {
+                            equals: [
+                                {
+                                    var: 'steps_state.multiple_choices1.content.text',
+                                },
+                                'choice 1',
+                            ],
+                        },
+                    ],
+                },
+            },
         },
         {
             ...buildEdgeCommonProperties(),

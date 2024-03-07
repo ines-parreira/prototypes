@@ -279,6 +279,10 @@ export const ConditionsBranchItem = ({
 
                             if (!variable) return null
 
+                            const operators = getOperatorListByType(
+                                variable.type
+                            )
+
                             return (
                                 <div
                                     className={css.conditionList}
@@ -294,9 +298,7 @@ export const ConditionsBranchItem = ({
                                         selectedOperatorValue={
                                             Object.keys(condition)[0]
                                         }
-                                        operators={getOperatorListByType(
-                                            variable.type
-                                        )}
+                                        operators={operators}
                                         onOperatorSelect={handleOperatorSelect(
                                             condition,
                                             index

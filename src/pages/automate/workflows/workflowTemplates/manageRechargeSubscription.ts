@@ -51,6 +51,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                     id: rechargeCustomerIdVariableId,
                     name: 'recharge_customer_id',
                     jsonpath: '$.customers[0].id',
+                    data_type: 'number',
                 },
             ],
         })
@@ -74,11 +75,13 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                     id: rechargeSubscriptionIdVariableId,
                     name: 'recharge_subscription_id',
                     jsonpath: '$.subscriptions[0].id',
+                    data_type: 'string',
                 },
                 {
                     id: rechargeAddressIdVariableId,
                     name: 'recharge_address_id',
                     jsonpath: '$.subscriptions[0].address_id',
+                    data_type: 'number',
                 },
             ],
         })
@@ -198,10 +201,10 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             content: {
                 html: `<div>Your shipping address has been updated!</div><div>-Street and number: {{steps_state.${address1TextInputStepId}.content.text}} </div><div>-Additional info: {{steps_state.${address2TextInputStepId}.content.text}} </div><div>-ZIP code: {{steps_state.${zipTextInputStepId}.content.text}} </div><div>-City: {{steps_state.${cityTextInputStepId}.content.text}} </div><div>-State: {{steps_state.${stateTextInputStepId}.content.text}} </div>`,
                 text: `Your shipping address has been updated!
--Street and number: {{steps_state.${address1TextInputStepId}.content.text}} 
--Additional info: {{steps_state.${address2TextInputStepId}.content.text}} 
--ZIP code: {{steps_state.${zipTextInputStepId}.content.text}} 
--City: {{steps_state.${cityTextInputStepId}.content.text}} 
+-Street and number: {{steps_state.${address1TextInputStepId}.content.text}}
+-Additional info: {{steps_state.${address2TextInputStepId}.content.text}}
+-ZIP code: {{steps_state.${zipTextInputStepId}.content.text}}
+-City: {{steps_state.${cityTextInputStepId}.content.text}}
 -State: {{steps_state.${stateTextInputStepId}.content.text}} `,
             },
         })
@@ -248,7 +251,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                 text: `Your subscription has been canceled and we sent a confirmation to {{steps_state.${shopperAuthenticationStepId}.customer.email}}.
 
 Note: you will not receive a confirmation email if any of the following apply:
-- Your subscription was created today 
+- Your subscription was created today
 - Your subscription is for a membership
 - You received an email about this subscription in the last 24 hours
 - You have other active subscriptions`,

@@ -43,6 +43,7 @@ export default function HttpRequestEditor({
         visualBuilderGraph,
         checkNewVisualBuilderNode,
         handleDownloadHttpRequestEventLogs,
+        getVariableListInChildren,
         isDownloadPending,
     } = useWorkflowEditorContext()
     const {isErrored} = useIsHttpRequestNodeErrored(nodeInEdition, true)
@@ -56,6 +57,10 @@ export default function HttpRequestEditor({
         })
     const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null)
     const [isTestRequestModalOpen, setIsTestRequestModalOpen] = useState(false)
+    const variablesInUse = useMemo(
+        () => getVariableListInChildren(nodeInEdition.id),
+        [getVariableListInChildren, nodeInEdition.id]
+    )
 
     const downloadLogsButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -311,7 +316,9 @@ export default function HttpRequestEditor({
                             </div>
                         </div>
                         <Variables
+                            nodeId={nodeInEdition.id}
                             variables={nodeInEdition.data.variables}
+                            variablesInChildren={variablesInUse}
                             onChange={handleChangeVariable}
                             onDelete={handleDeleteVariable}
                             onAdd={handleAddVariable}
@@ -321,6 +328,7 @@ export default function HttpRequestEditor({
             </Drawer.Content>
             {variables.length > 0 ? (
                 <TestRequestModalWithInputs
+                    nodeId={nodeInEdition.id}
                     isOpen={isTestRequestModalOpen}
                     onClose={() => {
                         setIsTestRequestModalOpen(false)
@@ -333,6 +341,7 @@ export default function HttpRequestEditor({
                             httpRequestNodeId: nodeInEdition.id,
                         })
                     }}
+                    variablesInChildren={variablesInUse}
                     variables={nodeInEdition.data.variables}
                     result={nodeInEdition.data.testRequestResult}
                     inputs={variables.filter(
@@ -350,6 +359,8 @@ export default function HttpRequestEditor({
                         onClose={() => {
                             setIsTestRequestModalOpen(false)
                         }}
+                        nodeId={nodeInEdition.id}
+                        variablesInChildren={variablesInUse}
                         isLoading={isTestRequestLoading}
                         sendTestRequest={sendTestRequest}
                         variables={nodeInEdition.data.variables}

@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 import _noop from 'lodash/noop'
 import _isString from 'lodash/isString'
 import {JSONPath} from 'jsonpath-plus'
@@ -16,12 +16,17 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import IconButton from 'pages/common/components/button/IconButton'
 
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import css from './TestRequestResult.less'
 
 type Props = {
     isLoading?: boolean
+    nodeId: string
     result: NonNullable<HttpRequestNodeType['data']['testRequestResult']>
     variables: HttpRequestNodeType['data']['variables']
+    variablesInChildren: WorkflowVariable[]
     onRetest: () => void
     onClose: () => void
     onChangeVariable: (
@@ -112,7 +117,9 @@ const statusTextByStatus: Record<number, string> = {
 const TestRequestResult = ({
     isLoading,
     result,
+    nodeId,
     variables,
+    variablesInChildren,
     onRetest,
     onClose,
     onChangeVariable,
@@ -125,6 +132,9 @@ const TestRequestResult = ({
             ? JSON.parse(result.content)
             : null
     }, [result.content])
+    const [currentDeleteIndex, setCurrentDeleteIndex] = useState(-1)
+    const anchorRef = useRef<HTMLButtonElement | null>(null)
+
     const prettifiedJSON = useMemo(
         () => (json ? JSON.stringify(json, null, 2) : null),
         [json]
@@ -214,15 +224,68 @@ const TestRequestResult = ({
                                     placeholder="Value"
                                     isDisabled
                                 />
-                                <IconButton
-                                    intent="destructive"
-                                    fillStyle="ghost"
-                                    onClick={() => {
-                                        onDeleteVariable(index)
+                                <SelectField
+                                    showSelectedOption
+                                    value={variable.data_type}
+                                    onChange={(type) => {
+                                        onChangeVariable(index, {
+                                            ...variable,
+                                            data_type: type as
+                                                | 'string'
+                                                | 'number'
+                                                | 'boolean'
+                                                | 'date',
+                                        })
+                                    }}
+                                    options={[
+                                        {label: 'String', value: 'string'},
+                                        {label: 'Number', value: 'number'},
+                                        {label: 'Boolean', value: 'boolean'},
+                                        {label: 'Date', value: 'date'},
+                                    ]}
+                                />
+                                <ConfirmationPopover
+                                    placement="top"
+                                    buttonProps={{
+                                        intent: 'destructive',
+                                    }}
+                                    cancelButtonProps={{intent: 'secondary'}}
+                                    showCancelButton={true}
+                                    title={`Delete "${variables[currentDeleteIndex]?.name}"?`}
+                                    content="This variable is used in other steps below. Deleting this step will result in unavailable variables and cannot be undone."
+                                    onConfirm={() => {
+                                        onDeleteVariable(currentDeleteIndex)
+                                    }}
+                                    onCancel={() => {
+                                        setCurrentDeleteIndex(-1)
                                     }}
                                 >
-                                    close
-                                </IconButton>
+                                    {({uid, onDisplayConfirmation}) => (
+                                        <IconButton
+                                            id={uid}
+                                            intent="destructive"
+                                            fillStyle="ghost"
+                                            ref={anchorRef}
+                                            className={css.deleteIcon}
+                                            onClick={(e) => {
+                                                if (
+                                                    variablesInChildren?.find(
+                                                        ({value}) =>
+                                                            value ===
+                                                            `steps_state.${nodeId}.content.${variable.id}`
+                                                    )
+                                                ) {
+                                                    setCurrentDeleteIndex(index)
+                                                    onDisplayConfirmation(e)
+                                                } else {
+                                                    onDeleteVariable(index)
+                                                }
+                                            }}
+                                        >
+                                            close
+                                        </IconButton>
+                                    )}
+                                </ConfirmationPopover>
                             </div>
                         )
                     })}

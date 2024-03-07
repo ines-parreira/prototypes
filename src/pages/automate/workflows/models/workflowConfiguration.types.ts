@@ -106,6 +106,7 @@ export type WorkflowStepHttpRequest = {
             id: string
             name: string
             jsonpath: string
+            data_type: 'string' | 'number' | 'boolean' | 'date'
         }[]
     }
 }

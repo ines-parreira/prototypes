@@ -157,6 +157,15 @@ describe('baseReducer', () => {
 
     test('DELETE_NODE', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
+
+        expect(
+            g.edges.filter((e) => {
+                const conditions =
+                    e.data?.conditions?.and ?? e.data?.conditions?.or ?? []
+                return Object.keys(conditions).length > 0
+            })
+        ).toHaveLength(1)
+
         const nextG = baseReducer(g, {
             type: 'DELETE_NODE',
             nodeId: 'automated_message1',
@@ -171,6 +180,13 @@ describe('baseReducer', () => {
                 .filter((e) => e.source === 'multiple_choices1')
                 .map((e) => e.target)
         ).toEqual(['end1', 'automated_message2', 'text_reply1'])
+        expect(
+            nextG.edges.filter((e) => {
+                const conditions =
+                    e.data?.conditions?.and ?? e.data?.conditions?.or ?? []
+                return Object.keys(conditions).length > 0
+            })
+        ).toHaveLength(0)
     })
 
     test('DELETE_BRANCH', () => {
@@ -198,16 +214,11 @@ describe('baseReducer', () => {
             nodeId: 'multiple_choices1',
             isGreyedOut: true,
         })
-        // all nodes except the trigger button should be greyed out
-        expect(
-            nextG.nodes
-                .filter((n) => n.type === 'trigger_button')
-                .every((n) => !n.data.isGreyedOut)
-        ).toBe(true)
-        expect(
-            nextG.nodes
-                .filter((n) => n.type !== 'trigger_button')
-                .every((n) => n.data.isGreyedOut)
-        ).toBe(true)
+        // all nodes except the trigger button + conditions should be greyed out
+        expect(nextG.nodes.slice(0, 2).every((n) => !n.data.isGreyedOut)).toBe(
+            true
+        )
+
+        expect(nextG.nodes.slice(3).every((n) => n.data.isGreyedOut)).toBe(true)
     })
 })

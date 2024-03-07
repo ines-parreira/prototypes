@@ -69,16 +69,19 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
                     id: pointsApprovedVariableId,
                     name: 'points_approved',
                     jsonpath: '$.customers[0].points_approved',
+                    data_type: 'number',
                 },
                 {
                     id: pointsSpentVariableId,
                     name: 'points_spent',
                     jsonpath: '$.customers[0].points_spent',
+                    data_type: 'number',
                 },
                 {
                     id: rewardsClaimedVariableId,
                     name: 'rewards_claimed',
                     jsonpath: '$.customers[0].rewards_claimed',
+                    data_type: 'number',
                 },
             ],
         })
@@ -87,8 +90,8 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
             content: {
                 html: `<div>Here&#x27;s your point balance:</div><div>- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} </div><div>- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} </div><div>- Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} </div>`,
                 text: `Here's your point balance:
-- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} 
-- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} 
+- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}}
+- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}}
 - Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} `,
             },
         })

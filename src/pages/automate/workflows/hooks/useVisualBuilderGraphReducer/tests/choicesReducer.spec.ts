@@ -92,8 +92,8 @@ describe('choicesReducer', () => {
             type: 'ADD_MULTIPLE_CHOICES_CHOICE',
             multipleChoicesNodeId: 'multiple_choices1',
         })
-        // now there are 4 ending branches
-        expect(nextG.nodes.filter((n) => n.type === 'end').length).toEqual(4)
+        // now there are 5 ending branches
+        expect(nextG.nodes.filter((n) => n.type === 'end').length).toEqual(5)
         // and 4 edges starting from the multiple_choices node
         const choicesOutgoingEdges = nextG.edges.filter(
             (e) => e.source === 'multiple_choices1'

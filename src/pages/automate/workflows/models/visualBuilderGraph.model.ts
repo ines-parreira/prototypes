@@ -170,7 +170,7 @@ export function walkVisualBuilderGraph(
     }
 }
 
-function cleanConditionsFromEmptyVariables(
+export function cleanConditionsFromEmptyVariables(
     conditions: ConditionsSchema,
     availableVariables: WorkflowVariableList
 ) {

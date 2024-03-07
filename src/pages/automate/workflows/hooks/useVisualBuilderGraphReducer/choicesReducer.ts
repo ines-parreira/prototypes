@@ -7,7 +7,11 @@ import {
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
 import {MessageContent} from '../../models/workflowConfiguration.types'
-import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
+import {
+    buildEdgeCommonProperties,
+    cleanConditionsFromEmptyVariables,
+} from '../../models/visualBuilderGraph.model'
+import {getWorkflowVariableListForNode} from '../../models/variables.model'
 import {
     buildEndNode,
     buildMultipleChoicesNode,
@@ -103,12 +107,29 @@ export function choicesReducer(
                 node.data.choices = node.data.choices.filter(
                     (c) => c.event_id !== action.eventId
                 )
+
+                // Removes variables from conditions that are associated with the deleted choice
+                draft.edges = draft.edges.map((edge) => {
+                    if (edge.data?.conditions) {
+                        edge.data.conditions =
+                            cleanConditionsFromEmptyVariables(
+                                edge.data.conditions,
+                                getWorkflowVariableListForNode(
+                                    draft,
+                                    edge.target
+                                )
+                            )
+                        return edge
+                    }
+                    return edge
+                })
             })
             const childNodeId = graph.edges.find(
                 (e) =>
                     e.source === action.nodeId &&
                     e.data?.event?.id === action.eventId
             )?.target
+
             if (childNodeId)
                 return computeNodesPositions(
                     deleteBranch(nextGraph, childNodeId)

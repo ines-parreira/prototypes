@@ -39,12 +39,12 @@ export const BooleanConditionType = ({condition, onChange}: Props) => {
             }}
             options={[
                 {
-                    label: 'false',
-                    value: 0,
-                },
-                {
                     label: 'true',
                     value: 1,
+                },
+                {
+                    label: 'false',
+                    value: 0,
                 },
             ]}
         />

@@ -21,34 +21,7 @@ import css from '../NodeEditor.less'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 import {ConditionsBranchItem} from './ConditionsBranchItem'
 import conditionsCss from './ConditionsNodeEditor.less'
-
-const buildConditionSchemaByVariableType = (
-    type: WorkflowVariable['type'],
-    variable: string
-): ConditionSchema => {
-    switch (type) {
-        case 'string':
-            return {
-                equals: [{var: variable}, ''],
-            }
-        case 'number':
-            return {
-                equals: [{var: variable}, 0],
-            }
-        case 'boolean':
-            return {
-                exists: [{var: variable}],
-            }
-        case 'date':
-            return {
-                lessThan: [{var: variable}, null],
-            }
-        default:
-            return {
-                exists: [{var: variable}],
-            }
-    }
-}
+import {buildConditionSchemaByVariableType} from './utils'
 
 export default function ConditionsNodeEditor({
     nodeInEdition,

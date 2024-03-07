@@ -69,6 +69,26 @@ export function findVariable(
         }
     }
 }
+
+export function findManyVariables(
+    variables: WorkflowVariableList,
+    fn: (
+        v: WorkflowVariable | WorkflowVariableGroup
+    ) => WorkflowVariable | undefined
+): WorkflowVariable[] {
+    const result: WorkflowVariable[] = []
+    for (const variable of variables) {
+        const found = fn(variable)
+        if (found) {
+            result.push(found)
+        }
+        if ('variables' in variable) {
+            result.push(...findManyVariables(variable.variables, fn))
+        }
+    }
+    return result
+}
+
 export function parseWorkflowVariable(
     value: string,
     availableVariables: WorkflowVariableList
@@ -135,7 +155,7 @@ export const buildWorkflowVariableFromNode = (
                     value: `steps_state.${node.id}.order.total_amount`,
                     filter: `format_currency: steps_state.${node.id}.order.currency.code, steps_state.${node.id}.order.currency.decimals`,
                     nodeType: 'order_selection',
-                    type: 'string',
+                    type: 'number',
                 },
                 {
                     name: 'Order date',
@@ -187,6 +207,7 @@ export const buildWorkflowVariableFromNode = (
         const {
             data: {name, variables},
         } = node
+
         return {
             nodeType: 'http_request',
             name: formatVariableName(name.length > 0 ? name : 'Request name'),
@@ -194,8 +215,11 @@ export const buildWorkflowVariableFromNode = (
                 name: variable.name,
                 value: `steps_state.${node.id}.content.${variable.id}`,
                 nodeType: 'http_request',
-                // TODO: change this to the correct type
-                type: 'string',
+                type: variable.data_type,
+                filter:
+                    variable.data_type === 'date'
+                        ? 'format_datetime'
+                        : undefined,
             })),
         }
     } else if (node.type === 'file_upload') {
@@ -243,7 +267,8 @@ export function getWorkflowVariableListForNode(
 }
 
 export function extractVariablesFromNode(
-    node: UnionPick<VisualBuilderNode, 'type' | 'data'>
+    node: UnionPick<VisualBuilderNode, 'type' | 'data'> & {id?: string},
+    edges?: VisualBuilderEdge[]
 ) {
     let variables: string[] = []
 
@@ -280,6 +305,30 @@ export function extractVariablesFromNode(
                     )
                 ),
             ]
+            break
+        case 'conditions': {
+            variables =
+                edges
+                    ?.filter((e) => e.source === node.id)
+                    .reduce<string[]>((acc, edge) => {
+                        const conditions = edge.data?.conditions?.and
+                            ? edge.data.conditions.and
+                            : edge.data?.conditions?.or ?? []
+
+                        for (const condition of conditions) {
+                            const key = Object.keys(condition)[0] as AllKeys<
+                                typeof condition
+                            >
+                            const schema = condition[key]
+
+                            if (schema) {
+                                acc.push(schema[0].var)
+                            }
+                        }
+                        return acc
+                    }, []) ?? []
+            break
+        }
     }
 
     return variables

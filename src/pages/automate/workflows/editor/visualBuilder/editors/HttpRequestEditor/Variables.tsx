@@ -1,15 +1,21 @@
-import React from 'react'
+import React, {useRef, useState} from 'react'
 
+import classNames from 'classnames'
 import TextInput from 'pages/common/forms/input/TextInput'
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import css from '../NodeEditor.less'
 
 type Props = {
+    nodeId: string
     variables: HttpRequestNodeType['data']['variables']
+    variablesInChildren?: WorkflowVariable[]
     onChange: (
         index: number,
         variable: HttpRequestNodeType['data']['variables'][number]
@@ -18,11 +24,27 @@ type Props = {
     onAdd: () => void
 }
 
-const Variables = ({variables, onChange, onDelete, onAdd}: Props) => {
+const Variables = ({
+    nodeId,
+    variables,
+    variablesInChildren,
+    onChange,
+    onDelete,
+    onAdd,
+}: Props) => {
+    const anchorRef = useRef<HTMLButtonElement | null>(null)
+    const [currentDeleteIndex, setCurrentDeleteIndex] = useState<number>(-1)
+
     return (
         <div className={css.keyValueContainer}>
             {variables.map((variable, index) => (
-                <div key={variable.id} className={css.keyValueRow}>
+                <div
+                    key={variable.id}
+                    className={classNames(
+                        css.keyValueRow,
+                        css.variablesKeyValueRow
+                    )}
+                >
                     <TextInput
                         value={variable.name}
                         className={css.textInput}
@@ -39,15 +61,68 @@ const Variables = ({variables, onChange, onDelete, onAdd}: Props) => {
                             onChange(index, {...variable, jsonpath})
                         }}
                     />
-                    <IconButton
-                        intent="destructive"
-                        fillStyle="ghost"
-                        onClick={() => {
-                            onDelete(index)
+                    <SelectField
+                        showSelectedOption
+                        value={variable.data_type}
+                        onChange={(type) => {
+                            onChange(index, {
+                                ...variable,
+                                data_type: type as
+                                    | 'string'
+                                    | 'number'
+                                    | 'boolean'
+                                    | 'date',
+                            })
+                        }}
+                        options={[
+                            {label: 'String', value: 'string'},
+                            {label: 'Number', value: 'number'},
+                            {label: 'Boolean', value: 'boolean'},
+                            {label: 'Date', value: 'date'},
+                        ]}
+                    />
+                    <ConfirmationPopover
+                        placement="top"
+                        buttonProps={{
+                            intent: 'destructive',
+                        }}
+                        cancelButtonProps={{intent: 'secondary'}}
+                        showCancelButton={true}
+                        title={`Delete "${variables[currentDeleteIndex]?.name}"?`}
+                        content="This variable is used in other steps below. Deleting this step will result in unavailable variables and cannot be undone."
+                        onConfirm={() => {
+                            onDelete(currentDeleteIndex)
+                        }}
+                        onCancel={() => {
+                            setCurrentDeleteIndex(-1)
                         }}
                     >
-                        close
-                    </IconButton>
+                        {({uid, onDisplayConfirmation}) => (
+                            <IconButton
+                                id={uid}
+                                intent="destructive"
+                                fillStyle="ghost"
+                                ref={anchorRef}
+                                className={css.deleteIcon}
+                                onClick={(e) => {
+                                    if (
+                                        variablesInChildren?.find(
+                                            ({value}) =>
+                                                value ===
+                                                `steps_state.${nodeId}.content.${variable.id}`
+                                        )
+                                    ) {
+                                        setCurrentDeleteIndex(index)
+                                        onDisplayConfirmation(e)
+                                    } else {
+                                        onDelete(index)
+                                    }
+                                }}
+                            >
+                                close
+                            </IconButton>
+                        )}
+                    </ConfirmationPopover>
                 </div>
             ))}
             {variables.length > 0 && (

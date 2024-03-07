@@ -1,8 +1,19 @@
 import {produce} from 'immer'
-
 import {ulid} from 'ulidx'
+import {buildConditionSchemaByVariableType} from '../../editor/visualBuilder/editors/ConditionsNodeEditor/utils'
+import {ConditionSchema} from '../../models/conditions.types'
+import {
+    extractVariablesFromText,
+    getWorkflowVariableListForNode,
+    toLiquidSyntax,
+} from '../../models/variables.model'
+import {
+    cleanConditionsFromEmptyVariables,
+    walkVisualBuilderGraph,
+} from '../../models/visualBuilderGraph.model'
 import {
     HttpRequestNodeType,
+    VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
 
@@ -281,6 +292,11 @@ export function httpRequestReducer(
                 )
                 if (node && node.data.variables[action.index]) {
                     node.data.variables[action.index] = action.variable
+                    rebuildGraphForVariableChange(
+                        draft,
+                        node.id,
+                        action.variable
+                    )
                 }
             })
         case 'ADD_HTTP_REQUEST_VARIABLE':
@@ -295,6 +311,7 @@ export function httpRequestReducer(
                         id: ulid(),
                         name: '',
                         jsonpath: '',
+                        data_type: 'string',
                     })
                 }
             })
@@ -307,6 +324,19 @@ export function httpRequestReducer(
                 )
                 if (node && node.data.variables[action.index]) {
                     node.data.variables.splice(action.index, 1)
+
+                    draft.edges.forEach((edge) => {
+                        if (edge.data?.conditions) {
+                            edge.data.conditions =
+                                cleanConditionsFromEmptyVariables(
+                                    edge.data.conditions,
+                                    getWorkflowVariableListForNode(
+                                        draft,
+                                        edge.target
+                                    )
+                                )
+                        }
+                    })
                 }
             })
         case 'SET_HTTP_REQUEST_TEST_REQUEST_RESULT':
@@ -332,4 +362,221 @@ export function httpRequestReducer(
                 }
             })
     }
+}
+
+function rebuildCondition(
+    edge: VisualBuilderEdge,
+    variable: HttpRequestNodeType['data']['variables'][number]
+) {
+    if (!edge.data?.conditions) return []
+
+    const changeConditionBasedOnVariableType = (condition: ConditionSchema) => {
+        const operator = Object.keys(condition)[0] as AllKeys<typeof condition>
+        const schema = condition[operator]
+        if (!schema) return condition
+
+        if (schema[0].var && schema[0].var.includes(variable.id)) {
+            const varSchema = schema[0]
+            const conditionSchema = buildConditionSchemaByVariableType(
+                variable.data_type,
+                varSchema.var
+            )
+
+            return conditionSchema
+        }
+        return condition
+    }
+
+    const conditions =
+        edge.data?.conditions?.and ?? edge.data?.conditions?.or ?? []
+    const nextConditions = conditions.map(changeConditionBasedOnVariableType)
+    return nextConditions
+}
+
+function replaceVariablesInHttpRequestHeaders(
+    currentNodeId: string,
+    newLiquidSyntax: string,
+    node: HttpRequestNodeType,
+    variable: HttpRequestNodeType['data']['variables'][number]
+) {
+    node.data.headers.forEach((header) => {
+        const variablesInHeader = extractVariablesFromText(header.value)
+        const oldVariable = variablesInHeader.find(
+            ({value}) =>
+                `steps_state.${currentNodeId}.content.${variable.id}` === value
+        )
+        if (!oldVariable) return
+        const oldLiquidSyntax = toLiquidSyntax({
+            value: oldVariable.value,
+            filter: oldVariable.filter,
+        })
+        header.value = header.value.replace(oldLiquidSyntax, newLiquidSyntax)
+    })
+}
+
+function replaceVariablesInHttpRequestUrl(
+    currentNodeId: string,
+    newLiquidSyntax: string,
+    node: HttpRequestNodeType,
+    variable: HttpRequestNodeType['data']['variables'][number]
+) {
+    const variablesInUrlText = extractVariablesFromText(node.data.url)
+    const oldVariable = variablesInUrlText.find(
+        ({value}) =>
+            `steps_state.${currentNodeId}.content.${variable.id}` === value
+    )
+    if (!oldVariable) return
+    const oldLiquidSyntax = toLiquidSyntax({
+        value: oldVariable.value,
+        filter: oldVariable.filter,
+    })
+    node.data.url = node.data.url.replace(oldLiquidSyntax, newLiquidSyntax)
+}
+
+function requestVaraiblesInHttpRequestUrlEncoded(
+    currentNodeId: string,
+    newLiquidSyntax: string,
+    node: HttpRequestNodeType,
+    variable: HttpRequestNodeType['data']['variables'][number]
+) {
+    node.data.formUrlencoded?.forEach((item) => {
+        const oldVariable = extractVariablesFromText(item.value).find(
+            ({value}) =>
+                `steps_state.${currentNodeId}.content.${variable.id}` === value
+        )
+
+        if (!oldVariable) return
+
+        const oldLiquidSyntax = toLiquidSyntax({
+            value: oldVariable.value,
+            filter: oldVariable.filter,
+        })
+        item.value = item.value.replace(oldLiquidSyntax, newLiquidSyntax)
+    })
+}
+
+function replaceVariablesInHttpRequestJson(
+    currentNodeId: string,
+    newLiquidSyntax: string,
+    node: HttpRequestNodeType,
+    variable: HttpRequestNodeType['data']['variables'][number]
+) {
+    if (!node.data.json) return
+    const variablesInJson = extractVariablesFromText(node.data.json ?? '')
+    const oldVariableInJson = variablesInJson.find(
+        ({value}) =>
+            `steps_state.${currentNodeId}.content.${variable.id}` === value
+    )
+    if (oldVariableInJson) {
+        const oldLiquidSyntax = toLiquidSyntax({
+            value: oldVariableInJson.value,
+            filter: oldVariableInJson.filter,
+        })
+        node.data.json = node.data.json.replace(
+            oldLiquidSyntax,
+            newLiquidSyntax
+        )
+    }
+}
+
+function replaceVariablesInHttpNode(
+    currentNodeId: string,
+    newLiquidSyntax: string,
+    node: HttpRequestNodeType,
+    variable: HttpRequestNodeType['data']['variables'][number]
+) {
+    replaceVariablesInHttpRequestHeaders(
+        currentNodeId,
+        newLiquidSyntax,
+        node,
+        variable
+    )
+    replaceVariablesInHttpRequestUrl(
+        currentNodeId,
+        newLiquidSyntax,
+        node,
+        variable
+    )
+    replaceVariablesInHttpRequestJson(
+        currentNodeId,
+        newLiquidSyntax,
+        node,
+        variable
+    )
+    requestVaraiblesInHttpRequestUrlEncoded(
+        currentNodeId,
+        newLiquidSyntax,
+        node,
+        variable
+    )
+}
+
+function rebuildGraphForVariableChange(
+    g: VisualBuilderGraph,
+    currentNodeId: string,
+    variable: HttpRequestNodeType['data']['variables'][number]
+) {
+    g.edges = g.edges.map((edge) => {
+        const nextConditions = rebuildCondition(edge, variable)
+        if (edge.data?.conditions?.and) {
+            edge.data.conditions.and = nextConditions
+        } else if (edge.data?.conditions?.or) {
+            edge.data.conditions.or = nextConditions
+        }
+        return edge
+    })
+
+    walkVisualBuilderGraph(g, currentNodeId, (node) => {
+        if (
+            node.type === 'automated_message' ||
+            node.type === 'multiple_choices' ||
+            node.type === 'text_reply' ||
+            node.type === 'file_upload' ||
+            node.type === 'order_selection'
+        ) {
+            const liquidSyntax = toLiquidSyntax({
+                filter:
+                    variable.data_type === 'date'
+                        ? 'format_datetime'
+                        : undefined,
+                value: `steps_state.${currentNodeId}.content.${variable.id}`,
+            })
+
+            const variables = extractVariablesFromText(node.data.content.text)
+            const oldVariable = variables.find(
+                ({value}) =>
+                    `steps_state.${currentNodeId}.content.${variable.id}` ===
+                    value
+            )
+
+            if (!oldVariable) return
+
+            const oldLiquidSyntax = toLiquidSyntax({
+                value: oldVariable.value,
+                filter: oldVariable.filter,
+            })
+
+            node.data.content.html = node.data.content.html.replace(
+                oldLiquidSyntax,
+                liquidSyntax
+            )
+
+            node.data.content.text = node.data.content.text.replace(
+                oldLiquidSyntax,
+                liquidSyntax
+            )
+        } else if (node.type === 'http_request') {
+            const newLiquidSyntax = toLiquidSyntax({
+                value: `steps_state.${currentNodeId}.content.${variable.id}`,
+                filter: variable.data_type === 'date' ? 'date' : undefined,
+            })
+
+            replaceVariablesInHttpNode(
+                currentNodeId,
+                newLiquidSyntax,
+                node,
+                variable
+            )
+        }
+    })
 }
