@@ -420,7 +420,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 </div>
                 <div
                   class="channel"
-                  title="Facebook"
+                  title="Facebook Comment"
                 >
                   <i
                     class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
@@ -1020,7 +1020,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 </div>
                 <div
                   class="channel"
-                  title="Facebook"
+                  title="Facebook Comment"
                 >
                   <i
                     class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
@@ -1804,7 +1804,7 @@ exports[`TableStat should render a table chart 1`] = `
                 </div>
                 <div
                   class="channel"
-                  title="Facebook"
+                  title="Facebook Comment"
                 >
                   <i
                     class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
@@ -2596,7 +2596,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                 </div>
                 <div
                   class="channel"
-                  title="Facebook"
+                  title="Facebook Comment"
                 >
                   <i
                     class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
