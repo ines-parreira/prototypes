@@ -88,6 +88,7 @@ export enum FeatureFlagKey {
     ShopifyMetafields = 'shopify-metafields',
     SplitTicketView = 'split-ticket-view',
     TicketNavigationArrows = 'ticket-navigation-arrows',
+    TicketDemoSuggestion = 'ticket-demo-suggestion',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
 }

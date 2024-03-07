@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {emailTicket} from 'state/ticket/tests/fixtures'
 import {billingState} from 'fixtures/billing'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
@@ -15,6 +16,7 @@ import {integrationsState} from 'fixtures/integrations'
 import {emptyManagedRule, emptyRule} from 'fixtures/rule'
 import {UserRole} from 'config/types/user'
 import useMeasure from 'hooks/useMeasure'
+import {FeatureFlagKey} from 'config/featureFlags'
 import RuleSuggestion, {
     getRuleSuggestionContent,
     isSuggestionEmpty,
@@ -29,6 +31,12 @@ jest.mock('hooks/useMeasure', () => {
         default: jest.fn().mockImplementation(() => [undefined, 0]),
     }
 })
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(),
+}))
+
+const useFlagsMock = useFlags as jest.Mock
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -239,5 +247,50 @@ describe('RuleSuggestion', () => {
         }
         expect(getRuleSuggestionContent(noAction)).toMatchSnapshot()
         expect(isSuggestionEmpty(getRuleSuggestionContent(noAction))).toBe(true)
+    })
+
+    it('should display the CTAs for no addon and admin role', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.TicketDemoSuggestion]: 10,
+        })
+
+        render(
+            <Provider store={mockStore(store)}>
+                <RuleSuggestion {...minProps} />
+            </Provider>
+        )
+        const bookDemo = screen.queryByText('Book Demo')
+        const dismiss = screen.queryByText('Dismiss')
+        expect(bookDemo).toBeDefined()
+        expect(dismiss).toBeDefined()
+
+        const install = screen.queryByText('Install')
+        const activate = screen.queryByText('Activate')
+        expect(install).toBeNull()
+        expect(activate).toBeNull()
+    })
+
+    it('should display the CTAs for no addon and agent role', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.TicketDemoSuggestion]: 10,
+        })
+
+        const liteAgentStore = {
+            ...store,
+            currentUser: fromJS({
+                ...agents[0],
+                role: {name: UserRole.LiteAgent},
+            }),
+        }
+        render(
+            <Provider store={mockStore(liteAgentStore)}>
+                <RuleSuggestion {...minProps} />
+            </Provider>
+        )
+
+        const notifyAdmin = screen.queryByText('Notify Admin')
+        const dismiss = screen.queryByText('Dismiss')
+        expect(notifyAdmin).toBeDefined()
+        expect(dismiss).toBeDefined()
     })
 })
