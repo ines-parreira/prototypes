@@ -148,7 +148,7 @@ export const buildWorkflowVariableFromNode = (
                     name: 'Order number',
                     value: `steps_state.${node.id}.order.name`,
                     nodeType: 'order_selection',
-                    type: 'number',
+                    type: 'string',
                 },
                 {
                     name: 'Order total amount',
