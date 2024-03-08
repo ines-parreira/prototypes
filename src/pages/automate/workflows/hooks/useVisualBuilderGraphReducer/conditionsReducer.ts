@@ -7,7 +7,12 @@ import {
 } from '../../models/visualBuilderGraph.types'
 import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
 import {ConditionsSchema} from '../../models/conditions.types'
-import {buildConditionsNode, buildEndNode, computeNodesPositions} from './utils'
+import {
+    buildConditionsNode,
+    buildEndNode,
+    computeNodesPositions,
+    deleteBranch,
+} from './utils'
 
 export type VisualBuilderConditionsAction =
     | {
@@ -74,10 +79,17 @@ export function conditionsReducer(
             return computeNodesPositions(
                 addConditionBranch(graph, action.conditionNodeId)
             )
-        case 'DELETE_CONDITIONS_NODE_BRANCH':
-            return computeNodesPositions(
-                deleteConditionBranch(graph, action.edgeId)
-            )
+        case 'DELETE_CONDITIONS_NODE_BRANCH': {
+            const childNodeId = graph.edges.find(
+                (e) => e.id === action.edgeId
+            )?.target
+
+            if (childNodeId) {
+                return computeNodesPositions(deleteBranch(graph, childNodeId))
+            }
+
+            return computeNodesPositions(graph)
+        }
         case 'REORDER_CONDITIONS_NODE_BRANCHES':
             return computeNodesPositions(
                 reorderBranches(graph, action.nodeId, action.newOrder)
@@ -204,21 +216,5 @@ function addConditionBranch(
         )
 
         draft.edges = draft.edges.concat(newBranches)
-    })
-}
-
-function deleteConditionBranch(graph: VisualBuilderGraph, edgeId: string) {
-    return produce(graph, (draft) => {
-        const branches = draft.edges.slice(0, draft.edges.length - 1)
-        const fallback = draft.edges[draft.edges.length - 1]
-        const branchToDelete = branches.find((edge) => edge.id === edgeId)
-        if (!branchToDelete) return
-
-        draft.edges = branches
-            .filter((edge) => edge.id !== edgeId)
-            .concat(fallback)
-        draft.nodes = draft.nodes.filter(
-            (node) => node.id !== branchToDelete.target
-        )
     })
 }

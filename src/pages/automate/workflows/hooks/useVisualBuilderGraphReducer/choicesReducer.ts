@@ -130,10 +130,12 @@ export function choicesReducer(
                     e.data?.event?.id === action.eventId
             )?.target
 
-            if (childNodeId)
+            if (childNodeId) {
                 return computeNodesPositions(
                     deleteBranch(nextGraph, childNodeId)
                 )
+            }
+
             return computeNodesPositions(nextGraph)
         }
         case 'ADD_MULTIPLE_CHOICES_CHOICE':
