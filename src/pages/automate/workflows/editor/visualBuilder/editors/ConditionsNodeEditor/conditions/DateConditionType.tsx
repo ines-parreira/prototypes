@@ -19,6 +19,7 @@ import {
 } from 'state/currentUser/selectors'
 import {StoreState} from 'state/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {stringToDatetime} from 'utils/date'
 import {TIMEPERIOD_REGEX} from '../constants'
 import css from '../ConditionsNodeEditor.less'
 
@@ -39,16 +40,17 @@ export const DateConditionType = ({condition, onChange}: Props) => {
         }
 
         const value = schema[1]
+        const date = value ? stringToDatetime(value) : null
 
         return (
             <DatePicker
                 initialSettings={{
                     timePicker: false,
                     singleDatePicker: true,
-                    ...(value
+                    ...(date
                         ? {
-                              startDate: value,
-                              endDate: value,
+                              startDate: date,
+                              endDate: date,
                           }
                         : {}),
                 }}
