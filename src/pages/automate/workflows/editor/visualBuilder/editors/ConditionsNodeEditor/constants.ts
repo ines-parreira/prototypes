@@ -46,14 +46,6 @@ export const BOOLEAN_CONDITION_OPERATORS: ConditionOperator[] = [
         label: 'Is',
         key: 'equals',
     },
-    {
-        label: 'Does not exist',
-        key: 'doesNotExist',
-    },
-    {
-        label: 'Exists',
-        key: 'exists',
-    },
 ]
 
 export const NUMBER_CONDITION_OPERATORS: ConditionOperator[] = [

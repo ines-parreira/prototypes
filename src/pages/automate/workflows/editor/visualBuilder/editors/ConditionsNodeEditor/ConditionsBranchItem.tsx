@@ -33,9 +33,9 @@ import {NumberConditionType} from './conditions/NumberConditionType'
 import {DateConditionType} from './conditions/DateConditionType'
 import {
     isIntervalOperator,
-    isBooleanOperator,
+    isExistenceOperator,
     isStringOrNumberOperator,
-} from './utilts'
+} from './utils'
 
 interface Props {
     name?: string
@@ -179,10 +179,10 @@ export const ConditionsBranchItem = ({
                         key !== 'greaterThanInterval'
                     ) {
                         draft[nextKey] = [schema[0], '1d']
-                    } else if (isBooleanOperator(nextKey)) {
+                    } else if (isExistenceOperator(nextKey)) {
                         draft[nextKey] = [schema[0]]
                     } else if (
-                        isBooleanOperator(key) &&
+                        isExistenceOperator(key) &&
                         isStringOrNumberOperator(nextKey)
                     ) {
                         draft[nextKey] = [schema[0], null]
