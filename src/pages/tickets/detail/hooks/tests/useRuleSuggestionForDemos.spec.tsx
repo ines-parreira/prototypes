@@ -164,4 +164,22 @@ describe('useRuleSuggestionForDemos', () => {
 
         expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
     })
+
+    it('should add ticketId to dismissed tickets', () => {
+        const demoSuggestionDismissedTickets = [2]
+        const setDemoSuggestionDismissedTickets = jest.fn()
+        useLocalStorageSpy.mockReturnValueOnce([
+            demoSuggestionDismissedTickets,
+            setDemoSuggestionDismissedTickets,
+        ])
+        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(store)}>{children}</Provider>
+            ),
+        })
+
+        result.current.setDemoSuggestionSettingPerUser()
+
+        expect(setDemoSuggestionDismissedTickets).toHaveBeenCalled()
+    })
 })

@@ -34,6 +34,7 @@ import {getLastCustomerMessage, getTicketState} from 'state/ticket/selectors'
 import {reportError} from 'utils/errors'
 import {generateTicketMessagesId} from 'utils'
 import {isVoiceCall} from 'models/voiceCall/types'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {TicketEventPrivateReplyData} from '../../../../models/event/types'
 import TicketVoiceCall from './TicketVoiceCall/TicketVoiceCall'
 
@@ -121,7 +122,16 @@ const TicketBodyElement = ({
     }
 
     if (isTicketRuleSuggestion(element)) {
-        return <RuleSuggestion isCollapsed={!isLast} ticket={ticket.toJS()} />
+        return (
+            <ErrorBoundary
+                sentryTags={{
+                    section: 'rule-suggestion',
+                    team: 'automate-obs',
+                }}
+            >
+                <RuleSuggestion isCollapsed={!isLast} ticket={ticket.toJS()} />
+            </ErrorBoundary>
+        )
     }
 
     if (isTicketAISuggestion(element)) {

@@ -32,10 +32,14 @@ import {ManagedRule} from 'state/rules/types'
 import {hasRole} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getHasAutomate} from 'state/billing/selectors'
-import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
-import InTicketSuggestion from './InTicketSuggestion'
 
+import {SegmentEvent, logEvent} from 'common/segment'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import useEffectOnce from 'hooks/useEffectOnce'
+import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
 import css from './RuleSuggestion.less'
+import InTicketSuggestion from './InTicketSuggestion'
 
 type TicketWithRuleSuggestionData = Ticket & {
     meta: Record<'rule_suggestion', RuleSuggestionData>
@@ -95,8 +99,17 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     const suggestion = ticket.meta.rule_suggestion
     const {actions, text} = getRuleSuggestionContent(ticket)
 
-    const {shouldDisplayDemoSuggestion, setLocalDemoSuggestionSetting} =
-        useRuleSuggestionForDemos(ticket.id)
+    const {
+        shouldDisplayDemoSuggestion,
+        setDemoSuggestionSettingPerUser,
+        setDemoSuggestionSettingPerAccount,
+    } = useRuleSuggestionForDemos(ticket.id)
+
+    useEffectOnce(() => {
+        if (!hasAutomate && shouldDisplayDemoSuggestion) {
+            logEvent(SegmentEvent.InTicketSuggestionForDemoViewed)
+        }
+    })
 
     if (!shouldDisplayDemoSuggestion || isSuggestionEmpty({actions, text}))
         return null
@@ -157,6 +170,43 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         }
 
         await dispatch(sendTicketMessage(getMomentNow(), message, null))
+    }
+
+    const handleBookDemo = () => {
+        if (canInstall) {
+            logEvent(SegmentEvent.InTicketSuggestionForDemoBooked, {
+                userRole: 'Admin',
+            })
+            window.open(
+                'https://www.gorgias.com/demo/customers/automate?utm_source=scaled_success&utm_campaign=in_ticket_suggestions&utm_medium=product',
+                '_blank',
+                'noopener'
+            )
+            handleDismiss(false)
+        } else {
+            logEvent(SegmentEvent.InTicketSuggestionForDemoRequested, {
+                userRole: 'Agent',
+            })
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message:
+                        'We notified your account admin of your interest in an Automate demo.',
+                })
+            )
+        }
+    }
+
+    const handleDismiss = (trackEvents: boolean) => {
+        if (trackEvents) {
+            logEvent(SegmentEvent.InTicketSuggestionForDemoDismissed, {
+                userRole: canInstall ? 'Admin' : 'Agent',
+            })
+        }
+        setDemoSuggestionSettingPerUser()
+        if (canInstall) {
+            void setDemoSuggestionSettingPerAccount()
+        }
     }
 
     const actionsContentForAutomate = (
@@ -222,16 +272,11 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             <Button
                 intent="secondary"
                 size="small"
-                onClick={() => setLocalDemoSuggestionSetting()}
+                onClick={() => handleDismiss(true)}
             >
                 Dismiss
             </Button>
-            <Button
-                size="small"
-                onClick={() => {
-                    return
-                }}
-            >
+            <Button size="small" onClick={handleBookDemo}>
                 {canInstall ? 'Book demo' : 'Notify admin'}
             </Button>
         </div>

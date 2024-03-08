@@ -9,6 +9,9 @@ import {
     getHasAutomate,
 } from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {submitSetting} from 'state/currentAccount/actions'
+import {AccountSettingType} from 'state/currentAccount/types'
 
 const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
 
@@ -35,6 +38,8 @@ export default function useRuleSuggestionForDemos(ticketId: number) {
         getInTicketSuggestionSettings
     )
     const ticketDemoSuggestion = useFlags()[FeatureFlagKey.TicketDemoSuggestion]
+
+    const dispatch = useAppDispatch()
 
     const isProPlus = ['pro', 'advanced', 'enterprise'].some((priceType) =>
         currentPlanName?.toLowerCase().includes(priceType)
@@ -74,14 +79,27 @@ export default function useRuleSuggestionForDemos(ticketId: number) {
         demoSuggestionDismissedTickets,
     ])
 
-    const setLocalDemoSuggestionSetting = () => {
+    const setDemoSuggestionSettingPerUser = () => {
         setDemoSuggestionDismissedTickets((prevState: number[] | undefined) => {
             return [...(prevState || []), ticketId]
         })
     }
 
+    const setDemoSuggestionSettingPerAccount = async () => {
+        await dispatch(
+            submitSetting({
+                id: inTicketSuggestionForDemo?.id,
+                type: AccountSettingType.InTicketSuggestion,
+                data: {
+                    is_demo_hidden: true,
+                },
+            })
+        )
+    }
+
     return {
         shouldDisplayDemoSuggestion: hasAutomate || shouldDisplayDemoSuggestion,
-        setLocalDemoSuggestionSetting,
+        setDemoSuggestionSettingPerUser,
+        setDemoSuggestionSettingPerAccount,
     }
 }
