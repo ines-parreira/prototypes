@@ -19,6 +19,7 @@ export enum AccountSettingType {
     ViewsOrdering = 'views-ordering',
     ViewsVisibility = 'views-visibility',
     AutoMerge = 'auto-merge',
+    InTicketSuggestion = 'in-ticket-suggestion',
 }
 
 export enum AccountFeature {
@@ -65,6 +66,7 @@ export type AccountSetting =
     | AccountSettingViewsVisibility
     | AccountSettingAutoMerge
     | AccountSettingAgentsTableConfig
+    | AccountSettingInTicketSuggestion
 
 export type AccountSettingBusinessHours = {
     id: number
@@ -157,6 +159,14 @@ export type AccountFeatureMetadata = {
     rate_limit?: {
         interval_ms: number
         max_burst: number
+    }
+}
+
+export type AccountSettingInTicketSuggestion = {
+    id: number
+    type: AccountSettingType.InTicketSuggestion
+    data: {
+        is_demo_hidden: boolean
     }
 }
 

@@ -1,10 +1,8 @@
-import React, {useMemo, useState} from 'react'
+import React, {useState} from 'react'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
 import {Spinner, Tooltip} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
 import Button from 'pages/common/components/button/Button'
 import {ActionStatus, Ticket} from 'models/ticket/types'
 import {actionsConfig} from 'pages/common/components/ast/actions/config'
@@ -33,8 +31,8 @@ import {UserRole} from 'config/types/user'
 import {ManagedRule} from 'state/rules/types'
 import {hasRole} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {FeatureFlagKey} from 'config/featureFlags'
-import useLocalStorage from 'hooks/useLocalStorage'
+import {getHasAutomate} from 'state/billing/selectors'
+import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
 import InTicketSuggestion from './InTicketSuggestion'
 
 import css from './RuleSuggestion.less'
@@ -52,13 +50,6 @@ export type RuleSuggestionData = {
     actions: RuleAction[]
     slug: string
 }
-
-type DemoSuggestionSetting = {
-    ticketId: number
-    dismissCount: number
-}
-
-const DEMO_SUGGESTION_SETTING = 'demo-suggestion-setting'
 
 export const getRuleSuggestionContent = (
     ticket: TicketWithRuleSuggestionData
@@ -104,23 +95,10 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     const suggestion = ticket.meta.rule_suggestion
     const {actions, text} = getRuleSuggestionContent(ticket)
 
-    const ticketDemoSuggestion = useFlags()[FeatureFlagKey.TicketDemoSuggestion]
+    const {shouldDisplayDemoSuggestion, setLocalDemoSuggestionSetting} =
+        useRuleSuggestionForDemos(ticket.id)
 
-    const [demoSuggestionSetting, setDemoSuggestionSetting] = useLocalStorage<
-        DemoSuggestionSetting[]
-    >(DEMO_SUGGESTION_SETTING)
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const ticketDemoSuggestionSetting = useMemo(
-        () =>
-            demoSuggestionSetting?.find((item) => item.ticketId === ticket.id),
-        [ticket.id, demoSuggestionSetting]
-    )
-
-    if (
-        (!hasAutomate && !ticketDemoSuggestion) ||
-        isSuggestionEmpty({actions, text})
-    )
+    if (!shouldDisplayDemoSuggestion || isSuggestionEmpty({actions, text}))
         return null
 
     const channel = getPreferredChannel(
@@ -244,35 +222,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             <Button
                 intent="secondary"
                 size="small"
-                onClick={() =>
-                    setDemoSuggestionSetting(
-                        (prevState: DemoSuggestionSetting[] | undefined) => {
-                            const foundTicket = prevState?.find(
-                                (item) => item?.ticketId === ticket.id
-                            )
-
-                            if (foundTicket) {
-                                return prevState?.map((item) =>
-                                    item.ticketId === ticket.id
-                                        ? {
-                                              ...item,
-                                              dismissCount:
-                                                  item.dismissCount + 1,
-                                          }
-                                        : item
-                                )
-                            }
-
-                            return [
-                                ...(prevState || []),
-                                {
-                                    ticketId: ticket.id,
-                                    dismissCount: 1,
-                                },
-                            ]
-                        }
-                    )
-                }
+                onClick={() => setLocalDemoSuggestionSetting()}
             >
                 Dismiss
             </Button>

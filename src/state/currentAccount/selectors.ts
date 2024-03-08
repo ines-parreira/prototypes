@@ -11,6 +11,7 @@ import {
     AccountSettingAgentsTableConfig,
     AccountSettingAutoMerge,
     AccountSettingBusinessHours,
+    AccountSettingInTicketSuggestion,
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
     AccountSettingViewsVisibility,
@@ -247,4 +248,12 @@ export const getTwoFAEnforcedDatetime = createSelector(
 export const is2FAEnforcedSelector = createSelector(
     getTwoFAEnforcedDatetime,
     (twoFAEnforcedDatetime) => !!twoFAEnforcedDatetime
+)
+
+export const getInTicketSuggestionSettings = createSelector(
+    createSettingByTypeSelector(AccountSettingType.InTicketSuggestion),
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingInTicketSuggestion)
 )
