@@ -1,4 +1,10 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
+import {
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    within,
+} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import React, {ComponentProps, createRef} from 'react'
 import {fromJS} from 'immutable'
@@ -52,5 +58,37 @@ describe('CallTransferDropdown', () => {
         renderComponent()
         fireEvent.click(screen.getByTestId('floating-overlay'))
         expect(onToggle).toHaveBeenCalled()
+    })
+
+    it(`doesn't select more than one agent`, () => {
+        renderComponent()
+        const agent1 = screen.getByRole('option', {
+            name: /agent 1/i,
+        })
+        fireEvent.click(agent1)
+        expect(within(agent1).getByText(/done/i)).toBeVisible()
+
+        const agent2 = screen.getByRole('option', {
+            name: /agent 2/i,
+        })
+        fireEvent.click(agent2)
+        expect(within(agent2).getByText(/done/i)).toBeVisible()
+        expect(within(agent1).queryByText(/done/i)).toBeNull()
+    })
+
+    it('only enables the transfer button when an agent is selected', () => {
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', {name: /transfer call/i})
+        ).toHaveAttribute('aria-disabled', 'true')
+
+        const agent1 = screen.getByRole('option', {
+            name: /agent 1/i,
+        })
+        fireEvent.click(agent1)
+        expect(
+            screen.getByRole('button', {name: /transfer call/i})
+        ).not.toHaveAttribute('aria-disabled', 'true')
     })
 })

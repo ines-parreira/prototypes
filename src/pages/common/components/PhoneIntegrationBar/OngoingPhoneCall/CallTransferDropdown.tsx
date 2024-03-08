@@ -1,11 +1,12 @@
 import React, {ComponentProps, useState} from 'react'
-import useAppSelector from 'hooks/useAppSelector'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import Button from 'pages/common/components/button/Button'
+import {AgentLabel} from 'pages/common/utils/labels'
 import {getAgentsJS} from 'state/agents/selectors'
-import Dropdown from '../../dropdown/Dropdown'
-import DropdownBody from '../../dropdown/DropdownBody'
-import DropdownSearch from '../../dropdown/DropdownSearch'
-import DropdownItem from '../../dropdown/DropdownItem'
-import Button from '../../button/Button'
+import useAppSelector from 'hooks/useAppSelector'
 
 import DropdownSection from '../../dropdown/DropdownSection'
 import css from './CallTransferDropdown.less'
@@ -22,7 +23,7 @@ export default function CallTransferDropdown({
     placement = 'top',
 }: Props) {
     const agents = useAppSelector(getAgentsJS)
-    const [, setSelectedAgent] = useState<number | null>(null)
+    const [selectedAgent, setSelectedAgent] = useState<number | null>(null)
 
     return (
         <Dropdown
@@ -31,6 +32,7 @@ export default function CallTransferDropdown({
             target={target}
             placement={placement}
             className={css.container}
+            value={selectedAgent}
         >
             <DropdownSearch />
             <DropdownBody className={css.dropdownBody}>
@@ -43,12 +45,22 @@ export default function CallTransferDropdown({
                                 value: option.id,
                             }}
                             onClick={setSelectedAgent}
-                        />
+                        >
+                            <AgentLabel
+                                shouldDisplayAvatar
+                                name={option.name}
+                                profilePictureUrl={
+                                    option.meta?.profile_picture_url
+                                }
+                            />
+                        </DropdownItem>
                     ))}
                 </DropdownSection>
             </DropdownBody>
             <div className={css.dropdownFooter}>
-                <Button className={css.cta}>Transfer call</Button>
+                <Button className={css.cta} isDisabled={!selectedAgent}>
+                    Transfer call
+                </Button>
             </div>
         </Dropdown>
     )
