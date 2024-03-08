@@ -117,7 +117,9 @@ const AIArticlesLibraryList = ({
                                 <AIArticleRow
                                     key={article.key}
                                     article={article}
-                                    isSelected={article === selectedArticle}
+                                    isSelected={
+                                        article.key === selectedArticle?.key
+                                    }
                                     onSelect={setSelectedArticle}
                                     showNewTag={
                                         selectedArticleType ===

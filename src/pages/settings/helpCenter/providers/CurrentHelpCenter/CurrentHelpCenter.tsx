@@ -141,7 +141,11 @@ const CurrentHelpCenter: React.FC = () => {
                     <Route
                         path={`${path}/ai-library`}
                         exact
-                        component={AILibraryView}
+                        render={() => (
+                            <EditionManagerContextProvider>
+                                <AILibraryView />
+                            </EditionManagerContextProvider>
+                        )}
                     />
                 )}
                 <Route

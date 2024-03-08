@@ -1,0 +1,207 @@
+import {useRef} from 'react'
+import {useQueryClient} from '@tanstack/react-query'
+import {
+    AIArticle,
+    AILibraryArticleItem,
+    ArticleTemplateReviewAction,
+    HelpCenter,
+} from 'models/helpCenter/types'
+import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {
+    aiArticleKeys,
+    useReviewArticleTemplate,
+} from 'pages/settings/helpCenter/queries'
+import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {AIArticleArchiveModalHandle} from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
+
+export type onEditorSaveProps = {
+    article?: AILibraryArticleItem
+    title: string
+    content: string
+    saveAsDraft: boolean
+    categoryId: number | null
+    visibilityStatus: 'PUBLIC' | 'UNLISTED'
+}
+
+const useAILibraryActions = (
+    helpCenter: HelpCenter,
+    articles: AILibraryArticleItem[],
+    markArticleAsReviewed: (
+        templateKey: string,
+        reviewAction: 'publish' | 'archive' | 'saveAsDraft'
+    ) => void
+) => {
+    const {createArticle} = useCreateAIArticle(helpCenter)
+    const queryClient = useQueryClient()
+    const appDispatch = useAppDispatch()
+
+    const editorPayloadDetails = useRef<{
+        title: string
+        content: string
+        saveAsDraft: boolean
+        categoryId: number | null
+        visibilityStatus: 'PUBLIC' | 'UNLISTED'
+    } | null>(null)
+
+    const reviewArticle = useReviewArticleTemplate({
+        onSuccess: async (__data, [__client, __pathParameters, body]) => {
+            const successMessages: Record<ArticleTemplateReviewAction, string> =
+                {
+                    publish:
+                        'Article published and added to your ‘Articles’ tab.',
+                    saveAsDraft:
+                        'Article saved as a draft and added to your ‘Articles’ tab.',
+                    archive: 'Article archived.',
+                }
+
+            void appDispatch(
+                notify({
+                    message: successMessages[body.action],
+                    status: NotificationStatus.Success,
+                })
+            )
+
+            await queryClient.invalidateQueries(
+                aiArticleKeys.list(helpCenter.id)
+            )
+
+            markArticleAsReviewed(body.template_key, body.action)
+
+            if (body.action === 'archive') {
+                return
+            }
+
+            const article = articles.find(
+                (article) => article.key === body.template_key
+            )
+
+            if (!article) return
+
+            const articleTemplate = {
+                ...article,
+                title: editorPayloadDetails.current?.title || article.title,
+                html_content:
+                    editorPayloadDetails.current?.content ||
+                    article.html_content,
+            }
+
+            void createArticle({
+                articleTemplate,
+                visibilityStatus:
+                    editorPayloadDetails.current?.visibilityStatus || 'PUBLIC',
+                categoryId: editorPayloadDetails.current?.categoryId || null,
+                publish: !editorPayloadDetails.current?.saveAsDraft,
+            })
+
+            editorPayloadDetails.current = null
+        },
+        onError: (__error, [__client, __pathParameters, body]) => {
+            const errorActions: Record<ArticleTemplateReviewAction, string> = {
+                publish: 'published',
+                saveAsDraft: 'saved as draft',
+                archive: 'archived',
+            }
+
+            void appDispatch(
+                notify({
+                    message: `Article could not be ${
+                        errorActions[body.action]
+                    }.`,
+                    status: NotificationStatus.Error,
+                })
+            )
+        },
+    })
+
+    const {setEditModal, editModal} = useEditionManager()
+
+    const onEdit = () => {
+        setEditModal({
+            isOpened: true,
+            view: null,
+        })
+    }
+
+    const isEditModalOpen = editModal.isOpened
+
+    const onEditorClose = () => {
+        setEditModal((prevState) => ({
+            ...prevState,
+            isOpened: false,
+        }))
+    }
+
+    const archiveModal = useRef<AIArticleArchiveModalHandle>(null)
+
+    const onStartArchive = (article: AIArticle) => {
+        archiveModal.current?.open(article)
+    }
+
+    const onArchive = (article: AIArticle, reason: string | undefined) => {
+        return reviewArticle.mutate([
+            undefined,
+            {help_center_id: helpCenter.id},
+            {action: 'archive', template_key: article.key, reason},
+        ])
+    }
+
+    const onPublish = (article: AIArticle) => {
+        editorPayloadDetails.current = {
+            title: article.title,
+            content: article.html_content,
+            saveAsDraft: false,
+            categoryId: null,
+            visibilityStatus: 'PUBLIC',
+        }
+
+        return reviewArticle.mutate([
+            undefined,
+            {help_center_id: helpCenter.id},
+            {action: 'publish', template_key: article.key},
+        ])
+    }
+
+    const onEditorSave = ({
+        article,
+        title,
+        content,
+        saveAsDraft,
+        categoryId,
+        visibilityStatus,
+    }: onEditorSaveProps) => {
+        editorPayloadDetails.current = {
+            title,
+            content,
+            saveAsDraft,
+            categoryId,
+            visibilityStatus,
+        }
+
+        onEditorClose()
+
+        return reviewArticle.mutate([
+            undefined,
+            {help_center_id: helpCenter.id},
+            {
+                action: saveAsDraft ? 'saveAsDraft' : 'publish',
+                template_key: article!.key,
+            },
+        ])
+    }
+
+    return {
+        onEdit,
+        onEditorClose,
+        onStartArchive,
+        archiveModal,
+        onArchive,
+        onPublish,
+        onEditorSave,
+        isEditModalOpen,
+    }
+}
+
+export default useAILibraryActions

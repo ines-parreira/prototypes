@@ -1,5 +1,6 @@
 import {isDevelopment} from 'utils/environment'
 import {
+    AILibraryArticleItem,
     ARTICLE_TEMPLATES_KEYS,
     Article,
     ArticleTemplateKey,
@@ -240,6 +241,44 @@ export const mapHelpCenterArticleItemToArticle = (
             slug: slugify(article.title),
             locale,
             is_current: shouldPublish,
+        },
+    }
+
+    return {
+        ...hcArticle,
+        template_key: article.key,
+    }
+}
+
+type AILibraryArticleItemParams = {
+    article: AILibraryArticleItem
+    locale: LocaleCode
+    categoryId?: number | null
+    visibilityStatus?: 'PUBLIC' | 'UNLISTED'
+    publish: boolean
+}
+
+export const mapAILibraryArticleItemToArticle = (
+    params: AILibraryArticleItemParams
+) => {
+    const {article, locale, categoryId, visibilityStatus, publish} = params
+
+    if (!article.title || !article.html_content) return null
+
+    const hcArticle = {
+        translation: {
+            title: article.title,
+            content: article.html_content,
+            seo_meta: {
+                title: null,
+                description: null,
+            },
+            category_id: categoryId || null,
+            excerpt: '',
+            slug: slugify(article.title),
+            locale,
+            is_current: publish,
+            visibility_status: visibilityStatus || 'PUBLIC',
         },
     }
 

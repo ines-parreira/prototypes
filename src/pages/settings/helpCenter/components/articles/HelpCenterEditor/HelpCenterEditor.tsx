@@ -32,7 +32,7 @@ type Props = {
     value?: string
     className?: string
     onChange: (value: string, charCount?: number) => void
-    onEditorReady: (content: string) => void
+    onEditorReady?: (content: string) => void
 }
 
 type FroalaEditorInstance = FroalaEditorComponentType & {
@@ -261,7 +261,7 @@ const HelpCenterEditor = ({
 
                         const content = editor.html.get(true)
 
-                        onEditorReady(replaceUploadUrls(content))
+                        onEditorReady?.(replaceUploadUrls(content))
 
                         const closeClickEventHandler =
                             createOnCloseEventHandler(editor)

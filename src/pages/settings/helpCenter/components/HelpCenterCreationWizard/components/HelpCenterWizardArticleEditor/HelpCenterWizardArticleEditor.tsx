@@ -123,6 +123,7 @@ const ArticleEditor: React.FC<Props> = ({
                         <Tooltip
                             placement="bottom-end"
                             target="close-edit-mode-button"
+                            boundariesElement="body"
                         >
                             Close edit mode
                         </Tooltip>
