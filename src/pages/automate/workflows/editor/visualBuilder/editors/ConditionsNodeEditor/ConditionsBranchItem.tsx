@@ -20,6 +20,7 @@ import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/compone
 import Button from 'pages/common/components/button/Button'
 import {
     WorkflowVariable,
+    WorkflowVariableFormat,
     WorkflowVariableList,
     WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
@@ -73,8 +74,12 @@ export const ConditionsBranchItem = ({
 }: Props) => {
     const {isExpanded} = useAccordionItemContext()
 
-    const renderInputByType = useCallback(
-        (type: WorkflowVariableType, conditionIndex: number) => {
+    const renderInput = useCallback(
+        (
+            type: WorkflowVariableType,
+            format: WorkflowVariableFormat | undefined,
+            conditionIndex: number
+        ) => {
             const condition = conditions[conditionIndex]
 
             if ('exists' in condition || 'doesNotExist' in condition) {
@@ -126,6 +131,7 @@ export const ConditionsBranchItem = ({
                     return (
                         <NumberConditionType
                             condition={condition}
+                            format={format}
                             shouldShowErrors={shouldShowErrors}
                             onChange={(updatedCondition) =>
                                 onConditionChange(
@@ -300,8 +306,9 @@ export const ConditionsBranchItem = ({
                                             index
                                         )}
                                     >
-                                        {renderInputByType(
+                                        {renderInput(
                                             variable.type,
+                                            variable.format,
                                             index
                                         )}
                                     </Condition>

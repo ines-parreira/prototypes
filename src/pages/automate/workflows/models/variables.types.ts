@@ -5,10 +5,11 @@ export type WorkflowVariableType =
     | 'boolean'
     | 'array'
 
+export type WorkflowVariableFormat = 'currency'
+
 export type WorkflowVariable = {
     name: string
     value: string
-} & {
     nodeType:
         | 'text_reply'
         | 'multiple_choices'
@@ -17,6 +18,7 @@ export type WorkflowVariable = {
         | 'http_request'
         | 'shopper_authentication'
     type: WorkflowVariableType
+    format?: WorkflowVariableFormat
     filter?: string
 }
 

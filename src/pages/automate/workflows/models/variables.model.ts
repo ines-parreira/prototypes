@@ -156,6 +156,7 @@ export const buildWorkflowVariableFromNode = (
                     filter: `format_currency: steps_state.${node.id}.order.currency.code, steps_state.${node.id}.order.currency.decimals`,
                     nodeType: 'order_selection',
                     type: 'number',
+                    format: 'currency',
                 },
                 {
                     name: 'Order date',

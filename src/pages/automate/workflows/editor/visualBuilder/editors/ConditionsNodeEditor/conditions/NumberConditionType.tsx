@@ -7,15 +7,43 @@ import {
     NumberSchema,
 } from 'pages/automate/workflows/models/conditions.types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import {WorkflowVariableFormat} from 'pages/automate/workflows/models/variables.types'
 import css from '../ConditionsNodeEditor.less'
 
 interface Props {
     condition: Exclude<NumberSchema, ExistsSchema | DoesNotExistSchema>
+    format: WorkflowVariableFormat | undefined
     onChange: (condition: ConditionSchema) => void
     shouldShowErrors?: boolean
 }
+
+const getDisplayValue = (
+    value: number,
+    format: WorkflowVariableFormat | undefined
+) => {
+    switch (format) {
+        case 'currency':
+            return value * 100
+        default:
+            return value
+    }
+}
+
+const getValueFromDisplayValue = (
+    displayValue: number,
+    format: WorkflowVariableFormat | undefined
+) => {
+    switch (format) {
+        case 'currency':
+            return displayValue / 100
+        default:
+            return displayValue
+    }
+}
+
 export const NumberConditionType = ({
     condition,
+    format,
     onChange,
     shouldShowErrors,
 }: Props) => {
@@ -33,7 +61,7 @@ export const NumberConditionType = ({
         <NumberInput
             className={css.input}
             placeholder="value"
-            value={value}
+            value={getDisplayValue(value, format)}
             hasError={shouldShowErrors && !value}
             onChange={(nextValue) => {
                 onChange(
@@ -44,7 +72,10 @@ export const NumberConditionType = ({
                             return
                         }
 
-                        schema[1] = nextValue ?? 0
+                        schema[1] = getValueFromDisplayValue(
+                            nextValue ?? 0,
+                            format
+                        )
                     })
                 )
             }}
