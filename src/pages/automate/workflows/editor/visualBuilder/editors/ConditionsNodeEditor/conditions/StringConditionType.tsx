@@ -1,6 +1,5 @@
 import React from 'react'
 import {produce} from 'immer'
-import classNames from 'classnames'
 import {
     ConditionSchema,
     DoesNotExistSchema,
@@ -32,7 +31,7 @@ export const StringConditionType = ({
 
     return (
         <InputField
-            className={classNames(css.input, hasError ? css.inputError : '')}
+            className={css.input}
             placeholder="value"
             onChange={(nextValue) => {
                 onChange(

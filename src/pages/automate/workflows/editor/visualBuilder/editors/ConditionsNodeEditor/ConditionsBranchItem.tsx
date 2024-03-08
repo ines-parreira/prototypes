@@ -1,5 +1,4 @@
 import React, {useCallback} from 'react'
-import classNames from 'classnames'
 import {produce} from 'immer'
 import {
     BooleanSchema,
@@ -215,10 +214,7 @@ export const ConditionsBranchItem = ({
                         value={name}
                         hasError={hasNameError}
                         error={hasNameError ? 'Enter a branch name' : ''}
-                        className={classNames(
-                            css.input,
-                            hasNameError ? css.inputError : ''
-                        )}
+                        className={css.input}
                         onChange={onNameChange}
                     />
                 ) : (
