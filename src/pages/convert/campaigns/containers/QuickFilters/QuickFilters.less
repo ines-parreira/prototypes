@@ -1,0 +1,19 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .item {
+        margin-right: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xs;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

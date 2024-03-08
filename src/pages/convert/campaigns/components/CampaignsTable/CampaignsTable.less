@@ -1,0 +1,40 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .campaignsTable {
+        .anchor {
+            width: 80%;
+            padding: @layout-spacing-s @layout-spacing-xs;
+
+            color: var(--neutral-grey-6);
+        }
+
+        .anchorCell {
+            padding: 0;
+        }
+
+        .headerCellTitle {
+            color: var(--neutral-grey-4);
+        }
+    }
+
+    .tableRow {
+        transition: background-color 0.2s ease-in-out;
+        &:hover {
+            background-color: var(--neutral-grey-1);
+        }
+    }
+
+    .pagination {
+        padding-top: 0;
+        padding-left: @layout-spacing-s;
+        padding-right: @layout-spacing-s;
+        padding-bottom: @layout-spacing-m;
+    }
+
+    .languageBadge {
+        margin-bottom: 0;
+        background-color: var(--neutral-grey-1);
+        color: var(--neutral-grey-5);
+    }
+}

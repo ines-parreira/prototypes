@@ -9,7 +9,10 @@ import {
 import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
 import {Paths} from 'rest_api/revenue_addon_api/client.generated'
 import {MutationOverrides} from 'types/query'
-import {ChannelConnectionListOptions} from 'models/convert/channelConnection/types'
+import {
+    ChannelConnection,
+    ChannelConnectionListOptions,
+} from 'models/convert/channelConnection/types'
 import {CONVERT_DEFAULT_OPTIONS} from '../constants'
 
 export const channelConnectionKeys = {
@@ -25,7 +28,9 @@ export const channelConnectionKeys = {
 export const useGetChannelConnection = (
     params: Paths.GetChannelConnection.PathParameters,
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getChannelConnection>>
+        Awaited<ReturnType<typeof getChannelConnection>>,
+        unknown,
+        ChannelConnection
     >
 ) => {
     const {client: convertClient} = useRevenueAddonApi()
@@ -33,6 +38,7 @@ export const useGetChannelConnection = (
     return useQuery({
         queryKey: channelConnectionKeys.detail(params),
         queryFn: () => getChannelConnection(convertClient, params),
+        select: (data) => (data?.data ?? {}) as ChannelConnection,
         ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
         enabled: !!convertClient && (overrides?.enabled ?? true),
@@ -42,7 +48,9 @@ export const useGetChannelConnection = (
 export const useListChannelConnections = (
     params?: ChannelConnectionListOptions,
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof listChannelConnections>>
+        Awaited<ReturnType<typeof listChannelConnections>>,
+        unknown,
+        ChannelConnection[]
     >
 ) => {
     const {client: convertClient} = useRevenueAddonApi()
@@ -50,6 +58,7 @@ export const useListChannelConnections = (
     return useQuery({
         queryKey: channelConnectionKeys.list(params),
         queryFn: () => listChannelConnections(convertClient, params),
+        select: (data) => (data?.data ?? []) as ChannelConnection[],
         ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
         enabled: !!convertClient && (overrides?.enabled ?? true),

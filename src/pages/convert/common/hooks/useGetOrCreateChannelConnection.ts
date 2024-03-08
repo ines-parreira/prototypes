@@ -1,6 +1,5 @@
 import {useQueryClient} from '@tanstack/react-query'
 import {useMemo, useState} from 'react'
-import {AxiosResponse} from 'axios'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {
     ChannelConnection,
@@ -18,14 +17,14 @@ import {useGetOneClickInstallationStatus} from 'pages/convert/common/hooks/useGe
 const READ_RETRIES = 3
 
 export const useGetOrCreateChannelConnection = (
-    integration: GorgiasChatIntegration,
+    integration: GorgiasChatIntegration | undefined,
     retries = READ_RETRIES
 ) => {
     const queryClient = useQueryClient()
     const [createTriggered, setCreateTriggered] = useState(false)
 
     const options: ChannelConnectionListOptions = useMemo(() => {
-        const externalId = integration.meta?.app_id
+        const externalId = integration?.meta?.app_id
 
         return externalId !== undefined
             ? {
@@ -33,7 +32,7 @@ export const useGetOrCreateChannelConnection = (
                   channel: ChannelConnectionChannel.Widget,
               }
             : {}
-    }, [integration.meta])
+    }, [integration?.meta])
 
     const shouldFetchList = useMemo(
         () => Object.keys(options).length > 0,
@@ -44,13 +43,13 @@ export const useGetOrCreateChannelConnection = (
     const channelConnectionData: ChannelConnectionCreatePayload =
         useMemo(() => {
             const data: ChannelConnectionCreatePayload = {
-                external_id: integration.meta?.app_id,
+                external_id: integration?.meta?.app_id,
                 external_installation_status: installationStatus,
                 channel: ChannelConnectionChannel.Widget,
             }
 
             const storeIntegrationId =
-                integration.meta?.shop_type === IntegrationType.Shopify
+                integration?.meta?.shop_type === IntegrationType.Shopify
                     ? integration.meta?.shop_integration_id
                     : null
             if (storeIntegrationId !== null) {
@@ -58,19 +57,12 @@ export const useGetOrCreateChannelConnection = (
             }
 
             return data
-        }, [integration.meta, installationStatus])
+        }, [integration?.meta, installationStatus])
 
-    const handleSuccessCallback = (
-        data: AxiosResponse<ChannelConnection[] | any, any> | null
-    ) => {
-        const statusCode = data?.status ?? 200
-
-        if (statusCode === 200) {
-            const channelConnections = (data?.data ?? []) as ChannelConnection[]
-            if (channelConnections.length === 0 && !createTriggered) {
-                mutateCreate([undefined, channelConnectionData])
-                setCreateTriggered(true)
-            }
+    const handleSuccessCallback = (data: ChannelConnection[]) => {
+        if (data.length === 0 && !createTriggered) {
+            mutateCreate([undefined, channelConnectionData])
+            setCreateTriggered(true)
         }
     }
 
@@ -104,10 +96,8 @@ export const useGetOrCreateChannelConnection = (
             return createDataResponse as ChannelConnection | null
         }
 
-        return !!listData?.data &&
-            Array.isArray(listData?.data) &&
-            listData?.data.length > 0
-            ? listData?.data[0]
+        return !!listData && Array.isArray(listData) && listData.length > 0
+            ? listData[0]
             : null
     }, [createTriggered, createDataResponse, listData])
 

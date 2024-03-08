@@ -5,7 +5,6 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {channelConnection} from 'fixtures/channelConnection'
 import {IntegrationType} from 'models/integration/constants'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {
     useCreateChannelConnection,
     useListChannelConnections,
@@ -25,7 +24,7 @@ const wrapper = ({children}: any) => (
 describe('useGetOrCreateChannelConnection', () => {
     it('should fetch the channel connection and not create a new connection when existing connections are found', () => {
         useListChannelConnectionsSpy.mockReturnValue({
-            data: axiosSuccessResponse([channelConnection]),
+            data: [channelConnection],
             isLoading: false,
             isError: false,
         } as any)
@@ -87,9 +86,7 @@ describe('useGetOrCreateChannelConnection', () => {
             {wrapper}
         )
 
-        useListChannelConnectionsSpy.mock.calls[0][1]?.onSuccess!(
-            axiosSuccessResponse([]) as any
-        )
+        useListChannelConnectionsSpy.mock.calls[0][1]?.onSuccess!([] as any)
 
         expect(useListChannelConnectionsSpy).toHaveBeenCalled()
         expect(mutateSpy).toHaveBeenCalled()

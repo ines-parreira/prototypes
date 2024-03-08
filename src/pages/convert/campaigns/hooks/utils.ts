@@ -3,14 +3,16 @@ import {campaignKeys} from 'models/convert/campaign/queries'
 
 export const invalidateCacheOnCampaignChange = (
     queryClient: QueryClient,
-    channelConnectionId: string,
+    channelConnectionId: string | undefined,
     campaignId: string
 ) => {
+    const queryKeyList = channelConnectionId
+        ? campaignKeys.list({channelConnectionId})
+        : campaignKeys.lists()
+
     return Promise.all([
         queryClient.invalidateQueries({
-            queryKey: campaignKeys.list({
-                channelConnectionId: channelConnectionId,
-            }),
+            queryKey: queryKeyList,
         }),
         queryClient.invalidateQueries({
             queryKey: campaignKeys.detail({

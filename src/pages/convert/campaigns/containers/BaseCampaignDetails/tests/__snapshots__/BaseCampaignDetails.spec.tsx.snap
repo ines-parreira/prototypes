@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BaseCampaignDetails /> matches snapshot 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/convert/1/campaigns"
+            >
+              Campaigns
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Welcome to the internet
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div>
+      content
+    </div>
+  </div>
+</div>
+`;

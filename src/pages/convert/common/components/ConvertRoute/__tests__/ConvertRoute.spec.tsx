@@ -109,7 +109,7 @@ describe('ConvertRoute', () => {
         )
 
         expect(
-            getByText('Redirected to /app/convert/2/installation')
+            getByText('Redirected to /app/convert/2/campaigns')
         ).toBeInTheDocument()
     })
 
@@ -146,7 +146,7 @@ describe('ConvertRoute', () => {
         )
 
         expect(
-            getByText('Redirected to /app/convert/2/installation')
+            getByText('Redirected to /app/convert/2/campaigns')
         ).toBeInTheDocument()
     })
 })

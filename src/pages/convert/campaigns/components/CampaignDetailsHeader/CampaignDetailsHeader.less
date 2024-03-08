@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .backWrapper {
+        display: inline-block;
+        margin: @layout-spacing-l;
+
+        a {
+            .body-medium();
+
+            color: var(--neutral-grey-5);
+
+            img {
+                margin-right: @layout-spacing-xs;
+            }
+        }
+    }
+}

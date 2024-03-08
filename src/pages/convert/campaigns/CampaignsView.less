@@ -1,0 +1,19 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .pageContainer {
+        padding: @layout-spacing-m;
+    }
+
+    .campaignsTable {
+        :global td.link-full-td > a > div {
+            padding-top: @layout-spacing-s;
+            padding-bottom: @layout-spacing-s;
+        }
+    }
+
+    .createCampaignLink {
+        margin-left: @layout-spacing-xs;
+    }
+}

@@ -5,15 +5,21 @@ import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {invalidateCacheOnCampaignChange} from 'pages/convert/campaigns/hooks/utils'
 
-export const useDeleteCampaign = (channelConnectionId: string) => {
+export const useDeleteCampaign = () => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     return usePureDeleteCampaign({
         onSuccess: (_, [, params]) => {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Campaign successfully deleted',
+                })
+            )
             return invalidateCacheOnCampaignChange(
                 queryClient,
-                channelConnectionId,
+                params?.channelConnectionId,
                 params.campaign_id
             )
         },

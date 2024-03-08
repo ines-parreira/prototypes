@@ -32,7 +32,7 @@ describe('useDeleteCampaign', () => {
 
     it('should dispatch success notification on success and invalidate list and detail queries', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useDeleteCampaign(channelConnectionId), {
+        renderHook(() => useDeleteCampaign(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
@@ -58,7 +58,7 @@ describe('useDeleteCampaign', () => {
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useDeleteCampaign(channelConnectionId), {
+        renderHook(() => useDeleteCampaign(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}

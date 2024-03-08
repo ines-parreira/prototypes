@@ -1,0 +1,28 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .pageContainer {
+        padding: @layout-spacing-m;
+    }
+
+    .campaignsToolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        @media @mobiles {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    .quickFiltersContainer {
+        margin-top: @layout-spacing-s;
+    }
+
+    .noCampaignsLayer {
+        margin-top: @layout-spacing-s;
+    }
+}

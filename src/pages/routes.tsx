@@ -133,9 +133,14 @@ import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
-import {CONVERT_ROUTING_PARAM} from 'pages/convert/common/constants'
+import {
+    CONVERT_ROUTING_CAMPAIGN_PARAM,
+    CONVERT_ROUTING_PARAM,
+} from 'pages/convert/common/constants'
 import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
 import TicketDetailLayout from 'ticket-page/components/TicketDetailLayout'
+import {CampaignsView} from 'pages/convert/campaigns/CampaignsView'
+import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignDetailsFactory'
 import {useIsConvertUiDecouplingEnabled} from './convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {
     BundlesView,
@@ -184,8 +189,6 @@ export function AppRoutes() {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
 
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
-
     return (
         <Switch>
             <Route
@@ -210,9 +213,7 @@ export function AppRoutes() {
                 <StatsRoutes />
             </Route>
             <Route path={`${path}/automation`} render={AutomationRoutes} />
-            {isConvertUiDecouplingEnabled && (
-                <Route path={`${path}/convert`} render={ConvertRoutes} />
-            )}
+            <Route path={`${path}/convert`} render={ConvertRoutes} />
             <Route path={`${path}/settings`}>
                 <SettingsRoutes />
             </Route>
@@ -1708,6 +1709,30 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/setup`}
                 component={memoizedWithUserRoleRequired(
                     ConvertOnboardingView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
+                path={`${convertPathPrefix}/campaigns`}
+                component={memoizedWithUserRoleRequired(
+                    CampaignsView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
+                path={`${convertPathPrefix}/campaigns/new`}
+                component={memoizedWithUserRoleRequired(
+                    CampaignDetailsFactory as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
+                path={`${convertPathPrefix}/campaigns/${CONVERT_ROUTING_CAMPAIGN_PARAM}`}
+                component={memoizedWithUserRoleRequired(
+                    CampaignDetailsFactory as any,
                     ADMIN_ROLE
                 )}
             />

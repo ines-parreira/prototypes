@@ -32,7 +32,7 @@ describe('useCreateCampaign', () => {
 
     it('should dispatch success notification on success and invalidate list and detail queries', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useCreateCampaign(channelConnectionId), {
+        renderHook(() => useCreateCampaign(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
@@ -58,7 +58,7 @@ describe('useCreateCampaign', () => {
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useCreateCampaign(channelConnectionId), {
+        renderHook(() => useCreateCampaign(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}

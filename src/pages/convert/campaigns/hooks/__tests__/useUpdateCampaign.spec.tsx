@@ -11,9 +11,9 @@ import {
 import {assumeMock} from 'utils/testing'
 
 import {campaign, campaignId} from 'fixtures/campaign'
-import {channelConnectionId} from 'fixtures/channelConnection'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
+import {channelConnectionId} from 'fixtures/channelConnection'
 import {useUpdateCampaign} from '../useUpdateCampaign'
 
 const queryClient = mockQueryClient()
@@ -32,7 +32,7 @@ describe('useUpdateCampaign', () => {
 
     it('should dispatch success notification on success and invalidate list and detail queries', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useUpdateCampaign(channelConnectionId), {
+        renderHook(() => useUpdateCampaign(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
@@ -58,7 +58,7 @@ describe('useUpdateCampaign', () => {
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useUpdateCampaign(channelConnectionId), {
+        renderHook(() => useUpdateCampaign(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}

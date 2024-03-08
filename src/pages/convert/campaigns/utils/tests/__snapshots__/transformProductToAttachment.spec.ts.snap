@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transformProductToAttachment() adds the currency code if product is missing it 1`] = `
+{
+  "contentType": "application/productCard",
+  "extra": {
+    "currency": "GBP",
+    "position": undefined,
+    "price": 0,
+    "product_id": 7684488200358,
+    "product_link": undefined,
+    "variant_name": undefined,
+  },
+  "name": "Fanboy subscription",
+  "size": 0,
+  "url": "https://cdn.shopify.com/s/files/1/0572/7505/6294/products/unnamed.jpg?v=1675942346",
+}
+`;
+
+exports[`transformProductToAttachment() adds the currency code if product is missing it 2`] = `
+{
+  "contentType": "application/productCard",
+  "extra": {
+    "currency": "USD",
+    "position": undefined,
+    "price": 0,
+    "product_id": 7684488200358,
+    "product_link": undefined,
+    "variant_name": undefined,
+  },
+  "name": "Fanboy subscription",
+  "size": 0,
+  "url": "https://cdn.shopify.com/s/files/1/0572/7505/6294/products/unnamed.jpg?v=1675942346",
+}
+`;

@@ -60,9 +60,9 @@ describe('Channel Connection queries', () => {
 
     describe('useGetChannelConnection', () => {
         it('should return correct data on success', async () => {
-            mockedResources.mockGetChannelConnection.mockResolvedValueOnce(
-                channelConnection as any
-            )
+            mockedResources.mockGetChannelConnection.mockResolvedValueOnce({
+                data: channelConnection,
+            } as any)
             const {result, waitFor} = renderHook(
                 () =>
                     queries.useGetChannelConnection(
@@ -128,9 +128,9 @@ describe('Channel Connection queries', () => {
         }
 
         it('should return correct data on success', async () => {
-            mockedResources.mockListChannelConnections.mockResolvedValueOnce([
-                channelConnection,
-            ] as any)
+            mockedResources.mockListChannelConnections.mockResolvedValueOnce({
+                data: [channelConnection],
+            } as any)
 
             const {result, waitFor} = renderHook(
                 () => queries.useListChannelConnections(options),

@@ -8,9 +8,13 @@ import {
 export const ONE_CLICK_INSTALLED = 'installed'
 
 export const useGetOneClickInstallationStatus = (
-    integration: GorgiasChatIntegration
+    integration: GorgiasChatIntegration | undefined
 ) => {
     return useMemo(() => {
+        if (integration === undefined) {
+            return null
+        }
+
         const installationMethod =
             integration.meta?.one_click_installation_method
         if (installationMethod !== GorgiasChatInstallationMethod.ScriptTag) {

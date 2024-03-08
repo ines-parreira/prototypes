@@ -24,8 +24,7 @@ const ConvertRoute = () => {
                 onboardingMap[integration.meta.app_id]) ||
             !isOnboardingEnabled
         ) {
-            // TODO: change to campaigns when page exists
-            return `/app/convert/${integration.id}/installation`
+            return `/app/convert/${integration.id}/campaigns`
         }
         return `/app/convert/${integration.id}/setup`
     }, [isOnboardingEnabled, onboardingMap, sortedIntegrations])

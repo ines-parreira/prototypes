@@ -57,9 +57,9 @@ describe('Campaign queries', () => {
 
     describe('useGetCampaign', () => {
         it('should return correct data on success', async () => {
-            mockedResources.mockGetCampaign.mockResolvedValueOnce(
-                campaign as any
-            )
+            mockedResources.mockGetCampaign.mockResolvedValueOnce({
+                data: campaign,
+            } as any)
             const {result, waitFor} = renderHook(
                 () =>
                     queries.useGetCampaign({
@@ -114,9 +114,9 @@ describe('Campaign queries', () => {
 
     describe('useListCampaigns', () => {
         it('should return correct data on success', async () => {
-            mockedResources.mockListCampaigns.mockResolvedValueOnce([
-                campaign,
-            ] as any)
+            mockedResources.mockListCampaigns.mockResolvedValueOnce({
+                data: [campaign],
+            } as any)
             const {result, waitFor} = renderHook(
                 () =>
                     queries.useListCampaigns({

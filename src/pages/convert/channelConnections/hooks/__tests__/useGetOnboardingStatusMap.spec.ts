@@ -2,7 +2,6 @@ import {renderHook} from '@testing-library/react-hooks'
 import {assumeMock} from 'utils/testing'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useListChannelConnections} from 'models/convert/channelConnection/queries'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {useGetOnboardingStatusMap} from '../useGetOnboardingStatusMap'
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber', () => ({
@@ -30,7 +29,7 @@ describe('useGetOnboardingStatusMap', () => {
         (isSubscriber, channelConnections, expectedResult) => {
             useIsConvertSubscriberMock.mockReturnValue(isSubscriber)
             useListChannelConnectionsMock.mockReturnValue({
-                data: axiosSuccessResponse(channelConnections),
+                data: channelConnections,
             } as any)
 
             const {result} = renderHook(() => useGetOnboardingStatusMap())

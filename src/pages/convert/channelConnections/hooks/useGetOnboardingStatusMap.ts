@@ -11,10 +11,9 @@ export const useGetOnboardingStatusMap = () => {
     })
 
     return useMemo(() => {
-        const list = channelConnections?.data
         const map: {[key: string]: boolean} = {}
-        if (!!list && Array.isArray(list)) {
-            list.map((channelConnection) => {
+        if (!!channelConnections && Array.isArray(channelConnections)) {
+            channelConnections.map((channelConnection) => {
                 if (!!channelConnection.external_id) {
                     map[channelConnection.external_id] = Boolean(
                         (isSubscriber && channelConnection.is_onboarded) ||

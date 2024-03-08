@@ -5,15 +5,21 @@ import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {invalidateCacheOnCampaignChange} from 'pages/convert/campaigns/hooks/utils'
 
-export const useUpdateCampaign = (channelConnectionId: string) => {
+export const useUpdateCampaign = () => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     return usePureUpdateCampaign({
         onSuccess: (_, [, params]) => {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Campaign successfully updated',
+                })
+            )
             return invalidateCacheOnCampaignChange(
                 queryClient,
-                channelConnectionId,
+                params?.channelConnectionId,
                 params.campaign_id
             )
         },

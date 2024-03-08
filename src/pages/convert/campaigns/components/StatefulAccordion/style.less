@@ -1,0 +1,34 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .state {
+        margin-right: @layout-spacing-s;
+    }
+
+    .count {
+        .body-semibold();
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        height: 24px;
+        width: 24px;
+
+        border-radius: 50%;
+
+        background-color: var(--neutral-grey-2);
+        color: var(--neutral-grey-5);
+    }
+
+    .title {
+        .heading-section-semibold();
+    }
+}

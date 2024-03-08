@@ -9,7 +9,7 @@ import {
     listCampaigns,
     updateCampaign,
 } from './resources'
-import {CampaignListOptions, CampaignParams} from './types'
+import {Campaign, CampaignListOptions, CampaignParams} from './types'
 
 export const campaignKeys = {
     all: () => ['campaign'] as const,
@@ -23,13 +23,18 @@ export const campaignKeys = {
 
 export const useGetCampaign = (
     params: CampaignParams,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getCampaign>>>
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getCampaign>>,
+        unknown,
+        Campaign
+    >
 ) => {
     const {client: convertClient} = useRevenueAddonApi()
 
     return useQuery({
         queryKey: campaignKeys.detail(params),
         queryFn: () => getCampaign(convertClient, params),
+        select: (data) => (data?.data ?? {}) as Campaign,
         ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
         enabled: !!convertClient && (overrides?.enabled ?? true),
@@ -38,13 +43,18 @@ export const useGetCampaign = (
 
 export const useListCampaigns = (
     params: CampaignListOptions,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listCampaigns>>>
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof listCampaigns>>,
+        unknown,
+        Campaign[]
+    >
 ) => {
     const {client: convertClient} = useRevenueAddonApi()
 
     return useQuery({
         queryKey: campaignKeys.list(params),
         queryFn: () => listCampaigns(convertClient, params),
+        select: (data) => (data?.data ?? []) as Campaign[],
         ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
         enabled: !!convertClient && (overrides?.enabled ?? true),

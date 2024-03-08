@@ -1,0 +1,147 @@
+import React, {MouseEvent, useCallback, useMemo} from 'react'
+import {Link, useParams} from 'react-router-dom'
+
+import {fromJS, Map} from 'immutable'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {useListCampaigns} from 'models/convert/campaign/queries'
+import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
+import {CampaignListOptions} from 'pages/convert/campaigns/providers/CampaignListOptions'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {toJS} from 'utils'
+import history from 'pages/history'
+import {CONVERT_ROUTE_PARAM_NAME} from '../common/constants'
+import {ConvertRouteParams} from '../common/types'
+import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
+import {Campaign} from './types/Campaign'
+import css from './CampaignsView.less'
+import {useUpdateCampaign} from './hooks/useUpdateCampaign'
+import {useCreateCampaign} from './hooks/useCreateCampaign'
+import {useDeleteCampaign} from './hooks/useDeleteCampaign'
+import {duplicateCampaign} from './utils/duplicateCampaign'
+import CampaignsList from './containers/CampaignsList/CampaignsList'
+
+export const CampaignsView = () => {
+    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+        useParams<ConvertRouteParams>()
+
+    const integration = useAppSelector(
+        getIntegrationById(parseInt(integrationId))
+    )
+
+    const immutableIntegration = useMemo(
+        () => fromJS(integration) as Map<any, any>,
+        [integration]
+    )
+
+    const {channelConnection} = useGetOrCreateChannelConnection(
+        toJS(integration)
+    )
+
+    const {mutate: updateCampaign} = useUpdateCampaign()
+    const {mutateAsync: createCampaign} = useCreateCampaign()
+    const {mutate: deleteCampaign} = useDeleteCampaign()
+
+    const toggleCampaign = useCallback(
+        (campaign: Campaign) => {
+            const status = isActiveStatus(campaign.status)
+                ? CampaignStatus.Inactive
+                : CampaignStatus.Active
+
+            if (!!channelConnection) {
+                void updateCampaign([
+                    undefined,
+                    {
+                        campaign_id: campaign.id,
+                        channelConnectionId: channelConnection.id,
+                    },
+                    {
+                        status: status,
+                    },
+                ])
+            }
+        },
+        [updateCampaign, channelConnection]
+    )
+
+    const handleDuplicateCampaign = useCallback(
+        async (event: MouseEvent, campaign: Campaign) => {
+            event.stopPropagation()
+
+            if (!!channelConnection) {
+                const duplicate = duplicateCampaign(
+                    campaign,
+                    channelConnection.id
+                )
+                const response = await createCampaign([undefined, duplicate])
+                const newCampaign = response?.data as Campaign
+                history.push(
+                    `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`
+                )
+            }
+        },
+        [createCampaign, channelConnection, integrationId]
+    )
+
+    const handleDeleteCampaign = useCallback(
+        (campaign: Campaign) => {
+            if (!!channelConnection) {
+                deleteCampaign([
+                    undefined,
+                    {
+                        campaign_id: campaign.id,
+                        channelConnectionId: channelConnection.id,
+                    },
+                ])
+            }
+        },
+        [deleteCampaign, channelConnection]
+    )
+
+    const campaignListOptions = useMemo(() => {
+        const channelConnectionId = channelConnection?.id
+        return (
+            channelConnectionId
+                ? {
+                      channelConnectionId: channelConnectionId,
+                  }
+                : {}
+        ) as CampaignListOptionsParams
+    }, [channelConnection])
+
+    const {data: campaigns} = useListCampaigns(campaignListOptions, {
+        enabled: !!channelConnection && !!campaignListOptions,
+    })
+
+    const allCampaigns = useMemo(() => {
+        return (campaigns || []) as Campaign[]
+    }, [campaigns])
+
+    return (
+        <CampaignListOptions>
+            <div className="full-width">
+                <PageHeader title={'Campaigns'}>
+                    <Link
+                        to={`/app/convert/${integrationId}/campaigns/new`}
+                        className={css.createCampaignLink}
+                    >
+                        <Button>Create Campaign</Button>
+                    </Link>
+                </PageHeader>
+
+                <CampaignsList
+                    campaigns={allCampaigns}
+                    integration={immutableIntegration}
+                    onDeleteCampaign={handleDeleteCampaign}
+                    onDuplicateCampaign={handleDuplicateCampaign}
+                    onUpdateCampaign={toggleCampaign}
+                />
+            </div>
+        </CampaignListOptions>
+    )
+}
+
+export default CampaignsView
