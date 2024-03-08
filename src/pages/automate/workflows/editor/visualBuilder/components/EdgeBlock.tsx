@@ -376,7 +376,10 @@ export default function EdgeBlock({
                 e.stopPropagation()
             }}
             style={{
-                top: incomingChoice != null ? -48 : -46,
+                top:
+                    incomingChoice != null || incomingCondition != null
+                        ? -48
+                        : -46,
             }}
         >
             {incomingChoice && (
