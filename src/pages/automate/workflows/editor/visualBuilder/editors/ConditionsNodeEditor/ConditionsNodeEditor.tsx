@@ -192,7 +192,6 @@ export default function ConditionsNodeEditor({
                                     <HintTooltip title="Used to help you better understand your Flow, not visible to customers." />
                                 </>
                             }
-                            placeholder="Check order date"
                             value={nodeInEdition.data?.name}
                             onChange={handleStepNameChange}
                             className={conditionsCss.input}

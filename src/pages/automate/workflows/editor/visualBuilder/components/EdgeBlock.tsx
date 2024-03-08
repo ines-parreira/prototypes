@@ -236,12 +236,13 @@ function useMenuItems(
                 visualBuilderGraph,
                 nodeId
             ) &&
-            !hasParentNodeInPath('http_request', visualBuilderGraph, nodeId)
+            !hasParentNodeInPath('http_request', visualBuilderGraph, nodeId) &&
+            !hasParentNodeInPath('text_reply', visualBuilderGraph, nodeId)
         ) {
             updateMenuItems((draft) => {
                 if (draft.type === 'conditions') {
                     draft.disabledText =
-                        'Conditions rely on variables from other steps such as Customer login, Order selection and HTTP requests. '
+                        'Conditions rely on variables from other steps such as Customer login, Collect text reply, Order selection and HTTP requests. '
                 }
             })
         } else {
