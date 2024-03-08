@@ -20,6 +20,23 @@ import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
 
 jest.mock('@twilio/voice-sdk')
 
+jest.mock('../CallTransferDropdown', () => ({
+    __esModule: true,
+    default: ({
+        isOpen,
+        onToggle,
+    }: {
+        isOpen: boolean
+        onToggle: (flag: boolean) => void
+    }) => (
+        <div
+            data-testid="transfer-dropdown"
+            className={isOpen ? 'is-open' : 'is-hidden'}
+            onClick={() => onToggle(!isOpen)}
+        />
+    ),
+}))
+
 describe('<OngoingPhoneCall/>', () => {
     let store: MockStoreEnhanced
     const mockedServer = new MockAdapter(client)
@@ -163,5 +180,45 @@ describe('<OngoingPhoneCall/>', () => {
         )
 
         expect(queryByTestId('hold-call-button')).toBeNull()
+    })
+
+    it('should display transfer button', () => {
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({[FeatureFlagKey.CallTransfer]: true})
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>
+        )
+
+        expect(getByTestId('transfer-call-button')).toBeInTheDocument()
+    })
+
+    it('should not display transfer button when FF is disabled', () => {
+        const call = mockIncomingCall(integrationId) as Call
+
+        const {queryByTestId} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>
+        )
+
+        expect(queryByTestId('transfer-call-button')).toBeNull()
+    })
+
+    it('should toggle transfer dropdown', () => {
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({[FeatureFlagKey.CallTransfer]: true})
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>
+        )
+
+        expect(getByTestId('transfer-dropdown')).toHaveClass('is-hidden')
+        fireEvent.click(getByTestId('transfer-call-button'))
+        expect(getByTestId('transfer-dropdown')).toHaveClass('is-open')
     })
 })

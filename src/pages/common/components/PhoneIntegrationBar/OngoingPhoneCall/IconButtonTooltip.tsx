@@ -1,4 +1,4 @@
-import React, {ComponentProps, ReactNode} from 'react'
+import React, {ComponentProps, ReactNode, Ref, forwardRef} from 'react'
 import classnames from 'classnames'
 
 import Tooltip from 'pages/common/components/Tooltip'
@@ -16,31 +16,23 @@ type Props = ComponentProps<typeof IconButton> & {
     interactive?: boolean
 }
 
-const IconButtonTooltip = ({
-    children,
-    className,
-    icon = 'info',
-    id,
-    tooltipProps,
-    ...rest
-}: Props) => {
+const IconButtonTooltip = (
+    {children, className, icon = 'info', id, tooltipProps, ...rest}: Props,
+    ref?: Ref<HTMLButtonElement> | null
+) => {
     const generatedId = useId()
     const buttonId = id ?? `icon-button-${generatedId}`
 
     return (
         <div className={classnames(css.wrapper, className)}>
-            <IconButton id={buttonId} {...rest}>
+            <IconButton id={buttonId} ref={ref} {...rest}>
                 {icon}
             </IconButton>
-            <Tooltip
-                target={buttonId}
-                style={{textAlign: 'left'}}
-                {...tooltipProps}
-            >
+            <Tooltip target={buttonId} {...tooltipProps}>
                 {children}
             </Tooltip>
         </div>
     )
 }
 
-export default IconButtonTooltip
+export default forwardRef<HTMLButtonElement, Props>(IconButtonTooltip)

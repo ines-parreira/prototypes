@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect} from 'react'
+import React, {useCallback, useState, useEffect, useRef} from 'react'
 import {Call} from '@twilio/voice-sdk'
 import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
@@ -32,6 +32,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import DialPad from './DialPad/DialPad'
 import css from './OngoingPhoneCall.less'
 import IconButtonTooltip from './IconButtonTooltip'
+import CallTransferDropdown from './CallTransferDropdown'
 
 type OwnProps = {
     call: Call
@@ -46,12 +47,14 @@ export function OngoingPhoneCall({
     integration,
     notify,
 }: Props): JSX.Element {
+    const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
     const {isMuted, onToggleMute} = useMute(call)
     const {onDisconnect} = useDisconnect(call)
     const {integrationId, customerName, customerPhoneNumber} =
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
     const isCallHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
+    const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
 
     const {startRecording, isRequestPending} = useRecording(
         call,
@@ -59,6 +62,8 @@ export function OngoingPhoneCall({
         setIsRecording,
         notify
     )
+
+    const transferButtonRef = useRef<HTMLButtonElement>(null)
 
     const onToggleHold = () => {
         setIsOnHold((isOnHold) => !isOnHold)
@@ -90,6 +95,26 @@ export function OngoingPhoneCall({
                     phoneNumber={customerPhoneNumber}
                 />
                 <DialPad className={css.dialPad} call={call} />
+                {isCallTransferEnabled && (
+                    <>
+                        <IconButtonTooltip
+                            intent="secondary"
+                            data-testid="transfer-call-button"
+                            onClick={() =>
+                                setIsTransferDropdownOpen((isOpen) => !isOpen)
+                            }
+                            icon="phone_forwarded"
+                            ref={transferButtonRef}
+                        >
+                            Transfer
+                        </IconButtonTooltip>
+                        <CallTransferDropdown
+                            target={transferButtonRef}
+                            isOpen={isTransferDropdownOpen}
+                            onToggle={setIsTransferDropdownOpen}
+                        />
+                    </>
+                )}
                 <IconButtonTooltip
                     intent="secondary"
                     data-testid="mute-call-button"
