@@ -724,10 +724,12 @@ export function StatsRoutes() {
                         exact
                         path={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
                         render={() => (
-                            <App
-                                content={SelfServiceStatsPage}
-                                navbar={StatsNavbarContainer}
-                            />
+                            <HelpCenterApiClientProvider>
+                                <App
+                                    content={SelfServiceStatsPage}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            </HelpCenterApiClientProvider>
                         )}
                     />
                     <Route

@@ -3,7 +3,7 @@ import {chain} from 'lodash'
 import {assumeMock} from 'utils/testing'
 import {
     useGetArticleTemplates,
-    useGetAIArticles,
+    useGetAIArticlesByHelpCenter,
 } from 'pages/settings/helpCenter/queries'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {
@@ -25,7 +25,9 @@ const mockedUseGetArticleTemplates = assumeMock(useGetArticleTemplates)
 const mockedUseGetHelpCenterArticleList = assumeMock(
     useGetHelpCenterArticleList
 )
-const mockedUseGetAIArticles = assumeMock(useGetAIArticles)
+const mockedUseGetAIArticlesByHelpCenter = assumeMock(
+    useGetAIArticlesByHelpCenter
+)
 
 describe('useGetHelpCenterArticles', () => {
     beforeEach(() => {
@@ -46,11 +48,11 @@ describe('useGetHelpCenterArticles', () => {
 
     describe('article templates', () => {
         beforeEach(() => {
-            mockedUseGetAIArticles.mockImplementation(() => {
+            mockedUseGetAIArticlesByHelpCenter.mockImplementation(() => {
                 return {
                     data: [],
                     isLoading: false,
-                } as unknown as ReturnType<typeof useGetAIArticles>
+                } as unknown as ReturnType<typeof useGetAIArticlesByHelpCenter>
             })
         })
         it('should return template articles grouped by category when no articles created', () => {
@@ -166,11 +168,11 @@ describe('useGetHelpCenterArticles', () => {
 
     describe('ai articles', () => {
         beforeEach(() => {
-            mockedUseGetAIArticles.mockImplementation(() => {
+            mockedUseGetAIArticlesByHelpCenter.mockImplementation(() => {
                 return {
                     data: AIArticlesListFixture,
                     isLoading: false,
-                } as unknown as ReturnType<typeof useGetAIArticles>
+                } as unknown as ReturnType<typeof useGetAIArticlesByHelpCenter>
             })
         })
 
@@ -179,7 +181,7 @@ describe('useGetHelpCenterArticles', () => {
                 useGetHelpCenterArticles(1, 'en-US')
             )
 
-            expect(mockedUseGetAIArticles).toHaveBeenCalled()
+            expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalled()
             expect(result.current.articles).toMatchObject(
                 AIArticlesGroupedFixture
             )

@@ -244,13 +244,14 @@ describe('getAIArticles', () => {
 
     it('resolves with a list of AI articles on success', async () => {
         mockResourceServerReplies(sdkMocks.mockedServer, {
-            getAIGeneratedArticles: 'success',
+            getAIGeneratedArticlesByHelpCenter: 'success',
         })
 
-        const data = await helpCenterResourceMethods.getAIGeneratedArticles(
-            sdkMocks.client,
-            {help_center_id: helpCenterId}
-        )
+        const data =
+            await helpCenterResourceMethods.getAIGeneratedArticlesByHelpCenter(
+                sdkMocks.client,
+                {help_center_id: helpCenterId}
+            )
         expect(data).toEqual(AIArticlesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -265,9 +266,12 @@ describe('getAIArticles', () => {
             .reply(500, AIArticlesGeneric500ErrorFixture)
 
         await expect(
-            helpCenterResourceMethods.getAIGeneratedArticles(sdkMocks.client, {
-                help_center_id: helpCenterId,
-            })
+            helpCenterResourceMethods.getAIGeneratedArticlesByHelpCenter(
+                sdkMocks.client,
+                {
+                    help_center_id: helpCenterId,
+                }
+            )
         ).rejects.toMatchInlineSnapshot(
             `[Error: Request failed with status code 404]`
         )

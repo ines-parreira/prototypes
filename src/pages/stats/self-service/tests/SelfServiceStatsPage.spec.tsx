@@ -56,6 +56,13 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 
+jest.mock('pages/settings/helpCenter/queries', () => ({
+    useGetAIArticles: jest.fn(() => ({
+        data: [],
+        isLoading: false,
+    })),
+}))
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource

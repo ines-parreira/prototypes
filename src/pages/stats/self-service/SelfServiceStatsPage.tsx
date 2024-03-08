@@ -46,6 +46,7 @@ import HeaderTitle from 'pages/common/components/HeaderTitle'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
 import {SelfServiceStatsPageFilters} from 'pages/stats/self-service/SelfServiceStatsPageFilters'
 import {AccountFeature} from 'state/currentAccount/types'
 import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
@@ -59,9 +60,11 @@ import KeyMetricStat from '../common/components/charts/KeyMetricStat'
 
 import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
+import {DEFAULT_LOCALE} from '../common/utils'
 import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
+import AIBanner from '../help-center/components/AIBanner'
 import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,
@@ -158,6 +161,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         (config) => !config.article_recommendation_help_center_id
     )
 
+    const articleRecommendationHelpCenterIds = selfServiceConfigurations
+        .filter((config) => config.article_recommendation_help_center_id)
+        .map((config) => config.article_recommendation_help_center_id)
+
     const [overview, isFetchingOverview] =
         useStatResource<OneDimensionalUnionChart>({
             statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
@@ -235,6 +242,20 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
         statsFilters: pageStatsFilters,
     })
+
+    const {data: fetchedArticles, isLoading: isLoadingAIArticles} =
+        useGetAIArticles(DEFAULT_LOCALE)
+
+    const articleRecommendationWithAIArticleHelpCenterId =
+        fetchedArticles &&
+        articleRecommendationHelpCenterIds.find(
+            (helpCenterId) =>
+                !fetchedArticles.every(({reviews}) =>
+                    reviews?.some(
+                        (review) => review.help_center_id === helpCenterId
+                    )
+                )
+        )
 
     const productsWithMostIssuesAndReturnRequestsNoData =
         (productsWithMostIssuesAndReturnRequests?.data.data.lines.length ??
@@ -499,6 +520,15 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </>
                         )}
                     </StatWrapper>
+                    {!isLoadingAIArticles &&
+                        articleRecommendationWithAIArticleHelpCenterId && (
+                            <AIBanner
+                                helpCenterId={
+                                    articleRecommendationWithAIArticleHelpCenterId
+                                }
+                                className={css.aiBanner}
+                            />
+                        )}
                     <StatWrapper
                         stat={topReportedIssues}
                         isFetchingStat={isFetchingTopReportedIssues}

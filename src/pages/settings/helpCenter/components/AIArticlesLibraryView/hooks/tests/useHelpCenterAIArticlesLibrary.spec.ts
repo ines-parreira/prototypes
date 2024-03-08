@@ -1,6 +1,6 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import {assumeMock} from 'utils/testing'
-import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
+import {useGetAIArticlesByHelpCenter} from 'pages/settings/helpCenter/queries'
 import {
     AIArticlesListFixture,
     AILibraryArticleItemsFixture,
@@ -10,16 +10,18 @@ import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
 
 jest.mock('pages/settings/helpCenter/queries')
 
-const mockedUseGetAIArticles = assumeMock(useGetAIArticles)
+const mockedUseGetAIArticlesByHelpCenter = assumeMock(
+    useGetAIArticlesByHelpCenter
+)
 
-describe('useGetAIArticles', () => {
+describe('useGetAIArticlesByHelpCenter', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockedUseGetAIArticles.mockImplementation(() => {
+        mockedUseGetAIArticlesByHelpCenter.mockImplementation(() => {
             return {
                 data: AIArticlesListFixture,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetAIArticles>
+            } as unknown as ReturnType<typeof useGetAIArticlesByHelpCenter>
         })
     })
 
@@ -28,7 +30,7 @@ describe('useGetAIArticles', () => {
             useHelpCenterAIArticlesLibrary(1, 'en-US')
         )
 
-        expect(mockedUseGetAIArticles).toHaveBeenCalled()
+        expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalled()
 
         expect(result.current.articles).toEqual(
             AILibraryArticleItemsFixture.filter((aiArticle) => aiArticle.isNew)

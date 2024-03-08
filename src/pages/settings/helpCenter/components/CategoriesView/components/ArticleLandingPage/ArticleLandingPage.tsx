@@ -10,7 +10,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {
-    useGetAIArticles,
+    useGetAIArticlesByHelpCenter,
     useGetArticleTemplates,
 } from 'pages/settings/helpCenter/queries'
 import {ArticleTemplate} from 'models/helpCenter/types'
@@ -53,13 +53,10 @@ const ArticleLandingPageComponent = ({
     const helpCenter = useCurrentHelpCenter()
     const supportedLocales = helpCenter.supported_locales
 
-    const {data: aiArticles, isLoading: isAIArticlesLoading} = useGetAIArticles(
-        helpCenter.id,
-        viewLanguage,
-        {
+    const {data: aiArticles, isLoading: isAIArticlesLoading} =
+        useGetAIArticlesByHelpCenter(helpCenter.id, viewLanguage, {
             refetchOnWindowFocus: false,
-        }
-    )
+        })
 
     const hasAIArticlesNotReviewed = useMemo(() => {
         return aiArticles?.some((aiArticle) => !aiArticle.review_action)

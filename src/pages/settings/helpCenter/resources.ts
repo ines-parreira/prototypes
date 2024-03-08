@@ -107,12 +107,22 @@ export const getArticleTemplate = async (
 }
 
 export const getAIGeneratedArticles = async (
-    client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListAIArticleTemplates.PathParameters
+    client: HelpCenterClient | undefined
 ) => {
     if (!client) return null
 
-    const res = await client.listAIArticleTemplates(pathParameters)
+    const res = await client.listAIArticleTemplates()
+
+    return res.data
+}
+
+export const getAIGeneratedArticlesByHelpCenter = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.ListAIArticleTemplatesByHelpCenter.PathParameters
+) => {
+    if (!client) return null
+
+    const res = await client.listAIArticleTemplatesByHelpCenter(pathParameters)
 
     return res.data
 }

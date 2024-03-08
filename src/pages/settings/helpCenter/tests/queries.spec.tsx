@@ -14,7 +14,7 @@ import {
     useUpdatePageEmbedment,
     useGetArticleTemplates,
     useGetArticleTemplate,
-    useGetAIArticles,
+    useGetAIArticlesByHelpCenter,
 } from '../queries'
 import {mockResourceServerReplies} from './resource-mocks'
 
@@ -381,11 +381,11 @@ describe('useGetAIArticles', () => {
 
     it('resolves with the list of AIArticles', async () => {
         const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
-            getAIGeneratedArticles: 'success',
+            getAIGeneratedArticlesByHelpCenter: 'success',
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetAIArticles(helpCenterId, locale),
+            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
             {
                 wrapper,
             }
@@ -400,11 +400,11 @@ describe('useGetAIArticles', () => {
 
     it('returns the error', async () => {
         mockResourceServerReplies(sdkMocks.mockedServer, {
-            getAIGeneratedArticles: 'error',
+            getAIGeneratedArticlesByHelpCenter: 'error',
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetAIArticles(helpCenterId, locale),
+            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
             {
                 wrapper,
             }

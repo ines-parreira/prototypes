@@ -6,7 +6,7 @@ import {
     ArticleTemplateReviewAction,
     Locale,
 } from 'models/helpCenter/types'
-import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
+import {useGetAIArticlesByHelpCenter} from 'pages/settings/helpCenter/queries'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
@@ -18,7 +18,7 @@ export const useHelpCenterAIArticlesLibrary = (
     const [mappedArticleItems, setMappedArticleItems] = useState<
         AILibraryArticleItem[]
     >([])
-    const {data: fetchedArticles, isLoading} = useGetAIArticles(
+    const {data: fetchedArticles, isLoading} = useGetAIArticlesByHelpCenter(
         helpCenterId,
         locale,
         {

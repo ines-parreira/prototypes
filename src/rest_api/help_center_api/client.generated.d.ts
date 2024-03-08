@@ -38,6 +38,7 @@ declare namespace Components {
       related_tickets_count?: number;
       batch_datetime?: string; // date-time
       review_action?: "archive" | "publish" | "saveAsDraft";
+      reviews?: ArticleTemplateReviewDto[];
     }
     export interface AccessTokenDto {
       access_token: string;
@@ -212,6 +213,12 @@ declare namespace Components {
        *     
        */
       score: number;
+    }
+    export interface ArticleTemplateReviewDto {
+      template_key: string;
+      help_center_id: number;
+      action: "archive" | "publish" | "saveAsDraft";
+      reason?: string | null;
     }
     export interface ArticleTranslationRatingDto {
       /**
@@ -3320,6 +3327,11 @@ declare namespace Paths {
     }
   }
   namespace ListAIArticleTemplates {
+    namespace Responses {
+      export type $200 = Components.Schemas.AIArticleTemplateDto[];
+    }
+  }
+  namespace ListAIArticleTemplatesByHelpCenter {
     namespace Parameters {
       export type HelpCenterId = number;
     }
@@ -4806,10 +4818,18 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * listAIArticleTemplates - Retrieve AI article templates
+   * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
+   */
+  'listAIArticleTemplatesByHelpCenter'(
+    parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
+  /**
+   * listAIArticleTemplates - Retrieve AI article templates for account
    */
   'listAIArticleTemplates'(
-    parameters?: Parameters<Paths.ListAIArticleTemplates.PathParameters> | null,
+    parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
@@ -5848,10 +5868,20 @@ export interface PathsDictionary {
   }
   ['/api/help-center/help-centers/{help_center_id}/article-templates/ai']: {
     /**
-     * listAIArticleTemplates - Retrieve AI article templates
+     * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
      */
     'get'(
-      parameters?: Parameters<Paths.ListAIArticleTemplates.PathParameters> | null,
+      parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
+  }
+  ['/api/help-center/article-templates/ai']: {
+    /**
+     * listAIArticleTemplates - Retrieve AI article templates for account
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>

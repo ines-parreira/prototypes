@@ -3744,8 +3744,8 @@
         },
         "/api/help-center/help-centers/{help_center_id}/article-templates/ai": {
             "get": {
-                "operationId": "listAIArticleTemplates",
-                "summary": "Retrieve AI article templates",
+                "operationId": "listAIArticleTemplatesByHelpCenter",
+                "summary": "Retrieve AI article templates by help center",
                 "parameters": [
                     {
                         "name": "help_center_id",
@@ -3754,6 +3754,29 @@
                         "schema": {"type": "number"}
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AIArticleTemplateDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-templates"]
+            }
+        },
+        "/api/help-center/article-templates/ai": {
+            "get": {
+                "operationId": "listAIArticleTemplates",
+                "summary": "Retrieve AI article templates for account",
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "",
@@ -7876,6 +7899,23 @@
                 },
                 "required": ["template_key", "action"]
             },
+            "ArticleTemplateReviewDto": {
+                "type": "object",
+                "properties": {
+                    "template_key": {"type": "string"},
+                    "help_center_id": {"type": "number"},
+                    "action": {
+                        "enum": ["archive", "publish", "saveAsDraft"],
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "nullable": true,
+                        "default": null
+                    }
+                },
+                "required": ["template_key", "help_center_id", "action"]
+            },
             "AIArticleTemplateDto": {
                 "type": "object",
                 "properties": {
@@ -7899,6 +7939,12 @@
                     "review_action": {
                         "enum": ["archive", "publish", "saveAsDraft"],
                         "type": "string"
+                    },
+                    "reviews": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTemplateReviewDto"
+                        }
                     }
                 },
                 "required": [

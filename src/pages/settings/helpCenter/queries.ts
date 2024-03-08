@@ -13,8 +13,9 @@ import {
     deletePageEmbedment,
     getArticleTemplates,
     getArticleTemplate,
-    getAIGeneratedArticles,
     reviewArticleTemplate,
+    getAIGeneratedArticlesByHelpCenter,
+    getAIGeneratedArticles,
 } from './resources'
 
 /**
@@ -102,6 +103,7 @@ export const aiArticleKeys = {
     all: () => ['aiArticle'] as const,
     lists: () => [...aiArticleKeys.all(), 'list'],
     list: (helpCenterId: number) => [...aiArticleKeys.lists(), helpCenterId],
+    listAll: (locale: string) => [...aiArticleKeys.lists(), 'all', locale],
 }
 
 /**
@@ -210,7 +212,6 @@ export const useGetArticleTemplate = <
 export const useGetAIArticles = <
     TData = Awaited<ReturnType<typeof getAIGeneratedArticles>>
 >(
-    helpCenterId: Paths.ListAIArticleTemplates.Parameters.HelpCenterId,
     locale: Paths.ListArticleTemplates.Parameters.Locale,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAIGeneratedArticles>>,
@@ -223,18 +224,38 @@ export const useGetAIArticles = <
         useFlags()[FeatureFlagKey.ObservabilityAIArticles] || false
 
     return useQuery({
+        queryKey: aiArticleKeys.listAll(locale),
+        queryFn: async () => {
+            return getAIGeneratedArticles(client)
+        },
+        enabled: !!client && isAIArticlesEnabled && locale === 'en-US',
+        ...overrides,
+    })
+}
+
+export const useGetAIArticlesByHelpCenter = <
+    TData = Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>
+>(
+    helpCenterId: Paths.ListAIArticleTemplatesByHelpCenter.Parameters.HelpCenterId,
+    locale: Paths.ListArticleTemplates.Parameters.Locale,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>,
+        unknown,
+        TData
+    >
+) => {
+    const {client} = useHelpCenterApi()
+    const isAIArticlesEnabled =
+        useFlags()[FeatureFlagKey.ObservabilityAIArticles] || false
+
+    return useQuery({
         queryKey: aiArticleKeys.list(helpCenterId),
         queryFn: async () => {
-            // Enforcing locale here because API doesn't support locale as param and AI articles are only availables in english
-            if (!isAIArticlesEnabled || locale !== 'en-US') {
-                return []
-            }
-
-            return getAIGeneratedArticles(client, {
+            return getAIGeneratedArticlesByHelpCenter(client, {
                 help_center_id: helpCenterId,
             })
         },
-        enabled: !!client,
+        enabled: !!client && isAIArticlesEnabled && locale === 'en-US',
         ...overrides,
     })
 }

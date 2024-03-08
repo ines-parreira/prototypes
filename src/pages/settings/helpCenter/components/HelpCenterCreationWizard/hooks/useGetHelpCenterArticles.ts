@@ -6,7 +6,7 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 import {
-    useGetAIArticles,
+    useGetAIArticlesByHelpCenter,
     useGetArticleTemplates,
 } from 'pages/settings/helpCenter/queries'
 import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
@@ -27,7 +27,7 @@ export const useGetHelpCenterArticles = (
     locale: LocaleCode
 ): HelpCenterArticlesOutput => {
     const {data: aiArticles, isLoading: isGetAIArticlesLoading} =
-        useGetAIArticles(helpCenterId, locale, {
+        useGetAIArticlesByHelpCenter(helpCenterId, locale, {
             refetchOnWindowFocus: false,
         })
 

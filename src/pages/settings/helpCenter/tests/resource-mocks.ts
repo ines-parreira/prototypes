@@ -120,18 +120,18 @@ export const mockResourceServerReplies = (
             .reply(500, ArticleTemplatesGeneric500ErrorFixture)
     }
 
-    if (options.getAIGeneratedArticles === 'success') {
+    if (options.getAIGeneratedArticlesByHelpCenter === 'success') {
         mockedServer
             .onGet('/api/help-center/help-centers/1/article-templates/ai')
             .reply(200, AIArticlesListFixture)
     }
-    if (options.getAIGeneratedArticles === 'success-empty') {
+    if (options.getAIGeneratedArticlesByHelpCenter === 'success-empty') {
         mockedServer
             .onGet('/api/help-center/help-centers/1/article-templates/ai')
             .reply(200, AIArticlesEmptyListFixture)
     }
 
-    if (options.getAIGeneratedArticles === 'error') {
+    if (options.getAIGeneratedArticlesByHelpCenter === 'error') {
         mockedServer
             .onGet(`/api/help-center/article-templates`)
             .reply(500, AIArticlesGeneric500ErrorFixture)
