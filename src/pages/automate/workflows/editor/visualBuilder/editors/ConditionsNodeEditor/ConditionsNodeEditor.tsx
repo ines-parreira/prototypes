@@ -177,6 +177,16 @@ export default function ConditionsNodeEditor({
             })
         }
 
+    const hasMultipleChildren = (edge: VisualBuilderEdge) => {
+        const targetNode = visualBuilderGraph.nodes.find(
+            (node) => node.id === edge.target
+        )
+        if (targetNode && targetNode.type !== 'end') {
+            return true
+        }
+        return false
+    }
+
     const branches = edges.slice(0, edges.length - 1)
 
     return (
@@ -247,6 +257,9 @@ export default function ConditionsNodeEditor({
                                             isDisabled={false}
                                         >
                                             <ConditionsBranchItem
+                                                hasMultipleChildren={hasMultipleChildren(
+                                                    item
+                                                )}
                                                 name={item.data?.name}
                                                 branchId={item.id}
                                                 availableVariables={

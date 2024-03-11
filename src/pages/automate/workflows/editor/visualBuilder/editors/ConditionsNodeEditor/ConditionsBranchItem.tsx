@@ -26,6 +26,7 @@ import {
 } from 'pages/automate/workflows/models/variables.types'
 import {Condition} from 'pages/common/components/Condition/Condition'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import css from './ConditionsNodeEditor.less'
 import {getOperatorListByType} from './constants'
 import {BooleanConditionType} from './conditions/BooleanConditionType'
@@ -46,6 +47,7 @@ interface Props {
     availableVariables: WorkflowVariableList
     canDeleteBranch: boolean
     shouldShowErrors: boolean
+    hasMultipleChildren: boolean
     onConditionTypeChange: (branchId: string, type: 'and' | 'or') => void
     onNameChange: (name: string) => void
     onVariableSelect: (variable: WorkflowVariable) => void
@@ -68,6 +70,7 @@ export const ConditionsBranchItem = ({
     onVariableSelect,
     onConditionChange,
     onConditionDelete,
+    hasMultipleChildren,
     availableVariables,
     conditions,
     canDeleteBranch,
@@ -335,17 +338,34 @@ export const ConditionsBranchItem = ({
                             onSelect={onVariableSelect}
                         />
                         {canDeleteBranch && (
-                            <Button
-                                intent="destructive"
-                                fillStyle="ghost"
-                                onClick={onDeleteBranch}
+                            <ConfirmationPopover
+                                buttonProps={{intent: 'destructive'}}
+                                cancelButtonProps={{intent: 'secondary'}}
+                                content="Deleting this branch wil also delete any steps added below and cannot be undone."
+                                title={<b>Delete branch and children?</b>}
+                                onConfirm={onDeleteBranch}
+                                confirmLabel="Delete"
+                                showCancelButton
                             >
-                                <ButtonIconLabel
-                                    icon="delete"
-                                    iconClassName={css.deleteIcon}
-                                />
-                                Delete Branch
-                            </Button>
+                                {({uid, onDisplayConfirmation}) => (
+                                    <Button
+                                        id={uid}
+                                        intent="destructive"
+                                        fillStyle="ghost"
+                                        onClick={
+                                            hasMultipleChildren
+                                                ? onDisplayConfirmation
+                                                : onDeleteBranch
+                                        }
+                                    >
+                                        <ButtonIconLabel
+                                            icon="delete"
+                                            iconClassName={css.deleteIcon}
+                                        />
+                                        Delete Branch
+                                    </Button>
+                                )}
+                            </ConfirmationPopover>
                         )}
                     </div>
                 </div>
