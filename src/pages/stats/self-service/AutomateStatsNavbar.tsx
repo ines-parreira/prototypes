@@ -4,19 +4,13 @@ import _kebabCase from 'lodash/kebabCase'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import cssNavbar from 'assets/css/navbar.less'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getIntegrationsList,
-    hasIntegrationOfTypes,
-} from 'state/integrations/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getHasAutomate} from 'state/billing/selectors'
-import {Category} from 'models/integration/types'
 import {
     ROUTE_AUTOMATE_OVERVIEW,
     PAGE_TITLE_OVERVIEW,
@@ -35,18 +29,6 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
     const hasAutomate = useAppSelector(getHasAutomate)
     const isNewAutomateEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewAutomationAddon]
-    const integrationsList = useAppSelector(getIntegrationsList)
-
-    const hasEcommerceIntegerations = useAppSelector(
-        hasIntegrationOfTypes(
-            integrationsList
-                .filter((integration) =>
-                    integration.categories.includes(Category.ECOMMERCE)
-                )
-                .map((integration) => integration.type)
-        )
-    )
-
     const automateRoutes: {
         label: ReactNode
         to: string
@@ -64,19 +46,7 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
     ]
     isNewAutomateEnabled &&
         automateRoutes.unshift({
-            label: (
-                <>
-                    {PAGE_TITLE_OVERVIEW}
-                    {hasAutomate && hasEcommerceIntegerations && (
-                        <Badge
-                            type={ColorType.Blue}
-                            className={cssNavbar.badge}
-                        >
-                            NEW
-                        </Badge>
-                    )}
-                </>
-            ),
+            label: PAGE_TITLE_OVERVIEW,
             to: OVERVIEW_PATH,
             text: PAGE_TITLE_OVERVIEW,
         })
