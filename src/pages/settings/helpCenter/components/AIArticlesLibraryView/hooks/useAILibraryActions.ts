@@ -128,10 +128,10 @@ const useAILibraryActions = (
     const isEditModalOpen = editModal.isOpened
 
     const onEditorClose = () => {
-        setEditModal((prevState) => ({
-            ...prevState,
+        setEditModal({
+            view: null,
             isOpened: false,
-        }))
+        })
     }
 
     const archiveModal = useRef<AIArticleArchiveModalHandle>(null)

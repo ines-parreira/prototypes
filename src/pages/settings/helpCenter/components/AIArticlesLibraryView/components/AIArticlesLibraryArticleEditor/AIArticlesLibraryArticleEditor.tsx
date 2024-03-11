@@ -163,6 +163,7 @@ const ArticleEditor: React.FC<Props> = ({
                     <header className={css.header}>
                         <input
                             type="text"
+                            data-testid="article-title-input"
                             value={title}
                             placeholder="Title"
                             onChange={handleTitleChange}
@@ -243,6 +244,7 @@ const ArticleEditor: React.FC<Props> = ({
                                 <Group>
                                     <Button
                                         id="save-changes-button"
+                                        data-testid="save-changes-button"
                                         isDisabled={
                                             !canManageArticle || isDisabled
                                         }
@@ -280,7 +282,7 @@ const ArticleEditor: React.FC<Props> = ({
                                             })
                                         }
                                     >
-                                        Save as Draft
+                                        Save Changes
                                     </DropdownItem>
                                     <DropdownItem
                                         onClick={() =>
