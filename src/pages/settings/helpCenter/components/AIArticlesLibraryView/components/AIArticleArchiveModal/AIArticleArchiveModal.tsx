@@ -18,6 +18,8 @@ export enum ArchiveReason {
     Other = 'Other',
 }
 
+const archiveReasonMaxLength = 5000
+
 const archiveReasonOptions = Object.values(ArchiveReason).map((value) => ({
     value,
     label: value,
@@ -91,19 +93,29 @@ const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
                                 showSelectedOption
                             />
                         </div>
-                        <TextArea
+                        <div
                             style={{
                                 display:
                                     reason === ArchiveReason.Other
                                         ? 'block'
                                         : 'none',
                             }}
-                            ref={reasonCommentRef}
-                            placeholder="Type your reason here..."
-                            rows={3}
-                            value={reasonComment}
-                            onChange={setReasonComment}
-                        />
+                        >
+                            <TextArea
+                                ref={reasonCommentRef}
+                                placeholder="Type your reason here..."
+                                rows={3}
+                                value={reasonComment}
+                                onChange={(value) =>
+                                    setReasonComment(
+                                        value.slice(0, archiveReasonMaxLength)
+                                    )
+                                }
+                                caption={`${
+                                    reasonComment?.length || 0
+                                }/${archiveReasonMaxLength} characters`}
+                            />
+                        </div>
                     </div>
                 </ModalBody>
                 <ModalActionsFooter>
