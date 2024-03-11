@@ -1,22 +1,17 @@
 import React from 'react'
-
 import {Col, Row} from 'reactstrap'
-
 import classnames from 'classnames'
-
 import {fromJS, List} from 'immutable'
 
 import {Attachment} from 'common/types'
-import Avatar from '../../components/Avatar/Avatar'
-
-import {Actor, Meta, Source} from '../../../../models/ticket/types'
-
-import TicketMessageMeta from '../../../tickets/detail/components/TicketMessages/Meta'
-import {DatetimeLabel} from '../../utils/labels'
+import {Actor, Meta, Source} from 'models/ticket/types'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import TicketMessageMeta from 'pages/tickets/detail/components/TicketMessages/Meta'
 
 import GenericCard from '../GenericCard/GenericCard'
 import SourceIcon from '../SourceIcon'
-import TicketAttachments from '../../../tickets/detail/components/ReplyArea/TicketAttachments'
 
 import css from './TicketMessageEmbeddedCard.less'
 

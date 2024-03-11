@@ -5,10 +5,12 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {Components} from 'rest_api/help_center_api/client.generated'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {UpdateToggle} from '../UpdateToggle'
 
 const mockedUpdateHelpCenter = jest.fn()
+
 jest.mock('../../../hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: () => ({

@@ -60,7 +60,7 @@ exports[`<UserAuditRow/> should fallback to user email when user has no name set
       >
         <span>
           <span
-            id="datetime-tooltip-ssssssssst"
+            id="datetime-tooltip-6"
           >
             January 25, 2022 10:39 AM
           </span>
@@ -109,7 +109,7 @@ exports[`<UserAuditRow/> should not render user when no agents are in store 1`] 
       >
         <span>
           <span
-            id="datetime-tooltip-ssssssssst"
+            id="datetime-tooltip-2"
           >
             January 25, 2022 10:39 AM
           </span>
@@ -178,7 +178,7 @@ exports[`<UserAuditRow/> should render with a link to Customer object type 1`] =
       >
         <span>
           <span
-            id="datetime-tooltip-ssssssssst"
+            id="datetime-tooltip-4"
           >
             January 25, 2022 10:39 AM
           </span>
@@ -247,7 +247,7 @@ exports[`<UserAuditRow/> should render with a link to Ticket object type 1`] = `
       >
         <span>
           <span
-            id="datetime-tooltip-ssssssssst"
+            id="datetime-tooltip-3"
           >
             January 25, 2022 10:39 AM
           </span>
@@ -316,7 +316,7 @@ exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
       >
         <span>
           <span
-            id="datetime-tooltip-ssssssssst"
+            id="datetime-tooltip-5"
           >
             January 25, 2022 10:39 AM
           </span>
@@ -383,7 +383,7 @@ exports[`<UserAuditRow/> should render with a user, event type and object type 1
       >
         <span>
           <span
-            id="datetime-tooltip-ssssssssst"
+            id="datetime-tooltip-1"
           >
             January 25, 2022 10:39 AM
           </span>

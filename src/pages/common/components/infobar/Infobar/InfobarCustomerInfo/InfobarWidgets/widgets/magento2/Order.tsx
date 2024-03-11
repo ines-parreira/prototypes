@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {guessFieldValueFromRawData} from 'pages/common/components/infobar/utils'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {RootState} from 'state/types'

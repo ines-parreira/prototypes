@@ -2,7 +2,7 @@ import React, {ContextType, ReactNode} from 'react'
 import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/magento.svg'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import StaticField from 'infobar/components/StaticField'
 import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'

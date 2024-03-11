@@ -5,7 +5,7 @@ import {Map} from 'immutable'
 
 import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
 
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import css from './SatisfactionSurvey.less'
 

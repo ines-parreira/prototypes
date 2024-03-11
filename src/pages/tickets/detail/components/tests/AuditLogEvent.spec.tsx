@@ -15,14 +15,10 @@ import {RuleEvent} from 'state/rules/types'
 import {AuditLogEventContainer} from '../AuditLogEvent'
 
 jest.mock(
-    'pages/common/utils/labels',
+    'pages/common/utils/DatetimeLabel',
     () =>
-        ({
-            ...jest.requireActual('pages/common/utils/labels'),
-            DatetimeLabel: ({dateTime}: {dateTime: string}) => (
-                <div>{dateTime}</div>
-            ),
-        } as Record<string, unknown>)
+        ({dateTime}: {dateTime: string}) =>
+            <div>{dateTime}</div>
 )
 
 jest.mock('state/entities/ruleRecipes/hooks', () => ({

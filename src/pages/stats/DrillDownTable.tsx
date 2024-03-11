@@ -17,7 +17,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {NumberedPagination} from 'pages/common/components/Paginations'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import {
     DRILL_DOWN_PER_PAGE,

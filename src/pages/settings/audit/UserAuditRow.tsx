@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import _startCase from 'lodash/startCase'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {Event} from 'models/event/types'
 import {getAgents} from 'state/agents/selectors'
 import {humanizeString} from 'utils'

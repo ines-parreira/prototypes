@@ -1,5 +1,6 @@
-import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
+import {cleanup, render, screen} from '@testing-library/react'
+
 import * as queries from 'models/voiceCall/queries'
 import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
 
@@ -22,9 +23,12 @@ jest.mock(
     () => () => <div>Agent Label</div>
 )
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: any) => <div>{dateTime}</div>,
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div>{dateTime}</div>
+)
 
 jest.mock('models/voiceCall/utils', () => ({
     processEvents: (events: any): any => events,

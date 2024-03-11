@@ -19,11 +19,12 @@ import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/Infobar
 import {TransactionKind} from 'constants/integrations/types/shopify'
 import {CancelOrderModalContainer} from '../CancelOrderModal'
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
-        <div data-testid="DatetimeLabel">{dateTime}</div>
-    ),
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div data-testid="DatetimeLabel">{dateTime}</div>
+)
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',

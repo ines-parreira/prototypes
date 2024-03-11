@@ -8,11 +8,11 @@ exports[`Order <AfterTitle/> should display the refund action (because total_pri
     <button
       aria-disabled="false"
       class="wrapper actionButton fill secondary small"
-      id="action-button-2"
+      id="action-button-6"
       type="button"
     >
       <span
-        id="action-button-2-tooltip-target"
+        id="action-button-6-tooltip-target"
       />
       <span
         class="wrapper"
@@ -50,11 +50,11 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
     <button
       aria-disabled="false"
       class="wrapper actionButton fill secondary small"
-      id="action-button-1"
+      id="action-button-4"
       type="button"
     >
       <span
-        id="action-button-1-tooltip-target"
+        id="action-button-4-tooltip-target"
       />
       <span
         class="wrapper"

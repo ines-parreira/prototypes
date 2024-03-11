@@ -5,14 +5,15 @@ import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
-import {RootState} from '../../../state/types'
+import {integrationsState} from 'fixtures/integrations'
+import {IntegrationType} from 'models/integration/constants'
+import {Integration} from 'models/integration/types'
+import {RootState} from 'state/types'
+
 import IntegrationsStatsFilter, {
     FONT_ICONS,
     IMAGE_ICONS,
 } from '../IntegrationsStatsFilter'
-import {integrationsState} from '../../../fixtures/integrations'
-import {IntegrationType} from '../../../models/integration/constants'
-import {Integration} from '../../../models/integration/types'
 
 const mockStore = configureMockStore([thunk])
 

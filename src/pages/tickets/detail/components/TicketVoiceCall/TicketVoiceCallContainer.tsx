@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {User} from 'config/types/user'
 import {Customer} from 'models/customer/types'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
 import css from './TicketVoiceCallContainer.less'

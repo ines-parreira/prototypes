@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import Tooltip from 'pages/common/components/Tooltip'
 import {TicketChannel} from 'business/types/ticket'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import css from './TicketVoiceCallContainer.less'
 

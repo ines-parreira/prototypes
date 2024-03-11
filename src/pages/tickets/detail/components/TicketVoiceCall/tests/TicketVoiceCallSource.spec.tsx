@@ -5,9 +5,12 @@ import {Provider} from 'react-redux'
 import {mockStore} from 'utils/testing'
 import TicketVoiceCallSource from '../TicketVoiceCallSource'
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>,
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div>{dateTime}</div>
+)
 
 describe('TicketVoiceCallSource', () => {
     const props = {

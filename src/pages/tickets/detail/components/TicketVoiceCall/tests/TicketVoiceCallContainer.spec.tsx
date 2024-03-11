@@ -36,11 +36,12 @@ jest.mock(
 
 jest.mock('../TicketVoiceCallDuration', () => () => <div>Duration</div>)
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
-        <div>DatetimeLabel {dateTime}</div>
-    ),
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div>DatetimeLabel {dateTime}</div>
+)
 
 jest.mock('pages/common/components/Avatar/Avatar', () => () => (
     <div>Avatar</div>

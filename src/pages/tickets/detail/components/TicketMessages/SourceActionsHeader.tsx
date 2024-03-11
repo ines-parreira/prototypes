@@ -2,16 +2,14 @@ import React, {Component} from 'react'
 import classNamesBind from 'classnames/bind'
 import {connect, ConnectedProps} from 'react-redux'
 
-import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
-
-import * as infobarActions from 'state/infobar/actions'
-import {getIsCurrentHelpdeskLegacy} from 'state/billing/selectors'
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {RootState} from 'state/types'
 import type {TicketMessage} from 'models/ticket/types'
+import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
+import {getIsCurrentHelpdeskLegacy} from 'state/billing/selectors'
+import * as infobarActions from 'state/infobar/actions'
+import {RootState} from 'state/types'
 
 import CollapsedSourceActions from './CollapsedSourceActions/CollapsedSourceActions'
-
 import IntentsFeedback from './IntentsFeedback/IntentsFeedback'
 
 import css from './SourceActionsHeader.less'

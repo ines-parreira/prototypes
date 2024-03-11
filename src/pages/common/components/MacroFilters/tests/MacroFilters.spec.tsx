@@ -4,7 +4,9 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+
 import {RootState} from 'state/types'
+
 import MacroFilters from '../MacroFilters'
 
 const mockStore = configureMockStore([thunk])

@@ -24,11 +24,12 @@ import {DraftOrderModalContainer} from '../DraftOrderModal'
 import EmailInvoicePopover from '../EmailInvoicePopover/EmailInvoicePopover'
 import OrderFooter from '../OrderFooter/OrderFooter'
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
-        <div data-testid="DatetimeLabel">{dateTime}</div>
-    ),
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div data-testid="DatetimeLabel">{dateTime}</div>
+)
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',

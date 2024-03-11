@@ -23,7 +23,7 @@ const commonProps: ComponentProps<typeof InfobarCustomerActions> = {
     setCustomer: () => null,
 }
 
-jest.mock('../../../../../../utils', () => ({
+jest.mock('utils', () => ({
     isCurrentlyOnTicket: (ticketId: Maybe<string | number>) => !!ticketId,
 }))
 

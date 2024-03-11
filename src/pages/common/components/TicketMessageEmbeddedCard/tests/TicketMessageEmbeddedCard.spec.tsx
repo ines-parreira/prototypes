@@ -16,15 +16,9 @@ jest.mock(
     () => () => <div>MockedTicketAttachments</div>
 )
 
-jest.mock('pages/common/utils/labels.tsx', () => {
-    const labels: Record<string, unknown> = jest.requireActual(
-        'pages/common/utils/labels.tsx'
-    )
-    return {
-        ...labels,
-        DatetimeLabel: () => <div>MockedDatetimeLabel</div>,
-    }
-})
+jest.mock('pages/common/utils/DatetimeLabel', () => () => (
+    <div>MockedDatetimeLabel</div>
+))
 
 const defaultProps = {
     integrationId: 1,

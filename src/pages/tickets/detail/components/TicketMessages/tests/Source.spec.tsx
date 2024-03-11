@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import moment from 'moment'
 import {omit} from 'lodash'
@@ -7,16 +7,16 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {channels as mockChannels} from 'fixtures/channels'
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {DatetimeLabel} from 'pages/common/utils/labels'
 import {Source as MessageSource} from 'models/ticket/types'
 
 import Source from '../Source'
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: ComponentProps<typeof DatetimeLabel>) => {
-        return <div>{dateTime}</div>
-    },
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div>{dateTime}</div>
+)
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({

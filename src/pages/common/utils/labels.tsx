@@ -1,46 +1,31 @@
-import React, {CSSProperties, Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, List, Map} from 'immutable'
+import React, {ReactNode} from 'react'
+import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
-import _omit from 'lodash/omit'
-import {Badge as ReactstrapBadge, UncontrolledTooltipProps} from 'reactstrap'
+import {Badge as ReactstrapBadge} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
-import moment from 'moment-timezone'
 
 import {isImmutable} from 'common/utils'
 import {DEFAULT_TAG_COLOR} from 'config'
 import {UserRole} from 'config/types/user'
-import {
-    EMAIL_INTEGRATION_TYPES,
-    RECHARGE_INTEGRATION_TYPE,
-} from 'constants/integration'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
+
 import {SourceType} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Tooltip from 'pages/common/components/Tooltip'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import {getAgents} from 'state/agents/selectors'
-import * as currentUserSelectors from 'state/currentUser/selectors'
-import * as customersHelpers from 'state/customers/helpers'
-import {getTeams} from 'state/teams/selectors'
-import {RootState} from 'state/types'
-import {parseTimeDelta} from 'tickets/common/utils'
-import {formatDatetime} from 'utils'
-import useAppSelector from 'hooks/useAppSelector'
+import {getDisplayName} from 'state/customers/helpers'
 import {getIntegrationChannel} from 'state/integrations/selectors'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import {getTeams} from 'state/teams/selectors'
 import {Theme, useTheme} from 'theme'
+import {parseTimeDelta} from 'tickets/common/utils'
 import {getTextColorBasedOnBackground} from 'utils/colors'
 
+import DatetimeLabel from './DatetimeLabel'
 import css from './labels.less'
 
-type RecipientsLabelProps = {
-    recipients: string
-}
-
-export const RecipientsLabel: React.FC<RecipientsLabelProps> = ({
-    recipients,
-}) => (
+export const RecipientsLabel = ({recipients}: {recipients: string}) => (
     <>
         {recipients.split(',').map((recipient) => (
             <div key={recipient} className={css.recipientLabel}>
@@ -50,30 +35,20 @@ export const RecipientsLabel: React.FC<RecipientsLabelProps> = ({
     </>
 )
 
-/**
- * AGENT
- */
-type AgentLabelProps = {
+export function AgentLabel({
+    name = '',
+    className = '',
+    maxWidth,
+    profilePictureUrl = '',
+    shouldDisplayAvatar = false,
+}: {
     name?: string
     maxWidth?: string
     className?: string
     profilePictureUrl?: string | null
     shouldDisplayAvatar?: boolean
-}
-
-export function AgentLabel({
-    name = '',
-    className = '',
-    profilePictureUrl = '',
-    shouldDisplayAvatar = false,
-    maxWidth,
-}: AgentLabelProps) {
+}) {
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
-    const style: CSSProperties = {}
-
-    if (maxWidth) {
-        style.maxWidth = `${maxWidth}px`
-    }
 
     return (
         <div className={classnames(css.AgentLabel, className)}>
@@ -94,7 +69,12 @@ export function AgentLabel({
             )}
 
             {name && (
-                <span className={css.name} style={style}>
+                <span
+                    className={css.name}
+                    {...(typeof maxWidth !== 'undefined'
+                        ? {style: {maxWidth: `${maxWidth}px`}}
+                        : {})}
+                >
                     {name}
                 </span>
             )}
@@ -102,31 +82,24 @@ export function AgentLabel({
     )
 }
 
-/**
- * TEAM
- */
-type TeamLabelProps = {
+export const TeamLabel = ({
+    name = '',
+    maxWidth,
+    className,
+    emoji,
+    shouldDisplayAvatar = false,
+    shouldDisplayTeamIcon = false,
+}: {
     name: string
     maxWidth?: number
     className?: string
     emoji?: Map<any, any>
     shouldDisplayAvatar?: boolean
     shouldDisplayTeamIcon?: boolean
-}
-
-export class TeamLabel extends Component<TeamLabelProps> {
-    static defaultProps = {
-        name: '',
-        className: '',
-        shouldDisplayAvatar: false,
-        shouldDisplayTeamIcon: false,
-    }
-
-    _renderAvatar() {
-        const {name, emoji, shouldDisplayAvatar} = this.props
-
-        if (shouldDisplayAvatar) {
-            return emoji ? (
+}) => (
+    <div className={classnames(css.TeamLabel, className)}>
+        {shouldDisplayAvatar ? (
+            emoji ? (
                 <span className={css.avatar}>
                     <Emoji
                         emoji={emoji.toJS()}
@@ -138,45 +111,35 @@ export class TeamLabel extends Component<TeamLabelProps> {
             ) : (
                 <Avatar name={name} size={26} className={css.avatar} />
             )
-        }
-
-        return <span className="material-icons md-2">people</span>
-    }
-
-    render() {
-        const {name, maxWidth, className, shouldDisplayTeamIcon} = this.props
-        const style: CSSProperties = {}
-        if (maxWidth) {
-            style.maxWidth = `${maxWidth}px`
-        }
-
-        return (
-            <div className={classnames(css.TeamLabel, className)}>
-                {this._renderAvatar()}
-                {name && (
-                    <span className={css.name} style={style}>
-                        {name}
-                        {shouldDisplayTeamIcon && (
-                            <span
-                                className={classnames(
-                                    css.nameIcon,
-                                    'material-icons md-2'
-                                )}
-                            >
-                                people
-                            </span>
+        ) : (
+            <span className="material-icons md-2">people</span>
+        )}
+        {name && (
+            <span
+                className={css.name}
+                {...(typeof maxWidth !== 'undefined'
+                    ? {style: {maxWidth: `${maxWidth}px`}}
+                    : {})}
+            >
+                {name}
+                {shouldDisplayTeamIcon && (
+                    <span
+                        className={classnames(
+                            css.nameIcon,
+                            'material-icons md-2'
                         )}
+                    >
+                        people
                     </span>
                 )}
-            </div>
-        )
-    }
-}
+            </span>
+        )}
+    </div>
+)
 
-/**
- * USER
- */
-type CustomerLabelParamType = {
+export const CustomerLabel = ({
+    customer,
+}: {
     customer:
         | {
               name: string
@@ -184,25 +147,22 @@ type CustomerLabelParamType = {
           }
         | string
         | Map<any, any>
-}
-export const CustomerLabel = ({customer}: CustomerLabelParamType) => {
-    if (typeof customer === 'string') {
-        return <span>{customer}</span>
-    }
+}) =>
+    typeof customer === 'string' ? (
+        <span>{customer}</span>
+    ) : (
+        <span>{getDisplayName(customer)}</span>
+    )
 
-    return <span>{customersHelpers.getDisplayName(customer)}</span>
-}
-CustomerLabel.displayName = 'CustomerLabel'
-
-/**
- * TAG
- */
-type TagLabelProps = {
+export const TagLabel = ({
+    className,
+    decoration,
+    children,
+}: {
     className?: string
     decoration?: Map<any, any>
     children?: ReactNode
-}
-export const TagLabel = ({className, decoration, children}: TagLabelProps) => {
+}) => {
     const color =
         ((decoration || fromJS({})) as Map<any, any>).get('color') ||
         DEFAULT_TAG_COLOR
@@ -227,20 +187,13 @@ export const TagLabel = ({className, decoration, children}: TagLabelProps) => {
     )
 }
 
-TagLabel.displayName = 'TagLabel'
-
-/**
- * TIMEDELTA LABEL
- */
-type TimedeltaLabelParamType = {
-    duration: string
-    className?: string
-}
-
 export const TimedeltaLabel = ({
     duration,
     className,
-}: TimedeltaLabelParamType) => {
+}: {
+    duration: string
+    className?: string
+}) => {
     const durationMoment = parseTimeDelta(duration)
     const durationArray = []
     durationMoment.days()
@@ -263,15 +216,13 @@ export const TimedeltaLabel = ({
     )
 }
 
-/**
- * STATUS
- */
-type StatusLabelParam = {
-    status: string
+export const StatusLabel = ({
+    className,
+    status,
+}: {
     className?: string
-}
-
-export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
+    status: string
+}) => {
     let color: ColorType = ColorType.Modern
 
     switch (status) {
@@ -285,25 +236,16 @@ export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
     }
 
     return (
-        <Badge className="text-center" type={color} {...rest}>
+        <Badge className={className ?? 'text-center'} type={color}>
             {status}
         </Badge>
     )
 }
 
-StatusLabel.displayName = 'StatusLabel'
-
-/**
- * CHANNEL
- */
-
 export const ChannelLabel = ({channel}: {channel: SourceType}) => (
     <SourceIcon type={channel} variant="secondary" />
 )
 
-/**
- *  Source DETAIL
- */
 export const IntegrationsDetailLabel = ({
     integration,
 }: {
@@ -343,154 +285,42 @@ export const IntegrationsDetailLabel = ({
     )
 }
 
-IntegrationsDetailLabel.displayName = 'IntegrationsDetailLabel'
+export const RoleLabel = ({role}: {role: {id?: number; name: UserRole}}) => {
+    let color: ColorType | undefined
+    let label = null
 
-type Role = {
-    id?: number
-    name: UserRole
+    if (role.name === UserRole.Admin) {
+        color = ColorType.LightError
+        label = 'Admin'
+    } else if (role.name === UserRole.Agent) {
+        color = ColorType.LightWarning
+        label = 'Lead'
+    } else if (role.name === UserRole.BasicAgent) {
+        color = ColorType.Teal
+        label = 'Basic'
+    } else if (role.name === UserRole.LiteAgent) {
+        color = ColorType.LightPurple
+        label = 'Lite'
+    } else if (role.name === UserRole.ObserverAgent) {
+        color = ColorType.LightGrey
+        label = 'Observer'
+    }
+
+    return <Badge type={color}>{label}</Badge>
 }
 
-/**
- * ROLE
- */
-export class RoleLabel extends Component<{
-    role: Role
-}> {
-    render() {
-        const {role} = this.props
-        let color: ColorType | undefined
-        let label = null
-
-        if (role.name === UserRole.Admin) {
-            color = ColorType.LightError
-            label = 'Admin'
-        } else if (role.name === UserRole.Agent) {
-            color = ColorType.LightWarning
-            label = 'Lead'
-        } else if (role.name === UserRole.BasicAgent) {
-            color = ColorType.Teal
-            label = 'Basic'
-        } else if (role.name === UserRole.LiteAgent) {
-            color = ColorType.LightPurple
-            label = 'Lite'
-        } else if (role.name === UserRole.ObserverAgent) {
-            color = ColorType.LightGrey
-            label = 'Observer'
-        }
-
-        return <Badge type={color}>{label}</Badge>
-    }
-}
-
-/**
- * DATETIME
- */
-type DatetimeLabelOwnProps = {
-    breakDate?: boolean
-    className?: string
-    dateTime?: string
-    labelFormat?: DateAndTimeFormatting
-    hasTooltip?: boolean
-    placement?: UncontrolledTooltipProps['placement']
-    integrationType?: string
-}
-
-type DatetimeLabelProps = DatetimeLabelOwnProps &
-    ConnectedProps<typeof datetimeLabelConnector>
-
-class DatetimeLabelContainer extends React.PureComponent<DatetimeLabelProps> {
-    id: string
-
-    static defaultProps = {
-        hasTooltip: true,
-    }
-
-    constructor(props: DatetimeLabelProps) {
-        super(props)
-        this.id = `datetime-tooltip-${Math.random().toString(36).slice(2)}` // generates a random unique id
-    }
-
-    render() {
-        const {
-            breakDate,
-            className,
-            hasTooltip,
-            labelFormat,
-            placement = 'top',
-            timezone,
-            getDateAndTimeFormatter,
-            integrationType,
-        } = _omit(this.props, 'dispatch')
-        let {dateTime} = this.props
-
-        if (!dateTime) {
-            return null
-        }
-
-        if (integrationType === RECHARGE_INTEGRATION_TYPE) {
-            dateTime = moment(dateTime).tz('US/Eastern', true).toISOString(true)
-        }
-
-        const labelDatetime = formatDatetime(
-            dateTime,
-            getDateAndTimeFormatter(
-                labelFormat || DateAndTimeFormatting.RelativeDateAndTime
-            ),
-            timezone
-        )
-        const tooltipDatetime = formatDatetime(
-            dateTime,
-            getDateAndTimeFormatter(DateAndTimeFormatting.CompactDateWithTime),
-            timezone
-        )
-
-        return (
-            <span className={className}>
-                <span id={this.id}>
-                    {breakDate
-                        ? // u200B is the unicode character for 'ZERO WIDTH SPACE'
-                          // it is intended for invisible word separation and line break control
-                          // in this case it allows us to break the date at forward slashes
-                          labelDatetime.toString().split('/').join('/\u200B')
-                        : labelDatetime}
-                </span>
-                {hasTooltip && (
-                    <Tooltip
-                        placement={placement}
-                        target={this.id}
-                        delay={{show: 200, hide: 0}}
-                        className={classnames(css.datetimeTooltip)}
-                    >
-                        {tooltipDatetime.toString()}
-                    </Tooltip>
-                )}
-            </span>
-        )
-    }
-}
-
-const datetimeLabelConnector = connect((state: RootState) => {
-    return {
-        timezone: currentUserSelectors.getTimezone(state),
-        getDateAndTimeFormatter:
-            currentUserSelectors.getDateAndTimeFormatter(state),
-    }
-})
-
-export const DatetimeLabel = datetimeLabelConnector(DatetimeLabelContainer)
-
-const UserAssigneeLabelComponent = ({
+export const UserAssigneeLabel = ({
     assigneeUser,
-    agents,
     size,
 }: {
     assigneeUser: Map<any, any>
-    agents: List<Map<any, any>>
     size?: number
 }) => {
+    const agents = useAppSelector(getAgents)
+
     const agent = agents.find(
-        (agent) => agent!.get('id') === assigneeUser.get('id')
-    )
+        (agent: Map<any, any>) => agent.get('id') === assigneeUser.get('id')
+    ) as Map<any, any>
     const avatarUrl =
         assigneeUser.getIn(['meta', 'profile_picture_url']) ||
         (agent && agent.getIn(['meta', 'profile_picture_url']))
@@ -507,18 +337,13 @@ const UserAssigneeLabelComponent = ({
     )
 }
 
-export const UserAssigneeLabel = connect((state: RootState) => ({
-    agents: getAgents(state),
-}))(UserAssigneeLabelComponent)
-
-type TeamAssigneeLabelProps = {assigneeTeam: Map<any, any>} & ConnectedProps<
-    typeof teamAssigneeLabelConnector
->
-
-const TeamAssigneeLabelComponent = ({
+export const TeamAssigneeLabel = ({
     assigneeTeam,
-    teams,
-}: TeamAssigneeLabelProps) => {
+}: {
+    assigneeTeam: Map<any, any>
+}) => {
+    const teams = useAppSelector(getTeams)
+
     const team = teams.find(
         (team) => team!.get('id') === assigneeTeam.get('id')
     )
@@ -547,70 +372,59 @@ const TeamAssigneeLabelComponent = ({
     )
 }
 
-const teamAssigneeLabelConnector = connect((state: RootState) => ({
-    teams: getTeams(state),
-}))
-
-export const TeamAssigneeLabel = teamAssigneeLabelConnector(
-    TeamAssigneeLabelComponent
-)
-
-type RenderLabelProps = {
+export const RenderLabel = ({
+    field,
+    value,
+}: {
     field: Map<any, any>
     value?: any
-}
+}) => {
+    if (!value) {
+        return null
+    }
 
-export class RenderLabel extends Component<RenderLabelProps> {
-    render() {
-        const {field, value} = this.props
+    if (React.isValidElement(value)) {
+        return value
+    }
 
-        if (!value) {
-            return null
-        }
-
-        if (React.isValidElement(value)) {
-            return value
-        }
-
-        switch (field.get('name')) {
-            case 'tags':
-                return <TagLabel>{value}</TagLabel>
-            case 'created':
-            case 'updated':
-            case 'last_message':
-            case 'last_received_message':
-            case 'snooze':
-            case 'closed':
-                return <DatetimeLabel dateTime={value} />
-            case 'status':
-                return <StatusLabel status={value} />
-            case 'assignee':
-                return <UserAssigneeLabel assigneeUser={value} />
-            case 'assignee_team':
-                return <TeamAssigneeLabel assigneeTeam={value} />
-            case 'integrations':
-                return typeof value === 'string' ? (
-                    <span>{value}</span>
-                ) : (
-                    <IntegrationsDetailLabel integration={value} />
-                )
-            case 'customer':
-                return <CustomerLabel customer={value} />
-            case 'role':
-                return (
-                    <RoleLabel
-                        role={
-                            isImmutable(value)
-                                ? (value as Map<any, any>).toJS()
-                                : value
-                        }
-                    />
-                )
-            case 'via':
-            case 'channel':
-                return <ChannelLabel channel={value} />
-            default:
-                return <span>{value}</span>
-        }
+    switch (field.get('name')) {
+        case 'tags':
+            return <TagLabel>{value}</TagLabel>
+        case 'created':
+        case 'updated':
+        case 'last_message':
+        case 'last_received_message':
+        case 'snooze':
+        case 'closed':
+            return <DatetimeLabel dateTime={value} />
+        case 'status':
+            return <StatusLabel status={value} />
+        case 'assignee':
+            return <UserAssigneeLabel assigneeUser={value} />
+        case 'assignee_team':
+            return <TeamAssigneeLabel assigneeTeam={value} />
+        case 'integrations':
+            return typeof value === 'string' ? (
+                <span>{value}</span>
+            ) : (
+                <IntegrationsDetailLabel integration={value} />
+            )
+        case 'customer':
+            return <CustomerLabel customer={value} />
+        case 'role':
+            return (
+                <RoleLabel
+                    role={
+                        isImmutable(value)
+                            ? (value as Map<any, any>).toJS()
+                            : value
+                    }
+                />
+            )
+        case 'via':
+        case 'channel':
+            return <ChannelLabel channel={value} />
+        default:
+            return <span>{value}</span>
     }
 }

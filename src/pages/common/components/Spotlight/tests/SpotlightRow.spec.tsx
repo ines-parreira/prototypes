@@ -5,8 +5,8 @@ import userEvent from '@testing-library/user-event'
 import * as platform from 'utils/platform'
 import {mockSearchRank} from 'fixtures/searchRank'
 
-import SpotlightRow from '../SpotlightRow'
 import SearchRankScenarioContext from '../../SearchRankScenarioProvider/SearchRankScenarioContext'
+import SpotlightRow from '../SpotlightRow'
 
 describe('<SpotlightRow/>', () => {
     const mockOnClose = jest.fn()

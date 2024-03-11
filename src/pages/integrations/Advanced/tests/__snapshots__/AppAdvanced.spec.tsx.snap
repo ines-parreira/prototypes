@@ -144,7 +144,7 @@ exports[`AppAdvanced should render 1`] = `
           class="text-faded"
         >
           <span
-            id="datetime-tooltip-4fzzzxjylrx"
+            id="datetime-tooltip-4"
           >
             01/17/2022
           </span>
@@ -170,7 +170,7 @@ exports[`AppAdvanced should render 1`] = `
           class="text-faded"
         >
           <span
-            id="datetime-tooltip-4fzzzxjylrx"
+            id="datetime-tooltip-5"
           >
             02/17/2022
           </span>
@@ -208,7 +208,7 @@ exports[`AppAdvanced should render 1`] = `
           class="text-faded"
         >
           <span
-            id="datetime-tooltip-4fzzzxjylrx"
+            id="datetime-tooltip-6"
           >
             03/17/2022
           </span>

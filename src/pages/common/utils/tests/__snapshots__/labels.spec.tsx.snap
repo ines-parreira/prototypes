@@ -1,27 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components utils: labels <DatetimeLabel/> render() should render a modified date because integrationType is Recharge 1`] = `
-<span>
-  <span
-    id="datetime-tooltip-"
-  >
-    01/01/2022 12:11 AM
-  </span>
-  TooltipMock
-</span>
-`;
-
-exports[`components utils: labels <DatetimeLabel/> render() should render with zero width space 1`] = `
-<span>
-  <span
-    id="datetime-tooltip-"
-  >
-    01/​15/​2016
-  </span>
-  TooltipMock
-</span>
-`;
-
 exports[`components utils: labels <TeamLabel/> render() should render with default avatar 1`] = `
 <div
   class="TeamLabel"
@@ -217,7 +195,7 @@ exports[`components utils: labels RenderLabel distribution channel label 1`] = `
 exports[`components utils: labels RenderLabel distribution created label 1`] = `
 <span>
   <span
-    id="datetime-tooltip-"
+    id="datetime-tooltip-1"
   >
     01/15/2016
   </span>

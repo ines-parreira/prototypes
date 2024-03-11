@@ -1,22 +1,22 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {DatetimeLabel} from 'pages/common/utils/labels'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithDnD} from 'utils/testing'
 import Row from '../Row'
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: ComponentProps<typeof DatetimeLabel>) => {
-        return <div>{dateTime}</div>
-    },
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div data-testid="DatetimeLabel">{dateTime}</div>
+)
 
 jest.mock('models/customField/resources')
 

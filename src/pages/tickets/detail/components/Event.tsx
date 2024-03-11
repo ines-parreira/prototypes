@@ -11,7 +11,8 @@ import IconButton from 'pages/common/components/button/IconButton'
 import {IntegrationType} from 'models/integration/constants'
 import {RootState} from 'state/types'
 import {getActionByName} from 'config/actions'
-import {AgentLabel, DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {AgentLabel} from 'pages/common/utils/labels'
 import {getIntegrationById} from 'state/integrations/selectors'
 import {
     getAppDataByAppId,

@@ -23,7 +23,7 @@ import StaticField from 'infobar/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {renderTemplate} from 'pages/common/utils/template'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 

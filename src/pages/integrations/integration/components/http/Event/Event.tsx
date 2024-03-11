@@ -5,7 +5,7 @@ import {useGetHTTPEvent} from 'models/integration/queries/http'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import HTTPParams from './Params'
 import HTTPItem from './Item'

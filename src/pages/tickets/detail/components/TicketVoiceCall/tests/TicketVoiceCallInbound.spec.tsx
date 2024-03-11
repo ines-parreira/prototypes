@@ -12,9 +12,12 @@ jest.mock(
             <div>VoiceCallCustomerLabel {customerId}</div>
 )
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: () => <div>DatetimeLabel</div>,
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div>{dateTime}</div>
+)
 
 jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
     useCustomerDetails: (customerId: number) => ({

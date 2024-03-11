@@ -50,6 +50,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         </span>
       </div>
     </div>
+    <span
+      class="date text-faded"
+    >
+      <span
+        id="datetime-tooltip-1"
+      >
+        04/27/2021
+      </span>
+    </span>
   </div>
 </div>
 `;
@@ -104,6 +113,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         </span>
       </div>
     </div>
+    <span
+      class="date text-faded"
+    >
+      <span
+        id="datetime-tooltip-7"
+      >
+        04/27/2021
+      </span>
+    </span>
   </div>
 </div>
 `;
@@ -140,6 +158,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Instagram D
         AgentLabel
       </div>
     </div>
+    <span
+      class="date text-faded"
+    >
+      <span
+        id="datetime-tooltip-4"
+      >
+        04/27/2021
+      </span>
+    </span>
   </div>
 </div>
 `;
@@ -176,6 +203,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
         AgentLabel
       </div>
     </div>
+    <span
+      class="date text-faded"
+    >
+      <span
+        id="datetime-tooltip-2"
+      >
+        04/27/2021
+      </span>
+    </span>
   </div>
   <div
     class="eventDetails"
@@ -264,7 +300,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
               </div>
               <div
                 class="text-right justify-content-center align-self-center dateTimeText pr-0 col-md-5"
-              />
+              >
+                <span>
+                  <span
+                    id="datetime-tooltip-3"
+                  >
+                    04/27/2021
+                  </span>
+                </span>
+              </div>
             </div>
             <div
               class="row"
@@ -319,6 +363,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
         AgentLabel
       </div>
     </div>
+    <span
+      class="date text-faded"
+    >
+      <span
+        id="datetime-tooltip-8"
+      >
+        04/27/2021
+      </span>
+    </span>
   </div>
   <div
     class="eventDetails"
@@ -434,6 +487,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
         AgentLabel
       </div>
     </div>
+    <span
+      class="date text-faded"
+    >
+      <span
+        id="datetime-tooltip-5"
+      >
+        04/27/2021
+      </span>
+    </span>
   </div>
   <div
     class="eventDetails"
@@ -522,7 +584,15 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
               </div>
               <div
                 class="text-right justify-content-center align-self-center dateTimeText pr-0 col-md-5"
-              />
+              >
+                <span>
+                  <span
+                    id="datetime-tooltip-6"
+                  >
+                    04/27/2021
+                  </span>
+                </span>
+              </div>
             </div>
             <div
               class="row"

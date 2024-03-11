@@ -22,7 +22,7 @@ export const getPaginatedAgents: Selector<RootState, Agents> =
 export const getAgents = createImmutableSelector(
     getState,
     (state: AgentsState) => {
-        return (state.get('all') as List<any>) || fromJS([])
+        return (state.get('all') as List<any>) || (fromJS([]) as List<any>)
     }
 )
 

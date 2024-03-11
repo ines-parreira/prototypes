@@ -29,7 +29,7 @@ import {
 } from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'

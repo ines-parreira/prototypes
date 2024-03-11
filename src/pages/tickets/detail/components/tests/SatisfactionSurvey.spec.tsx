@@ -1,12 +1,10 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
+
 import SatisfactionSurvey from '../SatisfactionSurvey'
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: () => null,
-}))
+jest.mock('pages/common/utils/DatetimeLabel', () => () => null)
 
 describe('SatisfactionSurvey', () => {
     it('should display satisfaction survey', () => {

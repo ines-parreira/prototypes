@@ -40,7 +40,7 @@ import {
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {DateTimeResultFormatType} from 'constants/datetime'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 

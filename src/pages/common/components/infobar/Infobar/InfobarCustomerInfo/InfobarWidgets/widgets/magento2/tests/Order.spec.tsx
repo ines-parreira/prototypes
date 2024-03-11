@@ -16,16 +16,12 @@ const BeforeContent = orderWidgets.BeforeContent
 const AfterContent = orderWidgets.AfterContent
 const TitleWrapper = orderWidgets.TitleWrapper
 
-jest.mock('pages/common/utils/labels', () => {
-    const utilsLabels: Record<string, unknown> = jest.requireActual(
-        'pages/common/utils/labels'
-    )
-
-    return {
-        ...utilsLabels,
-        DatetimeLabel: 'time',
-    }
-})
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div>{dateTime}</div>
+)
 
 describe('Order', () => {
     describe('<BeforeContent/>', () => {

@@ -23,6 +23,8 @@ import {
     formatCurrency,
     formatDuration,
 } from 'pages/stats/common/utils'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import Tooltip from 'pages/common/components/Tooltip'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
@@ -32,8 +34,6 @@ import {
     StatValueType,
     TICKET_MAX_SUBJECT_LENGTH,
 } from 'config/stats'
-import Tooltip from 'pages/common/components/Tooltip'
-import {DatetimeLabel} from 'pages/common/utils/labels'
 import StatDifference from 'pages/stats/common/components/StatDifference'
 import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 import DistributionVariantStat, {

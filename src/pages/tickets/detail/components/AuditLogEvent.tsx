@@ -6,12 +6,8 @@ import _truncate from 'lodash/truncate'
 import _omit from 'lodash/omit'
 
 import {Link} from 'react-router-dom'
-import {
-    AgentLabel,
-    DatetimeLabel,
-    TagLabel,
-    TeamLabel,
-} from 'pages/common/utils/labels'
+import {AgentLabel, TagLabel, TeamLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'

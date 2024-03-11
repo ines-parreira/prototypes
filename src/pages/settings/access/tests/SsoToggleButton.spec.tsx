@@ -3,7 +3,7 @@ import {render, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../../../models/api/resources'
+import client from 'models/api/resources'
 
 import {SsoToggleButton} from '../SsoToggleButton'
 

@@ -4,11 +4,10 @@ import {Map} from 'immutable'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import StaticField from 'infobar/components/StaticField'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-
 import {EditionContext} from 'providers/infobar/EditionContext'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'

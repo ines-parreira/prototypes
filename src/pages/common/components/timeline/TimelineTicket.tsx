@@ -3,10 +3,11 @@ import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 import {Map} from 'immutable'
 
-import history from '../../../history'
-import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
-import {stripHTML} from '../../../../utils'
-import {displayHistoryOnNextPage} from '../../../../state/ticket/actions'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {StatusLabel, AgentLabel} from 'pages/common/utils/labels'
+import history from 'pages/history'
+import {displayHistoryOnNextPage} from 'state/ticket/actions'
+import {stripHTML} from 'utils'
 
 import SourceIcon from '../SourceIcon'
 

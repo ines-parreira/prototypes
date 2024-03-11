@@ -33,7 +33,7 @@ exports[`AppErrorRow should render 1`] = `
         class="text-faded"
       >
         <span
-          id="datetime-tooltip-4fzzzxjylrx"
+          id="datetime-tooltip-1"
         >
           01/17/2022
         </span>
@@ -64,7 +64,7 @@ exports[`AppErrorRow should render without a payload 1`] = `
         class="text-faded"
       >
         <span
-          id="datetime-tooltip-4fzzzxjylrx"
+          id="datetime-tooltip-2"
         >
           01/17/2022
         </span>

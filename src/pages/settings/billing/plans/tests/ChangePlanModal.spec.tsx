@@ -21,7 +21,6 @@ import ChangePlanModal from '../ChangePlanModal'
 import BillingPlanCard from '../BillingPlanCard'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
 jest.mock('launchdarkly-react-client-sdk')
 
 jest.mock(

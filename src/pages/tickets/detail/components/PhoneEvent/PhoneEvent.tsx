@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 
 import css from '../Event.less'

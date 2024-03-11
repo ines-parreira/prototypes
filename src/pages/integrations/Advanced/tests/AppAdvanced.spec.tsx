@@ -14,8 +14,6 @@ import client from '../../../../models/api/resources'
 const mockStore = configureMockStore([thunk])
 const store = mockStore({currentAccount: fromJS({domain: '20-1 rpz'})})
 
-global.Math.random = jest.fn(() => 0.123456789)
-
 describe(`AppAdvanced`, () => {
     const mockServer = new MockAdapter(client)
 

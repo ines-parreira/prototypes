@@ -56,7 +56,9 @@ exports[`<Row /> should render correctly active field 1`] = `
         <div
           class="text-faded"
         >
-          <div>
+          <div
+            data-testid="DatetimeLabel"
+          >
             2022-01-02T03:04:05.123456+00:00
           </div>
         </div>
@@ -125,7 +127,9 @@ exports[`<Row /> should render correctly active field 2`] = `
         <div
           class="text-faded"
         >
-          <div>
+          <div
+            data-testid="DatetimeLabel"
+          >
             2022-01-02T03:04:05.123456+00:00
           </div>
         </div>
@@ -214,7 +218,9 @@ exports[`<Row /> should render correctly active required field 1`] = `
         <div
           class="text-faded"
         >
-          <div>
+          <div
+            data-testid="DatetimeLabel"
+          >
             2022-01-02T03:04:05.123456+00:00
           </div>
         </div>
@@ -289,7 +295,9 @@ exports[`<Row /> should render correctly active required field 2`] = `
         <div
           class="text-faded"
         >
-          <div>
+          <div
+            data-testid="DatetimeLabel"
+          >
             2022-01-02T03:04:05.123456+00:00
           </div>
         </div>
@@ -358,7 +366,9 @@ exports[`<Row /> should render correctly archived required field 1`] = `
         <div
           class="text-faded"
         >
-          <div>
+          <div
+            data-testid="DatetimeLabel"
+          >
             2022-01-02T03:04:05.123456+00:00
           </div>
         </div>
@@ -427,7 +437,9 @@ exports[`<Row /> should render correctly archived required field 2`] = `
         <div
           class="text-faded"
         >
-          <div>
+          <div
+            data-testid="DatetimeLabel"
+          >
             2022-01-02T03:04:05.123456+00:00
           </div>
         </div>

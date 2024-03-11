@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import {IntegrationType} from '../../../../../../models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 import TwitterIntegrationDetail from '../TwitterIntegrationDetail'
 
 describe('<TwitterIntegrationDetail/>', () => {

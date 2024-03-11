@@ -8,29 +8,21 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {customer} from 'fixtures/customer'
+import {ticket} from 'fixtures/ticket'
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from '../../../../utils/testing'
-import {ticket} from '../../../../fixtures/ticket'
-import * as labels from '../../../common/utils/labels'
+import {renderWithRouter} from 'utils/testing'
+
 import {CustomerDetailContainer} from '../CustomerDetailContainer'
 
 jest.mock('../../common/components/CustomerForm', () => () => (
     <div>CustomerForm</div>
 ))
 
-type MockLabels = typeof labels
-
 jest.mock(
-    '../../../common/utils/labels',
+    'pages/common/utils/DatetimeLabel',
     () =>
-        ({
-            ...jest.requireActual('../../../common/utils/labels'),
-            DatetimeLabel: ({
-                dateTime,
-            }: ComponentProps<MockLabels['DatetimeLabel']>) => {
-                return <div>{dateTime}</div>
-            },
-        } as MockLabels)
+        ({dateTime}: {dateTime: string}) =>
+            <div>{dateTime}</div>
 )
 
 const mockSetRecentItem = jest.fn()

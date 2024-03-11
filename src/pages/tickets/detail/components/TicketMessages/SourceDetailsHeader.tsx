@@ -1,10 +1,10 @@
 import classnames from 'classnames'
 import React, {ReactNode, useState, useMemo} from 'react'
 
-import {TicketMessage} from 'models/ticket/types'
-import {DatetimeLabel} from 'pages/common/utils/labels'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useMeasure from 'hooks/useMeasure'
+import {TicketMessage} from 'models/ticket/types'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import SeenIndicator from './SeenIndicator'
 import SourceActionsHeader from './SourceActionsHeader'

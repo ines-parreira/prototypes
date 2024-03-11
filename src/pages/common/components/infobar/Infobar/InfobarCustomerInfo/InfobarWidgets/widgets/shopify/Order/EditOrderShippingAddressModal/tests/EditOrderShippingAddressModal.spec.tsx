@@ -8,11 +8,12 @@ import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {EditOrderShippingAddressModal} from '../EditOrderShippingAddressModal'
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
-        <div data-testid="DatetimeLabel">{dateTime}</div>
-    ),
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div data-testid="DatetimeLabel">{dateTime}</div>
+)
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',

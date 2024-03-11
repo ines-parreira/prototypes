@@ -3,7 +3,7 @@ import JSONPretty from 'react-json-pretty'
 
 import {AppErrorLog} from 'models/integration/types/app'
 import IconButton from 'pages/common/components/button/IconButton'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import css from './AppErrorRow.less'
 

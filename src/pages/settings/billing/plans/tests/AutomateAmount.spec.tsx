@@ -4,7 +4,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {starterHelpdeskPrice} from 'fixtures/productPrices'
 
-import {PlanInterval} from '../../../../../models/billing/types'
+import {PlanInterval} from 'models/billing/types'
 import AutomateAmount from '../AutomateAmount'
 
 describe('<AutomateAmount />', () => {

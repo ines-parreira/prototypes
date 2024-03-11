@@ -3,22 +3,18 @@ import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 import LD from 'launchdarkly-react-client-sdk'
 import {fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
-
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import history from 'pages/history'
-
-import {integrationsState} from 'fixtures/integrations'
-
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
-
-import ScriptTagMigrationModal from '../ScriptTagMigrationModal'
+import {integrationsState} from 'fixtures/integrations'
+import history from 'pages/history'
 
 import useStoresRequiringScriptTagMigration from '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
+
+import ScriptTagMigrationModal from '../ScriptTagMigrationModal'
 
 jest.mock(
     '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'

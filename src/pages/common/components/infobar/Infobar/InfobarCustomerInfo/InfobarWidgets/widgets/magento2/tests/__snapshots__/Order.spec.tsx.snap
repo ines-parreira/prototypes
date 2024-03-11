@@ -44,9 +44,9 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2018-11-07 05:22"
-        />
+        <div>
+          2018-11-07 05:22
+        </div>
       </span>
     </div>
     <div
@@ -114,9 +114,9 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2018-11-07 05:22"
-        />
+        <div>
+          2018-11-07 05:22
+        </div>
       </span>
     </div>
   </div>
@@ -167,9 +167,9 @@ exports[`Order <AfterContent/> render() should display credit memos without link
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2018-11-07 05:22"
-        />
+        <div>
+          2018-11-07 05:22
+        </div>
       </span>
     </div>
     <div
@@ -237,9 +237,9 @@ exports[`Order <AfterContent/> render() should display credit memos without link
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2018-11-07 05:22"
-        />
+        <div>
+          2018-11-07 05:22
+        </div>
       </span>
     </div>
   </div>
@@ -281,9 +281,9 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
   <div
@@ -320,9 +320,9 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2019-03-04 11:12"
-        />
+        <div>
+          2019-03-04 11:12
+        </div>
       </span>
     </div>
     <div>
@@ -429,9 +429,9 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2019-02-04 11:12"
-        />
+        <div>
+          2019-02-04 11:12
+        </div>
       </span>
     </div>
     <div>
@@ -518,9 +518,9 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
   <div
@@ -557,9 +557,9 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2019-03-04 11:12"
-        />
+        <div>
+          2019-03-04 11:12
+        </div>
       </span>
     </div>
     <div>
@@ -666,9 +666,9 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       <span
         class="fieldValue"
       >
-        <time
-          datetime="2019-02-04 11:12"
-        />
+        <div>
+          2019-02-04 11:12
+        </div>
       </span>
     </div>
     <div>
@@ -755,7 +755,7 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
     <span
       class="fieldValue"
     >
-      <time />
+      <div />
     </span>
   </div>
 </div>
@@ -794,9 +794,9 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
 </div>
@@ -835,9 +835,9 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
 </div>
@@ -876,9 +876,9 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
 </div>
@@ -917,9 +917,9 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
 </div>
@@ -958,9 +958,9 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
 </div>
@@ -999,9 +999,9 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
 </div>
@@ -1040,9 +1040,9 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
     <span
       class="fieldValue"
     >
-      <time
-        datetime=""2020-10-07 09:30:03""
-      />
+      <div>
+        "2020-10-07 09:30:03"
+      </div>
     </span>
   </div>
 </div>

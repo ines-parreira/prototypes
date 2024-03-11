@@ -16,9 +16,9 @@ jest.mock(
             <div>VoiceCallAgentLabel {agentId}</div>
 )
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: () => <div>DatetimeLabel</div>,
-}))
+jest.mock('pages/common/utils/DatetimeLabel', () => () => (
+    <div>DatetimeLabel</div>
+))
 
 jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
     useAgentDetails: (agentId: number) => ({

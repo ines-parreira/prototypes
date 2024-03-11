@@ -21,11 +21,12 @@ import {getDuplicateOrderPayload} from 'state/infobarActions/shopify/createOrder
 
 import {EditOrderModalContainer} from '../EditOrderModal'
 
-jest.mock('pages/common/utils/labels', () => ({
-    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
-        <div data-testid="DatetimeLabel">{dateTime}</div>
-    ),
-}))
+jest.mock(
+    'pages/common/utils/DatetimeLabel',
+    () =>
+        ({dateTime}: {dateTime: string}) =>
+            <div data-testid="DatetimeLabel">{dateTime}</div>
+)
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',

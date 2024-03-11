@@ -9,7 +9,6 @@ import {fromJS} from 'immutable'
 
 import {emptyRule as ruleFixture} from 'fixtures/rule'
 import {user} from 'fixtures/users'
-
 import {RootState, StoreDispatch} from 'state/types'
 
 import {RuleFormEditor} from '../RuleFormEditor'

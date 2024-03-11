@@ -152,7 +152,7 @@ exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActi
       class=""
     >
       <span
-        id="datetime-tooltip-"
+        id="datetime-tooltip-1"
       >
         01/09/2024
       </span>
@@ -174,7 +174,7 @@ exports[`<SourceDetailsHeader/> should render a DatetimeLabel because the messag
       class=""
     >
       <span
-        id="datetime-tooltip-"
+        id="datetime-tooltip-2"
       >
         01/09/2024
       </span>

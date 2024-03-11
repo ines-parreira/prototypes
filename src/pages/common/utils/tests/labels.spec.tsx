@@ -6,23 +6,17 @@ import configureMockStore from 'redux-mock-store'
 import {channels as mockChannels} from 'fixtures/channels'
 
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
-import {DateAndTimeFormatting} from 'constants/datetime'
 import {IntegrationType} from 'models/integration/types'
-import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
 import * as channelsService from 'services/channels'
-import * as labels from '../labels'
 
-/* DatetimeLabel uses Math.random.
- * Mock it to always return the same data.
- */
-const mockMath = Object.create(global.Math) as typeof global.Math
-mockMath.random = () => 1
-global.Math = mockMath
+import * as labels from '../labels'
+import DatetimeLabel from '../DatetimeLabel'
+
 const integrationJsObject = {
     type: 'email',
     name: 'common',
@@ -32,7 +26,7 @@ const integrationMap = fromJS(integrationJsObject)
 
 const mockStore = configureMockStore()
 
-jest.mock('../../components/Tooltip', () => () => 'TooltipMock')
+jest.mock('pages/common/components/Tooltip', () => () => 'TooltipMock')
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationChannel: () => () => mockChannels[0],
 }))
@@ -55,7 +49,7 @@ describe('components utils: labels', () => {
                 {
                     type: 'created',
                     value: '2016-01-15',
-                    expected: <labels.DatetimeLabel dateTime="2016-01-15" />,
+                    expected: <DatetimeLabel dateTime="2016-01-15" />,
                     wrapper: (comp: ReactElement) => {
                         return render(
                             <Provider
@@ -396,44 +390,6 @@ describe('components utils: labels', () => {
                 const {container} = render(
                     <labels.TimedeltaLabel duration={'1d'} />
                 )
-                expect(container.firstChild).toMatchSnapshot()
-            })
-        })
-    })
-
-    describe('<DatetimeLabel/>', () => {
-        describe('render()', () => {
-            it('should render with zero width space', () => {
-                const {container} = render(
-                    <Provider
-                        store={mockStore({
-                            currentUser: fromJS({timezone: 'utc'}),
-                        })}
-                    >
-                        <labels.DatetimeLabel dateTime="2016-01-15" breakDate />
-                    </Provider>
-                )
-
-                expect(container.firstChild).toMatchSnapshot()
-            })
-
-            it('should render a modified date because integrationType is Recharge', () => {
-                const {container} = render(
-                    <Provider
-                        store={mockStore({
-                            currentUser: fromJS({timezone: 'US/Pacific'}),
-                        })}
-                    >
-                        <labels.DatetimeLabel
-                            dateTime="2022-01-01T03:11:07"
-                            integrationType={RECHARGE_INTEGRATION_TYPE}
-                            labelFormat={
-                                DateAndTimeFormatting.CompactDateWithTime
-                            }
-                        />
-                    </Provider>
-                )
-
                 expect(container.firstChild).toMatchSnapshot()
             })
         })

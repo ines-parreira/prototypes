@@ -6,15 +6,9 @@ import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
 
 import {EventContainer} from '../Event'
 
-jest.mock('pages/common/utils/labels.tsx', () => {
-    const labels: Record<string, unknown> = jest.requireActual(
-        'pages/common/utils/labels.tsx'
-    )
-    return {
-        ...labels,
-        DatetimeLabel: () => <div>MockedDatetimeLabel</div>,
-    }
-})
+jest.mock('pages/common/utils/DatetimeLabel', () => () => (
+    <div>MockedDatetimeLabel</div>
+))
 
 describe('Event component', () => {
     const rechargeIntegrationId = 2
