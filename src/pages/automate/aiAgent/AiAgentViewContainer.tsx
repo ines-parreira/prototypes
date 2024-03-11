@@ -1,29 +1,54 @@
 import React from 'react'
 import {Redirect, useParams} from 'react-router-dom'
-// import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 
-// import {QueryClientProvider, useQueryClient} from '@tanstack/react-query'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import Loader from 'pages/common/components/Loader/Loader'
+import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import {useGetOrCreateStoreConfiguration} from 'hooks/aiAgent/useGetOrCreateStoreConfiguration'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {AiAgentStoreView} from './AiAgentStoreView'
 
 const AiAgentViewContainer = () => {
-    // const queryClient = useQueryClient()
-
-    // TODO: use the shopname to fetch the store configuration and rerender the AiAgentStoreView based on the shop name
-    const {shopType} = useParams<{shopType: string; shopName: string}>()
-
+    const dispatch = useAppDispatch()
+    const {shopType, shopName} =
+        useParams<{shopType: string; shopName: string}>()
     const hasAutomate = useAppSelector(getHasAutomate)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountId = currentAccount.get('id')
+    const accountDomain = currentAccount.get('domain')
 
-    if (!hasAutomate || shopType !== 'shopify') {
+    const {status: accountConfigRetrievalStatus} =
+        useGetOrCreateAccountConfiguration({accountId, accountDomain, dispatch})
+
+    const {status: storeConfigRetrievalStatus} =
+        useGetOrCreateStoreConfiguration({
+            shopName,
+            enabled: accountConfigRetrievalStatus === 'success',
+            accountDomain,
+            dispatch,
+        })
+
+    if (
+        !hasAutomate ||
+        shopType !== 'shopify' ||
+        accountConfigRetrievalStatus === 'error' ||
+        storeConfigRetrievalStatus === 'error'
+    ) {
         return <Redirect to="/app/automation" />
     }
 
+    if (
+        accountConfigRetrievalStatus !== 'success' ||
+        storeConfigRetrievalStatus !== 'success'
+    ) {
+        return <Loader />
+    }
+
     return (
-        // <QueryClientProvider client={queryClient}>
-        <AiAgentStoreView />
-        // <ReactQueryDevtools initialIsOpen={true} />
-        // </QueryClientProvider>
+        <AiAgentStoreView accountDomain={accountDomain} shopName={shopName} />
     )
 }
 

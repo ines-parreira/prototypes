@@ -4,15 +4,13 @@ import {MutationOverrides} from 'types/query'
 import {GetStoreConfigurationParams} from './types'
 import {
     getAccountConfiguration,
-    getOrCreateAccountConfiguration,
-    getOrCreateStoreConfiguration,
     getStoreConfiguration,
     upsertAccountConfiguration,
     upsertStoreConfiguration,
 } from './resources'
 
-const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
-const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
+export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 
 export const accountConfigurationKeys = {
     all: () => ['aiAgentAccountConfigurations'] as const,
@@ -30,23 +28,6 @@ export const useGetAccountConfiguration = (
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
         queryFn: () => getAccountConfiguration(accountDomain),
-        staleTime: STALE_TIME_MS,
-        cacheTime: CACHE_TIME_MS,
-        ...overrides,
-    })
-}
-
-export const useGetOrCreateAccountConfigurationPure = (
-    accountId: number,
-    accountDomain: string,
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getOrCreateAccountConfiguration>>
-    >
-) => {
-    return useQuery({
-        queryKey: accountConfigurationKeys.detail(accountDomain),
-        queryFn: () =>
-            getOrCreateAccountConfiguration(accountId, accountDomain),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         ...overrides,
@@ -92,21 +73,6 @@ export const useUpsertStoreConfigurationPure = (
 ) => {
     return useMutation({
         mutationFn: (params) => upsertStoreConfiguration(...params),
-        ...overrides,
-    })
-}
-
-export const useGetOrCreateStoreConfigurationPure = (
-    params: GetStoreConfigurationParams,
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getOrCreateStoreConfiguration>>
-    >
-) => {
-    return useQuery({
-        queryKey: storeConfigurationKeys.detail(params.storeName),
-        queryFn: () => getOrCreateStoreConfiguration(params),
-        staleTime: STALE_TIME_MS,
-        cacheTime: CACHE_TIME_MS,
         ...overrides,
     })
 }

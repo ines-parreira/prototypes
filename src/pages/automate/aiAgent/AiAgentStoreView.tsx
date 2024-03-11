@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
 import {List} from 'immutable'
 import {isEqual} from 'lodash'
 
@@ -10,10 +9,6 @@ import ToggleInput from '../../common/forms/ToggleInput'
 import useId from '../../../hooks/useId'
 import HeaderTitle from '../../common/components/HeaderTitle'
 import useAppSelector from '../../../hooks/useAppSelector'
-import {
-    getCurrentAccountState,
-    getCurrentDomain,
-} from '../../../state/currentAccount/selectors'
 import {StoreConfiguration, Tag} from '../../../models/aiAgent/types'
 import Button from '../../common/components/button/Button'
 import {getHelpCenterList} from '../../../state/entities/helpCenter/helpCenters'
@@ -26,8 +21,8 @@ import ListField from '../../common/forms/ListField'
 import UnsavedChangesPrompt from '../../common/components/UnsavedChangesPrompt'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
 import TextArea from '../../common/forms/TextArea'
-import {useGetOrUpsertAiAgentConfiguration} from '../../../hooks/aiAgent/useGetOrUpsertAccountConfiguration'
 import NumberInput from '../../common/forms/input/NumberInput'
+import {useGetStoreConfigurationPure} from '../../../models/aiAgent/queries'
 import css from './AiAgentStoreView.less'
 import {
     TONE_OF_VOICE_LABEL_TO_VALUE,
@@ -41,53 +36,59 @@ import {
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
 
-export const AiAgentStoreView = () => {
-    const {shopName} = useParams<{shopName: string}>()
+const createDefaultFormValues = (shopName: string): StoreConfiguration => {
+    return {
+        ...DEFAULT_STORE_CONFIGURATION,
+        storeName: shopName,
+    }
+}
 
-    const toggleAiAgentId = `toggle-ai-agent-${useId()}`
-    const toggleHandoffId = `toggle-handoff-${useId()}`
+type AiAgentStoreViewProps = {
+    shopName: string
+    accountDomain: string
+}
 
-    const accountDomain = useAppSelector(getCurrentDomain)
-    const accountId = useAppSelector(getCurrentAccountState).get('id')
+export const AiAgentStoreView = ({
+    shopName,
+    accountDomain,
+}: AiAgentStoreViewProps) => {
+    /**
+     * Resource management
+     */
+    const {mutateAsync: mutateStoreConfiguration} =
+        useUpsertStoreConfiguration(shopName)
+
+    const {
+        isLoading: storeConfigurationIsLoading,
+        data: storeConfigurationResponse,
+    } = useGetStoreConfigurationPure({
+        accountDomain,
+        storeName: shopName,
+    })
+
+    /**
+     * Global state retrieval
+     */
     const helpCenters = useAppSelector(getHelpCenterList)
     const emailIntegrations = useAppSelector(
         getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
     ) as EmailIntegration[]
 
-    const {mutateAsync: mutateStoreConfiguration} =
-        useUpsertStoreConfiguration(shopName)
-
-    const defaultAccountConfiguration = {
-        accountId: accountId,
-        gorgiasDomain: accountDomain,
-        helpdeskOAuth: null,
-    }
-
-    const defaultStoreConfiguration = {
-        ...DEFAULT_STORE_CONFIGURATION,
-        storeName: shopName,
-    }
-
-    const {
-        isLoading: storeConfigurationIsLoading,
-        data: storeConfigurationResponse,
-    } = useGetOrUpsertAiAgentConfiguration(
-        accountDomain,
-        shopName,
-        defaultAccountConfiguration,
-        defaultStoreConfiguration
-    )
-
+    /**
+     * Local states
+     */
     const [storeConfiguration, setStoreConfiguration] =
-        useState<StoreConfiguration>(defaultStoreConfiguration)
-    const [updatedTags, setUpdatedTags] = useState<{
-        tags: Tag[]
-        tagsValid: boolean
-        hasUpdated: boolean
-    }>({tags: [], tagsValid: true, hasUpdated: false})
+        useState<StoreConfiguration>(createDefaultFormValues(shopName))
     const [isDirty, setIsDirty] = useState<boolean>(false)
+
+    /**
+     * Ai Agent toggle and sample rate
+     */
     const [isAiAgentEnabled, setIsAiAgentEnabled] = useState<boolean>(false)
     const [sampleRateInPerc, setSampleRateInPerc] = useState<number>(50)
+
+    const toggleAiAgentId = `toggle-ai-agent-${useId()}`
+    const toggleHandoffId = `toggle-handoff-${useId()}`
 
     const toggleAiAgent = (value: boolean) => {
         setIsAiAgentEnabled(value)
@@ -102,11 +103,19 @@ export const AiAgentStoreView = () => {
         setIsDirty(true)
     }
 
+    /**
+     * Faq Help Center selection
+     */
+
     const helpCenter = useMemo(() => {
         return helpCenters.find(
             (helpCenter) => helpCenter.id === storeConfiguration.helpCenterId
         )
     }, [helpCenters, storeConfiguration])
+
+    const faqHelpCenters = useMemo(() => {
+        return helpCenters.filter((helpCenter) => helpCenter.type === 'faq')
+    }, [helpCenters])
 
     const setHelpCenter = (id: number) => {
         const dirtyHelpCenter = helpCenters.find(
@@ -158,6 +167,31 @@ export const AiAgentStoreView = () => {
         setIsDirty(true)
     }
 
+    /**
+     * Auto Tag state management
+     */
+    const [updatedTags, setUpdatedTags] = useState<{
+        tags: Tag[]
+        tagsValid: boolean
+        hasUpdated: boolean
+    }>({tags: [], tagsValid: true, hasUpdated: false})
+
+    const handleTagUpdate = (tags: Tag[]) => {
+        const hasInputError = tags.some((tag) => {
+            return !tag.name.trim().length || !tag.description.trim().length
+        })
+
+        if (!isEqual(tags, storeConfiguration.tags)) {
+            setIsDirty(true)
+            setUpdatedTags({tags, tagsValid: !hasInputError, hasUpdated: true})
+        } else {
+            setUpdatedTags({tags, tagsValid: !hasInputError, hasUpdated: false})
+        }
+    }
+
+    /**
+     * Other input states
+     */
     // The typing of onChange for TextInput is wrong. It's typed as event, but it actually passes the input value
     const setSignature = (value: unknown) => {
         setStoreConfiguration((prevState) => ({
@@ -195,33 +229,9 @@ export const AiAgentStoreView = () => {
         setIsDirty(true)
     }
 
-    const handleTagUpdate = (tags: Tag[]) => {
-        const hasInputError = tags.some((tag) => {
-            return !tag.name.trim().length || !tag.description.trim().length
-        })
-
-        if (!isEqual(tags, storeConfiguration.tags)) {
-            setIsDirty(true)
-            setUpdatedTags({tags, tagsValid: !hasInputError, hasUpdated: true})
-        } else {
-            setUpdatedTags({tags, tagsValid: !hasInputError, hasUpdated: false})
-        }
-    }
-
-    const saveStoreConfiguration = async () => {
-        await mutateStoreConfiguration([
-            {
-                accountDomain,
-                storeName: shopName,
-                storeConfiguration: {
-                    ...storeConfiguration,
-                    tags: updatedTags.tags,
-                    ticketSampleRate: +(sampleRateInPerc / 100).toFixed(2),
-                },
-            },
-        ])
-        setIsDirty(false)
-    }
+    /**
+     * Effects
+     */
 
     useEffect(() => {
         if (storeConfigurationResponse?.data) {
@@ -268,12 +278,28 @@ export const AiAgentStoreView = () => {
         }
     }, [storeConfiguration.ticketSampleRate])
 
+    /**
+     * Form submission handler
+     */
+
+    const handleOnSave = async () => {
+        await mutateStoreConfiguration([
+            {
+                accountDomain,
+                storeName: shopName,
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    tags: updatedTags.tags,
+                    ticketSampleRate: +(sampleRateInPerc / 100).toFixed(2),
+                },
+            },
+        ])
+        setIsDirty(false)
+    }
+
     return (
         <AutomateView title={AI_AGENT} isLoading={storeConfigurationIsLoading}>
-            <UnsavedChangesPrompt
-                onSave={saveStoreConfiguration}
-                when={isDirty}
-            />
+            <UnsavedChangesPrompt onSave={handleOnSave} when={isDirty} />
             <div className={css.automateView}>
                 <div className={css.aiAgentToggle}>
                     <ToggleInput
@@ -313,7 +339,7 @@ export const AiAgentStoreView = () => {
                     <HelpCenterSelect
                         helpCenter={helpCenter}
                         setHelpCenterId={setHelpCenter}
-                        helpCenters={helpCenters}
+                        helpCenters={faqHelpCenters}
                     />
                 </div>
                 <div className={css.customizeSection}>
@@ -391,7 +417,7 @@ export const AiAgentStoreView = () => {
                     />
                 </div>
                 <Button
-                    onClick={saveStoreConfiguration}
+                    onClick={handleOnSave}
                     isDisabled={
                         !isDirty ||
                         (updatedTags.hasUpdated && !updatedTags.tagsValid)

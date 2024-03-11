@@ -1,7 +1,6 @@
 import axios from 'axios'
 import {isProduction, isStaging} from '../../utils/environment'
 
-import {DEFAULT_STORE_CONFIGURATION} from '../../pages/automate/aiAgent/constants'
 import {
     AccountConfiguration,
     GetAccountConfigurationResponse,
@@ -49,28 +48,6 @@ export const createAccountConfiguration = async (
     return res
 }
 
-export const getOrCreateAccountConfiguration = async (
-    accountId: number,
-    accountDomain: string
-) => {
-    try {
-        return await getAccountConfiguration(accountDomain)
-    } catch (error) {
-        if (!axios.isAxiosError(error)) {
-            throw error
-        }
-        if (error.response?.status !== 404) {
-            throw error
-        }
-
-        return await createAccountConfiguration({
-            accountId,
-            gorgiasDomain: accountDomain,
-            helpdeskOAuth: null,
-        })
-    }
-}
-
 export async function upsertAccountConfiguration(
     accountConfiguration: AccountConfiguration
 ) {
@@ -109,27 +86,4 @@ export async function upsertStoreConfiguration(
         storeConfiguration
     )
     return response
-}
-
-export const getOrCreateStoreConfiguration = async (
-    params: GetStoreConfigurationParams
-) => {
-    try {
-        return await getStoreConfiguration(params)
-    } catch (error) {
-        if (!axios.isAxiosError(error)) {
-            throw error
-        }
-        if (error.response?.status !== 404) {
-            throw error
-        }
-
-        // FIXME: 1. Let the backend handle the default store configuration
-        // FIXME: 2. Use a post request to create the store configuration when available
-        return await upsertStoreConfiguration({
-            storeConfiguration: DEFAULT_STORE_CONFIGURATION,
-            accountDomain: params.accountDomain,
-            storeName: params.storeName,
-        })
-    }
 }
