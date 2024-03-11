@@ -2,11 +2,10 @@ import React, {useCallback, useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
 
 import {useParams} from 'react-router-dom'
-import {User} from 'config/types/user'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getAgents} from 'state/agents/selectors'
+import {getAgentsJS} from 'state/agents/selectors'
 import {getIntegrationById} from 'state/integrations/selectors'
 
 import {useGetCampaign} from 'models/convert/campaign/queries'
@@ -40,11 +39,10 @@ const CampaignDetailsFactory = (): JSX.Element => {
         getIntegrationById(parseInt(integrationId))
     )
 
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
-    )
+    const {channelConnection, isLoading: isChannelConnectionLoading} =
+        useGetOrCreateChannelConnection(toJS(integration))
 
-    const {data} = useGetCampaign(
+    const {data, isLoading: isCampaignLoading} = useGetCampaign(
         {campaign_id: campaignId || ''},
         {enabled: !!campaignId}
     )
@@ -60,7 +58,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
         getIntegrationById(integration.getIn(['meta', 'shop_integration_id']))
     )
 
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getAgentsJS)
 
     const {mutateAsync: updateCampaign} = useUpdateCampaign()
     const {mutateAsync: createCampaign} = useCreateCampaign()
@@ -134,22 +132,21 @@ const CampaignDetailsFactory = (): JSX.Element => {
         [createCampaign, channelConnection, integrationId]
     )
 
-    const memoAgents = useMemo(() => {
-        if (agents) {
-            return agents.toJS() as User[]
-        }
-        return []
-    }, [agents])
-
     const memoCampaign = useMemo(() => {
         return campaign.toJS() as Campaign
     }, [campaign])
 
+    const isLoading = useMemo(
+        () => isChannelConnectionLoading || isCampaignLoading,
+        [isChannelConnectionLoading, isCampaignLoading]
+    )
+
     return (
         <BaseCampaignDetails integration={integration} campaign={campaign}>
             <CampaignDetailsForm
-                agents={memoAgents}
+                agents={agents}
                 campaign={memoCampaign}
+                isLoading={isLoading}
                 isEditMode={campaignId !== undefined}
                 isShopifyStore={chatIsShopifyStore(integration)}
                 integration={integration}

@@ -22,9 +22,8 @@ type Props = {
 }
 
 const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
-    )
+    const {channelConnection, isLoading: isChannelConnectionLoading} =
+        useGetOrCreateChannelConnection(toJS(integration))
 
     const campaignListOptions = useMemo(() => {
         const channelConnectionId = channelConnection?.id
@@ -37,9 +36,12 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
         ) as CampaignListOptionsParams
     }, [channelConnection])
 
-    const {data: campaigns} = useListCampaigns(campaignListOptions, {
-        enabled: !!channelConnection && !!campaignListOptions,
-    })
+    const {data: campaigns, isLoading: areCampaignsLoading} = useListCampaigns(
+        campaignListOptions,
+        {
+            enabled: !!channelConnection && !!campaignListOptions,
+        }
+    )
 
     const allCampaigns = useMemo(() => {
         return (campaigns || []) as Campaign[]
@@ -54,11 +56,16 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
         history.push(url)
     }, [integration])
 
+    const isLoading = useMemo(
+        () => isChannelConnectionLoading || areCampaignsLoading,
+        [isChannelConnectionLoading, areCampaignsLoading]
+    )
+
     return (
         <>
             <Container fluid className={css.pageContainer}>
                 <div className={css.campaignsHeader}>
-                    {allCampaigns.length === 0 ? (
+                    {!isLoading && allCampaigns.length === 0 ? (
                         <p>
                             This integration doesn't display any campaigns yet.
                         </p>
@@ -83,12 +90,11 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
                 </div>
             </Container>
 
-            {allCampaigns.length > 0 && (
-                <ConvertCampaignsTablePlaceholder
-                    data={allCampaigns}
-                    perPage={PER_PAGE}
-                />
-            )}
+            <ConvertCampaignsTablePlaceholder
+                data={allCampaigns}
+                isLoading={isLoading}
+                perPage={PER_PAGE}
+            />
         </>
     )
 }

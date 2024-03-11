@@ -8,6 +8,8 @@ import Segmented from 'pages/common/components/Segmented'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {QuickFilters} from '../QuickFilters'
 
 import {QUICK_FILTERS} from '../../constants/filters'
@@ -30,6 +32,7 @@ import css from './CampaignsList.less'
 type Props = {
     campaigns: Campaign[]
     integration: Map<any, any>
+    isLoading: boolean
     onDeleteCampaign: (campaign: Campaign) => void
     onDuplicateCampaign: (event: MouseEvent, campaign: Campaign) => void
     onUpdateCampaign: (campaign: Campaign) => void
@@ -40,6 +43,7 @@ const PER_PAGE = 25
 const CampaignsList = ({
     campaigns,
     integration,
+    isLoading,
     onDeleteCampaign,
     onDuplicateCampaign,
     onUpdateCampaign,
@@ -151,6 +155,19 @@ const CampaignsList = ({
         state,
         statusFilterOptions,
     ])
+
+    if (isLoading) {
+        return (
+            <Container fluid className={css.pageContainer}>
+                <div className={css.mainLoader}>
+                    <Skeleton height={75} width={'100%'} />
+                </div>
+                <div>
+                    <SkeletonLoader className={css.loader} length={10} />
+                </div>
+            </Container>
+        )
+    }
 
     return (
         <>

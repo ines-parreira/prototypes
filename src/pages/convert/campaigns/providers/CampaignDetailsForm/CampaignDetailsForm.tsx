@@ -38,6 +38,7 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Language} from 'constants/languages'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
 import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
@@ -69,6 +70,7 @@ import css from './style.less'
 type Props = {
     agents: User[]
     campaign: Campaign
+    isLoading: boolean
     isEditMode?: boolean
     isShopifyStore?: boolean
     integration: Map<any, any>
@@ -82,6 +84,7 @@ type Props = {
 export const CampaignDetailsForm = ({
     agents = [],
     campaign,
+    isLoading,
     isEditMode = false,
     isShopifyStore = false,
     integration,
@@ -459,81 +462,107 @@ export const CampaignDetailsForm = ({
                             backToHref={backUrl}
                             isUpdate={isEditMode}
                         />
-                        <div className={css.formContainer}>
-                            <Accordion
-                                defaultExpandedItem={defaultOpenedStep}
-                                onChange={onChangePristine}
-                            >
-                                <CampaignBasicStep
-                                    count={1}
-                                    isPristine={pristine.basics}
-                                    isValid={isStepValid(
-                                        CampaignStepsKeys.Basics
-                                    )}
-                                />
-                                <CampaignAudienceStep
-                                    count={2}
-                                    isPristine={pristine.audience}
-                                    isValid={isStepValid(
-                                        CampaignStepsKeys.Audience
-                                    )}
-                                    isConvertSubscriber={isConvertSubscriber}
-                                    isShopifyStore={isShopifyStore}
-                                    integration={integration}
-                                />
-                                <CampaignMessageStep
-                                    agents={agents}
-                                    attachments={attachments}
-                                    count={3}
-                                    isPristine={pristine.message}
-                                    isValid={isStepValid(
-                                        CampaignStepsKeys.Message
-                                    )}
-                                    isConvertSubscriber={isConvertSubscriber}
-                                    showContentWarning={showContentWarning}
-                                    onDeleteAttachment={handleDeleteAttachment}
-                                />
-                            </Accordion>
-                            <div className="mt-4">
-                                <CampaignFooter
-                                    isCampaignValid={isCampaignValid}
-                                    isUpdate={isEditMode}
-                                    onSave={handleSaveCampaign}
-                                    onDiscard={handleDiscardChanges}
-                                    onDelete={handleDeleteCampaign}
-                                    onDuplicate={handleDuplicateCampaign}
-                                />
+                        {!isLoading && (
+                            <div className={css.formContainer}>
+                                <Accordion
+                                    defaultExpandedItem={defaultOpenedStep}
+                                    onChange={onChangePristine}
+                                >
+                                    <CampaignBasicStep
+                                        count={1}
+                                        isPristine={pristine.basics}
+                                        isValid={isStepValid(
+                                            CampaignStepsKeys.Basics
+                                        )}
+                                    />
+                                    <CampaignAudienceStep
+                                        count={2}
+                                        isPristine={pristine.audience}
+                                        isValid={isStepValid(
+                                            CampaignStepsKeys.Audience
+                                        )}
+                                        isConvertSubscriber={
+                                            isConvertSubscriber
+                                        }
+                                        isShopifyStore={isShopifyStore}
+                                        integration={integration}
+                                    />
+                                    <CampaignMessageStep
+                                        agents={agents}
+                                        attachments={attachments}
+                                        count={3}
+                                        isPristine={pristine.message}
+                                        isValid={isStepValid(
+                                            CampaignStepsKeys.Message
+                                        )}
+                                        isConvertSubscriber={
+                                            isConvertSubscriber
+                                        }
+                                        showContentWarning={showContentWarning}
+                                        onDeleteAttachment={
+                                            handleDeleteAttachment
+                                        }
+                                    />
+                                </Accordion>
+                                <div className="mt-4">
+                                    <CampaignFooter
+                                        isCampaignValid={isCampaignValid}
+                                        isUpdate={isEditMode}
+                                        onSave={handleSaveCampaign}
+                                        onDiscard={handleDiscardChanges}
+                                        onDelete={handleDeleteCampaign}
+                                        onDuplicate={handleDuplicateCampaign}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        )}
+
+                        {isLoading && (
+                            <>
+                                <div className={css.loader}>
+                                    <Skeleton height={70} />
+                                </div>
+                                <div className={css.loader}>
+                                    <Skeleton height={300} />
+                                </div>
+                                <div className={css.loader}>
+                                    <Skeleton height={70} />
+                                </div>
+                            </>
+                        )}
                     </div>
                     <div>
-                        <CampaignPreview
-                            {...chatPreviewProps}
-                            translatedTexts={
-                                campaignData.language
-                                    ? GORGIAS_CHAT_WIDGET_TEXTS[
-                                          campaignData.language
-                                      ]
-                                    : chatPreviewProps.translatedTexts
-                            }
-                            className={css.campaignPreview}
-                            products={shopifyProducts}
-                            html={sanitizeHtmlDefault(
-                                campaignData.message_html || ''
-                            )}
-                            authorName={campaignData.meta?.agentName ?? ``}
-                            authorAvatarUrl={
-                                campaignData.meta?.agentAvatarUrl ?? ''
-                            }
-                            avatar={avatar}
-                            chatTitle={integration.get('name')}
-                            mainFontFamily={
-                                chatPreviewProps.mainFontFamily ??
-                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                            }
-                            shouldHideReplyInput={!!campaignData.meta?.noReply}
-                            onCampaignContentChange={setShowContentWarning}
-                        />
+                        {!isLoading && (
+                            <CampaignPreview
+                                {...chatPreviewProps}
+                                translatedTexts={
+                                    campaignData.language
+                                        ? GORGIAS_CHAT_WIDGET_TEXTS[
+                                              campaignData.language
+                                          ]
+                                        : chatPreviewProps.translatedTexts
+                                }
+                                className={css.campaignPreview}
+                                products={shopifyProducts}
+                                html={sanitizeHtmlDefault(
+                                    campaignData.message_html || ''
+                                )}
+                                authorName={campaignData.meta?.agentName ?? ``}
+                                authorAvatarUrl={
+                                    campaignData.meta?.agentAvatarUrl ?? ''
+                                }
+                                avatar={avatar}
+                                chatTitle={integration.get('name')}
+                                mainFontFamily={
+                                    chatPreviewProps.mainFontFamily ??
+                                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                }
+                                shouldHideReplyInput={
+                                    !!campaignData.meta?.noReply
+                                }
+                                onCampaignContentChange={setShowContentWarning}
+                            />
+                        )}
                     </div>
                 </div>
             </CampaignDetailsFormContext.Provider>

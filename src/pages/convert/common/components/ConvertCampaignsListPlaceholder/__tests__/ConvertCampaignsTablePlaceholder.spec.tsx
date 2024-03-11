@@ -22,7 +22,11 @@ describe('<ConvertCampaignsTablePlaceholder />', () => {
 
     it('renders the `perPage` items', () => {
         const {container} = render(
-            <ConvertCampaignsTablePlaceholder data={data} perPage={10} />
+            <ConvertCampaignsTablePlaceholder
+                data={data}
+                isLoading={false}
+                perPage={10}
+            />
         )
 
         const rows = container.querySelectorAll('tr')
@@ -34,6 +38,7 @@ describe('<ConvertCampaignsTablePlaceholder />', () => {
         const {container} = render(
             <ConvertCampaignsTablePlaceholder
                 data={data}
+                isLoading={false}
                 perPage={DATA_LENGTH}
             />
         )
@@ -49,6 +54,7 @@ describe('<ConvertCampaignsTablePlaceholder />', () => {
         const {container} = render(
             <ConvertCampaignsTablePlaceholder
                 data={data}
+                isLoading={false}
                 perPage={DATA_LENGTH}
             />
         )

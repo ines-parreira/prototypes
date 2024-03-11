@@ -37,9 +37,8 @@ export const CampaignsView = () => {
         [integration]
     )
 
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
-    )
+    const {channelConnection, isLoading: isChannelConnectionLoading} =
+        useGetOrCreateChannelConnection(toJS(integration))
 
     const {mutate: updateCampaign} = useUpdateCampaign()
     const {mutateAsync: createCampaign} = useCreateCampaign()
@@ -112,13 +111,21 @@ export const CampaignsView = () => {
         ) as CampaignListOptionsParams
     }, [channelConnection])
 
-    const {data: campaigns} = useListCampaigns(campaignListOptions, {
-        enabled: !!channelConnection && !!campaignListOptions,
-    })
+    const {data: campaigns, isLoading: areCampaignsLoading} = useListCampaigns(
+        campaignListOptions,
+        {
+            enabled: !!channelConnection && !!campaignListOptions,
+        }
+    )
 
     const allCampaigns = useMemo(() => {
         return (campaigns || []) as Campaign[]
     }, [campaigns])
+
+    const isLoading = useMemo(
+        () => isChannelConnectionLoading || areCampaignsLoading,
+        [isChannelConnectionLoading, areCampaignsLoading]
+    )
 
     return (
         <CampaignListOptions>
@@ -135,6 +142,7 @@ export const CampaignsView = () => {
                 <CampaignsList
                     campaigns={allCampaigns}
                     integration={immutableIntegration}
+                    isLoading={isLoading}
                     onDeleteCampaign={handleDeleteCampaign}
                     onDuplicateCampaign={handleDuplicateCampaign}
                     onUpdateCampaign={toggleCampaign}

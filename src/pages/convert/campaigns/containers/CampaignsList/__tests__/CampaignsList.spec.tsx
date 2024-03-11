@@ -122,6 +122,7 @@ describe('<CampaignsList />', () => {
                                         '2021-10-06T17:17:56.565Z',
                                 },
                             ]}
+                            isLoading={false}
                             onDeleteCampaign={jest.fn()}
                             onDuplicateCampaign={jest.fn()}
                             onUpdateCampaign={jest.fn()}
@@ -149,6 +150,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={campaignsList}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}
@@ -186,6 +188,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={campaignsList}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}
@@ -204,6 +207,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={[]}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}
@@ -222,6 +226,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={campaignsForFilters}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}
@@ -248,6 +253,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={campaignsForFilters}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}
@@ -274,6 +280,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={campaignsForFilters}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}
@@ -297,6 +304,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={campaignsList}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}
@@ -320,6 +328,7 @@ describe('<CampaignsList />', () => {
                     <CampaignsList
                         integration={integration}
                         campaigns={campaignsList}
+                        isLoading={false}
                         onDeleteCampaign={jest.fn()}
                         onDuplicateCampaign={jest.fn()}
                         onUpdateCampaign={jest.fn()}

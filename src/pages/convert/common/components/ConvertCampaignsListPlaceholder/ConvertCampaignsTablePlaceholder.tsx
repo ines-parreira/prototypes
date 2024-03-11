@@ -7,6 +7,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
+import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import {Campaign} from '../../../campaigns/types/Campaign'
 import {useSortedCampaigns} from '../../../campaigns/hooks/useSortedCampaigns'
 import {isActiveStatus} from '../../../campaigns/types/enums/CampaignStatus.enum'
@@ -15,10 +16,15 @@ import css from './ConvertCampaignsTablePlaceholder.less'
 
 type Props = {
     data: Campaign[]
+    isLoading: boolean
     perPage?: number
 }
 
-const ConvertCampaignsTablePlaceholder = ({data, perPage = 25}: Props) => {
+const ConvertCampaignsTablePlaceholder = ({
+    data,
+    isLoading,
+    perPage = 25,
+}: Props) => {
     const {sortedCampaigns} = useSortedCampaigns(data)
 
     const renderRows = (campaign: Campaign) => {
@@ -55,7 +61,12 @@ const ConvertCampaignsTablePlaceholder = ({data, perPage = 25}: Props) => {
                     css.campaignsTable
                 )}
             >
-                <TableBody>{paginatedRows.map(renderRows)}</TableBody>
+                <TableBody>
+                    {!isLoading && paginatedRows.map(renderRows)}
+                    {isLoading && (
+                        <SkeletonLoader className={css.loader} length={10} />
+                    )}
+                </TableBody>
             </TableWrapper>
         </>
     )
