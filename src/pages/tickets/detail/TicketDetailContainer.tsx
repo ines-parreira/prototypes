@@ -82,6 +82,8 @@ import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
 import useTicketActivityTracking from './hooks/useTicketActivityTracking'
 import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
 
+import css from './TicketDetail.less'
+
 export type SubmitArgs = {
     status?: TicketStatus
     action?: string
@@ -655,7 +657,7 @@ export const TicketDetailContainer = ({
     }
 
     if (isLoading || isLoadingPhoneTicketData) {
-        return <Loader message="Loading ticket..." />
+        return <Loader className={css.loader} message="Loading ticket..." />
     }
 
     return (
