@@ -11,16 +11,18 @@ import AIArticleRow from '../AIArticleRow/AIArticleRow'
 import AIArticlesToggleButton from '../AIArticlesToggleButton'
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
 
+import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
+
 import css from './AIArticlesLibraryList.less'
 
 type AIArticlesLibraryListProps = {
     helpCenterId: number
     articles?: AILibraryArticleItem[] | null
-    counters?: {
+    counters: {
         [AIArticleToggleOptionValue.New]: number
         [AIArticleToggleOptionValue.Old]: number
         [AIArticleToggleOptionValue.All]: number
-    }
+    } | null
     selectedArticle?: AILibraryArticleItem
     setSelectedArticle: Dispatch<
         SetStateAction<AILibraryArticleItem | undefined>
@@ -42,8 +44,7 @@ const AIArticlesLibraryList = ({
 }: AIArticlesLibraryListProps) => {
     const showArticlesList = useMemo(
         () =>
-            counters &&
-            counters[AIArticleToggleOptionValue.All] > 0 &&
+            (!counters || counters[AIArticleToggleOptionValue.All] > 0) &&
             !showLinkToArticleTemplates,
         [counters, showLinkToArticleTemplates]
     )
@@ -131,22 +132,7 @@ const AIArticlesLibraryList = ({
                     )}
                 </>
             ) : (
-                <div className={css.centeredMessage}>
-                    <div className={css.messageContainer}>
-                        <span
-                            role="img"
-                            aria-label="Hooray"
-                            className={css.hooray}
-                        >
-                            🎉
-                        </span>
-                        <h3>Great work!</h3>
-                        <div>You've reviewed every article.</div>
-                        <div>
-                            We'll notify you when new articles are generated.
-                        </div>
-                    </div>
-                </div>
+                <AIArticlesLibraryListReviewedState />
             )}
         </div>
     )

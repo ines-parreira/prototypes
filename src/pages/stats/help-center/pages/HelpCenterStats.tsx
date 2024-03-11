@@ -152,7 +152,10 @@ const HelpCenterStatsComponent = ({
                     </DashboardGridCell>
                     {hasAccessToAILibrary && showAIBanner && (
                         <DashboardGridCell size={12}>
-                            <AIBanner helpCenterId={selectedHelpCenter.id} />
+                            <AIBanner
+                                helpCenterId={selectedHelpCenter.id}
+                                from="help-center-stats-banner"
+                            />
                         </DashboardGridCell>
                     )}
                 </DashboardSection>

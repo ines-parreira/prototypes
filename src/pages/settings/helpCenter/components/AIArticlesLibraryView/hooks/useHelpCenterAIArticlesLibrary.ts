@@ -14,7 +14,7 @@ export const useHelpCenterAIArticlesLibrary = (
     helpCenterId: number,
     locale: Locale['code']
 ) => {
-    const [articles, setArticles] = useState<AIArticle[] | null>()
+    const [articles, setArticles] = useState<AIArticle[] | null>(null)
     const [mappedArticleItems, setMappedArticleItems] = useState<
         AILibraryArticleItem[]
     >([])
@@ -61,7 +61,7 @@ export const useHelpCenterAIArticlesLibrary = (
         useState<AIArticleToggleOptionValue>(AIArticleToggleOptionValue.New)
 
     useEffect(() => {
-        setArticles(fetchedArticles)
+        setArticles(fetchedArticles || null)
     }, [fetchedArticles])
 
     useEffect(() => {
@@ -77,7 +77,7 @@ export const useHelpCenterAIArticlesLibrary = (
     return {
         articles: mappedArticleItems,
         isLoading,
-        counters: {
+        counters: articles && {
             [AIArticleToggleOptionValue.New]: newArticles.length,
             [AIArticleToggleOptionValue.Old]: oldArticles.length,
             [AIArticleToggleOptionValue.All]:

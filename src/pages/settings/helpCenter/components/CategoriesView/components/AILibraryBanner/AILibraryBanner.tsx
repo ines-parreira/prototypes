@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 
 import {assetsUrl} from 'utils'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -10,6 +10,7 @@ import css from './AILibraryBanner.less'
 
 const ArticleTemplatesBanner = () => {
     const helpCenterId = useHelpCenterIdParam()
+    const history = useHistory()
 
     return (
         <div className={css.container}>
@@ -25,12 +26,19 @@ const ArticleTemplatesBanner = () => {
                         We used AI to generate pre-written articles based on
                         your customer's most frequently asked questions.
                     </div>
-                    <Link
-                        to={`/app/settings/help-center/${helpCenterId}/ai-library`}
+                    <a
                         className={css.actionButton}
+                        onClick={() => {
+                            history.push(
+                                `/app/settings/help-center/${helpCenterId}/ai-library`,
+                                {
+                                    from: 'no-articles-banner',
+                                }
+                            )
+                        }}
                     >
                         <Button intent="primary">Review Articles</Button>
-                    </Link>
+                    </a>
                 </div>
                 <img
                     src={assetsUrl(`/img/help-center/ai-library-template.png`)}

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
@@ -9,9 +9,15 @@ import css from './AIBanner.less'
 type AIBannerProps = {
     helpCenterId: number
     className?: string
+    /**
+     * This is used to track the source of the click event.
+     */
+    from: string
 }
 
-const AIBanner = ({helpCenterId, className}: AIBannerProps) => {
+const AIBanner = ({helpCenterId, className, from}: AIBannerProps) => {
+    const history = useHistory()
+
     return (
         <div className={classNames(css.container, className)}>
             <div className={css.textContainer}>
@@ -27,14 +33,22 @@ const AIBanner = ({helpCenterId, className}: AIBannerProps) => {
                     </div>
                 </div>
             </div>
-            <Link
-                to={`/app/settings/help-center/${helpCenterId}/ai-library`}
+            <a
                 className={css.link}
+                onClick={(ev) => {
+                    ev.preventDefault()
+                    history.push(
+                        `/app/settings/help-center/${helpCenterId}/ai-library`,
+                        {
+                            from,
+                        }
+                    )
+                }}
             >
                 <Button intent="primary" fillStyle="ghost">
                     Review Articles
                 </Button>
-            </Link>
+            </a>
         </div>
     )
 }

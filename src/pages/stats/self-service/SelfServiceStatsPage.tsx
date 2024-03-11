@@ -527,6 +527,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                     articleRecommendationWithAIArticleHelpCenterId
                                 }
                                 className={css.aiBanner}
+                                from="self-service-stats-banner"
                             />
                         )}
                     <StatWrapper

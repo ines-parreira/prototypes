@@ -1,5 +1,8 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+import useEffectOnce from 'hooks/useEffectOnce'
 import useAppSelector from 'hooks/useAppSelector'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
@@ -16,6 +19,7 @@ import css from './AIArticlesLibraryView.less'
 import useAILibraryActions from './hooks/useAILibraryActions'
 
 const AIArticlesLibraryView = () => {
+    const history = useHistory()
     const helpCenter = useCurrentHelpCenter()
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const {
@@ -40,6 +44,13 @@ const AIArticlesLibraryView = () => {
         onPublish,
         onEditorSave,
     } = useAILibraryActions(helpCenter, articles, markArticleAsReviewed)
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.HelpCenterAILibraryViewed, {
+            from:
+                (history.location.state as Record<string, string>)?.from ?? '',
+        })
+    })
 
     return (
         <>

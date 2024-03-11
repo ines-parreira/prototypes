@@ -60,7 +60,15 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                 Articles
             </NavLink>
             {showAILibraryTab && (
-                <NavLink to={`${baseURL}/ai-library`}>
+                <NavLink
+                    to={`${baseURL}/ai-library`}
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        history.push(`${baseURL}/ai-library`, {
+                            from: 'ai-library-tab-clicked',
+                        })
+                    }}
+                >
                     <i
                         className={classNames(
                             'material-icons',

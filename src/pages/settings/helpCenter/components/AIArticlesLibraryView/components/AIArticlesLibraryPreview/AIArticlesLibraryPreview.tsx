@@ -1,5 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
@@ -62,20 +63,35 @@ const AIArticlesLibraryPreview: React.FC<Props> = ({
                                 'rounded',
                                 css.iconEdit
                             )}
-                            onClick={() => onEdit(article)}
+                            onClick={() => {
+                                logEvent(
+                                    SegmentEvent.HelpCenterAILibraryEditButtonClicked
+                                )
+                                onEdit(article)
+                            }}
                         >
                             edit
                         </IconButton>
                         <Tooltip target={editIconId}>Edit</Tooltip>
                         <Button
                             intent="secondary"
-                            onClick={() => onArchive(article)}
+                            onClick={() => {
+                                logEvent(
+                                    SegmentEvent.HelpCenterAILibraryArchiveButtonClicked
+                                )
+                                onArchive(article)
+                            }}
                         >
                             Archive
                         </Button>
                         <Button
                             intent="primary"
-                            onClick={() => onPublish(article)}
+                            onClick={() => {
+                                logEvent(
+                                    SegmentEvent.HelpCenterAILibraryPublishButtonClicked
+                                )
+                                onPublish(article)
+                            }}
                         >
                             Publish
                         </Button>
