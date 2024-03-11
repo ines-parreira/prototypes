@@ -18,6 +18,7 @@ describe('<TitleWrapper/>', () => {
                             vip_tier_name: 'Vip',
                         },
                     })}
+                    isEditing={false}
                 ></TitleWrapper>,
                 {
                     context: {
@@ -36,6 +37,7 @@ describe('<TitleWrapper/>', () => {
                             point_balance: 1,
                         },
                     })}
+                    isEditing={false}
                 ></TitleWrapper>,
                 {
                     context: {
@@ -48,7 +50,10 @@ describe('<TitleWrapper/>', () => {
         })
         it('should render empty state cause no data is available', () => {
             const component = shallow(
-                <TitleWrapper source={fromJS({})}></TitleWrapper>,
+                <TitleWrapper
+                    source={fromJS({})}
+                    isEditing={false}
+                ></TitleWrapper>,
                 {
                     context: {
                         integration: fromJS({id: 1}),

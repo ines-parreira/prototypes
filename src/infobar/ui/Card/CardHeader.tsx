@@ -6,6 +6,10 @@ import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
 import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
 import CardEditForm, {CardEditFormState} from 'infobar/ui/Card/CardEditForm'
+import {
+    EXPAND_TARGET_MARKER,
+    TARGET_CLOSED_MARKER,
+} from 'infobar/config/template'
 
 import css from './CardHeader.less'
 
@@ -150,6 +154,10 @@ export default function CardHeader(props: CardHeaderProps) {
         <div className={css.cardHeader} id={uniqueId}>
             {isExpandable && (
                 <span
+                    {...{
+                        [EXPAND_TARGET_MARKER]: true,
+                        [TARGET_CLOSED_MARKER]: !isOpen,
+                    }}
                     className={classnames(
                         css.dropdownIcon,
                         'clickable',

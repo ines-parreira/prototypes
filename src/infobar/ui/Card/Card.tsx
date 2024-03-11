@@ -1,9 +1,8 @@
 import React, {ComponentProps, ReactNode, useState} from 'react'
-
 import classnames from 'classnames'
 
-// This is to avoid circular dependencies while doing recursion
 import CardEditForm, {CardEditFormState} from 'infobar/ui/Card/CardEditForm'
+
 import css from './Card.less'
 import CardHeader from './CardHeader'
 

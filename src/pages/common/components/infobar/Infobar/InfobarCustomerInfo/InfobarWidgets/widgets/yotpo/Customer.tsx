@@ -6,7 +6,7 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import StaticField from 'infobar/components/StaticField'
 import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
 import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
-import ExpandAllButton from 'infobar/components/ExpandAllButton'
+import ExpandAllButton from 'infobar/ui/ExpandAllButton'
 
 import {CardHeaderStatusLabel} from './custom/CardHeaderStatusLabel'
 import {CardHeaderYotpoBadge} from './custom/CardHeaderYotpoBadge'
@@ -53,13 +53,14 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
 type TitleWrapperProps = {
     source: Map<string, any>
+    isEditing: boolean
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {source} = this.props
+        const {source, isEditing} = this.props
         const pointBalance = source.getIn([
             'loyalty_statistics',
             'point_balance',
@@ -70,7 +71,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
         ])
         return (
             <>
-                <ExpandAllButton />
+                {!isEditing && <ExpandAllButton />}
                 <CardHeaderTitle>
                     <CardHeaderIcon src={logo} alt="Yotpo" />
                     Yotpo

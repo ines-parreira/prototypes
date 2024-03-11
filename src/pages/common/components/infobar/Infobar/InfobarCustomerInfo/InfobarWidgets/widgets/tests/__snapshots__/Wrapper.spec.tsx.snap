@@ -4,6 +4,7 @@ exports[`Wrapper should display (without an edit or a remove icon) 1`] = `
 <div>
   <div
     class="draggable widgetWrapper"
+    data-expand-container="true"
   >
     <div
       class="wrapper"
@@ -22,6 +23,7 @@ exports[`Wrapper should render customer external data widget with the proper id 
 <div>
   <div
     class="draggable widgetWrapper"
+    data-expand-container="true"
   >
     <div
       class="wrapper"
@@ -40,6 +42,7 @@ exports[`Wrapper should render woocommerce widget with the proper id 1`] = `
 <div>
   <div
     class="draggable widgetWrapper"
+    data-expand-container="true"
   >
     <div
       class="wrapper"

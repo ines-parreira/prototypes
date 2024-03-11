@@ -32,6 +32,7 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import WrapperEditActions from 'infobar/ui/WrapperEditActions'
 import WidgetPanel from 'infobar/features/WidgetPanel'
+import {EXPAND_CONTAINER_MARKER} from 'infobar/config/template'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
@@ -88,6 +89,7 @@ export default function Wrapper({widget, template, source}: Props) {
                 }}
             >
                 <div
+                    {...{[EXPAND_CONTAINER_MARKER]: true}}
                     className={classnames('draggable', css.widgetWrapper, {
                         [css.widgetWrapperEditing]: isEditing,
                     })}

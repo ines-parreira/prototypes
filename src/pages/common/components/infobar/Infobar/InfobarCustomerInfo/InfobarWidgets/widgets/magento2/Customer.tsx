@@ -7,7 +7,7 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import StaticField from 'infobar/components/StaticField'
 import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
 import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
-import ExpandAllButton from 'infobar/components/ExpandAllButton'
+import ExpandAllButton from 'infobar/ui/ExpandAllButton'
 import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
 
 export default function Customer() {
@@ -42,13 +42,14 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 type TitleWrapperProps = {
     children: ReactNode
     source: Map<string, any>
+    isEditing: boolean
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {children, source} = this.props
+        const {children, source, isEditing} = this.props
 
         const storeUrl: string = this.context.integration.getIn([
             'meta',
@@ -68,7 +69,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 
         return (
             <>
-                <ExpandAllButton />
+                {!isEditing && <ExpandAllButton />}
                 <CardHeaderTitle>
                     <CardHeaderIcon src={logo} alt="Magento" />
                     Magento

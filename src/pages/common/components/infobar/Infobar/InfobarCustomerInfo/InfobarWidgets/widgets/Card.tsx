@@ -22,7 +22,7 @@ import {getWidgetsState} from 'state/widgets/selectors'
 import {WidgetType} from 'state/widgets/types'
 import StaticField from 'infobar/components/StaticField'
 import {CardEditFormState, HiddenField} from 'infobar/ui/Card/CardEditForm'
-import {DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER} from 'infobar/ui/List'
+import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'infobar/config/template'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 import {
@@ -169,7 +169,7 @@ export default function Card(props: Props) {
             limit: Number(
                 parent.getIn(
                     ['meta', 'limit'],
-                    DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER
+                    DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
                 ) as number | string
             ),
             orderBy: parent.getIn(['meta', 'orderBy'], '') as string,

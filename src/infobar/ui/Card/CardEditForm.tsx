@@ -9,8 +9,8 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import FileField from 'pages/common/forms/FileField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
+import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'infobar/config/template'
 
-import {DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER} from '../List'
 import css from './CardEditForm.less'
 
 export const TITLE_FIELD_LABEL = 'Title'
@@ -148,7 +148,7 @@ const CardEdit = ({
                             value={formState.limit}
                             placeholder="0"
                             onChange={(
-                                limit = DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER
+                                limit = DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
                             ) =>
                                 setFormState((formState) => ({
                                     ...formState,

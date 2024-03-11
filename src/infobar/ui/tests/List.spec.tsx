@@ -2,8 +2,9 @@ import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 
 import {compare} from 'utils'
+import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'infobar/config/template'
 
-import List, {DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER} from '../List'
+import List from '../List'
 
 describe('List', () => {
     const defaultProps = {
@@ -54,10 +55,7 @@ describe('List', () => {
             <List {...defaultProps} initialItemDisplayedNumber={undefined} />
         )
         expect(defaultProps.children).toHaveBeenLastCalledWith(
-            defaultProps.listItems.slice(
-                0,
-                DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER
-            )
+            defaultProps.listItems.slice(0, DEFAULT_LIST_ITEM_DISPLAYED_NUMBER)
         )
     })
 

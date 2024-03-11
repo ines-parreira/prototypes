@@ -23,7 +23,7 @@ describe('<TitleWrapper/>', () => {
                         }),
                     }}
                 >
-                    <TitleWrapper source={fromJS({id: 1})}>
+                    <TitleWrapper source={fromJS({id: 1})} isEditing={false}>
                         <div>foo bar</div>
                     </TitleWrapper>
                 </IntegrationContext.Provider>
@@ -45,7 +45,7 @@ describe('<TitleWrapper/>', () => {
                         }),
                     }}
                 >
-                    <TitleWrapper source={fromJS({id: 1})}>
+                    <TitleWrapper source={fromJS({id: 1})} isEditing={false}>
                         <div>foo bar</div>
                     </TitleWrapper>
                 </IntegrationContext.Provider>

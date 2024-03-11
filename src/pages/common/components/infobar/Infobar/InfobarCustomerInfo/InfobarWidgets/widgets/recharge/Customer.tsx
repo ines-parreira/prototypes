@@ -10,7 +10,7 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import StaticField from 'infobar/components/StaticField'
 import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
 import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
-import ExpandAllButton from 'infobar/components/ExpandAllButton'
+import ExpandAllButton from 'infobar/ui/ExpandAllButton'
 import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
 
 export default function Customer() {
@@ -36,9 +36,15 @@ type TitleWrapperProps = {
     children?: ReactNode
     source: Map<any, any>
     template: Map<any, any>
+    isEditing: boolean
 }
 
-export function TitleWrapper({children, source, template}: TitleWrapperProps) {
+export function TitleWrapper({
+    children,
+    source,
+    template,
+    isEditing,
+}: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)
     const storeName = integration.getIn(['meta', 'store_name']) as string
@@ -56,7 +62,7 @@ export function TitleWrapper({children, source, template}: TitleWrapperProps) {
 
     return (
         <>
-            <ExpandAllButton />
+            {!isEditing && <ExpandAllButton />}
             <CardHeaderTitle>
                 <CardHeaderIcon src={logo} alt="Recharge" />
                 Recharge

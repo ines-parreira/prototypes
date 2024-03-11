@@ -15,7 +15,7 @@ import StaticField from 'infobar/components/StaticField'
 import {CardHeaderSubtitle} from 'infobar/ui/Card/CardHeaderSubtitle'
 import {CardHeaderTitle} from 'infobar/ui/Card/CardHeaderTitle'
 import {CardHeaderIcon} from 'infobar/ui/Card/CardHeaderIcon'
-import ExpandAllButton from 'infobar/components/ExpandAllButton'
+import ExpandAllButton from 'infobar/ui/ExpandAllButton'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {InfobarAction} from '../types'
@@ -122,9 +122,10 @@ const AfterTitle = connector(AfterTitleContainer)
 type TitleWrapperProps = {
     children: ReactNode
     source: Map<any, any>
+    isEditing: boolean
 }
 
-function TitleWrapper({children, source}: TitleWrapperProps) {
+function TitleWrapper({children, source, isEditing}: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)
     const shopName: string = integration.getIn(['meta', 'shop_name'])
@@ -134,7 +135,7 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
 
     return (
         <>
-            <ExpandAllButton />
+            {!isEditing && <ExpandAllButton />}
             <CardHeaderTitle>
                 <CardHeaderIcon src={logo} alt="Shopify" />
                 Shopify

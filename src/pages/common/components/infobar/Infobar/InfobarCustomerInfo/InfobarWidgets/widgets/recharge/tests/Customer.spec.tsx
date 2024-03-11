@@ -29,6 +29,7 @@ describe('Customer', () => {
                                 hash: 'a8s4d86as54d',
                             })}
                             template={fromJS({})}
+                            isEditing={false}
                         />{' '}
                     </IntegrationContext.Provider>
                 </Provider>
@@ -49,6 +50,7 @@ describe('Customer', () => {
                             template={fromJS({
                                 meta: {link: 'https://gorgias.io/{{hash}}/'},
                             })}
+                            isEditing={false}
                         />{' '}
                     </IntegrationContext.Provider>
                 </Provider>

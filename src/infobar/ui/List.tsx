@@ -2,9 +2,9 @@ import React, {useState, ReactNode, useMemo} from 'react'
 import cs from 'classnames'
 
 import {compare} from 'utils'
-import css from './List.less'
+import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'infobar/config/template'
 
-export const DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER = 3
+import css from './List.less'
 
 type Props = {
     isDraggable: boolean
@@ -48,7 +48,7 @@ function List({
 
     let itemDisplayedLimit = initialItemDisplayedNumber
         ? initialItemDisplayedNumber
-        : DEFAULT_INITIAL_ITEM_DISPLAYED_NUMBER
+        : DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
 
     if (isEditing) {
         itemDisplayedLimit = 1
