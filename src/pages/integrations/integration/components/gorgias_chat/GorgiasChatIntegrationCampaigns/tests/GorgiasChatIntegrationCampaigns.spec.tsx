@@ -13,6 +13,7 @@ import useSearch from 'hooks/useSearch'
 import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/constants'
 
 import {renderWithRouter} from 'utils/testing'
+import * as useIsConvertUiDecouplingEnabledHook from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import GorgiasChatIntegrationCampaigns, {
     GorgiasChatIntegrationCampaignsComponent,
 } from '../GorgiasChatIntegrationCampaigns'
@@ -42,6 +43,13 @@ jest.mock(
     }
 )
 
+jest.mock(
+    'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder',
+    () => {
+        return jest.fn(() => <div>CampaignListPlaceholderElement</div>)
+    }
+)
+
 describe('<GorgiasChatIntegrationCampaigns/>', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
@@ -56,6 +64,10 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
+        jest.spyOn(
+            useIsConvertUiDecouplingEnabledHook,
+            'useIsConvertUiDecouplingEnabled'
+        ).mockReturnValue(false)
         ;(useSearch as jest.Mock).mockImplementation(() => {
             return {
                 search: '',
@@ -147,6 +159,61 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should display the placeholder list', () => {
+        jest.spyOn(
+            useIsConvertUiDecouplingEnabledHook,
+            'useIsConvertUiDecouplingEnabled'
+        ).mockReturnValue(true)
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <GorgiasChatIntegrationCampaigns
+                    {...minProps}
+                    integration={fromJS({
+                        id: 118,
+                        type: 'gorgias_chat',
+                        name: 'My new chat',
+                        meta: {
+                            campaigns: [
+                                {
+                                    id: '156a4d-fg68h40-sd6f4',
+                                    name: 'Super campaign',
+                                    message: {
+                                        text: 'Campaign message 1',
+                                        html: 'Campaign message 1',
+                                    },
+                                    triggers: [
+                                        createTrigger(
+                                            CampaignTriggerKey.BusinessHours
+                                        ),
+                                    ],
+                                    deactivated_datetime: null,
+                                },
+                                {
+                                    id: 'not-so-good-campaign-d8f9-fds486-sf78',
+                                    name: 'Not so good campaign',
+                                    message: {
+                                        text: 'Campaign message 2',
+                                        html: 'Campaign message 2',
+                                    },
+                                    triggers: [
+                                        createTrigger(
+                                            CampaignTriggerKey.BusinessHours
+                                        ),
+                                    ],
+                                    deactivated_datetime:
+                                        '2017-10-06T17:17:56.565Z',
+                                },
+                            ],
+                        },
+                    })}
+                />
+            </Provider>
+        )
+
+        expect(getByText('CampaignListPlaceholderElement')).toBeInTheDocument()
     })
 
     describe('Revenue campaign generator', () => {

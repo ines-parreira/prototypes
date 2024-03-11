@@ -18,6 +18,8 @@ import {IntegrationType} from 'models/integration/constants'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import ConvertCampaignsListPlaceholder from 'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder'
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {CampaignsList} from './containers/CampaignsList'
 import {CampaignListOptions} from './providers/CampaignListOptions'
@@ -36,6 +38,8 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
     deleteCampaign,
     updateCampaign,
 }: Props) => {
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
+
     const toggleCampaign = useCallback(
         (campaign: ChatCampaign) => {
             let form: Map<any, any> = fromJS(campaign)
@@ -126,14 +130,22 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
 
                 <GorgiasChatIntegrationHeader integration={integration} />
 
-                <CampaignsList
-                    campaigns={allCampaigns}
-                    currentUser={currentUser}
-                    integration={integration}
-                    onDeleteCampaign={handleDeleteCampaign}
-                    onDuplicateCampaign={handleDuplicateCampaign}
-                    onUpdateCampaign={toggleCampaign}
-                />
+                {!isConvertUiDecouplingEnabled && (
+                    <CampaignsList
+                        campaigns={allCampaigns}
+                        currentUser={currentUser}
+                        integration={integration}
+                        onDeleteCampaign={handleDeleteCampaign}
+                        onDuplicateCampaign={handleDuplicateCampaign}
+                        onUpdateCampaign={toggleCampaign}
+                    />
+                )}
+
+                {isConvertUiDecouplingEnabled && (
+                    <ConvertCampaignsListPlaceholder
+                        integration={integration}
+                    />
+                )}
             </div>
         </CampaignListOptions>
     )

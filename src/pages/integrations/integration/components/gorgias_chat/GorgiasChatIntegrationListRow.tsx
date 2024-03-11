@@ -24,6 +24,7 @@ import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
 import {Language} from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import Tooltip from '../../../../common/components/Tooltip'
 import history from '../../../../history'
 import {
@@ -66,6 +67,7 @@ const GorgiasChatIntegrationListRow = ({
         useFlags()[FeatureFlagKey.ChatCreationWizard]
     const showUpdatePermissions =
         useFlags()[FeatureFlagKey.ChatScopeUpdateChatList]
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
     const integrationId: number = chat.get('id')
 
     const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([
@@ -81,6 +83,8 @@ const GorgiasChatIntegrationListRow = ({
         isChatCreationWizardEnabled &&
         wizardStatus === GorgiasChatCreationWizardStatus.Draft
             ? Tab.CreateWizard
+            : isConvertUiDecouplingEnabled
+            ? Tab.Appearance
             : Tab.Campaigns
     }`
     const shopIntegrationId: number | null = chat.getIn(

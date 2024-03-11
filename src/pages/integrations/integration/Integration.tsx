@@ -42,6 +42,7 @@ import {
 } from 'state/entities/chatInstallationStatus/actions'
 import useAppSelector from 'hooks/useAppSelector'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -119,6 +120,7 @@ export const IntegrationDetail = ({
     }>()
 
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
@@ -180,7 +182,12 @@ export const IntegrationDetail = ({
         [integrations]
     )
 
-    const editLinkDefaultTab = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Campaigns}`
+    const editLinkDefaultTab = useMemo(() => {
+        if (isConvertUiDecouplingEnabled) {
+            return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Appearance}`
+        }
+        return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Campaigns}`
+    }, [isConvertUiDecouplingEnabled, integrationId])
 
     const goToDefaultTab = () => history.replace(editLinkDefaultTab)
     if (
