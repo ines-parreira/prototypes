@@ -334,6 +334,7 @@ const ArticleEditor: React.FC<Props> = ({
                                 onContinueEditing={resetPendingStates}
                                 onSave={() =>
                                     onEditorSave({
+                                        article,
                                         title: title!,
                                         content: content!,
                                         saveAsDraft: true,
