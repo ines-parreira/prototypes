@@ -5,7 +5,6 @@ import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import cssNavbar from 'assets/css/navbar.less'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import PaywallPopover from 'pages/settings/new_billing/components/PaywallPopover'
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
@@ -36,11 +35,7 @@ function VoiceStatsNavbarItem({to, title, commonNavLinkProps}: Props) {
         >
             <NavbarLink {...commonNavLinkProps} to={to}>
                 {title}
-                {hasVoiceFeature ? (
-                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
-                        NEW
-                    </Badge>
-                ) : (
+                {!hasVoiceFeature && (
                     <UpgradeIcon
                         iconRef={iconRef}
                         onMouseEnter={() => {

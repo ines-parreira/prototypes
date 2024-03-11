@@ -18,15 +18,6 @@ describe('<VoiceStatsNavbarItem />', () => {
         },
     }
 
-    it('should render with NEW badge', () => {
-        mockUseAppSelector.mockReturnValue(true)
-        const {getByText} = renderWithRouter(
-            <VoiceStatsNavbarItem {...defaultProps} />
-        )
-        expect(getByText(defaultProps.title)).toBeInTheDocument()
-        expect(getByText('NEW')).toBeInTheDocument()
-    })
-
     it('should render with upgrade icon', () => {
         mockUseAppSelector.mockReturnValue(false)
         const {getByText} = renderWithRouter(
