@@ -26,7 +26,7 @@ export const useGetHelpCenterArticles = (
     helpCenterId: number,
     locale: LocaleCode
 ): HelpCenterArticlesOutput => {
-    const {data: aiArticles, isLoading: isGetAIArticlesLoading} =
+    const {data: aiArticles, isInitialLoading: isGetAIArticlesLoading} =
         useGetAIArticlesByHelpCenter(helpCenterId, locale, {
             refetchOnWindowFocus: false,
         })
