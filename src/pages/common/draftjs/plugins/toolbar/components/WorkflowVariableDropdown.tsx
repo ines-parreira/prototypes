@@ -106,17 +106,14 @@ const WorkflowVariableDropdown = ({
                         </span>
                     </div>
                 )}
-                {filteredOptions.map((option) => {
-                    const mappedOption = {
-                        label: option.name,
-                        value:
-                            'variables' in option ? option.name : option.value,
-                    }
-
+                {filteredOptions.map((option, index) => {
                     return (
                         <DropdownItem
-                            key={mappedOption.value}
-                            option={mappedOption}
+                            key={`${option.name}-${index}`}
+                            option={{
+                                label: option.name,
+                                value: index,
+                            }}
                             onClick={() => {
                                 if ('variables' in option) {
                                     setSelectedCategory(option)
