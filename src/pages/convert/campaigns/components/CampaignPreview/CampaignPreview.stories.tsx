@@ -7,7 +7,7 @@ import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias
 import CampaignPreview from './CampaignPreview'
 
 const storyConfig: Meta = {
-    title: 'Data Display/Chat Campaigns/Preview',
+    title: 'Convert/Chat Campaigns/Preview',
     component: CampaignPreview,
     argTypes: {
         mainColor: {

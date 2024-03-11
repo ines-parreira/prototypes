@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import {ProductCarousel} from './ProductCarousel'
 
 const storyConfig: Meta = {
-    title: 'Data Display/Chat Campaigns/Product Carousel',
+    title: 'Convert/Chat Campaigns/Product Carousel',
     component: ProductCarousel,
     args: {
         products: [

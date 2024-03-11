@@ -6,7 +6,7 @@ import {FRAME_WIDTH} from '../../../../constants/visuals'
 import {ProductCardView} from './ProductCardView'
 
 const storyConfig: Meta = {
-    title: 'Data Display/Chat Campaigns/Product Card',
+    title: 'Convert/Chat Campaigns/Product Card',
     component: ProductCardView,
     argTypes: {
         color: {

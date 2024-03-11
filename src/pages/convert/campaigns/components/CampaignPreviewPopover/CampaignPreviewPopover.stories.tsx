@@ -7,7 +7,7 @@ import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import {CampaignPreviewPopover} from './CampaignPreviewPopover'
 
 const storyConfig: Meta = {
-    title: 'Data Display/Chat Campaigns/Preview Popover',
+    title: 'Convert/Chat Campaigns/Preview Popover',
     component: CampaignPreviewPopover,
     argTypes: {
         message: {

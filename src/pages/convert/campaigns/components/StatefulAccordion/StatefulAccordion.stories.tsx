@@ -6,7 +6,7 @@ import Accordion from 'pages/common/components/accordion/Accordion'
 import {StatefulAccordion} from './StatefulAccordion'
 
 const storyConfig: Meta = {
-    title: 'Data Display/Chat Campaigns/Accordion',
+    title: 'Convert/Chat Campaigns/Accordion',
     component: StatefulAccordion,
     argTypes: {
         children: {

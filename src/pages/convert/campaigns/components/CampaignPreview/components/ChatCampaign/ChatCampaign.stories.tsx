@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import {ChatCampaign} from './ChatCampaign'
 
 const storyConfig: Meta = {
-    title: 'Data Display/Chat Campaigns/Campaign',
+    title: 'Convert/Chat Campaigns/Campaign',
     component: ChatCampaign,
     args: {
         html: `Hello, first-time visitor! 👋 <br><br> Thank you for shopping with us, we'd like to offer you free shipping 🚢, please use the code: <strong>FREE_SHIPPING</strong>`,

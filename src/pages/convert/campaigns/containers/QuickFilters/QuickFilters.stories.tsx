@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import {QuickFilters} from './QuickFilters'
 
 const storyConfig: Meta = {
-    title: 'Revenue/QuickFilters',
+    title: 'Convert/QuickFilters',
     component: QuickFilters,
 }
 
