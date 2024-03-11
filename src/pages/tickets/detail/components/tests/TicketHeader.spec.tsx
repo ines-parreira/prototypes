@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import _omit from 'lodash/omit'
 import {useParams} from 'react-router-dom'
 
+import moment from 'moment'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {ticket} from 'fixtures/ticket'
 import * as notificationsActions from 'state/notifications/actions'
@@ -19,6 +20,7 @@ import {makeExecuteKeyboardAction} from 'utils/testing'
 import shortcutManager from 'services/shortcutManager'
 import useAppDispatch from 'hooks/useAppDispatch'
 import TicketHeader from '../TicketHeader'
+import Snooze from '../Snooze'
 
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee',
@@ -35,7 +37,9 @@ jest.mock('state/ticket/actions', () => ({
     addTags: jest.fn(),
     clearTicket: jest.fn(),
     displayAuditLogEvents: jest.fn(),
-    goToNextTicket: jest.fn(),
+    goToNextTicket: jest.fn(async (_ticketId, promise: Promise<any>) => {
+        await Promise.resolve(promise)
+    }),
     hideAuditLogEvents: jest.fn(),
     removeTag: jest.fn(),
     setAgent: jest.fn(),
@@ -44,7 +48,9 @@ jest.mock('state/ticket/actions', () => ({
     setSubject: jest.fn(() => () => Promise.resolve()),
     setTeam: jest.fn(),
     setTrashed: jest.fn(),
-    snoozeTicket: jest.fn(() => () => Promise.resolve()),
+    snoozeTicket: jest.fn((_datime, callback?: () => void) => {
+        callback?.()
+    }),
     ticketPartialUpdate: jest.fn(() => () => Promise.resolve()),
     isTicketNavigationAvailable: jest.fn(),
 }))
@@ -62,7 +68,11 @@ jest.mock('reactstrap', () => {
 
 jest.mock('common/segment')
 
-jest.mock('../Snooze', () => () => <div>Snooze</div>)
+const mockMoment = moment
+
+jest.mock('../Snooze', () => ({onUpdate}: ComponentProps<typeof Snooze>) => (
+    <div onClick={() => onUpdate(mockMoment())}>Snooze</div>
+))
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -97,7 +107,9 @@ describe('<TicketHeader />', () => {
     const minProps = {
         className: '',
         ticket: fromJS(_omit(ticket, 'id')),
-    } as ComponentProps<typeof TicketHeader>
+        hideTicket: () => Promise.resolve(),
+        setStatus: jest.fn(),
+    }
 
     let dispatch: jest.Mock
     const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -290,6 +302,21 @@ describe('<TicketHeader />', () => {
         jest.runAllTimers()
         expect(window.open).toHaveBeenCalledWith(
             `/app/ticket/${ticket.id}/print`
+        )
+    })
+
+    it('should clear ticket and go to next ticket on ticket snooze', async () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultStore)}>
+                <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(/Snooze/))
+
+        expect(ticketActions.snoozeTicket).toHaveBeenCalled()
+        await waitFor(() =>
+            expect(ticketActions.clearTicket).toHaveBeenCalled()
         )
     })
 })
