@@ -2,7 +2,7 @@ import React from 'react'
 import ReactStars from 'react-rating-stars-component'
 import {List, Map} from 'immutable'
 
-import StaticField from 'infobar/components/StaticField'
+import StaticField from 'Infobar/features/Field/components/StaticField'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {StarRatingColors} from 'pages/common/components/infobar/utils'
 

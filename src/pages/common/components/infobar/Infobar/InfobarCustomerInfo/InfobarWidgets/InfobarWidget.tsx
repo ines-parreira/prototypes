@@ -8,7 +8,7 @@ import {
 } from 'pages/common/components/infobar/utils'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {WidgetContext, WidgetContextType} from 'providers/infobar/WidgetContext'
-import {HiddenField} from 'infobar/ui/Card/CardEditForm'
+import {HiddenField} from 'Infobar/features/Card/display/CardEditForm'
 import {
     HTTP_WIDGET_TYPE,
     MAGENTO2_WIDGET_TYPE,
@@ -20,11 +20,11 @@ import {
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
+import Card from 'Infobar/features/Card'
 
-import ListWidget from './widgets/List'
-import Wrapper from './widgets/Wrapper'
-import Card from './widgets/Card'
-import Field from './widgets/Field'
+import Field from 'Infobar/features/Field'
+import Wrapper from 'Infobar/features/Wrapper'
+import ListWidget from 'Infobar/features/List'
 
 import http from './widgets/http'
 import magento2 from './widgets/magento2'

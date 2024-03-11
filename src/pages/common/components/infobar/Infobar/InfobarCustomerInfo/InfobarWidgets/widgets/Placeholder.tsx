@@ -7,7 +7,7 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import {removeEditedWidget} from 'state/widgets/actions'
 import {RootState} from 'state/types'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import WidgetPanel from 'infobar/features/WidgetPanel'
+import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 
 import css from './Placeholder.less'
 

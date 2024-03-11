@@ -6,7 +6,7 @@ import React, {
 } from 'react'
 import {fromJS, List, Map} from 'immutable'
 
-import StaticField from 'infobar/components/StaticField'
+import StaticField from 'Infobar/features/Field/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {OrderContext} from './Order/OrderWidget'
 

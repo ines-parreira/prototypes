@@ -11,7 +11,7 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import WidgetPanel from 'infobar/features/WidgetPanel'
+import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 import {WidgetType} from 'state/widgets/types'
 
 // This is to avoid circular dependencies while doing recursion

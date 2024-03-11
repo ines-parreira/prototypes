@@ -1,7 +1,7 @@
 import React from 'react'
 import {Map} from 'immutable'
 
-import StaticField from 'infobar/components/StaticField'
+import StaticField from 'Infobar/features/Field/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {humanizeString} from 'utils'
 

@@ -4,14 +4,14 @@ import {Map} from 'immutable'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import StaticField from 'infobar/components/StaticField'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {EditionContext} from 'providers/infobar/EditionContext'
+import StaticField from 'Infobar/features/Field/components/StaticField'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import CopyButton from 'infobar/components/CopyButton'
+import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import css from './DraftOrderWidget.less'
 
 export default function DraftOrderWidget() {

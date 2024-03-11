@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
-import CopyButton from 'infobar/components/CopyButton'
+import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
@@ -20,7 +20,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import DraftOrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/DraftOrderModal'
-import StaticField from 'infobar/components/StaticField'
+import StaticField from 'Infobar/features/Field/components/StaticField'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
