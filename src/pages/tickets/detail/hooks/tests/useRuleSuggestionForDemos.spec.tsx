@@ -49,120 +49,171 @@ describe('useRuleSuggestionForDemos', () => {
 
     useLocalStorageSpy.mockReturnValue([])
 
-    it('should return shouldDisplayDemoSuggestion true', () => {
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(store)}>{children}</Provider>
-            ),
+    describe('shouldDisplayDemoSuggestion', () => {
+        it('should return true', () => {
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(store)}>{children}</Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeTruthy()
         })
 
-        expect(result.current.shouldDisplayDemoSuggestion).toBeTruthy()
-    })
-
-    it('should return shouldDisplayDemoSuggestion true [ADDON]', () => {
-        const addonAccountStore = {
-            ...store,
-            currentAccount: fromJS({
-                ...account,
-                current_subscription: {
-                    ...account.current_subscription,
-                    status: 'active',
-                    products: automationSubscriptionProductPrices,
-                },
-            }),
-        }
-
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(addonAccountStore)}>
-                    {children}
-                </Provider>
-            ),
-        })
-
-        expect(result.current.shouldDisplayDemoSuggestion).toBeTruthy()
-    })
-
-    it('should return shouldDisplayDemoSuggestion false [FREQUENCY]', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementationOnce(() => ({
-            [FeatureFlagKey.TicketDemoSuggestion]: 0,
-        }))
-
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(store)}>{children}</Provider>
-            ),
-        })
-
-        expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
-    })
-
-    it('should return shouldDisplayDemoSuggestion false [ACCOUNT TYPE]', () => {
-        const basicAccountStore = {
-            ...store,
-            currentAccount: fromJS({...account}),
-        }
-
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(basicAccountStore)}>
-                    {children}
-                </Provider>
-            ),
-        })
-
-        expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
-    })
-
-    it('should return shouldDisplayDemoSuggestion false [DISMISS THRESHOLD]', () => {
-        const demoSuggestionDismissedTickets = [2, 3, 4]
-        useLocalStorageSpy.mockReturnValueOnce([demoSuggestionDismissedTickets])
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(store)}>{children}</Provider>
-            ),
-        })
-
-        expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
-    })
-
-    it('should return shouldDisplayDemoSuggestion false [DISMISS TICKET]', () => {
-        const demoSuggestionDismissedTickets = [1]
-        useLocalStorageSpy.mockReturnValueOnce([demoSuggestionDismissedTickets])
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(store)}>{children}</Provider>
-            ),
-        })
-
-        expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
-    })
-
-    it('should return shouldDisplayDemoSuggestion false [ACCOUNT SETTING]', () => {
-        const dismissedAccountSettingStore = {
-            ...store,
-            currentAccount: fromJS({
-                ...account,
-                settings: [
-                    {
-                        type: AccountSettingType.InTicketSuggestion,
-                        data: {
-                            is_demo_hidden: true,
-                        },
+        it('should return true [ADDON]', () => {
+            const addonAccountStore = {
+                ...store,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        status: 'active',
+                        products: automationSubscriptionProductPrices,
                     },
-                ],
-            }),
-        }
+                }),
+            }
 
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(dismissedAccountSettingStore)}>
-                    {children}
-                </Provider>
-            ),
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(addonAccountStore)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeTruthy()
         })
 
-        expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        it('should return false [FREQUENCY]', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementationOnce(() => ({
+                [FeatureFlagKey.TicketDemoSuggestion]: 0,
+            }))
+
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(store)}>{children}</Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        })
+
+        it('should return false [ACCOUNT TYPE]', () => {
+            const basicAccountStore = {
+                ...store,
+                currentAccount: fromJS({...account}),
+            }
+
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(basicAccountStore)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        })
+
+        it('should return false [DISMISS THRESHOLD]', () => {
+            const demoSuggestionDismissedTickets = [2, 3, 4]
+            useLocalStorageSpy.mockReturnValueOnce([
+                demoSuggestionDismissedTickets,
+            ])
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(store)}>{children}</Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        })
+
+        it('should return false [DISMISS TICKET]', () => {
+            const demoSuggestionDismissedTickets = [1]
+            useLocalStorageSpy.mockReturnValueOnce([
+                demoSuggestionDismissedTickets,
+            ])
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(store)}>{children}</Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        })
+
+        it('should return false [ACCOUNT SETTING]', () => {
+            const dismissedAccountSettingStore = {
+                ...store,
+                currentAccount: fromJS({
+                    ...account,
+                    settings: [
+                        {
+                            type: AccountSettingType.InTicketSuggestion,
+                            data: {
+                                is_demo_hidden: true,
+                            },
+                        },
+                    ],
+                }),
+            }
+
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider
+                            store={mockStore(dismissedAccountSettingStore)}
+                        >
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        })
+
+        it('should return false [MACRO PREFILL]', () => {
+            const macroPrefillTicketStore = {
+                ...store,
+                ticket: fromJS({
+                    state: {topRankMacroState: {macroId: 8, state: 'pending'}},
+                }),
+            }
+
+            const {result} = renderHook(
+                () => useRuleSuggestionForDemos(ticketId),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(macroPrefillTicketStore)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        })
     })
 
     it('should add ticketId to dismissed tickets', () => {

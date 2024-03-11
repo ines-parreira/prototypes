@@ -12,6 +12,7 @@ import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {submitSetting} from 'state/currentAccount/actions'
 import {AccountSettingType} from 'state/currentAccount/types'
+import {getTopRankMacroState} from 'state/ticket/selectors'
 
 const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
 
@@ -41,9 +42,11 @@ export default function useRuleSuggestionForDemos(ticketId: number) {
 
     const dispatch = useAppDispatch()
 
-    const isProPlus = ['pro', 'advanced', 'enterprise'].some((priceType) =>
-        currentPlanName?.toLowerCase().includes(priceType)
+    const isProPlus = ['pro', 'advanced', 'enterprise', 'custom'].some(
+        (priceType) => currentPlanName?.toLowerCase().includes(priceType)
     )
+
+    const topRankMacroState = useAppSelector(getTopRankMacroState)
 
     const frequencyThreshold = useMemo(() => {
         const frequency =
@@ -64,19 +67,24 @@ export default function useRuleSuggestionForDemos(ticketId: number) {
         const accountSettingDismiss =
             !!inTicketSuggestionForDemo?.data?.is_demo_hidden
 
+        const macroPrefillActive =
+            topRankMacroState && topRankMacroState.macroId
+
         return (
             frequencyThreshold &&
+            !macroPrefillActive &&
+            isProPlus &&
             !userSettingDismissTreshold &&
             !userSettingDismissTicket &&
-            !accountSettingDismiss &&
-            isProPlus
+            !accountSettingDismiss
         )
     }, [
-        ticketId,
-        isProPlus,
+        demoSuggestionDismissedTickets,
         frequencyThreshold,
         inTicketSuggestionForDemo,
-        demoSuggestionDismissedTickets,
+        isProPlus,
+        ticketId,
+        topRankMacroState,
     ])
 
     const setDemoSuggestionSettingPerUser = () => {

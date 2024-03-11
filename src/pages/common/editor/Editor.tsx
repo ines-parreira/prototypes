@@ -12,6 +12,8 @@ import MessageSourceFields from 'pages/tickets/detail/components/ReplyArea/Messa
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
 
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import {getHasAutomate} from 'state/billing/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import useMacrosSearch from './hooks/useMacrosSearch'
@@ -32,6 +34,7 @@ export default function Editor({
     submit,
     ticket,
 }: Props) {
+    const hasAutomate = useAppSelector(getHasAutomate)
     const {showWhatsAppTemplateEditor} = useWhatsAppEditor()
 
     const {formRef, onSubmit, setTicketStatus} = useForm(submit)
@@ -70,6 +73,7 @@ export default function Editor({
                     {!showWhatsAppTemplateEditor && (
                         <TicketReplyArea
                             hasShownMacros={hasShown}
+                            hasAutomate={hasAutomate}
                             filters={filters}
                             initialMacrosLoaded={initialLoaded}
                             isMacrosActive={isActive}

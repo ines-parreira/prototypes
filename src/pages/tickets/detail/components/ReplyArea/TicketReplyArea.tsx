@@ -40,6 +40,7 @@ const PREFILL_TOP_MACRO_SCORE_THRESHOLD = 0.8
 
 type Props = {
     filters: MacrosProperties
+    hasAutomate: boolean
     hasShownMacros: boolean
     initialMacrosLoaded: boolean
     isMacrosActive: boolean
@@ -100,7 +101,10 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     checkTopRankMacro() {
-        if (this.props.inTicketSuggestionState === 'pending') {
+        if (
+            this.props.hasAutomate &&
+            this.props.inTicketSuggestionState === 'pending'
+        ) {
             return
         }
 

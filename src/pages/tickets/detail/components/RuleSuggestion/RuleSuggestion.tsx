@@ -182,7 +182,6 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                 '_blank',
                 'noopener'
             )
-            handleDismiss(false)
         } else {
             logEvent(SegmentEvent.InTicketSuggestionForDemoRequested, {
                 userRole: 'Agent',
@@ -195,6 +194,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                 })
             )
         }
+        handleDismiss(false)
     }
 
     const handleDismiss = (trackEvents: boolean) => {
