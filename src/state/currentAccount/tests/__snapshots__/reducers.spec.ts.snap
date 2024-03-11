@@ -1,53 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`current account reducers SET_CURRENT_SUBSCRIPTION should set the credit card (initial state). 1`] = `
-Immutable.Map {
-  "settings": Immutable.List [],
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {},
-  },
-  "current_subscription": Immutable.Map {
-    "products": Immutable.Map {
-      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
-    },
-    "status": "active",
-  },
-}
-`;
-
-exports[`current account reducers SET_CURRENT_SUBSCRIPTION should set the credit card and override the previous one. 1`] = `
-Immutable.Map {
-  "settings": Immutable.List [],
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {},
-  },
-  "current_subscription": {
-    "products": {
-      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
-    },
-    "staus": "past_due",
-  },
-}
-`;
-
-exports[`current account reducers UPDATE_SUBSCRIPTION_PRODUCTS should set the credit card (initial state). 1`] = `
-Immutable.Map {
-  "settings": Immutable.List [],
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {},
-  },
-}
-`;
-
-exports[`current account reducers UPDATE_SUBSCRIPTION_PRODUCTS should set the credit card and override the previous one. 1`] = `
-Immutable.Map {
-  "settings": Immutable.List [],
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {},
-  },
-}
-`;
-
 exports[`current account reducers update account 1`] = `
 {
   "_internal": {
@@ -120,33 +72,5 @@ exports[`current account reducers update setting 2`] = `
       "id": 1,
     },
   ],
-}
-`;
-
-exports[`current account reducers update subscription with an existing subscription 1`] = `
-{
-  "_internal": {
-    "loading": {},
-  },
-  "current_subscription": {
-    "products": {
-      "prod_LsH6kV35G6zKWo": "price_1LJBjdI9qXomtXqS8RzPPA7K",
-    },
-  },
-  "settings": [],
-}
-`;
-
-exports[`current account reducers update subscription without any existing subscription 1`] = `
-{
-  "_internal": {
-    "loading": {},
-  },
-  "current_subscription": {
-    "products": {
-      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
-    },
-  },
-  "settings": [],
 }
 `;

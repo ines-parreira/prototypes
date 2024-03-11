@@ -24,6 +24,7 @@ export const account: Account = {
         products: {
             [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
         },
+        scheduled_to_cancel_at: null,
     },
     created_datetime: '2017-08-23T01:38:52.479339+00:00',
     deactivated_datetime: null,

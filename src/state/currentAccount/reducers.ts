@@ -51,7 +51,10 @@ export default function reducer(
             )
 
         case constants.SET_CURRENT_SUBSCRIPTION:
-            return state.set('current_subscription', action.subscription)
+            return state.set(
+                'current_subscription',
+                fromJS(action.subscription)
+            )
 
         case constants.UPDATE_SUBSCRIPTION_PRODUCTS:
             if (!state.get('current_subscription')) {

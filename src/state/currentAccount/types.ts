@@ -180,6 +180,7 @@ export type Account = {
         trial_end_datetime: string | null
         trial_start_datetime: string | null
         products: Record<string, string>
+        scheduled_to_cancel_at: string | null
     }
     created_datetime: string
     deactivated_datetime: Maybe<string>

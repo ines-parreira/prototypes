@@ -1228,6 +1228,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
       "products": Immutable.Map {
         "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
       },
+      "scheduled_to_cancel_at": null,
     },
     "domain": "acme",
     "meta": Immutable.Map {},

@@ -3,6 +3,8 @@ import {fromJS} from 'immutable'
 
 import {
     advancedMonthlyHelpdeskPrice,
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPrice,
     basicMonthlyHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
@@ -92,115 +94,143 @@ describe('current account reducers', () => {
         done()
     })
 
-    describe('update subscription', () => {
-        it('without any existing subscription', () => {
+    describe('UPDATE_SUBSCRIPTION_SUCCESS', () => {
+        const basicSubscription = {
+            start_datetime: '2024-03-01T11:33:41+00:00',
+            trial_end_datetime: '2024-03-01T11:33:41+00:00',
+            trial_start_datetime: '2024-03-03T11:33:41+00:00',
+            products: {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+            },
+            status: 'past_due',
+            scheduled_to_cancel_at: '2024-03-04T11:33:41+00:00',
+        }
+
+        it('should update when previous subscription is null', () => {
             const state = initialState.set('current_subscription', null)
+
             expect(
                 reducer(state, {
                     type: types.UPDATE_SUBSCRIPTION_SUCCESS,
-                    subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
-                        },
-                    },
-                }).toJS()
-            ).toMatchSnapshot()
+                    subscription: basicSubscription,
+                }).get('current_subscription')
+            ).toEqual(fromJS(basicSubscription))
         })
 
-        it('with an existing subscription', () => {
+        it('should update the status and scheduled_to_cancel_at', () => {
             const state = initialState.set(
                 'current_subscription',
-                fromJS({
-                    products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPrice.price_id,
-                    },
-                })
+                fromJS(basicSubscription)
             )
+            const updatedSubscription = {
+                ...basicSubscription,
+                status: 'active',
+                scheduled_to_cancel_at: null,
+            }
             expect(
                 reducer(state, {
                     type: types.UPDATE_SUBSCRIPTION_SUCCESS,
-                    subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                advancedMonthlyHelpdeskPrice.price_id,
-                        },
-                    },
-                }).toJS()
-            ).toMatchSnapshot()
+                    subscription: updatedSubscription,
+                }).get('current_subscription')
+            ).toEqual(fromJS(updatedSubscription))
         })
     })
 
     describe('SET_CURRENT_SUBSCRIPTION', () => {
-        const subscription = fromJS({
+        const subscription = {
+            start_datetime: '2024-03-01T11:33:41+00:00',
+            trial_end_datetime: '2024-03-01T11:33:41+00:00',
+            trial_start_datetime: '2024-03-03T11:33:41+00:00',
             products: {
                 [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
             },
-            status: 'active',
-        })
+            status: 'past_due',
+            scheduled_to_cancel_at: '2024-03-04T11:33:41+00:00',
+        }
 
-        it('should set the credit card (initial state).', () => {
+        it('should set a subscription when before subscription was null', () => {
+            const state = initialState.set('current_subscription', null)
             const action = {
                 type: types.SET_CURRENT_SUBSCRIPTION,
-                subscription,
+                subscription: subscription,
             }
-            expect(reducer(initialState, action)).toMatchSnapshot()
+            expect(reducer(state, action).get('current_subscription')).toEqual(
+                fromJS(subscription)
+            )
         })
 
-        it('should set the credit card and override the previous one.', () => {
+        it('should reset a subscription when previous one existed already', () => {
             const action = {
                 type: types.SET_CURRENT_SUBSCRIPTION,
                 subscription,
             }
             const state = reducer(initialState, action)
+
             const newSubscription = {
+                ...subscription,
                 products: {
                     [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [AUTOMATION_PRODUCT_ID]:
+                        basicMonthlyAutomationPrice.price_id,
                 },
-                staus: 'past_due',
+                status: 'active',
             }
             const newAction = {
                 type: types.SET_CURRENT_SUBSCRIPTION,
                 subscription: newSubscription,
             }
-            expect(reducer(state, newAction as GorgiasAction)).toMatchSnapshot()
+            expect(
+                reducer(state, newAction).get('current_subscription')
+            ).toEqual(fromJS(newSubscription))
         })
     })
 
     describe('UPDATE_SUBSCRIPTION_PRODUCTS', () => {
-        const subscription = fromJS({
+        const subscription = {
+            start_datetime: '2024-03-01T11:33:41+00:00',
+            trial_end_datetime: '2024-03-01T11:33:41+00:00',
+            trial_start_datetime: '2024-03-03T11:33:41+00:00',
             products: {
                 [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
             },
-            status: 'active',
-        })
+            status: 'past_due',
+            scheduled_to_cancel_at: '2024-03-04T11:33:41+00:00',
+        }
 
-        it('should set the credit card (initial state).', () => {
+        it('should return the same state if current subscription is null', () => {
+            const state = initialState.set('current_subscription', null)
             const action = {
                 type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
-                subscription,
-            }
-            expect(reducer(initialState, action)).toMatchSnapshot()
-        })
-
-        it('should set the credit card and override the previous one.', () => {
-            const action = {
-                type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
-                subscription,
-            }
-            const state = reducer(initialState, action)
-            const newSubscription = {
-                products: {
+                products: fromJS({
                     [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-                },
-                staus: 'past_due',
+                }),
             }
-            const newAction = {
+            expect(
+                reducer(state, action).get('current_subscription')
+            ).toBeNull()
+        })
+
+        it('should update the products of the subscription', () => {
+            const state = initialState.set(
+                'current_subscription',
+                fromJS(subscription)
+            )
+            const action = {
                 type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
-                subscription: newSubscription,
+                products: fromJS({
+                    [HELPDESK_PRODUCT_ID]:
+                        advancedMonthlyHelpdeskPrice.price_id,
+                }),
             }
-            expect(reducer(state, newAction as GorgiasAction)).toMatchSnapshot()
+            expect(reducer(state, action).get('current_subscription')).toEqual(
+                fromJS({
+                    ...subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            advancedMonthlyHelpdeskPrice.price_id,
+                    },
+                })
+            )
         })
     })
 })
