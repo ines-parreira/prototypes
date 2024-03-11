@@ -64,6 +64,11 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
     return (
         <>
             <Container fluid className={css.pageContainer}>
+                <div>
+                    <ConvertCampaignsNewHomeInfobar
+                        integrationId={integration.get('id')}
+                    />
+                </div>
                 <div className={css.campaignsHeader}>
                     {!isLoading && allCampaigns.length === 0 ? (
                         <p>
@@ -82,11 +87,6 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
                     >
                         {BUTTON_TITLE}
                     </Button>
-                </div>
-                <div>
-                    <ConvertCampaignsNewHomeInfobar
-                        integrationId={integration.get('id')}
-                    />
                 </div>
             </Container>
 

@@ -34,7 +34,7 @@ const ConvertCampaignsNewHomeInfobar = ({integrationId}: Props) => {
 
     return (
         <Alert
-            className="mt-4"
+            className="mb-4"
             icon
             customActions={
                 <img
@@ -49,7 +49,7 @@ const ConvertCampaignsNewHomeInfobar = ({integrationId}: Props) => {
         >
             <b>Campaigns have a new home!</b> You can now manage your campaigns
             from the <b>Convert</b> page by clicking the top left menu in the
-            sidebar, or the Edit in Convert Settings button above.
+            sidebar, or the Edit in Convert Settings button below.
         </Alert>
     )
 }
