@@ -10,7 +10,7 @@ export const useUpsertAccountConfiguration = () => {
     return useUpsertAccountConfigurationPure({
         onSuccess: () => {
             void queryClient.invalidateQueries({
-                queryKey: accountConfigurationKeys.accountConfiguration(),
+                queryKey: accountConfigurationKeys.all(),
             })
         },
     })

@@ -17,7 +17,7 @@ export const useUpsertStoreConfiguration = (
     return useUpsertStoreConfigurationPure({
         onSuccess: () => {
             void queryClient.invalidateQueries({
-                queryKey: storeConfigurationKeys.storeConfiguration(storeName),
+                queryKey: storeConfigurationKeys.detail(storeName),
             })
             if (enableNotifications) {
                 void dispatch(

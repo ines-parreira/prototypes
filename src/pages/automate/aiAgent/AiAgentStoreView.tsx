@@ -28,7 +28,7 @@ import HelpCenterSelect from '../common/components/HelpCenterSelect'
 import TextArea from '../../common/forms/TextArea'
 import {useGetOrUpsertAiAgentConfiguration} from '../../../hooks/aiAgent/useGetOrUpsertAccountConfiguration'
 import NumberInput from '../../common/forms/input/NumberInput'
-import css from './AiAgentView.less'
+import css from './AiAgentStoreView.less'
 import {
     TONE_OF_VOICE_LABEL_TO_VALUE,
     TONE_OF_VOICE_LABELS,
@@ -41,7 +41,7 @@ import {
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
 
-export const AiAgentView = () => {
+export const AiAgentStoreView = () => {
     const {shopName} = useParams<{shopName: string}>()
 
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`

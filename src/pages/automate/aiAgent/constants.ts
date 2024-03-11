@@ -1,3 +1,5 @@
+import {StoreConfiguration} from '../../../models/aiAgent/types'
+
 export const SIGNATURE_MAX_LENGTH = 50
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
 export const MAX_EXCLUDED_TOPICS = 10
@@ -23,7 +25,8 @@ export const TONE_OF_VOICE_VALUE_TO_LABEL: Record<string, string> = {
         'Sophisticated',
 }
 
-export const DEFAULT_STORE_CONFIGURATION = {
+// FIXME: Let the backend handle the default store configuration
+export const DEFAULT_STORE_CONFIGURATION: StoreConfiguration = {
     storeName: '',
 
     helpCenterId: 0,

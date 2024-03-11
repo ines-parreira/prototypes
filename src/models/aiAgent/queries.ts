@@ -4,6 +4,8 @@ import {MutationOverrides} from 'types/query'
 import {GetStoreConfigurationParams} from './types'
 import {
     getAccountConfiguration,
+    getOrCreateAccountConfiguration,
+    getOrCreateStoreConfiguration,
     getStoreConfiguration,
     upsertAccountConfiguration,
     upsertStoreConfiguration,
@@ -12,10 +14,62 @@ import {
 const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 
+export const accountConfigurationKeys = {
+    all: () => ['aiAgentAccountConfigurations'] as const,
+    details: () => [...accountConfigurationKeys.all(), 'detail'] as const,
+    detail: (accountDomain: string) =>
+        [...accountConfigurationKeys.details(), accountDomain] as const,
+}
+
+export const useGetAccountConfiguration = (
+    accountDomain: string,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getAccountConfiguration>>
+    >
+) => {
+    return useQuery({
+        queryKey: accountConfigurationKeys.detail(accountDomain),
+        queryFn: () => getAccountConfiguration(accountDomain),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useGetOrCreateAccountConfigurationPure = (
+    accountId: number,
+    accountDomain: string,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getOrCreateAccountConfiguration>>
+    >
+) => {
+    return useQuery({
+        queryKey: accountConfigurationKeys.detail(accountDomain),
+        queryFn: () =>
+            getOrCreateAccountConfiguration(accountId, accountDomain),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useUpsertAccountConfigurationPure = (
+    overrides?: MutationOverrides<typeof upsertAccountConfiguration>
+) => {
+    return useMutation({
+        mutationFn: (params) => upsertAccountConfiguration(...params),
+        ...overrides,
+    })
+}
+
 export const storeConfigurationKeys = {
-    all: () => ['storeConfigurations'] as const,
-    storeConfiguration: (storeName: string) =>
-        [...storeConfigurationKeys.all(), storeName] as const,
+    all: () => ['aiAgentStoreConfigurations'] as const,
+    lists: () => [...storeConfigurationKeys.all(), 'list'] as const,
+    list: (params: {query: string}) =>
+        [...storeConfigurationKeys.lists(), params] as const,
+    details: () => [...storeConfigurationKeys.all(), 'detail'] as const,
+    detail: (storeName: string) =>
+        [...storeConfigurationKeys.details(), storeName] as const,
 }
 
 export const useGetStoreConfigurationPure = (
@@ -25,7 +79,7 @@ export const useGetStoreConfigurationPure = (
     >
 ) => {
     return useQuery({
-        queryKey: storeConfigurationKeys.storeConfiguration(params.storeName),
+        queryKey: storeConfigurationKeys.detail(params.storeName),
         queryFn: () => getStoreConfiguration(params),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
@@ -42,30 +96,17 @@ export const useUpsertStoreConfigurationPure = (
     })
 }
 
-export const accountConfigurationKeys = {
-    accountConfiguration: () => ['accountConfiguration'] as const,
-}
-
-export const useGetAccountConfiguration = (
-    accountDomain: string,
+export const useGetOrCreateStoreConfigurationPure = (
+    params: GetStoreConfigurationParams,
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getAccountConfiguration>>
+        Awaited<ReturnType<typeof getOrCreateStoreConfiguration>>
     >
 ) => {
     return useQuery({
-        queryKey: accountConfigurationKeys.accountConfiguration(),
-        queryFn: () => getAccountConfiguration(accountDomain),
+        queryKey: storeConfigurationKeys.detail(params.storeName),
+        queryFn: () => getOrCreateStoreConfiguration(params),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        ...overrides,
-    })
-}
-
-export const useUpsertAccountConfigurationPure = (
-    overrides?: MutationOverrides<typeof upsertAccountConfiguration>
-) => {
-    return useMutation({
-        mutationFn: (params) => upsertAccountConfiguration(...params),
         ...overrides,
     })
 }
