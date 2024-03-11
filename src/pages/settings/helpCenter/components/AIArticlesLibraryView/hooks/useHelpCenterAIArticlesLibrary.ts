@@ -18,13 +18,10 @@ export const useHelpCenterAIArticlesLibrary = (
     const [mappedArticleItems, setMappedArticleItems] = useState<
         AILibraryArticleItem[]
     >([])
-    const {data: fetchedArticles, isLoading} = useGetAIArticlesByHelpCenter(
-        helpCenterId,
-        locale,
-        {
+    const {data: fetchedArticles, isInitialLoading: isLoading} =
+        useGetAIArticlesByHelpCenter(helpCenterId, locale, {
             refetchOnWindowFocus: false,
-        }
-    )
+        })
     const fetchedArticlesCount = fetchedArticles?.length ?? 0
 
     const [selectedArticle, setSelectedArticle] =

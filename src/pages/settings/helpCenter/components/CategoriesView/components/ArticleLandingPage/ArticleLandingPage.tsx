@@ -53,7 +53,7 @@ const ArticleLandingPageComponent = ({
     const helpCenter = useCurrentHelpCenter()
     const supportedLocales = helpCenter.supported_locales
 
-    const {data: aiArticles, isLoading: isAIArticlesLoading} =
+    const {data: aiArticles, isInitialLoading: isAIArticlesLoading} =
         useGetAIArticlesByHelpCenter(helpCenter.id, viewLanguage, {
             refetchOnWindowFocus: false,
         })

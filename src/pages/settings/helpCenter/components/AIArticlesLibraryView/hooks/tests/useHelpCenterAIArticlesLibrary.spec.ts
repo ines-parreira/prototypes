@@ -20,7 +20,7 @@ describe('useGetAIArticlesByHelpCenter', () => {
         mockedUseGetAIArticlesByHelpCenter.mockImplementation(() => {
             return {
                 data: AIArticlesListFixture,
-                isLoading: false,
+                isInitialLoading: false,
             } as unknown as ReturnType<typeof useGetAIArticlesByHelpCenter>
         })
     })

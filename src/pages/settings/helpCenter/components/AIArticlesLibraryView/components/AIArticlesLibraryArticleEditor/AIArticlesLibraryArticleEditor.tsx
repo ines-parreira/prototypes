@@ -146,6 +146,7 @@ const ArticleEditor: React.FC<Props> = ({
 
     const onConfirmDiscardChanges = () => {
         resetPendingStates()
+        setContent(article?.html_content)
         onEditorClose()
     }
 
