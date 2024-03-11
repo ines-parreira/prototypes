@@ -8,14 +8,14 @@ import thunk from 'redux-thunk'
 
 import {renderWithRouter} from 'utils/testing'
 import {notify} from 'state/notifications/actions'
-import App, {Tab} from 'pages/integrations/App'
+import App, {Tab} from 'pages/integrations/integration/components/app/App'
 import client from 'models/api/resources'
 import {dummyAppData} from 'fixtures/apps'
 import {TrialPeriod} from 'models/integration/types/app'
 import {Integration} from 'models/integration/types'
 import {RootState} from 'state/types'
 
-import {DEFAULT_VALUES} from '../mappers/mapDefaults'
+import {DEFAULT_VALUES} from 'pages/integrations/mappers/mapDefaults'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({

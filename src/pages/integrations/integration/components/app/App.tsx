@@ -30,10 +30,10 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ConnectLink from './components/ConnectLink'
-import {mapAppToDetail} from './mappers/appToDetail'
-import {mapDefaults} from './mappers/mapDefaults'
-import ConnectionsList from './ConnectionsList'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import {mapDefaults} from 'pages/integrations/mappers/mapDefaults'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import IntegrationsList from './IntegrationsList'
 
 export enum Tab {
     Details = 'details',
@@ -145,7 +145,7 @@ export default function AppDetail() {
             {extra === Tab.Advanced && <AppAdvanced {...appItem} />}
             {extra === Tab.Details && <Detail {...detailProps} />}
             {extra === Tab.Connections && (
-                <ConnectionsList
+                <IntegrationsList
                     appId={appItem.appId}
                     connectUrl={appItem.connectUrl}
                 />

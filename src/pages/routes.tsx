@@ -28,7 +28,7 @@ import {
 import ClickTrackingPaywallView from 'pages/convert/clickTracking/components/ClickTrackingPaywallView/ClickTrackingPaywallView'
 import App from 'pages/App'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
-import AppDetail from 'pages/integrations/App'
+import AppDetail from 'pages/integrations/integration/components/app/App'
 import IntegrationsStore from 'pages/integrations/Store'
 import MyIntegrations from 'pages/integrations/Store/Mine'
 import PhoneNumbersListContainer from 'pages/phoneNumbers/PhoneNumbersListContainer'
