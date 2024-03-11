@@ -56,6 +56,7 @@ export function WorkflowVisualBuilderWrapped() {
         visualBuilderNodeIdEditing,
         setVisualBuilderNodeIdEditing,
         setVisualBuilderChoiceEventIdEditing,
+        setVisualBuilderBranchIdsEditing,
     } = useWorkflowEditorContext()
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
         ? visualBuilderGraph.nodes.find(
@@ -86,7 +87,12 @@ export function WorkflowVisualBuilderWrapped() {
     const onDrawerEditorClose = useCallback(() => {
         setVisualBuilderNodeIdEditing(null)
         setVisualBuilderChoiceEventIdEditing(null)
-    }, [setVisualBuilderNodeIdEditing, setVisualBuilderChoiceEventIdEditing])
+        setVisualBuilderBranchIdsEditing([])
+    }, [
+        setVisualBuilderNodeIdEditing,
+        setVisualBuilderChoiceEventIdEditing,
+        setVisualBuilderBranchIdsEditing,
+    ])
 
     const handleNodeClick = useCallback<NodeMouseHandler>(
         (_e, node) => {

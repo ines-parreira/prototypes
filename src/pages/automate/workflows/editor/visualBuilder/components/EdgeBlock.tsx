@@ -333,14 +333,18 @@ export type VisualBuilderEdgeProps = {
         nodeId: string
     }
     incomingCondition?: {
+        id: string
         label: string
         nodeId: string
+        isFallback: boolean
     }
 } & Pick<
     WorkflowEditorContext,
     | 'dispatch'
+    | 'visualBuilderNodeIdEditing'
     | 'setVisualBuilderChoiceEventIdEditing'
     | 'setVisualBuilderNodeIdEditing'
+    | 'setVisualBuilderBranchIdsEditing'
 >
 
 export default function EdgeBlock({
@@ -351,6 +355,8 @@ export default function EdgeBlock({
     isSelected,
     setVisualBuilderChoiceEventIdEditing,
     setVisualBuilderNodeIdEditing,
+    setVisualBuilderBranchIdsEditing,
+    visualBuilderNodeIdEditing,
     dispatch,
 }: VisualBuilderEdgeProps) {
     const edgeRef = useRef<HTMLDivElement>(null)
@@ -389,7 +395,12 @@ export default function EdgeBlock({
                         setVisualBuilderChoiceEventIdEditing(
                             incomingChoice.eventId
                         )
-                        setVisualBuilderNodeIdEditing(incomingChoice.nodeId)
+
+                        if (
+                            visualBuilderNodeIdEditing !== incomingChoice.nodeId
+                        ) {
+                            setVisualBuilderNodeIdEditing(incomingChoice.nodeId)
+                        }
                     }}
                     isSelected={isSelected}
                     type="choice"
@@ -401,7 +412,25 @@ export default function EdgeBlock({
                 <EdgeLabel
                     type="condition"
                     onClick={() => {
-                        setVisualBuilderNodeIdEditing(incomingCondition.nodeId)
+                        if (
+                            visualBuilderNodeIdEditing !==
+                            incomingCondition.nodeId
+                        ) {
+                            setVisualBuilderNodeIdEditing(
+                                incomingCondition.nodeId
+                            )
+
+                            if (!incomingCondition.isFallback) {
+                                setVisualBuilderBranchIdsEditing([
+                                    incomingCondition.id,
+                                ])
+                            }
+                        } else if (!incomingCondition.isFallback) {
+                            setVisualBuilderBranchIdsEditing((prevState) => [
+                                ...prevState,
+                                incomingCondition.id,
+                            ])
+                        }
                     }}
                     isSelected={isSelected}
                 >

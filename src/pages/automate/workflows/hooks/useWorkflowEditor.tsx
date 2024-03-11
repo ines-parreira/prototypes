@@ -23,6 +23,7 @@ import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/wo
 import {
     HttpRequestNodeType,
     MultipleChoicesNodeType,
+    VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../models/visualBuilderGraph.types'
@@ -79,9 +80,9 @@ export type WorkflowEditorContext = {
     checkNodeHasVariablesUsedInChildren: (nodeId: string) => boolean
     dispatch: React.Dispatch<VisualBuilderGraphAction>
     visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
-    setVisualBuilderNodeIdEditing: React.Dispatch<
-        React.SetStateAction<VisualBuilderNode['id'] | null>
-    >
+    setVisualBuilderNodeIdEditing: (
+        visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
+    ) => void
     currentLanguage: LanguageCode
     switchLanguage: (nextLanguage: LanguageCode) => void
     translateKey: (tkey: string, languageCode: LanguageCode) => string
@@ -101,6 +102,10 @@ export type WorkflowEditorContext = {
             | MultipleChoicesNodeType['data']['choices'][number]['event_id']
             | null
         >
+    >
+    visualBuilderBranchIdsEditing: VisualBuilderEdge['id'][]
+    setVisualBuilderBranchIdsEditing: React.Dispatch<
+        React.SetStateAction<VisualBuilderEdge['id'][]>
     >
     translationSizeToLimitRate: number
     configurationSizeToLimitRate: number
@@ -174,10 +179,20 @@ export function useWorkflowEditor(
     ] = useState<
         MultipleChoicesNodeType['data']['choices'][number]['event_id'] | null
     >(null)
+    const [visualBuilderBranchIdsEditing, setVisualBuilderBranchIdsEditing] =
+        useState<VisualBuilderEdge['id'][]>([])
     const [remoteConfiguration, setRemoteConfiguration] =
         useState<Maybe<WorkflowConfiguration>>(null)
     const workflowFactoryInstance = useRef(
         workflowConfigurationFactory(currentAccountId, workflowId)
+    )
+
+    const handleSetVisualBuilderNodeIdEditing = useCallback(
+        (visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null) => {
+            setVisualBuilderNodeIdEditing(visualBuilderNodeIdEditing)
+            setVisualBuilderBranchIdsEditing([])
+        },
+        []
     )
 
     const configuration = remoteConfiguration || workflowFactoryInstance.current
@@ -683,7 +698,7 @@ export function useWorkflowEditor(
         handleDiscard,
         dispatch,
         visualBuilderNodeIdEditing,
-        setVisualBuilderNodeIdEditing,
+        setVisualBuilderNodeIdEditing: handleSetVisualBuilderNodeIdEditing,
         translateKey,
         currentLanguage,
         switchLanguage: switchLanguageCallback,
@@ -698,6 +713,8 @@ export function useWorkflowEditor(
         handleDownloadHttpRequestEventLogs,
         isDownloadPending,
         checkNewVisualBuilderNode,
+        setVisualBuilderBranchIdsEditing,
+        visualBuilderBranchIdsEditing,
     }
 }
 
@@ -903,5 +920,7 @@ export function createWorkflowEditorContextForPreview(
         handleDownloadHttpRequestEventLogs: () => Promise.resolve(),
         isDownloadPending: false,
         checkNewVisualBuilderNode: () => false,
+        visualBuilderBranchIdsEditing: [],
+        setVisualBuilderBranchIdsEditing: () => null,
     }
 }

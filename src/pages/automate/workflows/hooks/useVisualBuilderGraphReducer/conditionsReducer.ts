@@ -22,6 +22,7 @@ export type VisualBuilderConditionsAction =
     | {
           type: 'ADD_CONDITIONS_NODE_BRANCH'
           conditionNodeId: string
+          edgeId: string
       }
     | {
           type: 'DELETE_CONDITIONS_NODE_BRANCH'
@@ -77,7 +78,7 @@ export function conditionsReducer(
             )
         case 'ADD_CONDITIONS_NODE_BRANCH':
             return computeNodesPositions(
-                addConditionBranch(graph, action.conditionNodeId)
+                addConditionBranch(graph, action.conditionNodeId, action.edgeId)
             )
         case 'DELETE_CONDITIONS_NODE_BRANCH': {
             const childNodeId = graph.edges.find(
@@ -178,7 +179,8 @@ function reorderBranches(
 
 function addConditionBranch(
     graph: VisualBuilderGraph,
-    conditionNodeId: string
+    conditionNodeId: string,
+    edgeId: string
 ) {
     return produce(graph, (draft) => {
         const node = draft.nodes.find((node) => node.id === conditionNodeId)
@@ -193,6 +195,7 @@ function addConditionBranch(
 
         edges.push({
             ...buildEdgeCommonProperties(),
+            id: edgeId,
             source: conditionNodeId,
             target: draft.nodes[draft.nodes.length - 1].id,
             data: {

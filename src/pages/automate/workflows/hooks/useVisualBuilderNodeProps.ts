@@ -31,6 +31,8 @@ export function useVisualBuilderNodeProps({
         visualBuilderNodeIdEditing,
         setVisualBuilderNodeIdEditing,
         setVisualBuilderChoiceEventIdEditing,
+        visualBuilderBranchIdsEditing,
+        setVisualBuilderBranchIdsEditing,
         checkNodeHasVariablesUsedInChildren,
     } = useWorkflowEditorContext()
 
@@ -38,7 +40,12 @@ export function useVisualBuilderNodeProps({
     const incomingChoice = getIncoming(visualBuilderGraph, id, 'choice')
     const incomingCondition = getIncoming(visualBuilderGraph, id, 'conditions')
 
-    const isEdgeSelected = incomingChoice?.nodeId === visualBuilderNodeIdEditing
+    const isEdgeSelected =
+        incomingChoice?.nodeId === visualBuilderNodeIdEditing
+            ? true
+            : incomingCondition?.id
+            ? visualBuilderBranchIdsEditing.includes(incomingCondition.id)
+            : false
     const edgeProps: VisualBuilderEdgeProps = useMemo(
         () => ({
             nodeId: id,
@@ -54,22 +61,31 @@ export function useVisualBuilderNodeProps({
                       }
                     : undefined,
             incomingCondition:
-                incomingCondition?.nodeId && incomingCondition?.label
+                incomingCondition?.nodeId &&
+                incomingCondition?.label &&
+                incomingCondition?.id &&
+                typeof incomingCondition?.isFallback !== 'undefined'
                     ? {
+                          id: incomingCondition.id,
                           label: incomingCondition.label,
                           nodeId: incomingCondition.nodeId,
+                          isFallback: incomingCondition.isFallback,
                       }
                     : undefined,
             dispatch,
             isSelected: isEdgeSelected,
             setVisualBuilderNodeIdEditing,
             setVisualBuilderChoiceEventIdEditing,
+            setVisualBuilderBranchIdsEditing,
+            visualBuilderNodeIdEditing,
         }),
         [
             id,
             configuration.id,
+            incomingCondition?.id,
             incomingCondition?.label,
             incomingCondition?.nodeId,
+            incomingCondition?.isFallback,
             incomingChoice?.label,
             incomingChoice?.eventId,
             incomingChoice?.nodeId,
@@ -77,6 +93,8 @@ export function useVisualBuilderNodeProps({
             dispatch,
             setVisualBuilderNodeIdEditing,
             setVisualBuilderChoiceEventIdEditing,
+            setVisualBuilderBranchIdsEditing,
+            visualBuilderNodeIdEditing,
         ]
     )
 

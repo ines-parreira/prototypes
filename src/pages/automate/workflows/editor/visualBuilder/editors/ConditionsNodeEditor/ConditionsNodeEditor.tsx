@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useRef} from 'react'
 import classNames from 'classnames'
+import {ulid} from 'ulidx'
 import {Drawer} from 'pages/common/components/Drawer'
 import {
     ConditionsNodeType,
@@ -28,8 +29,13 @@ export default function ConditionsNodeEditor({
 }: {
     nodeInEdition: ConditionsNodeType
 }) {
-    const {visualBuilderGraph, dispatch, shouldShowErrors} =
-        useWorkflowEditorContext()
+    const {
+        visualBuilderGraph,
+        dispatch,
+        shouldShowErrors,
+        visualBuilderBranchIdsEditing,
+        setVisualBuilderBranchIdsEditing,
+    } = useWorkflowEditorContext()
 
     const edges = visualBuilderGraph.edges.filter(
         (edge) => edge.source === nodeInEdition.id
@@ -45,10 +51,15 @@ export default function ConditionsNodeEditor({
     )
 
     const handleAddConditionBranch = () => {
+        const edgeId = ulid()
+
         dispatch({
             type: 'ADD_CONDITIONS_NODE_BRANCH',
             conditionNodeId: nodeInEdition.id,
+            edgeId,
         })
+
+        setVisualBuilderBranchIdsEditing((prevState) => [...prevState, edgeId])
     }
 
     const handleBranchDelete = (edgeId: string) => () => {
@@ -213,7 +224,8 @@ export default function ConditionsNodeEditor({
                         {edges.length > 0 && (
                             <SortableAccordion
                                 onReorder={handleReorderBranchItems}
-                                isMulti
+                                expandedItem={visualBuilderBranchIdsEditing}
+                                onChange={setVisualBuilderBranchIdsEditing}
                             >
                                 {branches.map((item) => {
                                     const type =

@@ -416,14 +416,19 @@ export function getIncoming(
     const incomingEdge = visualBuilderGraph.edges.find(
         ({target}) => target === currentNodeId
     )
-    const previousNodeId = incomingEdge?.source
+
+    if (!incomingEdge) {
+        return
+    }
+
+    const previousNodeId = incomingEdge.source
     const previousNode = previousNodeId
         ? visualBuilderGraph.nodes.find(({id}) => id === previousNodeId)
         : undefined
 
     switch (type) {
         case 'choice': {
-            const choiceEventId = incomingEdge?.data?.event?.id
+            const choiceEventId = incomingEdge.data?.event?.id
             const choiceIndex =
                 previousNode?.type === 'multiple_choices' &&
                 choiceEventId != null
@@ -446,11 +451,15 @@ export function getIncoming(
             break
         }
         case 'conditions': {
-            const branchName = incomingEdge?.data?.name
+            const branchName = incomingEdge.data?.name
+            const branchId = incomingEdge.id
+
             if (previousNode && isConditionsNodeType(previousNode)) {
                 return {
+                    id: branchId,
                     label: branchName,
                     nodeId: previousNode.id,
+                    isFallback: !incomingEdge.data?.conditions,
                 }
             }
         }
