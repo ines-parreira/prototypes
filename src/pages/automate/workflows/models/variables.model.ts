@@ -211,9 +211,9 @@ export const buildWorkflowVariableFromNode = (
 
         return {
             nodeType: 'http_request',
-            name: formatVariableName(name.length > 0 ? name : 'Request name'),
+            name: name || 'Request name',
             variables: variables.map((variable) => ({
-                name: variable.name,
+                name: variable.name || 'Name',
                 value: `steps_state.${node.id}.content.${variable.id}`,
                 nodeType: 'http_request',
                 type: variable.data_type,

@@ -1,7 +1,14 @@
-import React from 'react'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import React, {useRef, useState} from 'react'
+
 import IconButton from 'pages/common/components/button/IconButton'
-import Button from '../button/Button'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
+import Button from 'pages/common/components/button/Button'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+
 import css from './Condition.less'
 
 type Operator = {
@@ -15,8 +22,8 @@ export type ConditionProps = {
     isFirst: boolean
     type: string
     children: React.ReactNode
-    selectedOperatorValue?: string
-    onOperatorSelect?: (key: string) => void
+    selectedOperatorValue: string
+    onOperatorSelect: (key: string) => void
     onDelete?: () => void
 }
 
@@ -29,11 +36,14 @@ export const Condition = ({
     children,
     onDelete,
     onOperatorSelect,
-}: ConditionProps): JSX.Element => {
-    const options = operators.map(({label, key}) => ({
-        label,
-        value: key,
-    }))
+}: ConditionProps) => {
+    const [isSelectOpen, setIsSelectOpen] = useState(false)
+    const selectRef = useRef<HTMLDivElement>(null)
+    const floatingSelectRef = useRef<HTMLDivElement>(null)
+
+    const selectedOperatorLabel = operators.find(
+        (operator) => operator.key === selectedOperatorValue
+    )?.label
 
     return (
         <div className={css.container}>
@@ -42,26 +52,57 @@ export const Condition = ({
                     {type.toUpperCase()}
                 </Button>
             )}
-            <div className={css.conditionLabel}>{label}</div>
-            <SelectField
-                showSelectedOption
-                value={selectedOperatorValue}
-                onChange={(key) => onOperatorSelect?.(key as string)}
-                options={options}
-            />
+            <div className={css.labelWrapper}>
+                <span className={css.label}>{label}</span>
+            </div>
 
-            {children}
+            <SelectInputBox
+                className={css.selectInput}
+                ref={selectRef}
+                floating={floatingSelectRef}
+                onToggle={setIsSelectOpen}
+                label={selectedOperatorLabel}
+            >
+                <SelectInputBoxContext.Consumer>
+                    {(context) => (
+                        <Dropdown
+                            isOpen={isSelectOpen}
+                            onToggle={() => context!.onBlur()}
+                            ref={floatingSelectRef}
+                            target={selectRef}
+                        >
+                            <DropdownBody>
+                                {operators.map((operator) => (
+                                    <DropdownItem
+                                        key={operator.key}
+                                        option={{
+                                            label: operator.label,
+                                            value: operator.key,
+                                        }}
+                                        onClick={onOperatorSelect}
+                                        shouldCloseOnSelect
+                                    />
+                                ))}
+                            </DropdownBody>
+                        </Dropdown>
+                    )}
+                </SelectInputBoxContext.Consumer>
+            </SelectInputBox>
 
-            {onDelete && (
-                <IconButton
-                    fillStyle="ghost"
-                    intent="destructive"
-                    size="medium"
-                    onClick={() => onDelete()}
-                >
-                    clear
-                </IconButton>
-            )}
+            <div className={css.childrenWrapper}>
+                {children}
+                {onDelete && (
+                    <IconButton
+                        className={css.deleteButton}
+                        fillStyle="ghost"
+                        intent="destructive"
+                        size="medium"
+                        onClick={() => onDelete()}
+                    >
+                        clear
+                    </IconButton>
+                )}
+            </div>
         </div>
     )
 }

@@ -4,24 +4,38 @@
 :local {
     .container {
         display: flex;
+        flex-wrap: wrap;
         gap: @layout-spacing-xs;
         width: 100%;
     }
 
-    .conditionLabel {
-        .body-semibold();
+    .labelWrapper {
+        display: flex;
+        align-items: center;
+        height: 32px;
         border-radius: @layout-spacing-xxs;
         background-color: var(--neutral-grey-2);
         border: 1px solid var(--neutral-grey-3);
-        padding: @layout-spacing-xxs @layout-spacing-s;
-        min-width: min-content;
+        padding: 0 12px;
+    }
+
+    .childrenWrapper {
+        display: flex;
+        gap: @layout-spacing-xs;
+        flex: 1;
+    }
+
+    .deleteButton {
+        margin-left: auto;
+    }
+
+    .label {
+        .component-button-medium();
+        max-width: 174px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: center;
-        height: 32px;
-        display: flex;
-        align-items: center;
     }
 
     .type {
@@ -29,8 +43,8 @@
         border: 1px solid var(--feedback-warning-4) !important;
     }
 
-    .deleteIcon {
-        font-size: 18px;
-        color: var(--feedback-error-3);
+    .selectInput {
+        width: auto;
+        min-width: unset;
     }
 }

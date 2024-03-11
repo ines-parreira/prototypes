@@ -103,8 +103,8 @@ export const DateConditionType = ({condition, onChange}: Props) => {
     return (
         <>
             <NumberInput
+                className={css.dateConditionNumberInput}
                 value={groups ? Number(groups.value) : 1}
-                className={css.numberInput}
                 onChange={(nextValue) => {
                     onChange(
                         produce(condition, (draft) => {
