@@ -67,7 +67,7 @@ describe('Infobar::Widgets::List', () => {
         source,
         widget,
         template,
-        removeBorderTop: true,
+        hasNoBorderTop: true,
     }
 
     it('should return null when template widgets are an empty array', () => {
@@ -139,18 +139,18 @@ describe('Infobar::Widgets::List', () => {
         expect(InfobarWidget).toHaveBeenNthCalledWith(
             1,
             expect.objectContaining({
-                open: true,
+                isOpen: true,
                 source: source.get(0),
-                removeBorderTop: true,
+                hasNoBorderTop: true,
             }),
             {}
         )
         expect(InfobarWidget).toHaveBeenNthCalledWith(
             2,
             expect.objectContaining({
-                open: false,
+                isOpen: false,
                 source: source.get(1),
-                removeBorderTop: false,
+                hasNoBorderTop: false,
             }),
             {}
         )

@@ -217,7 +217,7 @@ function renderWidgets({
                 source={source}
                 widget={newItem.get('widget') as Map<string, unknown>}
                 template={newItem.get('template') as Map<unknown, unknown>}
-                open={newItem.get('open') as boolean}
+                isOpen={newItem.get('open') as boolean}
             />
         )
     })

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, ElementType} from 'react'
 import {fromJS, Map, List} from 'immutable'
 
 import {
@@ -8,6 +8,7 @@ import {
 } from 'pages/common/components/infobar/utils'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {WidgetContext, WidgetContextType} from 'providers/infobar/WidgetContext'
+import {HiddenField} from 'infobar/ui/Card/CardEditForm'
 import {
     HTTP_WIDGET_TYPE,
     MAGENTO2_WIDGET_TYPE,
@@ -41,8 +42,8 @@ export default function InfobarWidget({
     source,
     widget,
     template,
-    open = false,
-    removeBorderTop = false,
+    isOpen = false,
+    hasNoBorderTop = false,
 }: WidgetProps) {
     const {isEditing} = useContext(EditionContext)
     if (!infobarWidgetShouldRender(source)) {
@@ -70,7 +71,14 @@ export default function InfobarWidget({
         source: data,
     }
 
-    let extension = {}
+    let extension: {
+        AfterTitle?: ElementType
+        BeforeContent?: ElementType
+        AfterContent?: ElementType
+        TitleWrapper?: ElementType
+        Wrapper?: ElementType
+        editionHiddenFields?: HiddenField[]
+    } = {}
     const extensionMethod =
         extensionMethodsByType[
             (widget as Map<string, keyof typeof extensionMethodsByType>).get(
@@ -135,7 +143,7 @@ export default function InfobarWidget({
                     }
                     widget={widget}
                     template={updatedTemplate}
-                    removeBorderTop={removeBorderTop}
+                    hasNoBorderTop={hasNoBorderTop}
                 />
             )
             break
@@ -160,9 +168,10 @@ export default function InfobarWidget({
                     widget={widget}
                     template={updatedTemplate}
                     parent={parent}
-                    open={open || !isParentList}
-                    removeBorderTop={removeBorderTop}
-                    {...extension}
+                    isOpen={isOpen || !isParentList}
+                    hasNoBorderTop={hasNoBorderTop}
+                    extensions={extension}
+                    editionHiddenFields={extension.editionHiddenFields}
                 />
             )
             break

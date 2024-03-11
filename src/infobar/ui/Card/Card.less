@@ -1,0 +1,47 @@
+@import '~css/new/mixins';
+
+:local {
+    .card {
+        position: relative;
+        margin-top: 12px;
+        background-color: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-0);
+        border-radius: 4px;
+        .card {
+            background-color: transparent;
+            border: none;
+            border-top: 1px dashed var(--neutral-grey-3);
+            border-radius: 0px;
+            &.onlyContent {
+                margin-top: 0;
+                border-top: none;
+            }
+            &.removeBorderTop {
+                border-top: none;
+            }
+        }
+    }
+    // we need this wrapped to benefit from margin fusion
+    // otherwise we can’t have proper spacing with the
+    // expand / collapse feature
+    .cardMarginWrapper {
+        margin: 12px 0;
+        .cardMarginWrapper.onlyContent {
+            margin: 0;
+        }
+    }
+
+    .cardHeaderPlaceholder {
+        color: var(--neutral-grey-4);
+    }
+
+    .cardContent {
+        display: block;
+    }
+
+    .closed {
+        .cardContent {
+            display: none;
+        }
+    }
+}

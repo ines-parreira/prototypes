@@ -2,7 +2,7 @@
 
 exports[`InfobarWidget card widget should display the widget 1`] = `
 "<ContextProvider value={{...}}>
-  <Card isEditing={false} isParentList={false} source={{...}} widget={{...}} template={{...}} parent={[undefined]} open={true} removeBorderTop={false} />
+  <Card isEditing={false} isParentList={false} source={{...}} widget={{...}} template={{...}} parent={[undefined]} isOpen={true} hasNoBorderTop={false} extensions={{...}} editionHiddenFields={[undefined]} />
 </ContextProvider>"
 `;
 
@@ -19,11 +19,15 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
   }
 >
   <Card
-    extensionUsed="bigcommerce"
+    extensions={
+      {
+        "extensionUsed": "bigcommerce",
+      }
+    }
+    hasNoBorderTop={false}
     isEditing={false}
+    isOpen={true}
     isParentList={false}
-    open={true}
-    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",
@@ -77,11 +81,15 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
   }
 >
   <Card
-    extensionUsed="magento2"
+    extensions={
+      {
+        "extensionUsed": "magento2",
+      }
+    }
+    hasNoBorderTop={false}
     isEditing={false}
+    isOpen={true}
     isParentList={false}
-    open={true}
-    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",
@@ -135,11 +143,15 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
   }
 >
   <Card
-    extensionUsed="recharge"
+    extensions={
+      {
+        "extensionUsed": "recharge",
+      }
+    }
+    hasNoBorderTop={false}
     isEditing={false}
+    isOpen={true}
     isParentList={false}
-    open={true}
-    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",
@@ -193,11 +205,15 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
   }
 >
   <Card
-    extensionUsed="shopify"
+    extensions={
+      {
+        "extensionUsed": "shopify",
+      }
+    }
+    hasNoBorderTop={false}
     isEditing={false}
+    isOpen={true}
     isParentList={false}
-    open={true}
-    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",

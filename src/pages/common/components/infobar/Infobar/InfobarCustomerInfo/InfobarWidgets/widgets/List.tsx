@@ -14,7 +14,7 @@ type Props = {
     template: Map<unknown, unknown>
     isEditing?: boolean
     isParentList?: boolean
-    removeBorderTop?: boolean
+    hasNoBorderTop?: boolean
 }
 
 function ListInfobarWidget({
@@ -23,7 +23,7 @@ function ListInfobarWidget({
     widget,
     template,
     isParentList,
-    removeBorderTop = false,
+    hasNoBorderTop = false,
 }: Props) {
     const InfobarWidget = widgetReference.Widget
 
@@ -94,18 +94,12 @@ function ListInfobarWidget({
                         parent={updatedTemplate}
                         widget={widget}
                         template={passedTemplate}
-                        open={index === 0}
-                        removeBorderTop={index === 0 && removeBorderTop}
+                        isOpen={index === 0}
+                        hasNoBorderTop={index === 0 && hasNoBorderTop}
                     />
                 </WidgetListContext.Provider>
             )),
-        [
-            InfobarWidget,
-            updatedTemplate,
-            widget,
-            passedTemplate,
-            removeBorderTop,
-        ]
+        [InfobarWidget, updatedTemplate, widget, passedTemplate, hasNoBorderTop]
     )
 
     if (

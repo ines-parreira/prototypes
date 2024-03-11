@@ -577,7 +577,7 @@ export function canDrop(
  */
 export function prepareWidgetToDisplay(
     template: Map<any, any> = fromJS({}),
-    source: Maybe<Map<any, any>>,
+    source?: Map<any, any>,
     parent?: Map<any, any>
 ) {
     // build absolute path of widget
@@ -609,9 +609,10 @@ export function prepareWidgetToDisplay(
     updatedTemplate = updatedTemplate.set('path', path)
 
     // get data of widget in shortcuts
-    const data = (path ? source?.getIn(path) : source) as Maybe<
-        Map<string, unknown>
-    >
+    const data = (path ? source?.getIn(path, undefined) : source) as
+        | Map<string, unknown>
+        | undefined
+
     const type = updatedTemplate.get('type', '')
 
     return {

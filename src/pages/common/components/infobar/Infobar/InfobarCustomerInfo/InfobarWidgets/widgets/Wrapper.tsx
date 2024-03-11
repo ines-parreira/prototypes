@@ -49,7 +49,7 @@ export const CUSTOMIZABLE_WIDGET_TYPES = [
 ]
 
 type Props = {
-    source: Maybe<Map<string, unknown>>
+    source: Map<string, unknown> | undefined
     widget: Map<string, unknown>
     template: Map<string, unknown>
 }

@@ -3,7 +3,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {Action} from 'redux'
 import {Map, fromJS} from 'immutable'
-import {act, screen, fireEvent, render, waitFor} from '@testing-library/react'
+import {act, render, screen} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
 import {cardTemplate, listTemplate, shopifyWidget} from 'fixtures/widgets'
@@ -14,23 +14,70 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import CardEditForm, {CardEditFormState} from 'infobar/ui/Card/CardEditForm'
+import {CardEditFormState} from 'infobar/ui/Card/CardEditForm'
+import UICard from 'infobar/ui/Card'
+import {renderTemplate} from 'pages/common/utils/template'
+import {renderInfobarTemplate} from 'pages/common/utils/infobar'
+import {canDrop} from 'pages/common/components/infobar/utils'
 
-import Card, {
-    DELETE_BUTTON_TEXT,
-    EDIT_BUTTON_TEXT,
-    listMetaFields,
-} from '../Card'
+import Card, {listMetaFields, NO_DATA_TEXT} from '../Card'
+import CustomActions from '../customActions'
+import {getWidgetTitle} from '../../helpers'
+import {widgetReference} from '../../widgetReference'
 
 const mockStore = configureMockStore()
 
-const CARD_EDIT_FORM_TEST_ID = 'card-edit-form'
-jest.mock('infobar/ui/Card/CardEditForm', () =>
-    jest.fn(() => {
-        return <span data-testid={CARD_EDIT_FORM_TEST_ID}>card edit form</span>
-    })
+jest.mock('pages/common/components/infobar/utils', () => {
+    return {
+        ...jest.requireActual('pages/common/components/infobar/utils'),
+        canDrop: jest.fn(() => true),
+    } as Record<string, unknown>
+})
+
+jest.mock('../../widgetReference', () => ({
+    widgetReference: {
+        Widget: jest.fn(() => <div>root</div>),
+    },
+}))
+jest.mock('pages/common/utils/template')
+jest.mock('pages/common/utils/infobar')
+jest.mock('../../helpers')
+const canDropMock = assumeMock(canDrop)
+const InfobarWidgetMock = assumeMock(widgetReference.Widget)
+const renderTemplateMock = assumeMock(renderTemplate)
+const renderInfobarTemplateMock = assumeMock(renderInfobarTemplate)
+const getWidgetTitleMock = assumeMock(getWidgetTitle)
+
+jest.mock('../customActions', () => jest.fn(() => <div>CustomActions</div>))
+const CustomActionsMock = assumeMock(CustomActions)
+
+const UICARD_TEST_ID = 'ui-card'
+jest.mock('infobar/ui/Card', () =>
+    jest.fn(
+        ({
+            extensions,
+            customActions,
+            children,
+        }: ComponentProps<typeof UICard>) => {
+            return (
+                <>
+                    <span data-testid={UICARD_TEST_ID}>
+                        {Object.values(extensions).map((extension, index) => (
+                            <div key={index}>
+                                {typeof extension === 'function'
+                                    ? extension('ok')
+                                    : extension}
+                            </div>
+                        ))}
+                        {customActions}
+                        {children}
+                    </span>
+                </>
+            )
+        }
+    )
 )
-const CardEditFormMock = assumeMock(CardEditForm)
+const UICardMock = assumeMock(UICard)
 
 describe('Card', () => {
     const defaultState = {
@@ -51,78 +98,569 @@ describe('Card', () => {
         defaultAbsolutePath
     )
     const defaultProps: ComponentProps<typeof Card> = {
-        // we will add a default source at some point here
+        extensions: {},
         parent: defaultParentTemplate,
         template: defaultTemplate,
         isEditing: false,
         widget: fromJS(shopifyWidget),
         isParentList: false,
-        removeBorderTop: false,
-        open: true,
+        hasNoBorderTop: false,
+        isOpen: true,
     }
 
-    describe('Edit mode', () => {
-        it('should have a draggable class', () => {
-            const {container} = render(
+    const legacyProps = {
+        template: defaultProps.template,
+        source: defaultProps.source,
+        isEditing: defaultProps.isEditing,
+    }
+
+    describe('getCardTitle', () => {
+        it('should call "getWidgetTitle" if root widget', () => {
+            render(
                 <Provider store={mockStore(defaultState)}>
-                    <Card {...defaultProps} isEditing />
+                    <Card {...defaultProps} />
                 </Provider>
             )
 
-            expect(container.firstChild).toHaveClass('draggable')
+            expect(getWidgetTitleMock).toHaveBeenCalledTimes(1)
         })
 
-        it('should set hidden fields relative to list in the edit form', () => {
+        it("should not call 'getWidgetTitle' if not root widget", () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card
+                        {...defaultProps}
+                        template={fromJS({
+                            templatePath: '0.template.widgets.0.something',
+                        })}
+                    />
+                </Provider>
+            )
+
+            expect(getWidgetTitleMock).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('children rendering', () => {
+        it('should say it when there is no data to display', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card {...defaultProps} />
+                </Provider>
+            )
+
+            expect(screen.getByText(NO_DATA_TEXT))
+        })
+
+        it('call InfobarWidget with correct props', () => {
+            const source = fromJS({ok: 'ok'})
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card {...defaultProps} source={source} />
+                </Provider>
+            )
+
+            const expectedProps = {
+                source: source,
+                parent: defaultProps.template,
+                widget: defaultProps.widget,
+            }
+
+            expect(InfobarWidgetMock).toHaveBeenCalledTimes(6)
+
+            const templatePath = defaultProps.template.get(
+                'templatePath',
+                ''
+            ) as string
+
+            expect(InfobarWidgetMock).toHaveBeenNthCalledWith(
+                1,
+                {
+                    ...expectedProps,
+                    template: (
+                        defaultProps.template.getIn(['widgets', 0]) as Map<
+                            any,
+                            any
+                        >
+                    ).set('templatePath', templatePath + '.widgets.0'),
+                    isOpen: false,
+                    hasNoBorderTop: false,
+                },
+                {}
+            )
+
+            expect(InfobarWidgetMock).toHaveBeenNthCalledWith(
+                6,
+                {
+                    ...expectedProps,
+                    template: (
+                        defaultProps.template.getIn(['widgets', 5]) as Map<
+                            any,
+                            any
+                        >
+                    ).set('templatePath', templatePath + '.widgets.5'),
+                    isOpen: true,
+                    hasNoBorderTop: false,
+                },
+                {}
+            )
+        })
+    })
+
+    describe('UICard params', () => {
+        it('should provide templated title', () => {
+            const defaultTitle = defaultProps.template.get(
+                'title',
+                ''
+            ) as string
+            const title = 'wohhh?'
+            getWidgetTitleMock.mockReturnValue(defaultTitle)
+            renderTemplateMock.mockReturnValue(defaultTitle)
+            renderInfobarTemplateMock.mockReturnValue(title)
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card {...defaultProps} />
+                </Provider>
+            )
+            expect(renderInfobarTemplateMock).toHaveBeenNthCalledWith(
+                1,
+                defaultTitle,
+                defaultProps.source?.toJS()
+            )
+
+            expect(getLastMockCall(UICardMock)[0].displayedTitle).toBe(title)
+        })
+
+        it('should provide template link', () => {
+            const link = 'wohhh?'
+            renderTemplateMock.mockReturnValue(link)
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card {...defaultProps} />
+                </Provider>
+            )
+
+            expect(renderTemplateMock).toHaveBeenNthCalledWith(
+                1,
+                defaultProps.template.getIn(['meta', 'link'], ''),
+                defaultProps.source?.toJS()
+            )
+            expect(getLastMockCall(UICardMock)[0].dynamicLink).toBe(link)
+        })
+
+        it('should provide isOpen', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card {...defaultProps} />
+                </Provider>
+            )
+
+            expect(getLastMockCall(UICardMock)[0].isOpen).toBe(true)
+        })
+
+        it('should provide hasNoBorderTop', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card {...defaultProps} hasNoBorderTop />
+                </Provider>
+            )
+
+            expect(getLastMockCall(UICardMock)[0].hasNoBorderTop).toBe(true)
+        })
+
+        it('should provide isEditionMode if isEditing', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <Card {...defaultProps} isEditing />
                 </Provider>
             )
 
-            act(() => {
-                fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-            })
-
-            expect(getLastMockCall(CardEditFormMock)[0].hiddenFields).toEqual(
-                listMetaFields
-            )
+            expect(getLastMockCall(UICardMock)[0].isEditionMode).toBe(true)
         })
 
-        it('should render edit and delete buttons when editing', () => {
-            const {queryByText} = render(
+        it('should provide isDraggable to false if its parent is a list', () => {
+            render(
                 <Provider store={mockStore(defaultState)}>
-                    <Card {...defaultProps} isEditing />
+                    <Card {...defaultProps} isParentList />
                 </Provider>
             )
 
-            expect(queryByText(EDIT_BUTTON_TEXT)).toBeInTheDocument()
-            expect(queryByText(DELETE_BUTTON_TEXT)).toBeInTheDocument()
+            expect(getLastMockCall(UICardMock)[0].isDraggable).toBe(false)
         })
 
-        it('should dispatch start widget edition with correct path on edit button click', () => {
+        it('should provide cardData', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card {...defaultProps} />
+                </Provider>
+            )
+
+            expect(getLastMockCall(UICardMock)[0].cardData).toEqual({
+                color: defaultProps.template.getIn(
+                    ['meta', 'color'],
+                    ''
+                ) as string,
+                displayCard: defaultProps.template.getIn([
+                    'meta',
+                    'displayCard',
+                ]) as boolean,
+                limit: Number(defaultProps.parent?.getIn(['meta', 'limit'])),
+                link: defaultProps.template.getIn(
+                    ['meta', 'link'],
+                    ''
+                ) as string,
+                orderBy: defaultProps.parent?.getIn(
+                    ['meta', 'orderBy'],
+                    ''
+                ) as string,
+                pictureUrl: defaultProps.template.getIn(
+                    ['meta', 'pictureUrl'],
+                    ''
+                ) as string,
+                title: defaultProps.template.get('title', '') as string,
+            })
+        })
+
+        it('should provide the correct orderByOptions', () => {
             const store = mockStore(defaultState)
             render(
                 <Provider store={store}>
-                    <Card {...defaultProps} isEditing />
+                    <Card {...defaultProps} isEditing isParentList />
                 </Provider>
             )
 
-            fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
+            expect(getLastMockCall(UICardMock)[0].orderByOptions).toEqual([
+                {label: 'Id (DESC)', value: '-id'},
+                {label: 'Id (ASC)', value: '+id'},
+                {label: 'Created at (DESC)', value: '-created_at'},
+                {label: 'Created at (ASC)', value: '+created_at'},
+            ])
+        })
+
+        describe('canDrop', () => {
+            it("should set canDrop to true if canDrop() returns true and it's in edition mode", () => {
+                canDropMock.mockReturnValue(true)
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} isEditing />
+                    </Provider>
+                )
+
+                expect(getLastMockCall(UICardMock)[0].canDrop).toBe(true)
+            })
+            it('should set canDrop to false if not editing', () => {
+                canDropMock.mockReturnValue(true)
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} />
+                    </Provider>
+                )
+
+                expect(getLastMockCall(UICardMock)[0].canDrop).toBe(false)
+            })
+        })
+
+        describe('shouldDisplayHeader', () => {
+            it('should not display header if displayCard is false', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card
+                            {...defaultProps}
+                            template={defaultProps.template.setIn(
+                                ['meta', 'displayCard'],
+                                false
+                            )}
+                        />
+                    </Provider>
+                )
+
+                expect(getLastMockCall(UICardMock)[0].shouldDisplayHeader).toBe(
+                    false
+                )
+            })
+
+            it('should display header in edition mode even if displayCard is false', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card
+                            {...defaultProps}
+                            template={defaultProps.template.setIn(
+                                ['meta', 'displayCard'],
+                                false
+                            )}
+                            isEditing
+                        />
+                    </Provider>
+                )
+
+                expect(getLastMockCall(UICardMock)[0].shouldDisplayHeader).toBe(
+                    true
+                )
+            })
+
+            it('should display header if they are some custom actions and title is empty', () => {
+                getWidgetTitleMock.mockReturnValue('')
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card
+                            {...defaultProps}
+                            template={defaultProps.template
+                                .set('title', '')
+                                .setIn(
+                                    ['meta', 'custom', 'buttons'],
+                                    fromJS([{label: 'ok', action: 'ok'}])
+                                )}
+                        />
+                    </Provider>
+                )
+
+                expect(getLastMockCall(UICardMock)[0].shouldDisplayHeader).toBe(
+                    true
+                )
+            })
+        })
+
+        describe('shouldDisplayContent ', () => {
+            it('should display content if in edition mode', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} isEditing />
+                    </Provider>
+                )
+
+                expect(
+                    getLastMockCall(UICardMock)[0].shouldDisplayContent
+                ).toBe(true)
+                expect(screen.getByText(NO_DATA_TEXT))
+            })
+
+            it('should display content if there is data to display', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card
+                            {...defaultProps}
+                            source={fromJS({display: 'coucou'})}
+                        />
+                    </Provider>
+                )
+
+                expect(
+                    getLastMockCall(UICardMock)[0].shouldDisplayContent
+                ).toBe(true)
+                expect(InfobarWidgetMock).toHaveBeenCalled()
+            })
+
+            it('should not display content if there is no data', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card
+                            {...defaultProps}
+                            template={defaultProps.template.set(
+                                'widgets',
+                                fromJS([])
+                            )}
+                        />
+                    </Provider>
+                )
+
+                expect(
+                    getLastMockCall(UICardMock)[0].shouldDisplayContent
+                ).toBe(false)
+                expect(InfobarWidgetMock).not.toHaveBeenCalled()
+            })
+        })
+
+        describe('customActions', () => {
+            it('should not provide custom actions if widget is not root widget', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card
+                            {...defaultProps}
+                            template={fromJS({
+                                templatePath: '0.template.widgets.0.something',
+                            })}
+                        />
+                    </Provider>
+                )
+
+                expect(getLastMockCall(UICardMock)[0].customActions).toBeNull()
+            })
+
+            it('should provide custom actions if widget is root widget', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} />
+                    </Provider>
+                )
+
+                expect(
+                    getLastMockCall(UICardMock)[0].customActions
+                ).not.toBeNull()
+
+                expect(CustomActionsMock).toHaveBeenNthCalledWith(
+                    1,
+                    legacyProps,
+                    {}
+                )
+            })
+        })
+
+        describe('editionHiddenFields', () => {
+            it('should set hidden fields relative to list in the edit form', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} isEditing />
+                    </Provider>
+                )
+
+                expect(
+                    getLastMockCall(UICardMock)[0].editionHiddenFields
+                ).toEqual(listMetaFields)
+            })
+
+            it('should set no hidden fields in the edit form', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} isEditing isParentList />
+                    </Provider>
+                )
+
+                expect(
+                    getLastMockCall(UICardMock)[0].editionHiddenFields
+                ).not.toEqual(listMetaFields)
+            })
+
+            it('should add "pictureUrl" and "color" to hidden fields if there is a TitleWrapper and integration type is not http', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card
+                            {...defaultProps}
+                            extensions={{
+                                TitleWrapper: () => <div>TitleWrapper</div>,
+                            }}
+                        />
+                    </Provider>
+                )
+
+                expect(
+                    getLastMockCall(UICardMock)[0].editionHiddenFields
+                ).toEqual(expect.arrayContaining(['pictureUrl', 'color']))
+            })
+        })
+
+        describe('extensions', () => {
+            it('should handle extensions when they are not provided', () => {
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} />
+                    </Provider>
+                )
+
+                const mappedExtensions =
+                    getLastMockCall(UICardMock)[0].extensions
+
+                expect(mappedExtensions.afterTitle).toBeUndefined()
+                expect(mappedExtensions.beforeContent).toBeUndefined()
+                expect(mappedExtensions.afterContent).toBeUndefined()
+                expect(mappedExtensions.renderTitleWrapper(null)).toBeNull()
+                expect(mappedExtensions.renderWrapper(null)).toBeNull()
+            })
+
+            it('should handle extensions when they are provided', () => {
+                const extensions = {
+                    AfterTitle: jest.fn(() => <div>AfterTitle</div>),
+                    BeforeContent: jest.fn(() => <div>BeforeContent</div>),
+                    AfterContent: jest.fn(() => <div>AfterContent</div>),
+                    TitleWrapper: jest.fn(() => <div>TitleWrapper</div>),
+                    Wrapper: jest.fn(() => <div>Wrapper</div>),
+                }
+                render(
+                    <Provider store={mockStore(defaultState)}>
+                        <Card {...defaultProps} extensions={extensions} />
+                    </Provider>
+                )
+
+                const mappedExtensions =
+                    getLastMockCall(UICardMock)[0].extensions
+
+                expect(mappedExtensions).toHaveProperty('afterTitle')
+                expect(mappedExtensions).toHaveProperty('beforeContent')
+                expect(mappedExtensions).toHaveProperty('afterContent')
+                expect(mappedExtensions).toHaveProperty('renderTitleWrapper')
+                expect(mappedExtensions).toHaveProperty('renderWrapper')
+                expect(extensions.AfterTitle).toHaveBeenNthCalledWith(
+                    1,
+                    legacyProps,
+                    {}
+                )
+                expect(extensions.BeforeContent).toHaveBeenNthCalledWith(
+                    1,
+                    legacyProps,
+                    {}
+                )
+                expect(extensions.AfterContent).toHaveBeenNthCalledWith(
+                    1,
+                    legacyProps,
+                    {}
+                )
+                expect(extensions.TitleWrapper).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining(legacyProps),
+                    {}
+                )
+                expect(extensions.Wrapper).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining(legacyProps),
+                    {}
+                )
+            })
+        })
+    })
+
+    describe('dispatch callbacks', () => {
+        it('should dispatch start widget edition with correct path when calling "onEditionStart"', () => {
+            const store = mockStore(defaultState)
+            render(
+                <Provider store={store}>
+                    <Card {...defaultProps} />
+                </Provider>
+            )
+
+            act(() => getLastMockCall(UICardMock)[0].onEditionStart())
 
             expect(store.getActions()).toContainEqual(
                 startWidgetEdition(cardTemplate.templatePath!)
             )
         })
 
-        it('should dispatch delete widget action with correct path on delete button click', () => {
+        it('should dispatch start widget edition with correct path when calling "onEditionStart" when parent is list', () => {
             const store = mockStore(defaultState)
             render(
                 <Provider store={store}>
-                    <Card {...defaultProps} isEditing />
+                    <Card
+                        {...defaultProps}
+                        parent={fromJS(listTemplate)}
+                        isParentList
+                    />
                 </Provider>
             )
 
-            fireEvent.click(screen.getByText(DELETE_BUTTON_TEXT))
+            act(() => getLastMockCall(UICardMock)[0].onEditionStart())
+
+            expect(store.getActions()).toContainEqual(
+                startWidgetEdition(listTemplate.templatePath!)
+            )
+        })
+
+        it('should dispatch delete widget action with correct path when calling "onDelete"', () => {
+            const store = mockStore(defaultState)
+            render(
+                <Provider store={store}>
+                    <Card {...defaultProps} />
+                </Provider>
+            )
+
+            act(() => getLastMockCall(UICardMock)[0].onDelete())
 
             expect(store.getActions()).toContainEqual(
                 removeEditedWidget(
@@ -132,21 +670,25 @@ describe('Card', () => {
             )
         })
 
-        it('should display edit form on edit button click', () => {
+        it('should dispatch delete widget action with correct path when calling "onDelete" when parent is list', () => {
+            const store = mockStore(defaultState)
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <Card {...defaultProps} isEditing />
+                <Provider store={store}>
+                    <Card {...defaultProps} isParentList />
                 </Provider>
             )
 
-            fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
+            act(() => getLastMockCall(UICardMock)[0].onDelete())
 
-            expect(
-                screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-            ).toBeInTheDocument()
+            expect(store.getActions()).toContainEqual(
+                removeEditedWidget(
+                    cardTemplate.templatePath,
+                    defaultParentAbsolutePath
+                )
+            )
         })
 
-        it('should hide edit form and dispatch stop widget edit on onCancel callback', async () => {
+        it('should dispatch update widget action with correct path when calling "onEditionStop"', () => {
             const store = mockStore(defaultState)
             render(
                 <Provider store={store}>
@@ -154,18 +696,12 @@ describe('Card', () => {
                 </Provider>
             )
 
-            fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-            act(() => getLastMockCall(CardEditFormMock)[0].onCancel())
+            act(() => getLastMockCall(UICardMock)[0].onEditionStop())
 
-            await waitFor(() =>
-                expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).not.toBeInTheDocument()
-            )
             expect(store.getActions()).toContainEqual(stopWidgetEdition())
         })
 
-        it('should hide edit form, dispatch update widget and stop edit on onSubmit callback', async () => {
+        it('should dispatch update widget and stop edit when calling "onSubmit"', () => {
             const store = mockStore(defaultState)
             render(
                 <Provider store={store}>
@@ -174,19 +710,10 @@ describe('Card', () => {
             )
 
             act(() => {
-                fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-            })
-            act(() => {
-                CardEditFormMock.mock.calls
+                UICardMock.mock.calls
                     .slice(-1)[0][0]
                     .onSubmit({title: 'ok'} as CardEditFormState)
             })
-
-            await waitFor(() =>
-                expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).not.toBeInTheDocument()
-            )
 
             const updateWidgetAction = updateEditedWidget({
                 type: 'card',
@@ -217,10 +744,7 @@ describe('Card', () => {
             )
 
             act(() => {
-                fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-            })
-            act(() => {
-                getLastMockCall(CardEditFormMock)[0].onSubmit({
+                getLastMockCall(UICardMock)[0].onSubmit({
                     title: 'ok',
                     link: 'http://example.com',
                     pictureUrl: 'http://example.com/picture.jpg',
@@ -246,163 +770,47 @@ describe('Card', () => {
             expect(store.getActions()).toContainEqual(updateWidgetAction)
         })
 
-        it('should hide edit form and dispatch stop widget on click outside of the popover', async () => {
+        it('should correctly format given data and provide it to update widget actions when parent is list', () => {
             const store = mockStore(defaultState)
-            const {container} = render(
+            render(
                 <Provider store={store}>
-                    <Card {...defaultProps} isEditing />
+                    <Card {...defaultProps} isEditing isParentList />
                 </Provider>
             )
 
             act(() => {
-                fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-            })
-
-            fireEvent.click(container)
-
-            await waitFor(() =>
-                expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).not.toBeInTheDocument()
-            )
-            expect(store.getActions()).toContainEqual(stopWidgetEdition())
-        })
-
-        describe('Parent is list', () => {
-            it('should have a draggable class', () => {
-                const {container} = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <Card {...defaultProps} isEditing isParentList />
-                    </Provider>
-                )
-
-                expect(container.firstChild).not.toHaveClass('draggable')
-            })
-
-            it('should set no hidden fields in the edit form', () => {
-                render(
-                    <Provider store={mockStore(defaultState)}>
-                        <Card {...defaultProps} isEditing isParentList />
-                    </Provider>
-                )
-
-                fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-                act(() => {
-                    expect(
-                        screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                    ).toBeInTheDocument()
+                getLastMockCall(UICardMock)[0].onSubmit({
+                    title: 'ok',
+                    link: 'http://example.com',
+                    pictureUrl: 'http://example.com/picture.jpg',
+                    color: 'red',
+                    displayCard: true,
+                    limit: 5,
+                    orderBy: 'name',
                 })
-
-                expect(
-                    getLastMockCall(CardEditFormMock)[0].orderByOptions
-                ).not.toEqual(listMetaFields)
             })
 
-            it('should dispatch start widget edition with correct path on edit button click', () => {
-                const store = mockStore(defaultState)
-                render(
-                    <Provider store={store}>
-                        <Card
-                            {...defaultProps}
-                            isEditing
-                            parent={fromJS(listTemplate)}
-                            isParentList
-                        />
-                    </Provider>
-                )
-
-                fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-
-                expect(store.getActions()).toContainEqual(
-                    startWidgetEdition(listTemplate.templatePath!)
-                )
-            })
-
-            it('should dispatch delete widget action with correct path on delete button click', () => {
-                const store = mockStore(defaultState)
-                render(
-                    <Provider store={store}>
-                        <Card {...defaultProps} isEditing isParentList />
-                    </Provider>
-                )
-
-                fireEvent.click(screen.getByText(DELETE_BUTTON_TEXT))
-
-                expect(store.getActions()).toContainEqual(
-                    removeEditedWidget(
-                        cardTemplate.templatePath,
-                        defaultParentAbsolutePath
-                    )
-                )
-            })
-
-            it('should correctly format given data and provide it to update widget actions', () => {
-                const store = mockStore(defaultState)
-                render(
-                    <Provider store={store}>
-                        <Card {...defaultProps} isEditing isParentList />
-                    </Provider>
-                )
-
-                act(() => {
-                    fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-                })
-                act(() => {
-                    getLastMockCall(CardEditFormMock)[0].onSubmit({
+            const updateWidgetAction = updateEditedWidget({
+                type: 'list',
+                meta: {
+                    limit: 5,
+                    orderBy: 'name',
+                },
+                widgets: [
+                    {
+                        type: 'card',
                         title: 'ok',
-                        link: 'http://example.com',
-                        pictureUrl: 'http://example.com/picture.jpg',
-                        color: 'red',
-                        displayCard: true,
-                        limit: 5,
-                        orderBy: 'name',
-                    })
-                })
-
-                const updateWidgetAction = updateEditedWidget({
-                    type: 'list',
-                    meta: {
-                        limit: 5,
-                        orderBy: 'name',
-                    },
-                    widgets: [
-                        {
-                            type: 'card',
-                            title: 'ok',
-                            meta: {
-                                link: 'http://example.com',
-                                pictureUrl: 'http://example.com/picture.jpg',
-                                color: 'red',
-                                displayCard: true,
-                            },
+                        meta: {
+                            link: 'http://example.com',
+                            pictureUrl: 'http://example.com/picture.jpg',
+                            color: 'red',
+                            displayCard: true,
                         },
-                    ],
-                })
-
-                expect(store.getActions()).toContainEqual(updateWidgetAction)
+                    },
+                ],
             })
 
-            it('should provide the correct orderBy parameter to the edit form', () => {
-                const store = mockStore(defaultState)
-                render(
-                    <Provider store={store}>
-                        <Card {...defaultProps} isEditing isParentList />
-                    </Provider>
-                )
-
-                act(() => {
-                    fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
-                })
-
-                expect(
-                    getLastMockCall(CardEditFormMock)[0].orderByOptions
-                ).toEqual([
-                    {label: 'Id (DESC)', value: '-id'},
-                    {label: 'Id (ASC)', value: '+id'},
-                    {label: 'Created at (DESC)', value: '-created_at'},
-                    {label: 'Created at (ASC)', value: '+created_at'},
-                ])
-            })
+            expect(store.getActions()).toContainEqual(updateWidgetAction)
         })
     })
 })

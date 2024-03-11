@@ -161,7 +161,7 @@ export const cardTemplate: Card = {
     ],
     meta: {
         displayCard: true,
-        link: '',
+        link: 'https://www.kma.com',
     },
     type: 'card',
     title: 'Order {name}',
