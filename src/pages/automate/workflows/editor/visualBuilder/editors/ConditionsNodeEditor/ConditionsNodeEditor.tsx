@@ -206,8 +206,8 @@ export default function ConditionsNodeEditor({
                                 arrow_downward
                             </i>
                             <h4 className={conditionsCss.title}>
-                                branches evaluated in the order, names not
-                                visible to customers
+                                branches are evaluated in the order below, names
+                                not visible to customers
                             </h4>
                         </div>
                         {edges.length > 0 && (
