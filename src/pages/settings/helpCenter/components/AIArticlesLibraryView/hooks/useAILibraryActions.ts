@@ -144,7 +144,11 @@ const useAILibraryActions = (
         return reviewArticle.mutate([
             undefined,
             {help_center_id: helpCenter.id},
-            {action: 'archive', template_key: article.key, reason},
+            {
+                action: 'archive',
+                template_key: article.key,
+                reason: reason?.length ? reason : null,
+            },
         ])
     }
 
