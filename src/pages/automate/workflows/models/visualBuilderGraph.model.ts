@@ -88,17 +88,11 @@ export function areGraphsEqual(
                         return {id: node.id, type: node.type, data}
                     })
                     .sort((a, b) => a.id.localeCompare(b.id)),
-                edges: g.edges
-                    .map(({source, target, data}) => ({
-                        source,
-                        target,
-                        data,
-                    }))
-                    .sort((a, b) =>
-                        `${a.source}${a.target}`.localeCompare(
-                            `${b.source}${b.target}`
-                        )
-                    ),
+                edges: g.edges.map(({source, target, data}) => ({
+                    source,
+                    target,
+                    data,
+                })),
             },
             ['wfConfigurationOriginal']
         )
