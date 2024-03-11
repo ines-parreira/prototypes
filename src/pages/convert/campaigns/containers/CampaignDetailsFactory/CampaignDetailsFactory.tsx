@@ -137,8 +137,8 @@ const CampaignDetailsFactory = (): JSX.Element => {
     }, [campaign])
 
     const isLoading = useMemo(
-        () => isChannelConnectionLoading || isCampaignLoading,
-        [isChannelConnectionLoading, isCampaignLoading]
+        () => isChannelConnectionLoading || (isCampaignLoading && !!campaignId),
+        [isChannelConnectionLoading, isCampaignLoading, campaignId]
     )
 
     return (
