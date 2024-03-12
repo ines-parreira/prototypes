@@ -113,6 +113,8 @@ jest.mock(
 jest.mock('hooks/useSelectedIndex')
 const mockUseSelectedIndex = assumeMock(useSelectedIndex)
 
+const CUSTOMERS_TAB_LABEL = 'Customers'
+const TICKETS_TAB_LABEL = 'Tickets'
 describe('<SpotlightModal/>', () => {
     const mockCloseModal = jest.fn()
     const minProps: ComponentProps<typeof SpotlightModal> = {
@@ -153,23 +155,25 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should render with tickets tab as default', async () => {
-        const {container} = renderWithRouter(
+        const {getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
         )
         await act(flushPromises)
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(getByText(TICKETS_TAB_LABEL)).toBeInTheDocument()
     })
 
     it('should set customers tab on click', async () => {
-        const {container, getByText} = renderWithRouter(
+        const customersLabel = CUSTOMERS_TAB_LABEL
+        const {getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
         )
         await act(flushPromises)
 
-        const customersTab = getByText('Customers')
-        customersTab.parentElement!.focus()
+        const customersTab = getByText(customersLabel)
+        customersTab.parentElement?.focus()
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText(customersLabel)).toBeInTheDocument()
     })
 
     it('should focus the search input when opened', async () => {
@@ -205,8 +209,8 @@ describe('<SpotlightModal/>', () => {
             <WrappedSpotlightModal {...minProps} />
         )
         await act(flushPromises)
-        const customersTab = getByText('Customers')
-        customersTab.parentElement!.focus()
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
+        customersTab.parentElement?.focus()
         const advancedSearchButton = getByText('Advanced Search')
         userEvent.click(advancedSearchButton)
 
@@ -252,8 +256,8 @@ describe('<SpotlightModal/>', () => {
             <WrappedSpotlightModal {...minProps} />
         )
         await act(flushPromises)
-        const customersTab = getByText('Customers')
-        customersTab.parentElement!.focus()
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
+        customersTab.parentElement?.focus()
         await userEvent.type(document.body, '{shift}{enter}')
 
         expect(history.push).toHaveBeenCalledWith({
@@ -336,6 +340,7 @@ describe('<SpotlightModal/>', () => {
 
     it('should fetch tickets on enter keypress from the new search endpoint', async () => {
         jest.useFakeTimers()
+        const searchQuery = 'foo'
 
         const {getByPlaceholderText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
@@ -344,10 +349,17 @@ describe('<SpotlightModal/>', () => {
 
         const searchInput = getByPlaceholderText('Search...')
 
-        await userEvent.type(searchInput, 'foo')
+        await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
-        expect(mockServer.history.post).toMatchSnapshot()
+
+        expect(mockServer.history.post).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    data: JSON.stringify({search: searchQuery, filters: ''}),
+                }),
+            ])
+        )
     })
 
     it('should end previous searchRank scenario and register a new one on enter keypress', async () => {
@@ -403,6 +415,7 @@ describe('<SpotlightModal/>', () => {
             [FeatureFlagKey.ElasticsearchTicketSearch]: false,
         }))
         jest.useFakeTimers()
+        const searchQuery = 'foo2'
 
         const {getByPlaceholderText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
@@ -411,10 +424,22 @@ describe('<SpotlightModal/>', () => {
 
         const searchInput = getByPlaceholderText('Search...')
 
-        await userEvent.type(searchInput, 'foo2')
+        await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
-        expect(mockServer.history.put).toMatchSnapshot()
+
+        expect(mockServer.history.put).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    data: JSON.stringify({
+                        view: {
+                            search: searchQuery,
+                            type: 'ticket-list',
+                        },
+                    }),
+                }),
+            ])
+        )
     })
 
     it('should register a new searchRank scenario with PG as searchEngine enter keypress from the old search endpoint', async () => {
@@ -453,13 +478,13 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
-        const customersTab = getByText('Customers')
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         await act(flushPromises)
-        customersTab.parentElement!.focus()
+        customersTab.parentElement?.focus()
         await act(flushPromises)
         expect(mockServer.history.post).toHaveLength(2)
     })
@@ -467,6 +492,7 @@ describe('<SpotlightModal/>', () => {
     it('should fetch items for the search term on previous tab if search was not triggered for new query', async () => {
         jest.useFakeTimers()
         mockServer.onPost().reply(200, {data: []})
+        const searchQuery = 'foo'
 
         const {getByPlaceholderText, getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
@@ -474,17 +500,27 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
-        const customersTab = getByText('Customers')
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
-        await userEvent.type(searchInput, 'foo')
+        await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         await act(flushPromises)
         await userEvent.type(searchInput, 'baz')
-        customersTab.parentElement!.focus()
+        customersTab.parentElement?.focus()
         await act(flushPromises)
+
         expect(mockServer.history.post).toHaveLength(2)
-        expect(mockServer.history.post).toMatchSnapshot()
+        expect(mockServer.history.post).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    data: JSON.stringify({search: searchQuery, filters: ''}),
+                }),
+                expect.objectContaining({
+                    data: JSON.stringify({search: searchQuery}),
+                }),
+            ])
+        )
     })
 
     it('should not fetch items on tab switch if a search has been performed for that item type', async () => {
@@ -497,17 +533,18 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
-        const ticketsTab = getByText('Tickets')
-        const customersTab = getByText('Customers')
+        const ticketsTab = getByText(TICKETS_TAB_LABEL)
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         await act(flushPromises)
-        customersTab.parentElement!.focus()
+        customersTab.parentElement?.focus()
         await act(flushPromises)
-        ticketsTab.parentElement!.focus()
+        ticketsTab.parentElement?.focus()
         await act(flushPromises)
+
         expect(mockServer.history.post).toHaveLength(2)
     })
 
@@ -520,18 +557,20 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
-        const customersTab = getByText('Customers')
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
-        customersTab.parentElement!.focus()
+        customersTab.parentElement?.focus()
         await act(flushPromises)
+
         expect(mockServer.history.post).toHaveLength(0)
     })
 
     it('should fetch customers on enter keypress', async () => {
         mockServer.onPost().reply(200, {data: []})
         jest.useFakeTimers()
+        const searchQuery = 'foo2'
 
         const {getByPlaceholderText, getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
@@ -539,13 +578,20 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
-        const customersTab = getByText('Customers')
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
-        customersTab.parentElement!.focus()
-        await userEvent.type(searchInput, 'foo2')
+        customersTab.parentElement?.focus()
+        await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
-        expect(mockServer.history.post).toMatchSnapshot()
+
+        expect(mockServer.history.post).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    data: JSON.stringify({search: searchQuery}),
+                }),
+            ])
+        )
     })
 
     it('should show SkeletonLoader component while results are fetched', async () => {
@@ -563,6 +609,7 @@ describe('<SpotlightModal/>', () => {
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         jest.advanceTimersByTime(300)
+
         expect(getByText('SkeletonLoader')).toBeInTheDocument()
     })
 
@@ -570,7 +617,7 @@ describe('<SpotlightModal/>', () => {
         mockServer.onPost().reply(200, {data: []})
         jest.useFakeTimers()
 
-        const {rerender, getByPlaceholderText, container} = renderWithRouter(
+        const {rerender, getByPlaceholderText, getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
         )
         await act(flushPromises)
@@ -583,7 +630,7 @@ describe('<SpotlightModal/>', () => {
         await userEvent.type(searchInput, '{enter}')
         await act(flushPromises)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('No results')).toBeInTheDocument()
     })
 
     it('should notify when an error occurs and register searchRank scenario', async () => {
@@ -622,6 +669,7 @@ describe('<SpotlightModal/>', () => {
         jest.useFakeTimers()
         mockServer = new MockAdapter(client, {delayResponse: 2000})
         mockServer.onPost().reply(200, {data: []})
+        const searchQuery = 'foo'
 
         const {getByPlaceholderText, getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
@@ -629,22 +677,40 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
-        const customersTab = getByText('Customers')
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
-        await userEvent.type(searchInput, 'foo')
+        await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         jest.advanceTimersByTime(500)
-        customersTab.parentElement!.focus()
+        customersTab.parentElement?.focus()
         await act(flushPromises)
 
-        expect(mockServer.history.post).toMatchSnapshot()
+        expect(mockServer.history.post).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    data: JSON.stringify({search: searchQuery}),
+                }),
+                expect.objectContaining({
+                    data: JSON.stringify({search: searchQuery}),
+                }),
+                expect.objectContaining({
+                    cancelToken: expect.objectContaining({
+                        reason: expect.objectContaining({
+                            code: 'ERR_CANCELED',
+                            message: 'canceled',
+                            name: 'CanceledError',
+                        }),
+                    }),
+                }),
+            ])
+        )
         expect(notify).not.toHaveBeenCalled()
     })
 
     it.each([
-        ['Tickets', ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
-        ['Customers', customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
+        [TICKETS_TAB_LABEL, ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
+        [CUSTOMERS_TAB_LABEL, customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
     ])(
         'should render the fetched result set with SpotlightRow for %s tab',
         async (name, item, componentName) => {
@@ -658,7 +724,7 @@ describe('<SpotlightModal/>', () => {
 
             const tab = getByText(name)
             const searchInput = getByPlaceholderText('Search...')
-            tab.parentElement!.focus()
+            tab.parentElement?.focus()
 
             await userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
@@ -670,8 +736,8 @@ describe('<SpotlightModal/>', () => {
     )
 
     it.each([
-        ['Tickets', ticket],
-        ['Customers', customer],
+        [TICKETS_TAB_LABEL, ticket],
+        [CUSTOMERS_TAB_LABEL, customer],
     ])(
         'should fetch more from new endpoint on end reached if meta indicates more items are available',
         async (name, item) => {
@@ -691,7 +757,7 @@ describe('<SpotlightModal/>', () => {
 
             const tab = getByText(name)
             const searchInput = getByPlaceholderText('Search...')
-            tab.parentElement!.focus()
+            tab.parentElement?.focus()
 
             await userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
@@ -732,9 +798,9 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         rerender(<WrappedSpotlightModal {...minProps} />)
 
-        const tab = getByText('Tickets')
+        const tab = getByText(TICKETS_TAB_LABEL)
         const searchInput = getByPlaceholderText('Search...')
-        tab.parentElement!.focus()
+        tab.parentElement?.focus()
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
@@ -749,9 +815,10 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should reset search after closing and end previous searchRank scenario', async () => {
+        const searchQuery = 'foo'
         jest.useFakeTimers()
 
-        const {rerender, getByPlaceholderText, container} = renderWithRouter(
+        const {rerender, getByPlaceholderText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
         )
         await act(flushPromises)
@@ -759,15 +826,18 @@ describe('<SpotlightModal/>', () => {
 
         const searchInput = getByPlaceholderText('Search...')
 
-        await userEvent.type(searchInput, 'foo')
+        await userEvent.type(searchInput, searchQuery)
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         await act(flushPromises)
 
+        expect(searchInput).toHaveValue(searchQuery)
+
         rerender(<WrappedSpotlightModal {...minProps} isOpen={false} />)
         rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
+
         expect(mockSearchRank.endScenario).toHaveBeenCalled()
-        expect(container.firstChild).toMatchSnapshot()
+        expect(searchInput).toHaveValue('')
     })
 
     it('should close modal after pathname change', async () => {
@@ -791,14 +861,14 @@ describe('<SpotlightModal/>', () => {
         )
         await act(flushPromises)
 
-        const ticketsTab = getByText('Tickets')
-        const customersTab = getByText('Customers')
+        const ticketsTab = getByText(TICKETS_TAB_LABEL)
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
-        customersTab.parentElement!.focus()
+        customersTab.parentElement?.focus()
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchCustomerTabClick
         )
-        ticketsTab.parentElement!.focus()
+        ticketsTab.parentElement?.focus()
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchTicketTabClick
         )
@@ -810,18 +880,18 @@ describe('<SpotlightModal/>', () => {
         )
         await act(flushPromises)
 
-        const ticketsTab = getByText('Tickets')
-        const customersTab = getByText('Customers')
+        const ticketsTab = getByText(TICKETS_TAB_LABEL)
+        const customersTab = getByText(CUSTOMERS_TAB_LABEL)
 
-        customersTab.parentElement!.focus()
+        customersTab.parentElement?.focus()
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(1)
-        ticketsTab.parentElement!.focus()
+        ticketsTab.parentElement?.focus()
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(2)
     })
 
     it.each([
-        ['Tickets', ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
-        ['Customers', customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
+        [TICKETS_TAB_LABEL, ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
+        [CUSTOMERS_TAB_LABEL, customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
     ])(
         'should render the recent %s searches with SpotlightRow',
         async (name, item, componentName) => {
@@ -838,7 +908,7 @@ describe('<SpotlightModal/>', () => {
             rerender(<WrappedSpotlightModal {...minProps} />)
 
             const tab = getByText(name)
-            tab.parentElement!.focus()
+            tab.parentElement?.focus()
 
             expect(getByText('Recently accessed')).toBeInTheDocument()
             expect(getByTestId(container, componentName)).toBeInTheDocument()
@@ -846,9 +916,14 @@ describe('<SpotlightModal/>', () => {
     )
 
     it.each([
-        ['Tickets', ticket, TICKET_SPOTLIGHT_ROW_TEST_ID, 'spotlight-ticket'],
         [
-            'Customers',
+            TICKETS_TAB_LABEL,
+            ticket,
+            TICKET_SPOTLIGHT_ROW_TEST_ID,
+            'spotlight-ticket',
+        ],
+        [
+            CUSTOMERS_TAB_LABEL,
             customer,
             CUSTOMER_SPOTLIGHT_ROW_TEST_ID,
             'spotlight-customer',
@@ -869,7 +944,7 @@ describe('<SpotlightModal/>', () => {
             rerender(<WrappedSpotlightModal {...minProps} />)
 
             const tab = getByText(name)
-            tab.parentElement!.focus()
+            tab.parentElement?.focus()
 
             userEvent.click(getByTestId(container, componentName))
             expect(logEventMock).toHaveBeenNthCalledWith(
@@ -892,7 +967,7 @@ describe('<SpotlightModal/>', () => {
 
     it.each([
         [
-            'Tickets',
+            TICKETS_TAB_LABEL,
             ticket,
             {
                 KBkey: '{enter}',
@@ -901,7 +976,7 @@ describe('<SpotlightModal/>', () => {
             },
         ],
         [
-            'Customers',
+            CUSTOMERS_TAB_LABEL,
             customer,
             {
                 KBkey: '{enter}',
@@ -910,7 +985,7 @@ describe('<SpotlightModal/>', () => {
             },
         ],
         [
-            'Tickets',
+            TICKETS_TAB_LABEL,
             ticket,
             {
                 KBkey: '{ctrl}{enter}',
@@ -923,7 +998,7 @@ describe('<SpotlightModal/>', () => {
             },
         ],
         [
-            'Customers',
+            CUSTOMERS_TAB_LABEL,
             customer,
             {
                 KBkey: '{ctrl}{enter}',
@@ -940,7 +1015,7 @@ describe('<SpotlightModal/>', () => {
         async (name, item, {KBkey, shouldCall, expectedResult}) => {
             mockUseSearchRankScenario.mockImplementation((arg) => {
                 return {
-                    isRunning: arg === 'spotlight_customer' ? true : false,
+                    isRunning: arg === 'spotlight_customer',
                     registerResultsRequest: jest.fn(),
                     registerResultsResponse: jest.fn(),
                     registerResultSelection: jest.fn(),
@@ -964,7 +1039,7 @@ describe('<SpotlightModal/>', () => {
 
             const tab = getByText(name)
             const searchInput = getByPlaceholderText('Search...')
-            tab.parentElement!.focus()
+            tab.parentElement?.focus()
 
             await userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
@@ -987,7 +1062,7 @@ describe('<SpotlightModal/>', () => {
 
     it.each([
         [
-            'Tickets',
+            TICKETS_TAB_LABEL,
             ticket,
             {
                 KBkey: '{enter}',
@@ -996,7 +1071,7 @@ describe('<SpotlightModal/>', () => {
             },
         ],
         [
-            'Customers',
+            CUSTOMERS_TAB_LABEL,
             customer,
             {
                 KBkey: '{enter}',
@@ -1005,7 +1080,7 @@ describe('<SpotlightModal/>', () => {
             },
         ],
         [
-            'Tickets',
+            TICKETS_TAB_LABEL,
             ticket,
             {
                 KBkey: '{meta}{enter}',
@@ -1018,7 +1093,7 @@ describe('<SpotlightModal/>', () => {
             },
         ],
         [
-            'Customers',
+            CUSTOMERS_TAB_LABEL,
             customer,
             {
                 KBkey: '{meta}{enter}',
@@ -1039,7 +1114,7 @@ describe('<SpotlightModal/>', () => {
             })
             mockUseSearchRankScenario.mockImplementation((arg) => {
                 return {
-                    isRunning: arg === 'spotlight_customer' ? true : false,
+                    isRunning: arg === 'spotlight_customer',
                     registerResultsRequest: jest.fn(),
                     registerResultsResponse: jest.fn(),
                     registerResultSelection: jest.fn(),
@@ -1063,7 +1138,7 @@ describe('<SpotlightModal/>', () => {
 
             const tab = getByText(name)
             const searchInput = getByPlaceholderText('Search...')
-            tab.parentElement!.focus()
+            tab.parentElement?.focus()
 
             await userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
@@ -1112,6 +1187,7 @@ describe('<SpotlightModal/>', () => {
         ).toHaveBeenCalled()
 
         fireEvent.keyDown(searchInput, {key: 'ArrowDown'})
+
         expect(
             (
                 mockUseSelectedIndex.mock.results[1].value as ReturnType<
@@ -1124,7 +1200,7 @@ describe('<SpotlightModal/>', () => {
     it('clearing the input after searching a few times should clear component internals', async () => {
         mockUseSearchRankScenario.mockImplementation((arg) => {
             return {
-                isRunning: arg === 'spotlight_customer' ? true : false,
+                isRunning: arg === 'spotlight_customer',
                 registerResultsRequest: jest.fn(),
                 registerResultsResponse: jest.fn(),
                 registerResultSelection: jest.fn(),
@@ -1147,9 +1223,9 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         rerender(<WrappedSpotlightModal {...minProps} />)
 
-        const tab = getByText('Customers')
+        const tab = getByText(CUSTOMERS_TAB_LABEL)
         const searchInput = getByPlaceholderText('Search...')
-        tab.parentElement!.focus()
+        tab.parentElement?.focus()
 
         await userEvent.type(searchInput, 'foo')
         jest.runOnlyPendingTimers()
@@ -1182,10 +1258,10 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         rerender(<WrappedSpotlightModal {...minProps} />)
 
-        const tab = getByText('Customers')
+        const tab = getByText(CUSTOMERS_TAB_LABEL)
         jest.runOnlyPendingTimers()
         const searchInput = getByPlaceholderText('Search...')
-        tab.parentElement!.focus()
+        tab.parentElement?.focus()
 
         await userEvent.type(searchInput, 'asdf')
         jest.runOnlyPendingTimers()
@@ -1197,7 +1273,9 @@ describe('<SpotlightModal/>', () => {
             container,
             CUSTOMER_SPOTLIGHT_ROW_TEST_ID
         )
-        fireEvent.mouseOver(spotlightCustomerRow)
+        act(() => {
+            fireEvent.mouseOver(spotlightCustomerRow)
+        })
 
         expect(
             (
