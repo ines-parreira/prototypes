@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {ViewType} from 'models/view/types'
 import * as utils from 'utils'
 
 import useIsToggleEnabled from '../useIsToggleEnabled'
@@ -34,11 +35,23 @@ describe('useIsToggleEnabled', () => {
         expect(result.current.isEnabled).toBe(false)
     })
 
-    it('should return isEnabled as true if the path is a direct ticket path and active view is defined', () => {
+    it('should return isEnabled as true if the path is a direct ticket path and active view is defined and of type ticket-list', () => {
         isDirectTicketPathSpy.mockReturnValue(true)
-        useAppSelectorMock.mockReturnValue(fromJS({id: 1}))
+        useAppSelectorMock.mockReturnValue(
+            fromJS({id: 1, type: ViewType.TicketList})
+        )
         const {result} = renderHook(() => useIsToggleEnabled())
 
         expect(result.current.isEnabled).toBe(true)
+    })
+
+    it('should return isEnabled as false if the path is a direct ticket path and active view is defined but not of type ticket-list', () => {
+        isDirectTicketPathSpy.mockReturnValue(true)
+        useAppSelectorMock.mockReturnValue(
+            fromJS({id: 1, type: ViewType.CustomerList})
+        )
+        const {result} = renderHook(() => useIsToggleEnabled())
+
+        expect(result.current.isEnabled).toBe(false)
     })
 })

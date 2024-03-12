@@ -6,6 +6,7 @@ import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolu
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
+import {ViewType} from 'models/view/types'
 import {getActiveView} from 'state/views/selectors'
 import {isStrictTicketPath} from 'utils'
 
@@ -31,6 +32,11 @@ export default function useSplitTicketViewSwitcher() {
 
     const activeViewId = useMemo(
         () => activeView.get('id') as number,
+        [activeView]
+    )
+
+    const activeViewType = useMemo(
+        () => activeView.get('type') as ViewType,
         [activeView]
     )
 
@@ -75,7 +81,11 @@ export default function useSplitTicketViewSwitcher() {
         }
 
         if (ticketId) {
-            if (activeViewId && ticketId !== 'new') {
+            if (
+                activeViewId &&
+                activeViewType === ViewType.TicketList &&
+                ticketId !== 'new'
+            ) {
                 history.replace(`/app/views/${activeViewId}/${ticketId}`)
             }
             return
@@ -91,6 +101,7 @@ export default function useSplitTicketViewSwitcher() {
         }
     }, [
         activeViewId,
+        activeViewType,
         isSplitTicketViewEnabled,
         previousIsSplitTicketViewEnabled,
         hasSplitTicketView,

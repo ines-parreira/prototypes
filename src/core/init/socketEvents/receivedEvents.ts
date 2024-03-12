@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/react'
 import {cloneDeep} from 'lodash'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {store as reduxStore} from 'common/store'
+import {isSpecificTicketPath} from 'common/utils'
 import {MAX_RECENT_CHATS} from 'config/recentChats'
 import {appQueryClient} from 'api/queryClient'
 import browserNotification from 'services/browserNotification'
@@ -623,7 +624,10 @@ const receivedEvents: ReceivedEvent[] = [
                 entityType: 'ticket',
             })
 
-            if (window.location.pathname === originalPath) {
+            if (
+                window.location.pathname === originalPath &&
+                !isSpecificTicketPath(window.location.pathname, phoneTicketId)
+            ) {
                 history.push(`/app/ticket/${phoneTicketId}`)
             }
         },
