@@ -11,15 +11,18 @@ import {
     getRuleSuggestionContent,
     isSuggestionEmpty,
 } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
-import {getHasAutomate} from 'state/billing/selectors'
 import {getTicketBodyElements, getTicketState} from 'state/ticket/selectors'
+import useRuleSuggestionForDemos from './useRuleSuggestionForDemos'
 
 type FakeVirtuosoItems = 'header'
 
 export default function useGroupedElements() {
     const bodyElements = useAppSelector(getTicketBodyElements)
-    const hasAutomate = useAppSelector(getHasAutomate)
     const ticket = useAppSelector(getTicketState)
+    const {shouldDisplayDemoSuggestion} = useRuleSuggestionForDemos(
+        ticket.get('id'),
+        true
+    )
 
     return useMemo(
         () => [
@@ -31,7 +34,7 @@ export default function useGroupedElements() {
                 if (Array.isArray(element)) return true
                 if (isTicketRuleSuggestion(element))
                     return (
-                        hasAutomate &&
+                        shouldDisplayDemoSuggestion &&
                         !isSuggestionEmpty(
                             getRuleSuggestionContent(ticket.toJS())
                         )
@@ -53,6 +56,6 @@ export default function useGroupedElements() {
                 )
             }),
         ],
-        [bodyElements, hasAutomate, ticket]
+        [bodyElements, ticket, shouldDisplayDemoSuggestion]
     )
 }

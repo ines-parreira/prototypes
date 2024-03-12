@@ -52,7 +52,7 @@ describe('useRuleSuggestionForDemos', () => {
     describe('shouldDisplayDemoSuggestion', () => {
         it('should return true', () => {
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
@@ -77,7 +77,7 @@ describe('useRuleSuggestionForDemos', () => {
             }
 
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(addonAccountStore)}>
@@ -96,7 +96,7 @@ describe('useRuleSuggestionForDemos', () => {
             }))
 
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
@@ -114,7 +114,7 @@ describe('useRuleSuggestionForDemos', () => {
             }
 
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(basicAccountStore)}>
@@ -133,7 +133,7 @@ describe('useRuleSuggestionForDemos', () => {
                 demoSuggestionDismissedTickets,
             ])
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
@@ -150,7 +150,7 @@ describe('useRuleSuggestionForDemos', () => {
                 demoSuggestionDismissedTickets,
             ])
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
@@ -178,7 +178,7 @@ describe('useRuleSuggestionForDemos', () => {
             }
 
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider
@@ -202,7 +202,7 @@ describe('useRuleSuggestionForDemos', () => {
             }
 
             const {result} = renderHook(
-                () => useRuleSuggestionForDemos(ticketId),
+                () => useRuleSuggestionForDemos(ticketId, true),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(macroPrefillTicketStore)}>
@@ -223,11 +223,14 @@ describe('useRuleSuggestionForDemos', () => {
             demoSuggestionDismissedTickets,
             setDemoSuggestionDismissedTickets,
         ])
-        const {result} = renderHook(() => useRuleSuggestionForDemos(ticketId), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(store)}>{children}</Provider>
-            ),
-        })
+        const {result} = renderHook(
+            () => useRuleSuggestionForDemos(ticketId, true),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                ),
+            }
+        )
 
         result.current.setDemoSuggestionSettingPerUser()
 

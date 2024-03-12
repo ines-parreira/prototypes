@@ -103,7 +103,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         shouldDisplayDemoSuggestion,
         setDemoSuggestionSettingPerUser,
         setDemoSuggestionSettingPerAccount,
-    } = useRuleSuggestionForDemos(ticket.id)
+    } = useRuleSuggestionForDemos(ticket.id, false)
 
     useEffectOnce(() => {
         if (!hasAutomate && shouldDisplayDemoSuggestion) {

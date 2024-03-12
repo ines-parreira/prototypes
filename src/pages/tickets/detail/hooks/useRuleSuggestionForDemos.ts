@@ -25,7 +25,10 @@ const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
  * - User has not dismissed the demo suggestion more than 3 times
  * - Account has not hidden the demo suggestion
  */
-export default function useRuleSuggestionForDemos(ticketId: number) {
+export default function useRuleSuggestionForDemos(
+    ticketId: number,
+    shouldCheckFrequency: boolean
+) {
     const [demoSuggestionDismissedTickets, setDemoSuggestionDismissedTickets] =
         useLocalStorage<number[]>(DEMO_SUGGESTION_DISMISSED_TICKETS)
 
@@ -54,8 +57,8 @@ export default function useRuleSuggestionForDemos(ticketId: number) {
                 ? ticketDemoSuggestion / 100
                 : 0
 
-        return Math.random() < frequency
-    }, [ticketDemoSuggestion])
+        return shouldCheckFrequency ? Math.random() < frequency : true
+    }, [ticketDemoSuggestion, shouldCheckFrequency])
 
     const shouldDisplayDemoSuggestion = useMemo(() => {
         const userSettingDismissTreshold = !!(
