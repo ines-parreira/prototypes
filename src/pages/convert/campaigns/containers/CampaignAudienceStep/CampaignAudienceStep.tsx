@@ -115,6 +115,7 @@ export const CampaignAudienceStep = ({
                     'meta',
                     'shop_integration_id',
                 ])}
+                chatIntegrationId={integration.get('id')}
             />
             <div className="mb-4">
                 {shouldShowContactCsm && (

@@ -19,10 +19,8 @@ const defaultState = {
 } as RootState
 const store = createStore((state) => state as RootState, defaultState)
 
-const buttonText = 'Continue Setup'
-const subscribedMessageText = 'Ensure proper campaign functionality'
-const unsubscribedMessageText =
-    'To keep your campaigns visible for your visitors, please install the campaign bundle'
+const buttonText = 'Complete installation'
+const messageText = "you haven't completed the campaign bundle installation"
 
 jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
@@ -42,13 +40,11 @@ describe('ConvertSetupBanner', () => {
 
         const {queryByText} = render(
             <Provider store={store}>
-                <ConvertSetupBanner />
+                <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>
         )
 
-        expect(
-            queryByText(subscribedMessageText, {exact: false})
-        ).toBeInTheDocument()
+        expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
         expect(queryByText(buttonText)).toBeInTheDocument()
     })
 
@@ -66,13 +62,11 @@ describe('ConvertSetupBanner', () => {
 
         const {queryByText} = render(
             <Provider store={store}>
-                <ConvertSetupBanner />
+                <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>
         )
 
-        expect(
-            queryByText(unsubscribedMessageText, {exact: false})
-        ).toBeInTheDocument()
+        expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
         expect(queryByText(buttonText)).toBeInTheDocument()
     })
 
@@ -90,13 +84,11 @@ describe('ConvertSetupBanner', () => {
 
         const {queryByText} = render(
             <Provider store={store}>
-                <ConvertSetupBanner />
+                <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>
         )
 
-        expect(
-            queryByText(unsubscribedMessageText, {exact: false})
-        ).not.toBeInTheDocument()
+        expect(queryByText(messageText, {exact: false})).not.toBeInTheDocument()
     })
 
     it('should not render because has bundle installed', () => {
@@ -108,13 +100,11 @@ describe('ConvertSetupBanner', () => {
 
         const {queryByText} = render(
             <Provider store={store}>
-                <ConvertSetupBanner />
+                <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>
         )
 
-        expect(
-            queryByText(subscribedMessageText, {exact: false})
-        ).not.toBeInTheDocument()
+        expect(queryByText(messageText, {exact: false})).not.toBeInTheDocument()
         expect(queryByText(buttonText)).not.toBeInTheDocument()
     })
 
@@ -135,12 +125,10 @@ describe('ConvertSetupBanner', () => {
 
         const {queryByText} = render(
             <Provider store={agentStore}>
-                <ConvertSetupBanner />
+                <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>
         )
-        expect(
-            queryByText(subscribedMessageText, {exact: false})
-        ).toBeInTheDocument()
+        expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
         expect(queryByText(buttonText)).not.toBeInTheDocument()
     })
 })

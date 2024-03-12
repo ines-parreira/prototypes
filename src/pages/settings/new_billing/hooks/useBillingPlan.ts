@@ -39,6 +39,9 @@ import {
 } from 'state/currentAccount/actions'
 import GorgiasApi from 'services/gorgiasApi'
 import {isGorgiasApiError} from 'models/api/types'
+import useGetConvertStatus, {
+    convertStatusKeys,
+} from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -54,7 +57,6 @@ import {
     setConvertNotification,
 } from '../views/BillingProcessView/utils'
 import {getDefaultConvertPriceIndex} from '../utils/getDefaultConvertPriceIndex'
-import useGetConvertStatus from '../../revenue/hooks/useGetConvertStatus'
 import {useRevenueAddonApi} from '../../revenue/hooks/useRevenueAddonApi'
 
 export type BillingPlansProps = {
@@ -333,7 +335,7 @@ export const useBillingPlans = ({
             )
 
             await queryClient.invalidateQueries({
-                queryKey: ['convert', 'status'],
+                queryKey: convertStatusKeys.all(),
             })
         }
     }, [

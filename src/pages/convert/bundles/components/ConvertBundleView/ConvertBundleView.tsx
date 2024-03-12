@@ -24,6 +24,7 @@ import {IntegrationType} from 'models/integration/constants'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {transformBundleError} from 'pages/settings/revenue/utils/transformBundleError'
 import Loader from 'pages/common/components/Loader/Loader'
+import {convertStatusKeys} from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import ConvertBundleDetail from '../ConvertBundleDetail'
 import css from './ConvertBundleView.less'
 
@@ -159,6 +160,10 @@ const ConvertBundleView = () => {
 
             await queryClient.invalidateQueries({
                 queryKey: bundleKeys.lists(),
+            })
+
+            await queryClient.invalidateQueries({
+                queryKey: convertStatusKeys.all(),
             })
         } catch (e) {
             void dispatch(

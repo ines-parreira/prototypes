@@ -294,8 +294,8 @@ describe('<CampaignsList />', () => {
     })
 
     describe('Campaign infobar', () => {
-        const buttonText = 'Continue Setup'
-        const messageText = 'Ensure proper campaign functionality'
+        const buttonText = 'Complete installation'
+        const messageText = "haven't completed the campaign bundle installation"
 
         it('should render setup infobar', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)

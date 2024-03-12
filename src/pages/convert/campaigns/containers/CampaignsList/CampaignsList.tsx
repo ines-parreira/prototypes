@@ -211,6 +211,7 @@ const CampaignsList = ({
                         'meta',
                         'shop_integration_id',
                     ])}
+                    chatIntegrationId={integration.get('id')}
                 />
 
                 {!isConvertSubscriber && <CampaignInfobarPaywall />}

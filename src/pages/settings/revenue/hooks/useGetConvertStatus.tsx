@@ -19,6 +19,12 @@ const defaultOptions = {
     cacheTime: 10 * 60 * 1000, // 10 minutes
 }
 
+export const convertStatusKeys = {
+    all: () => ['convert', 'status'] as const,
+    shop: (shopIntegrationId?: number) =>
+        [...convertStatusKeys.all(), shopIntegrationId] as const,
+}
+
 export const getConvertStatusAndUsage = async (
     client: RevenueAddonClient | undefined,
     shopIntegrationId?: number
@@ -44,7 +50,7 @@ const useGetConvertStatus = (
     const {client} = useRevenueAddonApi()
 
     const {data} = useQuery({
-        queryKey: ['convert', 'status', shopIntegrationId],
+        queryKey: convertStatusKeys.shop(shopIntegrationId),
         queryFn: async () =>
             getConvertStatusAndUsage(client, shopIntegrationId),
         // avoid fetching if not convert subscriber

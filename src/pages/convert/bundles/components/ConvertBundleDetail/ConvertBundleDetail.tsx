@@ -19,6 +19,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {Bundle} from 'models/convert/bundle/types'
+import {convertStatusKeys} from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
 import css from './ConvertBundleDetail.less'
 
@@ -98,6 +99,9 @@ const ConvertBundleDetail = ({
         async (isInstalled) => {
             await queryClient.invalidateQueries({
                 queryKey: bundleKeys.lists(),
+            })
+            await queryClient.invalidateQueries({
+                queryKey: convertStatusKeys.all(),
             })
 
             if (onChange) {

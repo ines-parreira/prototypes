@@ -13,11 +13,13 @@ import {useIsConvertCampaignBundleWarningEnabled} from 'pages/settings/revenue/h
 type Props = {
     classes?: string
     shopIntegrationId?: number
+    chatIntegrationId?: number
 }
 
 export const ConvertSetupBanner = ({
     classes,
     shopIntegrationId,
+    chatIntegrationId,
 }: Props): JSX.Element => {
     const isConvertSubscriber = useIsConvertSubscriber()
     const currentUser = useAppSelector((state) => state.currentUser)
@@ -27,7 +29,7 @@ export const ConvertSetupBanner = ({
 
     const convertStatus = useGetConvertStatus(
         isConvertCampaignBundleWarningEnabled,
-        shopIntegrationId
+        !!shopIntegrationId ? shopIntegrationId : chatIntegrationId
     )
 
     const isBundleNotInstalled = useMemo(
@@ -53,22 +55,22 @@ export const ConvertSetupBanner = ({
         <div className={classNames(classes)}>
             <Alert
                 customActions={
-                    isButtonVisible ? (
+                    isButtonVisible && chatIntegrationId ? (
                         <div>
                             <Link
                                 className="mr-3"
-                                to={`/app/settings/convert/installations`}
+                                to={`/app/convert/${chatIntegrationId}/installation`}
                             >
-                                Continue Setup
+                                Complete installation
                             </Link>
                         </div>
                     ) : undefined
                 }
                 type={AlertType.Warning}
+                icon
             >
-                {isConvertSubscriber
-                    ? 'Ensure proper campaign functionality by completing the Convert setup'
-                    : 'To keep your campaigns visible for your visitors, please install the campaign bundle'}
+                Your campaigns won't be displayed on your store as long as you
+                haven't completed the campaign bundle installation.
             </Alert>
         </div>
     )
