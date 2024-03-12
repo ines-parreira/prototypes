@@ -1,6 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'
 import TipsToggle from 'pages/stats/TipsToggle'
@@ -84,6 +84,11 @@ export default function SupportPerformanceOverview() {
             return screenSize === SCREEN_SIZE.SMALL ? 12 : defaultSize
         },
         [screenSize]
+    )
+
+    const performanceOverviewChartType = useMemo(
+        () => (isAnalyticsProductivityMetricsEnabled ? 'bar' : 'line'),
+        [isAnalyticsProductivityMetricsEnabled]
     )
 
     return (
@@ -298,6 +303,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewChartConfig[
                                         OverviewMetric.TicketsCreated
                                     ]}
+                                    chartType={performanceOverviewChartType}
                                 />
                             </DashboardGridCell>
                             <DashboardGridCell size={getGridCellSize(6)}>
@@ -305,6 +311,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewChartConfig[
                                         OverviewMetric.TicketsClosed
                                     ]}
+                                    chartType={performanceOverviewChartType}
                                 />
                             </DashboardGridCell>
                         </>
@@ -317,6 +324,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewChartConfig[
                                         OverviewMetric.TicketsReplied
                                     ]}
+                                    chartType={performanceOverviewChartType}
                                 />
                             </DashboardGridCell>
                             <DashboardGridCell size={getGridCellSize(6)}>
@@ -324,6 +332,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewChartConfig[
                                         OverviewMetric.MessagesSent
                                     ]}
+                                    chartType={performanceOverviewChartType}
                                 />
                             </DashboardGridCell>
                         </>
@@ -371,6 +380,7 @@ export default function SupportPerformanceOverview() {
                                 {...OverviewChartConfig[
                                     OverviewMetric.TicketsReplied
                                 ]}
+                                chartType={performanceOverviewChartType}
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(6)}>
@@ -378,6 +388,7 @@ export default function SupportPerformanceOverview() {
                                 {...OverviewChartConfig[
                                     OverviewMetric.MessagesSent
                                 ]}
+                                chartType={performanceOverviewChartType}
                             />
                         </DashboardGridCell>
                     </DashboardSection>

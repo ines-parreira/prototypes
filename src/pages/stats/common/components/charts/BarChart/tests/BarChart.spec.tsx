@@ -1,14 +1,16 @@
 import React from 'react'
 import {render, waitFor, fireEvent} from '@testing-library/react'
 import * as chartjs from 'chart.js'
-
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {ThemeProvider} from 'theme'
 import {assumeMock} from 'utils/testing'
 
 import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
-import BarChart, {CHART_TOOLTIP_TARGET} from '../BarChart'
+import {ThemeProvider} from 'theme'
+import BarChart, {
+    CHART_TOOLTIP_TARGET,
+    BarChart as BarChartWithoutTheme,
+} from '../BarChart'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />
@@ -106,28 +108,7 @@ describe('<BarChart />', () => {
         expect(queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
-    it('should render chart grid with theme provider colors', () => {
-        render(
-            <ThemeProvider>
-                <BarChart data={[]} />
-            </ThemeProvider>
-        )
-
-        const lastCall = chartSpy.mock.lastCall?.[1]
-        const color = lastCall?.options?.scales?.y?.grid?.color as (
-            ctx: unknown
-        ) => undefined
-
-        expect(color({tick: {value: 0}})).toEqual(
-            colors['🖥 Modern'].Main.Primary.value
-        )
-
-        expect(color({tick: {value: 1}})).toEqual(
-            colors['🖥 Modern'].Neutral.Grey_2.value
-        )
-    })
-
-    it('should render chart grid with theme wrapped colors', () => {
+    it('should render chart grid with analytics theme wrapped colors', () => {
         render(<BarChart data={[]} />)
 
         const lastCall = chartSpy.mock.lastCall?.[1]
@@ -144,8 +125,33 @@ describe('<BarChart />', () => {
         )
     })
 
+    it('should render chart grid with theme wrapped colors', () => {
+        render(
+            <ThemeProvider>
+                <BarChartWithoutTheme data={[]} />
+            </ThemeProvider>
+        )
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const color = lastCall?.options?.scales?.y?.grid?.color as (
+            ctx: unknown
+        ) => undefined
+
+        expect(color({tick: {value: 0}})).toEqual(
+            colors['📺 Classic'].Main.Primary.value
+        )
+
+        expect(color({tick: {value: 1}})).toEqual(
+            colors['📺 Classic'].Neutral.Grey_2.value
+        )
+    })
+
     it('should not render chart tooltip title callback', () => {
-        render(<BarChart data={[ticketsCreatedDataItem]} />)
+        render(
+            <ThemeProvider>
+                <BarChart data={[ticketsCreatedDataItem]} />
+            </ThemeProvider>
+        )
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const callbacksTitle = lastCall?.options?.plugins?.tooltip?.callbacks

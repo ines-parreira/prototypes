@@ -8,9 +8,9 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import configureStore from 'store/configureStore.prod'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
+import {InitialRootState} from 'types'
 import HelpCenterStats from '../HelpCenterStats'
-import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
-import {InitialRootState} from '../../../../../types'
 import {HELP_CENTER_STATS_TEST_IDS} from './constants'
 
 jest.mock('common/segment')

@@ -1,11 +1,13 @@
 import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
 import moment from 'moment'
+import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 
-import {defaultBarChartColors, stackedBarChartColors} from '../config'
-import BarChart from './BarChart'
+import {AnalyticsTheme} from 'theme/withAnalyticsTheme'
+import {ChartColors} from '../types'
+import {BarChart} from './BarChart'
 
 const storyConfig: Meta = {
     title: 'Stats/BarChart',
@@ -40,10 +42,26 @@ MultipleLinesWithColorsFromDesign.args = {
             y: Math.floor(Math.random() * 100_000_000),
         })),
     })),
-    customColors: defaultBarChartColors,
 }
 
 export const MultipleLinesWithColorsFromDesignStacked = Template.bind({})
+const stackedColors = {
+    analytics: {
+        data: {
+            ...analyticsColorsModern.analytics.data,
+            blue: {
+                value: analyticsColorsModern.analytics.data.grey.value,
+            },
+            yellow: {
+                value: analyticsColorsModern.analytics.data.blue.value,
+            },
+            grey: {
+                value: analyticsColorsModern.analytics.data.yellow.value,
+            },
+        },
+        heatmap: analyticsColorsModern.analytics.heatmap,
+    },
+} as ChartColors & AnalyticsTheme
 MultipleLinesWithColorsFromDesignStacked.args = {
     ...defaultProps,
     data: new Array(3).fill(null).map((_, index) => ({
@@ -55,7 +73,7 @@ MultipleLinesWithColorsFromDesignStacked.args = {
             y: Math.floor(Math.random() * 100_000_000),
         })),
     })),
-    customColors: stackedBarChartColors,
+    colorTokens: stackedColors,
     options: {
         scales: {
             x: {
@@ -83,7 +101,6 @@ MultipleLines.args = {
             y: Math.floor(Math.random() * 100_000_000),
         })),
     })),
-    hasBackground: true,
     customColors: new Array(15).fill(null).map(() => generateRandomColor()),
     options: {
         elements: {

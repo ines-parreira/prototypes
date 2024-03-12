@@ -20,6 +20,8 @@ import {OverviewChartConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
+import {CHART_TOOLTIP_TARGET as lineChartTooltipTarget} from 'pages/stats/common/components/charts/LineChart/LineChart'
+import {CHART_TOOLTIP_TARGET as barChartTooltipTarget} from 'pages/stats/common/components/charts/BarChart/BarChart'
 
 jest.mock('hooks/reporting/timeSeries')
 const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)
@@ -69,12 +71,29 @@ describe('<OverviewChartCard />', () => {
     } as ReturnType<typeof useTimeSeries>
 
     it.each(Object.values(OverviewChartConfig))(
-        'should fetch TimeSeries data and render chart',
+        'should fetch TimeSeries data and render with line chart',
         (config) => {
-            render(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <OverviewChartCard {...config} />
+                    <OverviewChartCard {...config} chartType="line" />
                 </Provider>
+            )
+            expect(container.querySelector('canvas')?.id).toContain(
+                lineChartTooltipTarget
+            )
+        }
+    )
+
+    it.each(Object.values(OverviewChartConfig))(
+        'should fetch TimeSeries data and render with bar chart',
+        (config) => {
+            const {container} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <OverviewChartCard {...config} chartType="bar" />
+                </Provider>
+            )
+            expect(container.querySelector('canvas')?.id).toContain(
+                barChartTooltipTarget
             )
         }
     )

@@ -38,7 +38,7 @@ export const useCreatedVsClosedTicketsTimeSeries = () => {
     )
 
     return {
-        timeSeries: [...closedTickets, ...createdTickets],
+        timeSeries: [...createdTickets, ...closedTickets],
         isLoading: !closedTicketsTimeSeries.data || !createdTicketsTimeSeries,
     }
 }

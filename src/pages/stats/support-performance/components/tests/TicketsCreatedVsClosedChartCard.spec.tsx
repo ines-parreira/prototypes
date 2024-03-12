@@ -1,6 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
-import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import {assumeMock} from 'utils/testing'
@@ -11,8 +11,8 @@ const createdVsClosedTicketsTimeSeriesMock = assumeMock(
     useCreatedVsClosedTicketsTimeSeries
 )
 
-jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
-const LineChartMock = assumeMock(LineChart as unknown as jest.Mock)
+jest.mock('pages/stats/common/components/charts/BarChart/BarChart')
+const BarChartMock = assumeMock(BarChart as unknown as jest.Mock)
 
 describe('<TicketsCreatedVsClosedChartCard />', () => {
     const isLoading = true
@@ -32,7 +32,7 @@ describe('<TicketsCreatedVsClosedChartCard />', () => {
 
     beforeEach(() => {
         createdVsClosedTicketsTimeSeriesMock.mockReturnValue(timeSeriesResponse)
-        LineChartMock.mockImplementation(() => null)
+        BarChartMock.mockImplementation(() => null)
     })
 
     it('should use CreatedVsClosedTicketsTimeSeries hook data and render chart', () => {
@@ -41,12 +41,14 @@ describe('<TicketsCreatedVsClosedChartCard />', () => {
         expect(
             screen.getByText(new RegExp(CREATED_VS_CLOSED_TICKETS_LABEL))
         ).toBeInTheDocument()
-        expect(LineChartMock).toHaveBeenCalledWith(
+        expect(BarChartMock).toHaveBeenCalledWith(
             {
                 isLoading,
                 data: timeSeriesResponse.timeSeries,
                 hasBackground: true,
                 _displayLegacyTooltip: true,
+                displayLegend: true,
+                legendOnLeft: true,
             },
             {}
         )

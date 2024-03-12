@@ -1,5 +1,7 @@
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {fromJS} from 'immutable'
+import analyticsColorsModern from 'assets/css/new/stats/modern.json'
+import {AnalyticsTheme} from 'theme/withAnalyticsTheme'
 import {ChartColors} from './types'
 
 export const chartColorsFallbackTokens = {
@@ -21,23 +23,10 @@ export const chartColorsFallbackTokens = {
             value: colors['📺 Classic'].Neutral.Grey_5.value,
         },
     },
+    ...analyticsColorsModern,
 }
 
-export const defaultBarChartColors = [
-    colors['🖥 Modern'].Main.Variations.Primary_2.value,
-    colors['📺 Classic'].Feedback.Variations.Warning_4.value,
-    colors['🖥 Modern'].Neutral.Grey_5.value,
-    colors['📺 Classic'].Feedback.Error.value,
-]
-
-export const stackedBarChartColors = [
-    colors['🖥 Modern'].Neutral.Grey_5.value,
-    colors['🖥 Modern'].Main.Variations.Primary_2.value,
-    colors['📺 Classic'].Feedback.Variations.Warning_4.value,
-    colors['📺 Classic'].Feedback.Error.value,
-]
-
-export const OPTIONS = (colorTokens: ChartColors): unknown =>
+export const OPTIONS = (colorTokens: ChartColors & AnalyticsTheme): unknown =>
     fromJS({
         elements: {
             point: {

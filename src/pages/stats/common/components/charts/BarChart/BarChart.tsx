@@ -11,7 +11,7 @@ import {fromJS, Map} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Bar} from 'react-chartjs-2'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {withThemedColorTokens} from 'theme/withThemedColorTokens'
+import {AnalyticsTheme, withAnalyticsTheme} from 'theme/withAnalyticsTheme'
 import {GreyArea} from 'pages/stats/ChartPluginGreyArea'
 import {ChartTooltip} from 'pages/stats/ChartTooltip'
 import {TwoDimensionalDataItem} from 'pages/stats/types'
@@ -21,8 +21,8 @@ import {ChartTooltipContent} from 'pages/stats/common/components/charts/ChartToo
 import {ChartLegend} from 'pages/stats/common/components/charts/ChartLegend'
 import {ChartColors} from 'pages/stats/common/components/charts/types'
 import {
-    OPTIONS,
     chartColorsFallbackTokens,
+    OPTIONS,
 } from 'pages/stats/common/components/charts/config'
 import css from 'pages/stats/common/components/charts/Chart.less'
 
@@ -54,13 +54,13 @@ type Props = {
     }
     wrapperclassNames?: string
     skeletonHeight?: number
-    colorTokens?: ChartColors
+    colorTokens?: ChartColors & AnalyticsTheme
     isStacked?: boolean
 }
 
 export const CHART_TOOLTIP_TARGET = 'barChartTooltip'
 
-function BarChart({
+export function BarChart({
     data,
     options,
     hasBackground,
@@ -86,20 +86,10 @@ function BarChart({
     const [chart, setChart] = useState<Chart>()
     const {customTooltip, tooltipData, tooltipStyle} = useCustomTooltip()
 
-    const statColors: string[] = useMemo(
-        () => [
-            colorTokens.Main.Primary.value,
-            colorTokens.Feedback.Warning.value,
-            colorTokens.Feedback.Success.value,
-            colorTokens.Feedback.Error.value,
-        ],
-        [
-            colorTokens.Feedback.Error.value,
-            colorTokens.Feedback.Success.value,
-            colorTokens.Feedback.Warning.value,
-            colorTokens.Main.Primary.value,
-        ]
-    )
+    const statColors: string[] = useMemo(() => {
+        const colors = colorTokens.analytics.data
+        return [colors.blue.value, colors.yellow.value, colors.grey.value]
+    }, [colorTokens])
 
     const chartColors = useCallback(
         (index: number) => customColors?.[index] || statColors[index],
@@ -273,4 +263,4 @@ function BarChart({
     )
 }
 
-export default withThemedColorTokens<Props>(BarChart)
+export default withAnalyticsTheme<Props>(BarChart)

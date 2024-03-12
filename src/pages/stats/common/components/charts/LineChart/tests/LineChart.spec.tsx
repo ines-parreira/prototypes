@@ -1,14 +1,16 @@
 import React from 'react'
 import {render, waitFor, fireEvent} from '@testing-library/react'
 import * as chartjs from 'chart.js'
-
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {ThemeProvider} from 'theme'
 import {assumeMock} from 'utils/testing'
 
 import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
-import LineChart, {CHART_TOOLTIP_TARGET} from '../LineChart'
+import {ThemeProvider} from 'theme'
+import LineChart, {
+    CHART_TOOLTIP_TARGET,
+    LineChart as LineChartWithoutTheme,
+} from '../LineChart'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />
@@ -114,12 +116,8 @@ describe('<LineChart />', () => {
         expect(queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
-    it('should render chart grid with theme provider colors', () => {
-        render(
-            <ThemeProvider>
-                <LineChart data={[]} />
-            </ThemeProvider>
-        )
+    it('should render chart grid with analytics theme wrapped colors', () => {
+        render(<LineChart data={[]} />)
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const color = lastCall?.options?.scales?.y?.grid?.color as (
@@ -127,16 +125,20 @@ describe('<LineChart />', () => {
         ) => undefined
 
         expect(color({tick: {value: 0}})).toEqual(
-            colors['🖥 Modern'].Main.Primary.value
+            colors['📺 Classic'].Main.Primary.value
         )
 
         expect(color({tick: {value: 1}})).toEqual(
-            colors['🖥 Modern'].Neutral.Grey_2.value
+            colors['📺 Classic'].Neutral.Grey_2.value
         )
     })
 
     it('should render chart grid with theme wrapped colors', () => {
-        render(<LineChart data={[]} />)
+        render(
+            <ThemeProvider>
+                <LineChartWithoutTheme data={[]} />
+            </ThemeProvider>
+        )
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const color = lastCall?.options?.scales?.y?.grid?.color as (

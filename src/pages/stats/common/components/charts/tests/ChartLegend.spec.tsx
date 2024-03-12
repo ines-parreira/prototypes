@@ -81,7 +81,6 @@ describe('ChartLegend Component', () => {
             displayLegend: true,
             legendOnLeft: true,
         })
-        screen.debug()
         expect(screen.getByText('Legend').parentElement).toHaveClass(
             'legendOnLeft'
         )
