@@ -167,7 +167,7 @@ export const MetricFormat: Record<
     },
     [TableColumn.ClosedTickets]: {format: 'integer', perAgent: true},
     [TableColumn.RepliedTickets]: {format: 'integer', perAgent: true},
-    [TableColumn.OneTouchTickets]: {format: 'percent', perAgent: true},
+    [TableColumn.OneTouchTickets]: {format: 'percent', perAgent: false},
     [TableColumn.OnlineTime]: {format: 'duration', perAgent: true},
     [TableColumn.MessagesSentPerHour]: {format: 'decimal', perAgent: false},
     [TableColumn.RepliedTicketsPerHour]: {format: 'decimal', perAgent: false},
