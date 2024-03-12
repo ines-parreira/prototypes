@@ -117,15 +117,19 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
                             integration={integration}
                         />
                     )}
-                    <Link
-                        to={
-                            `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
-                            `${integration.get('id') as string}/campaigns/new`
-                        }
-                        className={css.createCampaignLink}
-                    >
-                        <Button>Create Campaign</Button>
-                    </Link>
+                    {!isConvertUiDecouplingEnabled && (
+                        <Link
+                            to={
+                                `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
+                                `${
+                                    integration.get('id') as string
+                                }/campaigns/new`
+                            }
+                            className={css.createCampaignLink}
+                        >
+                            <Button>Create Campaign</Button>
+                        </Link>
+                    )}
                 </PageHeader>
 
                 <GorgiasChatIntegrationHeader integration={integration} />
