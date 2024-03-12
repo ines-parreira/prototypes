@@ -15,10 +15,6 @@ const LibrarySkeleton = () => {
                     customers' top asked questions. New articles are generated
                     every 90 days.
                 </div>
-                <div className={listCss.articleLink}>
-                    <i className="material-icons rounded">menu_book</i>
-                    How articles are generated with AI
-                </div>
                 <div className={listCss.listHeader}>
                     <div>Generated Article</div>
                     <div># of ticket inquiries</div>

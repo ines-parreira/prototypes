@@ -6,7 +6,6 @@ import {
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
 
-import Button from 'pages/common/components/button/Button'
 import AIArticleRow from '../AIArticleRow/AIArticleRow'
 import AIArticlesToggleButton from '../AIArticlesToggleButton'
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
@@ -67,12 +66,6 @@ const AIArticlesLibraryList = ({
                 customers' top asked questions. New articles are generated every
                 90 days.
             </div>
-            <Link to="#" className={css.articleLink}>
-                <Button fillStyle="ghost">
-                    <i className="material-icons rounded">menu_book</i>
-                    How articles are generated with AI
-                </Button>
-            </Link>
             {showLinkToArticleTemplates ? (
                 <div className={css.centeredMessage}>
                     <div className={css.messageContainer}>
