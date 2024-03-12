@@ -6,6 +6,7 @@ import {
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
 
+import Button from 'pages/common/components/button/Button'
 import AIArticleRow from '../AIArticleRow/AIArticleRow'
 import AIArticlesToggleButton from '../AIArticlesToggleButton'
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
@@ -66,6 +67,17 @@ const AIArticlesLibraryList = ({
                 customers' top asked questions. New articles are generated every
                 90 days.
             </div>
+            <a
+                className={css.articleLink}
+                href="https://docs.gorgias.com/en-US/422031-01b2bf287f8e4447add54794e89c3e8a"
+                rel="noopener noreferrer"
+                target="_blank"
+            >
+                <Button fillStyle="ghost">
+                    <i className="material-icons rounded">menu_book</i>
+                    How articles are generated with AI
+                </Button>
+            </a>
             {showLinkToArticleTemplates ? (
                 <div className={css.centeredMessage}>
                     <div className={css.messageContainer}>

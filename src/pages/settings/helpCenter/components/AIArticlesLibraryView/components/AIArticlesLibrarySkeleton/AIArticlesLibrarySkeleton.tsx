@@ -1,5 +1,6 @@
 import React from 'react'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import Button from 'pages/common/components/button/Button'
 
 import listCss from '../AIArticlesLibraryList/AIArticlesLibraryList.less'
 import previewCss from '../AIArticlesLibraryPreview/AIArticlesLibraryPreview.less'
@@ -14,6 +15,12 @@ const LibrarySkeleton = () => {
                     Review, edit, and publish pre-written articles based on your
                     customers' top asked questions. New articles are generated
                     every 90 days.
+                </div>
+                <div className={listCss.articleLink}>
+                    <Button fillStyle="ghost" isDisabled>
+                        <i className="material-icons rounded">menu_book</i>
+                        How articles are generated with AI
+                    </Button>
                 </div>
                 <div className={listCss.listHeader}>
                     <div>Generated Article</div>
