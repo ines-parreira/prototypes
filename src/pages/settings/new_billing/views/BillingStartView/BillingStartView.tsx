@@ -41,6 +41,7 @@ import {formatDatetime} from 'utils'
 import {ProductType} from 'models/billing/types'
 import {isEnterprisePrice} from 'models/billing/utils'
 import {isExceedingPlanLimit} from 'pages/settings/revenue/utils/isExceedingPlanLimit'
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -83,6 +84,7 @@ const BillingStartView = () => {
     const isPaymentShopify = payment === 'shopify'
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.LongDateWithYear
     )
@@ -303,7 +305,11 @@ const BillingStartView = () => {
                         status: NotificationStatus.Success,
                         actionHTML: (
                             <a
-                                href="/app/settings/convert/installations"
+                                href={
+                                    isConvertUiDecouplingEnabled
+                                        ? '/app/convert'
+                                        : '/app/settings/convert/installations'
+                                }
                                 rel="noreferrer"
                             >
                                 Set Up Convert

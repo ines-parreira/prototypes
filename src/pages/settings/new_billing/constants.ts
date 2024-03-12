@@ -82,6 +82,9 @@ export const PRODUCT_INFO = {
         tooltip:
             'Campaign clicks represent the cumulative count of instances when a visitor clicks on campaigns.',
         tooltipLink: 'https://docs.gorgias.com/en-US/subscription-plans-81852',
+        // TODO: update link after launch of the new section
+        // because it's not possible to change it dynamically by Feature flag
+        // the right routing is handled now by Redirect on the destination page
         bannerLink: '/app/settings/convert/installations',
     },
 }
