@@ -16,6 +16,7 @@ import Label from 'pages/common/forms/Label/Label'
 import css from './TextArea.less'
 
 type Props = {
+    innerClassName?: string
     caption?: ReactNode
     error?: string
     isDisabled?: boolean
@@ -34,6 +35,7 @@ type Props = {
 
 function TextArea(
     {
+        innerClassName,
         caption,
         className,
         error,
@@ -109,7 +111,11 @@ function TextArea(
                 </Label>
             )}
             <textarea
-                className={classnames(css.textarea, {[css.error]: !!error})}
+                className={classnames(
+                    css.textarea,
+                    {[css.error]: !!error},
+                    innerClassName
+                )}
                 id={textareaId}
                 name={textareaId}
                 onChange={onChangeHandler}

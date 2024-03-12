@@ -102,9 +102,10 @@ const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
                             }}
                         >
                             <TextArea
+                                innerClassName={css.reasonComment}
                                 ref={reasonCommentRef}
                                 placeholder="Type your reason here..."
-                                rows={3}
+                                autoRowHeight
                                 value={reasonComment}
                                 onChange={(value) =>
                                     setReasonComment(
