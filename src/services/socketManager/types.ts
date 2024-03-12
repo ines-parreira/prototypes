@@ -296,6 +296,7 @@ export type OutboundPhoneCallInitiated = {
         type: SocketEventType.OutboundPhoneCallInitiated
         phone_ticket_id: number
         original_path: string
+        tab_id: string
     }
 }
 

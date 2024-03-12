@@ -46,6 +46,7 @@ export function useOutboundCall(): (options: Options) => void {
                 customer_name: customerName,
                 agent_id: agentId.toString(),
                 original_path: window.location.pathname,
+                tab_id: window.CLIENT_ID,
             }
 
             if (!!ticketId) {

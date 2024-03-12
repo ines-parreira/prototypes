@@ -687,6 +687,7 @@ describe('receivedEvents', () => {
                     type: SocketEventType.OutboundPhoneCallInitiated,
                     phone_ticket_id: 456,
                     original_path: originalPath,
+                    tab_id: 'abc123',
                 },
             }
             handler?.onReceive(data)
@@ -705,6 +706,7 @@ describe('receivedEvents', () => {
                     type: SocketEventType.OutboundPhoneCallInitiated,
                     phone_ticket_id: 456,
                     original_path: originalPath,
+                    tab_id: 'abc123',
                 },
             }
             handler?.onReceive(data)
@@ -723,6 +725,7 @@ describe('receivedEvents', () => {
                     type: SocketEventType.OutboundPhoneCallInitiated,
                     phone_ticket_id: 456,
                     original_path: originalPath,
+                    tab_id: 'abc123',
                 },
             }
             handler?.onReceive(data)
