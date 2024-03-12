@@ -12,14 +12,15 @@ import {LayoutKeys} from 'split-ticket-view/constants'
 import storePanelWidths from 'split-ticket-view/utils/storePanelWidths'
 import createInitialConfig from 'split-ticket-view/utils/createInitialConfig'
 
-const defaultPanelsConfig: Config = [
-    [238, 200, 350],
-    [Infinity, 300],
-    [Infinity, 340, 400],
-]
-
-const initialConfig = () =>
-    createInitialConfig(LayoutKeys.TICKET, defaultPanelsConfig)
+const initialConfig = () => {
+    const infobarMaxWidth = Math.round(window.innerWidth / 2)
+    const config: Config = [
+        [238, 200, 350],
+        [Infinity, 300],
+        [Infinity, 340, infobarMaxWidth],
+    ]
+    return createInitialConfig(LayoutKeys.TICKET, config)
+}
 
 const handleResize = (widths: number[]) => {
     storePanelWidths(LayoutKeys.TICKET, widths)
