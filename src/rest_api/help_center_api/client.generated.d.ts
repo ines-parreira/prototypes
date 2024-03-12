@@ -1310,6 +1310,7 @@ declare namespace Components {
        * false
        */
       deactivated?: boolean;
+      layout?: "default" | "1-pager";
       account_id?: number;
     }
     export interface CreateNavigationLinkDto {
@@ -1574,6 +1575,7 @@ declare namespace Components {
         completed?: boolean | null;
       } | null;
       type: "faq" | "guidance";
+      layout: "default" | "1-pager";
       account_id: number;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
@@ -1656,6 +1658,7 @@ declare namespace Components {
         completed?: boolean | null;
       } | null;
       type: "faq" | "guidance";
+      layout: "default" | "1-pager";
     }
     export interface HelpCenterSiteMapUrlDto {
       url: string;
@@ -2413,6 +2416,7 @@ declare namespace Components {
        * false
        */
       deactivated?: boolean;
+      layout?: "default" | "1-pager";
       /**
        * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
        * example:

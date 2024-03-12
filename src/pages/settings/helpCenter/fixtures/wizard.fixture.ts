@@ -31,6 +31,7 @@ const HelpCenterApiBaseFixture = {
     automation_settings_id: null,
     account_id: 1,
     type: 'faq' as const,
+    layout: 'default' as const,
 }
 
 export const InvalidHelpCenterApiFixture = {

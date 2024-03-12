@@ -4375,6 +4375,10 @@
                         "description": "Boolean indicating if the help center is deactivated.",
                         "example": false
                     },
+                    "layout": {
+                        "enum": ["default", "1-pager"],
+                        "type": "string"
+                    },
                     "account_id": {"type": "number"}
                 },
                 "required": ["name", "default_locale"]
@@ -4523,6 +4527,11 @@
                         "enum": ["faq", "guidance"],
                         "type": "string",
                         "nullable": false
+                    },
+                    "layout": {
+                        "enum": ["default", "1-pager"],
+                        "type": "string",
+                        "nullable": false
                     }
                 },
                 "required": [
@@ -4552,7 +4561,8 @@
                     "automation_settings_id",
                     "code_snippet_template",
                     "integration_id",
-                    "type"
+                    "type",
+                    "layout"
                 ]
             },
             "AccountInfoDto": {
@@ -4975,6 +4985,11 @@
                         "type": "string",
                         "nullable": false
                     },
+                    "layout": {
+                        "enum": ["default", "1-pager"],
+                        "type": "string",
+                        "nullable": false
+                    },
                     "account_id": {"type": "number"},
                     "translations": {
                         "minItems": 1,
@@ -5016,6 +5031,7 @@
                     "code_snippet_template",
                     "integration_id",
                     "type",
+                    "layout",
                     "account_id"
                 ]
             },
@@ -5126,6 +5142,10 @@
                         "type": "boolean",
                         "description": "Boolean indicating if the help center is deactivated.",
                         "example": false
+                    },
+                    "layout": {
+                        "enum": ["default", "1-pager"],
+                        "type": "string"
                     },
                     "powered_by_deactivated": {
                         "type": "boolean",
