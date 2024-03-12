@@ -29,7 +29,7 @@ import {
     legacyWithoutAutomateProductPrices,
 } from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {PlanInterval} from 'models/billing/types'
+import {PlanInterval, ProductType} from 'models/billing/types'
 import {getFormattedAmount} from 'models/billing/utils'
 import {AccountFeature} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
@@ -481,6 +481,17 @@ describe('billing selectors', () => {
                     ),
                 })
             ).toEqual(smsPrice1)
+        })
+    })
+
+    describe('currentAccountHasProduct', () => {
+        it('should indicate if the account has the product', () => {
+            expect(
+                selectors.currentAccountHasProduct(ProductType.Helpdesk)(state)
+            ).toBe(true)
+            expect(
+                selectors.currentAccountHasProduct(ProductType.Voice)(state)
+            ).toBe(false)
         })
     })
 

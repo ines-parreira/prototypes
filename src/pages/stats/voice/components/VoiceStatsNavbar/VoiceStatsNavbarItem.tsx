@@ -8,8 +8,8 @@ import cssNavbar from 'assets/css/navbar.less'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import PaywallPopover from 'pages/settings/new_billing/components/PaywallPopover'
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
-import {currentAccountHasFeature} from 'state/currentAccount/selectors'
-import {AccountFeature} from 'state/currentAccount/types'
+import {currentAccountHasProduct} from 'state/billing/selectors'
+import {ProductType} from 'models/billing/types'
 import css from './VoiceStatsNavbarItem.less'
 
 type Props = {
@@ -23,7 +23,7 @@ function VoiceStatsNavbarItem({to, title, commonNavLinkProps}: Props) {
 
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
     const hasVoiceFeature = useAppSelector(
-        currentAccountHasFeature(AccountFeature.PhoneNumber)
+        currentAccountHasProduct(ProductType.Voice)
     )
 
     return (

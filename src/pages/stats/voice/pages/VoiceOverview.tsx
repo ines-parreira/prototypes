@@ -27,7 +27,6 @@ import {
     TOTAL_CALLS_METRIC_TITLE,
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -53,6 +52,8 @@ import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountT
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {saveReport} from 'services/reporting/voiceOverviewReportingService'
 import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
+import {ProductType} from 'models/billing/types'
 
 function VoiceOverview() {
     const displayVoiceAnalyticsNiceToHave: boolean =
@@ -256,4 +257,7 @@ function VoiceOverview() {
     )
 }
 
-export default withFeaturePaywall(AccountFeature.PhoneNumber)(VoiceOverview)
+export default withProductEnabledPaywall(
+    ProductType.Voice,
+    AccountFeature.PhoneNumber
+)(VoiceOverview)

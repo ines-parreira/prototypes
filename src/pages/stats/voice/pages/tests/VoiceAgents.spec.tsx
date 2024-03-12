@@ -22,6 +22,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
 
+import {VOICE_PRODUCT_ID, voicePrice1} from 'fixtures/productPrices'
 import VoiceAgents from '../VoiceAgents'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
@@ -44,7 +45,15 @@ describe('VoiceAgents', () => {
         const state = {
             currentUser: fromJS(user) as Map<any, any>,
             currentAccount: fromJS({
-                current_subscription: account.current_subscription,
+                current_subscription: {
+                    ...account.current_subscription,
+                    products: {
+                        ...account.current_subscription.products,
+                        ...(featureEnabled && {
+                            [VOICE_PRODUCT_ID]: voicePrice1.price_id,
+                        }),
+                    },
+                },
                 features: fromJS({
                     [AccountFeature.PhoneNumber]: {
                         enabled: featureEnabled,

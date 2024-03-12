@@ -193,6 +193,12 @@ export const getCurrentConvertProduct = createSelector(
     (currentProducts) => currentProducts?.convert
 )
 
+export const currentAccountHasProduct = (product: ProductType) =>
+    createSelector(
+        getCurrentProducts,
+        (currentProducts) => !!currentProducts?.[product]
+    )
+
 export const getCurrentHelpdeskName = createSelector(
     getCurrentHelpdeskProduct,
     (currentHelpdeskProduct) => currentHelpdeskProduct?.name

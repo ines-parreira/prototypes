@@ -117,7 +117,7 @@ const Paywall = ({
                         <Col xs={12} lg={5} xl={5} className="pl-lg-5">
                             <div className={css.content}>
                                 <div className="flex align-items-center">
-                                    {shouldKeepPrice && (
+                                    {requiredUpgrade && shouldKeepPrice && (
                                         <>
                                             <Badge type={ColorType.Error}>
                                                 <i className="material-icons mr-1">

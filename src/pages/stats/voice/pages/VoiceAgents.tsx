@@ -3,7 +3,6 @@ import moment from 'moment'
 
 import {PaywallConfig, paywallConfigs} from 'config/paywalls'
 import StatsPage from 'pages/stats/StatsPage'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import useAppSelector from 'hooks/useAppSelector'
@@ -24,6 +23,8 @@ import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voi
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {VoiceAgentsDownloadDataButton} from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
+import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
+import {ProductType} from 'models/billing/types'
 
 function VoiceAgents() {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
@@ -76,9 +77,14 @@ function VoiceAgents() {
     )
 }
 
-export default withFeaturePaywall(AccountFeature.PhoneNumber, undefined, {
-    [AccountFeature.PhoneNumber]: {
-        ...paywallConfigs[AccountFeature.PhoneNumber],
-        pageHeader: VOICE_AGENTS_PAGE_TITLE,
-    } as PaywallConfig,
-})(VoiceAgents)
+export default withProductEnabledPaywall(
+    ProductType.Voice,
+    AccountFeature.PhoneNumber,
+    undefined,
+    {
+        [AccountFeature.PhoneNumber]: {
+            ...paywallConfigs[AccountFeature.PhoneNumber],
+            pageHeader: VOICE_AGENTS_PAGE_TITLE,
+        } as PaywallConfig,
+    }
+)(VoiceAgents)
