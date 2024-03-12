@@ -10,12 +10,14 @@ type OwnProps = {
     children: ReactNode
     integration: Map<any, any>
     campaign: Map<any, any>
+    isEditMode?: boolean
 }
 
 export const BaseCampaignDetails = ({
     children,
     integration,
     campaign,
+    isEditMode = false,
 }: OwnProps): JSX.Element => {
     return (
         <div className="full-width">
@@ -31,7 +33,9 @@ export const BaseCampaignDetails = ({
                                 Campaigns
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem>{campaign.get('name')}</BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {isEditMode ? campaign.get('name') : 'Add campaign'}
+                        </BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

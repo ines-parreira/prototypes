@@ -37,6 +37,7 @@ describe('<BaseCampaignDetails />', () => {
                 <BaseCampaignDetails
                     integration={integration}
                     campaign={campaign}
+                    isEditMode={true}
                 >
                     <div>content</div>
                 </BaseCampaignDetails>

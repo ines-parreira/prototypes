@@ -142,7 +142,11 @@ const CampaignDetailsFactory = (): JSX.Element => {
     )
 
     return (
-        <BaseCampaignDetails integration={integration} campaign={campaign}>
+        <BaseCampaignDetails
+            integration={integration}
+            campaign={campaign}
+            isEditMode={!!campaignId}
+        >
             <CampaignDetailsForm
                 agents={agents}
                 campaign={memoCampaign}
