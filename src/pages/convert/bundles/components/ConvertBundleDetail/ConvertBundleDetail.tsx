@@ -9,8 +9,6 @@ import {NotificationStatus} from 'state/notifications/types'
 import {
     RevenueBundle,
     RevenueBundleActionResponse,
-    RevenueBundleInstallationMethodResponse,
-    RevenueBundleStatus,
 } from 'models/revenueBundles/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getIconFromType} from 'state/integrations/helpers'
@@ -94,14 +92,6 @@ const ConvertBundleDetail = ({
     const integrationId = useMemo(
         () => (!!storeIntegrationId ? storeIntegrationId : chatIntegrationId),
         [storeIntegrationId, chatIntegrationId]
-    )
-
-    const isManuallyInstalled = useMemo(
-        () =>
-            !!bundle &&
-            bundle.status === RevenueBundleStatus.Installed &&
-            bundle.method === RevenueBundleInstallationMethodResponse.Manual,
-        [bundle]
     )
 
     const handle1ClickInstall = useCallback(
@@ -192,7 +182,6 @@ const ConvertBundleDetail = ({
                 bundleCode={code}
                 isConnected={Boolean(storeIntegration)}
                 isConnectedToShopify={isConnectedToShopify}
-                isInstalledManually={isManuallyInstalled}
             />
         </div>
     )

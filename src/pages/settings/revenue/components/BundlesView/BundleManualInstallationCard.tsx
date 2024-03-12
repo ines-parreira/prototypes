@@ -13,7 +13,6 @@ type Props = {
     bundleCode?: string
     isConnected: boolean
     isConnectedToShopify: boolean
-    isInstalledManually: boolean
 }
 
 enum Tab {
@@ -25,7 +24,6 @@ const BundleManualInstallationCard = ({
     bundleCode,
     isConnected,
     isConnectedToShopify,
-    isInstalledManually,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(!isConnected || !isConnectedToShopify)
     const [activeTab, setActiveTab] = useState<Tab>(
@@ -58,14 +56,6 @@ const BundleManualInstallationCard = ({
                     setIsOpen(!isOpen)
                 }}
             >
-                {isInstalledManually ? (
-                    <i
-                        className="material-icons text-success"
-                        style={{fontSize: 24}}
-                    >
-                        check_circle
-                    </i>
-                ) : null}
                 <div>
                     <div className={css.title}>Manual installation</div>
                     <div>

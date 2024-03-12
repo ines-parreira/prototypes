@@ -135,7 +135,6 @@ const ConvertInstallModal = ({
                         isConnectedToShopify={
                             integration?.get('type') === IntegrationType.Shopify
                         }
-                        isInstalledManually={false}
                     />
                 ) : (
                     <div>
