@@ -203,7 +203,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent bodyCell"
+                    class="cellContent bodyCell lastBodyCellInner"
                   >
                     <button
                       aria-disabled="false"
@@ -312,7 +312,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent bodyCell"
+                    class="cellContent bodyCell lastBodyCellInner"
                   >
                     <button
                       aria-disabled="false"
@@ -421,7 +421,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent bodyCell"
+                    class="cellContent bodyCell lastBodyCellInner"
                   >
                     <button
                       aria-disabled="false"
@@ -530,7 +530,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent bodyCell"
+                    class="cellContent bodyCell lastBodyCellInner"
                   >
                     <button
                       aria-disabled="false"

@@ -150,7 +150,10 @@ export const HelpCenterTable: React.FC<Props> = ({
 
                             <BodyCell
                                 className={css.lastBodyCell}
-                                innerClassName={css.bodyCell}
+                                innerClassName={classNames(
+                                    css.bodyCell,
+                                    css.lastBodyCellInner
+                                )}
                             >
                                 {isHCWizardInProgress ? (
                                     <Button
