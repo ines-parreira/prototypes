@@ -2,12 +2,13 @@ import React, {useRef, useState} from 'react'
 import Slider from 'react-slick'
 import classNames from 'classnames'
 
+import _isString from 'lodash/isString'
 import Button from '../button/Button'
 import css from './HeroImageCarousel.less'
 
 export type CarouselData = {
     imageUrl: string
-    description?: string
+    description?: string | JSX.Element
     header?: string
 }
 type Props = {
@@ -46,7 +47,11 @@ const HeroImageCarousel = ({
                                     height={420}
                                     className={css.slideImage}
                                     src={imageUrl}
-                                    alt={description}
+                                    alt={
+                                        _isString(description)
+                                            ? description
+                                            : header
+                                    }
                                 />
                                 {description && (
                                     <div className={css.slideDescription}>

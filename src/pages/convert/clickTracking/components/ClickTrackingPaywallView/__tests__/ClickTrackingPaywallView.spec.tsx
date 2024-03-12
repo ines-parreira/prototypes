@@ -34,7 +34,7 @@ describe('ClickTrackingPaywallView', () => {
 
         expect(
             getByText(
-                'Meet Gorgias Convert - Your on-site revenue generation toolkit 🤩'
+                'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩'
             )
         ).toBeInTheDocument()
     })

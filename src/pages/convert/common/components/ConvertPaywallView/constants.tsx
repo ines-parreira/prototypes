@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {assetsUrl} from 'utils'
 import {CarouselData} from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 
@@ -20,7 +22,7 @@ export const PaywallConfig: Record<ConvertFeatures, PaywallFeature> = {
         greyButtonText: 'Learn more',
         primaryButtonText: 'Select plan to get started',
         paywallTitle:
-            'Meet Gorgias Convert - Your on-site revenue generation toolkit 🤩',
+            'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩',
         descriptions: [
             'Transform visitors into loyal customers.',
             'Increase average customer spend per order.',
@@ -31,13 +33,37 @@ export const PaywallConfig: Record<ConvertFeatures, PaywallFeature> = {
                 imageUrl: assetsUrl(
                     '/img/paywalls/screens/convert-tmlewin.png'
                 ),
-                description:
-                    'As T.M.Lewin, encourage customers to add additional products to their carts before completing the order',
+                description: (
+                    <>
+                        As{' '}
+                        <a
+                            target="blank"
+                            rel="noopener noreferrer"
+                            href="https://tmlewin.co.uk/"
+                        >
+                            T.M.Lewin
+                        </a>
+                        , encourage customers to add additional products to
+                        their carts before completing the order
+                    </>
+                ),
             },
             {
                 imageUrl: assetsUrl('/img/paywalls/screens/convert-tushy.png'),
-                description:
-                    'With everything from welcome to cart abandonment campaigns, get ready to engage shoppers across your entire website and drive revenue, like Tushy',
+                description: (
+                    <>
+                        With everything from welcome to cart abandonment
+                        campaigns, get ready to engage shoppers across your
+                        entire website and drive revenue, like{' '}
+                        <a
+                            target="blank"
+                            rel="noopener noreferrer"
+                            href="https://hellotushy.com/"
+                        >
+                            Tushy
+                        </a>
+                    </>
+                ),
             },
             {
                 imageUrl: assetsUrl('/img/paywalls/screens/convert-setup.png'),

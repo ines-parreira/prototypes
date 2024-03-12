@@ -177,7 +177,7 @@ const ConvertOnboardingView = () => {
                         {isSubscriber ? (
                             <>
                                 <h1>
-                                    Welcome to Convert, your on-site revenue
+                                    Welcome to Convert, your onsite revenue
                                     generation tool kit!
                                 </h1>
                                 <p className={css.text}>
