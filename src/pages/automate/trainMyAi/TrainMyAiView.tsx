@@ -17,6 +17,7 @@ import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
 import {useGetHelpCenter} from 'models/helpCenter/queries'
 import Badge from 'pages/common/components/Badge/Badge'
 import Paywall from 'pages/common/components/Paywall/Paywall'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {TRAIN_MY_AI} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
@@ -373,6 +374,18 @@ const TrainMyAiView = () => {
                                         }
                                     />
                                 )}
+                                {hasArticleRecommendations &&
+                                    recommendationFilterFeedbackOptions.length ===
+                                        1 &&
+                                    recommendationFilterFeedbackOptions[0] ===
+                                        'helpful' && (
+                                        <Alert type={AlertType.Info} icon>
+                                            Giving feedback on articles with no
+                                            rating or unhelpful ratings improves
+                                            accuracy more than confirming
+                                            helpful ones.
+                                        </Alert>
+                                    )}
                                 <RecommendationDivisor />
                             </div>
                         )}
