@@ -389,35 +389,29 @@ const TrainMyAiView = () => {
                                     [css.withButton]: isHelpCenterEmpty,
                                 })}
                             >
-                                <div
-                                    className={classNames({
-                                        [css.withButton]: isHelpCenterEmpty,
-                                    })}
-                                >
-                                    <div className={css.description}>
-                                        {isHelpCenterEmpty
-                                            ? `There are no articles published in ${shopName} Help Center.`
-                                            : 'No recommendations have been sent yet'}
-                                    </div>
-                                    {typeof helpCenterId === 'number' &&
-                                    isHelpCenterEmpty ? (
-                                        <LinkButton
-                                            target=""
-                                            href={`/app/settings/help-center/${helpCenterId}/articles`}
-                                        >
-                                            Add articles to your help center
-                                        </LinkButton>
-                                    ) : (
-                                        <a
-                                            href="https://link.gorgias.com/m1k"
-                                            rel="noopener noreferrer"
-                                            target="_blank"
-                                        >
-                                            Learn about Article Recommendation
-                                            and AI training
-                                        </a>
-                                    )}
+                                <div className={css.description}>
+                                    {isHelpCenterEmpty
+                                        ? `There are no articles published in ${shopName} Help Center.`
+                                        : 'No recommendations have been sent yet'}
                                 </div>
+                                {typeof helpCenterId === 'number' &&
+                                isHelpCenterEmpty ? (
+                                    <LinkButton
+                                        target=""
+                                        href={`/app/settings/help-center/${helpCenterId}/articles`}
+                                    >
+                                        Add articles to your help center
+                                    </LinkButton>
+                                ) : (
+                                    <a
+                                        href="https://link.gorgias.com/m1k"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        Learn about Article Recommendation and
+                                        AI training
+                                    </a>
+                                )}
                             </div>
                         )}
                     </>
