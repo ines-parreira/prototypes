@@ -1,15 +1,19 @@
 import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import routerDom, {MemoryRouter, useParams} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import MockAdapter from 'axios-mock-adapter'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {useListBundles} from 'models/convert/bundle/queries'
 import {convertBundle} from 'fixtures/convertBundle'
+import client from 'models/api/resources'
 import ConvertBundleView from '../ConvertBundleView'
+
+const mockedServer = new MockAdapter(client)
 
 const queryClient = mockQueryClient()
 
@@ -19,7 +23,13 @@ const defaultState = {
     integrations: fromJS({
         integrations: [
             {id: 123, type: 'gorgias_chat', meta: {shop_integration_id: 234}},
-            {id: 234, type: 'shopify'},
+            {
+                id: 234,
+                type: 'shopify',
+                meta: {
+                    oauth: {scope: ['write_script_tags', 'read_script_tags']},
+                },
+            },
         ],
     }),
 }
@@ -36,16 +46,18 @@ const useListBundlesMock = assumeMock(useListBundles)
 describe('ConvertBundleView Component', () => {
     beforeEach(() => {
         queryClient.clear()
+        mockedServer.reset()
     })
 
     it('renders installation method selection when is installed', async () => {
-        // Mock useParams
         ;(useParams as jest.Mock).mockReturnValue({id: '123'})
-
-        // Mock useListBundles
         useListBundlesMock.mockReturnValue({
             data: [convertBundle],
         } as any)
+
+        mockedServer
+            .onGet(`/api/revenue-addon-bundle/${convertBundle.id}/`)
+            .reply(200, {code: 'some code'})
 
         render(
             <MemoryRouter>
@@ -63,36 +75,51 @@ describe('ConvertBundleView Component', () => {
                 screen.getByText('1-click installation for Shopify')
             ).toBeInTheDocument()
             expect(screen.getByText('Manual installation')).toBeInTheDocument()
+            expect(screen.getByText('some code')).toBeInTheDocument()
         })
     })
 
-    it('renders installation method selection when not installed', async () => {
-        // Mock useParams
-        ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+    it.each([
+        ['1-click install', 'Install', 'install'],
+        ['Manual install', 'Install manually', 'manual-install'],
+    ])(
+        'renders installation method selection when not installed',
+        async (option, button, action) => {
+            ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+            useListBundlesMock.mockReturnValue({
+                data: [],
+            } as any)
 
-        // Mock useListBundles
-        useListBundlesMock.mockReturnValue({
-            data: [],
-        } as any)
+            mockedServer
+                .onPost(`/api/revenue-addon-bundle/${action}/`)
+                .reply(200, {})
 
-        render(
-            <MemoryRouter>
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <ConvertBundleView />
-                    </Provider>
-                </QueryClientProvider>
-            </MemoryRouter>
-        )
+            render(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore(defaultState)}>
+                            <ConvertBundleView />
+                        </Provider>
+                    </QueryClientProvider>
+                </MemoryRouter>
+            )
 
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    'Select installation method for the Campaign bundle'
-                )
-            ).toBeInTheDocument()
-            expect(screen.getByText('1-click install')).toBeInTheDocument()
-            expect(screen.getByText('Manual install')).toBeInTheDocument()
-        })
-    })
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Select installation method for the Campaign bundle'
+                    )
+                ).toBeInTheDocument()
+                expect(screen.getByText('1-click install')).toBeInTheDocument()
+                expect(screen.getByText('Manual install')).toBeInTheDocument()
+            })
+
+            fireEvent.click(screen.getByText(option))
+            fireEvent.click(screen.getByText(button))
+
+            await waitFor(() => {
+                expect(mockedServer.history.post.length).toBe(1)
+            })
+        }
+    )
 })
