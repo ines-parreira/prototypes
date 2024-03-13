@@ -52,6 +52,7 @@ describe('createInitialConfig', () => {
         })
 
         const config = createInitialConfig(LayoutKeys.TICKET, defaultConfig)
+
         expect(config).toEqual(expectedConfig)
     })
 
@@ -73,6 +74,7 @@ describe('createInitialConfig', () => {
         })
 
         const config = createInitialConfig(LayoutKeys.TICKET, defaultConfig)
+
         expect(config).toEqual(expectedConfig)
     })
 
@@ -98,6 +100,38 @@ describe('createInitialConfig', () => {
         })
 
         const config = createInitialConfig(LayoutKeys.TICKET, defaultConfig)
+
+        expect(config).toEqual(expectedConfig)
+    })
+
+    it('should not return ticket list width if layout key is not VIEW or TICKET', () => {
+        const expectedConfig = [
+            [1, 100, 100],
+            [5, 100, 100],
+            [3, 100, 100],
+        ]
+
+        jest.spyOn(window.localStorage, 'getItem').mockImplementation((key) => {
+            switch (key) {
+                case 'navbar-width':
+                    return '1'
+                case 'ticket-list-width':
+                    return '2'
+                case 'infobar-width':
+                    return '3'
+                case LayoutKeys.FULL_TICKET:
+                    return '4,5,6'
+                default:
+                    return null
+            }
+        })
+
+        const config = createInitialConfig(LayoutKeys.FULL_TICKET, [
+            [100, 100, 100],
+            [100, 100, 100],
+            [100, 100, 100],
+        ])
+
         expect(config).toEqual(expectedConfig)
     })
 })

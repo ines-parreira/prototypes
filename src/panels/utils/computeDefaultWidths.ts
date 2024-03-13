@@ -85,7 +85,7 @@ export default function computeDefaultWidths({config, totalWidth}: Options) {
 
     // check how many panels there are with NO max width, and divide
     // the actual remaining width evenly across those. We again want
-    // to make sure we don't do sub-pixel division so we calculate the
+    // to make sure we don't do sub-pixel division, so we calculate the
     // average again and give the first panel a little extra
     const noMaxLeftovers = indexedConfig.filter(
         ([, [, , max]]) => !max || max === Infinity

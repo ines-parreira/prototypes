@@ -6,10 +6,14 @@ import {
     useState,
     useRef,
 } from 'react'
+import _isEqual from 'lodash/isEqual'
+
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import usePrevious from 'hooks/usePrevious'
 
 import {computeDefaultWidths, mutatePanels, createConfig} from '../utils'
-
 import {Config} from '../types'
+
 import useScreenSize from './useScreenSize'
 
 type Coord = {
@@ -23,6 +27,7 @@ type UsePanelsReturn = {
 }
 
 export default function usePanels(config: Config): UsePanelsReturn {
+    const previousConfig = usePrevious(config)
     const [screenWidth] = useScreenSize()
     const [dragHandle, setDragHandle] = useState<number | null>(null)
     const dragStart = useRef<Coord | null>(null)
@@ -32,13 +37,19 @@ export default function usePanels(config: Config): UsePanelsReturn {
         computeDefaultWidths({config, totalWidth: screenWidth})
     )
 
-    useEffect(() => {
-        setPanelWidths((panelWidths) =>
-            computeDefaultWidths({
-                config: createConfig(panelWidths, config),
-                totalWidth: screenWidth,
-            })
-        )
+    useUpdateEffect(() => {
+        if (_isEqual(config, previousConfig)) {
+            setPanelWidths((panelWidths) =>
+                computeDefaultWidths({
+                    config: createConfig(panelWidths, config),
+                    totalWidth: screenWidth,
+                })
+            )
+        } else {
+            setPanelWidths(
+                computeDefaultWidths({config, totalWidth: screenWidth})
+            )
+        }
     }, [config, screenWidth])
 
     useEffect(() => {

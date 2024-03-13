@@ -16,12 +16,22 @@ const createInitialConfig = (layoutKey: LayoutKeys, defaultConfig: Config) => {
         if (navbarWidth) {
             widths[0] = Number(navbarWidth)
         }
-        if (ticketListWidth) {
+
+        if (
+            ticketListWidth &&
+            [LayoutKeys.VIEW, LayoutKeys.TICKET].includes(layoutKey)
+        ) {
             widths[1] = Number(ticketListWidth)
         }
 
-        if (infobarWidth && layoutKey === LayoutKeys.TICKET) {
-            widths[3] = Number(infobarWidth)
+        if (infobarWidth) {
+            if (layoutKey === LayoutKeys.TICKET) {
+                widths[3] = Number(infobarWidth)
+            }
+
+            if (layoutKey === LayoutKeys.FULL_TICKET) {
+                widths[2] = Number(infobarWidth)
+            }
         }
 
         return createConfig(widths, defaultConfig)

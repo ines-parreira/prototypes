@@ -7,20 +7,26 @@ import {Config, Panel, Panels} from 'panels'
 
 import storePanelWidths from '../utils/storePanelWidths'
 import createInitialConfig from '../utils/createInitialConfig'
-import {LayoutKeys} from '../constants'
+import {
+    DEFAULT_INFOBAR_WIDTH,
+    DEFAULT_NAVBAR_WIDTH,
+    DEFAULT_TICKET_PANEL_WIDTH,
+    LayoutKeys,
+} from '../constants'
 import DefaultViewFallback from './DefaultViewFallback'
 import TicketWrapper from './TicketWrapper'
 import css from './TicketLayout.less'
 
-const defaultPanelsConfig: Config = [
-    [238, 200, 350],
-    [300, 300, 450],
-    [Infinity, 300],
-    [Infinity, 340, 400],
-]
-
-const initialConfig = () =>
-    createInitialConfig(LayoutKeys.TICKET, defaultPanelsConfig)
+const initialConfig = () => {
+    const infobarMaxWidth = Math.round(window.innerWidth / 2)
+    const config: Config = [
+        [DEFAULT_NAVBAR_WIDTH, 200, 350],
+        [DEFAULT_TICKET_PANEL_WIDTH, DEFAULT_TICKET_PANEL_WIDTH, 450],
+        [Infinity, 300],
+        [DEFAULT_INFOBAR_WIDTH, DEFAULT_INFOBAR_WIDTH, infobarMaxWidth],
+    ]
+    return createInitialConfig(LayoutKeys.TICKET, config)
+}
 
 const handleResize = (widths: number[]) => {
     storePanelWidths(LayoutKeys.TICKET, widths)

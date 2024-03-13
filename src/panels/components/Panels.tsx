@@ -1,13 +1,9 @@
-import React, {
-    Children,
-    cloneElement,
-    Fragment,
-    ReactElement,
-    useEffect,
-} from 'react'
+import React, {Children, cloneElement, Fragment, ReactElement} from 'react'
 import _isEqual from 'lodash/isEqual'
 
 import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+
 import {usePanels, useScreenSize} from '../hooks'
 import type {Config} from '../types'
 
@@ -33,7 +29,7 @@ export default function Panels({
     const {panelWidths, resizeStartHandlers} = usePanels(config)
     const previousPanelWidths = usePrevious(panelWidths)
 
-    useEffect(() => {
+    useUpdateEffect(() => {
         if (!_isEqual(panelWidths, previousPanelWidths)) {
             onResize?.(panelWidths)
         }

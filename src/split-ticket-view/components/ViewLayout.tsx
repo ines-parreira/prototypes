@@ -7,12 +7,16 @@ import {EmptyTicket} from 'ticket-page'
 
 import storePanelWidths from '../utils/storePanelWidths'
 import createInitialConfig from '../utils/createInitialConfig'
-import {LayoutKeys} from '../constants'
+import {
+    LayoutKeys,
+    DEFAULT_NAVBAR_WIDTH,
+    DEFAULT_TICKET_PANEL_WIDTH,
+} from '../constants'
 import DefaultViewFallback from './DefaultViewFallback'
 
 const defaultPanelsConfig: Config = [
-    [238, 200, 350],
-    [300, 300, 450],
+    [DEFAULT_NAVBAR_WIDTH, 200, 350],
+    [DEFAULT_TICKET_PANEL_WIDTH, DEFAULT_TICKET_PANEL_WIDTH, 450],
     [Infinity, 100, Infinity],
 ]
 

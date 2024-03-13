@@ -13,10 +13,14 @@ const storePanelWidths = _debounce(
                     'navbar-width',
                     widths[0].toString()
                 )
-                window.localStorage.setItem(
-                    'ticket-list-width',
-                    widths[1].toString()
-                )
+
+                if ([LayoutKeys.TICKET, LayoutKeys.VIEW].includes(layoutKey)) {
+                    window.localStorage.setItem(
+                        'ticket-list-width',
+                        widths[1].toString()
+                    )
+                }
+
                 window.localStorage.setItem(layoutKey, widths.toString())
             })
         }
@@ -26,6 +30,15 @@ const storePanelWidths = _debounce(
                 window.localStorage.setItem(
                     'infobar-width',
                     widths[3].toString()
+                )
+            })
+        }
+
+        if (layoutKey === LayoutKeys.FULL_TICKET && widths.length === 3) {
+            tryLocalStorage(() => {
+                window.localStorage.setItem(
+                    'infobar-width',
+                    widths[2].toString()
                 )
             })
         }

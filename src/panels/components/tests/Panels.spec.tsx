@@ -138,7 +138,7 @@ describe('Panels', () => {
             resizeStartHandlers: [resizeStartHandler1, resizeStartHandler2],
         })
 
-        const {getAllByText} = render(
+        const {rerender} = render(
             <Panels config={config} onResize={onResize}>
                 <Panel>
                     <p>Navigation</p>
@@ -149,10 +149,22 @@ describe('Panels', () => {
             </Panels>
         )
 
-        const handles = getAllByText('Handle')
-        const handle = handles[0]
-        fireEvent.mouseDown(handle)
+        usePanelsMock.mockReturnValue({
+            panelWidths: [300, 400],
+            resizeStartHandlers: [resizeStartHandler1, resizeStartHandler2],
+        })
 
-        expect(onResize).toHaveBeenCalledWith([200, 400])
+        rerender(
+            <Panels config={config} onResize={onResize}>
+                <Panel>
+                    <p>Navigation</p>
+                </Panel>
+                <Panel>
+                    <p>Panel one</p>
+                </Panel>
+            </Panels>
+        )
+
+        expect(onResize).toHaveBeenCalledWith([300, 400])
     })
 })

@@ -8,22 +8,26 @@ import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import {Config, Panel, Panels} from 'panels'
 
 import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
-import {LayoutKeys} from 'split-ticket-view/constants'
+import {
+    LayoutKeys,
+    DEFAULT_NAVBAR_WIDTH,
+    DEFAULT_INFOBAR_WIDTH,
+} from 'split-ticket-view/constants'
 import storePanelWidths from 'split-ticket-view/utils/storePanelWidths'
 import createInitialConfig from 'split-ticket-view/utils/createInitialConfig'
 
 const initialConfig = () => {
     const infobarMaxWidth = Math.round(window.innerWidth / 2)
     const config: Config = [
-        [238, 200, 350],
+        [DEFAULT_NAVBAR_WIDTH, 200, 350],
         [Infinity, 300],
-        [Infinity, 340, infobarMaxWidth],
+        [DEFAULT_INFOBAR_WIDTH, DEFAULT_INFOBAR_WIDTH, infobarMaxWidth],
     ]
-    return createInitialConfig(LayoutKeys.TICKET, config)
+    return createInitialConfig(LayoutKeys.FULL_TICKET, config)
 }
 
 const handleResize = (widths: number[]) => {
-    storePanelWidths(LayoutKeys.TICKET, widths)
+    storePanelWidths(LayoutKeys.FULL_TICKET, widths)
 }
 
 export default function TicketDetailLayout() {

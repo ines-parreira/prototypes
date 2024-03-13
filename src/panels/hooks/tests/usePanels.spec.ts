@@ -37,12 +37,26 @@ describe('usePanels', () => {
         expect(result.current.panelWidths).toEqual([200, 800])
     })
 
-    it('should update panel widths when screen size changes', () => {
-        const {result, rerender} = renderHook(() => usePanels(config))
+    it('should update panel widths when screen size changes and use existing widths when config has not changed', () => {
+        const {result, rerender} = renderHook(({config}) => usePanels(config), {
+            initialProps: {config},
+        })
         useScreenSizeMock.mockReturnValue([2000, 800])
-        rerender()
+        rerender({config})
 
         expect(result.current.panelWidths).toEqual([200, 1800])
+    })
+
+    it('should update panel widths when screen size changes , but recompute widths when config has changed', () => {
+        const {result, rerender} = renderHook(({config}) => usePanels(config), {
+            initialProps: {config},
+        })
+
+        const newConfig = [[300], [Infinity]] as Config
+        useScreenSizeMock.mockReturnValue([2000, 800])
+        rerender({config: newConfig})
+
+        expect(result.current.panelWidths).toEqual([300, 1700])
     })
 
     it('should return a resize start handler for each handle', () => {
