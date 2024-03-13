@@ -125,126 +125,143 @@ const main = async () => {
         process.exit(1)
     }
 
-    const readAndSubmitSchemas = (apicurioUrl, apicurioRuleUrl) => {
-        fs.readdir(SCHEMAS_DIR, async (err, files) => {
-            if (err) {
-                signale.fatal(err)
-                return
-            }
-
-            const JSONFiles = files.filter((file) => file.endsWith('.json'))
-
-            let successCount = 0
-
-            for (const [index, file] of JSONFiles.entries()) {
-                const jsonSchema = require(SCHEMAS_DIR + '/' + file)
-                const schemaDescription = Object.values(
-                    JSON.parse(JSON.stringify(jsonSchema)).definitions
-                )[0].description
-                const schemaName = file.split('.schema.json')[0]
-                const sharedContentTypeHeaders = {
-                    'Content-Type': 'application/json; artifactType=JSON',
-                }
-                const headers = {
-                    ...sharedContentTypeHeaders,
-                    'X-Registry-ArtifactId': schemaName,
-                    'X-Registry-Version':
-                        parseDescription(schemaDescription).version,
-                    'X-Registry-Description':
-                        parseDescription(schemaDescription).description,
+    const readAndSubmitSchemas = async (apicurioUrl, apicurioRuleUrl) => {
+        return new Promise((resolve) => {
+            fs.readdir(SCHEMAS_DIR, async (err, files) => {
+                if (err) {
+                    signale.fatal(err)
+                    return
                 }
 
-                try {
-                    // upload schemas
-                    signale.pending(
-                        `Uploading schema ${index + 1}/${
-                            JSONFiles.length
-                        } to ${apicurioUrl}`
-                    )
-                    await axios.post(
-                        apicurioUrl,
-                        JSON.parse(JSON.stringify(jsonSchema)),
-                        {headers}
-                    )
+                const JSONFiles = files.filter((file) => file.endsWith('.json'))
 
-                    const ruleUrl = apicurioRuleUrl.replace(
-                        ARTIFACT_PLACEHOLDER,
-                        schemaName
-                    )
+                let successCount = 0
 
-                    // check compatibility and validity rules
-                    signale.pending('Checking schema rules...')
-                    const {data: schemaRules = []} = await axios.get(ruleUrl)
-
-                    if (!schemaRules.includes(SchemaRuleType.COMPATIBILITY)) {
-                        signale.pending(
-                            `Updating compatibility rule ${index + 1}/${
-                                JSONFiles.length
-                            }`
-                        )
-
-                        // update compatibility rule
-                        await axios.post(
-                            ruleUrl,
-                            {
-                                type: 'COMPATIBILITY',
-                                config: 'BACKWARD_TRANSITIVE',
-                            },
-                            {headers: sharedContentTypeHeaders}
-                        )
+                for (const [index, file] of JSONFiles.entries()) {
+                    const jsonSchema = require(SCHEMAS_DIR + '/' + file)
+                    const schemaDescription = Object.values(
+                        JSON.parse(JSON.stringify(jsonSchema)).definitions
+                    )[0].description
+                    const schemaName = file.split('.schema.json')[0]
+                    const sharedContentTypeHeaders = {
+                        'Content-Type': 'application/json; artifactType=JSON',
+                    }
+                    const headers = {
+                        ...sharedContentTypeHeaders,
+                        'X-Registry-ArtifactId': schemaName,
+                        'X-Registry-Version':
+                            parseDescription(schemaDescription).version,
+                        'X-Registry-Description':
+                            parseDescription(schemaDescription).description,
                     }
 
-                    if (!schemaRules.includes(SchemaRuleType.VALIDITY)) {
-                        // update validity rule
+                    try {
+                        // upload schemas
                         signale.pending(
-                            `Updating validity rule ${index + 1}/${
+                            `Uploading schema ${index + 1}/${
                                 JSONFiles.length
-                            }`
+                            } to ${apicurioUrl}`
                         )
                         await axios.post(
-                            ruleUrl,
-                            {
-                                type: 'VALIDITY',
-                                config: 'FULL',
-                            },
-                            {headers: sharedContentTypeHeaders}
+                            apicurioUrl,
+                            JSON.parse(JSON.stringify(jsonSchema)),
+                            {headers}
                         )
+
+                        const ruleUrl = apicurioRuleUrl.replace(
+                            ARTIFACT_PLACEHOLDER,
+                            schemaName
+                        )
+
+                        // check compatibility and validity rules
+                        signale.pending('Checking schema rules...')
+                        const {data: schemaRules = []} = await axios.get(
+                            ruleUrl
+                        )
+
+                        if (
+                            !schemaRules.includes(SchemaRuleType.COMPATIBILITY)
+                        ) {
+                            signale.pending(
+                                `Updating compatibility rule ${index + 1}/${
+                                    JSONFiles.length
+                                }`
+                            )
+
+                            // update compatibility rule
+                            await axios.post(
+                                ruleUrl,
+                                {
+                                    type: 'COMPATIBILITY',
+                                    config: 'BACKWARD_TRANSITIVE',
+                                },
+                                {headers: sharedContentTypeHeaders}
+                            )
+                        }
+
+                        if (!schemaRules.includes(SchemaRuleType.VALIDITY)) {
+                            // update validity rule
+                            signale.pending(
+                                `Updating validity rule ${index + 1}/${
+                                    JSONFiles.length
+                                }`
+                            )
+                            await axios.post(
+                                ruleUrl,
+                                {
+                                    type: 'VALIDITY',
+                                    config: 'FULL',
+                                },
+                                {headers: sharedContentTypeHeaders}
+                            )
+                        }
+
+                        if (
+                            schemaRules.includes(
+                                SchemaRuleType.COMPATIBILITY
+                            ) &&
+                            schemaRules.includes(SchemaRuleType.VALIDITY)
+                        ) {
+                            signale.note('Schema rules are already updated.')
+                        }
+
+                        signale.success(
+                            `Schema ${index + 1}/${
+                                JSONFiles.length
+                            } uploaded / updated successfully !`
+                        )
+                        successCount++
+                    } catch (err) {
+                        signale.fatal(err.response.data)
                     }
-
-                    signale.success(
-                        `Schema ${index + 1}/${
-                            JSONFiles.length
-                        } uploaded / updated successfully !`
-                    )
-                    successCount++
-                } catch (err) {
-                    signale.fatal(err.response.data)
                 }
-            }
 
-            if (successCount === 0) {
-                signale.fatal({
-                    prefix: '[SUMMARY] :',
-                    message:
-                        'No schemas or rules were uploaded / updated successfully, please check the logs !',
-                })
-            } else if (successCount !== JSONFiles.length) {
-                signale.fatal({
-                    prefix: '[SUMMARY] :',
-                    message:
-                        'Schemas or rules were uploaded / updated partially, please check the logs !',
-                })
-            } else {
-                signale.complete(
-                    'All schemas uploaded / updated successfully !'
-                )
-            }
+                if (successCount === 0) {
+                    signale.fatal({
+                        prefix: '[SUMMARY] :',
+                        message:
+                            'No schemas or rules were uploaded / updated successfully, please check the logs !',
+                    })
+                } else if (successCount !== JSONFiles.length) {
+                    signale.fatal({
+                        prefix: '[SUMMARY] :',
+                        message:
+                            'Schemas or rules were uploaded / updated partially, please check the logs !',
+                    })
+                } else {
+                    signale.complete(
+                        'All schemas uploaded / updated successfully !'
+                    )
+                }
+
+                resolve()
+            })
         })
     }
 
     if (releaseName === RELEASE_TYPE.DEVELOPMENT) {
         const {apicurioURl, apicurioRuleUrl} = buildUrls()
-        readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
+        await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
     }
 
     if (releaseName === RELEASE_TYPE.STAGING) {
@@ -263,7 +280,7 @@ const main = async () => {
             password,
             buildApicurioHostname(STAGING_CLUSTER, true)
         )
-        readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
+        await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
     }
 
     if (releaseName === RELEASE_TYPE.PRODUCTION) {
@@ -286,7 +303,7 @@ const main = async () => {
                     password,
                     cluster
                 )
-                readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
+                await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
             }
             signale.success('All clusters updated !')
         } else {
@@ -298,7 +315,7 @@ const main = async () => {
                 password,
                 clusterChoice
             )
-            readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
+            await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
         }
     }
 }
