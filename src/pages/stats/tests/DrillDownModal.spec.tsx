@@ -1,6 +1,5 @@
 import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,7 +7,6 @@ import {DrillDownTable} from 'pages/stats/DrillDownTable'
 import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
 import {assumeMock} from 'utils/testing'
 import {DrillDownModal} from '../DrillDownModal'
@@ -17,10 +15,6 @@ jest.mock('pages/stats/DrillDownTable')
 const DrillDownTableMock = assumeMock(DrillDownTable)
 jest.mock('pages/stats/DrillDownInfoBar')
 const DrillDownInfobarMock = assumeMock(DrillDownInfoBar)
-
-jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.AnalyticsDrillDown]: true,
-}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

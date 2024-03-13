@@ -1,8 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
 import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -49,10 +47,7 @@ export const DrillDownDownloadButton = ({
         void dispatch(createExportTicketDrillDownJob(query))
     }
 
-    const hasAnalyticsDrillDownExport: boolean =
-        useFlags()[FeatureFlagKey.AnalyticsDrillDownExport]
-
-    return !hasAnalyticsDrillDownExport ? null : (
+    return (
         <>
             <Button
                 id={tooltipTargetID}

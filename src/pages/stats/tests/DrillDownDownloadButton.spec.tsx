@@ -1,4 +1,3 @@
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
@@ -8,7 +7,6 @@ import {fromJS} from 'immutable'
 import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
 import {ReportingGranularity} from 'models/reporting/types'
 import {user} from 'fixtures/users'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     DrillDownDownloadButton,
@@ -30,7 +28,6 @@ import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
-const useFlagsMock = jest.spyOn(LD, 'useFlags')
 
 jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
@@ -48,10 +45,6 @@ describe('<DrillDownDownloadButton />', () => {
         },
     }
     beforeEach(() => {
-        useFlagsMock.mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsDrillDownExport]: true,
-        }))
-
         getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
             userTimezone: 'someTimezone',
             cleanStatsFilters,
@@ -84,20 +77,6 @@ describe('<DrillDownDownloadButton />', () => {
         )
 
         expect(screen.getByRole('button')).toBeInTheDocument()
-    })
-
-    it('should not render if the Feature Flag is off', () => {
-        useFlagsMock.mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsDrillDownExport]: false,
-        }))
-
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <DrillDownDownloadButton metricData={metricData} />
-            </Provider>
-        )
-
-        expect(screen.queryByRole('button')).not.toBeInTheDocument()
     })
 
     it('should render disabled button when user is not allowed', () => {

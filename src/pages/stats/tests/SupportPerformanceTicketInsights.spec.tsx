@@ -1,31 +1,32 @@
-import React from 'react'
+import {UseQueryResult} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {UseQueryResult} from '@tanstack/react-query'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import useAppSelector from 'hooks/useAppSelector'
+
+import {ApiListResponseCursorPagination} from 'models/api/types'
+import {CustomField} from 'models/customField/types'
+import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
+import {DrillDownModal} from 'pages/stats/DrillDownModal'
+import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import SupportPerformanceTicketInsights, {
+    TICKET_INSIGHTS_PAGE_TITLE,
+} from 'pages/stats/SupportPerformanceTicketInsights'
+import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
+import {TicketFieldsBlankState} from 'pages/stats/TicketFieldsBlankState'
+import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
 
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {
     initialState as ticketInsightsState,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import useAppSelector from 'hooks/useAppSelector'
-import SupportPerformanceTicketInsights, {
-    TICKET_INSIGHTS_PAGE_TITLE,
-} from 'pages/stats/SupportPerformanceTicketInsights'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
-import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
-import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
-import {TicketFieldsBlankState} from 'pages/stats/TicketFieldsBlankState'
-import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
-
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {CustomField} from 'models/customField/types'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {assumeMock} from 'utils/testing'
 import {CustomFieldsTicketCountBreakdownReport} from '../CustomFieldsTicketCountBreakdownReport'
 
@@ -53,6 +54,8 @@ jest.mock('pages/stats/CustomFieldsTicketCountBreakdownReport.tsx')
 const CustomFieldsTicketCountBreakdownReportMock = assumeMock(
     CustomFieldsTicketCountBreakdownReport
 )
+jest.mock('pages/stats/DrillDownModal')
+const DrillDownModalMock = assumeMock(DrillDownModal)
 const componentMock = () => <div />
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -88,6 +91,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
         )
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
         DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
+        DrillDownModalMock.mockImplementation(componentMock)
     })
 
     it('should render the page title', () => {

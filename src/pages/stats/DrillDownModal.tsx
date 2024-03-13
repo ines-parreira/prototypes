@@ -1,10 +1,8 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -21,10 +19,7 @@ export const DrillDownModal = () => {
     const {metricData} = useAppSelector(getDrillDownMetric)
     const dispatch = useAppDispatch()
 
-    const hasAnalyticsDrillDown: boolean =
-        useFlags()[FeatureFlagKey.AnalyticsDrillDown]
-
-    return hasAnalyticsDrillDown && isOpen ? (
+    return isOpen ? (
         <Modal
             size="huge"
             isOpen={isOpen}
