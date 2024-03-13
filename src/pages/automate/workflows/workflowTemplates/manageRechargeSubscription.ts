@@ -115,7 +115,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                     'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
-  "email": "{{steps_state.${newEmailAddressTextInputStepId}.content.text}}"
+  "email": "{{steps_state.${newEmailAddressTextInputStepId}.content.text | json_escape}}"
 }`,
             variables: [],
         })
@@ -189,11 +189,11 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                     'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
-    "address1": "{{steps_state.${address1TextInputStepId}.content.text}}",
-    "address2": "{{steps_state.${address2TextInputStepId}.content.text}}",
-    "city": "{{steps_state.${cityTextInputStepId}.content.text}}",
-    "province": "{{steps_state.${stateTextInputStepId}.content.text}}",
-    "zip": "{{steps_state.${zipTextInputStepId}.content.text}}"
+    "address1": "{{steps_state.${address1TextInputStepId}.content.text | json_escape}}",
+    "address2": "{{steps_state.${address2TextInputStepId}.content.text | json_escape}}}",
+    "city": "{{steps_state.${cityTextInputStepId}.content.text | json_escape}}}",
+    "province": "{{steps_state.${stateTextInputStepId}.content.text | json_escape}}}",
+    "zip": "{{steps_state.${zipTextInputStepId}.content.text | json_escape}}}"
 }`,
             variables: [],
         })
@@ -240,7 +240,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
                     'Before enabling this flow, make sure to delete all "gorgias-message" headers',
             },
             body: `{
-    "cancellation_reason": "{{steps_state.${cancellationReasonTextInputStepId}.content.text}}",
+    "cancellation_reason": "{{steps_state.${cancellationReasonTextInputStepId}.content.text | json_escape}}",
     "send_email": "true"
 }`,
             variables: [],

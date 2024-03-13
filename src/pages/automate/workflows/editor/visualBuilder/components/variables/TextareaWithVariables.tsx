@@ -74,6 +74,8 @@ const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
                         ? 'date'
                         : variable.type === 'array'
                         ? 'json'
+                        : variable.type === 'string'
+                        ? 'json_escape'
                         : undefined,
             })
         )

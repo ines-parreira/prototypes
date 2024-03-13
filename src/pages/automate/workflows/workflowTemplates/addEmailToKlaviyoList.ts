@@ -63,8 +63,8 @@ export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
   "data": {
     "type": "profile",
     "attributes": {
-      "email": "{{steps_state.${emailAddressStepId}.content.text}}",
-      "first_name": "{{steps_state.${firstNameStepId}.content.text}}",
+      "email": "{{steps_state.${emailAddressStepId}.content.text | json_escape}}",
+      "first_name": "{{steps_state.${firstNameStepId}.content.text | json_escape}}",
       "properties": {
         "newKey": "New Value"
       }
