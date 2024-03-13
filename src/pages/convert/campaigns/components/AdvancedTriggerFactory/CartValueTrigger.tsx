@@ -4,6 +4,9 @@ import Button from 'pages/common/components/button/Button'
 import {Value} from 'pages/common/forms/SelectField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
+import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+
+import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 
 import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
 import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
@@ -26,6 +29,8 @@ export const CartValueTrigger = ({
         trigger.value as string
     )
 
+    const {shopifyIntegration} = useIntegrationContext()
+
     const handleChangeOperator = (operator: Value) =>
         handleTriggerOperatorChange(
             operator,
@@ -47,6 +52,11 @@ export const CartValueTrigger = ({
             value: innerValue,
         })
     }
+
+    const currencySymbol = getShopifyMoneySymbol(
+        shopifyIntegration?.meta?.currency ?? 'USD',
+        true
+    )
 
     useEffect(() => {
         setInnerOperator(trigger.operator)
@@ -76,7 +86,7 @@ export const CartValueTrigger = ({
             >
                 <InputField
                     className={css.fullWidth}
-                    prefix="$"
+                    prefix={currencySymbol}
                     value={innerValue}
                     type="number"
                     min={0}
