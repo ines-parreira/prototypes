@@ -1,13 +1,12 @@
 import React, {ComponentProps} from 'react'
 
-import {Campaign} from 'models/integration/types'
-
 import {Value} from 'pages/common/forms/SelectField/types'
 
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
+import {CampaignPreview} from 'models/convert/campaign/types'
 
 type Props = {
-    campaigns: Campaign[]
+    campaigns: CampaignPreview[]
     selected: Value[]
     onChangeItem: ComponentProps<typeof SelectStatsFilter>['onChange']
 }

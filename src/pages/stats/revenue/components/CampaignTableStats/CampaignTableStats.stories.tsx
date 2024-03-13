@@ -18,12 +18,7 @@ Default.args = {
         {
             campaign: {
                 id: '1234',
-                message: {
-                    html: 'test',
-                    text: 'test',
-                },
                 name: 'Test campaign',
-                triggers: {},
             },
             currency: 'USD',
             metrics: {

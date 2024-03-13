@@ -13,11 +13,9 @@ export function useGetChatForStore(shopIntegrationId: number) {
         )
     )
 
-    const campaign = useMemo(() => {
+    return useMemo(() => {
         return chatIntegrations.find((integration) => {
             return integration.meta?.shop_integration_id === shopIntegrationId
         })
     }, [chatIntegrations, shopIntegrationId])
-
-    return campaign
 }

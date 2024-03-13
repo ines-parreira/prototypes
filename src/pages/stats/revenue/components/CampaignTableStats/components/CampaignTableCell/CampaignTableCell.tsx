@@ -15,6 +15,7 @@ import {CampaignTableValueFormat} from 'pages/stats/revenue/types/enums/Campaign
 
 import {formatNumber} from 'pages/stats/common/utils'
 
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {TotalRevenueCell} from '../TotalRevenueCell'
 import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
@@ -51,6 +52,8 @@ export const CampaignTableCell = ({
         }
     }, [column])
 
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
+
     if (isLoading) {
         return (
             <BodyCell {...bodyCellProps}>
@@ -71,7 +74,9 @@ export const CampaignTableCell = ({
 
     if (column.key === CampaignTableKeys.CampaignName) {
         if (cell.chatIntegration) {
-            const url = `/app/settings/channels/gorgias_chat/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
+            const url = isConvertUiDecouplingEnabled
+                ? `/app/convert/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
+                : `/app/settings/channels/gorgias_chat/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
             return (
                 <BodyCell
                     {...bodyCellProps}

@@ -18,3 +18,8 @@ export type CampaignUpdatePayload =
 export type CampaignListOptions = {
     channelConnectionId: string
 }
+
+export type CampaignPreview = {
+    id: string
+    name: string
+}

@@ -8,6 +8,8 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {getStateWithPrice} from 'utils/paywallTesting'
 import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import {useGetCampaignsForStore} from 'pages/stats/revenue/hooks/useGetCampaignsForStore'
+import {Campaign} from 'models/integration/types'
 import ConvertCampaignsStats from '../CampaignsStats'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
@@ -30,6 +32,9 @@ jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
+jest.mock('pages/stats/revenue/hooks/useGetCampaignsForStore')
+const useGetCampaignsForStoreMock = assumeMock(useGetCampaignsForStore)
+
 describe('CampaignsStats', () => {
     const renderWithStore = (state: Partial<RootState>, props = {}) =>
         render(
@@ -51,6 +56,13 @@ describe('CampaignsStats', () => {
         ).mockImplementation(() => true)
 
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
+
+        useGetCampaignsForStoreMock.mockReturnValue([
+            {
+                id: '123',
+                name: 'some campaign',
+            } as Campaign,
+        ])
     })
 
     it('should render the paywall with modal for Convert non-subscriber', () => {

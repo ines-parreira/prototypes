@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 import {Map} from 'immutable'
 
+import {Redirect} from 'react-router-dom'
 import {User} from 'config/types/user'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -20,6 +21,7 @@ import {
 
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {canSeeCampaignImprovements} from '../../utils/canSeeCampaignImprovements'
 import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
 
@@ -41,6 +43,7 @@ export const ChatCampaignDetailsFactory = ({
 }: OwnProps): JSX.Element => {
     const dispatch = useAppDispatch()
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     const campaign = useAppSelector(
         getChatIntegrationCampaignById(integration.get('id'), id)
@@ -82,6 +85,11 @@ export const ChatCampaignDetailsFactory = ({
     const memoCampaign = useMemo(() => {
         return campaign.toJS() as ChatCampaign
     }, [campaign])
+
+    const integrationId = integration.get('id') as number
+    if (isConvertUiDecouplingEnabled && !!integrationId && !!id) {
+        return <Redirect to={`/app/convert/${integrationId}/campaigns/${id}`} />
+    }
 
     return (
         <BaseCampaignDetails integration={integration}>

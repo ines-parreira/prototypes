@@ -15,6 +15,7 @@ import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {IntegrationType} from 'models/integration/constants'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {
     Meta as MetaType,
     ReplyTicketMessage,
@@ -63,6 +64,7 @@ export default function Meta(props: Props) {
     const dispatch = useAppDispatch()
     const rules = useAppSelector(rulesSelector)
     const recipes = useRuleRecipes()
+    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     const [{loading: isFetchingRule, value: rule}, startFetchingRule] =
         useAsyncFn(
@@ -430,7 +432,9 @@ export default function Meta(props: Props) {
             </From>
         )
     } else if (meta && meta.campaign_id && props.integrationId) {
-        const sentViaLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${props.integrationId}/campaigns/${meta.campaign_id}`
+        const sentViaLink = isConvertUiDecouplingEnabled
+            ? `/app/convert/${props.integrationId}/campaigns/${meta.campaign_id}`
+            : `/app/settings/channels/${IntegrationType.GorgiasChat}/${props.integrationId}/campaigns/${meta.campaign_id}`
 
         widgets.push(
             <From key="via-widget" label="sent via a">

@@ -1,10 +1,11 @@
 import {createContext} from 'react'
 
-import {Campaign, Integration} from 'models/integration/types'
+import {Integration} from 'models/integration/types'
 import {Value} from 'pages/common/forms/SelectField/types'
+import {CampaignPreview} from 'models/convert/campaign/types'
 
 interface FilterContextSchema {
-    campaigns: Campaign[]
+    campaigns: CampaignPreview[]
     integrations: Integration[]
     selectedCampaigns: string[]
     selectedIntegrations: number[]
