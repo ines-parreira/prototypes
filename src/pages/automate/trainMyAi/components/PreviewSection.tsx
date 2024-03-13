@@ -2,16 +2,21 @@ import React, {useEffect, useState, useMemo} from 'react'
 import classNames from 'classnames'
 import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
 import Loader from 'pages/common/components/Loader/Loader'
+import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import {HelpCenter} from 'models/helpCenter/types'
 import {Components} from '../../../../rest_api/ssp_api/client.generated'
 import useUpdateArticleRecommendationPrediction from '../hooks/useUpdateArticleRecommendationPrediction'
 import PreviewHeader from './PreviewHeader'
 import PreviewArticle from './PreviewArticle'
 import DeletedArticlePreview from './DeletedArticlePreview'
 import NoRelevantArticlePreview from './NoRelevantArticlePreview'
+
 import css from './PreviewSection.less'
 
 interface Props {
     recommendations: Components.Schemas.PredictionResponseDataDTO
+    helpCenter: HelpCenter
     onConfirmFeedback: () => void
     page: number
 }
@@ -20,6 +25,7 @@ export default function TrainMyAiPreview({
     recommendations,
     page,
     onConfirmFeedback,
+    helpCenter,
 }: Props) {
     const [noRelevantArticles, setNoRelevantArticles] = useState(
         recommendations?.articleIdFeedback === -1
@@ -112,19 +118,26 @@ export default function TrainMyAiPreview({
                 recommendations={recommendations}
                 onChange={onChangeArticle}
             />
-            <div className={css.preview}>
-                {noRelevantArticles ? (
-                    <NoRelevantArticlePreview
-                        helpCenterId={recommendations?.helpCenterId}
-                    />
-                ) : previewArticleData === null ? (
-                    <DeletedArticlePreview />
-                ) : previewArticleData ? (
-                    <PreviewArticle articleData={previewArticleData} />
-                ) : previewArticleDataIsInitialLoading ? (
-                    <Loader minHeight="0" />
-                ) : null}
-            </div>
+            <CurrentHelpCenterContext.Provider value={helpCenter}>
+                <EditionManagerContextProvider>
+                    <div className={css.preview}>
+                        {noRelevantArticles ? (
+                            <NoRelevantArticlePreview
+                                helpCenterId={recommendations?.helpCenterId}
+                            />
+                        ) : previewArticleData === null ? (
+                            <DeletedArticlePreview />
+                        ) : previewArticleData ? (
+                            <PreviewArticle
+                                helpCenter={helpCenter}
+                                articleData={previewArticleData}
+                            />
+                        ) : previewArticleDataIsInitialLoading ? (
+                            <Loader minHeight="0" />
+                        ) : null}
+                    </div>
+                </EditionManagerContextProvider>
+            </CurrentHelpCenterContext.Provider>
         </div>
     )
 }

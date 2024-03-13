@@ -62,6 +62,7 @@ const useHelpCenterArticleTree = (
         data,
         map,
         isLoading: response.isFetching,
+        isInitialLoading: response.isInitialLoading,
     }
 }
 

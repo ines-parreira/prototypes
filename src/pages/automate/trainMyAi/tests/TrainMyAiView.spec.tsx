@@ -8,7 +8,9 @@ import routerDom, {BrowserRouter} from 'react-router-dom'
 import {
     useGetHelpCenterArticle,
     useGetHelpCenter,
+    useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useUpdateArticleRecommendationPrediction from 'pages/automate/trainMyAi/hooks/useUpdateArticleRecommendationPrediction'
 import useHelpCenterArticleTree from 'pages/automate/trainMyAi/hooks/useHelpCenterArticleTree'
 import {articleRecommendationPredictionsResponseFixture} from 'models/articleRecommendationPrediction/tests/article-recommendation-prediction.fixture'
@@ -24,13 +26,17 @@ import {useArticleRecommendationPredictions} from 'models/articleRecommendationP
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import TrainMyAiView from '../TrainMyAiView'
 
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('pages/automate/trainMyAi/hooks/useHelpCenterArticleTree')
 jest.mock(
     'pages/automate/trainMyAi/hooks/useUpdateArticleRecommendationPrediction'
 )
-jest.mock('models/helpCenter/queries')
 jest.mock('pages/automate/common/hooks/useHelpCenterPublishedArticlesCount')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
@@ -45,15 +51,35 @@ jest.mock('react-router-dom', () => ({
 jest.mock('models/articleRecommendationPrediction/queries')
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 
+jest.mock('hooks/useAppSelector')
+jest.mock('models/helpCenter/queries')
+
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+jest.mock(
+    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
+)
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const queryClient = mockQueryClient()
 
 const updateMutateMock = jest.fn().mockResolvedValue({})
+const updateArticleTranslationMutateMock = jest.fn().mockResolvedValue({})
 
 const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
     ReturnType<typeof getLDClient>['allFlags']
 >
+
+const useCurrentHelpCenterMock = useCurrentHelpCenter as jest.MockedFunction<
+    typeof useCurrentHelpCenter
+>
+
+const useUpdateArticleTranslationMock =
+    useUpdateArticleTranslation as jest.MockedFunction<
+        typeof useUpdateArticleTranslation
+    >
 
 const useHelpCenterMock = useGetHelpCenter as jest.MockedFunction<
     typeof useGetHelpCenter
@@ -128,6 +154,10 @@ describe('<TrainMyAiView />', () => {
             shopName: 'myShop,',
         }) as unknown as ReturnType<typeof useParamsMock>
 
+        useCurrentHelpCenterMock.mockReturnValue(
+            getSingleHelpCenterResponseFixture
+        )
+
         useHistoryMock.mockReturnValue({
             push: jest.fn(),
         } as unknown as ReturnType<typeof useHistoryMock>)
@@ -146,6 +176,12 @@ describe('<TrainMyAiView />', () => {
                 isInitialLoading: false,
                 isFetched: true,
             } as ReturnType<typeof useGetHelpCenterArticleMock>
+        })
+
+        useUpdateArticleTranslationMock.mockImplementation(() => {
+            return {
+                mutateAsync: updateArticleTranslationMutateMock,
+            } as unknown as ReturnType<typeof useUpdateArticleTranslationMock>
         })
 
         useSelfServiceChatChannelsMock.mockReturnValue([

@@ -566,6 +566,7 @@ const TrainMyAiView = () => {
                     </div>
                 ) : (
                     <PreviewSection
+                        helpCenter={helpCenterData!}
                         key={selectedRecommendationId}
                         page={currentPage}
                         recommendations={selectedRecommendationData}

@@ -46,6 +46,12 @@ export const helpCenterStatsKeys = {
         ] as const,
 }
 
+export const helpCenterArticleKeys = (
+    helpCenterId?: number,
+    articleId?: number,
+    locale?: string
+) => ['help-center-article', helpCenterId, articleId, locale]
+
 export const useGetHelpCenterArticleList = (
     helpCenterId: Paths.ListArticles.Parameters.HelpCenterId,
     queryParams: Paths.ListArticles.QueryParameters,
@@ -108,7 +114,7 @@ export const useGetHelpCenterArticle = (
     const {client} = useHelpCenterApi()
 
     return useQuery({
-        queryKey: ['help-center-article', helpCenterId, articleId, locale],
+        queryKey: helpCenterArticleKeys(helpCenterId, articleId, locale),
         queryFn: async () =>
             getHelpCenterArticle(
                 client,

@@ -60,12 +60,15 @@ export const StatefulMessageCard = ({
     articleId: number
     locale: Paths.GetCategoryTree.Parameters.Locale
 }) => {
-    const {map, isLoading} = useHelpCenterArticleTree(helpCenterId, locale)
+    const {map, isInitialLoading} = useHelpCenterArticleTree(
+        helpCenterId,
+        locale
+    )
 
     return (
         <MessageCard
             articleTitle={
-                isLoading ? '' : map.get(articleId) || 'Deleted article'
+                isInitialLoading ? '' : map.get(articleId) || 'Deleted article'
             }
             {...props}
         />
