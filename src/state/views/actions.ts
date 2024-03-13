@@ -33,7 +33,6 @@ import {SearchEngine, SearchType} from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
 import {getLDClient, LDContext} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {searchTickets} from 'models/ticket/resources'
 import {searchCustomers} from 'models/customer/resources'
 
@@ -424,14 +423,7 @@ export function fetchViewItems(
             discreet: isPolling,
         })
 
-        const enforceTicketsOnES = launchDarklyClient.variation(
-            FeatureFlagKey.EnforceTicketsOnES
-        )
-
         if (
-            launchDarklyClient.variation(
-                FeatureFlagKey.ElasticsearchTicketSearch
-            ) &&
             activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList
         ) {
@@ -466,44 +458,27 @@ export function fetchViewItems(
         } else if (isDirty) {
             // when a view is dirty, just send the whole view data rather than just the id
             // this will allow us to test a view before submitting it to the DB
-            if (enforceTicketsOnES) {
-                const cursorParam: string =
-                    cursor ||
-                    (direction === ViewNavDirection.NextView &&
-                        navigation.get('next_cursor')) ||
-                    (direction === ViewNavDirection.PrevView &&
-                        navigation.get('prev_cursor')) ||
-                    undefined
+            const cursorParam: string =
+                cursor ||
+                (direction === ViewNavDirection.NextView &&
+                    navigation.get('next_cursor')) ||
+                (direction === ViewNavDirection.PrevView &&
+                    navigation.get('prev_cursor')) ||
+                undefined
 
-                promise = searchTickets({
-                    cursor: cursorParam,
-                    search: (activeView.get('search') as string) || '',
-                    filters: activeView.get('filters') as string,
-                    cancelToken,
-                    orderBy: 'last_message_datetime:desc',
-                    ...params,
-                })
-            } else {
-                promise = client.put<ApiListResponsePagination<Ticket[]>>(
-                    url,
-                    {
-                        view: activeView
-                            .delete('dirty')
-                            .delete('editMode')
-                            .delete('allItemsSelected')
-                            .delete('filters_ast')
-                            .toJS(),
-                    },
-                    options
-                )
-            }
+            promise = searchTickets({
+                cursor: cursorParam,
+                search: (activeView.get('search') as string) || '',
+                filters: activeView.get('filters') as string,
+                cancelToken,
+                orderBy: 'last_message_datetime:desc',
+                ...params,
+            })
         } else {
-            promise = client.get<ApiListResponsePagination<Ticket[]>>(
-                url,
-                enforceTicketsOnES
-                    ? {...options, headers: {'x-gorgias-search-engine': 'ES'}}
-                    : options
-            )
+            promise = client.get<ApiListResponsePagination<Ticket[]>>(url, {
+                ...options,
+                headers: {'x-gorgias-search-engine': 'ES'},
+            })
         }
 
         searchRank?.endScenario()

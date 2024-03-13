@@ -1,5 +1,4 @@
 import axios, {CancelToken} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 import {
     KeyboardEvent,
@@ -10,7 +9,6 @@ import {
     useState,
 } from 'react'
 import history from 'pages/history'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -22,8 +20,7 @@ import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import useSelectedIndex from 'hooks/useSelectedIndex'
-import client from 'models/api/resources'
-import {ApiListResponsePagination, CursorMeta} from 'models/api/types'
+import {CursorMeta} from 'models/api/types'
 import {searchCustomers} from 'models/customer/resources'
 import {Customer} from 'models/customer/types'
 import {SearchEngine} from 'models/search/types'
@@ -52,8 +49,6 @@ const searchRankScenarioSource = {
 
 export const useSearch = () => {
     const dispatch = useAppDispatch()
-    const isESTicketSearchEnabled =
-        useFlags()[FeatureFlagKey.ElasticsearchTicketSearch]
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         ViewType.TicketList
     )
@@ -144,41 +139,22 @@ export const useSearch = () => {
                     requestTime: Date.now(),
                 })
                 let promise
-                let searchEngine = SearchEngine.PG
+                const searchEngine = SearchEngine.ES
 
-                if (
-                    isESTicketSearchEnabled &&
-                    viewType === ViewType.TicketList
-                ) {
+                if (viewType === ViewType.TicketList) {
                     promise = searchTickets({
                         search: searchTerm,
                         filters: '',
                         cursor,
                         cancelToken,
                     })
-                    searchEngine = SearchEngine.ES
-                } else if (viewType === ViewType.CustomerList) {
+                } else {
                     promise = searchCustomers({
                         search: searchTerm,
                         orderBy: '_score:desc',
                         cursor,
                         cancelToken,
                     })
-                    searchEngine = SearchEngine.ES
-                } else {
-                    const url = cursor || `/api/views/${0}/items/`
-                    promise = client.put<
-                        ApiListResponsePagination<
-                            Ticket[] | Customer[],
-                            OldSearchPaginationMeta
-                        >
-                    >(
-                        url,
-                        {
-                            view: {search: searchTerm, type: viewType},
-                        },
-                        {cancelToken}
-                    )
                 }
 
                 try {
@@ -227,7 +203,7 @@ export const useSearch = () => {
                     }
                 }
             },
-        [searchRank, dispatch, isESTicketSearchEnabled, lastSearchQueries]
+        [searchRank, dispatch, lastSearchQueries]
     )
 
     const [cancellableFetchSearchItems, cancelSearch] = useCancellableRequest(

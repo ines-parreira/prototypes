@@ -1,6 +1,5 @@
 import _omit from 'lodash/omit'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
 import {
     ApiListResponseCursorPagination,
@@ -30,18 +29,13 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
 export const getViewItems = async ({url, viewId, ...params}: ListParams) => {
     const launchDarklyClient = getLDClient()
     await launchDarklyClient.waitForInitialization()
-    const enforceTicketsOnES = launchDarklyClient.variation(
-        FeatureFlagKey.EnforceTicketsOnES
-    )
 
     return await client.get<
         ApiListResponseCursorPagination<Ticket[], OldCursorMeta>
-    >(
-        url ?? `/api/views/${viewId}/items`,
-        enforceTicketsOnES
-            ? {...params, headers: {'x-gorgias-search-engine': 'ES'}}
-            : {params}
-    )
+    >(url ?? `/api/views/${viewId}/items`, {
+        ...params,
+        headers: {'x-gorgias-search-engine': 'ES'},
+    })
 }
 
 export type ViewTicketUpdatesParams = {

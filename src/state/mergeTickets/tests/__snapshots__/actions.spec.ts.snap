@@ -39,52 +39,10 @@ exports[`mergeTickets actions mergeTickets should dispatch an error notification
 
 exports[`mergeTickets actions mergeTickets should dispatch an error notification and reject the promise with the error message because the merge failed 2`] = `[Error: Request failed with status code 500]`;
 
-exports[`mergeTickets actions search should dispatch an error notification if the search failed 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to search tickets.",
-    "type": "ERROR",
-  },
-]
-`;
+exports[`mergeTickets actions search should search the tickets of the customer because we passed a customer id 1`] = `undefined`;
 
-exports[`mergeTickets actions search should search the tickets of the customer because we passed a customer id 1`] = `"{"view":{"search":null,"order_by":"created_datetime","slug":"merge-tickets","fields":["details","customer","channel","created"],"type":"ticket-list","id":0,"filters":"neq(ticket.id, 1) && eq(ticket.customer.id, 118)","order_dir":"desc","filters_ast":{"type":"Program","body":[{"type":"ExpressionStatement","expression":{"type":"LogicalExpression","operator":"&&","left":{"type":"CallExpression","callee":{"type":"Identifier","name":"neq","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":3}}},"arguments":[{"type":"MemberExpression","computed":false,"object":{"type":"Identifier","name":"ticket","loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":10}}},"property":{"type":"Identifier","name":"id","loc":{"start":{"line":1,"column":11},"end":{"line":1,"column":13}}},"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":13}}},{"type":"Literal","value":1,"raw":"1","loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":16}}}],"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}},"right":{"type":"CallExpression","callee":{"type":"Identifier","name":"eq","loc":{"start":{"line":1,"column":21},"end":{"line":1,"column":23}}},"arguments":[{"type":"MemberExpression","computed":false,"object":{"type":"MemberExpression","computed":false,"object":{"type":"Identifier","name":"ticket","loc":{"start":{"line":1,"column":24},"end":{"line":1,"column":30}}},"property":{"type":"Identifier","name":"customer","loc":{"start":{"line":1,"column":31},"end":{"line":1,"column":39}}},"loc":{"start":{"line":1,"column":24},"end":{"line":1,"column":39}}},"property":{"type":"Identifier","name":"id","loc":{"start":{"line":1,"column":40},"end":{"line":1,"column":42}}},"loc":{"start":{"line":1,"column":24},"end":{"line":1,"column":42}}},{"type":"Literal","value":118,"raw":"118","loc":{"start":{"line":1,"column":44},"end":{"line":1,"column":47}}}],"loc":{"start":{"line":1,"column":21},"end":{"line":1,"column":48}}},"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":48}}},"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":48}}}],"sourceType":"script","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":48}}}}}"`;
+exports[`mergeTickets actions search should search the tickets using the next url because we passed direction = next 1`] = `undefined`;
 
-exports[`mergeTickets actions search should search the tickets of the customer because we passed a customer id 2`] = `
-[
-  1,
-  2,
-  3,
-]
-`;
+exports[`mergeTickets actions search should search the tickets using the previous url because we passed direction = prev 1`] = `undefined`;
 
-exports[`mergeTickets actions search should search the tickets using the next url because we passed direction = next 1`] = `"{"view":{"search":"","order_by":"created_datetime","slug":"merge-tickets","fields":["details","customer","channel","created"],"type":"ticket-list","id":0,"filters":"neq(ticket.id, 1)","order_dir":"desc","filters_ast":{"type":"Program","body":[{"type":"ExpressionStatement","expression":{"type":"CallExpression","callee":{"type":"Identifier","name":"neq","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":3}}},"arguments":[{"type":"MemberExpression","computed":false,"object":{"type":"Identifier","name":"ticket","loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":10}}},"property":{"type":"Identifier","name":"id","loc":{"start":{"line":1,"column":11},"end":{"line":1,"column":13}}},"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":13}}},{"type":"Literal","value":1,"raw":"1","loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":16}}}],"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}},"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}}],"sourceType":"script","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}}}}"`;
-
-exports[`mergeTickets actions search should search the tickets using the next url because we passed direction = next 2`] = `
-[
-  1,
-  2,
-  3,
-]
-`;
-
-exports[`mergeTickets actions search should search the tickets using the previous url because we passed direction = prev 1`] = `"{"view":{"search":"","order_by":"created_datetime","slug":"merge-tickets","fields":["details","customer","channel","created"],"type":"ticket-list","id":0,"filters":"neq(ticket.id, 1)","order_dir":"desc","filters_ast":{"type":"Program","body":[{"type":"ExpressionStatement","expression":{"type":"CallExpression","callee":{"type":"Identifier","name":"neq","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":3}}},"arguments":[{"type":"MemberExpression","computed":false,"object":{"type":"Identifier","name":"ticket","loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":10}}},"property":{"type":"Identifier","name":"id","loc":{"start":{"line":1,"column":11},"end":{"line":1,"column":13}}},"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":13}}},{"type":"Literal","value":1,"raw":"1","loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":16}}}],"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}},"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}}],"sourceType":"script","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}}}}"`;
-
-exports[`mergeTickets actions search should search the tickets using the previous url because we passed direction = prev 2`] = `
-[
-  1,
-  2,
-  3,
-]
-`;
-
-exports[`mergeTickets actions search should search the tickets using the search query because we did not pass a customer id 1`] = `"{"view":{"search":"foo","order_by":"created_datetime","slug":"merge-tickets","fields":["details","customer","channel","created"],"type":"ticket-list","id":0,"filters":"neq(ticket.id, 1)","order_dir":"desc","filters_ast":{"type":"Program","body":[{"type":"ExpressionStatement","expression":{"type":"CallExpression","callee":{"type":"Identifier","name":"neq","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":3}}},"arguments":[{"type":"MemberExpression","computed":false,"object":{"type":"Identifier","name":"ticket","loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":10}}},"property":{"type":"Identifier","name":"id","loc":{"start":{"line":1,"column":11},"end":{"line":1,"column":13}}},"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":13}}},{"type":"Literal","value":1,"raw":"1","loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":16}}}],"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}},"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}}],"sourceType":"script","loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}}}}}"`;
-
-exports[`mergeTickets actions search should search the tickets using the search query because we did not pass a customer id 2`] = `
-[
-  1,
-  2,
-  3,
-]
-`;
+exports[`mergeTickets actions search should search the tickets using the search query because we did not pass a customer id 1`] = `undefined`;

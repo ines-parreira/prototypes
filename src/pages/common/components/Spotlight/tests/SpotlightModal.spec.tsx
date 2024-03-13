@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event'
 import {act, fireEvent, getByTestId} from '@testing-library/react'
 import ReactDOM from 'react-dom'
 import {stringify} from 'qs'
-import LD from 'launchdarkly-react-client-sdk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -20,7 +19,6 @@ import {assumeMock, flushPromises, renderWithRouter} from 'utils/testing'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
 import history from 'pages/history'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {customer} from 'fixtures/customer'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import {mockSearchRank} from 'fixtures/searchRank'
@@ -131,9 +129,6 @@ describe('<SpotlightModal/>', () => {
     })
 
     beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ElasticsearchTicketSearch]: true,
-        }))
         mockServer = new MockAdapter(client)
         mockUseRecentItems.mockReturnValue({
             items: [],
@@ -408,64 +403,6 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         await userEvent.type(searchInput, '{enter}')
         expect(mockServer.history.post).toHaveLength(1)
-    })
-
-    it('should fetch tickets on enter keypress from the old search endpoint', async () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ElasticsearchTicketSearch]: false,
-        }))
-        jest.useFakeTimers()
-        const searchQuery = 'foo2'
-
-        const {getByPlaceholderText} = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />
-        )
-        await act(flushPromises)
-
-        const searchInput = getByPlaceholderText('Search...')
-
-        await userEvent.type(searchInput, searchQuery)
-        jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
-
-        expect(mockServer.history.put).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    data: JSON.stringify({
-                        view: {
-                            search: searchQuery,
-                            type: 'ticket-list',
-                        },
-                    }),
-                }),
-            ])
-        )
-    })
-
-    it('should register a new searchRank scenario with PG as searchEngine enter keypress from the old search endpoint', async () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ElasticsearchTicketSearch]: false,
-        }))
-        mockServer.onPut().reply(200, {data: ['foo']})
-        jest.useFakeTimers()
-
-        const {getByPlaceholderText} = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />
-        )
-        await act(flushPromises)
-
-        const searchInput = getByPlaceholderText('Search...')
-
-        await userEvent.type(searchInput, 'foo')
-        jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
-        await act(flushPromises)
-        expect(mockSearchRank.registerResultsResponse).toHaveBeenCalledWith(
-            expect.objectContaining({
-                numberOfResults: 1,
-                searchEngine: SearchEngine.PG,
-            })
-        )
     })
 
     it('should fetch items for the same search term on tab switch if search was performed', async () => {
@@ -775,44 +712,44 @@ describe('<SpotlightModal/>', () => {
         }
     )
 
-    it('should fetch more from old endpoint on end reached if meta indicates more items are available', async () => {
-        const mockMeta = {
-            next_items:
-                '/api/views/0/items/?direction=next&ignored_item=169178&cursor=MTY3NDc4MTEyNjc0ODg4Ni1mYWxzZQ%3D%3D',
-            prev_items: null,
-            current_cursor: 'MTY3NzY3Nzk0ODM0NzA3NC1mYWxzZQ==',
-        }
-
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ElasticsearchTicketSearch]: false,
-        }))
-        mockServer.onPut().reply(200, {
-            data: [ticket],
-            meta: mockMeta,
-        })
-        jest.useFakeTimers()
-
-        const {rerender, getByPlaceholderText, getByText} = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />
-        )
-        await act(flushPromises)
-        rerender(<WrappedSpotlightModal {...minProps} />)
-
-        const tab = getByText(TICKETS_TAB_LABEL)
-        const searchInput = getByPlaceholderText('Search...')
-        tab.parentElement?.focus()
-
-        await userEvent.type(searchInput, 'foo')
-        jest.runOnlyPendingTimers()
-        await userEvent.type(searchInput, '{enter}')
-        await act(flushPromises)
-
-        const endTrigger = getByText('end area')
-        userEvent.click(endTrigger)
-
-        await act(flushPromises)
-        expect(mockServer.history.put[1].url).toEqual(mockMeta.next_items)
-    })
+    // it('should fetch more from old endpoint on end reached if meta indicates more items are available', async () => {
+    //     const mockMeta = {
+    //         next_items:
+    //             '/api/views/0/items/?direction=next&ignored_item=169178&cursor=MTY3NDc4MTEyNjc0ODg4Ni1mYWxzZQ%3D%3D',
+    //         prev_items: null,
+    //         current_cursor: 'MTY3NzY3Nzk0ODM0NzA3NC1mYWxzZQ==',
+    //     }
+    //
+    //     jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+    //         [FeatureFlagKey.ElasticsearchTicketSearch]: false,
+    //     }))
+    //     mockServer.onPut().reply(200, {
+    //         data: [ticket],
+    //         meta: mockMeta,
+    //     })
+    //     jest.useFakeTimers()
+    //
+    //     const {rerender, getByPlaceholderText, getByText} = renderWithRouter(
+    //         <WrappedSpotlightModal {...minProps} />
+    //     )
+    //     await act(flushPromises)
+    //     rerender(<WrappedSpotlightModal {...minProps} />)
+    //
+    //     const tab = getByText(TICKETS_TAB_LABEL)
+    //     const searchInput = getByPlaceholderText('Search...')
+    //     tab.parentElement?.focus()
+    //
+    //     await userEvent.type(searchInput, 'foo')
+    //     jest.runOnlyPendingTimers()
+    //     await userEvent.type(searchInput, '{enter}')
+    //     await act(flushPromises)
+    //
+    //     const endTrigger = getByText('end area')
+    //     userEvent.click(endTrigger)
+    //
+    //     await act(flushPromises)
+    //     expect(mockServer.history.put[1].url).toEqual(mockMeta.next_items)
+    // })
 
     it('should reset search after closing and end previous searchRank scenario', async () => {
         const searchQuery = 'foo'
