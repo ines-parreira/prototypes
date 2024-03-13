@@ -106,8 +106,14 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     } = useRuleSuggestionForDemos(ticket.id, false)
 
     useEffectOnce(() => {
-        if (!hasAutomate && shouldDisplayDemoSuggestion) {
-            logEvent(SegmentEvent.InTicketSuggestionForDemoViewed)
+        if (
+            !hasAutomate &&
+            shouldDisplayDemoSuggestion &&
+            !isSuggestionEmpty({actions, text})
+        ) {
+            logEvent(SegmentEvent.InTicketSuggestionForDemoViewed, {
+                ticketId: ticket.id,
+            })
         }
     })
 

@@ -57,7 +57,9 @@ export default function useRuleSuggestionForDemos(
                 ? ticketDemoSuggestion / 100
                 : 0
 
-        return shouldCheckFrequency ? Math.random() < frequency : true
+        return shouldCheckFrequency
+            ? Math.random() < frequency
+            : !!ticketDemoSuggestion
     }, [ticketDemoSuggestion, shouldCheckFrequency])
 
     const shouldDisplayDemoSuggestion = useMemo(() => {
