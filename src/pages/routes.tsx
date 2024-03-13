@@ -172,6 +172,7 @@ import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCente
 import ConvertOnboardingView from './convert/common/components/ConvertOnboardingView'
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
 import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
+import ConvertOnboardingRecommendationsView from './convert/common/components/ConvertOnboardingRecommendationsView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1711,6 +1712,14 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/setup`}
                 component={memoizedWithUserRoleRequired(
                     ConvertOnboardingView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
+                path={`${convertPathPrefix}/setup/recommendations`}
+                component={memoizedWithUserRoleRequired(
+                    ConvertOnboardingRecommendationsView as any,
                     ADMIN_ROLE
                 )}
             />

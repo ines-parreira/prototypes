@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Col, Container, Row} from 'reactstrap'
 import classnames from 'classnames'
-import {useParams} from 'react-router-dom'
+import {useLocation, useParams} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -33,6 +33,7 @@ const ConvertOnboardingView = () => {
         useParams<ConvertRouteParams>()
 
     const queryClient = useQueryClient()
+    const location = useLocation()
 
     const chatIntegrationId = parseInt(integrationId || '')
     const chatIntegration = useAppSelector(
@@ -221,9 +222,17 @@ const ConvertOnboardingView = () => {
                                     title="Create your first campaigns"
                                     description="Create and launch your first campaign."
                                     action="Create Campaign"
+                                    actionLink={`/app/convert/${chatIntegrationId}/setup/recommendations`}
                                     isDisabled={!hasChat || !hasStore}
                                     isCompleted={isOnboarded}
                                 />
+
+                                {location.hash === '#later' && (
+                                    <p className={classnames(css.text, 'mt-3')}>
+                                        Need more help to set up Convert?{' '}
+                                        <a href="">Book an onboarding call</a>.
+                                    </p>
+                                )}
                             </>
                         ) : (
                             <>

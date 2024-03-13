@@ -1,0 +1,61 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 8px;
+        transition: ease-in-out 0.2s;
+
+        &:hover {
+            box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        }
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .preview {
+        background: #fff9f4;
+        text-align: center;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    .estimation {
+        text-align: center;
+        background: var(--accessory-green-1);
+        color: var(--accessory-green-3);
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+    }
+
+    .label {
+        padding: 4px 8px;
+        border-radius: 4px;
+
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 16px;
+    }
+
+    .content {
+        padding: @layout-spacing-s;
+    }
+
+    .button {
+        text-align: center;
+    }
+}
