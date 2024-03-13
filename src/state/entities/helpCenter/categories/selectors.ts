@@ -109,3 +109,19 @@ export const getCategoriesWithArticles = createSelector(
             }
         })
 )
+
+export const hasNestedCategories = createSelector(
+    getCategoriesById,
+    (categoriesById) => {
+        const topLevelCategories = categoriesById['0']?.children
+        if (topLevelCategories) {
+            for (const categoryId of topLevelCategories) {
+                const subCategories = categoriesById[categoryId]?.children
+                if (subCategories && subCategories.length > 0) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+)

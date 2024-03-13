@@ -12,7 +12,11 @@ import {
     getRootCategory,
 } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 
-import {getCategories, getCategoriesWithArticles} from '../selectors'
+import {
+    getCategories,
+    getCategoriesWithArticles,
+    hasNestedCategories,
+} from '../selectors'
 import {
     getCategoryById,
     getNonRootCategoriesById,
@@ -90,5 +94,11 @@ describe('getCategoriesWithArticles()', () => {
             .forEach((category) => {
                 expect(category.articles.length).toEqual(1)
             })
+    })
+})
+
+describe('hasNestedCategories()', () => {
+    it('returns true when help center has nested categories', () => {
+        expect(hasNestedCategories(store as StoreState)).toBe(true)
     })
 })

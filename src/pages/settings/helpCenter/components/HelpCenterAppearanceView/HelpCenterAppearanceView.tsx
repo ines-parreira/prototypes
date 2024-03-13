@@ -44,6 +44,7 @@ import settingsCss from 'pages/settings/settings.less'
 import InputField from 'pages/common/forms/input/InputField'
 import {reportError} from 'utils/errors'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {hasNestedCategories} from 'state/entities/helpCenter/categories'
 import {ImageUpload} from '../ImageUpload'
 import {UpdateToggle} from '../UpdateToggle'
 import {FontSelectField} from '../../../common/FontSelectField/FontSelectField'
@@ -92,6 +93,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const [localImage, setLocalImage] = useState<File | undefined>(undefined)
     const bannerInputRef = createRef<HTMLInputElement>()
     const [isSavingBannerImage, setIsSavingBannerImage] = useState(false)
+    const isHelpCenterHasNestedCategories = useAppSelector(hasNestedCategories)
 
     const translation = useMemo(() => {
         return helpCenter.translations?.find(
@@ -513,7 +515,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     <LayoutSwitch
                         selectedLayout={selectedLayout}
                         onLayoutChange={setSelectedLayout}
-                        isOnePagerDisabled={false} // TODO. will be adjusted in the next iteration
+                        isOnePagerDisabled={isHelpCenterHasNestedCategories}
                     />
                 </section>
             )}
