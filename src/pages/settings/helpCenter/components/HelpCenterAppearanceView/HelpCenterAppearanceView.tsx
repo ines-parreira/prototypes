@@ -3,6 +3,7 @@ import axios from 'axios'
 import {FormGroup, FormText} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 
 import {validLocaleCode} from 'models/helpCenter/utils'
@@ -42,6 +43,7 @@ import settingsCss from 'pages/settings/settings.less'
 
 import InputField from 'pages/common/forms/input/InputField'
 import {reportError} from 'utils/errors'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ImageUpload} from '../ImageUpload'
 import {UpdateToggle} from '../UpdateToggle'
 import {FontSelectField} from '../../../common/FontSelectField/FontSelectField'
@@ -52,6 +54,9 @@ import {ImageRepositioningModal} from '../ImageRepositioningModal'
 import {RepositionableImageUpload} from '../RepositionableImageUpload/RepositionableImageUpload'
 
 import {LanguageSelect} from '../LanguageSelect/LanguageSelect'
+import {HelpCenterLayout, isHelpCenterLayout} from '../../types/layout.enum'
+import {LayoutSwitch} from '../LayoutSwitch'
+import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
 import css from './HelpCenterAppearanceView.less'
 
 export const HelpCenterAppearanceView: React.FC = () => {
@@ -67,11 +72,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
         helpCenter.primary_color || HELP_CENTER_DEFAULT_COLOR
     const helpCenterFont =
         helpCenter.primary_font_family || HELP_CENTER_DEFAULT_FONT
+    const helpCenterLayout: HelpCenterLayout = getHelpCenterLayout(helpCenter)
     const [currentBrandName, setCurrentBrandName] = useState(helpCenter.name)
     const [selectedTheme, setSelectedTheme] =
         useState<HelpCenterTheme>(helpCenterTheme)
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
     const [currentPrimaryFont, setCurrentPrimaryFont] = useState(helpCenterFont)
+    const [selectedLayout, setSelectedLayout] =
+        useState<HelpCenterLayout>(helpCenterLayout)
     const primaryLogo = useFileUpload()
     const lightLogo = useFileUpload()
     const favicon = useFileUpload()
@@ -95,6 +103,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
         return bannerText !== (translation?.banner_text || '')
     }, [bannerText, translation])
 
+    const isHelpCenterOnePagerEnabled =
+        useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
+
     useEffect(() => {
         if (helpCenter.theme && isHelpCenterTheme(helpCenter.theme)) {
             setSelectedTheme(helpCenter.theme)
@@ -102,6 +113,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
         if (helpCenter.primary_color) {
             setCurrentColor(helpCenter.primary_color)
+        }
+
+        if (helpCenter.layout && isHelpCenterLayout(helpCenter.layout)) {
+            setSelectedLayout(helpCenter.layout)
         }
     }, [helpCenter])
 
@@ -206,6 +221,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     primary_color: currentColor,
                     primary_font_family: currentPrimaryFont,
                     name: currentBrandName,
+                    layout: selectedLayout,
                 }
 
                 payload.brand_logo_url = await getFileUploadURL(primaryLogo)
@@ -280,6 +296,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         primaryLogo,
         favicon,
         lightLogo,
+        selectedLayout,
     ])
 
     const canSaveCurrentAppearance = useMemo(() => {
@@ -297,6 +314,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
         if (currentPrimaryFont !== helpCenter.primary_font_family) {
             return Boolean(currentPrimaryFont)
+        }
+
+        if (selectedLayout !== helpCenter.layout) {
+            return Boolean(selectedLayout)
         }
 
         if (!!currentBrandName && currentBrandName !== helpCenter.name) {
@@ -326,6 +347,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         bannerImage,
         isBannerTextUpdated,
         updateResponse,
+        selectedLayout,
     ])
 
     const discardAllFiles = () => {
@@ -339,6 +361,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         setCurrentColor(helpCenterColor)
         setCurrentBrandName(helpCenter.name)
         setCurrentPrimaryFont(helpCenterFont)
+        setSelectedLayout(helpCenterLayout)
         setBannerText(translation?.banner_text || '')
         bannerImage.discardFile()
         discardAllFiles()
@@ -380,7 +403,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
             isDirty={canSaveCurrentAppearance}
             onSaveChanges={saveCurrentAppearance}
         >
-            <section className={settingsCss.mb40}>
+            <section className={css.sectionWrapper}>
                 <div className={css.heading}>
                     <h3>Branding</h3>
                     <p>Set up your Help Center's logo, color and theme.</p>
@@ -485,7 +508,16 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     </>
                 </div>
             </section>
-            <section className={settingsCss.mb40}>
+            {isHelpCenterOnePagerEnabled && (
+                <section className={css.sectionWrapper}>
+                    <LayoutSwitch
+                        selectedLayout={selectedLayout}
+                        onLayoutChange={setSelectedLayout}
+                        isOnePagerDisabled={false} // TODO. will be adjusted in the next iteration
+                    />
+                </section>
+            )}
+            <section className={css.sectionWrapper}>
                 <div className={css.bannerHeader}>
                     <div className={css.bannerHeaderText}>
                         <div className={css.heading}>

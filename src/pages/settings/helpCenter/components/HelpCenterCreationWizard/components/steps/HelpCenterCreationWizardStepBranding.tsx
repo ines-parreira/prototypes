@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {useDispatch} from 'react-redux'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {
@@ -20,10 +21,13 @@ import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectF
 import {useFileUpload} from 'pages/settings/helpCenter/hooks/useFileUpload'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
 import {ImageUpload} from '../../../ImageUpload'
 import HelpCenterPreviewHomePage from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
 import HelpCenterPreview from '../../../HelpCenterPreview/HelpCenterPreview'
+import {LayoutSwitch} from '../../../LayoutSwitch'
 import css from './HelpCenterCreationWizardStepBranding.less'
 
 type Props = {
@@ -46,12 +50,19 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
     )
     const brandLogo = useFileUpload()
 
+    const isHelpCenterOnePagerEnabled =
+        useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
+
     const handlePrimaryColorChange = (primaryColor: string) => {
         handleFormUpdate({primaryColor})
     }
 
     const handlePrimaryFontFamilyChange = (primaryFontFamily: string) => {
         handleFormUpdate({primaryFontFamily})
+    }
+
+    const handleLayoutChange = (layout: HelpCenterLayout) => {
+        handleFormUpdate({layout})
     }
 
     const handleBrandLogoChange = async () => {
@@ -129,43 +140,57 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
                     </HelpCenterPreview>
                 }
             >
-                <div className={css.brandingStepContainer}>
-                    <div>
-                        <Label htmlFor="brand_logo">Logo</Label>
-                        <div className={css.brandingLogoDescription}>
-                            Displayed in the header of your Help Center.
-                        </div>
-                        <ImageUpload
-                            id="brand_logo"
-                            imageRole="wizardLogo"
-                            file={brandLogo.payload}
-                            defaultPreview={newHelpCenter.brandLogoUrl || ''}
-                            onChangeFile={brandLogo.changeFile}
-                            isTouched={brandLogo.isTouched}
-                            helpTextProps={{
-                                highlight: 'Upload image',
-                                text: ' - Recommended size 1640 x 624, 500KB or less',
-                                className: css.imageUpload,
-                            }}
-                        />
-                    </div>
-                    <div className={css.brandingColorFontGroup}>
-                        <ColorField
-                            className={css.colorPicker}
-                            value={newHelpCenter.primaryColor}
-                            onChange={handlePrimaryColorChange}
-                            label="Accent color"
-                        />
+                <div className={css.customizationContainer}>
+                    <div className={css.brandingStepContainer}>
+                        <div className="heading-section-semibold">Branding</div>
                         <div>
-                            <Label className="mb-2">Main font</Label>
-                            <FontSelectField
-                                value={newHelpCenter.primaryFontFamily}
-                                defaultFonts={HELP_CENTER_AVAILABLE_FONTS}
-                                placeholder="Select a primary font"
-                                onChange={handlePrimaryFontFamilyChange}
+                            <Label htmlFor="brand_logo">Logo</Label>
+                            <div className={css.brandingLogoDescription}>
+                                Displayed in the header of your Help Center.
+                            </div>
+                            <ImageUpload
+                                id="brand_logo"
+                                imageRole="wizardLogo"
+                                file={brandLogo.payload}
+                                defaultPreview={
+                                    newHelpCenter.brandLogoUrl || ''
+                                }
+                                onChangeFile={brandLogo.changeFile}
+                                isTouched={brandLogo.isTouched}
+                                helpTextProps={{
+                                    highlight: 'Upload image',
+                                    text: ' - Recommended size 1640 x 624, 500KB or less',
+                                    className: css.imageUpload,
+                                }}
                             />
                         </div>
+                        <div className={css.brandingColorFontGroup}>
+                            <ColorField
+                                className={css.colorPicker}
+                                value={newHelpCenter.primaryColor}
+                                onChange={handlePrimaryColorChange}
+                                label="Accent color"
+                            />
+                            <div>
+                                <Label className="mb-2">Main font</Label>
+                                <FontSelectField
+                                    value={newHelpCenter.primaryFontFamily}
+                                    defaultFonts={HELP_CENTER_AVAILABLE_FONTS}
+                                    placeholder="Select a primary font"
+                                    onChange={handlePrimaryFontFamilyChange}
+                                />
+                            </div>
+                        </div>
                     </div>
+                    {isHelpCenterOnePagerEnabled && (
+                        <div>
+                            <LayoutSwitch
+                                selectedLayout={newHelpCenter.layout}
+                                onLayoutChange={handleLayoutChange}
+                                isOnePagerDisabled={false}
+                            />
+                        </div>
+                    )}
                 </div>
             </WizardStepSkeleton>
         </>

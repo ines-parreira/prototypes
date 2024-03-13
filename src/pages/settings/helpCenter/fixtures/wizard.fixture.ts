@@ -1,5 +1,9 @@
 import {HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {HELP_CENTER_DEFAULT_LOCALE, PlatformType} from '../constants'
+import {
+    HELP_CENTER_DEFAULT_LAYOUT,
+    HELP_CENTER_DEFAULT_LOCALE,
+    PlatformType,
+} from '../constants'
 
 const HelpCenterApiBaseFixture = {
     id: 1,
@@ -97,6 +101,7 @@ const HelpCenterUiBaseFixture = {
     primaryColor: '#4A8DF9',
     primaryFontFamily: 'Inter',
     deactivated: false,
+    layout: HELP_CENTER_DEFAULT_LAYOUT,
 }
 
 export const HelpCenterUiBasicsFixture = {
@@ -131,6 +136,7 @@ export const EmptyHelpCenterUiFixture = {
     primaryColor: '',
     primaryFontFamily: '',
     deactivated: true,
+    layout: HELP_CENTER_DEFAULT_LAYOUT,
 }
 
 export const InvalidHelpCenterUiFixture = {

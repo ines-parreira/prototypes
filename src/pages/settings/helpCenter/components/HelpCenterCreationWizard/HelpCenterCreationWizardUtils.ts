@@ -29,6 +29,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 import {Components} from 'rest_api/help_center_api/client.generated'
+import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
 
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
@@ -85,6 +86,7 @@ export const mapApiHelpCenterToUIHelpCenter = (
         deactivated: helpCenter
             ? helpCenter.deactivated_datetime !== null
             : true, // when no help center we mark it as unpublished by default
+        layout: getHelpCenterLayout(helpCenter),
     }
 }
 
@@ -134,6 +136,7 @@ export const mapUIHelpCenterToApiHelpCenter = (
                 ? undefined
                 : !data.orderManagementEnabled,
         deactivated: data.deactivated,
+        layout: data.layout,
     }
 
     Object.keys(result).forEach((key) => {

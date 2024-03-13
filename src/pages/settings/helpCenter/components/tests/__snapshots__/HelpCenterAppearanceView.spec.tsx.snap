@@ -133,7 +133,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
         class="contentWrapper"
       >
         <section
-          class="mb40"
+          class="sectionWrapper"
         >
           <div
             class="heading"
@@ -746,7 +746,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           </div>
         </section>
         <section
-          class="mb40"
+          class="sectionWrapper"
         >
           <div
             class="bannerHeader"

@@ -11,6 +11,7 @@ import {isProduction, isStaging} from '../../../utils/environment'
 import {emojiRegex} from './utils/emojiRegex'
 
 import {HelpCenterTheme} from './types'
+import {HelpCenterLayout} from './types/layout.enum'
 
 export const HELP_CENTER_BASE_PATH = '/app/settings/help-center'
 
@@ -31,6 +32,8 @@ export const HELP_CENTER_AVAILABLE_FONTS = [
 ]
 
 export const HELP_CENTER_DEFAULT_THEME = HelpCenterTheme.LIGHT
+
+export const HELP_CENTER_DEFAULT_LAYOUT = HelpCenterLayout.DEFAULT
 
 export const HELP_CENTER_DEFAULT_LOCALE: LocaleCode = 'en-US'
 
@@ -275,6 +278,7 @@ export type HelpCenterCreationWizard = {
     wizardCompleted?: boolean
     orderManagementEnabled?: boolean
     deactivated: boolean
+    layout: HelpCenterLayout
 }
 
 export enum NEXT_ACTION {

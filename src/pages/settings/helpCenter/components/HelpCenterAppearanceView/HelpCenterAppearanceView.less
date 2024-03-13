@@ -1,3 +1,5 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .heading {
         margin-bottom: 24px;
@@ -41,5 +43,9 @@
         :global(.hd-help-text-actions) div {
             display: inline;
         }
+    }
+
+    .sectionWrapper {
+        margin-bottom: @layout-spacing-xl;
     }
 }

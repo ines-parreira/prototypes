@@ -12,7 +12,12 @@ import {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {HELP_CENTER_DOMAIN, EMOJI_REGEX} from '../constants'
+import {
+    HELP_CENTER_DOMAIN,
+    EMOJI_REGEX,
+    HELP_CENTER_DEFAULT_LAYOUT,
+} from '../constants'
+import {HelpCenterLayout, isHelpCenterLayout} from '../types/layout.enum'
 
 export const articleRequiredFields: Partial<
     keyof CreateArticleTranslationDto
@@ -287,3 +292,10 @@ export const mapAILibraryArticleItemToArticle = (
         template_key: article.key,
     }
 }
+
+export const getHelpCenterLayout = (
+    helpCenter: HelpCenter | undefined
+): HelpCenterLayout =>
+    helpCenter?.layout && isHelpCenterLayout(helpCenter.layout)
+        ? helpCenter.layout
+        : HELP_CENTER_DEFAULT_LAYOUT

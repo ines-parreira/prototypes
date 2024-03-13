@@ -18,6 +18,7 @@ import {Integration} from 'models/integration/types'
 import {proMonthlyHelpdeskPrice as mockedProMonthlyHelpdeskPrice} from 'fixtures/productPrices'
 import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import {
+    HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
     HelpCenterCreationWizard,
     NEXT_ACTION,
@@ -66,6 +67,7 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     primaryColor: '',
     primaryFontFamily: '',
     deactivated: true,
+    layout: HELP_CENTER_DEFAULT_LAYOUT,
 }
 const mockedUseHelpCenterWizardHook = {
     helpCenter: defaultHelpCenter,

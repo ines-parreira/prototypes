@@ -60,6 +60,7 @@ export enum FeatureFlagKey {
     HelpCenterCreationWizard = 'help-center-creation-wizard',
     HelpCenterLogoHyperlink = 'help-center-logo-hyperlink',
     HelpCenterMigrationConfig = 'migration-config',
+    HelpCenterOnePager = 'help-center-one-pager',
     HelpCenterRulesAndViews = 'help-center-rules-and-views',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',

@@ -11,6 +11,7 @@ import {
 } from 'state/entities/helpCenter/helpCenters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
+    HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
     HELP_CENTER_WIZARD_COMPLETED_STATE,
@@ -49,6 +50,7 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     primaryColor: '#4A8DF9',
     primaryFontFamily: 'Inter',
     deactivated: true, // Unpublish help center by default
+    layout: HELP_CENTER_DEFAULT_LAYOUT,
 }
 
 type SuccessModalParams = {
