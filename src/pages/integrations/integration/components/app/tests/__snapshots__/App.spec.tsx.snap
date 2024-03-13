@@ -68,6 +68,22 @@ exports[`App should render 2`] = `
         </li>
       </ol>
     </nav>
+    <div>
+      <a
+        class="connectButtonWrapper"
+        href="https://ok.com/?account=20-1+rpz"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <button
+          aria-disabled="false"
+          class="wrapper fill primary medium"
+          type="button"
+        >
+          Add Account
+        </button>
+      </a>
+    </div>
   </div>
   <header
     class="hero"
@@ -406,6 +422,22 @@ exports[`App should render the advanced tab 2`] = `
         </li>
       </ol>
     </nav>
+    <div>
+      <a
+        class="connectButtonWrapper"
+        href="https://ok.com/?account=20-1+rpz"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <button
+          aria-disabled="false"
+          class="wrapper fill primary medium"
+          type="button"
+        >
+          Add Account
+        </button>
+      </a>
+    </div>
   </div>
   <div
     class="p-4"

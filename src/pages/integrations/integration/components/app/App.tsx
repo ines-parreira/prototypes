@@ -126,7 +126,16 @@ export default function AppDetail() {
                         <BreadcrumbItem>{appItem.title}</BreadcrumbItem>
                     </Breadcrumb>
                 }
-            />
+            >
+                <ConnectLink
+                    connectUrl={appItem.connectUrl}
+                    isApp
+                    integrationTitle={appItem.title}
+                >
+                    <Button>Add Account</Button>
+                </ConnectLink>
+            </PageHeader>
+
             {appItem.isConnected && (
                 <SecondaryNavbar>
                     <NavLink to={baseURL} exact>
