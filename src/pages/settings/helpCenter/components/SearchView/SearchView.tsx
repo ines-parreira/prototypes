@@ -1,5 +1,4 @@
 import React, {FC, useRef} from 'react'
-import _noop from 'lodash/noop'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {Article, HelpCenter} from 'models/helpCenter/types'
@@ -73,6 +72,10 @@ const Header: FC<HeaderProps> = ({
         logEvent(SegmentEvent.HelpCenterTemplatesUseTemplateButtonClicked)
     }
 
+    const onCreateClick = () => {
+        logEvent(SegmentEvent.HelpCenterTemplatesCreateArticleButtonClicked)
+    }
+
     return (
         <div className={css.wrapper}>
             <SearchBar />
@@ -102,7 +105,8 @@ const Header: FC<HeaderProps> = ({
                         fillStyle="fill"
                         ref={dropdownTargetRef}
                         isDisabled={!canUpdateArticle}
-                        onToggleClick={_noop}
+                        onClick={onCreateClick}
+                        onToggleClick={onCreateClick}
                     >
                         Create Article
                     </DropdownButton>
