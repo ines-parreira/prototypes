@@ -37,6 +37,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {getAccountOwnerId} from 'state/currentAccount/selectors'
 import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
 import css from './RuleSuggestion.less'
 import InTicketSuggestion from './InTicketSuggestion'
@@ -93,6 +94,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     const recipes = useRuleRecipes()
     const emailChannels = useAppSelector(getEmailChannels)
     const currentUser = useAppSelector(getCurrentUser)
+    const accountOwnerId = useAppSelector(getAccountOwnerId)
     const [rules, isLoadingRules] = useRules()
     const [isSending, setIsSending] = useState(false)
 
@@ -180,9 +182,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
 
     const handleBookDemo = () => {
         if (canInstall) {
-            logEvent(SegmentEvent.InTicketSuggestionForDemoBooked, {
-                userRole: 'Admin',
-            })
+            logEvent(SegmentEvent.InTicketSuggestionForDemoBooked)
             window.open(
                 'https://www.gorgias.com/demo/customers/automate?utm_source=scaled_success&utm_campaign=in_ticket_suggestions&utm_medium=product',
                 '_blank',
@@ -190,7 +190,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             )
         } else {
             logEvent(SegmentEvent.InTicketSuggestionForDemoRequested, {
-                userRole: 'Agent',
+                adminId: accountOwnerId,
             })
             void dispatch(
                 notify({
