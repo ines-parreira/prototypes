@@ -94,9 +94,11 @@ export default function useTickets(
 
     const latestDatetime = useMemo(() => {
         const lastVisiblePartial = visiblePartials[visiblePartials.length - 1]
-        return lastVisiblePartial && data[lastVisiblePartial.id]
-            ? data[lastVisiblePartial.id][sortField]
-            : null
+        if (!lastVisiblePartial || !data[lastVisiblePartial.id]) {
+            return null
+        }
+
+        return data[lastVisiblePartial.id][sortField] || Infinity
     }, [data, sortField, visiblePartials])
 
     useEffect(() => {

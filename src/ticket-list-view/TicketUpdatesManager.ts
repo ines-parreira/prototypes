@@ -17,8 +17,8 @@ const PAGE_LIMIT = 25
 const POLLING_INTERVAL = 5000
 
 export default class TicketUpdatesManager {
+    private latestDatetime: number | string | null = null
     private latestIndex = 0
-    private latestDatetime: string | null = null
     private listener: Listener | null = null
     private loading = false
     private nextCursor: CursorMeta['next_cursor'] = null
@@ -45,7 +45,7 @@ export default class TicketUpdatesManager {
         this.loading = false
     }
 
-    setLatest = (index: number, datetime: string | null) => {
+    setLatest = (index: number, datetime: number | string | null) => {
         this.latestIndex = index
         this.latestDatetime = datetime
     }
@@ -82,13 +82,14 @@ export default class TicketUpdatesManager {
 
     private async getTicketsUpTo(
         sortOrder: SortOrder,
-        datetime: string | null
+        datetime: number | string
     ) {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
                 getViewTicketUpdates(this.viewId, {
                     order_by: sortOrder,
-                    up_to_datetime: datetime,
+                    up_to_datetime:
+                        datetime === Infinity ? undefined : datetime,
                 }),
             queryKey: viewItemsDefinitionKeys.updates(this.viewId),
         })
