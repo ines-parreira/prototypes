@@ -1,8 +1,9 @@
-import React, {Dispatch, SetStateAction} from 'react'
+import React, {Dispatch, SetStateAction, useRef} from 'react'
 import classNames from 'classnames'
 
 import {AILibraryArticleItem} from 'models/helpCenter/types'
 
+import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import css from './AIArticleRow.less'
 
 export type AIArticleRowProps = {
@@ -20,6 +21,10 @@ const AIArticleRow = ({
 }: AIArticleRowProps) => {
     const showCount =
         article.related_tickets_count && article.related_tickets_count > 0
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    useScrollActiveItemIntoView(containerRef, isSelected, true)
+
     return (
         <div
             className={classNames(css.container, {
@@ -27,6 +32,7 @@ const AIArticleRow = ({
             })}
             onClick={() => onSelect(article)}
             data-testid="ai-article-row"
+            ref={containerRef}
         >
             <div className={css.titleContainer}>
                 <i className="material-icons rounded">article</i>

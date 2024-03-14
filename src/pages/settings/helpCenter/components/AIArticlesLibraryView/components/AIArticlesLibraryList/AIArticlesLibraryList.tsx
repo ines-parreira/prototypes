@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useMemo} from 'react'
+import React, {Dispatch, SetStateAction, useMemo, useRef} from 'react'
 import {Link} from 'react-router-dom'
 
 import {
@@ -7,6 +7,8 @@ import {
 } from 'models/helpCenter/types'
 
 import Button from 'pages/common/components/button/Button'
+import useKey from 'hooks/useKey'
+import useEffectOnce from 'hooks/useEffectOnce'
 import AIArticleRow from '../AIArticleRow/AIArticleRow'
 import AIArticlesToggleButton from '../AIArticlesToggleButton'
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
@@ -42,6 +44,8 @@ const AIArticlesLibraryList = ({
     setSelectedArticleType,
     showLinkToArticleTemplates,
 }: AIArticlesLibraryListProps) => {
+    const containerRef = useRef<HTMLDivElement>(null)
+
     const showArticlesList = useMemo(
         () =>
             (!counters || counters[AIArticleToggleOptionValue.All] > 0) &&
@@ -59,8 +63,47 @@ const AIArticlesLibraryList = ({
         }
     })
 
+    const [previousArticle, nextArticle] = useMemo(() => {
+        const currentIndex = articles?.findIndex(
+            (article) => article.key === selectedArticle?.key
+        )
+        if (currentIndex !== undefined && currentIndex !== null && articles) {
+            const prevIndex =
+                currentIndex === 0 ? articles.length - 1 : currentIndex - 1
+            const nextIndex =
+                currentIndex === articles.length - 1 ? 0 : currentIndex + 1
+            return [articles[prevIndex], articles[nextIndex]]
+        }
+
+        return [articles?.[articles.length - 1], articles?.[0]]
+    }, [articles, selectedArticle])
+
+    useKey(
+        'ArrowDown',
+        (e) => {
+            e.preventDefault()
+            setSelectedArticle(nextArticle)
+        },
+        {target: containerRef.current},
+        [nextArticle, setSelectedArticle]
+    )
+
+    useKey(
+        'ArrowUp',
+        (e) => {
+            e.preventDefault()
+            setSelectedArticle(previousArticle)
+        },
+        {target: containerRef.current},
+        [previousArticle, setSelectedArticle]
+    )
+
+    useEffectOnce(() => {
+        containerRef.current?.focus()
+    })
+
     return (
-        <div className={css.container}>
+        <div className={css.container} ref={containerRef} tabIndex={1}>
             <h3>AI Generated Articles</h3>
             <div className={css.description}>
                 Review, edit, and publish pre-written articles based on your
