@@ -17,7 +17,10 @@ import storePanelWidths from 'split-ticket-view/utils/storePanelWidths'
 import createInitialConfig from 'split-ticket-view/utils/createInitialConfig'
 
 const initialConfig = () => {
-    const infobarMaxWidth = Math.round(window.innerWidth / 2)
+    const infobarMaxWidth = Math.max(
+        Math.round(window.innerWidth / 2),
+        DEFAULT_INFOBAR_WIDTH
+    )
     const config: Config = [
         [DEFAULT_NAVBAR_WIDTH, 200, 350],
         [Infinity, 300],
