@@ -3,6 +3,7 @@ import {deepMapKeysToSnakeCase} from 'models/api/utils'
 import {
     CampaignCreatePayload,
     CampaignListOptions,
+    CampaignListParams,
     CampaignParams,
     CampaignUpdatePayload,
 } from './types'
@@ -22,9 +23,8 @@ export const listCampaigns = async (
 ) => {
     if (!client) return null
 
-    const parameters: Record<string, unknown> & {
-        channel_connection_id: string
-    } = deepMapKeysToSnakeCase(options)
+    // @ts-ignore Type instantiation is excessively deep and possibly infinite.
+    const parameters: CampaignListParams = deepMapKeysToSnakeCase(options)
     return await client.get_campaigns(parameters)
 }
 

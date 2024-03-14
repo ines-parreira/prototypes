@@ -37,6 +37,17 @@ const defaultState = {
                     shop_integration_id: 1,
                 },
             },
+            {
+                id: 5,
+                type: IntegrationType.Shopify,
+            },
+            {
+                id: 6,
+                type: IntegrationType.GorgiasChat,
+                meta: {
+                    shop_integration_id: 5,
+                },
+            },
         ],
     }),
 } as RootState
@@ -62,6 +73,21 @@ describe('useGetChatForStore', () => {
                 meta: {
                     shop_integration_id: 1,
                     shopify_integration_ids: [1],
+                },
+            })
+        })
+
+        it('returns first linked chat', () => {
+            const {result} = renderHook(
+                () => useGetChatForStore(5),
+                hookOptions
+            )
+
+            expect(result.current).toEqual({
+                id: 6,
+                type: IntegrationType.GorgiasChat,
+                meta: {
+                    shop_integration_id: 5,
                 },
             })
         })

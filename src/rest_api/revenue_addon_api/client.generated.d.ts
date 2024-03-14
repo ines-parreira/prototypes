@@ -1065,13 +1065,19 @@ declare namespace Paths {
     namespace GetCampaigns {
         namespace Parameters {
             /**
+             * Channel Connection External Ids
+             * Channel connection external ID
+             */
+            export type ChannelConnectionExternalIds = string[] | null
+            /**
              * Channel Connection Id
              * Channel connection ID to which campaigns belong
              */
-            export type ChannelConnectionId = string
+            export type ChannelConnectionId = string | null
         }
         export interface QueryParameters {
-            channel_connection_id: Parameters.ChannelConnectionId
+            channel_connection_id?: Parameters.ChannelConnectionId
+            channel_connection_external_ids?: Parameters.ChannelConnectionExternalIds
         }
         namespace Responses {
             /**

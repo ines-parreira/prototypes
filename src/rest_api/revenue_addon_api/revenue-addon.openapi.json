@@ -936,13 +936,27 @@
                     {
                         "name": "channel_connection_id",
                         "in": "query",
-                        "required": true,
+                        "required": false,
                         "schema": {
-                            "type": "string",
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
                             "description": "Channel connection ID to which campaigns belong",
                             "title": "Channel Connection Id"
                         },
                         "description": "Channel connection ID to which campaigns belong"
+                    },
+                    {
+                        "name": "channel_connection_external_ids",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {"type": "array", "items": {"type": "string"}},
+                                {"type": "null"}
+                            ],
+                            "description": "Channel connection external ID",
+                            "title": "Channel Connection External Ids"
+                        },
+                        "description": "Channel connection external ID"
                     }
                 ],
                 "responses": {
@@ -2169,7 +2183,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-janbalaz.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-nicolae.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",

@@ -7,6 +7,8 @@ export type CampaignParams =
           | Paths.DeleteCampaign.PathParameters
       ) & {channelConnectionId?: string}
 
+export type CampaignListParams = Paths.GetCampaigns.QueryParameters
+
 export type Campaign = Components.Schemas.CampaignResponseSchema
 
 export type CampaignCreatePayload =
@@ -16,7 +18,8 @@ export type CampaignUpdatePayload =
     Components.Schemas.CampaignPatchRequestSchema
 
 export type CampaignListOptions = {
-    channelConnectionId: string
+    channelConnectionId?: string
+    channelConnectionExternalIds?: string[]
 }
 
 export type CampaignPreview = {
