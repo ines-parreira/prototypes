@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import classNames from 'classnames'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -10,6 +11,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {AutomateFeatures} from '../types'
 import css from './AutomatePaywallView.less'
 import {PaywallConfig} from './constants'
@@ -34,6 +36,10 @@ const AutomatePaywallView = ({
             location: automateFeature,
         })
     })
+
+    const hasAccessToROICalculator =
+        useFlags()[FeatureFlagKey.ObservabilityROICalculator]
+
     return (
         <div className={css.layout}>
             <PageHeader title={headerTitle}></PageHeader>
@@ -80,6 +86,19 @@ const AutomatePaywallView = ({
                             {greyButtonText}
                         </LinkButton>
                     </div>
+                    {hasAccessToROICalculator && (
+                        <Button
+                            fillStyle="ghost"
+                            intent="secondary"
+                            size="medium"
+                            className={css.roiButton}
+                        >
+                            <i className="material-icons rounded">
+                                monetization_on
+                            </i>
+                            Calculate Potential Return on Investment
+                        </Button>
+                    )}
                 </div>
                 <div className={css.rightContainer}>
                     <HeroImageCarousel slides={slidesData} />
