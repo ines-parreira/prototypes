@@ -52,7 +52,7 @@ export type GorgiasChatIntegrationMeta = {
         linked_email_integration?: Maybe<number>
         privacy_policy_disclaimer_enabled?: boolean
     }
-    shopify_integration_ids?: string[]
+    shopify_integration_ids?: number[]
     shop_name?: Maybe<string>
     shop_type?: Maybe<string>
     shop_integration_id?: Maybe<number>

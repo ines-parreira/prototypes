@@ -14,8 +14,10 @@ export function useGetChatForStore(shopIntegrationId: number) {
     )
 
     return useMemo(() => {
-        return chatIntegrations.find((integration) => {
-            return integration.meta?.shop_integration_id === shopIntegrationId
-        })
+        return chatIntegrations.find((integration) =>
+            (integration.meta?.shopify_integration_ids || []).includes(
+                shopIntegrationId
+            )
+        )
     }, [chatIntegrations, shopIntegrationId])
 }

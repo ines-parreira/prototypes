@@ -27,6 +27,14 @@ const defaultState = {
                 type: IntegrationType.GorgiasChat,
                 meta: {
                     shop_integration_id: 1,
+                    shopify_integration_ids: [1],
+                },
+            },
+            {
+                id: 4,
+                type: IntegrationType.GorgiasChat,
+                meta: {
+                    shop_integration_id: 1,
                 },
             },
         ],
@@ -53,6 +61,7 @@ describe('useGetChatForStore', () => {
                 type: IntegrationType.GorgiasChat,
                 meta: {
                     shop_integration_id: 1,
+                    shopify_integration_ids: [1],
                 },
             })
         })
