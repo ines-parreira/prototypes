@@ -66,8 +66,8 @@ export const Detail = () => {
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
         const form: UserDraft = {
-            email,
-            name,
+            email: email.trim().toLocaleLowerCase(),
+            name: name.trim(),
             role: {name: role},
         }
 

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import {useParams} from 'react-router-dom'
 
 import {act} from 'react-dom/test-utils'
-import {assumeMock} from 'utils/testing'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 import {User, UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {getAccountOwnerId} from 'state/currentAccount/selectors'
@@ -105,9 +105,11 @@ describe('Detail', () => {
         expect(container.firstChild).toBeNull()
     })
 
-    it('should save the details on submit with all the data', () => {
+    it('should save the details on submit with all the data trimmed and email lowercased', () => {
         const accountOwnerId = 1
         const currentUserId = 1
+        const name = ' Spaced '
+        const email = ' UppercasedSpace'
         useParamsMock.mockReturnValue({id: ''})
         useGetAgentWithEffectsMock.mockReturnValue({
             rawData: {} as User,
@@ -117,13 +119,26 @@ describe('Detail', () => {
         mockedGetCurrentUserId.mockReturnValue(currentUserId)
 
         render(<Detail />)
+        act(() => {
+            getLastMockCall(useGetAgentWithEffectsMock)[0].setAgentState({
+                name: name,
+                email: email,
+                role: UserRole.BasicAgent,
+            })
+        })
         userEvent.click(screen.getByText('Save'))
 
-        expect(mockedCreateAgent).toHaveBeenNthCalledWith(
-            1,
-            [{email: '', name: '', role: {name: UserRole.BasicAgent}}],
+        expect(mockedCreateAgent).toHaveBeenCalledWith(
+            [
+                {
+                    email: email.trim().toLocaleLowerCase(),
+                    name: name.trim(),
+                    role: {name: UserRole.BasicAgent},
+                },
+            ],
             {onSuccess: navigateBackToUserList}
         )
+        expect(mockedCreateAgent).toHaveBeenCalledTimes(1)
     })
 
     it('should compute the correct props to components', () => {
