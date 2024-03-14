@@ -1,31 +1,15 @@
 import React from 'react'
-import {Reason, ReasonsToCanduContent} from '../types'
 import css from './ChurnMitigationOffer.less'
 
 type ChurnMitigationOfferProps = {
-    reasonsToCanduContent: ReasonsToCanduContent[]
-    primaryReason: Reason
-    secondaryReason: Reason | null
+    canduContentId: string | null
 }
 
-const ChurnMitigationOffer = ({
-    reasonsToCanduContent,
-    primaryReason,
-    secondaryReason,
-}: ChurnMitigationOfferProps) => {
-    const canduContentID =
-        reasonsToCanduContent.find(
-            (reasonToCanduContent) =>
-                reasonToCanduContent.primaryReasonLabel ===
-                    primaryReason.label &&
-                reasonToCanduContent.secondaryReasonLabel ===
-                    secondaryReason?.label
-        )?.canduContentID || null
-
+const ChurnMitigationOffer = ({canduContentId}: ChurnMitigationOfferProps) => {
     return (
         <div>
-            {canduContentID ? (
-                <div data-candu-id={canduContentID}></div>
+            {canduContentId ? (
+                <div data-candu-id={canduContentId}></div>
             ) : (
                 <div className={css.container}>
                     <span>Need help staying with us?</span>

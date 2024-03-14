@@ -1,52 +1,21 @@
 import {render} from '@testing-library/react'
 import React from 'react'
-import {
-    HelpdeskPrimaryReasonLabel,
-    HelpdeskSecondaryReasonLabel,
-} from '../../constants'
 import ChurnMitigationOffer from '../ChurnMitigationOffer'
 
 describe('ChurnMitigationOffer', () => {
-    const reasonsToCanduContent = [
-        {
-            primaryReasonLabel: HelpdeskPrimaryReasonLabel.InternalReasons,
-            secondaryReasonLabel:
-                HelpdeskSecondaryReasonLabel.BusinessSlowingDown,
-            canduContentID: '5f5e3e3e4f3e4e001f3e4e4f',
-        },
-    ]
-
     it('should render with candu content contents', () => {
-        reasonsToCanduContent.forEach(
-            ({primaryReasonLabel, secondaryReasonLabel, canduContentID}) => {
-                const primaryReason = {label: primaryReasonLabel}
-                const secondaryReason = secondaryReasonLabel
-                    ? {label: secondaryReasonLabel}
-                    : null
-
-                const {container} = render(
-                    <ChurnMitigationOffer
-                        reasonsToCanduContent={reasonsToCanduContent}
-                        primaryReason={primaryReason}
-                        secondaryReason={secondaryReason}
-                    />
-                )
-                expect(
-                    container.querySelector(
-                        `[data-candu-id="${canduContentID}"]`
-                    )
-                ).toBeInTheDocument()
-            }
+        const canduContentId = '5f5e3e3e4f3e4e001f3e4e4f'
+        const {container} = render(
+            <ChurnMitigationOffer canduContentId={canduContentId} />
         )
+        expect(
+            container.querySelector(`[data-candu-id="${canduContentId}"]`)
+        ).toBeInTheDocument()
     })
 
     it('should render with no candu content', () => {
         const {container} = render(
-            <ChurnMitigationOffer
-                reasonsToCanduContent={reasonsToCanduContent}
-                primaryReason={{label: 'Other'}}
-                secondaryReason={{label: 'Other'}}
-            />
+            <ChurnMitigationOffer canduContentId={null} />
         )
 
         const defaultTextElement = container.querySelector('.container')

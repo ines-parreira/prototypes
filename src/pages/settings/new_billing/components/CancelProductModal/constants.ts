@@ -1,5 +1,9 @@
+import {isProduction} from 'utils/environment'
 import {CancellationReason, ReasonsToCanduContent} from './types'
 
+export const CHURN_MITIGATION_OFFER_ZAPIER_URL = isProduction()
+    ? 'https://hooks.zapier.com/hooks/catch/11610441/30s3nqr/'
+    : 'https://hooks.zapier.com/hooks/catch/11610441/30s63w9/'
 export enum CancellationFlowStep {
     productFeaturesFOMO,
     cancellationReasons,

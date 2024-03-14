@@ -15,28 +15,36 @@ import {assumeMock, getLastMockCall} from 'utils/testing'
 import {cancelHelpdeskAutoRenewal} from 'state/currentAccount/actions'
 import {ProductType} from 'models/billing/types'
 import {billingState} from 'fixtures/billing'
+import {user} from 'fixtures/users'
+import {account} from 'fixtures/account'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import CancelProductModal from '../CancelProductModal'
 import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
 import {HELPDESK_CANCELLATION_SCENARIO} from '../scenarios'
 import CancellationReasons from '../CancellationReasons'
 import {CancellationFlowStep} from '../constants'
-import {useCancellationFlowStepsStateMachine} from '../hooks'
+import useCancellationFlowStepsStateMachine from '../hooks/useCancellationFlowStepsStateMachine'
 import {cancellationReasonsReducer, DEFAULT_STATE} from '../reducers'
 import ChurnMitigationOffer from '../ChurnMitigationOffer'
 import CancellationSummary from '../CancellationSummary'
 import Disclaimer from '../UI/Disclaimer'
+import useFindChurnMitigationOffer from '../hooks/useFindChurnMitigationOffer'
+import {sendAcceptedChurnMitigationOfferToSupport} from '../resources'
 
 // components mocks
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
     billing: fromJS(billingState),
     currentAccount: fromJS({
+        ...account,
         current_subscription: {
             products: {
                 [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
             },
         },
     }),
+    currentUser: fromJS(user),
 })
 
 jest.mock('../ProductFeaturesFOMO/ProductFeaturesFOMO', () =>
@@ -65,10 +73,12 @@ jest.mock('../UI/Disclaimer', () =>
 const DisclaimerMock = assumeMock(Disclaimer)
 
 // business logic mocks
-jest.mock('../hooks')
+jest.mock('../hooks/useCancellationFlowStepsStateMachine')
 const useCancellationFlowStepsStateMachineMock = assumeMock(
     useCancellationFlowStepsStateMachine
 )
+jest.mock('../hooks/useFindChurnMitigationOffer')
+const useFindChurnMitigationOfferMock = assumeMock(useFindChurnMitigationOffer)
 
 jest.mock('../reducers')
 const cancellationReasonsReducerMock = assumeMock(cancellationReasonsReducer)
@@ -76,6 +86,12 @@ const cancellationReasonsReducerMock = assumeMock(cancellationReasonsReducer)
 jest.mock('state/currentAccount/actions')
 const cancelHelpdeskAutoRenewalMock = assumeMock(cancelHelpdeskAutoRenewal)
 
+jest.mock('../resources')
+const sendAcceptedChurnMitigationOfferToSupportMock = assumeMock(
+    sendAcceptedChurnMitigationOfferToSupport
+)
+jest.mock('state/notifications/actions')
+const notifyMock = notify as jest.Mock
 const mockSwitchToNextStep = jest.fn()
 
 // tests setup
@@ -85,6 +101,9 @@ beforeEach(() => {
     useCancellationFlowStepsStateMachineMock.mockReset()
     cancellationReasonsReducerMock.mockReset()
     cancelHelpdeskAutoRenewalMock.mockReset()
+    useFindChurnMitigationOfferMock.mockReset()
+    sendAcceptedChurnMitigationOfferToSupportMock.mockReset()
+    notifyMock.mockReset()
 
     // Set the default reducer state
     cancellationReasonsReducerMock.mockImplementation(() => DEFAULT_STATE)
@@ -93,6 +112,20 @@ beforeEach(() => {
         switchToNextStep: mockSwitchToNextStep,
         resetCancellationFlow: jest.fn(),
     }))
+
+    // Set the default churn mitigation offer id
+    useFindChurnMitigationOfferMock.mockImplementation(
+        () => '5f5e3e3e4f3e4e001f3e4e4f'
+    )
+
+    // Mock notify
+    notifyMock.mockImplementation((msg) => ({
+        type: 'mocked notify action',
+        message: msg,
+    }))
+
+    // Reset store actions
+    store.clearActions()
 })
 
 // constants
@@ -346,13 +379,20 @@ describe('CancelProductModal: step 3', () => {
             </Provider>
         )
         expect(ChurnMitigationOfferMock).toHaveBeenCalledWith(
-            {
-                primaryReason: mockState.primaryReason,
-                reasonsToCanduContent:
-                    HELPDESK_CANCELLATION_SCENARIO.reasonsToCanduContents,
-                secondaryReason: mockState.secondaryReason,
-            },
+            {canduContentId: '5f5e3e3e4f3e4e001f3e4e4f'},
             {}
+        )
+        expect(useFindChurnMitigationOfferMock).toHaveBeenNthCalledWith(
+            1,
+            null,
+            null,
+            []
+        )
+        expect(useFindChurnMitigationOfferMock).toHaveBeenNthCalledWith(
+            2,
+            mockState.primaryReason,
+            mockState.secondaryReason,
+            HELPDESK_CANCELLATION_SCENARIO.reasonsToCanduContents
         )
         expect(getByTestId('churn-mitigation-offer')).toBeInTheDocument()
         expect(getByRole('button', {name: 'Accept offer'})).toBeInTheDocument()
@@ -380,7 +420,8 @@ describe('CancelProductModal: step 3', () => {
         expect(mockSwitchToNextStep).toHaveBeenCalled()
     })
 
-    it('should close when churn mitigation offer is accepted', () => {
+    it('should close the modal when churn mitigation offer was successfully submitted', async () => {
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
         const mockHandleOnClose = jest.fn()
         const {getByRole} = render(
             <Provider store={store}>
@@ -393,11 +434,74 @@ describe('CancelProductModal: step 3', () => {
                 />
             </Provider>
         )
-        const continueCancellingButtonElement = getByRole('button', {
+        const acceptOfferButtonElement = getByRole('button', {
             name: 'Accept offer',
         })
-        continueCancellingButtonElement.click()
+        fireEvent.click(acceptOfferButtonElement)
+        await waitFor(() => {
+            expect(
+                sendAcceptedChurnMitigationOfferToSupportMock
+            ).toHaveBeenCalledWith({
+                productType: productType,
+                primaryReason: mockState.primaryReason.label,
+                secondaryReason: mockState.secondaryReason.label,
+                accountDomain: account.domain,
+                userEmail: user.email,
+                correspondingChurnMitigationOfferId: '5f5e3e3e4f3e4e001f3e4e4f',
+                otherReason: mockState.otherReason,
+            })
+        })
         expect(mockHandleOnClose).toHaveBeenCalled()
+        expect(store.getActions()).toEqual([
+            {
+                type: 'mocked notify action',
+                message: {
+                    status: NotificationStatus.Success,
+                    message:
+                        'We are happy you changed your mind! ' +
+                        'Our support team will reach out to you shortly regarding this offer.',
+                },
+            },
+        ])
+    })
+
+    it('should not close the modal when churn mitigation offer submission failed', async () => {
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(false)
+        const mockHandleOnClose = jest.fn()
+        const {getByRole} = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={mockHandleOnClose}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                />
+            </Provider>
+        )
+        const acceptOfferButtonElement = getByRole('button', {
+            name: 'Accept offer',
+        })
+        fireEvent.click(acceptOfferButtonElement)
+        await waitFor(() => {
+            expect(
+                sendAcceptedChurnMitigationOfferToSupportMock
+            ).toHaveBeenCalled()
+        })
+        expect(mockHandleOnClose).toHaveBeenCalledTimes(0)
+        expect(store.getActions()).toEqual([
+            {
+                type: 'mocked notify action',
+                message: {
+                    status: NotificationStatus.Error,
+                    message:
+                        "Couldn't send the request to our support team. " +
+                        'If the problem persists, please contact our billing team via chat or ' +
+                        'at <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.',
+                    allowHTML: true,
+                },
+            },
+        ])
     })
 })
 describe('CancelProductModal: step 4', () => {

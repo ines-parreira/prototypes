@@ -3,6 +3,11 @@ import Modal from 'pages/common/components/modal/Modal'
 import {ProductType} from 'models/billing/types'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import CancellationReasons from './CancellationReasons'
 import ProductFeaturesFOMO from './ProductFeaturesFOMO'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
@@ -13,11 +18,13 @@ import {findCancellationScenarioByProductType} from './helpers'
 import {SubscriptionProducts} from './CancellationSummary/types'
 import {CancellationFlowStep} from './constants'
 import Step from './UI/Step'
-import {useCancellationFlowStepsStateMachine} from './hooks'
+import useCancellationFlowStepsStateMachine from './hooks/useCancellationFlowStepsStateMachine'
 import ProductFeaturesFOMOFooter from './ProductFeaturesFOMO/ProductFeaturesFOMOFooter'
 import CancellationReasonsFooter from './CancellationReasons/CancellationReasonsFooter'
 import ChurnMitigationOfferFooter from './ChurnMitigationOffer/ChurnMitigationOfferFooter'
 import CancellationSummaryFooter from './CancellationSummary/CancellationSummaryFooter'
+import {sendAcceptedChurnMitigationOfferToSupport} from './resources'
+import useFindChurnMitigationOfferId from './hooks/useFindChurnMitigationOffer'
 
 type CancelProductModelProps = {
     onClose: () => void
@@ -45,6 +52,8 @@ const CancelProductModal = ({
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
     const [isFirstOpen, setIsFirstOpened] = useState(true)
 
+    const currentUser = useAppSelector(getCurrentUser)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const resetAll = () => {
         setIsFirstOpened(false)
         dispatchCancellationReasonsAction({
@@ -63,11 +72,50 @@ const CancelProductModal = ({
         setIsFirstOpened(true)
     }
 
-    const acceptChurnMitigationOffer = () => {
+    const correspondingChurnMitigationOfferId = useFindChurnMitigationOfferId(
+        cancellationReasonsState.primaryReason,
+        cancellationReasonsState.secondaryReason,
+        productCancellationScenario.reasonsToCanduContents
+    )
+
+    const handleAcceptOffer = async () => {
         setIsSubmitting(true)
-        // TODO: Submit accepted candu content id and selected reasons to Zapier
-        setIsSubmitting(false)
-        handleOnClose()
+        const isSent = await sendAcceptedChurnMitigationOfferToSupport({
+            productType: productType.toString(),
+            accountDomain: currentAccount.get('domain'),
+            userEmail: currentUser.get('email'),
+            primaryReason: cancellationReasonsState.primaryReason!.label,
+            secondaryReason:
+                cancellationReasonsState.secondaryReason?.label || null,
+            otherReason: cancellationReasonsState.otherReason?.label || null,
+            correspondingChurnMitigationOfferId:
+                correspondingChurnMitigationOfferId,
+        })
+
+        if (isSent) {
+            await dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message:
+                        'We are happy you changed your mind! ' +
+                        'Our support team will reach out to you shortly regarding this offer.',
+                })
+            )
+            handleOnClose()
+            setIsSubmitting(false)
+        } else {
+            await dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        "Couldn't send the request to our support team. " +
+                        'If the problem persists, please contact our billing team via chat or ' +
+                        'at <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.',
+                    allowHTML: true,
+                })
+            )
+            setIsSubmitting(false)
+        }
     }
 
     const handleSubmitCancellation = async () => {
@@ -131,20 +179,14 @@ const CancelProductModal = ({
                     <Step
                         body={
                             <ChurnMitigationOffer
-                                reasonsToCanduContent={
-                                    productCancellationScenario.reasonsToCanduContents
-                                }
-                                primaryReason={
-                                    cancellationReasonsState.primaryReason!
-                                }
-                                secondaryReason={
-                                    cancellationReasonsState.secondaryReason
+                                canduContentId={
+                                    correspondingChurnMitigationOfferId
                                 }
                             />
                         }
                         footer={
                             <ChurnMitigationOfferFooter
-                                onAccept={acceptChurnMitigationOffer}
+                                onAccept={handleAcceptOffer}
                                 onContinue={switchToNextStep}
                                 isLoading={isSubmitting}
                             />
