@@ -20,7 +20,10 @@ const mockStore = configureMockStore([thunk])()
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
 
-jest.mock('pages/history')
+jest.mock('pages/history', () => ({
+    ...jest.requireActual<Record<string, unknown>>('pages/history'),
+    listen: jest.fn(() => jest.fn()),
+}))
 
 describe('<AddFieldForm/>', () => {
     beforeEach(() => {

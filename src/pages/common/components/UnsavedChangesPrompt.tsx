@@ -58,6 +58,15 @@ const UnsavedChangesPrompt: React.FC<Props> = ({
         }
     }
 
+    useEffect(() => {
+        const unlisten = history.listen(() => {
+            // Reset isDiscarding to false after each navigation
+            isDiscarding.current = false
+        })
+
+        return () => unlisten()
+    }, [])
+
     return (
         <>
             <Prompt
