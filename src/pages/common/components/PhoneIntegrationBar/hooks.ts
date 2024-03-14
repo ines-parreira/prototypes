@@ -1,4 +1,6 @@
 import {Call} from '@twilio/voice-sdk'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 type ConnectionParameters = {
     integrationId: number
@@ -8,6 +10,9 @@ type ConnectionParameters = {
 }
 
 export function useConnectionParameters(call: Call): ConnectionParameters {
+    const isVoiceConferenceInboundEnabled =
+        useFlags()[FeatureFlagKey.VoiceConferenceInboundRoundRobin]
+
     const integrationId = parseInt(
         call.customParameters.get('integration_id') as string
     )
@@ -16,9 +21,14 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
             ? parseInt(call.customParameters.get('ticket_id') as string)
             : null
     const customerName = call.customParameters.get('customer_name') as string
+
+    const inboundCallCustomerPhoneNumber = isVoiceConferenceInboundEnabled
+        ? call.customParameters.get('customer_phone_number') ?? ''
+        : call.parameters.From
+
     const customerPhoneNumber =
         call.direction === Call.CallDirection.Incoming
-            ? call.parameters.From
+            ? inboundCallCustomerPhoneNumber
             : (call.customParameters.get('To') as string)
 
     return {

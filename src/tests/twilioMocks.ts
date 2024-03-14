@@ -21,6 +21,7 @@ export const mockIncomingCall = (
         ['ticket_id', ticketId.toString()],
         ['call_sid', 'fake-call-sid'],
         ['customer_name', 'Bob'],
+        ['customer_phone_number', '+25111111111'],
     ]),
     parameters: {From: '+14158880101'},
     accept: jest.fn(),
@@ -38,4 +39,5 @@ export const mockOutgoingCall = (integrationId = 1): Partial<Call> => ({
         ['customer_name', 'Bob'],
         ['To', '+14158880101'],
     ]),
+    parameters: {From: '+25111111111'},
 })

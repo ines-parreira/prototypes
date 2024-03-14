@@ -87,6 +87,7 @@ export enum FeatureFlagKey {
     SplitTicketView = 'split-ticket-view',
     TicketNavigationArrows = 'ticket-navigation-arrows',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
+    VoiceConferenceInboundRoundRobin = 'voice-conference-inbound-round-robin',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     HelpdeskProductAutomatedCancellation = 'helpdesk-product-automated-cancellation',

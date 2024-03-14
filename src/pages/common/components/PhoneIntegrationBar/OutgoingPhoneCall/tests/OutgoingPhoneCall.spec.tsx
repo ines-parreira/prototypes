@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {mockOutgoingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import OutgoingPhoneCall from '../OutgoingPhoneCall'
@@ -33,6 +34,8 @@ describe('<OutgoingPhoneCall/>', () => {
                 ],
             }),
         })
+
+        mockFlags({})
     })
 
     it('should render', () => {

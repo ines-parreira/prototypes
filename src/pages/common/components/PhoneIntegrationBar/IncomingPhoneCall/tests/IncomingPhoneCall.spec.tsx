@@ -9,6 +9,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {Router} from 'react-router-dom'
 import {History} from 'history'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
@@ -54,6 +55,8 @@ describe('<IncomingPhoneCall/>', () => {
                 ],
             }),
         })
+
+        mockFlags({})
     })
 
     it('should render', () => {
