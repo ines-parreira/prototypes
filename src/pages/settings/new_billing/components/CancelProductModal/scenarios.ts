@@ -1,4 +1,5 @@
-import {ProductType} from '../../../../../models/billing/types'
+import {ProductType} from 'models/billing/types'
+import {cancelHelpdeskAutoRenewal} from 'state/currentAccount/actions'
 import {
     HELPDESK_CANCELLATION_REASONS,
     HELPDESK_REASONS_TO_CANDU_CONTENTS,
@@ -36,4 +37,5 @@ export const HELPDESK_CANCELLATION_SCENARIO: CancellationScenario = {
         },
     ],
     reasonsToCanduContents: HELPDESK_REASONS_TO_CANDU_CONTENTS,
+    cancelProductAction: cancelHelpdeskAutoRenewal,
 }

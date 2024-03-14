@@ -9,6 +9,7 @@ import {Notification, NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
 import client from '../../models/api/resources'
 
+import {GorgiasApiError, isGorgiasApiError} from '../../models/api/types'
 import * as constants from './constants'
 import {Account, AccountSetting} from './types'
 
@@ -217,3 +218,48 @@ export const resendVerificationEmail =
             )
         }
     }
+
+export function cancelHelpdeskAutoRenewal() {
+    return (dispatch: StoreDispatch): Promise<boolean> => {
+        return client
+            .put<Record<string, string>>('/api/billing/subscription/', {
+                cancel_at_the_end_of_current_period: true,
+            })
+            .then((json) => json?.data)
+            .then(
+                (resp) => {
+                    void dispatch({
+                        type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
+                        subscription: {
+                            scheduled_to_cancel_at: resp.scheduled_to_cancel_at,
+                        },
+                    })
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message:
+                                'Your Helpdesk auto-renewal has been cancelled.',
+                        })
+                    )
+
+                    return true
+                },
+                (error: GorgiasApiError) => {
+                    const message = isGorgiasApiError(error)
+                        ? error.response.data.error.msg
+                        : `Failed to cancel Helpdesk auto-renewal. If the problem persists, 
+                           please contact our billing team via chat or at 
+                           <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.`
+
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: message,
+                            allowHTML: true,
+                        })
+                    )
+                    return false
+                }
+            )
+    }
+}

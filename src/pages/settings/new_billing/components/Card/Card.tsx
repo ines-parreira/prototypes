@@ -28,7 +28,7 @@ const Card = ({children, title, link}: CardProps) => {
                     </a>
                 )}
             </div>
-            <div className={css.body}>{children}</div>
+            <div>{children}</div>
         </div>
     )
 }

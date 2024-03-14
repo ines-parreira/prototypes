@@ -11,15 +11,23 @@ import {
     currentProductsUsage,
     products,
 } from 'fixtures/productPrices'
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import BillingProcessView from '../BillingProcessView'
+import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
-
+jest.mock(
+    '../../../components/ScheduledCancellationSummary/ScheduledCancellationSummary',
+    () =>
+        jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>)
+)
+const ScheduledCancellationSummaryMock = assumeMock(
+    ScheduledCancellationSummary
+)
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn().mockReturnValue({
@@ -41,13 +49,6 @@ const store = mockedStore({
     billing: fromJS({
         invoices: [],
         products,
-        currentAccount: fromJS({
-            current_subscription: {
-                products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-                },
-            },
-        }),
         currentProductsUsage: {
             helpdesk: {
                 data: {
@@ -63,6 +64,14 @@ const store = mockedStore({
             automation: null,
             voice: null,
             sms: null,
+        },
+    }),
+    currentAccount: fromJS({
+        current_subscription: {
+            products: {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+            },
+            scheduled_to_cancel_at: null,
         },
     }),
 })
@@ -87,5 +96,52 @@ describe('UsageAndPlansView', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should render a scheduled cancellation summary if the subscription is scheduled to cancel', () => {
+        const scheduledToCancelAt = '2021-01-01T00:00:00Z'
+        const alteredStore = mockedStore({
+            ...store.getState(),
+            currentAccount: fromJS({
+                ...store.getState().currentAccount,
+                current_subscription: fromJS({
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPrice.price_id,
+                    },
+                    scheduled_to_cancel_at: scheduledToCancelAt,
+                }),
+            }),
+        })
+
+        const {queryByTestId} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={alteredStore}>
+                    <BillingProcessView
+                        currentUsage={currentProductsUsage}
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                        setDefaultMessage={jest.fn()}
+                        setIsModalOpen={jest.fn()}
+                        periodEnd="2021-01-01"
+                        isTrialing={false}
+                        isCurrentSubscriptionCanceled={false}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        expect(
+            queryByTestId('scheduled-cancellation-summary')
+        ).toBeInTheDocument()
+
+        expect(ScheduledCancellationSummaryMock).toHaveBeenCalledWith(
+            {
+                scheduledToCancelAt: scheduledToCancelAt,
+                onContactUs: expect.any(Function),
+                cancelledProducts: ['Helpdesk'],
+            },
+            {}
+        )
     })
 })

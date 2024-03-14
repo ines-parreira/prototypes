@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {
+    basicMonthlyAutomationPrice,
     basicMonthlyHelpdeskPrice,
     convertPrice1,
     HELPDESK_PRODUCT_ID,
@@ -92,6 +93,7 @@ describe('ProductPlanSelection', () => {
         selectedPlans,
         setSelectedPlans: mockSetSelectedPlans,
         periodEnd: 'February 14, 2024',
+        editingAvailable: true,
     }
 
     it('does not display the cancel auto-renewal button and a modal if cancellation is not available', () => {
@@ -240,4 +242,98 @@ describe('ProductPlanSelection', () => {
         )
         expect(getByText('Click allowance auto-upgrade')).toBeInTheDocument()
     })
+
+    it('should keep add product button disabled if editing is not available', () => {
+        const {queryByText} = render(
+            <Provider store={store}>
+                <ProductPlanSelection
+                    {...props}
+                    product={convertPrice1}
+                    selectedPlans={{
+                        ...selectedPlans,
+                        [ProductType.Convert]: {
+                            isSelected: false,
+                            autoUpgrade: false,
+                            plan: convertPrice1,
+                        },
+                    }}
+                    type={ProductType.Convert}
+                    editingAvailable={false}
+                />
+            </Provider>
+        )
+
+        expect(queryByText('Add Product')).toHaveClass('isDisabled')
+        expect(
+            queryByText('Click allowance auto-upgrade')
+        ).not.toBeInTheDocument()
+    })
+
+    it('should keep add product button disabled if editing is not available', () => {
+        const {queryByText} = render(
+            <Provider store={store}>
+                <ProductPlanSelection
+                    {...props}
+                    product={convertPrice1}
+                    selectedPlans={{
+                        ...selectedPlans,
+                        [ProductType.Convert]: {
+                            isSelected: false,
+                            autoUpgrade: false,
+                            plan: convertPrice1,
+                        },
+                    }}
+                    type={ProductType.Convert}
+                    editingAvailable={false}
+                />
+            </Provider>
+        )
+
+        expect(queryByText('Add Product')).toHaveClass('isDisabled')
+        expect(
+            queryByText('Click allowance auto-upgrade')
+        ).not.toBeInTheDocument()
+    })
+
+    it.each([
+        [
+            ProductType.Convert,
+            {isSelected: true, autoUpgrade: true, plan: convertPrice1},
+            'Remove product',
+        ],
+        [
+            ProductType.Automation,
+            {isSelected: true, plan: basicMonthlyAutomationPrice},
+            'Remove product',
+        ],
+        [
+            ProductType.Helpdesk,
+            {isSelected: true, plan: basicMonthlyHelpdeskPrice},
+            'Cancel auto-renewal',
+        ],
+    ])(
+        '%p: no removal button is displayed if editing is not available',
+        (productType, selectedProduct, expectedButtonText) => {
+            const {queryByRole} = render(
+                <Provider store={store}>
+                    <ProductPlanSelection
+                        {...props}
+                        product={convertPrice1}
+                        selectedPlans={{
+                            ...selectedPlans,
+                            [productType]: {
+                                ...selectedProduct,
+                            },
+                        }}
+                        type={productType}
+                        editingAvailable={false}
+                    />
+                </Provider>
+            )
+
+            expect(
+                queryByRole('button', {name: expectedButtonText})
+            ).not.toBeInTheDocument()
+        }
+    )
 })

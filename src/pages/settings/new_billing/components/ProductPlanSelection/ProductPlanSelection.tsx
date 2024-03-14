@@ -43,6 +43,7 @@ export type ProductPlanSelectionProps = {
     initialIndex?: number
     periodEnd?: string
     currentUsage?: CurrentProductsUsages
+    editingAvailable: boolean
 }
 
 const ProductPlanSelection = ({
@@ -56,6 +57,7 @@ const ProductPlanSelection = ({
     initialIndex = -1,
     periodEnd,
     currentUsage,
+    editingAvailable,
 }: ProductPlanSelectionProps) => {
     const isActive = useMemo(() => {
         if (!product) return false
@@ -160,7 +162,7 @@ const ProductPlanSelection = ({
     const isAutomatedHelpdeskCancellationFlowAvailable =
         useAutomatedHelpdeskCancellationFlowAvailable(
             currentSubscriptionProducts?.helpdesk || null
-        )
+        ) && editingAvailable
 
     const handleOpen = useCallback(() => {
         const initialPlan =
@@ -203,10 +205,14 @@ const ProductPlanSelection = ({
                     intent="primary"
                     size="small"
                     onClick={handleOpen}
+                    isDisabled={!editingAvailable}
                 >
                     <i className="material-icons">add</i>Add Product
                 </Button>
             )
+        }
+        if (!editingAvailable) {
+            return null
         }
 
         if (!isActive) {
@@ -303,6 +309,7 @@ const ProductPlanSelection = ({
                             data-testid="priceSelect"
                             showSelectedOption
                             dropdownMenuClassName={css.select}
+                            disabled={!editingAvailable}
                         />
                         <div className={css.counter}>
                             <div>
@@ -350,14 +357,16 @@ const ProductPlanSelection = ({
                         )}
                 </div>
             )}
-            {selectedPlans[type].isSelected && type === ProductType.Convert && (
-                <AutoUpgradeToggle
-                    type={type}
-                    selectedPlans={selectedPlans}
-                    setSelectedPlans={setSelectedPlans}
-                    prices={prices}
-                />
-            )}
+            {selectedPlans[type].isSelected &&
+                type === ProductType.Convert &&
+                editingAvailable && (
+                    <AutoUpgradeToggle
+                        type={type}
+                        selectedPlans={selectedPlans}
+                        setSelectedPlans={setSelectedPlans}
+                        prices={prices}
+                    />
+                )}
             {!!periodEnd && !!currentUsage && (
                 <CancelAAOModal
                     isOpen={isCancelAAOModalOpen}

@@ -16,6 +16,9 @@ import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentSubscription} from 'state/currentAccount/selectors'
+import {getCurrentProducts} from 'state/billing/selectors'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
@@ -32,6 +35,7 @@ import {
 import {formatNumTickets} from '../../utils/formatAmount'
 import {useBillingPlans} from '../../hooks/useBillingPlan'
 import {useCreditCard} from '../../hooks/useCreditCard'
+import ScheduledCancellationSummary from '../../components/ScheduledCancellationSummary'
 import css from './BillingProcessView.less'
 
 type Params = {
@@ -93,6 +97,14 @@ const BillingProcessView = ({
     const [showPendingChangesModal, setShowPendingChangesModal] =
         useState(false)
     const [updateProcessStarted, setUpdateProcessStarted] = useState(false)
+
+    // Current subscription state
+    const currentSubscriptionScheduledToCancelAt = useAppSelector(
+        getCurrentSubscription
+    ).get('scheduled_to_cancel_at')
+    const isCurrentSubscriptionScheduledToCancel =
+        !!currentSubscriptionScheduledToCancelAt
+    const currentSubscriptionProducts = useAppSelector(getCurrentProducts)
 
     // Selected product to Subscribe or Update
     const {selectedProduct} = useParams<Params>()
@@ -205,6 +217,131 @@ const BillingProcessView = ({
         }
         return 'Voice'
     }, [selectedPlans])
+
+    const renderSummary = () => {
+        if (isEnterpriseHelpdeskPlanSelected) {
+            return (
+                <Card title="Enterprise Plan">
+                    <div className={css.enterprisePlanText}>
+                        To subscribe to our Enterprise plan, please get in touch
+                        with our team.
+                    </div>
+                    <div className={css.enterprisePlanFooter}>
+                        <Button
+                            intent="primary"
+                            onClick={() => {
+                                setDefaultMessage(messageForEnterprise)
+                                setIsModalOpen(true)
+                            }}
+                        >
+                            Contact Us
+                        </Button>
+                    </div>
+                </Card>
+            )
+        }
+
+        if (
+            currentSubscriptionScheduledToCancelAt &&
+            currentSubscriptionProducts
+        ) {
+            return (
+                <Card title={'Summary'}>
+                    <ScheduledCancellationSummary
+                        cancelledProducts={Object.keys(
+                            currentSubscriptionProducts
+                        ).map(
+                            (type) => PRODUCT_INFO[type as ProductType].title
+                        )}
+                        scheduledToCancelAt={
+                            currentSubscriptionScheduledToCancelAt
+                        }
+                        onContactUs={() =>
+                            contactBilling(TicketPurpose.CONTACT_US)
+                        }
+                    />
+                </Card>
+            )
+        }
+
+        return (
+            <Card title={'Summary'}>
+                <div className={css.summary}>
+                    <div className={css.summaryHeader}>
+                        <div>PRODUCT</div>
+                        <div>PRICE</div>
+                    </div>
+                    <SummaryItem
+                        type={ProductType.Helpdesk}
+                        interval={interval}
+                        product={helpdeskProduct}
+                        prices={helpdeskPrices}
+                        selectedPlans={selectedPlans}
+                    />
+                    <SummaryItem
+                        type={ProductType.Automation}
+                        interval={interval}
+                        product={automationProduct}
+                        prices={automationPrices}
+                        selectedPlans={selectedPlans}
+                    />
+                    <SummaryItem
+                        type={ProductType.Voice}
+                        interval={interval}
+                        product={voiceProduct}
+                        prices={voicePrices}
+                        selectedPlans={selectedPlans}
+                    />
+                    <SummaryItem
+                        type={ProductType.SMS}
+                        interval={interval}
+                        product={smsProduct}
+                        prices={smsPrices}
+                        selectedPlans={selectedPlans}
+                    />
+                    <SummaryItem
+                        type={ProductType.Convert}
+                        interval={interval}
+                        product={convertProduct}
+                        prices={convertPrices}
+                        selectedPlans={selectedPlans}
+                    />
+                    <SummaryTotal
+                        selectedPlans={selectedPlans}
+                        totalProductAmount={totalProductAmount}
+                        interval={interval}
+                        currency={helpdeskPrices?.[0].currency}
+                    />
+                </div>
+                {!isTrialing && !isCurrentSubscriptionCanceled && (
+                    <SummaryPaymentSection
+                        setIsPaymentEnabled={setIsPaymentEnabled}
+                        isCreditCardFetched={isCreditCardFetched}
+                    />
+                )}
+                <SummaryFooter
+                    isPaymentEnabled={isPaymentEnabled}
+                    isTrialing={isTrialing}
+                    isCurrentSubscriptionCanceled={
+                        isCurrentSubscriptionCanceled
+                    }
+                    anyProductChanged={anyProductChanged}
+                    anyNewProductSelected={anyNewProductSelected}
+                    anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
+                    updateSubscription={updateSubscription}
+                    startSubscription={startSubscription}
+                    periodEnd={periodEnd}
+                    selectedPlans={selectedPlans}
+                    ctaText={ctaText}
+                    hasCreditCard={hasCreditCard}
+                    shouldPayWithShopify={shouldPayWithShopify}
+                    isSubscriptionUpdating={isSubscriptionUpdating}
+                    setUpdateProcessStarted={setUpdateProcessStarted}
+                    autoUpgradeChanged={autoUpgradeChanged}
+                />
+            </Card>
+        )
+    }
     return (
         <div className={css.container}>
             <div className={css.header}>
@@ -233,7 +370,11 @@ const BillingProcessView = ({
                             selectedPlans={selectedPlans}
                             periodEnd={periodEnd}
                             setSelectedPlans={setSelectedPlans}
+                            editingAvailable={
+                                !isCurrentSubscriptionScheduledToCancel
+                            }
                         />
+                        <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.Automation}
                             interval={interval}
@@ -244,7 +385,11 @@ const BillingProcessView = ({
                             initialIndex={automationInitialIndex}
                             periodEnd={periodEnd}
                             currentUsage={currentUsage}
+                            editingAvailable={
+                                !isCurrentSubscriptionScheduledToCancel
+                            }
                         />
+                        <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.Voice}
                             interval={interval}
@@ -254,7 +399,11 @@ const BillingProcessView = ({
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
                             initialIndex={voiceInitialIndex}
+                            editingAvailable={
+                                !isCurrentSubscriptionScheduledToCancel
+                            }
                         />
+                        <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.SMS}
                             interval={interval}
@@ -264,7 +413,11 @@ const BillingProcessView = ({
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
                             initialIndex={smsInitialIndex}
+                            editingAvailable={
+                                !isCurrentSubscriptionScheduledToCancel
+                            }
                         />
+                        <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.Convert}
                             interval={interval}
@@ -274,128 +427,47 @@ const BillingProcessView = ({
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
                             initialIndex={convertInitialIndex}
+                            editingAvailable={
+                                !isCurrentSubscriptionScheduledToCancel
+                            }
                         />
                     </div>
                 </Card>
-                {isEnterpriseHelpdeskPlanSelected ? (
-                    <Card title="Enterprise Plan">
-                        <div className={css.enterprisePlanText}>
-                            To subscribe to our Enterprise plan, please get in
-                            touch with our team.
-                        </div>
-                        <div className={css.enterprisePlanFooter}>
-                            <Button
-                                intent="primary"
-                                onClick={() => {
-                                    setDefaultMessage(messageForEnterprise)
-                                    setIsModalOpen(true)
-                                }}
-                            >
-                                Contact Us
-                            </Button>
-                        </div>
-                    </Card>
-                ) : (
-                    <Card title={'Summary'}>
-                        <div className={css.summary}>
-                            <div className={css.summaryHeader}>
-                                <div>PRODUCT</div>
-                                <div>PRICE</div>
-                            </div>
-                            <SummaryItem
-                                type={ProductType.Helpdesk}
-                                interval={interval}
-                                product={helpdeskProduct}
-                                prices={helpdeskPrices}
-                                selectedPlans={selectedPlans}
-                            />
-                            <SummaryItem
-                                type={ProductType.Automation}
-                                interval={interval}
-                                product={automationProduct}
-                                prices={automationPrices}
-                                selectedPlans={selectedPlans}
-                            />
-                            <SummaryItem
-                                type={ProductType.Voice}
-                                interval={interval}
-                                product={voiceProduct}
-                                prices={voicePrices}
-                                selectedPlans={selectedPlans}
-                            />
-                            <SummaryItem
-                                type={ProductType.SMS}
-                                interval={interval}
-                                product={smsProduct}
-                                prices={smsPrices}
-                                selectedPlans={selectedPlans}
-                            />
-                            <SummaryItem
-                                type={ProductType.Convert}
-                                interval={interval}
-                                product={convertProduct}
-                                prices={convertPrices}
-                                selectedPlans={selectedPlans}
-                            />
-                            <SummaryTotal
-                                selectedPlans={selectedPlans}
-                                totalProductAmount={totalProductAmount}
-                                interval={interval}
-                                currency={helpdeskPrices?.[0].currency}
-                            />
-                        </div>
-                        {!isTrialing && !isCurrentSubscriptionCanceled && (
-                            <SummaryPaymentSection
-                                setIsPaymentEnabled={setIsPaymentEnabled}
-                                isCreditCardFetched={isCreditCardFetched}
-                            />
-                        )}
-                        <SummaryFooter
-                            isPaymentEnabled={isPaymentEnabled}
-                            isTrialing={isTrialing}
-                            isCurrentSubscriptionCanceled={
-                                isCurrentSubscriptionCanceled
-                            }
-                            anyProductChanged={anyProductChanged}
-                            anyNewProductSelected={anyNewProductSelected}
-                            anyDowngradedPlanSelected={
-                                !!anyDowngradedPlanSelected
-                            }
-                            updateSubscription={updateSubscription}
-                            startSubscription={startSubscription}
-                            periodEnd={periodEnd}
-                            selectedPlans={selectedPlans}
-                            ctaText={ctaText}
-                            hasCreditCard={hasCreditCard}
-                            shouldPayWithShopify={shouldPayWithShopify}
-                            isSubscriptionUpdating={isSubscriptionUpdating}
-                            setUpdateProcessStarted={setUpdateProcessStarted}
-                            autoUpgradeChanged={autoUpgradeChanged}
-                        />
-                    </Card>
-                )}
+                {renderSummary()}
             </div>
-            <div className={css.unsubscribe}>
-                If you have any questions regarding your subscription, please{' '}
-                <span
-                    className={classNames('text-primary', css.contactUs)}
-                    onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
-                >
-                    contact us
-                </span>
-                .
-            </div>
-            <PendingChangesModal
-                onSave={updateSubscription}
-                onDiscard={() => setShowPendingChangesModal(false)}
-                onContinueEditing={() => setShowPendingChangesModal(false)}
-                when={anyProductChanged && !updateProcessStarted}
-                message="Your subscription changes will only be taken into account after you click “Update subscription”"
-                show={showPendingChangesModal}
-                title="Update subscription?"
-                saveText="Update subscription"
-                isSaving={isSubscriptionUpdating}
-            />
+            {!isCurrentSubscriptionScheduledToCancel && (
+                <>
+                    <div className={css.unsubscribe}>
+                        If you have any questions regarding your subscription,
+                        please{' '}
+                        <span
+                            className={classNames(
+                                'text-primary',
+                                css.contactUs
+                            )}
+                            onClick={() =>
+                                contactBilling(TicketPurpose.CONTACT_US)
+                            }
+                        >
+                            contact us
+                        </span>
+                        .
+                    </div>
+                    <PendingChangesModal
+                        onSave={updateSubscription}
+                        onDiscard={() => setShowPendingChangesModal(false)}
+                        onContinueEditing={() =>
+                            setShowPendingChangesModal(false)
+                        }
+                        when={anyProductChanged && !updateProcessStarted}
+                        message="Your subscription changes will only be taken into account after you click “Update subscription”"
+                        show={showPendingChangesModal}
+                        title="Update subscription?"
+                        saveText="Update subscription"
+                        isSaving={isSubscriptionUpdating}
+                    />
+                </>
+            )}
         </div>
     )
 }

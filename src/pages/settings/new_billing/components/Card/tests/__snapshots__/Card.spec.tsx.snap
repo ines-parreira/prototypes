@@ -14,9 +14,7 @@ exports[`<Card /> should render 1`] = `
         Test
       </h2>
     </div>
-    <div
-      class="body"
-    >
+    <div>
       Test
     </div>
   </div>

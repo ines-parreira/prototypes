@@ -1,0 +1,21 @@
+@import '~css/typography';
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        padding: @layout-spacing-m @layout-spacing-s;
+        color: var(--neutral-grey-5);
+    }
+
+    .content {
+        padding: @layout-spacing-m @layout-spacing-xs;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        .body-regular();
+    }
+
+    .contactUs {
+        cursor: pointer;
+    }
+}

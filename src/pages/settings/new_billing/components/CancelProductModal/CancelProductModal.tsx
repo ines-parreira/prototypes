@@ -2,6 +2,7 @@ import React, {useReducer, useState} from 'react'
 import Modal from 'pages/common/components/modal/Modal'
 import {ProductType} from 'models/billing/types'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import useAppDispatch from 'hooks/useAppDispatch'
 import CancellationReasons from './CancellationReasons'
 import ProductFeaturesFOMO from './ProductFeaturesFOMO'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
@@ -33,6 +34,7 @@ const CancelProductModal = ({
     subscriptionProducts,
     periodEnd,
 }: CancelProductModelProps) => {
+    const dispatch = useAppDispatch()
     const {cancellationStep, switchToNextStep, resetCancellationFlow} =
         useCancellationFlowStepsStateMachine()
     const [cancellationReasonsState, dispatchCancellationReasonsAction] =
@@ -68,11 +70,16 @@ const CancelProductModal = ({
         handleOnClose()
     }
 
-    const submitCancellation = () => {
+    const handleSubmitCancellation = async () => {
         setIsSubmitting(true)
-        // TODO: Submit cancellation to Zapier
+        const isCancelled = await dispatch(
+            productCancellationScenario.cancelProductAction()
+        )
         setIsSubmitting(false)
-        handleOnClose()
+
+        if (isCancelled) {
+            handleOnClose()
+        }
     }
 
     const renderStep = () => {
@@ -158,7 +165,7 @@ const CancelProductModal = ({
                         }
                         footer={
                             <CancellationSummaryFooter
-                                onConfirm={submitCancellation}
+                                onConfirm={handleSubmitCancellation}
                                 isLoading={isSubmitting}
                             />
                         }

@@ -47,9 +47,7 @@ exports[`UsageAndPlansView should render 1`] = `
             </i>
           </a>
         </div>
-        <div
-          class="body"
-        >
+        <div>
           <div
             class="products"
           >
@@ -63,7 +61,7 @@ exports[`UsageAndPlansView should render 1`] = `
                   class="title"
                 >
                   <i
-                    class="material-icons"
+                    class="material-icons activeIcon"
                   >
                     desktop_mac
                   </i>
@@ -72,18 +70,12 @@ exports[`UsageAndPlansView should render 1`] = `
                   >
                     Helpdesk
                   </div>
-                </div>
-                <button
-                  aria-disabled="false"
-                  class="wrapper ghost secondary small"
-                  type="button"
-                >
-                  <i
-                    class="material-icons closeButton"
+                  <span
+                    class="badge success"
                   >
-                    close
-                  </i>
-                </button>
+                    Active
+                  </span>
+                </div>
               </div>
               <div
                 class="details"
@@ -200,6 +192,9 @@ exports[`UsageAndPlansView should render 1`] = `
               </div>
             </div>
             <div
+              class="separator"
+            />
+            <div
               class="container"
             >
               <div
@@ -233,6 +228,9 @@ exports[`UsageAndPlansView should render 1`] = `
                 </button>
               </div>
             </div>
+            <div
+              class="separator"
+            />
             <div
               class="container"
             >
@@ -268,6 +266,9 @@ exports[`UsageAndPlansView should render 1`] = `
               </div>
             </div>
             <div
+              class="separator"
+            />
+            <div
               class="container"
             >
               <div
@@ -301,6 +302,9 @@ exports[`UsageAndPlansView should render 1`] = `
                 </button>
               </div>
             </div>
+            <div
+              class="separator"
+            />
             <div
               class="container"
             >
@@ -350,9 +354,7 @@ exports[`UsageAndPlansView should render 1`] = `
             Summary
           </h2>
         </div>
-        <div
-          class="body"
-        >
+        <div>
           <div
             class="summary"
           >
@@ -452,57 +454,6 @@ exports[`UsageAndPlansView should render 1`] = `
           <div
             class="container rounded disabled"
           >
-            <div
-              class="legalText"
-              data-testid="legalText"
-            >
-              You agree to be charged in accordance with the subscription plan until you cancel your subscription. Previous charges won't be refunded when you cancel unless it is legally required. Your payment data is encrypted and secure. All amounts shown are in USD.
-            </div>
-            <div
-              class="checkboxLegalTerms"
-            >
-              <input
-                class="checkbox"
-                disabled=""
-                id="terms"
-                type="checkbox"
-              />
-              <label
-                class="termsLabel"
-                data-testid="terms"
-                for="terms"
-              >
-                I agree to the
-                 
-                <a
-                  href="https://www.gorgias.com/legal/master-subscription-agreement"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Gorgias Master Subscription Agreement
-                </a>
-                 
-                and
-                 
-                <a
-                  href="https://www.gorgias.com/legal/terms-of-use"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Terms
-                </a>
-                . Learn about how we use and protect your data in our
-                 
-                <a
-                  href="https://www.gorgias.com/legal/privacy"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Privacy Policy
-                </a>
-                .
-              </label>
-            </div>
             <div
               class="button"
             >

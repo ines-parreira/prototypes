@@ -9,10 +9,14 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
+import * as constants from '../constants'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import {StoreDispatch} from '../../types'
 import {AccountSettingType, AccountSetting} from '../types'
+import {notify} from '../../notifications/actions'
+import {assumeMock} from '../../../utils/testing'
+import {NotificationStatus} from '../../notifications/types'
 
 type MockedRootState = {
     currentAccount: Map<any, any>
@@ -44,6 +48,7 @@ jest.mock('../../notifications/actions', () => {
         notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
+const notifyMock = assumeMock(notify)
 
 describe('current account actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
@@ -152,6 +157,77 @@ describe('current account actions', () => {
 
             store.dispatch(actions.submitSettingSuccess(req, false))
             expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('cancel Helpdesk auto-renewal', () => {
+        it('should successfully cancel', () => {
+            const subscription = {
+                prices: [basicMonthlyHelpdeskPrice.price_id],
+                scheduled_to_cancel_at: '2024-04-09T00:43:06+00:00',
+            }
+
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, subscription)
+
+            return store
+                .dispatch(actions.cancelHelpdeskAutoRenewal())
+                .then((res) => {
+                    expect(store.getActions()).toEqual([
+                        {
+                            subscription: {
+                                scheduled_to_cancel_at:
+                                    '2024-04-09T00:43:06+00:00',
+                            },
+                            type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
+                        },
+                    ])
+                    expect(notifyMock).toHaveBeenCalledWith({
+                        status: NotificationStatus.Success,
+                        message:
+                            'Your Helpdesk auto-renewal has been cancelled.',
+                    })
+                    expect(res).toEqual(true)
+                })
+        })
+
+        it('should fail to cancel with a message from the server', () => {
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(400, {error: {msg: 'error', data: []}})
+
+            return store
+                .dispatch(actions.cancelHelpdeskAutoRenewal())
+                .then((res) => {
+                    expect(store.getActions()).toEqual([])
+                    expect(notifyMock).toHaveBeenCalledWith({
+                        status: NotificationStatus.Error,
+                        message: 'error',
+                        allowHTML: true,
+                    })
+                    expect(res).toEqual(false)
+                })
+        })
+
+        it('should fail to cancel with a default message', () => {
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(500, {random: 'Response'})
+
+            return store
+                .dispatch(actions.cancelHelpdeskAutoRenewal())
+                .then((res) => {
+                    expect(store.getActions()).toEqual([])
+                    expect(notifyMock).toHaveBeenCalledWith({
+                        status: NotificationStatus.Error,
+                        message: `Failed to cancel Helpdesk auto-renewal. If the problem persists, 
+                           please contact our billing team via chat or at 
+                           <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.`,
+                        allowHTML: true,
+                    })
+                    expect(res).toEqual(false)
+                })
         })
     })
 })
