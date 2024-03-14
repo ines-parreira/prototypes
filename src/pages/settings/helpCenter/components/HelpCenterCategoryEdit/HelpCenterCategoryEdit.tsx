@@ -32,6 +32,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 import {
     DRAWER_TRANSITION_DURATION_MS,
+    HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
@@ -137,6 +138,7 @@ export const HelpCenterCategoryEdit = ({
     const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
     const [isAttemptingToDiscardChanges, setIsAttemptingToDiscardChanges] =
         useState(false)
+    const hasDefaultLayout = helpCenter.layout === HELP_CENTER_DEFAULT_LAYOUT
     const imageFile = useFileUpload()
     /**
      * We check here few cases
@@ -558,29 +560,32 @@ export const HelpCenterCategoryEdit = ({
                     </Drawer.HeaderActions>
                 </div>
                 <div className={css.headerActions}>
-                    <SelectField
-                        allowCustomValue
-                        id="parentCategory"
-                        dropdownMenuClassName={classNames(
-                            css['parentDropdown'],
-                            {
-                                [css['hideFirstOption']]: isFirstOptionHidden,
-                                [css['hideClearSelection']]:
-                                    isClearSelectionButtonHidden,
+                    {hasDefaultLayout && (
+                        <SelectField
+                            allowCustomValue
+                            id="parentCategory"
+                            dropdownMenuClassName={classNames(
+                                css['parentDropdown'],
+                                {
+                                    [css['hideFirstOption']]:
+                                        isFirstOptionHidden,
+                                    [css['hideClearSelection']]:
+                                        isClearSelectionButtonHidden,
+                                }
+                            )}
+                            value={
+                                parentCategory && categoriesById[parentCategory]
+                                    ? categoriesById[parentCategory].translation
+                                          ?.title
+                                    : null
                             }
-                        )}
-                        value={
-                            parentCategory && categoriesById[parentCategory]
-                                ? categoriesById[parentCategory].translation
-                                      ?.title
-                                : null
-                        }
-                        fullWidth
-                        options={parentOptions}
-                        placeholder="Category parent"
-                        onChange={handleChangeParent}
-                        onSearchChange={handleOnSearchChange}
-                    />
+                            fullWidth
+                            options={parentOptions}
+                            placeholder="Category parent"
+                            onChange={handleChangeParent}
+                            onSearchChange={handleOnSearchChange}
+                        />
+                    )}
                     <SelectVisibilityStatus
                         onChange={handleVisibilityChange}
                         status={visibilityStatus}
@@ -593,19 +598,21 @@ export const HelpCenterCategoryEdit = ({
                 </div>
             </Drawer.Header>
             <Drawer.Content>
-                <div
-                    className={css.groupedFormGroups}
-                    data-testid="image-upload"
-                >
-                    <FormGroup>
-                        <CategoryImageEdit
-                            onImageChanged={handleChangeImageFile}
-                            currentImageUrl={imageUrl}
-                            imageFile={imageFile}
-                            onRemoveImage={handleRemoveImage}
-                        />
-                    </FormGroup>
-                </div>
+                {hasDefaultLayout && (
+                    <div
+                        className={css.groupedFormGroups}
+                        data-testid="image-upload"
+                    >
+                        <FormGroup>
+                            <CategoryImageEdit
+                                onImageChanged={handleChangeImageFile}
+                                currentImageUrl={imageUrl}
+                                imageFile={imageFile}
+                                onRemoveImage={handleRemoveImage}
+                            />
+                        </FormGroup>
+                    </div>
+                )}
                 <div className={css.groupedFormGroups}>
                     <FormGroup className={classNames(css.languageSelect)}>
                         <Label for="title">Language</Label>
@@ -668,6 +675,7 @@ export const HelpCenterCategoryEdit = ({
                             value={slug}
                             placeholder="Category slug"
                             onChange={handleChangeSlug}
+                            disabled={!hasDefaultLayout}
                         />
                         {slugSuffix && (
                             <InputGroupAddon addonType="append">
@@ -682,53 +690,59 @@ export const HelpCenterCategoryEdit = ({
                     </InputGroup>
                     <FormText>Category link.</FormText>
                 </FormGroup>
-                <FormGroup className={css.textfield}>
-                    <Label for="description">Description</Label>
-                    <Input
-                        name="description"
-                        id="description"
-                        type="textarea"
-                        placeholder="Category description"
-                        value={description}
-                        style={{
-                            resize: 'vertical',
-                            minHeight: 52,
-                        }}
-                        onChange={handleChangeDescription}
-                        maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-                    />
-                    <FormText>Category description (optional)</FormText>
-                </FormGroup>
-                <AutoPopulateInput
-                    type="text"
-                    name="seoTitle"
-                    label="Meta Title"
-                    value={metaTitle}
-                    onChange={handleChangeMetaTitle}
-                    populateLabel="Use the same as Title"
-                    populateValue={title}
-                    help="Category title displayed in search engine results."
-                    required
-                />
-                <AutoPopulateInput
-                    type="textarea"
-                    name="seoDescription"
-                    label="Meta Description"
-                    value={metaDescription}
-                    onChange={handleChangeMetaDescription}
-                    populateLabel="Use the same as Description"
-                    populateValue={description}
-                    help="Category description displayed in search engines results."
-                    rows="2"
-                    required
-                />
-                <SearchEnginePreview
-                    baseUrl={getAbsoluteUrl({domain}, false)}
-                    title={metaTitle ?? title}
-                    description={metaDescription ?? description}
-                    urlItems={['articles', `${slug}${slugSuffix}`]}
-                    help="Category preview in search engine results."
-                />
+                {hasDefaultLayout && (
+                    <FormGroup className={css.textfield}>
+                        <Label for="description">Description</Label>
+                        <Input
+                            name="description"
+                            id="description"
+                            type="textarea"
+                            placeholder="Category description"
+                            value={description}
+                            style={{
+                                resize: 'vertical',
+                                minHeight: 52,
+                            }}
+                            onChange={handleChangeDescription}
+                            maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                        />
+                        <FormText>Category description (optional)</FormText>
+                    </FormGroup>
+                )}
+                {hasDefaultLayout && (
+                    <>
+                        <AutoPopulateInput
+                            type="text"
+                            name="seoTitle"
+                            label="Meta Title"
+                            value={metaTitle}
+                            onChange={handleChangeMetaTitle}
+                            populateLabel="Use the same as Title"
+                            populateValue={title}
+                            help="Category title displayed in search engine results."
+                            required
+                        />
+                        <AutoPopulateInput
+                            type="textarea"
+                            name="seoDescription"
+                            label="Meta Description"
+                            value={metaDescription}
+                            onChange={handleChangeMetaDescription}
+                            populateLabel="Use the same as Description"
+                            populateValue={description}
+                            help="Category description displayed in search engines results."
+                            rows="2"
+                            required
+                        />
+                        <SearchEnginePreview
+                            baseUrl={getAbsoluteUrl({domain}, false)}
+                            title={metaTitle ?? title}
+                            description={metaDescription ?? description}
+                            urlItems={['articles', `${slug}${slugSuffix}`]}
+                            help="Category preview in search engine results."
+                        />
+                    </>
+                )}
             </Drawer.Content>
             <Drawer.Footer className={css.footer}>
                 <Button
