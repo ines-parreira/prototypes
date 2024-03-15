@@ -21,6 +21,13 @@ export const shopifyDataMappers = {
         const product = integrationItem.data
         const variant = product.variants[0]
         const sku = variant.sku ? `SKU: ${variant.sku}` : null
+        const isTracked = product.variants.every(
+            (variant) => !!variant.inventory_management
+        )
+        const quantity = product.variants.reduce(
+            (total, variant) => total + variant.inventory_quantity,
+            0
+        )
 
         return {
             image: {
@@ -34,13 +41,9 @@ export const shopifyDataMappers = {
                     ? `${product.variants.length} variants`
                     : sku,
             stock: {
-                tracked: product.variants.every(
-                    (variant) => !!variant.inventory_management
-                ),
-                quantity: product.variants.reduce(
-                    (total, variant) => total + variant.inventory_quantity,
-                    0
-                ),
+                isAvailable: isTracked ? quantity !== 0 : true,
+                tracked: isTracked,
+                quantity: quantity,
                 totalVariants: product.variants.length,
             },
         }
@@ -54,10 +57,11 @@ export const shopifyDataMappers = {
             product.variants.length > 1 && variant.title
                 ? `${product.title} - ${variant.title}`
                 : product.title
-
         const image =
             product.images &&
             product.images.find((image) => image.id === variant.image_id)
+        const isTracked = !!variant.inventory_management
+        const quantity = variant.inventory_quantity
 
         return {
             image: {
@@ -68,8 +72,9 @@ export const shopifyDataMappers = {
             title,
             subtitle: variant.sku ? `SKU: ${variant.sku}` : null,
             stock: {
-                tracked: !!variant.inventory_management,
-                quantity: variant.inventory_quantity,
+                isAvailable: isTracked ? quantity !== 0 : true,
+                tracked: isTracked,
+                quantity: quantity,
             },
         }
     },

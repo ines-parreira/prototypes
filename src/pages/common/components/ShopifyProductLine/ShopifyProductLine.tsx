@@ -122,7 +122,6 @@ export default function ShopifyProductLine({
                     productId: result?.data?.id,
                     variantId: result?.data?.variants?.[0]?.id,
                 } as ProductCardDetails
-
                 productClicked(productCardDetails)
             } else {
                 setClickedResult(result)
@@ -259,20 +258,26 @@ export default function ShopifyProductLine({
                 {shopifyProducts.length > 0 && !subResults.length && (
                     <ListGroup flush>
                         {shopifyProducts.map((result, index) => {
+                            const productDetails =
+                                shopifyDataMappers.product(result)
+
                             return (
                                 <ListGroupItem
                                     key={result.id}
                                     tag="button"
                                     id={'resultRow'.concat(index.toString())}
                                     action
+                                    className={classnames({
+                                        [css.outOfStock]:
+                                            productDetails.stock.isAvailable ===
+                                            false,
+                                    })}
                                     onClick={(event) => {
                                         event.preventDefault()
                                         handleProductClick(index)
                                     }}
                                 >
-                                    <Result
-                                        {...shopifyDataMappers.product(result)}
-                                    />
+                                    <Result {...productDetails} />
                                 </ListGroupItem>
                             )
                         })}
@@ -281,26 +286,37 @@ export default function ShopifyProductLine({
                 {shopifyProducts.length > 0 && subResults.length > 0 && (
                     <ListGroup flush>
                         {(subResults as Array<Variant>).map(
-                            (subResult: Variant, index: number) => (
-                                <ListGroupItem
-                                    key={index}
-                                    tag="button"
-                                    action
-                                    onClick={(event) => {
-                                        event.preventDefault()
-                                        handleSubResultClicked(index)
-                                    }}
-                                >
-                                    {clickedResult && (
-                                        <Result
-                                            {...shopifyDataMappers.variants(
-                                                clickedResult,
-                                                subResult
-                                            )}
-                                        />
-                                    )}
-                                </ListGroupItem>
-                            )
+                            (subResult: Variant, index: number) => {
+                                if (clickedResult === null) {
+                                    return
+                                }
+
+                                const productDetails =
+                                    shopifyDataMappers.variants(
+                                        clickedResult,
+                                        subResult
+                                    )
+                                return (
+                                    <ListGroupItem
+                                        key={index}
+                                        tag="button"
+                                        action
+                                        className={classnames({
+                                            [css.outOfStock]:
+                                                !productDetails.stock
+                                                    .isAvailable,
+                                        })}
+                                        onClick={(event) => {
+                                            event.preventDefault()
+                                            handleSubResultClicked(index)
+                                        }}
+                                    >
+                                        {clickedResult && (
+                                            <Result {...productDetails} />
+                                        )}
+                                    </ListGroupItem>
+                                )
+                            }
                         )}
                     </ListGroup>
                 )}

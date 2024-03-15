@@ -23,7 +23,12 @@ describe('<Result/>', () => {
                     title="Title"
                     image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
                     subtitle="Subtitle"
-                    stock={{quantity: 1, tracked: true, totalVariants: 1}}
+                    stock={{
+                        isAvailable: true,
+                        quantity: 1,
+                        tracked: true,
+                        totalVariants: 1,
+                    }}
                 />
             )
 
@@ -36,7 +41,12 @@ describe('<Result/>', () => {
                     title="Title"
                     image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
                     subtitle="Subtitle"
-                    stock={{quantity: 1, tracked: true, totalVariants: 1}}
+                    stock={{
+                        isAvailable: true,
+                        quantity: 1,
+                        tracked: true,
+                        totalVariants: 1,
+                    }}
                     disabled
                 />
             )
@@ -51,7 +61,12 @@ describe('<Result/>', () => {
                     title="Title"
                     image={null}
                     subtitle="Subtitle"
-                    stock={{quantity: 1, tracked: true, totalVariants: 1}}
+                    stock={{
+                        isAvailable: true,
+                        quantity: 1,
+                        tracked: true,
+                        totalVariants: 1,
+                    }}
                 />
             )
 
@@ -64,7 +79,12 @@ describe('<Result/>', () => {
                     title="Title"
                     image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
                     subtitle={null}
-                    stock={{quantity: 1, tracked: true, totalVariants: 1}}
+                    stock={{
+                        isAvailable: true,
+                        quantity: 1,
+                        tracked: true,
+                        totalVariants: 1,
+                    }}
                 />
             )
 

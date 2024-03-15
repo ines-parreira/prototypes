@@ -13,6 +13,7 @@ export type Props = {
     title: string
     subtitle: string | null
     stock: {
+        isAvailable?: boolean
         tracked: boolean
         quantity: number | null
         totalVariants?: number
@@ -44,7 +45,11 @@ export default function Result({
     const imageAlt = !!image ? image.alt : 'Product'
 
     return (
-        <div className={css.container}>
+        <div
+            className={classnames(css.container, {
+                [css.isOutOfStock]: stock.isAvailable === false,
+            })}
+        >
             <div className={css.imgContainer}>
                 <img className={css.img} src={imageSrc} alt={imageAlt} />
             </div>

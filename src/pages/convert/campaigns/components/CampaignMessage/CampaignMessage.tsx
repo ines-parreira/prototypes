@@ -1,4 +1,4 @@
-import React, {memo, useMemo} from 'react'
+import React, {memo, useMemo, useState, useEffect} from 'react'
 import classnames from 'classnames'
 import {List} from 'immutable'
 
@@ -9,7 +9,10 @@ import {User} from 'config/types/user'
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+
+import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import {checkShopifyProductAvailabity} from 'pages/convert/campaigns/utils/checkProductAvailability'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
@@ -48,7 +51,12 @@ export const CampaignMessage = memo(
         onChangeMessage,
         onDeleteAttachment,
     }: Props): JSX.Element => {
+        const {shopifyIntegration} = useIntegrationContext()
         const isAllowedToAddDiscountCode = useIsAllowedToAddDiscountCode()
+        const [previousFirstProductId, setPreviousFirstProductId] =
+            useState<boolean>(false)
+        const [showWarningOutOfStock, setshowWarningOutOfStock] =
+            useState<boolean>(false)
         const options = useMemo<Option[]>(() => {
             const initialArr: Option[] = [
                 {
@@ -93,6 +101,35 @@ export const CampaignMessage = memo(
             [html, text]
         )
 
+        useEffect(() => {
+            if (attachments.isEmpty()) return
+
+            const product = attachments.first() as Map<any, any>
+            const productId = (product.get('extra') as Map<any, any>).get(
+                'product_id'
+            )
+
+            // trigger request to API only if first product change
+            if (previousFirstProductId === productId) {
+                return
+            }
+
+            setPreviousFirstProductId(productId)
+
+            if (shopifyIntegration?.id && productId) {
+                checkShopifyProductAvailabity(shopifyIntegration.id, productId)
+                    .then((isAvailable) =>
+                        setshowWarningOutOfStock(!isAvailable)
+                    )
+                    .catch(console.error)
+            }
+        }, [
+            setPreviousFirstProductId,
+            previousFirstProductId,
+            attachments,
+            shopifyIntegration?.id,
+        ])
+
         const displayedActions = useMemo(() => {
             const actions = [
                 ActionName.Bold,
@@ -136,6 +173,16 @@ export const CampaignMessage = memo(
                             Your campaign might be too large for mobile devices
                             or small screens. We advise limiting the content to
                             maximum 170 characters and maximum 5 lines of text.
+                        </Alert>
+                    </div>
+                )}
+                {isConvertSubscriber && showWarningOutOfStock && (
+                    <div className="mb-4 mt-4">
+                        <Alert icon type={AlertType.Warning}>
+                            Your campaign is currently not displayed because
+                            there is no product stock for your first product
+                            card. Remove the first product card to see have your
+                            campaign displayed.
                         </Alert>
                     </div>
                 )}
