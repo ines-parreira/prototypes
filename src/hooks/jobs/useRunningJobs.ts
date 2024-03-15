@@ -2,9 +2,9 @@ import {useListJobs} from '@gorgias/api-queries'
 import {Job, JobStatus} from '@gorgias/api-types'
 
 const RUNNING_JOB_STATUSES: string[] = [
-    JobStatus.running,
-    JobStatus.pending,
-    JobStatus.scheduled,
+    JobStatus.Running,
+    JobStatus.Pending,
+    JobStatus.Scheduled,
 ]
 
 const isAnyJobRunning = (jobs: Partial<Pick<Job, 'status'>>[]): boolean => {

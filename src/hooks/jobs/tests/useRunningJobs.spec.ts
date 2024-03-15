@@ -25,13 +25,13 @@ const jobsResponse = (jobs: {status?: JobStatus}[]): any => ({
 
 describe('useRunningJobs', () => {
     const runningJobs = [
-        jobWithStatus(JobStatus.pending),
-        jobWithStatus(JobStatus.running),
-        jobWithStatus(JobStatus.scheduled),
+        jobWithStatus(JobStatus.Pending),
+        jobWithStatus(JobStatus.Running),
+        jobWithStatus(JobStatus.Scheduled),
     ]
     const notRunningJobs = [
-        jobWithStatus(JobStatus.done),
-        jobWithStatus(JobStatus.cancel_requested),
+        jobWithStatus(JobStatus.Done),
+        jobWithStatus(JobStatus.CancelRequested),
     ]
 
     it('should fetch the list of jobs and return true if some are in "running" state', () => {
