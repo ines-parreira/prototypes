@@ -35,6 +35,7 @@ export default function Toggle() {
                 onClick={handleClick}
                 id={buttonId}
                 disabled={!isToggleEnabled}
+                data-candu-id="dtp-toggle"
             >
                 {isEnabled ? 'Use full width view' : 'Use split ticket view'}
             </button>
