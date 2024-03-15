@@ -617,12 +617,15 @@ const receivedEvents: ReceivedEvent[] = [
             const {
                 phone_ticket_id: phoneTicketId,
                 original_path: originalPath,
+                tab_id,
             } = event
 
-            logActivityEvent(ActivityEvents.UserStartedPhoneCall, {
-                entityId: phoneTicketId,
-                entityType: 'ticket',
-            })
+            if (tab_id === window.CLIENT_ID) {
+                logActivityEvent(ActivityEvents.UserStartedPhoneCall, {
+                    entityId: phoneTicketId,
+                    entityType: 'ticket',
+                })
+            }
 
             if (
                 window.location.pathname === originalPath &&

@@ -135,6 +135,13 @@ jest.mock('state/entities/views/actions')
 jest.mock('state/views/utils')
 
 describe('receivedEvents', () => {
+    afterEach(() => {
+        window.location.pathname = ''
+        window.CLIENT_ID = ''
+        jest.useRealTimers()
+        jest.resetAllMocks()
+    })
+
     it('is array', () => {
         expect(_isArray(receivedEvents)).toBe(true)
     })
@@ -165,11 +172,6 @@ describe('receivedEvents', () => {
                             mockedProMonthlyHelpdeskPrice,
                     } as Record<string, HelpdeskPrice>)
             )
-        })
-
-        afterEach(() => {
-            jest.useRealTimers()
-            jest.resetAllMocks()
         })
 
         it('should dispatch handleUsageBanner', () => {
@@ -718,6 +720,7 @@ describe('receivedEvents', () => {
             const originalTicketId = 123
             const originalPath = `/app/ticket/${originalTicketId}`
             window.location.pathname = originalPath
+            window.CLIENT_ID = 'abc123'
 
             const spy = jest.spyOn(activityTracker, 'logActivityEvent')
             const data: OutboundPhoneCallInitiated = {

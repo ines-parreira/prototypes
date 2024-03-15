@@ -35,6 +35,9 @@ import {
     disconnectCall,
     getToken,
 } from 'hooks/integrations/phone/api'
+import {appQueryClient} from 'api/queryClient'
+import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
+import {ListVoiceCallsParams} from 'models/voiceCall/types'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
 import {isProduction} from 'utils/environment'
@@ -285,14 +288,29 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
 }
 
 export function logCallEnd(call: Call) {
-    const ticketId =
-        call.customParameters.get('ticket_id') ||
-        call.customParameters.get('original_ticket_id')
+    let ticketId: string | number | undefined
+    const phoneCallId = getCallSid(call)
 
-    logActivityEvent(ActivityEvents.UserFinishedPhoneCall, {
-        entityId: Number(ticketId),
-        entityType: 'ticket',
-    })
+    if (call.customParameters.get('ticket_id')) {
+        ticketId = call.customParameters.get('ticket_id') as string
+    } else {
+        const ticketIdQueryKey = appQueryClient
+            .getQueriesData<UseListVoiceCalls>(voiceCallsKeys.lists())
+            .find(([, data]) => {
+                return !!data?.data.find(
+                    (call) => call.external_id === phoneCallId
+                )
+            })?.[0]
+
+        ticketId = (ticketIdQueryKey?.[2] as ListVoiceCallsParams)?.ticket_id
+    }
+
+    if (ticketId) {
+        logActivityEvent(ActivityEvents.UserFinishedPhoneCall, {
+            entityId: Number(ticketId),
+            entityType: 'ticket',
+        })
+    }
 }
 
 export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {

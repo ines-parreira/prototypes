@@ -39,10 +39,12 @@ import * as LDUtils from 'utils/launchDarkly'
 import * as activityTracker from 'services/activityTracker'
 import * as envUtils from 'utils/environment'
 import {ActivityEvents} from 'services/activityTracker'
+import {appQueryClient} from 'api/queryClient'
 
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')
 jest.mock('services/activityTracker')
+jest.mock('api/queryClient')
 
 const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
 
@@ -595,7 +597,7 @@ describe('getCallSid', () => {
 })
 
 describe('logEndCall', () => {
-    it('should log the call end', () => {
+    it('should log the call end when call has a ticket_id param', () => {
         // reset original logCallEnd implementation
         const logCallEndSpy = jest.spyOn(utils, 'logCallEnd')
         logCallEndSpy.mockRestore()
@@ -603,6 +605,35 @@ describe('logEndCall', () => {
         const logEventSpy = jest.spyOn(activityTracker, 'logActivityEvent')
         const call = {
             customParameters: new Map([['ticket_id', '123456']]),
+        } as unknown as Call
+
+        logCallEnd(call)
+        expect(logEventSpy).toHaveBeenCalledWith(
+            ActivityEvents.UserFinishedPhoneCall,
+            {
+                entityType: 'ticket',
+                entityId: 123456,
+            }
+        )
+    })
+
+    it('should log the call end when call does not have a ticket_id param, and look it up from query cache', () => {
+        // reset original logCallEnd implementation
+        const logCallEndSpy = jest.spyOn(utils, 'logCallEnd')
+        logCallEndSpy.mockRestore()
+        const logEventSpy = jest.spyOn(activityTracker, 'logActivityEvent')
+        const getQueriesDataSpy = jest.spyOn(appQueryClient, 'getQueriesData')
+        getQueriesDataSpy.mockReturnValue([
+            [
+                ['foo', 'bar', {ticket_id: 123456}],
+                {data: [{external_id: 'CA123'}]},
+            ],
+        ])
+
+        const call = {
+            parameters: {CallSid: 'CA123'},
+            direction: Call.CallDirection.Outgoing,
+            customParameters: new Map(),
         } as unknown as Call
 
         logCallEnd(call)
