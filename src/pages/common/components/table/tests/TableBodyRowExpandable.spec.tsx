@@ -5,12 +5,17 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
     TableBodyRowExpandable,
     WithChildren,
+    COLUMN_WIDTH,
+    MOBILE_COLUMN_WIDTH,
 } from 'pages/common/components/table/TableBodyRowExpandable'
+import {mockRequestAnimationFrame, triggerWidthResize} from 'utils/testing'
 
 type Data = {
     label: string
     value: number
 }
+
+const rafControl = mockRequestAnimationFrame()
 
 const SampleRowContentComponentMock = jest
     .fn()
@@ -136,5 +141,46 @@ describe('<TableBodyRowExpandable />', () => {
 
         expect(screen.queryByText(level2Label)).not.toBeInTheDocument()
         expect(screen.queryByText(level3Label)).not.toBeInTheDocument()
+    })
+
+    it('should check if expand cell indent(left) style is applied based on depth level', () => {
+        const {container} = render(
+            <TableBodyRowExpandable<WithChildren<Data>>
+                RowContentComponent={SampleRowContentComponentMock}
+                rowContentProps={sampleData}
+            />
+        )
+        triggerWidthResize(500)
+        rafControl.run()
+
+        act(() => {
+            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+        })
+        act(() => {
+            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+        })
+
+        const expandCells = Array.from(
+            container.querySelectorAll('.expandCell')
+        )
+        const expandCellLevel0 = 0
+        const expandCellLevel1 = 1
+
+        expect((expandCells[expandCellLevel0] as HTMLElement).style?.left).toBe(
+            `${MOBILE_COLUMN_WIDTH * expandCellLevel0}px`
+        )
+        expect((expandCells[expandCellLevel1] as HTMLElement).style?.left).toBe(
+            `${MOBILE_COLUMN_WIDTH * expandCellLevel1}px`
+        )
+
+        triggerWidthResize(1000)
+        rafControl.run()
+
+        expect((expandCells[expandCellLevel0] as HTMLElement).style?.left).toBe(
+            `${COLUMN_WIDTH * expandCellLevel0}px`
+        )
+        expect((expandCells[expandCellLevel1] as HTMLElement).style?.left).toBe(
+            `${COLUMN_WIDTH * expandCellLevel1}px`
+        )
     })
 })

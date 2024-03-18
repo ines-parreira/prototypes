@@ -24,10 +24,12 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {TicketFieldsMetric} from 'state/ui/stats/types'
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import {formatDates, getUtcPeriodFromDateAndGranularity} from './utils'
 
-const EXPAND_COLUMN_WIDTH = 24
-const DEFAULT_MARGIN = 8
+export const EXPAND_COLUMN_WIDTH = 24
+export const MOBILE_EXPAND_COLUMN_WIDTH = 10
+export const DEFAULT_MARGIN = 8
 
 export type DataRowProps =
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile & {
@@ -82,6 +84,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
     const {granularity} = useAppSelector(getCleanStatsFiltersWithTimezone)
+    const isMobile = useScreenSize() === SCREEN_SIZE.SMALL
 
     return (
         <>
@@ -95,7 +98,10 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                 innerStyle={{
                     ...(!hasChildren && {paddingLeft: 0}),
                     marginLeft: `${
-                        level * EXPAND_COLUMN_WIDTH +
+                        level *
+                            (isMobile
+                                ? MOBILE_EXPAND_COLUMN_WIDTH
+                                : EXPAND_COLUMN_WIDTH) +
                         (!hasChildren ? DEFAULT_MARGIN : DEFAULT_MARGIN * 2)
                     }px`,
                 }}

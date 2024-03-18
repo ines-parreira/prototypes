@@ -112,12 +112,28 @@
                     background-color: var(--neutral-grey-1);
                 }
             }
+
+            td {
+                &.sticky {
+                    .small,
+                    .BodyCellContent {
+                        @media @mobiles {
+                            display: block;
+                        }
+                    }
+                }
+            }
         }
     }
 
     .categoryHeader {
         min-width: 320px;
         width: 320px;
+
+        @media @mobiles {
+            min-width: 175px;
+            width: 130px;
+        }
     }
 
     .categoryColumn {
@@ -125,12 +141,24 @@
         min-width: 250px;
         font-weight: @body-medium-font-weight;
         border: 0;
+
+        @media @mobiles {
+            min-width: 120px;
+            width: 130px;
+        }
     }
 
     .small,
     .BodyCellContent {
         color: inherit;
         padding: @layout-spacing-xs @layout-spacing-s;
+
+        @media @mobiles {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 100px;
+        }
     }
 
     .BodyCell,

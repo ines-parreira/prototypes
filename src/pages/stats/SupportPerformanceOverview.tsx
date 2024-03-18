@@ -1,6 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'
 import TipsToggle from 'pages/stats/TipsToggle'
@@ -31,7 +31,7 @@ import {
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import {MetricName} from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import {useGridSize} from 'hooks/useGridSize'
 import DashboardGridCell from './DashboardGridCell'
 import DashboardSection from './DashboardSection'
 import {TicketsCreatedVsClosedChartCard} from './support-performance/components/TicketsCreatedVsClosedChartCard'
@@ -77,14 +77,8 @@ export default function SupportPerformanceOverview() {
         STATS_TIPS_VISIBILITY_KEY,
         true
     )
-    const screenSize = useScreenSize()
 
-    const getGridCellSize = useCallback(
-        (defaultSize: number) => {
-            return screenSize === SCREEN_SIZE.SMALL ? 12 : defaultSize
-        },
-        [screenSize]
-    )
+    const getGridCellSize = useGridSize()
 
     const performanceOverviewChartType = useMemo(
         () => (isAnalyticsProductivityMetricsEnabled ? 'bar' : 'line'),

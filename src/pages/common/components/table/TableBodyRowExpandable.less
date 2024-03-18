@@ -1,4 +1,5 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~css/new/mixins.less';
 
 :local {
     .comfortable {
@@ -10,5 +11,9 @@
         top: 0;
         height: 100%;
         padding-right: 0;
+
+        @media @mobiles {
+            overflow: visible;
+        }
     }
 }

@@ -200,3 +200,9 @@ export const mockRequestAnimationFrame = (getFrameId = () => Infinity) => {
 export const getLastMockCall = <TFunction extends (...args: any[]) => any>(
     mockedFunction: jest.MockedFunction<TFunction>
 ) => mockedFunction.mock.calls.slice(-1)[0]
+
+export function triggerWidthResize(value: number) {
+    Object.defineProperty(window, 'innerWidth', {value})
+
+    window.dispatchEvent(new Event('resize'))
+}

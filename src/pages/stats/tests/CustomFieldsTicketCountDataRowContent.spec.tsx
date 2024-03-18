@@ -4,7 +4,12 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
-import {CustomFieldsTicketCountDataRowContent} from 'pages/stats/CustomFieldsTicketCountDataRowContent'
+import {
+    CustomFieldsTicketCountDataRowContent,
+    EXPAND_COLUMN_WIDTH,
+    MOBILE_EXPAND_COLUMN_WIDTH,
+    DEFAULT_MARGIN,
+} from 'pages/stats/CustomFieldsTicketCountDataRowContent'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     getHeatmapMode,
@@ -12,8 +17,15 @@ import {
     ValueMode,
     getSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock, mockStore} from 'utils/testing'
+import {
+    assumeMock,
+    mockRequestAnimationFrame,
+    mockStore,
+    triggerWidthResize,
+} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
+
+const rafControl = mockRequestAnimationFrame()
 
 jest.mock('state/ui/stats/ticketInsightsSlice')
 jest.mock(
@@ -35,6 +47,24 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 
 describe('<CustomFieldsTicketCountDataRowContent />', () => {
+    const defaultProps = {
+        [BREAKDOWN_FIELD]: 'someTag',
+        [VALUE_FIELD]: 12,
+        initialCustomFieldValue: ['someTag'],
+        timeSeries: [
+            {
+                dateTime: '2023-08-09',
+                value: 5,
+                percentage: 0.4,
+                decile: 2,
+                totalsDecile: 3,
+            },
+        ],
+        percentage: 30,
+        decile: 2,
+        totalsDecile: 3,
+    }
+
     beforeEach(() => {
         getValueModeMock.mockReturnValue(ValueMode.TotalCount)
         getHeatmapModeMock.mockReturnValue(false)
@@ -52,6 +82,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             label: 'someLabel',
             isLoading: false,
         })
+        triggerWidthResize(1920)
     })
 
     it('should format total count values with thousands separator', () => {
@@ -271,4 +302,64 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             }
         })
     })
+
+    it.each([
+        {
+            props: {...defaultProps, level: 0},
+            expectedResult: `${DEFAULT_MARGIN}px`,
+        },
+        {
+            props: {...defaultProps, level: 1},
+            expectedResult: `${
+                MOBILE_EXPAND_COLUMN_WIDTH * 1 + DEFAULT_MARGIN
+            }px`,
+        },
+        {
+            props: {...defaultProps, level: 4},
+            expectedResult: `${
+                MOBILE_EXPAND_COLUMN_WIDTH * 4 + DEFAULT_MARGIN
+            }px`,
+        },
+    ])(
+        'should check the mobile view marginLeft styles for label with different levels of depth',
+        ({props, expectedResult}) => {
+            getValueModeMock.mockReturnValue(ValueMode.Percentage)
+            render(
+                <Provider store={mockStore({} as any)}>
+                    <CustomFieldsTicketCountDataRowContent {...props} />
+                </Provider>
+            )
+            triggerWidthResize(500)
+            rafControl.run()
+            const label = screen.getByText('someTag')
+            expect(label).toHaveStyle({marginLeft: expectedResult})
+        }
+    )
+
+    it.each([
+        {
+            props: {...defaultProps, level: 0},
+            expectedResult: `${DEFAULT_MARGIN}px`,
+        },
+        {
+            props: {...defaultProps, level: 1},
+            expectedResult: `${EXPAND_COLUMN_WIDTH * 1 + DEFAULT_MARGIN}px`,
+        },
+        {
+            props: {...defaultProps, level: 4},
+            expectedResult: `${EXPAND_COLUMN_WIDTH * 4 + DEFAULT_MARGIN}px`,
+        },
+    ])(
+        'should check the desktop view marginLeft styles for label with different levels of depth',
+        ({props, expectedResult}) => {
+            getValueModeMock.mockReturnValue(ValueMode.Percentage)
+            render(
+                <Provider store={mockStore({} as any)}>
+                    <CustomFieldsTicketCountDataRowContent {...props} />
+                </Provider>
+            )
+            const label = screen.getByText('someTag')
+            expect(label).toHaveStyle({marginLeft: expectedResult})
+        }
+    )
 })

@@ -14,11 +14,13 @@ import StatsPage from 'pages/stats/StatsPage'
 
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
+import {useGridSize} from 'hooks/useGridSize'
 
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
 
 export default function SupportPerformanceTicketInsights() {
     const selectedCustomField = useAppSelector(getSelectedCustomField)
+    const getGridCellSize = useGridSize()
 
     if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
@@ -48,7 +50,7 @@ export default function SupportPerformanceTicketInsights() {
 
             {selectedCustomField.id && (
                 <DashboardSection>
-                    <DashboardGridCell size={1}>
+                    <DashboardGridCell size={getGridCellSize(1)}>
                         <TicketDistributionTable
                             selectedCustomField={{
                                 id: selectedCustomField.id,
@@ -56,7 +58,7 @@ export default function SupportPerformanceTicketInsights() {
                             }}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={11}>
+                    <DashboardGridCell size={getGridCellSize(11)}>
                         <TicketInsightsFieldTrend />
                     </DashboardGridCell>
                     <DashboardGridCell>

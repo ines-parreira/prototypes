@@ -6,6 +6,7 @@ import {
     mockProductionEnvironment,
     mockStagingEnvironment,
     renderWithRouter,
+    triggerWidthResize,
 } from '../testing'
 
 describe('testing', () => {
@@ -58,6 +59,15 @@ describe('testing', () => {
                 },
             } as jest.MockedFunction<any>
             expect(getLastMockCall(mockedStuff)).toBe(myLastParams)
+        })
+    })
+
+    describe('triggerResize', () => {
+        it('should trigger a resize event', () => {
+            const callback = jest.fn()
+            window.addEventListener('resize', callback)
+            triggerWidthResize(1000)
+            expect(callback).toHaveBeenCalledTimes(1)
         })
     })
 })

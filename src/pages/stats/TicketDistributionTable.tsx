@@ -16,6 +16,7 @@ import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {TicketFieldsMetric} from 'state/ui/stats/types'
 
+import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import {
     DistributionCategoryCell,
     formatCategory,
@@ -42,6 +43,8 @@ export const TicketDistributionTable = ({
         outsideTopTotalPercentage,
         outsideTopTotalGaugePercentage,
     } = useTicketsDistribution()
+
+    const getWidth = useWidthBasedOnScreen()
 
     return (
         <ChartCard
@@ -88,7 +91,7 @@ export const TicketDistributionTable = ({
                                 <DistributionCategoryCell
                                     key={item.category}
                                     progress={item.gaugePercentage}
-                                    width={300}
+                                    width={getWidth(300, 140)}
                                     category={item.category}
                                 />
                                 <BodyCell justifyContent="right" width={100}>
@@ -152,7 +155,10 @@ export const TicketDistributionTable = ({
                         ) : null}
 
                         <TableBodyRow className={css.lastRow}>
-                            <BodyCell className={css.total} width={300}>
+                            <BodyCell
+                                className={css.total}
+                                width={getWidth(300, 140)}
+                            >
                                 Total
                             </BodyCell>
                             <BodyCell justifyContent="right" width={100}>
