@@ -31,12 +31,14 @@ jest.mock('web-vitals')
 
 describe('datadog', () => {
     describe('initDatadogLogger', () => {
-        const defaultVersion = 'v1.4.5'
+        const defaultClientVersion = 'v1.4.5'
+        const defaultServerVersion = 'v2.0.1'
         const defaultEnvironment = GorgiasUIEnv.Staging
         const defaultOptions: InitDatadogLoggerOptions = {
             account,
             user,
-            version: defaultVersion,
+            clientVersion: defaultClientVersion,
+            serverVersion: defaultServerVersion,
             environment: defaultEnvironment,
         }
 
@@ -47,7 +49,7 @@ describe('datadog', () => {
                 clientToken: DATADOG_CLIENT_TOKEN,
                 site: DATADOG_SITE,
                 forwardErrorsToLogs: true,
-                version: defaultVersion,
+                version: defaultClientVersion,
                 service: DATADOG_LOGS_SERVICE,
                 env: defaultEnvironment,
                 sampleRate: DATADOG_LOGS_SAMPLE_RATE,
@@ -65,17 +67,20 @@ describe('datadog', () => {
                 account: {
                     domain: account.domain,
                 },
+                serverVersion: defaultServerVersion,
             })
         })
     })
 
     describe('initDatadogRum', () => {
-        const defaultVersion = 'v1.4.5'
+        const defaultClientVersion = 'v1.4.5'
+        const defaultServerVersion = 'v2.0.1'
         const defaultEnvironment = GorgiasUIEnv.Staging
         const defaultOptions: InitDatadogRumOptions = {
             account,
             user,
-            version: defaultVersion,
+            clientVersion: defaultClientVersion,
+            serverVersion: defaultServerVersion,
             environment: defaultEnvironment,
         }
 
@@ -87,7 +92,7 @@ describe('datadog', () => {
                 applicationId: DATADOG_RUM_APPLICATION_ID,
                 site: DATADOG_SITE,
                 service: DATADOG_RUM_SERVICE,
-                version: defaultVersion,
+                version: defaultClientVersion,
                 env: defaultEnvironment,
                 sampleRate: DATADOG_RUM_SAMPLE_RATE,
                 sessionReplaySampleRate: DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE,
@@ -103,6 +108,14 @@ describe('datadog', () => {
                 id: user.id.toString(),
                 email: user.email,
                 domain: account.domain,
+            })
+        })
+
+        it('should set rum global context', () => {
+            initDatadogRum(defaultOptions)
+
+            expect(datadogRum.setRumGlobalContext).toHaveBeenCalledWith({
+                serverVersion: defaultServerVersion,
             })
         })
 

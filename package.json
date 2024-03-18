@@ -196,6 +196,7 @@
         "@gorgias/javascript-shared-config": "0.1.0",
         "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
         "@redux-devtools/extension": "3.1.0",
+        "@sentry/cli": "^2.30.0",
         "@sentry/types": "7.0.0",
         "@sheerun/mutationobserver-shim": "0.3.3",
         "@storybook/addon-actions": "^7.6.14",

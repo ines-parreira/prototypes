@@ -33,10 +33,15 @@ export const DENY_URLS = [
     /analytics\.min\.js/i, // https://linear.app/gorgias/issue/PLTCO-1017/typeerror-cannot-read-property-page-of-undefined
 ]
 export const ERROR_EXTRA_CONSOLE_LOG_MESSAGE = 'Error extra:'
+export const LANGUAGE_TAG = 'language'
+export const LANGUAGE_TAG_VALUE = 'javascript'
+export const ACCOUNT_DOMAIN_TAG = 'account.domain'
+export const SERVER_VERSION_TAG = 'server.version'
 
 export type InitErrorReporterParams = {
     dsn: string
-    release: string
+    clientVersion: string
+    serverVersion: string
     environment: GorgiasUIEnv
     currentUser?: User
     currentAccount?: Account
@@ -44,14 +49,15 @@ export type InitErrorReporterParams = {
 
 export function initErrorReporter({
     dsn,
-    release,
+    clientVersion,
+    serverVersion,
     environment,
     currentUser,
     currentAccount,
 }: InitErrorReporterParams) {
     Sentry.init({
         dsn,
-        release,
+        release: clientVersion,
         environment,
         // ignore old browsers and mobile safari
         enabled: !/^(.+Mobile.+Safari.+|.+MSIE 8\.0;.+)$/.test(
@@ -66,9 +72,10 @@ export function initErrorReporter({
         ignoreErrors: IGNORED_ERRORS,
         denyUrls: DENY_URLS,
     })
-    Sentry.setTag('language', 'javascript')
+    Sentry.setTag(LANGUAGE_TAG, LANGUAGE_TAG_VALUE)
+    Sentry.setTag(SERVER_VERSION_TAG, serverVersion)
     if (currentAccount) {
-        Sentry.setTag('account.domain', currentAccount.domain)
+        Sentry.setTag(ACCOUNT_DOMAIN_TAG, currentAccount.domain)
     }
     if (currentUser) {
         Sentry.setUser({

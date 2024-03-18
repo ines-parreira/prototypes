@@ -5,13 +5,17 @@ import {BrowserTracing, Transaction} from '@sentry/tracing'
 import {BrowserTracingOptions} from '@sentry/tracing/types/browser/browsertracing'
 
 import {
+    ACCOUNT_DOMAIN_TAG,
     DENY_URLS,
     ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
     IGNORED_ERRORS,
     initErrorReporter,
     InitErrorReporterParams,
+    LANGUAGE_TAG,
+    LANGUAGE_TAG_VALUE,
     PatchedBrowserTracing,
     reportError,
+    SERVER_VERSION_TAG,
     TRACE_SAMPLE_RATE,
     withInpMeasurements,
 } from 'utils/errors'
@@ -55,7 +59,8 @@ describe('errors util', () => {
     describe('initErrorReporter', () => {
         const defaultInitOptions: InitErrorReporterParams = {
             dsn: 'https://example.com/error',
-            release: 'foo',
+            clientVersion: 'foo',
+            serverVersion: 'bar',
             environment: GorgiasUIEnv.Development,
         }
 
@@ -64,7 +69,7 @@ describe('errors util', () => {
 
             expect(initMock).toHaveBeenCalledWith({
                 dsn: defaultInitOptions.dsn,
-                release: defaultInitOptions.release,
+                release: defaultInitOptions.clientVersion,
                 environment: defaultInitOptions.environment,
                 tracesSampleRate: TRACE_SAMPLE_RATE,
                 ignoreErrors: IGNORED_ERRORS,
@@ -74,20 +79,32 @@ describe('errors util', () => {
             })
         })
 
-        it('should set tag "language" equal "javascript"', () => {
+        it(`should set tag "${LANGUAGE_TAG}" equal "${LANGUAGE_TAG_VALUE}"`, () => {
             initErrorReporter(defaultInitOptions)
 
-            expect(setTagMock).toHaveBeenCalledWith('language', 'javascript')
+            expect(setTagMock).toHaveBeenCalledWith(
+                LANGUAGE_TAG,
+                LANGUAGE_TAG_VALUE
+            )
         })
 
-        it('should set account domain tag when currentAccount option is defined', () => {
+        it(`should set tag "${SERVER_VERSION_TAG}"`, () => {
+            initErrorReporter(defaultInitOptions)
+
+            expect(setTagMock).toHaveBeenCalledWith(
+                SERVER_VERSION_TAG,
+                defaultInitOptions.serverVersion
+            )
+        })
+
+        it(`should set tag "${ACCOUNT_DOMAIN_TAG}" when currentAccount option is defined`, () => {
             initErrorReporter({
                 ...defaultInitOptions,
                 currentAccount: account,
             })
 
             expect(setTagMock).toHaveBeenCalledWith(
-                'account.domain',
+                ACCOUNT_DOMAIN_TAG,
                 account.domain
             )
         })

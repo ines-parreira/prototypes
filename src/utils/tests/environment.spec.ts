@@ -79,6 +79,7 @@ describe('environment utils', () => {
             ...Object.values(NodeEnv).map((env) => ['NODE_ENV', env]),
             ['GORGIAS_ASSETS_URL', 'https://example.com'],
             ['TZ', 'UTC'],
+            ['WEB_APP_RELEASE', 'test-release'],
         ])(
             'should return %s property with "%s" value from process.env',
             (key, value) => {

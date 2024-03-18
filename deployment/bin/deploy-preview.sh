@@ -25,8 +25,8 @@ if [ -z "${ASSETS_DIR}" ]; then
     error "Environment variable ASSETS_DIR is required for the location of the asset directory."
     exit 1
 fi
-if [ -z "${WEBAPP_PATH}" ]; then
-    error "Environment variable WEBAPP_PATH is required for the destination path in GCS."
+if [ -z "${STORAGE_PATH}" ]; then
+    error "Environment variable STORAGE_PATH is required for the destination path in GCS."
     exit 1
 fi
 
@@ -63,11 +63,11 @@ info 'Creating preview environment K8s namespace...'
 kubectl --context "$CONTEXT" get ns "$PREVIEW_NS" >/dev/null 2>&1 || kubectl --context="${CONTEXT}" create ns "$PREVIEW_NS"
 
 # Publish manifest before we gzip it for gcs
-publish_manifest_configmap "$CONTEXT" "$PREVIEW_NS" "$BUILD_DIR" "/preview/${BUILD}/${WEBAPP_PATH}/build"
+publish_manifest_configmap "$CONTEXT" "$PREVIEW_NS" "$BUILD_DIR" "/preview/${BUILD}/${STORAGE_PATH}/build"
 
 # gcloud auth done in gitlab before_script
-find_and_publish_to_gcs "$BUILD_DIR" "${STORAGE_BUCKET}/preview/${BUILD}/${WEBAPP_PATH}/build"
-find_and_publish_to_gcs "$ASSETS_DIR" "${STORAGE_BUCKET}/preview/${BUILD}/${WEBAPP_PATH}/assets"
+find_and_publish_to_gcs "$BUILD_DIR" "${STORAGE_BUCKET}/preview/${BUILD}/${STORAGE_PATH}/build"
+find_and_publish_to_gcs "$ASSETS_DIR" "${STORAGE_BUCKET}/preview/${BUILD}/${STORAGE_PATH}/assets"
 
 deploy_helpdesk_backend_preview "$BACKEND_REF" "$PREVIEW_IDENTIFIER" "$(git show -s --format='%ae' HEAD)" ""
 

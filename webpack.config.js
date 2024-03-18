@@ -13,24 +13,23 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 
 const pkg = require('./package.json')
 
-const {NODE_ENV, RELEASE, GORGIAS_ASSETS_URL} = process.env
+const {NODE_ENV, GORGIAS_ASSETS_URL, WEB_APP_RELEASE} = process.env
 
 const __PRODUCTION__ = NODE_ENV === 'production'
-const HASH = RELEASE || '[contenthash]'
 
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
 const srcDir = path.join(__dirname, 'src')
 const buildDir = path.join(__dirname, 'build')
 const jsBundleFile = __PRODUCTION__
-    ? `helpdesk.app.${HASH}.js`
+    ? `helpdesk.app.[contenthash].js`
     : 'helpdesk.app.js'
 const styleBundleFile = __PRODUCTION__
-    ? `helpdesk.app.${HASH}.css`
+    ? `helpdesk.app.[contenthash].css`
     : 'helpdesk.app.css'
 const fontsBundleFile = 'font.css'
 const vendorsBundleFile = __PRODUCTION__
-    ? `helpdesk.vendors.${HASH}.js`
+    ? `helpdesk.vendors.[contenthash].js`
     : 'helpdesk.vendors.js'
 
 const mode = __PRODUCTION__ ? 'production' : 'development'
@@ -272,8 +271,11 @@ module.exports = (env = {}) => {
             new webpack.ProvidePlugin({
                 Tether: 'tether',
             }),
-            new webpack.EnvironmentPlugin({
-                GORGIAS_ASSETS_URL: 'http://localhost:8080/',
+            new webpack.DefinePlugin({
+                'process.env.GORGIAS_ASSETS_URL': JSON.stringify(
+                    GORGIAS_ASSETS_URL || 'http://localhost:8080/'
+                ),
+                'process.env.WEB_APP_RELEASE': JSON.stringify(WEB_APP_RELEASE),
             }),
             new NodePolyfillPlugin(),
             !__PRODUCTION__ && new ReactRefreshWebpackPlugin(),

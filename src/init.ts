@@ -29,7 +29,12 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import {initializeNewReleaseHandler} from 'models/api/resources'
 import {initLaunchDarkly} from 'utils/launchDarkly'
-import {getEnvironment, isProduction, isStaging} from 'utils/environment'
+import {
+    envVars,
+    getEnvironment,
+    isProduction,
+    isStaging,
+} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
 import {
     getCurrentAutomationProduct,
@@ -85,30 +90,36 @@ export const notifyUserImpersonated = (reduxStore: Store) => {
 
 export function initApp() {
     const environment = getEnvironment()
+    const {WEB_APP_RELEASE} = envVars
 
-    if (isStaging() || isProduction()) {
-        initDatadogLogger({
-            account: window.GORGIAS_STATE.currentAccount,
-            user: window.GORGIAS_STATE.currentUser,
-            version: window.GORGIAS_RELEASE,
-            environment,
-        })
-        initDatadogRum({
-            account: window.GORGIAS_STATE.currentAccount,
-            user: window.GORGIAS_STATE.currentUser,
-            version: window.GORGIAS_RELEASE,
-            environment,
-        })
-    }
+    if (WEB_APP_RELEASE) {
+        if (isStaging() || isProduction()) {
+            initDatadogLogger({
+                account: window.GORGIAS_STATE.currentAccount,
+                user: window.GORGIAS_STATE.currentUser,
+                serverVersion: window.GORGIAS_RELEASE,
+                clientVersion: WEB_APP_RELEASE,
+                environment,
+            })
+            initDatadogRum({
+                account: window.GORGIAS_STATE.currentAccount,
+                user: window.GORGIAS_STATE.currentUser,
+                serverVersion: window.GORGIAS_RELEASE,
+                clientVersion: WEB_APP_RELEASE,
+                environment,
+            })
+        }
 
-    if (window.SENTRY_DSN) {
-        initErrorReporter({
-            dsn: window.SENTRY_DSN,
-            release: window.GORGIAS_RELEASE,
-            environment,
-            currentUser: window.GORGIAS_STATE.currentUser,
-            currentAccount: window.GORGIAS_STATE.currentAccount,
-        })
+        if (window.SENTRY_DSN) {
+            initErrorReporter({
+                dsn: window.SENTRY_DSN,
+                clientVersion: WEB_APP_RELEASE,
+                serverVersion: window.GORGIAS_RELEASE,
+                environment,
+                currentUser: window.GORGIAS_STATE.currentUser,
+                currentAccount: window.GORGIAS_STATE.currentAccount,
+            })
+        }
     }
 
     // Supply an initial state to redux for faster page loads. See #752

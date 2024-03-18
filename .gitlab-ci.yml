@@ -8,6 +8,7 @@ stages:
   - test
   - build
   - deploy
+  - release
   - docs
   - force deploy
 
@@ -33,7 +34,8 @@ default:
 variables:
   BUILD_DIR: "build"
   ASSETS_DIR: "src/assets"
-  WEBAPP_PATH: "web-app"
+  STORAGE_PATH: "web-app"
+  WEB_APP_RELEASE: "$CI_COMMIT_SHORT_SHA"
 
 .staging_env:
   variables:
@@ -134,7 +136,7 @@ Build preview:
   extends: .build
   needs: [Install dependencies]
   variables:
-    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/preview/${CI_COMMIT_SHA}/${WEBAPP_PATH}
+    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/preview/${CI_COMMIT_SHA}/${STORAGE_PATH}
   rules:
     - if: $CI_COMMIT_REF_NAME != "main" && $CI_COMMIT_REF_NAME != "staging"
 
@@ -142,7 +144,7 @@ Build staging:
   extends: .build
   needs: [Install dependencies]
   variables:
-    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/${WEBAPP_PATH}
+    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/${STORAGE_PATH}
   rules:
     - if: $CI_COMMIT_REF_NAME == "staging"
 
@@ -150,7 +152,7 @@ Build production:
   extends: .build
   needs: [Install dependencies]
   variables:
-    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.io/${WEBAPP_PATH}
+    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.io/${STORAGE_PATH}
   rules:
     - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
 
@@ -163,10 +165,10 @@ Build production:
   script:
     - . deployment/bin/deploy-utils.sh
     - . deploy-argo-utils.sh
-    - find_and_publish_to_gcs $BUILD_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/build
-    - find_and_publish_to_gcs $ASSETS_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/assets
+    - find_and_publish_to_gcs $BUILD_DIR ${STORAGE_BUCKET}/${STORAGE_PATH}/build
+    - find_and_publish_to_gcs $ASSETS_DIR ${STORAGE_BUCKET}/${STORAGE_PATH}/assets
     - setup_helpdesk_kubecontext $CONTEXT
-    - publish_manifest_configmap $CONTEXT default $BUILD_DIR /${WEBAPP_PATH}/build
+    - publish_manifest_configmap $CONTEXT default $BUILD_DIR /${STORAGE_PATH}/build
 
 .deploy staging:
   dependencies: [Build staging]
@@ -219,6 +221,43 @@ Deploy preview:
   script:
     - deployment/bin/deploy-preview.sh $CI_COMMIT_SHA
 
+.sentry release:
+  stage: release
+  script:
+    - yarn sentry-cli releases new "$WEB_APP_RELEASE"
+    - yarn sentry-cli releases set-commits "$WEB_APP_RELEASE" --auto --ignore-missing
+    - yarn sentry-cli releases files "$WEB_APP_RELEASE" upload-sourcemaps "$BUILD_DIR"
+    - yarn sentry-cli releases finalize "$WEB_APP_RELEASE"
+  cache:
+    - <<: *node_modules-cache
+
+Create Preview Release:
+  extends: .sentry release
+  needs: 
+    - Build preview
+    - Deploy preview
+  dependencies: [Build preview]
+  rules:
+    - if: $CI_COMMIT_REF_NAME != "main" && $CI_COMMIT_REF_NAME != "staging"
+  variables:
+    SENTRY_PROJECT: "helpdesk-staging"
+
+Create Staging Release:
+  extends: .sentry release
+  dependencies: [Build staging]
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "staging"
+  variables:
+    SENTRY_PROJECT: "helpdesk-staging"
+
+Create Production Release:
+  extends: .sentry release
+  dependencies: [Build production]
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+  variables:
+    SENTRY_PROJECT: "helpdesk-web-app"
+
 Publish Chromatic:
   stage: docs
   dependencies: [Install dependencies]
@@ -250,10 +289,10 @@ Force deploy production:
   script:
     - . deployment/bin/deploy-utils.sh
     - . deploy-argo-utils.sh
-    - find_and_publish_to_gcs $BUILD_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/build
-    - find_and_publish_to_gcs $ASSETS_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/assets
+    - find_and_publish_to_gcs $BUILD_DIR ${STORAGE_BUCKET}/${STORAGE_PATH}/build
+    - find_and_publish_to_gcs $ASSETS_DIR ${STORAGE_BUCKET}/${STORAGE_PATH}/assets
     - |
       for CONTEXT in $CONTEXTS; do
         setup_helpdesk_kubecontext $CONTEXT
-        publish_manifest_configmap $CONTEXT default $BUILD_DIR /${WEBAPP_PATH}/build
+        publish_manifest_configmap $CONTEXT default $BUILD_DIR /${STORAGE_PATH}/build
       done
