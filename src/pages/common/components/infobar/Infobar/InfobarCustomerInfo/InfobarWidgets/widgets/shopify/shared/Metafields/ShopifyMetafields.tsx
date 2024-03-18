@@ -10,14 +10,13 @@ export default function ShopifyMetafields({metafields}: Props) {
     return (
         <>
             {metafields.map((field, index) => {
+                const namespace = field.namespace || ''
+                const key = field.key || ''
+                const value = field.value || ''
+
                 return (
-                    <StaticField
-                        key={index}
-                        label={`${field['namespace'] as string}.${
-                            field['key'] as string
-                        }`}
-                    >
-                        {field['value']}
+                    <StaticField key={index} label={`${namespace}.${key}`}>
+                        {value}
                     </StaticField>
                 )
             })}
