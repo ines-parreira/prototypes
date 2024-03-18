@@ -368,6 +368,7 @@ describe('useGetAIArticles', () => {
 
     mockFlags({
         [FeatureFlagKey.ObservabilityAIArticles]: true,
+        [FeatureFlagKey.ObservabilityAIArticlesLibrary]: true,
     })
 
     beforeEach(async () => {
