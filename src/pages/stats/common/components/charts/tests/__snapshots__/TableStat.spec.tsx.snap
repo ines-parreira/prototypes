@@ -88,6 +88,15 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
         </span>
       </th>
       <th
+        class="online-state"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          ONLINE STATE
+        </span>
+      </th>
+      <th
         class="ticket-details"
       >
         <span
@@ -343,6 +352,21 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             <span>
               4h 27m
             </span>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell online-state link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="badge upperCase"
+            >
+              Online
+            </div>
           </div>
         </span>
       </td>
@@ -947,6 +971,21 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
         </span>
       </td>
       <td
+        class="lineCell online-state link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="badge upperCase"
+            >
+              Online
+            </div>
+          </div>
+        </span>
+      </td>
+      <td
         class="lineCell ticket-details link-full-td"
       >
         <span
@@ -1472,6 +1511,15 @@ exports[`TableStat should render a table chart 1`] = `
         </span>
       </th>
       <th
+        class="online-state"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          ONLINE STATE
+        </span>
+      </th>
+      <th
         class="ticket-details"
       >
         <span
@@ -1727,6 +1775,21 @@ exports[`TableStat should render a table chart 1`] = `
             <span>
               4h 27m
             </span>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell online-state link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="badge upperCase"
+            >
+              Online
+            </div>
           </div>
         </span>
       </td>
@@ -2176,6 +2239,54 @@ exports[`TableStat should render a table chart with "no data" message 1`] = `
 </div>
 `;
 
+exports[`TableStat should render a table with online status disabled badge 1`] = `
+<table
+  class="table table table-hover"
+>
+  <thead>
+    <tr>
+      <th
+        class="online-state"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          ONLINE STATE
+        </span>
+      </th>
+      <th
+        class="ticket-details"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          TICKET DETAILS
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="lineCell online-state link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="badge upperCase"
+            >
+              Offline
+            </div>
+          </div>
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`TableStat should render a table with the expand button and one line visible 1`] = `
 <table
   class="table table table-hover"
@@ -2261,6 +2372,15 @@ exports[`TableStat should render a table with the expand button and one line vis
           class="cell-wrapper"
         >
           ONLINE TIME
+        </span>
+      </th>
+      <th
+        class="online-state"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          ONLINE STATE
         </span>
       </th>
       <th
@@ -2519,6 +2639,21 @@ exports[`TableStat should render a table with the expand button and one line vis
             <span>
               4h 27m
             </span>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell online-state link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="badge upperCase"
+            >
+              Online
+            </div>
           </div>
         </span>
       </td>

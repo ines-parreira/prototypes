@@ -40,9 +40,10 @@ import DistributionVariantStat, {
     DistributionStatVariant,
 } from 'pages/stats/common/components/charts/DistributionVariantStat'
 
-import ProductCell from './cells/ProductCell'
-import css from './TableStat.less'
-import TicketDetailsStat from './TicketDetailsStat'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import ProductCell from 'pages/stats/common/components/charts/TableStat/cells/ProductCell'
+import css from 'pages/stats/common/components/charts/TableStat/TableStat.less'
+import TicketDetailsStat from 'pages/stats/common/components/charts/TableStat/TicketDetailsStat'
 
 type OwnProps = {
     data: Map<any, any>
@@ -241,6 +242,26 @@ export class TableStat extends Component<
                                 context
                             )}
                         </span>
+                    </div>
+                )
+            }
+            case StatValueType.OnlineState: {
+                const isOnlineOrOffline = metric.getIn([
+                    'extra',
+                    'isOnline',
+                ]) as boolean
+
+                return (
+                    <div>
+                        <Badge
+                            type={
+                                isOnlineOrOffline
+                                    ? ColorType.Success
+                                    : ColorType.Grey
+                            }
+                        >
+                            {isOnlineOrOffline ? 'Online' : 'Offline'}
+                        </Badge>
                     </div>
                 )
             }

@@ -1,8 +1,9 @@
 import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
+import LD from 'launchdarkly-react-client-sdk'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
@@ -19,8 +20,9 @@ import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywal
 import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import TagsStatsFilter from '../TagsStatsFilter'
-import LiveAgents from '../LiveAgents'
+import {FeatureFlagKey} from 'config/featureFlags'
+import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import LiveAgents from 'pages/stats/LiveAgents'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -79,6 +81,9 @@ describe('LiveAgents', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsProductivityMetrics]: false,
+        }))
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
@@ -86,13 +91,15 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        const {container} = renderWithRouter(
+        const {container, getByText} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <LiveAgents />
             </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('ONLINE TIME')).toBeInTheDocument()
+        expect(screen.queryByText('ONLINE STATUS')).not.toBeInTheDocument()
     })
 
     it('should render the paywall when the current account has no user live statistics feature', () => {
@@ -148,5 +155,23 @@ describe('LiveAgents', () => {
         fireEvent.click(getByText('keyboard_arrow_right'))
 
         expect(fetchPage.mock.calls).toMatchSnapshot()
+    })
+
+    it('should render the filters and stats with online status instead of online time', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsProductivityMetrics]: true,
+        }))
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        const {getByText} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>
+        )
+
+        expect(getByText('ONLINE STATUS')).toBeInTheDocument()
+        expect(screen.queryByText('ONLINE TIME')).not.toBeInTheDocument()
     })
 })

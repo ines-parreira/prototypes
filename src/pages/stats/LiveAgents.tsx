@@ -1,6 +1,7 @@
 import React, {useMemo, useCallback} from 'react'
 import moment from 'moment-timezone'
 import {produce} from 'immer'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {LiveAgentsFilters} from 'pages/stats/LiveAgentsFilters'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,16 +22,21 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import StatsPage from './StatsPage'
-import StatCurrentDate from './common/components/StatCurrentDate'
-import css from './LiveAgents.less'
-import StatWrapper from './StatWrapper'
-import TableStat from './common/components/charts/TableStat/TableStat'
-import StatsFiltersContext from './StatsFiltersContext'
+import {FeatureFlagKey} from 'config/featureFlags'
+import StatsPage from 'pages/stats/StatsPage'
+import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
+import css from 'pages/stats/LiveAgents.less'
+import StatWrapper from 'pages/stats/StatWrapper'
+import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
+import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 
+export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
+    const isAnalyticsProductivityMetricsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
+
     const {cleanStatsFilters: statsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -71,8 +77,14 @@ function LiveAgents() {
     }, [fetchUserPerformancePage, userPerformance])
 
     const formattedUserPerformance = useMemo(() => {
-        return userPerformance && formatUserPerformanceData(userPerformance)
-    }, [userPerformance])
+        return (
+            userPerformance &&
+            formatUserPerformanceData(
+                userPerformance,
+                isAnalyticsProductivityMetricsEnabled
+            )
+        )
+    }, [userPerformance, isAnalyticsProductivityMetricsEnabled])
 
     return (
         <StatsFiltersContext.Provider value={pageStatsFilters}>
@@ -133,7 +145,8 @@ function LiveAgents() {
 }
 
 const formatUserPerformanceData = (
-    stat: Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>
+    stat: Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
+    analyticsMetricEnabled?: boolean
 ) => {
     return produce<
         Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
@@ -178,6 +191,15 @@ const formatUserPerformanceData = (
                     agentTimezoneIndex,
                 ].includes(i)
         )
+
+        if (analyticsMetricEnabled) {
+            const onlineTimeIndex = data.axes.x.findIndex(
+                (x) => x.type === StatType.OnlineTime
+            )
+            data.axes.x[onlineTimeIndex].name = 'Online status'
+            data.axes.x[onlineTimeIndex].type = StatType.OnlineState
+        }
+
         data.lines = data.lines.map((line) =>
             line.reduce((acc, value, index) => {
                 if (!acc || !value) {

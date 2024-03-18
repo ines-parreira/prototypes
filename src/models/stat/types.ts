@@ -30,6 +30,7 @@ export enum StatType {
     Number = 'number',
     Object = 'object',
     OnlineTime = 'online-time',
+    OnlineState = 'online-state',
     Percent = 'percent',
     Product = 'product',
     QuickResponseAutomationRate = 'quick-response-automation-rate',
@@ -118,7 +119,11 @@ export type StatAxisValue =
 
 export type NumericStatAxisValue = {
     name: string
-    type: StatType.Number | StatType.OnlineTime | StatType.TicketDetails
+    type:
+        | StatType.Number
+        | StatType.OnlineTime
+        | StatType.TicketDetails
+        | StatType.OnlineState
     value?: number
 }
 

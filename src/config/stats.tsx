@@ -252,6 +252,7 @@ export enum StatValueType {
     Number = 'number',
     Object = 'object',
     OnlineTime = 'online-time',
+    OnlineState = 'online-state',
     Percent = 'percent',
     Product = 'product',
     QuickResponseAutomationRate = 'quick-response-automation-rate',
@@ -771,6 +772,7 @@ export const stats = toImmutable<
         axisHelpers: {
             'Online time':
                 'Current agent online status and total amount of online time today calculated in your local timezone.',
+            'Online status': 'Current agent online status',
             'Tickets closed': 'Number of tickets closed per assigned agents',
         },
     },

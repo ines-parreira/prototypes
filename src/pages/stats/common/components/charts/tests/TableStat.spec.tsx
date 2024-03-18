@@ -16,7 +16,7 @@ import {
 import * as channelsService from 'services/channels'
 import {channels} from 'fixtures/channels'
 
-import {TableStat} from '../TableStat/TableStat'
+import {TableStat} from 'pages/stats/common/components/charts/TableStat/TableStat'
 
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
@@ -60,6 +60,7 @@ const tableStatData = fromJS({
                     currency: 'AUD',
                 },
                 {name: 'Online time', type: StatValueType.OnlineTime},
+                {name: 'Online state', type: StatValueType.OnlineState},
                 {name: 'Ticket details', type: StatValueType.TicketDetails},
                 {name: 'Customer link', type: StatValueType.CustomerLink},
                 {
@@ -141,6 +142,16 @@ const tableStatData = fromJS({
                     },
                 },
                 {
+                    type: StatValueType.Duration,
+                    value: 16043,
+                    extra: {
+                        timezone: 'US/Pacific',
+                        isOnline: true,
+                        firstSession: '2021-08-02T09:55:28.902155',
+                        lastSession: null,
+                    },
+                },
+                {
                     type: StatValueType.Object,
                     value: 51,
                     details: {
@@ -208,6 +219,39 @@ const tableStatData = fromJS({
                 {
                     value: 30,
                     type: StatValueType.ArticleRecommendationAutomationRate,
+                },
+            ],
+        ],
+    },
+    name: 'tickets_per_tag',
+    label: 'Tickets per tag',
+    meta: {
+        previous_start_datetime: '2018-10-22',
+        previous_end_datetime: '2018-10-23',
+    },
+}) as Map<any, any>
+const tableStatDataOnlyWithOnlineState = fromJS({
+    data: {
+        axes: {
+            x: [
+                {name: 'Online state', type: StatValueType.OnlineState},
+                {
+                    name: 'Ticket details',
+                    type: StatValueType.TicketDetails,
+                },
+            ],
+        },
+        lines: [
+            [
+                {
+                    type: StatValueType.Duration,
+                    value: 16043,
+                    extra: {
+                        timezone: 'US/Pacific',
+                        isOnline: false,
+                        firstSession: '2021-08-02T09:55:28.902155',
+                        lastSession: null,
+                    },
                 },
             ],
         ],
@@ -351,6 +395,26 @@ describe('TableStat', () => {
             userEvent.click(screen.getByRole('button'))
         })
 
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a table with online status disabled badge', () => {
+        const config = statsConfig.find(
+            (config, key) => key === TICKETS_PER_TAG
+        )
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TableStat
+                    {...(tableStatDataOnlyWithOnlineState.toObject() as ComponentProps<
+                        typeof TableStat
+                    >)}
+                    context={{tagColors: null}}
+                    config={config}
+                    integrations={integrationsData}
+                    selfServiceConfigurations={selfServiceConfigurationsData}
+                />
+            </Provider>
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 })
