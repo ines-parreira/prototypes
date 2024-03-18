@@ -6,7 +6,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import InputField from 'pages/common/forms/input/InputField'
-import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
 
 import css from './TestRequestInputs.less'
 
@@ -19,25 +18,13 @@ type Props = {
 
 const TestRequestInputs = ({
     isLoading,
-    inputs: inputsProp,
+    inputs,
     onSendTestRequest,
     onClose,
 }: Props) => {
     const [values, setValues] = useState<Record<string, string>>({})
 
-    const inputs = inputsProp.map((input) => ({
-        ...input,
-        key: toLiquidSyntax({
-            value: input.value,
-            filter:
-                input.type === 'date'
-                    ? 'date'
-                    : input.type === 'array'
-                    ? 'json'
-                    : undefined,
-        }),
-    }))
-    const isDisabled = inputs.some((input) => !values[input.key])
+    const isDisabled = inputs.some((input) => !values[input.value])
 
     return (
         <>
@@ -45,13 +32,13 @@ const TestRequestInputs = ({
             <ModalBody className={css.body}>
                 {inputs.map((input) => (
                     <InputField
-                        key={input.key}
+                        key={input.value}
                         label={input.name}
-                        value={values[input.key]}
+                        value={values[input.value]}
                         onChange={(value) => {
                             setValues({
                                 ...values,
-                                [input.key]: value,
+                                [input.value]: value,
                             })
                         }}
                         placeholder="Sample value"

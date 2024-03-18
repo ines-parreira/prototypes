@@ -1,15 +1,20 @@
 import {useCallback, useState} from 'react'
-
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const renderWithVariables = (
     string: string,
     variables: Record<string, string>
 ) => {
-    return Object.entries(variables).reduce(
-        (string, [key, value]) => string.replace(key, value),
-        string
-    )
+    let result = string
+
+    for (const path in variables) {
+        result = result.replace(
+            new RegExp(`{{${path.replace(/\./g, '\\.')}[^{}]*}}`, 'g'),
+            variables[path]
+        )
+    }
+
+    return result
 }
 
 const corsProxyBaseUrl = 'https://cors-proxy.gorgias.workers.dev'
