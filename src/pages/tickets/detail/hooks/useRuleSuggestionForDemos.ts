@@ -42,6 +42,8 @@ export default function useRuleSuggestionForDemos(
         getInTicketSuggestionSettings
     )
     const ticketDemoSuggestion = useFlags()[FeatureFlagKey.TicketDemoSuggestion]
+    const enforceTicketDemoSuggestion =
+        useFlags()[FeatureFlagKey.EnforceTicketDemoSuggestion]
 
     const dispatch = useAppDispatch()
 
@@ -111,7 +113,10 @@ export default function useRuleSuggestionForDemos(
     }
 
     return {
-        shouldDisplayDemoSuggestion: hasAutomate || shouldDisplayDemoSuggestion,
+        shouldDisplayDemoSuggestion:
+            hasAutomate ||
+            enforceTicketDemoSuggestion ||
+            shouldDisplayDemoSuggestion,
         setDemoSuggestionSettingPerUser,
         setDemoSuggestionSettingPerAccount,
     }

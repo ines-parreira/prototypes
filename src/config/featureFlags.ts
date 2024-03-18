@@ -48,6 +48,7 @@ export enum FeatureFlagKey {
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
+    EnforceTicketDemoSuggestion = 'enforce-ticket-demo-suggestion',
     FlowsStepsHttpRequest = 'flows-steps-http-request',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
     FlowsStepsShopperAuthentication = 'flows-steps-shopper-authentication-1',

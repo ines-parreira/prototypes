@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
 import {Spinner, Tooltip} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import {ActionStatus, Ticket} from 'models/ticket/types'
@@ -38,6 +39,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {getAccountOwnerId} from 'state/currentAccount/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
 import css from './RuleSuggestion.less'
 import InTicketSuggestion from './InTicketSuggestion'
@@ -100,6 +102,9 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
 
     const suggestion = ticket.meta.rule_suggestion
     const {actions, text} = getRuleSuggestionContent(ticket)
+
+    const enforceTicketDemoSuggestion =
+        useFlags()[FeatureFlagKey.EnforceTicketDemoSuggestion]
 
     const {
         shouldDisplayDemoSuggestion,
@@ -311,12 +316,14 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             text={text?.body_html}
             macroActions={actions}
             actionsContent={
-                hasAutomate
-                    ? actionsContentForAutomate
-                    : actionsContentForNonAutomate
+                enforceTicketDemoSuggestion || !hasAutomate
+                    ? actionsContentForNonAutomate
+                    : actionsContentForAutomate
             }
             infoContent={
-                hasAutomate ? infoContentForAutomate : infoContentForNonAutomate
+                enforceTicketDemoSuggestion || !hasAutomate
+                    ? infoContentForNonAutomate
+                    : infoContentForAutomate
             }
         />
     )
