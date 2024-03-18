@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -28,11 +29,13 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
 import EditOrderModal from './EditOrderModal/EditOrderModal'
 import OrderStatus from './OrderStatus'
 import css from './OrderWidgets.less'
+import OrderMetafieldsWidget from './OrderMetafieldsWidget'
 
 export default function OrderWidget() {
     return {
@@ -40,6 +43,7 @@ export default function OrderWidget() {
         editionHiddenFields: ['link'],
         TitleWrapper,
         Wrapper,
+        AfterContent,
     }
 }
 
@@ -356,4 +360,23 @@ export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
             {children}
         </OrderContext.Provider>
     )
+}
+
+type AfterContentProps = {
+    isEditing: boolean
+}
+
+export function AfterContent({isEditing}: AfterContentProps) {
+    const orderContext = useContext(OrderContext)
+    const integrationContext = useContext(IntegrationContext)
+    const render = useFlags()[FeatureFlagKey.ShopifyMetafields] ?? false
+    if (!render) {
+        return null
+    }
+    return !isEditing ? (
+        <OrderMetafieldsWidget
+            orderId={orderContext.orderId as number}
+            integrationId={integrationContext.integrationId as number}
+        />
+    ) : null
 }
