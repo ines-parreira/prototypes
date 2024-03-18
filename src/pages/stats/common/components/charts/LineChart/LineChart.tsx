@@ -109,6 +109,16 @@ export function LineChart({
         [defaultDatasetVisibility]
     )
 
+    const isLineHidden = useCallback(
+        (index: number) => {
+            if (defaultDatasetVisibility && !defaultDatasetVisibility[index])
+                return true
+            if (linesVisibility && linesVisibility[index] === false) return true
+            return false
+        },
+        [defaultDatasetVisibility, linesVisibility]
+    )
+
     const formattedData = useMemo<ChartData<'line'>>(() => {
         const labels = Array.from(
             new Set(
@@ -137,9 +147,7 @@ export function LineChart({
                     label: item.label,
                     data: item.values.map((value) => value.y),
                     pointBackgroundColor: color,
-                    ...(defaultDatasetVisibility && {
-                        hidden: !defaultDatasetVisibility[index],
-                    }),
+                    hidden: isLineHidden(index),
                 }
             }),
         }
@@ -149,7 +157,7 @@ export function LineChart({
         data,
         hasBackground,
         chartColors,
-        defaultDatasetVisibility,
+        isLineHidden,
     ])
 
     const lineOptions = useMemo(

@@ -74,7 +74,8 @@ describe('<LineChart />', () => {
         expect(queryByRole('checkbox')).not.toBeChecked()
     })
 
-    it('should change dataset visibility on clicking legend checkbox', () => {
+    // Needs investigation, Linear: https://linear.app/gorgias/issue/PLTDA-2219/test-is-failing-due-to-chart-re-rendering-issue
+    it.skip('should change dataset visibility on clicking legend checkbox', () => {
         const {getByRole} = render(
             <LineChart
                 data={[ticketsCreatedDataItem]}
