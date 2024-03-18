@@ -423,7 +423,7 @@ export const AiAgentStoreView = ({
                     <NumberInput
                         className={css.numberInput}
                         onChange={(value?: number) => {
-                            if (!value) return
+                            if (value === undefined) return
                             updateValue('ticketSampleRate', value)
                         }}
                         value={
