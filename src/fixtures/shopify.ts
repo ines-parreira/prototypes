@@ -1,4 +1,11 @@
 import {
+    DateShopifyMetafield,
+    DateTimeShopifyMetafield,
+    MultiLineTextFieldShopifyMetafield,
+    ShopifyMetafield,
+    SingleLineTextFieldShopifyMetafield,
+} from '@gorgias/api-types'
+import {
     Image,
     Variant,
     Product,
@@ -1555,3 +1562,40 @@ export const shopifyProductResult = () => [
         deleted_datetime: null,
     },
 ]
+
+export const shopifyUrlMetafield = (): ShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_url',
+    value: 'https://google.ro',
+    type: 'url',
+})
+
+export const shopifySingleTextLineFieldMetafield =
+    (): SingleLineTextFieldShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_single_line',
+        value: 'testing single line with a lot of text testing single line with a lot of text',
+        type: 'single_line_text_field',
+    })
+
+export const shopifyMultiTextLineFieldMetafield =
+    (): MultiLineTextFieldShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_multi_line',
+        value: 'testing\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\ntesting\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\ntesting\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\n\\n',
+        type: 'multi_line_text_field',
+    })
+
+export const shopifyDateMetafield = (): DateShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_date',
+    value: '2024-02-06T13:30:00Z',
+    type: 'date',
+})
+
+export const shopifyDateTimeMetafield = (): DateTimeShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_date_time',
+    value: '2024-02-06T13:30:00Z',
+    type: 'date_time',
+})

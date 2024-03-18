@@ -2948,26 +2948,26 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.1.25":
-  version "0.1.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.25/7d52f70cf92072db942478d028442a44b21c003e#7d52f70cf92072db942478d028442a44b21c003e"
-  integrity sha512-mYemSPyDa4o+Xi8f8lGDjzji7cNNJJzS3XcK7KKw5x7T40sgsIntEl2dEl/K94/HZkuUuPgnvSL+P6t2RB1Unw==
+"@gorgias/api-client@^0.1.26":
+  version "0.1.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.26/1eb35e2614ad8f6a41e1b6146707bf4266de1cd1#1eb35e2614ad8f6a41e1b6146707bf4266de1cd1"
+  integrity sha512-lE/KtCxN6AGv3RTy7mKkO84IvJeMnFpr/sfoyAhmsV3XM/I01JCE0Q+AL3+ND6FdaZWvI9k6A2X/GaWgwsvnUA==
   dependencies:
-    "@gorgias/api-types" "^0.1.25"
+    "@gorgias/api-types" "^0.1.26"
     axios "^1"
 
-"@gorgias/api-queries@0.1.25":
-  version "0.1.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.25/bcbad48c60ee5497476ed7502416de51058ae8b2#bcbad48c60ee5497476ed7502416de51058ae8b2"
-  integrity sha512-6Ptc8qBds+lgRm3eISrfAuw8SOPw91VdikReKGvw8Tb4ArlQTnbof5eXRkicC6o2nJ77c9DRLkQpkrgSHY+zDA==
+"@gorgias/api-queries@0.1.26":
+  version "0.1.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.26/9ba49e2865e5fa6b495092bfc02f93f4ed9cac91#9ba49e2865e5fa6b495092bfc02f93f4ed9cac91"
+  integrity sha512-KJe5h9u5PhIO1SeEx/WMmfXqnDwEa9ihS6AKT9aG2pmKETmr6/tFKqiMTOlByVfzHlVL/rEBxnlT+qZz6R8JUQ==
   dependencies:
-    "@gorgias/api-client" "^0.1.25"
-    "@gorgias/api-types" "^0.1.25"
+    "@gorgias/api-client" "^0.1.26"
+    "@gorgias/api-types" "^0.1.26"
 
-"@gorgias/api-types@^0.1.25":
-  version "0.1.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.25/2be88202d9871b13e08374d59cf9732f9b1fb9b4#2be88202d9871b13e08374d59cf9732f9b1fb9b4"
-  integrity sha512-L4t6nCzXqB9D0DBwS9SBqNzHnHQfqW+xrigj70VjjSdWGqzFp7/afu5x1JPgTBHeKCOX1lGbaOH112752HUPQQ==
+"@gorgias/api-types@^0.1.26":
+  version "0.1.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.26/91b092ec614baf9cc7e9f11147c12df4ab0a9b3c#91b092ec614baf9cc7e9f11147c12df4ab0a9b3c"
+  integrity sha512-eaq8dkHpQBLixt0SXEwuGNcjrNIbKf5FqWB9L27hOCwpIMntrEONq57JiRrGsEuh9Ip+LWs/qyWxuCnOCXCmhA==
 
 "@gorgias/design-tokens@^0.2.8":
   version "0.2.8"
@@ -6993,11 +6993,11 @@ axios@^0.21.1:
     follow-redirects "^1.14.0"
 
 axios@^1:
-  version "1.6.7"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.7.tgz#7b48c2e27c96f9c68a2f8f31e2ab19f59b06b0a7"
-  integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
+  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
   dependencies:
-    follow-redirects "^1.15.4"
+    follow-redirects "^1.15.6"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -10568,10 +10568,10 @@ follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.15.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.4.tgz#cdc7d308bf6493126b17ea2191ea0ccf3e535adf"
   integrity sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==
 
-follow-redirects@^1.15.4:
-  version "1.15.5"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
-  integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==
+follow-redirects@^1.15.4, follow-redirects@^1.15.6:
+  version "1.15.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
+  integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
 
 for-each@^0.3.3:
   version "0.3.3"

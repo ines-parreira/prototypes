@@ -1,0 +1,17 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .field {
+        display: block;
+        &:hover {
+            .copyButton {
+                display: inline-block;
+            }
+        }
+    }
+
+    .copyButton {
+        display: none;
+        margin-left: @layout-spacing-xxs;
+    }
+}
