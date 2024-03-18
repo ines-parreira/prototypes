@@ -1,3 +1,5 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .amount {
         flex: 1 0 auto;
@@ -12,6 +14,10 @@
     }
 
     .footerUnsubscribe {
+        justify-content: space-between;
+    }
+
+    .footerSpaceBetween {
         justify-content: space-between;
     }
 
@@ -32,5 +38,16 @@
 
     .wide {
         max-width: 980px;
+    }
+
+    .step {
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--neutral-grey-4);
+    }
+
+    .ROIButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 }

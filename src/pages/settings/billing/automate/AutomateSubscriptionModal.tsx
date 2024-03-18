@@ -47,6 +47,8 @@ type Props = {
     image?: string
     headerDescription?: string
     isOpen: boolean
+    showROICalculatorStep?: boolean
+    setShowROICalculatorStep?: (value: boolean) => void
     onClose: () => void
     onSubscribe?: () => void
     fade?: boolean
@@ -100,6 +102,8 @@ const AutomateSubscriptionModal = ({
     onClose,
     onSubscribe,
     fade = true,
+    showROICalculatorStep = false,
+    setShowROICalculatorStep,
 }: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -180,6 +184,8 @@ const AutomateSubscriptionModal = ({
         [selectedPrice]
     )
 
+    const [showStep, setShowStep] = useState(false)
+
     const onConfirmEnterprise = () => {
         setShowContactSupportModal(true)
         onClose()
@@ -187,6 +193,16 @@ const AutomateSubscriptionModal = ({
 
     const onCloseEnterprise = () => {
         setShowContactSupportModal(false)
+    }
+
+    const onSelectPlanClick = () => {
+        setShowROICalculatorStep?.(false)
+        setShowStep(true)
+    }
+
+    const handleOnClose = () => {
+        setShowStep(false)
+        onClose()
     }
 
     useEffect(() => {
@@ -197,11 +213,115 @@ const AutomateSubscriptionModal = ({
         }
     }, [isOpen, history])
 
+    const AutomateModalStep = () => (
+        <>
+            <ModalHeader toggle={handleOnClose}>{header}</ModalHeader>
+            <ModalBody
+                className={css.modalBody}
+                data-candu-id={
+                    hasAutomate
+                        ? 'cancel-automation-addon-modal-body'
+                        : 'manage-automation-addon-modal-body'
+                }
+            >
+                <PlanSubscriptionDescription
+                    productType={ProductType.Automation}
+                    prices={automationPrices}
+                    isTrialing={isTrialingSubscription}
+                    isEnterprisePlan={isEnterprisePlan}
+                    interval={interval}
+                    selectedPrice={selectedPrice}
+                    setSelectedPrice={setSelectedPrice}
+                    setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                />
+                {!!image && (
+                    <img
+                        alt="automation features"
+                        src={image}
+                        className={css.image}
+                    />
+                )}
+            </ModalBody>
+            {hasAutomate ? (
+                <ModalFooter
+                    className={classnames(css.footer, css.footerUnsubscribe)}
+                >
+                    <Button
+                        intent="destructive"
+                        onClick={handleUnsubscribeClick}
+                        isLoading={isSubscriptionUpdating}
+                    >
+                        Cancel subscription
+                    </Button>
+                    <Button intent="secondary" onClick={handleOnClose}>
+                        OK
+                    </Button>
+                </ModalFooter>
+            ) : isEnterprisePlan ? (
+                <Footer
+                    confirmLabel="Contact Us"
+                    isUpdating={isSubscriptionUpdating}
+                    onClose={handleOnClose}
+                    onConfirm={onConfirmEnterprise}
+                />
+            ) : showStep ? (
+                <ModalFooter
+                    className={classnames(css.footer, css.footerSpaceBetween)}
+                >
+                    <span className={css.step}>Step 2 of 2</span>
+                    <div className={css.ROIButtons}>
+                        <Button
+                            onClick={() => setShowROICalculatorStep?.(true)}
+                            intent="secondary"
+                        >
+                            Back
+                        </Button>
+                        <Button intent="primary" onClick={onConfirm}>
+                            {confirmLabel}
+                        </Button>
+                    </div>
+                </ModalFooter>
+            ) : (
+                <Footer
+                    confirmLabel={confirmLabel}
+                    isUpdating={isSubscriptionUpdating}
+                    isDisabled={!isSubscriptionEnabled}
+                    onClose={handleOnClose}
+                    onConfirm={onConfirm}
+                />
+            )}
+        </>
+    )
+
+    const ROICalculatorModalStep = () => (
+        <>
+            <ModalHeader toggle={handleOnClose}>
+                Calculate Potential ROI
+            </ModalHeader>
+            <ModalBody className={css.modalBody}>
+                ROI Calculator goes here
+            </ModalBody>
+            <ModalFooter
+                className={classnames(css.footer, css.footerSpaceBetween)}
+            >
+                <span className={css.step}>Step 1 of 2</span>
+                <div className={css.ROIButtons}>
+                    <Button onClick={handleOnClose} intent="secondary">
+                        Cancel
+                    </Button>
+                    <Button intent="primary" onClick={onSelectPlanClick}>
+                        Select Plan
+                    </Button>
+                </div>
+            </ModalFooter>
+        </>
+    )
+
     return (
         <>
             <Modal
                 isOpen={isOpen}
-                toggle={onClose}
+                toggle={handleOnClose}
                 className={classnames(css.modal, {
                     [css.wide]: false,
                 })}
@@ -209,67 +329,8 @@ const AutomateSubscriptionModal = ({
                 centered
                 container={appNode ?? undefined}
             >
-                <ModalHeader toggle={onClose}>{header}</ModalHeader>
-                <ModalBody
-                    className={css.modalBody}
-                    data-candu-id={
-                        hasAutomate
-                            ? 'cancel-automation-addon-modal-body'
-                            : 'manage-automation-addon-modal-body'
-                    }
-                >
-                    <PlanSubscriptionDescription
-                        productType={ProductType.Automation}
-                        prices={automationPrices}
-                        isTrialing={isTrialingSubscription}
-                        isEnterprisePlan={isEnterprisePlan}
-                        interval={interval}
-                        selectedPrice={selectedPrice}
-                        setSelectedPrice={setSelectedPrice}
-                        setIsSubscriptionEnabled={setIsSubscriptionEnabled}
-                    />
-                    {!!image && (
-                        <img
-                            alt="automation features"
-                            src={image}
-                            className={css.image}
-                        />
-                    )}
-                </ModalBody>
-                {hasAutomate ? (
-                    <ModalFooter
-                        className={classnames(
-                            css.footer,
-                            css.footerUnsubscribe
-                        )}
-                    >
-                        <Button
-                            intent="destructive"
-                            onClick={handleUnsubscribeClick}
-                            isLoading={isSubscriptionUpdating}
-                        >
-                            Cancel subscription
-                        </Button>
-                        <Button intent="secondary" onClick={onClose}>
-                            OK
-                        </Button>
-                    </ModalFooter>
-                ) : isEnterprisePlan ? (
-                    <Footer
-                        confirmLabel="Contact Us"
-                        isUpdating={isSubscriptionUpdating}
-                        onClose={onClose}
-                        onConfirm={onConfirmEnterprise}
-                    />
-                ) : (
-                    <Footer
-                        confirmLabel={confirmLabel}
-                        isUpdating={isSubscriptionUpdating}
-                        isDisabled={!isSubscriptionEnabled}
-                        onClose={onClose}
-                        onConfirm={onConfirm}
-                    />
-                )}
+                {showROICalculatorStep && <ROICalculatorModalStep />}
+                {!showROICalculatorStep && isOpen && <AutomateModalStep />}
             </Modal>
             {isEnterprisePlan && (
                 <ContactSupportModal

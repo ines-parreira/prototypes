@@ -40,6 +40,18 @@ const AutomatePaywallView = ({
     const hasAccessToROICalculator =
         useFlags()[FeatureFlagKey.ObservabilityROICalculator]
 
+    const [showROICalculatorStep, setShowROICalculatorStep] = useState(false)
+
+    const handleOnClose = () => {
+        setIsAutomationModalOpened(false)
+        setShowROICalculatorStep(false)
+    }
+
+    const handleROIButtonClick = () => {
+        setShowROICalculatorStep(true)
+        setIsAutomationModalOpened(true)
+    }
+
     return (
         <div className={css.layout}>
             <PageHeader title={headerTitle}></PageHeader>
@@ -92,6 +104,7 @@ const AutomatePaywallView = ({
                             intent="secondary"
                             size="medium"
                             className={css.roiButton}
+                            onClick={handleROIButtonClick}
                         >
                             <i className="material-icons rounded">
                                 monetization_on
@@ -107,7 +120,9 @@ const AutomatePaywallView = ({
             <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationModalOpened}
-                onClose={() => setIsAutomationModalOpened(false)}
+                onClose={handleOnClose}
+                showROICalculatorStep={showROICalculatorStep}
+                setShowROICalculatorStep={setShowROICalculatorStep}
             />
         </div>
     )
