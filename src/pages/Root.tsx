@@ -58,7 +58,7 @@ const Root = ({store}: Props) => {
     })
 
     return (
-        <QueryClientProvider client={appQueryClient} contextSharing={true}>
+        <QueryClientProvider client={appQueryClient}>
             <Provider store={store}>
                 <DndProvider manager={manager}>
                     <LDProvider
