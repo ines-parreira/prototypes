@@ -25,6 +25,7 @@ import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings
 import css from './ShopifyProductLine.less'
 
 type OwnProps = {
+    disableVariantStep?: boolean
     shopifyIntegration: Map<string, string>
     productClicked: (productCardDetails: ProductCardDetails) => void
     onResetStoreChoice?: () => void
@@ -51,6 +52,7 @@ const generateVariantName = (
 }
 
 export default function ShopifyProductLine({
+    disableVariantStep = false,
     shopifyIntegration,
     onResetStoreChoice,
     productClicked,
@@ -108,7 +110,7 @@ export default function ShopifyProductLine({
             const result = shopifyProducts[index]
             const variants = result?.data?.variants || []
 
-            if (variants.length === 1 && result) {
+            if (disableVariantStep || (variants.length === 1 && result)) {
                 const productCardDetails = {
                     imageUrl:
                         result?.data?.image?.src ||
@@ -129,7 +131,7 @@ export default function ShopifyProductLine({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [productClicked, shopifyProducts]
+        [productClicked, shopifyProducts, disableVariantStep]
     )
 
     const handleSubResultClicked = useCallback(

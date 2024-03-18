@@ -3376,6 +3376,7 @@ exports[`RichField should render mutable variable 1`] = `
                             canAddProductLink={false}
                             canAddVideoLink={false}
                             canAddVideoPlayer={false}
+                            disableVariantSelection={false}
                             getEditorState={[Function]}
                             isOpen={false}
                             linkEditionEnded={[Function]}

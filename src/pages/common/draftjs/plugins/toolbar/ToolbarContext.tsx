@@ -24,6 +24,7 @@ export type ToolbarContextType = {
     // AddProductLink
     canAddProductCard: boolean
     canAddProductLink: boolean
+    disableVariantSelection: boolean
     onAddProductCardAttachment: (attachment: ProductCardAttachment) => void
     onInsertProductLinkOpen: () => void
     onInsertProductLinkAdded: (productCardDetails: ProductCardDetails) => void
@@ -46,6 +47,7 @@ const ToolbarContext = createContext<ToolbarContextType>({
     onInsertDiscountCodeAdded: _noop,
     canAddProductCard: false,
     canAddProductLink: false,
+    disableVariantSelection: false,
     onAddProductCardAttachment: _noop,
     onInsertProductLinkOpen: _noop,
     onInsertProductLinkAdded: _noop,

@@ -49,6 +49,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
     const {
         canAddProductCard,
         canAddProductLink,
+        disableVariantSelection,
         onAddProductCardAttachment,
         onInsertProductLinkOpen,
         onInsertProductLinkAdded,
@@ -194,6 +195,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                 </div>
             ) : (
                 <ShopifyProductLine
+                    disableVariantStep={disableVariantSelection}
                     productClicked={handleAddProductLink}
                     onResetStoreChoice={
                         shopifyIntegrations.size > 1

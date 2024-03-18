@@ -193,6 +193,7 @@ export const CampaignMessage = memo(
                         attachments={attachments}
                         allowExternalChanges
                         disableProductCards={!isConvertSubscriber}
+                        disableVariantSelection={isConvertSubscriber}
                         onChange={onChangeMessage}
                         placeholder={'Write your message'}
                         displayedActions={displayedActions}

@@ -81,6 +81,25 @@ describe('<ShopifyProductLine/>', () => {
         })
     })
 
+    it('should not render the variants picker of a product when it is disabled', async () => {
+        mockServer
+            .onGet('/api/integrations/1/product/')
+            .reply(200, {data: shopifyProductResult()})
+
+        const {container, getByText} = render(
+            <Provider store={store}>
+                <ShopifyProductLine disableVariantStep={true} {...minProps} />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(getByText(/Black shirt/i)).toBeDefined()
+            fireEvent.click(getByText(/Black shirt/i))
+            expect(container).toMatchSnapshot()
+            expect(minProps.productClicked).toHaveBeenCalled()
+        })
+    })
+
     it('should render "{PRODUCTS_PER_PAGE}+ PRODUCTS" count in the variants picker of a product', async () => {
         const shopifyProducts = Array(PRODUCTS_PER_PAGE).fill(
             shopifyProductResult()[0]

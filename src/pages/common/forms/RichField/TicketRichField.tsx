@@ -31,12 +31,15 @@ import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 
 import RichField, {Props as RichFieldProps} from './RichField'
 
-type Props = {disableProductCards?: boolean} & RichFieldProps
+type Props = {
+    disableProductCards?: boolean
+    disableVariantSelection?: boolean
+} & RichFieldProps
 
 const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
 
 const TicketRichField = (
-    {disableProductCards, ...props}: Props,
+    {disableProductCards, disableVariantSelection, ...props}: Props,
     ref: ForwardedRef<RichField>
 ) => {
     const dispatch = useAppDispatch()
@@ -112,6 +115,7 @@ const TicketRichField = (
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
                     newMessageChannel
                 ),
+            disableVariantSelection: disableVariantSelection ?? false,
             onAddProductCardAttachment: (attachment) => {
                 dispatch(addProductCardAttachment(ticket, attachment))
             },
@@ -135,6 +139,7 @@ const TicketRichField = (
         }),
         [
             disableProductCards,
+            disableVariantSelection,
             dispatch,
             currentAccount,
             ticket,
