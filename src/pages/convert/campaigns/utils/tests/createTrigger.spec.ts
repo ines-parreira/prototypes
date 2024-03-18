@@ -29,7 +29,7 @@ describe('createTrigger(key)', () => {
             removeId(createTrigger(CampaignTriggerType.CurrentUrl))
         ).toStrictEqual({
             type: CampaignTriggerType.CurrentUrl,
-            operator: CampaignTriggerOperator.Eq,
+            operator: CampaignTriggerOperator.Contains,
             value: '/',
         })
     })

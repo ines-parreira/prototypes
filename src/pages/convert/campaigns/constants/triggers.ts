@@ -25,24 +25,24 @@ export const TRIGGERS_CONFIG: TriggerConfig = {
         group: 'Behavior',
         defaults: {
             value: '/',
-            operator: CampaignTriggerOperator.Eq,
+            operator: CampaignTriggerOperator.Contains,
         },
         requirements: {},
         operators: {
-            [CampaignTriggerOperator.Eq]: {
-                label: 'is',
-            },
-
-            [CampaignTriggerOperator.Neq]: {
-                label: 'is not',
-            },
-
             [CampaignTriggerOperator.Contains]: {
                 label: 'contains',
             },
 
             [CampaignTriggerOperator.NotContains]: {
                 label: 'not contains',
+            },
+
+            [CampaignTriggerOperator.Eq]: {
+                label: 'is',
+            },
+
+            [CampaignTriggerOperator.Neq]: {
+                label: 'is not',
             },
 
             [CampaignTriggerOperator.StartsWith]: {
