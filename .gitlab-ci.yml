@@ -231,7 +231,7 @@ Deploy preview:
   cache:
     - <<: *node_modules-cache
 
-Create Preview Release:
+Create preview release:
   extends: .sentry release
   needs: 
     - Build preview
@@ -242,7 +242,7 @@ Create Preview Release:
   variables:
     SENTRY_PROJECT: "helpdesk-staging"
 
-Create Staging Release:
+Create staging release:
   extends: .sentry release
   dependencies: [Build staging]
   rules:
@@ -250,7 +250,7 @@ Create Staging Release:
   variables:
     SENTRY_PROJECT: "helpdesk-staging"
 
-Create Production Release:
+Create production release:
   extends: .sentry release
   dependencies: [Build production]
   rules:
