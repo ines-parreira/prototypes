@@ -1,13 +1,4 @@
-export type GetAccountConfigurationParams = {
-    accountDomain: string
-}
-
-export type PutAccountConfigurationParams = {
-    accountDomain: string
-    accountConfiguration: AccountConfiguration
-}
-
-export type GetAccountConfigurationResponse = {
+export type AccountConfigurationResponse = {
     accountConfiguration: Omit<AccountConfiguration, 'helpdeskOAuth'>
 }
 
@@ -22,13 +13,7 @@ export type GetStoreConfigurationParams = {
     storeName: string
 }
 
-export type PutStoreConfigurationParams = {
-    accountDomain: string
-    storeName: string
-    storeConfiguration: StoreConfiguration
-}
-
-export type GetStoreConfigurationResponse = {
+export type StoreConfigurationResponse = {
     storeConfiguration: StoreConfiguration
 }
 
@@ -46,10 +31,11 @@ export type StoreConfiguration = {
     conversationBot: ConversationBot
     monitoredEmailIntegrations: EmailIntegration[]
 
-    dryRun: boolean
-    isDraft: boolean
     silentHandover: boolean
     ticketSampleRate: number
+
+    dryRun: boolean
+    isDraft: boolean
 }
 
 export type Tag = {
