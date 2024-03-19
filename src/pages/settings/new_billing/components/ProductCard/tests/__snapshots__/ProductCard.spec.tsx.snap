@@ -47,11 +47,11 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
       <div>
         <button
           aria-disabled="false"
-          class="wrapper fill secondary medium"
+          class="wrapper fill primary medium"
           id="productCardButton_helpdesk"
           type="button"
         >
-          Manage
+          Update Plan
         </button>
       </div>
       <div>

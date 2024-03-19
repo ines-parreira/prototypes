@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
+import classNames from 'classnames'
 import {
     AutomationPrice,
     ConvertPrice,
@@ -435,17 +436,37 @@ const BillingProcessView = ({
                 {renderSummary()}
             </div>
             {!isCurrentSubscriptionScheduledToCancel && (
-                <PendingChangesModal
-                    onSave={updateSubscription}
-                    onDiscard={() => setShowPendingChangesModal(false)}
-                    onContinueEditing={() => setShowPendingChangesModal(false)}
-                    when={anyProductChanged && !updateProcessStarted}
-                    message="Your subscription changes will only be taken into account after you click “Update subscription”"
-                    show={showPendingChangesModal}
-                    title="Update subscription?"
-                    saveText="Update subscription"
-                    isSaving={isSubscriptionUpdating}
-                />
+                <>
+                    <div className={css.unsubscribe}>
+                        If you have any questions regarding your subscription,
+                        please{' '}
+                        <span
+                            className={classNames(
+                                'text-primary',
+                                css.contactUs
+                            )}
+                            onClick={() =>
+                                contactBilling(TicketPurpose.CONTACT_US)
+                            }
+                        >
+                            contact us
+                        </span>
+                        .
+                    </div>
+                    <PendingChangesModal
+                        onSave={updateSubscription}
+                        onDiscard={() => setShowPendingChangesModal(false)}
+                        onContinueEditing={() =>
+                            setShowPendingChangesModal(false)
+                        }
+                        when={anyProductChanged && !updateProcessStarted}
+                        message="Your subscription changes will only be taken into account after you click “Update subscription”"
+                        show={showPendingChangesModal}
+                        title="Update subscription?"
+                        saveText="Update subscription"
+                        isSaving={isSubscriptionUpdating}
+                    />
+                </>
             )}
         </div>
     )

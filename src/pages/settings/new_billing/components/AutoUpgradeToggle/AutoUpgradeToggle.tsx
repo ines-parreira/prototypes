@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 
 import {useLocation} from 'react-router-dom'
-import classnames from 'classnames'
 import {Price, ProductType} from 'models/billing/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
@@ -77,70 +76,66 @@ const AutoUpgradeToggle = ({
 
     return (
         <>
-            <div className={css.container}>
-                <div className={css.separator}></div>
-                <div
-                    className={classnames({
-                        [css.flex]: !isEnterprisePlan,
-                    })}
-                >
-                    <ToggleInput
-                        isToggled={autoUpgradeValue}
-                        onClick={handleAutoUpgradePlan}
-                        aria-label={`Enable auto-upgrade`}
-                        isDisabled={isEnterprisePlan}
-                        className="mr-4"
-                        caption={
-                            isEnterprisePlan ? (
-                                <>
-                                    Auto-upgrade is not available for the
-                                    selected plan.
-                                </>
-                            ) : (
-                                <>
-                                    Get automatically upgraded to the next plan
-                                    if you reach your click allowance to keep
-                                    displaying campaigns to your customers.
-                                </>
-                            )
-                        }
-                    >
-                        <span className={css.label}>
-                            Click allowance auto-upgrade
-                        </span>
-                        {!autoUpgradeValue && !isEnterprisePlan && (
+            <div
+                className={`mt-3 pt-3 ${css.container} ${
+                    isEnterprisePlan ? '' : css.flex
+                }`}
+            >
+                <ToggleInput
+                    isToggled={autoUpgradeValue}
+                    onClick={handleAutoUpgradePlan}
+                    aria-label={`Enable auto-upgrade`}
+                    isDisabled={isEnterprisePlan}
+                    className="mr-4"
+                    caption={
+                        isEnterprisePlan ? (
                             <>
-                                <img
-                                    src={warningIcon}
-                                    alt="warning icon"
-                                    id={`auto-upgrade-disabled-${type}`}
-                                    className={`material-icons ${css.warning} ml-1`}
-                                />
-                                <Tooltip
-                                    target={`auto-upgrade-disabled-${type}`}
-                                    placement="top-start"
-                                >
-                                    Without auto-upgrade, campaigns will stop
-                                    being displayed if you reach 100% of your
-                                    allowance before the end of the billing
-                                    period.
-                                </Tooltip>
+                                Auto-upgrade is not available for the selected
+                                plan.
                             </>
-                        )}
-                    </ToggleInput>
-                    {!isEnterprisePlan && (
-                        <div>
-                            <Button
-                                fillStyle="ghost"
-                                size="small"
-                                intent="secondary"
-                                onClick={() => setIsModalOpen(true)}
+                        ) : (
+                            <>
+                                Get automatically upgraded to the next plan if
+                                you reach your click allowance to keep
+                                displaying campaigns to your customers.
+                            </>
+                        )
+                    }
+                >
+                    <span className={css.label}>
+                        Click allowance auto-upgrade
+                    </span>
+                    {!autoUpgradeValue && !isEnterprisePlan && (
+                        <>
+                            <img
+                                src={warningIcon}
+                                alt="warning icon"
+                                id={`auto-upgrade-disabled-${type}`}
+                                className={`material-icons ${css.warning} ml-1`}
+                            />
+                            <Tooltip
+                                target={`auto-upgrade-disabled-${type}`}
+                                placement="top-start"
                             >
-                                Learn more
-                            </Button>
-                        </div>
+                                Without auto-upgrade, campaigns will stop being
+                                displayed if you reach 100% of your allowance
+                                before the end of the billing period.
+                            </Tooltip>
+                        </>
                     )}
-                </div>
+                </ToggleInput>
+                {!isEnterprisePlan && (
+                    <div>
+                        <Button
+                            fillStyle="ghost"
+                            size="small"
+                            intent="secondary"
+                            onClick={() => setIsModalOpen(true)}
+                        >
+                            Learn more
+                        </Button>
+                    </div>
+                )}
             </div>
             <Modal
                 size="medium"
