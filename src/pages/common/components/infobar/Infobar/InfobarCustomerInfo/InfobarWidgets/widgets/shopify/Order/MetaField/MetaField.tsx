@@ -11,13 +11,20 @@ type Props = {
 }
 
 export default function MetaField({metafield}: Props) {
+    const namespace = metafield.namespace || ''
+    const key = metafield.key || ''
+
     switch (metafield.type) {
         case 'url':
         case 'multi_line_text_field':
-        case 'single_line_text_field': {
+        case 'single_line_text_field':
+        case 'variant_reference':
+        case 'file_reference':
+        case 'metaobject_reference':
+        case 'mixed_reference': {
             return (
                 <FieldWithCopyButton
-                    label={metafield.key}
+                    label={`${namespace}.${key}`}
                     value={metafield.value}
                 />
             )
@@ -27,7 +34,7 @@ export default function MetaField({metafield}: Props) {
         case 'date_time': {
             return (
                 <FieldWithCopyButton
-                    label={metafield.key}
+                    label={`${namespace}.${key}`}
                     value={metafield.value}
                 >
                     <DatetimeLabel dateTime={metafield.value} />

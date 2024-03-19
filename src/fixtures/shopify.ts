@@ -1,9 +1,13 @@
 import {
     DateShopifyMetafield,
     DateTimeShopifyMetafield,
+    FileReferenceShopifyMetafield,
+    MetaobjectReferenceShopifyMetafield,
+    MixedReferenceShopifyMetafield,
     MultiLineTextFieldShopifyMetafield,
     ShopifyMetafield,
     SingleLineTextFieldShopifyMetafield,
+    VariantReferenceShopifyMetafield,
 } from '@gorgias/api-types'
 import {
     Image,
@@ -1598,4 +1602,34 @@ export const shopifyDateTimeMetafield = (): DateTimeShopifyMetafield => ({
     key: 'test_date_time',
     value: '2024-02-06T13:30:00Z',
     type: 'date_time',
+})
+
+export const shopifyProductVariantReference =
+    (): VariantReferenceShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_product_variant',
+        value: 'gid://shopify/ProductVariant/40416320323627',
+        type: 'variant_reference',
+    })
+
+export const shopifyFileReference = (): FileReferenceShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_file',
+    value: 'gid://shopify/MediaImage/22300347564075',
+    type: 'file_reference',
+})
+
+export const shopifyMetaobjectReference =
+    (): MetaobjectReferenceShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_metaobject',
+        value: 'gid://shopify/Metaobject/79372845099',
+        type: 'metaobject_reference',
+    })
+
+export const shopifyMixedReference = (): MixedReferenceShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_mixed',
+    value: 'gid://shopify/Metaobject/79372845099',
+    type: 'mixed_reference',
 })
