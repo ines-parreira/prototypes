@@ -3,7 +3,7 @@ import React from 'react'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import FieldLabel from 'Infobar/features/Field/display/FieldLabel'
-import ShopifyMetafields from '../shared/Metafields/ShopifyMetafields'
+import Metafield from '../shared/Metafields/Metafield'
 import css from './OrderMetafields.less'
 
 type Props = {
@@ -39,5 +39,12 @@ export default function OrderMetafields({integrationId, orderId}: Props) {
         )
     }
 
-    return <ShopifyMetafields metafields={data.data.data} />
+    const metafields = data.data.data
+    return (
+        <>
+            {metafields.map((field, index) => (
+                <Metafield key={index} metafield={field} />
+            ))}
+        </>
+    )
 }

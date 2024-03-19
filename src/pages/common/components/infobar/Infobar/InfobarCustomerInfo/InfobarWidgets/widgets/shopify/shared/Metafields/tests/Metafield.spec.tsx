@@ -14,8 +14,8 @@ import {
     shopifyProductVariantReference,
     shopifySingleTextLineFieldMetafield,
     shopifyUrlMetafield,
-} from 'fixtures/shopify'
-import MetaField from '../MetaField'
+} from '../../../../../../../../../../../../fixtures/shopify'
+import Metafield from '../Metafield'
 
 describe('<MetaField/>', () => {
     const mockStore = configureMockStore()
@@ -31,7 +31,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyUrlMetafield', () => {
             render(
                 <Provider store={store}>
-                    <MetaField metafield={shopifyUrlMetafield()} />
+                    <Metafield metafield={shopifyUrlMetafield()} />
                 </Provider>
             )
             expect(screen.getByText(`https://google.ro`))
@@ -41,7 +41,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifySingleLineTextFieldMetafield', () => {
             render(
                 <Provider store={store}>
-                    <MetaField
+                    <Metafield
                         metafield={shopifySingleTextLineFieldMetafield()}
                     />
                 </Provider>
@@ -57,7 +57,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyMultiLineTextFieldMetafield', () => {
             render(
                 <Provider store={store}>
-                    <MetaField
+                    <Metafield
                         metafield={shopifyMultiTextLineFieldMetafield()}
                     />
                 </Provider>
@@ -73,7 +73,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyDateMetafield', () => {
             render(
                 <Provider store={store}>
-                    <MetaField metafield={shopifyDateMetafield()} />
+                    <Metafield metafield={shopifyDateMetafield()} />
                 </Provider>
             )
             expect(screen.getByText(`02/06/2024`))
@@ -83,7 +83,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyDateTimeMetafield', () => {
             render(
                 <Provider store={store}>
-                    <MetaField metafield={shopifyDateTimeMetafield()} />
+                    <Metafield metafield={shopifyDateTimeMetafield()} />
                 </Provider>
             )
             expect(screen.getByText(`02/06/2024`))
@@ -93,7 +93,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyProductVariantReference', () => {
             render(
                 <Provider store={store}>
-                    <MetaField metafield={shopifyProductVariantReference()} />
+                    <Metafield metafield={shopifyProductVariantReference()} />
                 </Provider>
             )
             expect(
@@ -105,7 +105,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyFileReference', () => {
             render(
                 <Provider store={store}>
-                    <MetaField metafield={shopifyFileReference()} />
+                    <Metafield metafield={shopifyFileReference()} />
                 </Provider>
             )
             expect(screen.getByText(`gid://shopify/MediaImage/22300347564075`))
@@ -115,7 +115,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyMetaobjectReference', () => {
             render(
                 <Provider store={store}>
-                    <MetaField metafield={shopifyMetaobjectReference()} />
+                    <Metafield metafield={shopifyMetaobjectReference()} />
                 </Provider>
             )
             expect(screen.getByText(`gid://shopify/Metaobject/79372845099`))
@@ -125,7 +125,7 @@ describe('<MetaField/>', () => {
         it('should render with shopifyMixedReference', () => {
             render(
                 <Provider store={store}>
-                    <MetaField metafield={shopifyMixedReference()} />
+                    <Metafield metafield={shopifyMixedReference()} />
                 </Provider>
             )
             expect(screen.getByText(`gid://shopify/Metaobject/79372845099`))

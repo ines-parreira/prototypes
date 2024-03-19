@@ -4,13 +4,13 @@ import {ShopifyMetafield} from '@gorgias/api-types'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import css from './MetaField.less'
+import css from './Metafield.less'
 
 type Props = {
     metafield: ShopifyMetafield
 }
 
-export default function MetaField({metafield}: Props) {
+export default function Metafield({metafield}: Props) {
     const namespace = metafield.namespace || ''
     const key = metafield.key || ''
 

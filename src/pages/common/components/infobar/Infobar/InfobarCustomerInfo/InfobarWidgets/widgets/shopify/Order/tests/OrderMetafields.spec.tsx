@@ -1,12 +1,17 @@
 import React from 'react'
 import {useListShopifyOrderMetafields} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import OrderMetafields from '../OrderMetafields'
 
 jest.mock('@gorgias/api-queries')
 
 const mockUseListShopifyOrderMetafields =
     useListShopifyOrderMetafields as jest.Mock
+
+const mockStore = configureMockStore([thunk])()
 
 describe('<OrderMetafields/>', () => {
     it('should return loading state', () => {
@@ -60,6 +65,7 @@ describe('<OrderMetafields/>', () => {
                 data: {
                     data: [
                         {
+                            type: 'single_line_text_field',
                             namespace: 'test_namespace',
                             key: 'test_key',
                             value: 'test_value',
@@ -69,10 +75,14 @@ describe('<OrderMetafields/>', () => {
             },
         })
 
-        render(<OrderMetafields integrationId={1} orderId={1} />)
+        render(
+            <Provider store={mockStore}>
+                <OrderMetafields integrationId={1} orderId={1} />
+            </Provider>
+        )
 
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
-        expect(screen.getByText('test_namespace.test_key:')).toBeInTheDocument()
+        expect(screen.getByText('Test Namespace Test Key:')).toBeInTheDocument()
         expect(screen.getByText('test_value')).toBeInTheDocument()
     })
 })
