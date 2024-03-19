@@ -6,73 +6,77 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
     class="footer"
   >
     <div
-      class="buttonsWrapper"
+      class="footerWrapper"
     >
       <div
-        class="dropdown"
-        id="article-save-button-wrapper"
+        class="buttonsWrapper"
       >
-        <span
-          class="group horizontal"
+        <div
+          class="dropdown"
+          id="article-save-button-wrapper"
         >
-          <button
-            aria-disabled="false"
-            class="wrapper fill primary medium left"
-            color="primary"
-            type="button"
-          >
-            Save & Publish
-          </button>
           <span
-            aria-expanded="false"
-            aria-haspopup="true"
-            class=""
+            class="group horizontal"
           >
             <button
               aria-disabled="false"
-              class="wrapper wrapper fill primary medium right"
+              class="wrapper fill primary medium left"
+              color="primary"
               type="button"
             >
-              <i
-                class="material-icons icon"
-              >
-                arrow_drop_down
-              </i>
+              Save & Publish
             </button>
+            <span
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper wrapper fill primary medium right"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  arrow_drop_down
+                </i>
+              </button>
+            </span>
           </span>
-        </span>
-        <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu-right"
-          role="menu"
-          style="width: 100%;"
-          tabindex="-1"
-        >
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu-right"
+            role="menu"
+            style="width: 100%;"
+            tabindex="-1"
           >
-            Save Changes
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            Save & Publish
-          </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Save Changes
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Save & Publish
+            </button>
+          </div>
         </div>
+        <button
+          aria-disabled="false"
+          class="wrapper fill secondary medium"
+          type="button"
+        >
+          Discard changes
+        </button>
       </div>
-      <button
-        aria-disabled="false"
-        class="wrapper fill secondary medium"
-        type="button"
-      >
-        Discard changes
-      </button>
       <div
         class="rating"
       >
@@ -118,7 +122,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
       </div>
     </div>
     <div
-      class="buttonsWrapper"
+      class="footerWrapper"
     >
       <div
         class="counter"

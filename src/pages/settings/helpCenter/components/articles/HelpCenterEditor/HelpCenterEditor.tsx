@@ -55,6 +55,15 @@ const HelpCenterEditor = ({
 
     // needed to specify the channel type of the attachment
     const helpCenter = useCurrentHelpCenter()
+    const hasOnePagerLayout = helpCenter.layout === '1-pager'
+    const onePagerConfig = {
+        paragraphFormat: {
+            N: 'Normal',
+            PRE: 'Code',
+            BLOCKQUOTE: 'Quote',
+        },
+        fontSize: ['8', '9', '10', '11', '12', '14', '16'],
+    }
 
     useEffect(() => {
         setIsEditorCodeViewActive(false)
@@ -98,6 +107,7 @@ const HelpCenterEditor = ({
             tag="textarea"
             config={{
                 ...config,
+                ...(hasOnePagerLayout && onePagerConfig),
                 editorClass: classnames(config.editorClass, className),
                 events: {
                     'file.beforeUpload': function (fileList: FileList): false {

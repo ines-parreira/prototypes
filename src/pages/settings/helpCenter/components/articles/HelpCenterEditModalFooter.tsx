@@ -6,6 +6,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import useId from 'hooks/useId'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up.svg'
 import down from 'assets/img/icons/rating-down.svg'
@@ -37,6 +38,7 @@ type Props = {
     onDiscard: () => void
     counters?: {charCount: number}
     articleMode: ArticleMode
+    hasOnePagerLayout?: boolean
 }
 
 export const HelpCenterEditModalFooter: React.FC<Props> = ({
@@ -46,9 +48,11 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     onDiscard,
     counters,
     articleMode,
+    hasOnePagerLayout,
 }: Props) => {
     const [pendingDeleteArticle, setPendingDeleteArticle] = useState(false)
     const {isPassingRulesCheck} = useAbilityChecker()
+    const warningTooltipId = 'article-editor-warning-tooltip-' + useId()
 
     const canManageArticle = isPassingRulesCheck(({can}) =>
         can('manage', 'ArticleEntity')
@@ -168,13 +172,14 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
     return (
         <footer className={css.footer}>
-            <div className={css.buttonsWrapper}>
-                {savingButtons(articleMode)}
+            <div className={css.footerWrapper}>
+                <div className={css.buttonsWrapper}>
+                    {savingButtons(articleMode)}
 
-                <Button intent="secondary" onClick={onDiscard}>
-                    Discard changes
-                </Button>
-
+                    <Button intent="secondary" onClick={onDiscard}>
+                        Discard changes
+                    </Button>
+                </div>
                 {rating && (
                     <div className={css.rating}>
                         <div className={css['rating-text']}>Rating:</div>
@@ -206,10 +211,29 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     </div>
                 )}
             </div>
-            <div className={css.buttonsWrapper}>
+
+            <div className={css.footerWrapper}>
                 {counters && (
                     <div className={css.counter}>
                         Characters: {counters.charCount}
+                        {hasOnePagerLayout && counters.charCount > 2000 && (
+                            <>
+                                <i
+                                    id={warningTooltipId}
+                                    className="material-icons"
+                                >
+                                    warning
+                                </i>
+                                <Tooltip
+                                    target={warningTooltipId}
+                                    placement="top"
+                                >
+                                    We recommend keeping articles shorter than
+                                    2000 characters in 1-Page Help Centers for
+                                    the best customer experience.
+                                </Tooltip>
+                            </>
+                        )}
                     </div>
                 )}
                 {canDelete(articleMode) && (

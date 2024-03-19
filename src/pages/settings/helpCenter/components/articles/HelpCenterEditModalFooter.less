@@ -1,3 +1,6 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography.less';
+
 :local {
     .footer {
         width: 100%;
@@ -11,6 +14,12 @@
         margin-bottom: 7px;
     }
 
+    .footerWrapper {
+        display: flex;
+        flex-direction: row;
+        column-gap: @layout-spacing-s;
+    }
+
     .buttonsWrapper {
         display: flex;
         align-items: center;
@@ -18,9 +27,16 @@
     }
 
     .counter {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: @layout-spacing-xxs;
+        .caption-regular();
         color: var(--neutral-grey-5);
-        font-size: 12px;
-        line-height: 16px;
+        i {
+            color: var(--feedback-warning);
+            font-size: 12px;
+        }
     }
 
     .deleteButton {

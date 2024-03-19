@@ -8,7 +8,10 @@ import {
 import {Components} from 'rest_api/help_center_api/client.generated'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 
-import {EDITOR_MODAL_CONTAINER_ID} from 'pages/settings/helpCenter/constants'
+import {
+    EDITOR_MODAL_CONTAINER_ID,
+    HELP_CENTER_DEFAULT_LAYOUT,
+} from 'pages/settings/helpCenter/constants'
 import {
     getHelpCenterDomain,
     isExistingArticle,
@@ -124,6 +127,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     )
 
     const helpCenter = useCurrentHelpCenter()
+    const hasOnePagerLayout = helpCenter.layout !== HELP_CENTER_DEFAULT_LAYOUT
 
     if (!selectedArticle?.translation || !helpCenter) {
         return null
@@ -224,6 +228,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 requiredFields={requiredFieldsArticle}
                 articleMode={articleMode}
                 onDiscard={onChangesDiscard}
+                hasOnePagerLayout={hasOnePagerLayout}
             />
         </span>
     )
