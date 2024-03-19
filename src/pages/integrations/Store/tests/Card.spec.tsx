@@ -9,34 +9,34 @@ const store = mockStore({})
 
 import {IntegrationType} from 'models/integration/constants'
 import {Category} from 'models/integration/types/app'
-import {dummyAppListItem} from 'fixtures/apps'
+import {dummyAppListIntegrationItem} from 'fixtures/apps'
 
 import Card, {Pills, CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 
 describe('<Pills />', () => {
     it('should render an empty div', () => {
-        const {container} = render(<Pills item={{...dummyAppListItem}} />)
+        const {container} = render(
+            <Pills item={{...dummyAppListIntegrationItem, count: 0}} />
+        )
         expect(container.firstChild?.firstChild).toBeNull()
     })
     it('should render the upgrade button', () => {
         render(
             <Pills
-                item={{...dummyAppListItem, requiredPriceName: 'enterprise'}}
+                item={{
+                    ...dummyAppListIntegrationItem,
+                    requiredPriceName: 'enterprise',
+                }}
             />
         )
         expect(screen.getByText('Upgrade'))
-    })
-
-    it('should render the checkmark icon', () => {
-        render(<Pills item={{...dummyAppListItem, isConnected: true}} />)
-        expect(screen.getByText('done'))
     })
 
     it('should render the number of install', () => {
         render(
             <Pills
                 item={{
-                    ...dummyAppListItem,
+                    ...dummyAppListIntegrationItem,
                     count: 2,
                     type: IntegrationType.BigCommerce,
                 }}
@@ -45,7 +45,7 @@ describe('<Pills />', () => {
         expect(screen.getByText('2'))
     })
     it('should render with a "Featured" label', () => {
-        render(<Pills item={dummyAppListItem} isFeatured />)
+        render(<Pills item={dummyAppListIntegrationItem} isFeatured />)
         expect(screen.getByText('Featured'))
     })
 })
@@ -56,7 +56,7 @@ describe('<Card />', () => {
             <Provider store={store}>
                 <Card
                     item={{
-                        ...dummyAppListItem,
+                        ...dummyAppListIntegrationItem,
                         count: 1,
                         type: IntegrationType.BigCommerce,
                     }}
@@ -71,7 +71,7 @@ describe('<Card />', () => {
             <Provider store={store}>
                 <Card
                     item={{
-                        ...dummyAppListItem,
+                        ...dummyAppListIntegrationItem,
                         requiredPriceName: 'enterprise',
                     }}
                 />
@@ -85,7 +85,7 @@ describe('<Card />', () => {
             <Provider store={store}>
                 <Card
                     item={{
-                        ...dummyAppListItem,
+                        ...dummyAppListIntegrationItem,
                     }}
                     isFeatured
                 />
@@ -100,7 +100,7 @@ describe('<Card />', () => {
             <Provider store={store}>
                 <Card
                     item={{
-                        ...dummyAppListItem,
+                        ...dummyAppListIntegrationItem,
                         categories: [Category.FEATURED],
                     }}
                     isFeatured
@@ -117,7 +117,7 @@ describe('<Card />', () => {
             <Provider store={store}>
                 <Card
                     item={{
-                        ...dummyAppListItem,
+                        ...dummyAppListIntegrationItem,
                     }}
                     isLoading
                 />

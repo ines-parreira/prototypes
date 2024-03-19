@@ -22,6 +22,11 @@ export const dummyAppListData: AppListData = {
 
 export const dummyAppListItem = appListDataToAppListMapper(dummyAppListData)
 
+export const dummyAppListIntegrationItem = {
+    ...dummyAppListItem,
+    count: 1,
+}
+
 export const dummyAppData: AppData = {
     ...dummyAppListData,
     app_url: 'https://ok.com',

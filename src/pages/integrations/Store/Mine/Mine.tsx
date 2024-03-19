@@ -2,12 +2,14 @@ import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 
 import {fetchInstalledApps} from 'models/integration/resources'
-import {AppListItem} from 'models/integration/types/app'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {IntegrationListItem} from 'state/integrations/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getIntegrationsList} from 'state/integrations/selectors'
+import {
+    getIntegrationsByTypes,
+    getIntegrationsList,
+} from 'state/integrations/selectors'
 import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -19,12 +21,14 @@ import logoShopify from 'assets/img/integrations/shopify.svg'
 import logoYotpo from 'assets/img/integrations/yotpo.png'
 import logoRecharge from 'assets/img/integrations/recharge.svg'
 
+import {IntegrationType} from 'models/integration/constants'
+import {AppListItem} from 'models/integration/types'
 import CardsWrapper from '../CardsWrapper'
 import Card from '../Card'
 import Loader from '../Loader'
 import css from './Mine.less'
 
-type Item = IntegrationListItem | AppListItem
+type Item = IntegrationListItem
 
 export const LOCAL_STORAGE_KEY = `integrations_connected_warning_discarded`
 
@@ -40,6 +44,10 @@ export default function Mine() {
     const [isAlertDiscarded, setAlertDiscarded] = useLocalStorage(
         LOCAL_STORAGE_KEY,
         false
+    )
+
+    const appIntegrations = useAppSelector(
+        getIntegrationsByTypes([IntegrationType.App, IntegrationType.Ecommerce])
     )
 
     const [isLoading, setLoading] = useState(true)
@@ -61,6 +69,7 @@ export default function Mine() {
                 setLoading(false)
             }
         }
+
         void fetchData()
     }, [dispatch])
 
@@ -68,7 +77,20 @@ export default function Mine() {
         void dispatch(fetchIntegrations())
     }, [dispatch])
 
-    const connectedItems: Item[] = [...installedIntegrations, ...connectedApps]
+    const integrationApps = connectedApps.map((app) => {
+        const count = appIntegrations.filter(
+            (integration) => integration.application_id === app.appId
+        ).length
+        return {
+            ...app,
+            count,
+        }
+    })
+
+    const connectedItems: Item[] = [
+        ...installedIntegrations,
+        ...integrationApps,
+    ]
 
     return (
         <main className="full-width">

@@ -3,9 +3,12 @@ import React, {ReactNode, useEffect, useState} from 'react'
 import useSearch from 'hooks/useSearch'
 import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 import {fetchApps} from 'models/integration/resources'
-import {Integration} from 'models/integration/types'
 import {
     AppListItem,
+    Integration,
+    IntegrationType,
+} from 'models/integration/types'
+import {
     Category as CategoryType,
     isCategory,
 } from 'models/integration/types/app'
@@ -25,6 +28,7 @@ import {
 } from 'state/currentAccount/types'
 import {
     getIntegrations,
+    getIntegrationsByTypes,
     getIntegrationsList,
 } from 'state/integrations/selectors'
 import useTitle from 'hooks/useTitle'
@@ -50,7 +54,7 @@ import Card from './Card'
 import Search from './Search'
 import RequestApp from './RequestApp'
 
-type Item = IntegrationListItem | AppListItem
+type Item = IntegrationListItem
 
 export function addRequiredPlanToIntegrations(
     integrationsListItems: IntegrationListItem[],
@@ -96,6 +100,10 @@ export default function All() {
     const [isLoading, setLoading] = useState(true)
     const [apps, setApps] = useState<AppListItem[]>([])
 
+    const appIntegrations = useAppSelector(
+        getIntegrationsByTypes([IntegrationType.App, IntegrationType.Ecommerce])
+    )
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -124,6 +132,16 @@ export default function All() {
         integrations
     )
 
+    const integrationApps: IntegrationListItem[] = apps.map((app) => {
+        const count = appIntegrations.filter(
+            (integration) => integration.application_id === app.appId
+        ).length
+        return {
+            ...app,
+            count,
+        }
+    })
+
     const items: Item[] = [
         ...addRequiredPlanToIntegrations(
             filteredIntegrationsList,
@@ -131,7 +149,7 @@ export default function All() {
             features,
             prices
         ),
-        ...apps,
+        ...integrationApps,
     ]
 
     const hasFilter = activeSearch || activeCategory

@@ -7,7 +7,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {assetsUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {AppListItem, isAppListItem} from 'models/integration/types/app'
+import {isAppListItem} from 'models/integration/types/app'
 import {IntegrationType} from 'models/integration/types'
 import {IntegrationListItem} from 'state/integrations/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -18,7 +18,7 @@ import css from './Card.less'
 export const LOADING_TEST_ID = 'card-loading'
 export const CARD_LINK_TEST_ID = 'card-link'
 
-type Item = IntegrationListItem | AppListItem
+type Item = IntegrationListItem
 
 function getLinkTargetTabName(item: Item) {
     if (!isAppListItem(item) && item.count > 0) {
@@ -105,12 +105,6 @@ export function Pills({
                         openedPlanModal: item.requiredPriceName,
                     }}
                 />
-            ) : isAppListItem(item) ? (
-                item.isConnected && (
-                    <div className={css.installedPill}>
-                        <i className="material-icons">done</i>
-                    </div>
-                )
             ) : (
                 item.count > 0 && (
                     <div className={css.installedPill}>{item.count}</div>
