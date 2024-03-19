@@ -7,7 +7,7 @@ import {
     CampaignTemplate,
     CampaignTemplateLabelType,
 } from 'pages/convert/campaigns/templates/types'
-import css from './ConvertCampaignTemplate.less'
+import css from './ConvertOnboardingCampaignTemplate.less'
 
 type Props = {
     template: CampaignTemplate
@@ -33,7 +33,7 @@ const campaignLabelStyles: Record<
     },
 }
 
-const ConvertCampaignTemplate = ({
+const ConvertOnboardingCampaignTemplate = ({
     template,
     integrationId,
     selected,
@@ -87,4 +87,4 @@ const ConvertCampaignTemplate = ({
     )
 }
 
-export default ConvertCampaignTemplate
+export default ConvertOnboardingCampaignTemplate

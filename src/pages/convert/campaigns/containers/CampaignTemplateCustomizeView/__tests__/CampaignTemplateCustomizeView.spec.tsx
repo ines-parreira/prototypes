@@ -13,7 +13,7 @@ import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {PRODUCT_CARD_SHOWCASE} from 'pages/convert/campaigns/templates/productCards'
-import ConvertOnboardingRecommendationCustomizeView from '../ConvertOnboardingRecommendationCustomizeView'
+import CampaignTemplateCustomizeView from '../CampaignTemplateCustomizeView'
 
 const mockStore = configureMockStore()
 
@@ -55,7 +55,7 @@ const defaultState = {
     }),
 }
 
-describe('ConvertOnboardingRecommendationCustomizeView', () => {
+describe('CampaignTemplateCustomizeView', () => {
     it('should render campaign form with template data', () => {
         ;(useParams as jest.Mock).mockReturnValue({
             id: '123',
@@ -87,7 +87,7 @@ describe('ConvertOnboardingRecommendationCustomizeView', () => {
         const {getByText} = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
-                    <ConvertOnboardingRecommendationCustomizeView />
+                    <CampaignTemplateCustomizeView />
                 </Provider>
             </BrowserRouter>
         )

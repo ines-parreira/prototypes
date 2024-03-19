@@ -28,7 +28,7 @@ import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/c
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {CampaignDetailsHeader} from 'pages/convert/campaigns/components/CampaignDetailsHeader'
 
-const ConvertOnboardingRecommendationCustomizeView = () => {
+const CampaignTemplateCustomizeView = () => {
     const {
         [CONVERT_ROUTE_PARAM_NAME]: integrationId,
         [CONVERT_ROUTE_TEMPLATE_PARAM_NAME]: templateSlug,
@@ -186,4 +186,4 @@ const ConvertOnboardingRecommendationCustomizeView = () => {
     )
 }
 
-export default ConvertOnboardingRecommendationCustomizeView
+export default CampaignTemplateCustomizeView

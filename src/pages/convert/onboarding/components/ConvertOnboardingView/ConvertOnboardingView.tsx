@@ -24,8 +24,8 @@ import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
-import {useGetOrCreateChannelConnection} from '../../hooks/useGetOrCreateChannelConnection'
 import css from './ConvertOnboardingView.less'
 
 const BOOK_CALL_URL =

@@ -1,9 +1,9 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
-import ConvertCampaignTemplate from '../ConvertCampaignTemplate'
+import ConvertOnboardingCampaignTemplate from '../ConvertOnboardingCampaignTemplate'
 
-describe('ConvertCampaignTemplate', () => {
+describe('ConvertOnboardingCampaignTemplate', () => {
     const template = {
         slug: 'test-slug',
         name: 'Test Campaign',
@@ -15,7 +15,7 @@ describe('ConvertCampaignTemplate', () => {
 
     it('renders campaign template correctly', () => {
         const {getByText, getByAltText} = render(
-            <ConvertCampaignTemplate
+            <ConvertOnboardingCampaignTemplate
                 template={template}
                 integrationId={1}
                 selected={true}

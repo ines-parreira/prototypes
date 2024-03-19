@@ -22,7 +22,7 @@ import {
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import ConvertCampaignTemplate from '../ConvertCampaignTemplate'
+import ConvertOnboardingCampaignTemplate from '../ConvertOnboardingCampaignTemplate'
 import css from './ConvertOnboardingRecommendationsView.less'
 
 const ConvertOnboardingRecommendationsView = () => {
@@ -96,7 +96,7 @@ const ConvertOnboardingRecommendationsView = () => {
 
                 <div className={css.templatesContainer}>
                     {ONBOARDING_CAMPAIGN_TEMPLATES_LIST.map((template) => (
-                        <ConvertCampaignTemplate
+                        <ConvertOnboardingCampaignTemplate
                             key={template.slug}
                             template={template}
                             integrationId={chatIntegrationId}

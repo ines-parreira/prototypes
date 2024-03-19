@@ -170,11 +170,11 @@ import TrainMyAiViewContainer from './automate/trainMyAi/TrainMyAiViewContainer'
 import AutomateRoute from './automate/common/components/AutomateRoute'
 import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrationApi'
 import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCenterCreationWizard'
-import ConvertOnboardingView from './convert/common/components/ConvertOnboardingView'
+import ConvertOnboardingView from './convert/onboarding/components/ConvertOnboardingView'
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
 import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
-import ConvertOnboardingRecommendationsView from './convert/common/components/ConvertOnboardingRecommendationsView'
-import ConvertOnboardingRecommendationCustomizeView from './convert/common/components/ConvertOnboardingRecommendationCustomizeView'
+import ConvertOnboardingRecommendationsView from './convert/onboarding/components/ConvertOnboardingRecommendationsView'
+import CampaignTemplateCustomizeView from './convert/campaigns/containers/CampaignTemplateCustomizeView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1729,7 +1729,7 @@ export function ConvertContent() {
                 exact
                 path={`${convertPathPrefix}/setup/recommendations/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
                 component={memoizedWithUserRoleRequired(
-                    ConvertOnboardingRecommendationCustomizeView as any,
+                    CampaignTemplateCustomizeView as any,
                     ADMIN_ROLE
                 )}
             />
