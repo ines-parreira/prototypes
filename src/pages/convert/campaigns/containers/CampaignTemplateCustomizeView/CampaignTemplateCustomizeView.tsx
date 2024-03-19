@@ -19,7 +19,7 @@ import {CAMPAIGN_TEMPLATES} from 'pages/convert/campaigns/templates'
 import history from 'pages/history'
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import {CampaignDetailsForm} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
-import {getAgentsJS} from 'state/agents/selectors'
+import {getHumanAgentsJS} from 'state/agents/selectors'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
@@ -34,7 +34,7 @@ const CampaignTemplateCustomizeView = () => {
         [CONVERT_ROUTE_TEMPLATE_PARAM_NAME]: templateSlug,
     } = useParams<ConvertRouteTemplateParams>()
 
-    const agents = useAppSelector(getAgentsJS)
+    const agents = useAppSelector(getHumanAgentsJS)
 
     const template = templateSlug && CAMPAIGN_TEMPLATES[templateSlug]
 
