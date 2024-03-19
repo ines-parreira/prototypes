@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -13,10 +12,8 @@ import {
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {User} from 'config/types/user'
-import {TableColumn} from 'state/ui/stats/types'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const ClosedTicketsPerHourCellContent = ({
@@ -56,19 +53,11 @@ export const ClosedTicketsPerHourCellContent = ({
             {isLoading ? (
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
-                <DrillDownModalTrigger
-                    enabled={!!metricValue}
-                    metricData={buildAgentMetric(
-                        TableColumn.ClosedTicketsPerHour,
-                        agent
-                    )}
-                >
-                    {formatMetricValue(
-                        metricValue,
-                        'decimal',
-                        NOT_AVAILABLE_PLACEHOLDER
-                    )}
-                </DrillDownModalTrigger>
+                formatMetricValue(
+                    metricValue,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
             )}
         </BodyCell>
     )
