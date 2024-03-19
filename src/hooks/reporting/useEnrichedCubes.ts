@@ -6,6 +6,8 @@ import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {ReportingQuery} from 'models/reporting/types'
+import {VoiceCallMeasure} from 'models/reporting/cubes/VoiceCallCube'
+import {VoiceEventsByAgentMeasure} from 'models/reporting/cubes/VoiceEventsByAgent'
 import {renameCubeStringified, renameMember} from 'utils/reporting'
 
 const CUBE_NAMES: [string, string][] = [
@@ -59,13 +61,21 @@ const isHandleTimeQuery = (query: ReportingQuery) =>
     query.measures.includes(HandleTimeMeasure.HandleTime) ||
     query.measures.includes(HandleTimeMeasure.AverageHandleTime)
 
+const isVoiceCallQuery = (query: ReportingQuery) =>
+    query.measures.includes(VoiceCallMeasure.VoiceCallCount) ||
+    query.measures.includes(VoiceCallMeasure.VoiceCallAverageTalkTime) ||
+    query.measures.includes(VoiceCallMeasure.VoiceCallAverageWaitTime) ||
+    query.measures.includes(VoiceEventsByAgentMeasure.VoiceEventsCount)
+
 export const useEnrichedCubes = <T extends ReportingQuery>(
     originalQuery: T
 ): T => {
     const isAnalyticsNewCubes: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewCubes]
 
-    return isAnalyticsNewCubes && !isHandleTimeQuery(originalQuery)
+    return isAnalyticsNewCubes &&
+        !isHandleTimeQuery(originalQuery) &&
+        !isVoiceCallQuery(originalQuery)
         ? renameCubesEnriched(originalQuery)
         : originalQuery
 }
