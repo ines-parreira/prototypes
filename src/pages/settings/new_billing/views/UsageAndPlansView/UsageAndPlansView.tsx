@@ -99,7 +99,9 @@ const UsageAndPlansView = ({
         () => !currentSubscription.isEmpty(),
         [currentSubscription]
     )
-
+    const scheduledToCancelAt = currentSubscription.get(
+        'scheduled_to_cancel_at'
+    )
     // in the last 3 days of the trial show banner
     const showTrialBanner = useMemo(() => {
         const now = moment()
@@ -180,21 +182,30 @@ const UsageAndPlansView = ({
             <div className={css.generalInfo}>
                 <div className={css.generalInfoItem}>
                     {isTrialingSubscription ? (
-                        <>
+                        <div>
                             Your free trial started on{' '}
                             <span>{trialPeriodStart}</span> and will expire on{' '}
                             <span>{trialPeriodEnd}</span>
-                        </>
+                        </div>
+                    ) : !!scheduledToCancelAt ? (
+                        <div>
+                            Your Helpdesk subscription has been cancelled. It
+                            will remain active until the end of your billing
+                            cycle on{' '}
+                            <span>
+                                {moment(scheduledToCancelAt).format(
+                                    DATE_FORMAT
+                                )}
+                            </span>
+                            .
+                        </div>
                     ) : hasSubscription ? (
-                        <>
-                            Your subscription will be renewed on{' '}
-                            <span>{periodEnd}</span>
-                        </>
+                        <div>
+                            All your active subscription(s) will renew on{' '}
+                            <span>{periodEnd}</span>.
+                        </div>
                     ) : (
-                        <>
-                            You don't have any active subscription. Please first
-                            select some plans.
-                        </>
+                        <>You don't have any active subscriptions.</>
                     )}
                 </div>
                 <div className={css.generalInfoItem}>
@@ -233,6 +244,7 @@ const UsageAndPlansView = ({
                                 placement="top"
                                 className={css.tooltip}
                                 autohide={false}
+                                isOpen={true}
                             >
                                 To switch from monthly to yearly,{' '}
                                 <span
@@ -266,6 +278,13 @@ const UsageAndPlansView = ({
                                 to a non-legacy plan
                             </Tooltip>
                         </div>
+                    ) : !!scheduledToCancelAt ? (
+                        <span
+                            className={css.disabledText}
+                            id="update-billing-frequency"
+                        >
+                            Update
+                        </span>
                     ) : (
                         <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
                     )}
@@ -278,41 +297,41 @@ const UsageAndPlansView = ({
                     product={helpdeskProduct}
                     usage={currentUsage?.helpdesk}
                     banner={helpdeskBanner}
-                    isDisabled={isSubscribedToHelpdeskStarter}
+                    isDisabled={!helpdeskProduct && !!scheduledToCancelAt}
                 />
                 <ProductCard
                     type={ProductType.Automation}
                     product={automationProduct}
                     usage={currentUsage?.automation}
-                    isDisabled={false}
+                    isDisabled={!automationProduct && !!scheduledToCancelAt}
                 />
                 <ProductCard
                     type={ProductType.Voice}
                     product={voiceProduct}
                     usage={currentUsage?.voice}
                     banner={voiceBanner}
-                    isDisabled={false}
+                    isDisabled={!voiceProduct && !!scheduledToCancelAt}
                 />
                 <ProductCard
                     type={ProductType.SMS}
                     product={smsProduct}
                     usage={currentUsage?.sms}
                     banner={smsBanner}
-                    isDisabled={false}
+                    isDisabled={!smsProduct && !!scheduledToCancelAt}
                 />
                 <ProductCard
                     type={ProductType.Convert}
                     product={convertProduct}
                     usage={currentUsage?.convert}
                     banner={convertBanner}
-                    isDisabled={false}
+                    isDisabled={!convertProduct && !!scheduledToCancelAt}
                     autoUpgradeEnabled={Boolean(
                         convertStatus && convertStatus.auto_upgrade_enabled
                     )}
                 />
             </div>
             <div className={css.unsubscribe}>
-                If you have any questions regarding your subscription, please{' '}
+                If you have any questions, please{' '}
                 <span
                     className={classNames('text-primary', css.contactUs)}
                     onClick={() => contactBilling(TicketPurpose.CONTACT_US)}

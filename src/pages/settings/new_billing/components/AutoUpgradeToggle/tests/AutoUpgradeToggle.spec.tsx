@@ -7,6 +7,7 @@ import {ProductType} from 'models/billing/types'
 import {
     basicMonthlyHelpdeskPrice,
     convertPrice1,
+    convertPrice5,
     convertProduct,
 } from 'fixtures/productPrices'
 import {billingState} from 'fixtures/billing'
@@ -63,6 +64,39 @@ describe('AutoUpgradeToggle', () => {
         getByRole('button').click()
         expect(
             getByText('Keep your campaigns live at any time!')
+        ).toBeInTheDocument()
+        expect(getByRole('button', {name: 'Learn more'})).toBeInTheDocument()
+        expect(
+            getByText(
+                'Get automatically upgraded to the next plan if you reach your' +
+                    ' click allowance to keep displaying campaigns to your customers.'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('displays the toggle for enterprise plan', () => {
+        const {getByText, queryByRole} = render(
+            <Provider store={store}>
+                <AutoUpgradeToggle
+                    type={props.type}
+                    prices={props.prices}
+                    selectedPlans={{
+                        ...props.selectedPlans,
+                        [ProductType.Convert]: {
+                            plan: convertPrice5,
+                            isSelected: true,
+                        },
+                    }}
+                    setSelectedPlans={props.setSelectedPlans}
+                />
+            </Provider>
+        )
+        expect(getByText('Click allowance auto-upgrade')).toBeInTheDocument()
+        expect(
+            queryByRole('button', {name: 'Learn more'})
+        ).not.toBeInTheDocument()
+        expect(
+            getByText('Auto-upgrade is not available for the selected plan.')
         ).toBeInTheDocument()
     })
 })

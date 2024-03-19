@@ -54,7 +54,7 @@ describe('ProductCard', () => {
             </Provider>
         )
         expect(screen.getByText('Active')).toBeInTheDocument()
-        expect(screen.getByText('Update Plan')).toBeInTheDocument()
+        expect(screen.getByText('Manage')).toBeInTheDocument()
     })
 
     it('should render an inactive ProductCard component', () => {
