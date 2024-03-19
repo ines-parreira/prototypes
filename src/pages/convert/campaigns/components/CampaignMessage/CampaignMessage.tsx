@@ -53,8 +53,9 @@ export const CampaignMessage = memo(
     }: Props): JSX.Element => {
         const {shopifyIntegration} = useIntegrationContext()
         const isAllowedToAddDiscountCode = useIsAllowedToAddDiscountCode()
-        const [previousFirstProductId, setPreviousFirstProductId] =
-            useState<boolean>(false)
+        const [previousFirstProductId, setPreviousFirstProductId] = useState<
+            number | null
+        >(null)
         const [showWarningOutOfStock, setshowWarningOutOfStock] =
             useState<boolean>(false)
         const options = useMemo<Option[]>(() => {
@@ -102,6 +103,12 @@ export const CampaignMessage = memo(
         )
 
         useEffect(() => {
+            if (attachments.isEmpty() && showWarningOutOfStock) {
+                // if no products and warning is visible, hide it
+                setshowWarningOutOfStock(false)
+                setPreviousFirstProductId(null)
+                return
+            }
             if (attachments.isEmpty()) return
 
             const product = attachments.first() as Map<any, any>
@@ -124,8 +131,10 @@ export const CampaignMessage = memo(
                     .catch(console.error)
             }
         }, [
+            setshowWarningOutOfStock,
             setPreviousFirstProductId,
             previousFirstProductId,
+            showWarningOutOfStock,
             attachments,
             shopifyIntegration?.id,
         ])

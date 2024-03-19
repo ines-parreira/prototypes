@@ -41,7 +41,7 @@ export const shopifyDataMappers = {
                     ? `${product.variants.length} variants`
                     : sku,
             stock: {
-                isAvailable: isTracked ? quantity !== 0 : true,
+                isAvailable: isTracked ? quantity > 0 : true,
                 tracked: isTracked,
                 quantity: quantity,
                 totalVariants: product.variants.length,
@@ -72,7 +72,7 @@ export const shopifyDataMappers = {
             title,
             subtitle: variant.sku ? `SKU: ${variant.sku}` : null,
             stock: {
-                isAvailable: isTracked ? quantity !== 0 : true,
+                isAvailable: isTracked ? quantity > 0 : true,
                 tracked: isTracked,
                 quantity: quantity,
             },

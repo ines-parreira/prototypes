@@ -20,5 +20,5 @@ export async function checkShopifyProductAvailabity(
         0
     )
 
-    return isTracked ? quantity !== 0 : true
+    return isTracked ? quantity > 0 : true
 }

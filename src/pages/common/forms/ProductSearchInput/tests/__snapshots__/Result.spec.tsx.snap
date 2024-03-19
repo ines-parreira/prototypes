@@ -198,7 +198,7 @@ exports[`<Result/> render() should render with number of variants as subtitle 1`
 
 exports[`<Result/> render() should render with product negative stock quantity 1`] = `
 <div
-  class="container"
+  class="container isOutOfStock"
 >
   <div
     class="imgContainer"
