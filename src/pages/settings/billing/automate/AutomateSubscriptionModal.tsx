@@ -40,6 +40,7 @@ import {Price, ProductType} from 'models/billing/types'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import {SegmentEvent, logEvent} from 'common/segment'
 import css from './AutomateSubscriptionModal.less'
+import ROICalculator from './ROICalculator'
 
 type Props = {
     confirmLabel: string
@@ -299,7 +300,7 @@ const AutomateSubscriptionModal = ({
                 Calculate Potential ROI
             </ModalHeader>
             <ModalBody className={css.modalBody}>
-                ROI Calculator goes here
+                <ROICalculator />
             </ModalBody>
             <ModalFooter
                 className={classnames(css.footer, css.footerSpaceBetween)}

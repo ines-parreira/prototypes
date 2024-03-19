@@ -1,0 +1,169 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+    }
+
+    .formContainer {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-s;
+        gap: @layout-spacing-s;
+    }
+
+    .resultsContainer {
+        flex: 1;
+        margin: @layout-spacing-s;
+    }
+
+    .resultsWrapper {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-s;
+        border-radius: 4px;
+        background-color: var(--main-latte);
+    }
+
+    .formRow {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .inputsContainer {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .selectField {
+        width: 220px;
+    }
+
+    .labelContainer {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        align-items: center;
+
+        i {
+            font-size: 16px;
+            color: var(--neutral-grey-4);
+        }
+    }
+
+    .inputField {
+        flex: 1;
+    }
+
+    .salaryValue input {
+        padding-left: 0;
+    }
+
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--neutral-grey-6);
+        padding-bottom: @layout-spacing-s;
+    }
+
+    .resultRowBackground {
+        background-color: var(--accessory-magenta-1);
+        border-radius: 4px;
+        height: 40px;
+        display: flex;
+        margin-bottom: @layout-spacing-xs;
+        align-items: center;
+    }
+
+    .withoutAutomate {
+        background-color: #f5d4ff;
+        display: flex;
+        padding: @layout-spacing-xs;
+        border-radius: 4px;
+        gap: 20px;
+        width: 313px;
+        padding: @layout-spacing-xs 10px;
+        border-radius: 4px;
+        color: #000000;
+        align-items: center;
+    }
+
+    .withoutAutomateCost {
+        font-size: 16px;
+        font-weight: 400;
+        color: #000000;
+    }
+
+    .withAutomate {
+        background-color: #cb55ef;
+        display: flex;
+        padding: @layout-spacing-xs;
+        border-radius: 4px;
+        gap: 20px;
+        width: 240px;
+        padding: @layout-spacing-xs 10px;
+        border-radius: 4px;
+        color: var(--neutral-grey-0);
+        align-items: center;
+    }
+
+    .withAutomateCost {
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--neutral-grey-0);
+    }
+
+    .savePercentage {
+        display: inline-block;
+        padding: 0px 10px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #000000;
+    }
+
+    .reduceTimeContainer {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
+        flex: 1;
+        padding-top: @layout-spacing-xs;
+    }
+
+    .reduceResolutionTime {
+        display: flex;
+        height: 100%;
+        flex: 1;
+        background-color: var(--accessory-magenta-2);
+        border-radius: @layout-spacing-xxs;
+        padding: 22px 18px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .reduceFirstResponseTime {
+        display: flex;
+        height: 100%;
+        flex: 1;
+        background-color: var(--accessory-magenta-1);
+        border-radius: @layout-spacing-xxs;
+        padding: 22px 18px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .reducePercentage {
+        font-size: 12px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .reduceTime {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--neutral-grey-6);
+        text-align: center;
+    }
+}
