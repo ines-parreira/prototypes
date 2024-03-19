@@ -93,4 +93,5 @@ export enum FeatureFlagKey {
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     HelpdeskProductAutomatedCancellation = 'helpdesk-product-automated-cancellation',
+    ConvertCampaignLibraryUi = 'convert-campaign-library-ui',
 }

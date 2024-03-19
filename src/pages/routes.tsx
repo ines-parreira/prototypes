@@ -133,6 +133,8 @@ import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
+import CampaginLibaryView from 'pages/convert/campaigns/components/CampaginLibaryView'
+
 import {
     CONVERT_ROUTING_CAMPAIGN_PARAM,
     CONVERT_ROUTING_PARAM,
@@ -1746,6 +1748,14 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/campaigns/new`}
                 component={memoizedWithUserRoleRequired(
                     CampaignDetailsFactory as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                path={`${convertPathPrefix}/campaigns/library`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    CampaginLibaryView as any,
                     ADMIN_ROLE
                 )}
             />

@@ -7,6 +7,9 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {useIsConvertCampaignLibraryEnabled} from 'pages/convert/common/hooks/useIsConvertCampaignLibraryEnabled'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
 import {CampaignListOptions} from 'pages/convert/campaigns/providers/CampaignListOptions'
@@ -31,6 +34,9 @@ export const CampaignsView = () => {
     const integration = useAppSelector(
         getIntegrationById(parseInt(integrationId))
     )
+
+    const isCampaignLibraryEnabled = useIsConvertCampaignLibraryEnabled()
+    const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
     const immutableIntegration = useMemo(
         () => fromJS(integration) as Map<any, any>,
@@ -131,12 +137,31 @@ export const CampaignsView = () => {
         <CampaignListOptions>
             <div className="full-width">
                 <PageHeader title={'Campaigns'}>
-                    <Link
-                        to={`/app/convert/${integrationId}/campaigns/new`}
-                        className={css.createCampaignLink}
-                    >
-                        <Button>Create Campaign</Button>
-                    </Link>
+                    {isConvertSubscriber && isCampaignLibraryEnabled ? (
+                        <>
+                            <Link
+                                to={`/app/convert/${integrationId}/campaigns/new`}
+                            >
+                                <Button intent="secondary">
+                                    Create Custom Campaign
+                                </Button>
+                            </Link>
+
+                            <Link
+                                to={`/app/convert/${integrationId}/campaigns/library`}
+                                className={css.createCampaignFromLibraryLink}
+                            >
+                                <Button>Create Campaign From Library</Button>
+                            </Link>
+                        </>
+                    ) : (
+                        <Link
+                            to={`/app/convert/${integrationId}/campaigns/new`}
+                            className={css.createCampaignFromLibraryLink}
+                        >
+                            <Button>Create Campaign</Button>
+                        </Link>
+                    )}
                 </PageHeader>
 
                 <CampaignsList

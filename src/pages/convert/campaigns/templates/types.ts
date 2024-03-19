@@ -10,9 +10,16 @@ export enum CampaignTemplateLabelType {
     IncreaseAOV = 'Increase Average Order Value',
 }
 
+export type CampaignTemplateSectionType = {
+    title: string
+    description: string
+    templates: CampaignTemplate[]
+}
+
 export type CampaignTemplate = {
     slug: string
     name: string
+    description?: string
     preview: string
     estimation?: string
     label: CampaignTemplateLabelType

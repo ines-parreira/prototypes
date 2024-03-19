@@ -1,0 +1,26 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/typography.less';
+
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .section {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .header {
+        .heading-section-semibold();
+        margin-bottom: 0;
+    }
+
+    .description {
+        .body-regular();
+    }
+
+    .templatesContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, 370px);
+        gap: @layout-spacing-m;
+        margin: @layout-spacing-m 0 @layout-spacing-xl 0;
+    }
+}

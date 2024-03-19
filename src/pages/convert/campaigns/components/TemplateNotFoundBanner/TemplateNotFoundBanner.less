@@ -1,0 +1,30 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/typography.less';
+
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        background-color: var(--neutral-grey-1);
+        justify-content: center;
+        padding: @layout-spacing-xl;
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .description {
+        .body-regular();
+        margin-bottom: @layout-spacing-s;
+    }
+}

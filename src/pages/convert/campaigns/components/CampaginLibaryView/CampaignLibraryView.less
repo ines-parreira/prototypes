@@ -1,0 +1,35 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/typography.less';
+
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .pageContainer {
+        padding: @layout-spacing-m;
+    }
+
+    .section {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .header {
+        .heading-section-semibold();
+        margin-bottom: 0;
+    }
+
+    .description {
+        .body-regular();
+    }
+
+    .templatesContainer {
+        padding: @layout-spacing-s 0;
+        padding-bottom: @layout-spacing-l;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 320px));
+        gap: @layout-spacing-s;
+
+        @media @mobiles {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1r));
+        }
+    }
+}
