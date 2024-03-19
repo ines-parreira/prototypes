@@ -28,6 +28,9 @@ import ConvertOnboardingStep from '../ConvertOnboardingStep'
 import {useGetOrCreateChannelConnection} from '../../hooks/useGetOrCreateChannelConnection'
 import css from './ConvertOnboardingView.less'
 
+const BOOK_CALL_URL =
+    'https://calendly.com/gorgias-implementation/convert-implementation?utm_medium=in_product&utm_source=helpdesk&utm_campaign=onboarding_flow'
+
 const ConvertOnboardingView = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
         useParams<ConvertRouteParams>()
@@ -230,7 +233,10 @@ const ConvertOnboardingView = () => {
                                 {location.hash === '#later' && (
                                     <p className={classnames(css.text, 'mt-3')}>
                                         Need more help to set up Convert?{' '}
-                                        <a href="">Book an onboarding call</a>.
+                                        <a href={BOOK_CALL_URL}>
+                                            Book an onboarding call
+                                        </a>
+                                        .
                                     </p>
                                 )}
                             </>

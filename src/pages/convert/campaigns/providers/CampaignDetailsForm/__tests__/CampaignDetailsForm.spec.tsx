@@ -102,6 +102,7 @@ describe('<CampaignDetailsForm />', () => {
                         duplicateCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
                         deleteCampaign={jest.fn()}
+                        backUrl={'/back'}
                     />
                 </Provider>
             )
@@ -135,6 +136,7 @@ describe('<CampaignDetailsForm />', () => {
                         duplicateCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
                         deleteCampaign={jest.fn()}
+                        backUrl={'/back'}
                     />
                 </Provider>
             )
@@ -161,6 +163,7 @@ describe('<CampaignDetailsForm />', () => {
                         duplicateCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
                         deleteCampaign={jest.fn()}
+                        backUrl={'/back'}
                     />
                 </Provider>
             )

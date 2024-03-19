@@ -9,6 +9,8 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import {channelConnection} from 'fixtures/channelConnection'
 import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import history from 'pages/history'
+import {campaign} from 'fixtures/campaign'
+import {useListCampaigns} from 'models/convert/campaign/queries'
 import ConvertOnboardingRecommendationsView from '../ConvertOnboardingRecommendationsView'
 
 const mockStore = configureMockStore()
@@ -20,6 +22,9 @@ jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
 )
+
+jest.mock('models/convert/campaign/queries')
+const useListCampaignMock = assumeMock(useListCampaigns)
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -41,6 +46,12 @@ describe('ConvertOnboardingRecommendationsView', () => {
                 ...channelConnection,
                 is_onboarded: false,
             },
+        } as any)
+
+        useListCampaignMock.mockReturnValue({
+            data: [campaign],
+            isLoading: false,
+            isError: false,
         } as any)
 
         const mutateUpdateMock = jest.fn()

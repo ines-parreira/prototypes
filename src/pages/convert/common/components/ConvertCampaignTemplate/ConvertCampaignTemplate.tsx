@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {Link} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 
 import {
@@ -10,6 +11,8 @@ import css from './ConvertCampaignTemplate.less'
 
 type Props = {
     template: CampaignTemplate
+    integrationId: number
+    selected: boolean
 }
 
 const campaignLabelStyles: Record<
@@ -30,13 +33,19 @@ const campaignLabelStyles: Record<
     },
 }
 
-const ConvertCampaignTemplate = ({template}: Props) => {
+const ConvertCampaignTemplate = ({
+    template,
+    integrationId,
+    selected,
+}: Props) => {
     return (
         <>
             <div className={css.container}>
-                <div className={css.estimation}>
-                    Generates <b>$1000/month</b> on average
-                </div>
+                {template.estimation && (
+                    <div className={css.estimation}>
+                        Generates <b>{template.estimation}</b> on average
+                    </div>
+                )}
                 <div className={css.preview}>
                     <img src={template.preview} alt={template.name} />
                 </div>
@@ -48,15 +57,29 @@ const ConvertCampaignTemplate = ({template}: Props) => {
                         >
                             {template.label}
                         </div>
+                        {selected && (
+                            <div className={css.selected}>
+                                <i
+                                    className="material-icons text-success"
+                                    style={{fontSize: 24}}
+                                >
+                                    check_circle
+                                </i>
+                            </div>
+                        )}
                     </div>
                     <div>
                         <div className={css.title}>{template.name}</div>
                     </div>
 
                     <div className={css.button}>
-                        <Button intent="primary" fillStyle="ghost">
-                            Customize
-                        </Button>
+                        <Link
+                            to={`/app/convert/${integrationId}/setup/recommendations/${template.slug}`}
+                        >
+                            <Button intent="primary" fillStyle="ghost">
+                                Customize
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

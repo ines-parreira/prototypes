@@ -141,6 +141,10 @@ const CampaignDetailsFactory = (): JSX.Element => {
         [isChannelConnectionLoading, isCampaignLoading, campaignId]
     )
 
+    const backUrl = `/app/convert/${integration.get('id') as string}/campaigns${
+        (history.location.state as Record<string, string>)?.previousSearch ?? ''
+    }`
+
     return (
         <BaseCampaignDetails
             integration={integration}
@@ -159,6 +163,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 duplicateCampaign={handleCreateDuplicate}
                 updateCampaign={handleUpdateCampaign}
                 deleteCampaign={handleDeleteCampaign}
+                backUrl={backUrl}
             />
         </BaseCampaignDetails>
     )

@@ -6,7 +6,10 @@ import {CampaignDetailsHeader} from '../CampaignDetailsHeader'
 describe('<CampaignDetailsHeader />', () => {
     it('sets the right href', () => {
         const {getByText} = render(
-            <CampaignDetailsHeader backToHref="/back-to-campaigns" />
+            <CampaignDetailsHeader
+                backToHref="/back-to-campaigns"
+                title="Back to Campaigns list"
+            />
         )
 
         expect(getByText('Back to Campaigns list').getAttribute('to')).toEqual(
@@ -16,7 +19,12 @@ describe('<CampaignDetailsHeader />', () => {
 
     describe('Header button shows back text', () => {
         it('renders the "Back to Campaigns list" title', () => {
-            const {getByText} = render(<CampaignDetailsHeader backToHref="/" />)
+            const {getByText} = render(
+                <CampaignDetailsHeader
+                    backToHref="/"
+                    title="Back to Campaigns list"
+                />
+            )
             getByText('Back to Campaigns list')
         })
     })

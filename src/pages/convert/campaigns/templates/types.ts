@@ -1,7 +1,8 @@
+import {CampaignCreatePayload} from 'pages/convert/campaigns/types/Campaign'
+
 export type CampaignConfiguration = {
-    name: string
     template_id: string
-}
+} & Omit<CampaignCreatePayload, 'channel_connection_id'>
 
 export enum CampaignTemplateLabelType {
     IncreaseConversions = 'Increase Conversions',
@@ -13,7 +14,9 @@ export type CampaignTemplate = {
     slug: string
     name: string
     preview: string
+    estimation?: string
     label: CampaignTemplateLabelType
+    onboarding: boolean
     getConfiguration: (
         storeIntegrationId: number,
         chatIntegrationId: number

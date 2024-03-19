@@ -12,3 +12,6 @@ export const CAMPAIGN_TEMPLATES: Record<
     [PRODUCT_CARD_SHOWCASE.slug]: PRODUCT_CARD_SHOWCASE,
 }
 export const CAMPAIGN_TEMPLATES_LIST = Object.values(CAMPAIGN_TEMPLATES)
+export const ONBOARDING_CAMPAIGN_TEMPLATES_LIST = Object.values(
+    CAMPAIGN_TEMPLATES
+).filter((t) => t.onboarding)

@@ -19,7 +19,7 @@ type Props = {
     isUpdate?: boolean
     onSave: (activate?: boolean) => void
     onDiscard?: () => void
-    onDelete: () => void
+    onDelete?: () => void
     onDuplicate?: () => void
 }
 
@@ -67,22 +67,24 @@ export const CampaignFooter = ({
                     )}
                 </div>
 
-                <ConfirmButton
-                    placement="bottom-end"
-                    onConfirm={onDelete}
-                    confirmationContent="Are you sure you want to delete this campaign?"
-                    intent="destructive"
-                    isDisabled={actionInProgress !== ''}
-                    fillStyle="ghost"
-                    className={classnames('float-right', {
-                        'btn-loading': actionInProgress === 'delete',
-                    })}
-                    isLoading={actionInProgress === 'delete'}
-                >
-                    <ButtonIconLabel icon="delete">
-                        Delete campaign
-                    </ButtonIconLabel>
-                </ConfirmButton>
+                {onDelete && (
+                    <ConfirmButton
+                        placement="bottom-end"
+                        onConfirm={onDelete}
+                        confirmationContent="Are you sure you want to delete this campaign?"
+                        intent="destructive"
+                        isDisabled={actionInProgress !== ''}
+                        fillStyle="ghost"
+                        className={classnames('float-right', {
+                            'btn-loading': actionInProgress === 'delete',
+                        })}
+                        isLoading={actionInProgress === 'delete'}
+                    >
+                        <ButtonIconLabel icon="delete">
+                            Delete campaign
+                        </ButtonIconLabel>
+                    </ConfirmButton>
+                )}
             </div>
         )
     }

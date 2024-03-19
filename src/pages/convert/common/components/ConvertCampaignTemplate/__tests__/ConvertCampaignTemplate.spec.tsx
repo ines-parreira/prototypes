@@ -9,12 +9,17 @@ describe('ConvertCampaignTemplate', () => {
         name: 'Test Campaign',
         preview: 'test-preview.jpg',
         label: 'Increase Conversions',
+        onboarding: true,
         getConfiguration: jest.fn(),
-    }
+    } as CampaignTemplate
 
     it('renders campaign template correctly', () => {
         const {getByText, getByAltText} = render(
-            <ConvertCampaignTemplate template={template as CampaignTemplate} />
+            <ConvertCampaignTemplate
+                template={template}
+                integrationId={1}
+                selected={true}
+            />
         )
 
         const campaignLabel = getByText(template.label)

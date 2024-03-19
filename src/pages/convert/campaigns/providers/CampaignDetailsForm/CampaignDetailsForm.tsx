@@ -76,9 +76,11 @@ type Props = {
     integration: Map<any, any>
     shopifyIntegration: Map<any, any>
     createCampaign: (form: any) => Promise<unknown>
-    duplicateCampaign: (form: any) => Promise<unknown>
     updateCampaign: (form: any) => Promise<unknown>
-    deleteCampaign: () => Promise<unknown>
+    duplicateCampaign?: (form: any) => Promise<unknown>
+    deleteCampaign?: () => Promise<unknown>
+    header?: React.ReactNode
+    backUrl: string
 }
 
 export const CampaignDetailsForm = ({
@@ -90,9 +92,11 @@ export const CampaignDetailsForm = ({
     integration,
     shopifyIntegration,
     createCampaign,
-    duplicateCampaign,
     updateCampaign,
+    duplicateCampaign,
     deleteCampaign,
+    header,
+    backUrl,
 }: Props) => {
     const dispatch = useAppDispatch()
     const defaultOpenedStep = isEditMode
@@ -365,6 +369,8 @@ export const CampaignDetailsForm = ({
     }
 
     const handleDuplicateCampaign = async () => {
+        if (duplicateCampaign === undefined) return
+
         setActionInProgress('duplicate')
 
         await duplicateCampaign(fromJS(campaign)).then(() =>
@@ -377,6 +383,8 @@ export const CampaignDetailsForm = ({
     }
 
     const handleDeleteCampaign = async () => {
+        if (deleteCampaign === undefined) return
+
         setActionInProgress('delete')
         await deleteCampaign().then(() => setActionInProgress(''))
     }
@@ -423,10 +431,6 @@ export const CampaignDetailsForm = ({
         [integration]
     )
 
-    const backUrl = `/app/convert/${integration.get('id') as string}/campaigns${
-        (history.location.state as Record<string, string>)?.previousSearch ?? ''
-    }`
-
     const context = useMemo<CampaignDetailsFormApi>(() => {
         return {
             campaign: campaignData,
@@ -458,10 +462,14 @@ export const CampaignDetailsForm = ({
                     data-testid="improved-campaign-details-page"
                 >
                     <div className={css.formWrapper}>
-                        <CampaignDetailsHeader
-                            backToHref={backUrl}
-                            isUpdate={isEditMode}
-                        />
+                        {header ? (
+                            header
+                        ) : (
+                            <CampaignDetailsHeader
+                                backToHref={backUrl}
+                                title="Back to Campaigns list"
+                            />
+                        )}
                         {!isLoading && (
                             <div className={css.formContainer}>
                                 <Accordion
@@ -510,8 +518,16 @@ export const CampaignDetailsForm = ({
                                         isUpdate={isEditMode}
                                         onSave={handleSaveCampaign}
                                         onDiscard={handleDiscardChanges}
-                                        onDelete={handleDeleteCampaign}
-                                        onDuplicate={handleDuplicateCampaign}
+                                        onDelete={
+                                            deleteCampaign
+                                                ? handleDeleteCampaign
+                                                : undefined
+                                        }
+                                        onDuplicate={
+                                            duplicateCampaign
+                                                ? handleDuplicateCampaign
+                                                : undefined
+                                        }
                                     />
                                 </div>
                             </div>

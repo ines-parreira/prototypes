@@ -136,6 +136,7 @@ import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/Convert
 import {
     CONVERT_ROUTING_CAMPAIGN_PARAM,
     CONVERT_ROUTING_PARAM,
+    CONVERT_ROUTING_TEMPLATE_PARAM,
 } from 'pages/convert/common/constants'
 import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
 import TicketDetailLayout from 'ticket-page/components/TicketDetailLayout'
@@ -173,6 +174,7 @@ import ConvertOnboardingView from './convert/common/components/ConvertOnboarding
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
 import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
 import ConvertOnboardingRecommendationsView from './convert/common/components/ConvertOnboardingRecommendationsView'
+import ConvertOnboardingRecommendationCustomizeView from './convert/common/components/ConvertOnboardingRecommendationCustomizeView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1720,6 +1722,14 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/setup/recommendations`}
                 component={memoizedWithUserRoleRequired(
                     ConvertOnboardingRecommendationsView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
+                path={`${convertPathPrefix}/setup/recommendations/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
+                component={memoizedWithUserRoleRequired(
+                    ConvertOnboardingRecommendationCustomizeView as any,
                     ADMIN_ROLE
                 )}
             />

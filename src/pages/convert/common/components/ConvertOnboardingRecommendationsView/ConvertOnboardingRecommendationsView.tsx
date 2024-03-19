@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useMemo} from 'react'
 
 import {Container} from 'reactstrap'
 import classnames from 'classnames'
@@ -13,8 +13,15 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import {toJS} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
-import {CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
+import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
 import history from 'pages/history'
+import {
+    Campaign,
+    CampaignListOptions as CampaignListOptionsParams,
+} from 'models/convert/campaign/types'
+import {useListCampaigns} from 'models/convert/campaign/queries'
+import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import ConvertCampaignTemplate from '../ConvertCampaignTemplate'
 import css from './ConvertOnboardingRecommendationsView.less'
 
@@ -32,6 +39,28 @@ const ConvertOnboardingRecommendationsView = () => {
     )
 
     const updateChannelConnection = useUpdateChannelConnection()
+
+    const campaignListOptions = useMemo(
+        () =>
+            (channelConnection?.id
+                ? {
+                      channelConnectionId: channelConnection?.id,
+                  }
+                : {}) as CampaignListOptionsParams,
+        [channelConnection]
+    )
+
+    const {data: campaigns} = useListCampaigns(campaignListOptions, {
+        enabled: !!campaignListOptions.channelConnectionId,
+    })
+
+    const isSelected = (template: CampaignTemplate, campaigns?: Campaign[]) =>
+        !!campaigns &&
+        campaigns.some(
+            (c) =>
+                c.template_id === template.slug &&
+                c.status === CampaignStatus.Active
+        )
 
     const handleFinishSetup = useCallback(async () => {
         if (updateChannelConnection.isLoading) return
@@ -66,10 +95,12 @@ const ConvertOnboardingRecommendationsView = () => {
                 </div>
 
                 <div className={css.templatesContainer}>
-                    {CAMPAIGN_TEMPLATES_LIST.map((template) => (
+                    {ONBOARDING_CAMPAIGN_TEMPLATES_LIST.map((template) => (
                         <ConvertCampaignTemplate
                             key={template.slug}
                             template={template}
+                            integrationId={chatIntegrationId}
+                            selected={isSelected(template, campaigns)}
                         />
                     ))}
                 </div>
