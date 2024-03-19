@@ -12,7 +12,7 @@ import AvatarGroup from 'gorgias-design-system/Avatar/AvatarGroup'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 
 type Props = {
     avatar?: GorgiasChatAvatarSettings
@@ -20,7 +20,7 @@ type Props = {
 }
 
 const ConversationAvatars: React.FC<Props> = ({avatar, chatTitle}) => {
-    const agents = useAppSelector(getAgents) as List<Map<any, any>>
+    const agents = useAppSelector(getHumanAgents) as List<Map<any, any>>
 
     if (avatar?.imageType === GorgiasChatAvatarImageType.COMPANY_LOGO) {
         return (

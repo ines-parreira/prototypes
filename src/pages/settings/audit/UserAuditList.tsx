@@ -8,7 +8,7 @@ import _isEqual from 'lodash/isEqual'
 import {auditLogEventsFetched} from 'state/entities/auditLogEvents/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {RootState} from 'state/types'
 import {
     EventType,
@@ -48,7 +48,7 @@ const eventTypeOptions = Object.values(EventType).map((auditEvent) => ({
 
 const UserAuditList = () => {
     const dispatch = useAppDispatch()
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
     const auditLogEvents = useAppSelector((state: RootState) =>
         Object.values(state.entities.auditLogEvents)
     )

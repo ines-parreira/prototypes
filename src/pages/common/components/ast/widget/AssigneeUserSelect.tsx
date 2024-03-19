@@ -84,7 +84,7 @@ export class AssigneeUserSelectContainer extends React.Component<
 
 const connector = connect(
     (state: RootState) => ({
-        agents: agentSelectors.getAgents(state),
+        agents: agentSelectors.getHumanAgents(state),
     }),
     (dispatch) => ({
         actions: bindActionCreators(userActions, dispatch),

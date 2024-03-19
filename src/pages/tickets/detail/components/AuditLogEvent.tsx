@@ -22,7 +22,7 @@ import {
     isSystemRuleEvent,
     isViaRuleEvent,
 } from 'models/event/predicates'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
 import {getEvents} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
@@ -594,7 +594,7 @@ export class AuditLogEventContainer extends Component<Props> {
 }
 
 const connector = connect((state: RootState) => ({
-    users: getAgents(state),
+    users: getHumanAgents(state),
     teams: getTeams(state),
     tags: state.entities.tags,
     events: getEvents(state),

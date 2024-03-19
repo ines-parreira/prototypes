@@ -23,7 +23,7 @@ import {
     updateMacro,
 } from 'models/macro/resources'
 import {MacroDraft} from 'models/macro/types'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {
     macroCreated,
     macroDeleted,
@@ -314,7 +314,7 @@ export function MacrosSettingsFormContainer({
 
 const connector = connect(
     (state: RootState) => ({
-        agents: getAgents(state),
+        agents: getHumanAgents(state),
         macros: state.entities.macros,
     }),
     {

@@ -6,7 +6,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -36,7 +36,7 @@ const ChatIntegrationAvatar = (props: Props) => {
     const hasAvatarCustomization =
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
 
-    const agents = useAppSelector(getAgents) as List<Map<any, any>>
+    const agents = useAppSelector(getHumanAgents) as List<Map<any, any>>
 
     const {
         avatar,

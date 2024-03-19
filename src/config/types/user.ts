@@ -7,6 +7,7 @@ export enum UserRole {
     BasicAgent = 'basic-agent',
     Agent = 'agent',
     Admin = 'admin',
+    Bot = 'bot',
 }
 
 export type UserDraft = {

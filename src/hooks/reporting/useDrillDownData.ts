@@ -11,7 +11,7 @@ import {Cubes} from 'models/reporting/cubes'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
-import {getAgentsJS} from 'state/agents/selectors'
+import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
@@ -132,7 +132,7 @@ export const useDrillDownData = (
 ): DrillDownData => {
     const [currentPage, setCurrentPage] = useState(1)
     const query = useDrillDownQuery(metricData)
-    const agents = useAppSelector(getAgentsJS)
+    const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
     const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
         query,
         defaultEnrichmentFields

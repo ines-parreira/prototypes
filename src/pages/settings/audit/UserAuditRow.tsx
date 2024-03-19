@@ -6,7 +6,7 @@ import _startCase from 'lodash/startCase'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {Event} from 'models/event/types'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {humanizeString} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const UserAuditRow = ({eventItem}: Props) => {
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
 
     const renderUser = useCallback(() => {
         const user: Map<any, any> | undefined = agents.find(

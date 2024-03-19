@@ -5,7 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {mergeStatsFilters} from 'state/stats/actions'
 import {getLabelledTeamsJS} from 'state/teams/selectors'
-import {getLabelledAgentsJS} from 'state/agents/selectors'
+import {getLabelledHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
@@ -27,7 +27,7 @@ export default function AgentsStatsFilter({
     variant = 'fill',
 }: Props) {
     const dispatch = useAppDispatch()
-    const agents = useAppSelector(getLabelledAgentsJS)
+    const agents = useAppSelector(getLabelledHumanAndAutomationBotAgentsJS)
     const teams = useAppSelector(getLabelledTeamsJS)
     const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
 

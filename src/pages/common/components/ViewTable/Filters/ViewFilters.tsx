@@ -7,7 +7,7 @@ import {
     ExpressionStatement,
 } from 'estree'
 
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {getSchemas} from 'state/schemas/selectors'
 import {getTeams} from 'state/teams/selectors'
 import {getActiveView} from 'state/views/selectors'
@@ -23,7 +23,7 @@ import CallExpression from './CallExpression'
 
 export default function ViewFilters() {
     const dispatch = useAppDispatch()
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
     const schemas = useAppSelector(getSchemas)
     const teams = useAppSelector(getTeams)
     const view = useAppSelector(getActiveView)

@@ -5,7 +5,7 @@ import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Button from 'pages/common/components/button/Button'
 import {AgentLabel} from 'pages/common/utils/labels'
-import {getAgentsJS} from 'state/agents/selectors'
+import {getHumanAgentsJS} from 'state/agents/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 
 import DropdownSection from '../../dropdown/DropdownSection'
@@ -22,7 +22,7 @@ export default function CallTransferDropdown({
     target,
     placement = 'top',
 }: Props) {
-    const agents = useAppSelector(getAgentsJS)
+    const agents = useAppSelector(getHumanAgentsJS)
     const [selectedAgent, setSelectedAgent] = useState<number | null>(null)
 
     return (

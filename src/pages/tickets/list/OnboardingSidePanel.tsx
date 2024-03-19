@@ -12,7 +12,7 @@ import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
 import Video from 'pages/common/components/Video/Video'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 import {tryLocalStorage} from 'services/common/utils'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
@@ -35,7 +35,7 @@ const CheckIcon = ({condition}: {condition: boolean}) => (
 )
 
 export const OnboardingSidePanel = () => {
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
     const currentUser = useAppSelector(getCurrentUser)
     const emailIntegrations = useAppSelector(getEmailIntegrations)
     const hasIntegrationsOfTypes = useAppSelector(makeHasIntegrationOfTypes)

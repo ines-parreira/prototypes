@@ -6,7 +6,7 @@ import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkfl
 import Label from 'pages/common/forms/Label/Label'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {Drawer} from 'pages/common/components/Drawer'
@@ -21,7 +21,7 @@ type EndNodeEditorProps = {
 }
 
 export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
-    const users = useAppSelector(getAgents)
+    const users = useAppSelector(getHumanAgents)
     const teams = useAppSelector(getTeams)
     const [dropdownContainerRef, setDropdownContainerRef] =
         useState<HTMLDivElement | null>(null)

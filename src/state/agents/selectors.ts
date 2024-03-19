@@ -1,35 +1,56 @@
 import {fromJS, Map, List} from 'immutable'
-import {createSelector, Selector} from 'reselect'
+import {createSelector} from 'reselect'
 
-import {User} from 'config/types/user'
-import {getDisplayName} from '../customers/helpers'
-import {createImmutableSelector, makeGetPlainJS} from '../../utils'
-import {getCurrentUser} from '../currentUser/selectors'
-import {CurrentUser, RootState} from '../types'
+import {User, UserRole} from 'config/types/user'
+import {getDisplayName} from 'state/customers/helpers'
+import {createImmutableSelector, makeGetPlainJS} from 'utils'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {CurrentUser, RootState} from 'state/types'
 
-import {Agent, Agents, AgentsState} from './types'
+import {Agent, Agents, AgentsState} from 'state/agents/types'
+
+export const AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS =
+    'bot@658d6f54fbff9b7c6f2d0321'
+
+export const isHumanAgent = (agent: Map<any, any>) =>
+    agent.getIn(['role', 'name'], '') !== UserRole.Bot
+
+export const isAutomationBot = (agent: Map<any, any>) =>
+    agent.getIn(['role', 'name'], '') === UserRole.Bot &&
+    agent.get('email', '') === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+
+export const isHumanOrAutomationBotAgent = (agent: Map<any, any>) =>
+    isHumanAgent(agent) || isAutomationBot(agent)
 
 export const getState = (state: RootState): AgentsState =>
     state.agents || fromJS({})
 
-export const getPaginatedAgents: Selector<RootState, Agents> =
-    createImmutableSelector(
-        getState,
-        (state: AgentsState) =>
-            (state.getIn(['pagination']) as List<any>) || fromJS([])
-    )
-
-export const getAgents = createImmutableSelector(
+export const getHumanAgents = createImmutableSelector(
     getState,
     (state: AgentsState) => {
-        return (state.get('all') as List<any>) || (fromJS([]) as List<any>)
+        return ((state.get('all') as List<any>) || fromJS([])).filter(
+            isHumanAgent
+        ) as List<any>
     }
 )
 
-export const getAgentsJS = makeGetPlainJS<User[]>(getAgents)
+export const getHumanAgentsJS = makeGetPlainJS<User[]>(getHumanAgents)
 
-export const getLabelledAgents = createSelector(
-    getAgents,
+export const getHumanAndAutomationBotAgents = createImmutableSelector(
+    getState,
+    (state: AgentsState) => {
+        return ((state.get('all') as List<any>) || fromJS([])).filter(
+            isHumanOrAutomationBotAgent
+        ) as List<any>
+    }
+)
+
+export const getHumanAndAutomationBotAgentsJS = makeGetPlainJS<User[]>(
+    getHumanAndAutomationBotAgents
+)
+
+export const getLabelledHumanAndBotAgents = createSelector(
+    getHumanAndAutomationBotAgents,
     (agents) =>
         agents.map((agent: Map<any, any>) => ({
             label: getDisplayName(agent),
@@ -37,11 +58,12 @@ export const getLabelledAgents = createSelector(
         })) as List<any>
 )
 
-export const getLabelledAgentsJS =
-    makeGetPlainJS<{id: number; label: string}[]>(getLabelledAgents)
+export const getLabelledHumanAndAutomationBotAgentsJS = makeGetPlainJS<
+    {id: number; label: string}[]
+>(getLabelledHumanAndBotAgents)
 
 export const getOtherAgents = createSelector(
-    getAgents,
+    getHumanAgents,
     getCurrentUser,
     (agents: Agents, currentUser: CurrentUser) =>
         agents.filter(
@@ -52,7 +74,7 @@ export const getOtherAgents = createSelector(
 )
 
 export const getAgent = (id?: number) =>
-    createSelector(getAgents, (agents: Agents) => {
+    createSelector(getHumanAgents, (agents: Agents) => {
         if (!id) {
             return fromJS({}) as Agent
         }

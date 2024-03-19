@@ -4,7 +4,7 @@ import {List, Map} from 'immutable'
 
 import RadioChoiceField from 'pages/common/forms/RadioChoiceField'
 import {ViewVisibility} from 'models/view/types'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
 import {RootState} from 'state/types'
 
@@ -133,7 +133,7 @@ export function ViewSharingModalBodyContainer({
 }
 
 const connector = connect((state: RootState) => ({
-    users: getAgents(state),
+    users: getHumanAgents(state),
     teams: getTeams(state).toList(),
 }))
 

@@ -27,7 +27,7 @@ import {
     useDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
-import {getAgentsJS} from 'state/agents/selectors'
+import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
@@ -42,7 +42,7 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
 jest.mock('state/agents/selectors')
-const getAgentsJSMock = assumeMock(getAgentsJS)
+const getHumanAndBotAgentsJSMock = assumeMock(getHumanAndAutomationBotAgentsJS)
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(
     useMetricPerDimensionWithEnrichment
@@ -86,7 +86,7 @@ describe('useDrillDownData', () => {
             userTimezone,
             granularity: ReportingGranularity.Day,
         })
-        getAgentsJSMock.mockReturnValue(agents)
+        getHumanAndBotAgentsJSMock.mockReturnValue(agents)
         useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
             data: {allData: rowData} as unknown as any,
             isFetching: false,

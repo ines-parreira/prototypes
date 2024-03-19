@@ -5,7 +5,7 @@ import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 import {ViewField} from 'models/view/types'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {ViewFilter} from 'state/views/types'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
 
@@ -23,7 +23,7 @@ export default function TicketsClosedPerAgentViewLink({
     children,
     unassignedName = 'Unassigned',
 }: Props) {
-    const agents = useAppSelector(getAgents) as List<Map<any, any>>
+    const agents = useAppSelector(getHumanAgents) as List<Map<any, any>>
     const agent = agents.find(
         (agent) => (agent!.get('name') as string) === agentName
     )

@@ -5,7 +5,7 @@ import {User} from 'config/types/user'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {isMetricForAgent} from 'pages/stats/common/utils'
-import {getAgentsJS} from 'state/agents/selectors'
+import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 
 import {RootState} from 'state/types'
 import {getCleanStatsFilters} from 'state/ui/stats/selectors'
@@ -100,7 +100,7 @@ export const getHeatmapMode = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].heatmapMode
 
 export const getFilteredAgents = createSelector(
-    getAgentsJS,
+    getHumanAndAutomationBotAgentsJS,
     getCleanStatsFilters,
     (agents, filters) =>
         filters !== null && filters?.agents && filters.agents.length > 0

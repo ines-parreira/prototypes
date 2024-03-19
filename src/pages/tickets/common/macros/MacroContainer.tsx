@@ -14,7 +14,7 @@ import {
     Macro,
     MacroSortableProperties,
 } from 'models/macro/types'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {fetchMacros} from 'state/macro/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -47,7 +47,7 @@ const MacroContainer = ({
 }: Props) => {
     const dispatch = useAppDispatch()
 
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
     const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
 
     const [searchParams, setSearchParams] = useState<FetchMacrosOptions>({})

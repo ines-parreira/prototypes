@@ -53,7 +53,7 @@ import {
     isActiveViewTrashView as getIsActiveViewTrashView,
     getViewCount,
 } from 'state/views/selectors'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
 
 import {hasRole} from 'utils'
@@ -85,7 +85,7 @@ export const TicketListActions = ({
 
     const currentUser = useAppSelector((state) => state.currentUser)
     const teams = useAppSelector(getTeams)
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
     const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
     const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
     const areFiltersValid = useAppSelector(getAreFiltersValid)

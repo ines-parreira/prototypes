@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getAgentsJS} from 'state/agents/selectors'
+import {getHumanAgentsJS} from 'state/agents/selectors'
 import {getIntegrationById} from 'state/integrations/selectors'
 
 import {useGetCampaign} from 'models/convert/campaign/queries'
@@ -58,7 +58,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
         getIntegrationById(integration.getIn(['meta', 'shop_integration_id']))
     )
 
-    const agents = useAppSelector(getAgentsJS)
+    const agents = useAppSelector(getHumanAgentsJS)
 
     const {mutateAsync: updateCampaign} = useUpdateCampaign()
     const {mutateAsync: createCampaign} = useCreateCampaign()

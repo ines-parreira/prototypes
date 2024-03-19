@@ -8,7 +8,7 @@ import {Team} from 'models/team/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {AgentLabel} from 'pages/common/utils/labels'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {RootState} from 'state/types'
 
 import css from './AddMember.less'
@@ -127,7 +127,7 @@ export class AddMemberContainer extends Component<Props, State> {
 
 const connector = connect((state: RootState) => {
     return {
-        users: getAgents(state),
+        users: getHumanAgents(state),
     }
 })
 

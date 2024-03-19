@@ -43,7 +43,7 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 import Label from 'pages/common/forms/Label/Label'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {FETCH_TEAM_SUCCESS} from 'state/teams/constants'
@@ -65,7 +65,7 @@ export default function TeamCreationModal({
     onTeamCreated,
 }: Props) {
     const dispatch = useAppDispatch()
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
     const ref = useRef<HTMLDivElement>(null)
     const [name, setName] = useState<string>('')
     const [description, setDescription] = useState<string>('')

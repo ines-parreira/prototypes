@@ -7,7 +7,7 @@ import {User} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {
     getChatIntegrationCampaignById,
     getIntegrationById,
@@ -52,7 +52,7 @@ export const ChatCampaignDetailsFactory = ({
         getIntegrationById(integration.getIn(['meta', 'shop_integration_id']))
     )
 
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
 
     const handleCreateCampaign = async (
         campaign: Map<any, any>,

@@ -193,6 +193,50 @@ exports[`<RestrictedPage/> should render for basic-agent role and include higher
 </div>
 `;
 
+exports[`<RestrictedPage/> should render for bot role and include higher permission roles 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="badge upperCase"
+      />
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      this page
+       you need to be 
+      an
+       
+      <b>
+        Admin
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;
+
 exports[`<RestrictedPage/> should render for lite-agent role and include higher permission roles 1`] = `
 <div
   class="full-width"

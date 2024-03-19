@@ -14,7 +14,7 @@ import {SourceType} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import SourceIcon from 'pages/common/components/SourceIcon'
-import {getAgents} from 'state/agents/selectors'
+import {getHumanAgents} from 'state/agents/selectors'
 import {getDisplayName} from 'state/customers/helpers'
 import {getIntegrationChannel} from 'state/integrations/selectors'
 import {getTeams} from 'state/teams/selectors'
@@ -316,7 +316,7 @@ export const UserAssigneeLabel = ({
     assigneeUser: Map<any, any>
     size?: number
 }) => {
-    const agents = useAppSelector(getAgents)
+    const agents = useAppSelector(getHumanAgents)
 
     const agent = agents.find(
         (agent: Map<any, any>) => agent.get('id') === assigneeUser.get('id')
