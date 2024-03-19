@@ -62,7 +62,7 @@ export default function AutoMergeSettings() {
                                 eligible channel.
                                 <br />
                                 <a
-                                    href={''}
+                                    href={'https://link.gorgias.com/b5y'}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
