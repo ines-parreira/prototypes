@@ -22,9 +22,7 @@ const SecondaryReasons = ({
             data-testid="secondary-reasons-selector"
             className={css.secondaryReasonsContainer}
         >
-            <Instruction isRequired>
-                Could you please share more? Select all that applies
-            </Instruction>
+            <Instruction isRequired>Could you please share more? </Instruction>
             <RadioFieldSet
                 onChange={handleSecondaryReasonSelection}
                 options={selectionOptions}

@@ -24,7 +24,7 @@ describe('SecondaryReasons', () => {
         )
         expect(instructionsElement).toBeInTheDocument()
         expect(instructionsElement).toHaveTextContent(
-            'Could you please share more? Select all that applies*'
+            'Could you please share more? *'
         )
 
         const selectorElement = container.querySelector('fieldset')
