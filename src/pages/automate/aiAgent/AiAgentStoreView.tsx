@@ -1,6 +1,8 @@
 import React, {useMemo, useState} from 'react'
 import {List} from 'immutable'
 
+import _omitBy from 'lodash/omitBy'
+import _isNull from 'lodash/isNull'
 import _isEqual from 'lodash/isEqual'
 
 import {useQueryClient} from '@tanstack/react-query'
@@ -26,7 +28,6 @@ import TextArea from '../../common/forms/TextArea'
 import NumberInput from '../../common/forms/input/NumberInput'
 import {
     storeConfigurationKeys,
-    useCreateStoreConfigurationPure,
     useGetStoreConfigurationPure,
     useUpsertStoreConfigurationPure,
 } from '../../../models/aiAgent/queries'
@@ -55,30 +56,29 @@ const isAiAgentEnabled = (ticketSampleRate: number) => {
 const isHandoffEnabled = (silentHandover: boolean) => !silentHandover
 
 type FormValues = {
-    ticketSampleRate: number
-    silentHandover: boolean
-    monitoredEmailIntegrations: {id: number; email: string}[]
-    tags: Tag[]
-    excludedTopics: string[]
-    signature: string
-    toneOfVoice: string
+    ticketSampleRate: number | null
+    silentHandover: boolean | null
+    monitoredEmailIntegrations: {id: number; email: string}[] | null
+    tags: Tag[] | null
+    excludedTopics: string[] | null
+    signature: string | null
+    toneOfVoice: string | null
     helpCenter: {id: number; locale: string; subdomain: string} | null
 }
-const DEFAULT_FORM_VALUES = {
-    ticketSampleRate: 0,
-    silentHandover: false,
-    monitoredEmailIntegrations: [],
-    tags: [],
-    excludedTopics: [],
-    signature: '',
-    toneOfVoice: TONE_OF_VOICE_LABEL_TO_VALUE['Friendly'],
+const DEFAULT_FORM_VALUES: FormValues = {
+    ticketSampleRate: null,
+    silentHandover: null,
+    monitoredEmailIntegrations: null,
+    tags: null,
+    excludedTopics: null,
+    signature: null,
+    toneOfVoice: null,
     helpCenter: null,
 }
 
 const createStoreConfigurationToSubmit = (
-    storeName: string,
     formValues: FormValues,
-    serverStoreConfig: StoreConfiguration | undefined
+    serverStoreConfig: StoreConfiguration
 ) => {
     const {helpCenter, ticketSampleRate, ...restOfFormValues} = formValues
 
@@ -95,39 +95,26 @@ const createStoreConfigurationToSubmit = (
           }
         : {}
 
-    let ticketSampleRateValue = convertPercentageToFloat(ticketSampleRate)
+    let ticketSampleRateValue = serverStoreConfig.ticketSampleRate
 
-    if (
-        serverStoreConfig &&
-        ticketSampleRate === DEFAULT_FORM_VALUES.ticketSampleRate
-    ) {
-        ticketSampleRateValue = serverStoreConfig.ticketSampleRate
+    if (ticketSampleRate !== null) {
+        ticketSampleRateValue = convertPercentageToFloat(ticketSampleRate)
     }
 
-    const dirtyFormValues: Record<any, any> = Object.assign(
-        {},
-        ...Object.entries(restOfFormValues).map(([key, value]) => {
-            if (_isEqual(value, DEFAULT_FORM_VALUES[key as keyof FormValues])) {
-                return {}
-            }
-
-            return {[key]: value}
-        })
-    )
+    const nonNullRestOfFormValues = _omitBy(restOfFormValues, _isNull)
 
     const config = {
-        storeName,
         ...serverStoreConfig,
         ticketSampleRate: ticketSampleRateValue,
         ...helpCenterDetails,
-        ...dirtyFormValues,
+        ...nonNullRestOfFormValues,
     }
 
     return config
 }
 
 // We decide to report via a notification the first error we encounter, one at a time
-// in order to simplify the error reporting, avoiding having to manage the error states for each input
+// in order to simplify the error reporting, avoiding to manage error states for each inputs
 const validateFormValues = (formValues: FormValues) => {
     const {excludedTopics, signature, tags, ticketSampleRate} = formValues
     if (ticketSampleRate !== null) {
@@ -169,16 +156,14 @@ const validateFormValues = (formValues: FormValues) => {
     return ''
 }
 
-const validateRequiredFields = (
-    storeConfiguration: Partial<StoreConfiguration>
-) => {
+const validateRequiredFields = (storeConfiguration: StoreConfiguration) => {
     const {helpCenterId, monitoredEmailIntegrations} = storeConfiguration
     if (!helpCenterId) {
         return 'A Help Center selection is required'
     }
 
     if (
-        !monitoredEmailIntegrations?.length ||
+        !monitoredEmailIntegrations.length ||
         monitoredEmailIntegrations[0].id === 0 // because the backend could, for some reason, setting up an email integration with id 0
     ) {
         return 'Select at least one monitored email integration'
@@ -188,7 +173,7 @@ const validateRequiredFields = (
 }
 
 const useFormValues = () => {
-    // could have used a useReducer instead, but keeping it simple for now
+    // could have use a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] =
         useState<FormValues>(DEFAULT_FORM_VALUES)
 
@@ -196,10 +181,7 @@ const useFormValues = () => {
         setFormValues(DEFAULT_FORM_VALUES)
     }
 
-    const isFormDirty = !_isEqual(formValues, DEFAULT_FORM_VALUES)
-    const isFieldDirty = (key: keyof FormValues) => {
-        return !_isEqual(formValues[key], DEFAULT_FORM_VALUES[key])
-    }
+    const isDirty = !_isEqual(formValues, DEFAULT_FORM_VALUES)
 
     function updateValue<Key extends keyof FormValues>(
         key: Key,
@@ -214,8 +196,7 @@ const useFormValues = () => {
     return {
         formValues,
         resetForm,
-        isFormDirty,
-        isFieldDirty,
+        isDirty,
         updateValue,
     }
 }
@@ -248,23 +229,17 @@ export const AiAgentStoreView = ({
      * Resource management
      */
     const {
-        isLoading: getStoreConfigurationIsLoading,
-        data: getStoreConfigurationResponse,
-    } = useGetStoreConfigurationPure(
-        {
-            accountDomain,
-            storeName: shopName,
-        },
-        {retry: 1}
-    )
+        mutateAsync: mutateStoreConfiguration,
+        isLoading: isMutationLoading,
+    } = useUpsertStoreConfigurationPure()
 
-    const {mutateAsync: createStoreConfiguration, isLoading: isCreateLoading} =
-        useCreateStoreConfigurationPure()
-
-    const {mutateAsync: upsertStoreConfiguration, isLoading: isUpsertLoading} =
-        useUpsertStoreConfigurationPure()
-
-    const isMutationLoading = isCreateLoading || isUpsertLoading
+    const {
+        isLoading: storeConfigurationIsLoading,
+        data: storeConfigurationResponse,
+    } = useGetStoreConfigurationPure({
+        accountDomain,
+        storeName: shopName,
+    })
 
     /**
      * Global state retrieval
@@ -288,8 +263,7 @@ export const AiAgentStoreView = ({
      * Form states and handlers
      */
 
-    const {formValues, isFormDirty, isFieldDirty, resetForm, updateValue} =
-        useFormValues()
+    const {formValues, isDirty, resetForm, updateValue} = useFormValues()
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
@@ -306,7 +280,6 @@ export const AiAgentStoreView = ({
         }
 
         const configurationToSubmit = createStoreConfigurationToSubmit(
-            shopName,
             formValues,
             serverStoreConfig
         )
@@ -325,74 +298,74 @@ export const AiAgentStoreView = ({
             return
         }
 
-        const mutateStoreConfiguration = serverStoreConfig
-            ? upsertStoreConfiguration
-            : createStoreConfiguration
-
-        // @ts-ignore
-        await mutateStoreConfiguration([accountDomain, configurationToSubmit], {
-            onSuccess: () => {
-                void queryClient.invalidateQueries({
-                    queryKey: storeConfigurationKeys.detail(shopName),
-                })
-
-                void dispatch(
-                    notify({
-                        message: 'AI Agent configuration saved!',
-                        status: NotificationStatus.Success,
+        await mutateStoreConfiguration(
+            [
+                {
+                    accountDomain,
+                    storeName: shopName,
+                    storeConfiguration: configurationToSubmit,
+                },
+            ],
+            {
+                onSuccess: () => {
+                    void queryClient.invalidateQueries({
+                        queryKey: storeConfigurationKeys.detail(shopName),
                     })
-                )
 
-                resetForm()
-            },
-            onError: () => {
-                void dispatch(
-                    notify({
-                        message: 'Failed to save AI Agent configuration',
-                        status: NotificationStatus.Error,
-                    })
-                )
-            },
-        })
+                    void dispatch(
+                        notify({
+                            message: 'AI Agent configuration saved!',
+                            status: NotificationStatus.Success,
+                        })
+                    )
+
+                    resetForm()
+                },
+                onError: () => {
+                    void dispatch(
+                        notify({
+                            message: 'Failed to save AI Agent configuration',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                },
+            }
+        )
     }
 
     // Render logic
-    if (getStoreConfigurationIsLoading) {
+    if (!storeConfigurationResponse?.data) {
         return <Loader />
     }
 
-    const serverStoreConfig =
-        getStoreConfigurationResponse?.data.storeConfiguration
+    const serverStoreConfig = storeConfigurationResponse.data.storeConfiguration
 
     const selectedHelpCenter = helpCenters.find((helpCenter) => {
         const selectedHelpCenterId =
-            !serverStoreConfig || isFieldDirty('helpCenter')
-                ? formValues.helpCenter?.id
+            formValues.helpCenter !== null
+                ? formValues.helpCenter.id
                 : serverStoreConfig.helpCenterId
         return helpCenter.id === selectedHelpCenterId
     })
 
     const isAIAgentToggled = isAiAgentEnabled(
-        !serverStoreConfig || isFieldDirty('ticketSampleRate')
+        formValues.ticketSampleRate !== null
             ? formValues.ticketSampleRate
             : serverStoreConfig.ticketSampleRate
     )
 
     const isHandoffToggled = isHandoffEnabled(
-        !serverStoreConfig || isFieldDirty('silentHandover')
+        formValues.silentHandover !== null
             ? formValues.silentHandover
             : serverStoreConfig.silentHandover
     )
 
     return (
-        <AutomateView
-            title={AI_AGENT}
-            isLoading={getStoreConfigurationIsLoading}
-        >
-            {isFormDirty && (
+        <AutomateView title={AI_AGENT} isLoading={storeConfigurationIsLoading}>
+            {isDirty && (
                 <UnsavedChangesPrompt
                     onSave={handleOnSave}
-                    when={isFormDirty}
+                    when={isDirty}
                     onDiscard={resetForm}
                     shouldRedirectAfterSave={true}
                 />
@@ -423,12 +396,11 @@ export const AiAgentStoreView = ({
                     <NumberInput
                         className={css.numberInput}
                         onChange={(value?: number) => {
-                            if (value === undefined) return
+                            if (!value) return
                             updateValue('ticketSampleRate', value)
                         }}
                         value={
-                            !serverStoreConfig ||
-                            isFieldDirty('ticketSampleRate')
+                            formValues.ticketSampleRate !== null
                                 ? formValues.ticketSampleRate
                                 : convertFloatRateToInt(
                                       serverStoreConfig.ticketSampleRate
@@ -472,8 +444,7 @@ export const AiAgentStoreView = ({
 
                     <EmailIntegrationListSelection
                         selectedIds={
-                            !serverStoreConfig ||
-                            isFieldDirty('monitoredEmailIntegrations')
+                            formValues.monitoredEmailIntegrations !== null
                                 ? formValues.monitoredEmailIntegrations.map(
                                       (integration) => integration.id
                                   )
@@ -510,7 +481,7 @@ export const AiAgentStoreView = ({
                     <TextArea
                         id="signature-text-area"
                         value={
-                            !serverStoreConfig || isFieldDirty('signature')
+                            formValues.signature !== null
                                 ? formValues.signature
                                 : serverStoreConfig.signature
                         }
@@ -527,7 +498,7 @@ export const AiAgentStoreView = ({
                     <SelectField
                         fullWidth
                         value={
-                            !serverStoreConfig || isFieldDirty('toneOfVoice')
+                            formValues.toneOfVoice !== null
                                 ? TONE_OF_VOICE_VALUE_TO_LABEL[
                                       formValues.toneOfVoice
                                   ]
@@ -536,11 +507,13 @@ export const AiAgentStoreView = ({
                                   ]
                         }
                         onChange={(toneOfVoiceLabel) => {
+                            const defaultToneOfVoice =
+                                TONE_OF_VOICE_LABEL_TO_VALUE['Friendly']
                             updateValue(
                                 'toneOfVoice',
                                 TONE_OF_VOICE_LABEL_TO_VALUE[
                                     toneOfVoiceLabel
-                                ] ?? TONE_OF_VOICE_LABEL_TO_VALUE['Friendly']
+                                ] ?? defaultToneOfVoice
                             )
                         }}
                         options={TONE_OF_VOICE_LABELS.map((label) => ({
@@ -560,10 +533,7 @@ export const AiAgentStoreView = ({
                         className={css.featureToggle}
                         isToggled={isHandoffToggled}
                         onClick={() => {
-                            if (
-                                !serverStoreConfig ||
-                                isFieldDirty('silentHandover')
-                            ) {
+                            if (formValues.silentHandover !== null) {
                                 updateValue(
                                     'silentHandover',
                                     !formValues.silentHandover
@@ -586,7 +556,7 @@ export const AiAgentStoreView = ({
                     <ListField
                         className={css.container}
                         items={List(
-                            !serverStoreConfig || isFieldDirty('excludedTopics')
+                            formValues.excludedTopics !== null
                                 ? formValues.excludedTopics
                                 : serverStoreConfig.excludedTopics
                         )}
@@ -603,7 +573,7 @@ export const AiAgentStoreView = ({
                     <HeaderTitle className={css.header} title="Auto Tag" />
                     <AutoTagList
                         tags={
-                            !serverStoreConfig || isFieldDirty('tags')
+                            formValues.tags !== null
                                 ? formValues.tags
                                 : serverStoreConfig.tags
                         }
@@ -614,7 +584,7 @@ export const AiAgentStoreView = ({
                 </div>
                 <Button
                     onClick={handleOnSave}
-                    isDisabled={isMutationLoading || !isFormDirty}
+                    isDisabled={isMutationLoading || !isDirty}
                     className="mb-3"
                 >
                     Save Changes

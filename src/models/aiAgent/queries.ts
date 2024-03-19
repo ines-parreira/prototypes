@@ -3,7 +3,6 @@ import {useQuery, UseQueryOptions, useMutation} from '@tanstack/react-query'
 import {MutationOverrides} from 'types/query'
 import {GetStoreConfigurationParams} from './types'
 import {
-    createStoreConfiguration,
     getAccountConfiguration,
     getStoreConfiguration,
     upsertAccountConfiguration,
@@ -65,15 +64,6 @@ export const useGetStoreConfigurationPure = (
         queryFn: () => getStoreConfiguration(params),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        ...overrides,
-    })
-}
-
-export const useCreateStoreConfigurationPure = (
-    overrides?: MutationOverrides<typeof createStoreConfiguration>
-) => {
-    return useMutation({
-        mutationFn: (params) => createStoreConfiguration(...params),
         ...overrides,
     })
 }
