@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import _pick from 'lodash/pick'
 
 import {TicketChannel} from 'business/types/ticket'
@@ -29,6 +29,7 @@ import {
     pickedCustomerFields,
 } from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 
+import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import css from './CustomerDetailContainer.less'
 
 const getActiveCustomerTicketChannels = makeGetActiveCustomerChannelsByType([
@@ -83,12 +84,14 @@ export const CustomerDetailContainer = ({
     const shouldDisplayLoader = customersIsLoading('active')
     const createTicketOptions = useMemo(
         () => ({
-            pathname: `/app/ticket/new`,
-            search: `?customer=${activeCustomer.get('id') as number}`,
-            state: {
-                receiver: {
-                    name: activeCustomer.get('name'),
-                    address: filteredChannels[0]?.address,
+            to: {
+                pathname: `/app/ticket/new`,
+                search: `?customer=${activeCustomer.get('id') as number}`,
+                state: {
+                    receiver: {
+                        name: activeCustomer.get('name'),
+                        address: filteredChannels[0]?.address,
+                    },
                 },
             },
         }),
@@ -101,11 +104,11 @@ export const CustomerDetailContainer = ({
         <div className={css.customerDetailContainer}>
             <div className="flex-spaced-row">
                 <h1>{customersHelpers.getDisplayName(activeCustomer)}</h1>
-
-                <div>
-                    <Link className="mr-2" to={createTicketOptions}>
-                        <Button intent="secondary">Create ticket</Button>
-                    </Link>
+                <div className={css.buttons}>
+                    <CreateTicketButton
+                        buttonProps={{intent: 'secondary'}}
+                        linkProps={createTicketOptions}
+                    />
                     <Button onClick={() => setIsCustomerFormOpen(true)}>
                         Edit customer
                     </Button>

@@ -1,5 +1,11 @@
 import _noop from 'lodash/noop'
-import React, {cloneElement, ReactElement, useMemo, useRef} from 'react'
+import React, {
+    cloneElement,
+    ComponentProps,
+    ReactElement,
+    useMemo,
+    useRef,
+} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
@@ -11,12 +17,18 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 
 type CreateTicketButtonProps = {
+    buttonProps?: ComponentProps<typeof Button>
     isDisabled?: boolean
+    linkProps?: ComponentProps<typeof Link>
     shouldBindKeys?: boolean
     trigger?: ReactElement
 }
 export default function CreateTicketButton({
+    buttonProps,
     isDisabled,
+    linkProps = {
+        to: '/app/ticket/new',
+    },
     shouldBindKeys = false,
     trigger,
 }: CreateTicketButtonProps) {
@@ -39,8 +51,12 @@ export default function CreateTicketButton({
     useConditionalShortcuts(shouldBindKeys, 'CreateTicketButton', actions)
 
     return !hasDraft ? (
-        <Link to="/app/ticket/new" className="d-inline-flex">
-            {trigger || <Button isDisabled={isDisabled}>Create ticket</Button>}
+        <Link className="d-inline-flex" {...linkProps}>
+            {trigger || (
+                <Button {...buttonProps} isDisabled={isDisabled}>
+                    Create ticket
+                </Button>
+            )}
         </Link>
     ) : (
         <>
@@ -48,7 +64,7 @@ export default function CreateTicketButton({
                 cloneElement(trigger, {ref: dropdownTargetRef})
             ) : (
                 <DropdownButton
-                    color="primary"
+                    intent={buttonProps?.intent ?? 'primary'}
                     fillStyle="fill"
                     onToggleClick={_noop}
                     size="medium"

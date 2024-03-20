@@ -10,9 +10,11 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
     <h1>
       Rachel Greene
     </h1>
-    <div>
+    <div
+      class="buttons"
+    >
       <a
-        class="mr-2"
+        class="d-inline-flex"
         to="[object Object]"
       >
         <button

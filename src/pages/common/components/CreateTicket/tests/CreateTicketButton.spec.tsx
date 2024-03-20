@@ -35,7 +35,7 @@ describe('<CreateTicketButton />', () => {
         expect(queryByText('Discard and create new ticket')).toBeInTheDocument()
     })
 
-    it('should not render draft dropdown when there is a draft', () => {
+    it('should not render draft dropdown when there is not a draft', () => {
         mockUseHandleTicketDraft.mockReturnValue({
             hasDraft: false,
             onResumeDraft: jest.fn(),
@@ -100,5 +100,51 @@ describe('<CreateTicketButton />', () => {
                 },
             })
         )
+    })
+
+    describe('custom link and button props', () => {
+        it('should display for existing draft', () => {
+            const {getByText} = renderWithRouter(
+                <CreateTicketButton
+                    buttonProps={{intent: 'secondary'}}
+                    linkProps={{
+                        to: {
+                            pathname: `/custom/path`,
+                        },
+                    }}
+                />
+            )
+
+            const buttonClasses = getByText('Create ticket').classList
+            expect(buttonClasses).toContain('secondary')
+            expect(buttonClasses).not.toContain('primary')
+            const arrowClasses =
+                getByText('arrow_drop_down').closest('button')?.classList
+            expect(arrowClasses).toContain('secondary')
+            expect(arrowClasses).not.toContain('primary')
+        })
+
+        it('should display for empty draft', () => {
+            mockUseHandleTicketDraft.mockReturnValue({
+                hasDraft: false,
+                onResumeDraft: jest.fn(),
+                onDiscardDraft: jest.fn(),
+            })
+
+            const {getByText} = renderWithRouter(
+                <CreateTicketButton
+                    buttonProps={{intent: 'secondary'}}
+                    linkProps={{
+                        to: {
+                            pathname: `/custom/path`,
+                        },
+                    }}
+                />
+            )
+
+            const buttonClasses = getByText('Create ticket').classList
+            expect(buttonClasses).toContain('secondary')
+            expect(buttonClasses).not.toContain('primary')
+        })
     })
 })
