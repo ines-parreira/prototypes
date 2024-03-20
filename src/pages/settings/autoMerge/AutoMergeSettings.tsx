@@ -36,6 +36,10 @@ export default function AutoMergeSettings() {
         [autoMergeSettings, saveAutoMergeSettings]
     )
 
+    const handleOnClick = (event: React.FormEvent<HTMLInputElement>) => {
+        event.currentTarget.select()
+    }
+
     return (
         <div className="full-width">
             <UnsavedChangesPrompt
@@ -105,6 +109,8 @@ export default function AutoMergeSettings() {
                                             defaultAutoMergeSettings.merging_window_days
                                     )
                                 }}
+                                onFocus={handleOnClick}
+                                onClick={handleOnClick}
                             />
                             &nbsp;&nbsp;days
                         </div>

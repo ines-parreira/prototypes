@@ -282,6 +282,21 @@ describe('<AuditLogEvent/>', () => {
                 ).toBeInTheDocument()
             })
 
+            it('should render by auto-merge service', () => {
+                const event = getEvent(TICKET_EVENT_TYPES.TicketMerged, null, {
+                    user_id: null,
+                })
+                const {getByText} = render(
+                    <AuditLogEventContainer
+                        {...minProps}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                )
+
+                expect(getByText('by auto-merge service')).toBeInTheDocument()
+            })
+
             it('when the customer has changed', () => {
                 const name1 = 'customer 2'
                 const name2 = 'customer 3'

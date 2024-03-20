@@ -577,6 +577,9 @@ export class AuditLogEventContainer extends Component<Props> {
                             </>
                         ) : !!event.getIn(['data', 'auto_assigned']) ? (
                             <Filler>via Team auto-assignment</Filler>
+                        ) : type === CONTENTFUL_EVENT_TYPES.TicketMerged &&
+                          !user ? (
+                            <Filler>by auto-merge service</Filler>
                         ) : null}
                     </div>
 
