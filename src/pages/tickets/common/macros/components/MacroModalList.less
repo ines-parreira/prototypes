@@ -1,16 +1,24 @@
-:local .component {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+:local {
+    .component {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
 
-    .search {
-        background: var(--neutral-grey-0);
-        border-color: var(--neutral-grey-4);
+        .search {
+            background: var(--neutral-grey-0);
+            border-color: var(--neutral-grey-4);
+        }
+
+        .scroller {
+            flex: 1;
+            margin: 0 -1em;
+            padding: 0 1em;
+        }
     }
 
-    .scroller {
-        flex: 1;
-        margin: 0 -1em;
-        padding: 0 1em;
+    .tags {
+        > div:last-of-type {
+            max-height: 45vh;
+        }
     }
 }

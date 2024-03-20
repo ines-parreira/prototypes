@@ -127,6 +127,9 @@ export default class MacroModalList extends Component<Props> {
                             ...values,
                         })
                     }
+                    tagDropdownMenuProps={{
+                        className: css.tags,
+                    }}
                 />
                 <MacroList
                     className={css.scroller}

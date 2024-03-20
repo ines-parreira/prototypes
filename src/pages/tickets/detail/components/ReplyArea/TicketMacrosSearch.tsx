@@ -1,6 +1,7 @@
-import classnames from 'classnames'
 import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
+import classnames from 'classnames'
 
+import {useAppNode} from 'appNode'
 import {MacrosProperties} from 'models/macro/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -35,6 +36,8 @@ const TicketMacrosSearch = ({
 }: Props) => {
     const ref = useRef<HTMLElement | null>(null)
 
+    const appNode = useAppNode()
+
     return (
         <div className={classnames(css.component, 'd-flex align-items-center')}>
             <TextInput
@@ -61,6 +64,10 @@ const TicketMacrosSearch = ({
                     selectedProperties={filters}
                     onChange={onChangeFilters}
                     size="sm"
+                    tagDropdownMenuProps={{
+                        className: css.tags,
+                        container: appNode ?? undefined,
+                    }}
                 />
             )}
 

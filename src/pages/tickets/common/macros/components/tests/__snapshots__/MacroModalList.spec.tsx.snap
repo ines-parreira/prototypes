@@ -73,7 +73,7 @@ exports[`<MacroModalList /> should render MacroModalList 1`] = `
       </button>
       <div
         aria-hidden="true"
-        class="dropdown dropdown-menu dropdown-menu-right"
+        class="dropdown tags dropdown-menu dropdown-menu-right"
         role="menu"
         tabindex="-1"
       >

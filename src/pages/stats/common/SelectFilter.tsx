@@ -162,6 +162,7 @@ type Props = {
     className?: string
     toggleClassName?: string
     dropdownMenu?: ComponentType<ComponentProps<typeof DropdownMenu>>
+    dropdownMenuProps?: ComponentProps<typeof DropdownMenu>
     isDisabled?: boolean
     isMultiple?: boolean
     isPartial?: boolean
@@ -174,14 +175,18 @@ type Props = {
     size?: 'sm' | 'lg'
 }
 
-const DefaultDropdownMenu = (props: ComponentProps<typeof DropdownMenu>) => (
-    <DropdownMenu {...props} className={css.dropdown} />
+const DefaultDropdownMenu = ({
+    className,
+    ...props
+}: ComponentProps<typeof DropdownMenu>) => (
+    <DropdownMenu {...props} className={classnames(css.dropdown, className)} />
 )
 
 const SelectFilter = ({
     children,
     className,
     dropdownMenu: DropdownMenuComponent = DefaultDropdownMenu,
+    dropdownMenuProps,
     isDisabled = false,
     isRequired = false,
     isMultiple = true,
@@ -405,7 +410,7 @@ const SelectFilter = ({
                     >
                         <span>{toggleLabel}</span>
                     </DropdownToggle>
-                    <DropdownMenuComponent right>
+                    <DropdownMenuComponent right {...dropdownMenuProps}>
                         <DropdownItem
                             header
                             className={classnames(

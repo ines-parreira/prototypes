@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
+
 import {ISO639English} from 'constants/languages'
 import {MacrosProperties} from 'models/macro/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
@@ -8,12 +9,20 @@ import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyAre
 import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
 
 type Props = {
+    tagDropdownMenuProps?: ComponentProps<
+        typeof SelectFilter
+    >['dropdownMenuProps']
     selectedProperties: MacrosProperties
     onChange: (properties: MacrosProperties) => void
     size?: 'sm' | 'lg'
 }
 
-const MacroFilters = ({selectedProperties, onChange, size}: Props) => {
+const MacroFilters = ({
+    tagDropdownMenuProps,
+    selectedProperties,
+    onChange,
+    size,
+}: Props) => {
     const properties: MacrosProperties = useAppSelector(
         getMacroParametersOptions
     ).toJS()
@@ -56,6 +65,7 @@ const MacroFilters = ({selectedProperties, onChange, size}: Props) => {
                 }
                 value={selectedProperties.tags ?? []}
                 size={size}
+                dropdownMenuProps={tagDropdownMenuProps}
             >
                 {properties.tags?.map((tag) => (
                     <SelectFilter.Item key={tag} value={tag} label={tag} />
