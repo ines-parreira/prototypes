@@ -1,6 +1,13 @@
 import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import css from './AutomateSavingsCard.less'
 
 interface Props {
@@ -14,73 +21,89 @@ export const AutomateSavingsCard = ({
     teamTimeSaved,
     customersTimeSaved,
 }: Props) => {
+    const hasAccessToROICalculator =
+        useFlags()[FeatureFlagKey.ObservabilityROICalculator]
+
     return (
         <div className={css.container}>
-            <p className="mb-1">In the last 28 days</p>
-            <div className={css.headings}>
-                <div className={css.wrapper}>
-                    <h2 className={css.heading}>Automate saved your team</h2>
-                    <div className={css.valuesContainer}>
-                        <div className={css.values}>
-                            <div>
-                                <div className={css.heading}>
-                                    {formatCurrency(
-                                        Math.round(amountSaved),
-                                        'usd'
-                                    )}
+            <div className={css.savings}>
+                <p className="mb-1">In the last 28 days</p>
+                <div className={css.headings}>
+                    <div className={css.wrapper}>
+                        <h2 className={css.heading}>
+                            Automate saved your team
+                        </h2>
+                        <div className={css.valuesContainer}>
+                            <div className={css.values}>
+                                <div>
+                                    <div className={css.heading}>
+                                        {formatCurrency(
+                                            Math.round(amountSaved),
+                                            'usd'
+                                        )}
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        <p className={css.subheading}>
+                                            In support costs
+                                        </p>
+                                        <HintTooltip title="How much more it would have cost if these interactions were handled by an agent, based on Helpdesk ticket cost plus the benchmark agent cost of $3.1 per ticket." />
+                                    </div>
                                 </div>
-                                <div className="d-flex align-items-center">
-                                    <p className={css.subheading}>
-                                        In support costs
-                                    </p>
-                                    <HintTooltip title="How much more it would have cost if these interactions were handled by an agent, based on Helpdesk ticket cost plus the benchmark agent cost of $3.1 per ticket." />
+                                <div>
+                                    <div className={css.heading}>
+                                        {teamTimeSaved
+                                            ? formatMetricValue(
+                                                  teamTimeSaved,
+                                                  'duration'
+                                              )
+                                            : '0h 0m'}
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        <p className={css.subheading}>
+                                            In average resolution time
+                                        </p>
+                                        <HintTooltip title="How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time." />
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <div className={css.heading}>
-                                    {teamTimeSaved
-                                        ? formatMetricValue(
-                                              teamTimeSaved,
-                                              'duration'
-                                          )
-                                        : '0h 0m'}
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <p className={css.subheading}>
-                                        In average resolution time
-                                    </p>
-                                    <HintTooltip title="How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time." />
+                        </div>
+                    </div>
+                    <div className={css.divider} />
+                    <div className={css.wrapper}>
+                        <h2 className={css.heading}>
+                            Automate saved your customers
+                        </h2>
+                        <div className={css.valuesContainer}>
+                            <div className={css.values}>
+                                <div>
+                                    <div className={css.heading}>
+                                        {customersTimeSaved
+                                            ? formatMetricValue(
+                                                  customersTimeSaved,
+                                                  'duration'
+                                              )
+                                            : '0h 0m'}
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        <p className={css.subheading}>
+                                            In average first response
+                                        </p>
+                                        <HintTooltip title="How much longer customers would have had to wait for a first response if you were not using Automate, based on your average first response time." />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className={css.divider} />
-                <div className={css.wrapper}>
-                    <h2 className={css.heading}>
-                        Automate saved your customers
-                    </h2>
-                    <div className={css.valuesContainer}>
-                        <div className={css.values}>
-                            <div>
-                                <div className={css.heading}>
-                                    {customersTimeSaved
-                                        ? formatMetricValue(
-                                              customersTimeSaved,
-                                              'duration'
-                                          )
-                                        : '0h 0m'}
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <p className={css.subheading}>
-                                        In average first response
-                                    </p>
-                                    <HintTooltip title="How much longer customers would have had to wait for a first response if you were not using Automate, based on your average first response time." />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div>
+                {hasAccessToROICalculator && (
+                    <Button fillStyle="ghost" intent="secondary">
+                        <ButtonIconLabel icon="calculate">
+                            Explore Data
+                        </ButtonIconLabel>
+                    </Button>
+                )}
             </div>
         </div>
     )
