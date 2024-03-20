@@ -319,6 +319,7 @@ export const views = fromAST([
                                         <TagLabel
                                             key={tag.get('id')}
                                             decoration={tag.get('decoration')}
+                                            title={tag.get('name')}
                                         >
                                             {tag.get('name')}
                                         </TagLabel>

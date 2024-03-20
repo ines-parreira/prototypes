@@ -209,14 +209,14 @@ exports[`<SetAssigneeAction/> render() should render user dropdown with current 
     >
       <div
         class="component square avatar"
-        style="width: 26px; height: 26px;"
+        style="width: 24px; height: 24px;"
       >
         <div
           class="initials"
-          style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+          style="width: 24px; height: 24px; font-size: 10px;"
         >
           <span
-            style="line-height: 28px;"
+            style="line-height: 26px;"
           >
             T1
           </span>
@@ -258,14 +258,14 @@ exports[`<SetAssigneeAction/> render() should render user dropdown with current 
         >
           <div
             class="component square avatar"
-            style="width: 26px; height: 26px;"
+            style="width: 24px; height: 24px;"
           >
             <div
               class="initials"
-              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              style="width: 24px; height: 24px; font-size: 10px;"
             >
               <span
-                style="line-height: 28px;"
+                style="line-height: 26px;"
               >
                 T1
               </span>

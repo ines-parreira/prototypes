@@ -147,7 +147,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                     class="tagsSelect"
                   >
                     <div
-                      class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1 justify-content-end"
+                      class="tags right"
                     >
                       <span
                         class="badge-tag tagLabel badge badge-secondary"
@@ -336,7 +336,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                     class="tagsSelect"
                   >
                     <div
-                      class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1 justify-content-end"
+                      class="tags right"
                     >
                       <span
                         class="badge-tag tagLabel badge badge-secondary"

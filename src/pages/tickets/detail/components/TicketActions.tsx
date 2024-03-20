@@ -36,6 +36,7 @@ export default function TicketActions({actions}: Props) {
                 id="ticket-actions-button"
                 intent="secondary"
                 onClick={handleClick}
+                size="small"
             >
                 <i className={cn(css.icon, 'material-icons')}>more_vert</i>
             </Button>

@@ -6,13 +6,13 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between align-items-center mb-2"
+    class="title"
   >
     <div
-      class="wrapper component"
+      class="wrapper editableTitleWrapper component"
     >
       <input
-        class="input mr-2 input"
+        class="input editableTitle input"
         id="input-text-4"
         name="input-text-4"
         placeholder="Subject"
@@ -22,7 +22,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       />
     </div>
     <div
-      class="d-flex justify-content-between align-items-center ml-3"
+      class="actions"
     >
       <div
         class="arrowPaginationWrapper"
@@ -59,7 +59,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       </div>
       <button
         aria-disabled="false"
-        class="wrapper button ghost secondary medium"
+        class="wrapper button ghost secondary small"
         id="ticket-actions-button"
         type="button"
       >
@@ -72,37 +72,33 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
     </div>
   </div>
   <div
-    class="d-flex justify-content-between"
+    class="secondRow"
   >
     <div
-      class="statusAndTags d-inline-flex"
+      class="statusAndTags"
     >
-      <div
-        class="d-inline-block mr-2"
+      <span
+        id="change-status-button"
       >
-        <span
-          id="change-status-button"
+        <button
+          aria-disabled="false"
+          class="wrapper fill secondary small"
+          type="button"
         >
-          <button
-            aria-disabled="false"
-            class="wrapper fill secondary medium"
-            type="button"
+          <span
+            class="wrapper"
           >
-            <span
-              class="wrapper"
+            <i
+              class="material-icons icon isLeft small"
             >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                check
-              </i>
-              Close
-            </span>
-          </button>
-        </span>
-      </div>
+              check
+            </i>
+            Close
+          </span>
+        </button>
+      </span>
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
+        class="tags"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -122,7 +118,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="btn-transparent btn btn-secondary btn-sm"
+            class="btn-transparent addTag btn btn-secondary btn-sm"
             type="button"
           >
             <i
@@ -170,12 +166,8 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="d-inline-flex align-items-top"
-    >
-      <div>
-        TicketAssigneeMock
-      </div>
+    <div>
+      TicketAssigneeMock
     </div>
   </div>
 </div>
@@ -187,13 +179,13 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between align-items-center mb-2"
+    class="title"
   >
     <div
-      class="wrapper isFocused component"
+      class="wrapper isFocused editableTitleWrapper component"
     >
       <input
-        class="input mr-2 input"
+        class="input editableTitle input"
         id="input-text-1"
         name="input-text-1"
         placeholder="Subject"
@@ -203,17 +195,17 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
       />
     </div>
     <div
-      class="d-flex justify-content-between align-items-center ml-3"
+      class="actions"
     />
   </div>
   <div
-    class="d-flex justify-content-between"
+    class="secondRow"
   >
     <div
-      class="statusAndTags d-inline-flex"
+      class="statusAndTags"
     >
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
+        class="tags"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -233,7 +225,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="btn-transparent btn btn-secondary btn-sm"
+            class="btn-transparent addTag btn btn-secondary btn-sm"
             type="button"
           >
             <i
@@ -281,12 +273,8 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="d-inline-flex align-items-top"
-    >
-      <div>
-        TicketAssigneeMock
-      </div>
+    <div>
+      TicketAssigneeMock
     </div>
   </div>
 </div>
@@ -298,13 +286,13 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between align-items-center mb-2"
+    class="title"
   >
     <div
-      class="wrapper component"
+      class="wrapper editableTitleWrapper component"
     >
       <input
-        class="input mr-2 input"
+        class="input editableTitle input"
         id="input-text-8"
         name="input-text-8"
         placeholder="Subject"
@@ -314,7 +302,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
       />
     </div>
     <div
-      class="d-flex justify-content-between align-items-center ml-3"
+      class="actions"
     >
       <div
         class="headerIcon"
@@ -331,7 +319,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
       </div>
       <button
         aria-disabled="false"
-        class="wrapper button ghost secondary medium"
+        class="wrapper button ghost secondary small"
         id="ticket-actions-button"
         type="button"
       >
@@ -344,37 +332,33 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
     </div>
   </div>
   <div
-    class="d-flex justify-content-between"
+    class="secondRow"
   >
     <div
-      class="statusAndTags d-inline-flex"
+      class="statusAndTags"
     >
-      <div
-        class="d-inline-block mr-2"
+      <span
+        id="change-status-button"
       >
-        <span
-          id="change-status-button"
+        <button
+          aria-disabled="false"
+          class="wrapper fill secondary small"
+          type="button"
         >
-          <button
-            aria-disabled="false"
-            class="wrapper fill secondary medium"
-            type="button"
+          <span
+            class="wrapper"
           >
-            <span
-              class="wrapper"
+            <i
+              class="material-icons icon isLeft small"
             >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                check
-              </i>
-              Close
-            </span>
-          </button>
-        </span>
-      </div>
+              check
+            </i>
+            Close
+          </span>
+        </button>
+      </span>
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
+        class="tags"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -394,7 +378,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="btn-transparent btn btn-secondary btn-sm"
+            class="btn-transparent addTag btn btn-secondary btn-sm"
             type="button"
           >
             <i
@@ -442,12 +426,8 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="d-inline-flex align-items-top"
-    >
-      <div>
-        TicketAssigneeMock
-      </div>
+    <div>
+      TicketAssigneeMock
     </div>
   </div>
 </div>
@@ -459,13 +439,13 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between align-items-center mb-2"
+    class="title"
   >
     <div
-      class="wrapper component"
+      class="wrapper editableTitleWrapper component"
     >
       <input
-        class="input mr-2 input"
+        class="input editableTitle input"
         id="input-text-12"
         name="input-text-12"
         placeholder="Subject"
@@ -475,7 +455,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
       />
     </div>
     <div
-      class="d-flex justify-content-between align-items-center ml-3"
+      class="actions"
     >
       <div
         class="headerIcon"
@@ -492,7 +472,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
       </div>
       <button
         aria-disabled="false"
-        class="wrapper button ghost secondary medium"
+        class="wrapper button ghost secondary small"
         id="ticket-actions-button"
         type="button"
       >
@@ -505,37 +485,33 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
     </div>
   </div>
   <div
-    class="d-flex justify-content-between"
+    class="secondRow"
   >
     <div
-      class="statusAndTags d-inline-flex"
+      class="statusAndTags"
     >
-      <div
-        class="d-inline-block mr-2"
+      <span
+        id="change-status-button"
       >
-        <span
-          id="change-status-button"
+        <button
+          aria-disabled="false"
+          class="wrapper fill secondary small"
+          type="button"
         >
-          <button
-            aria-disabled="false"
-            class="wrapper fill secondary medium"
-            type="button"
+          <span
+            class="wrapper"
           >
-            <span
-              class="wrapper"
+            <i
+              class="material-icons icon isLeft small"
             >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                check
-              </i>
-              Close
-            </span>
-          </button>
-        </span>
-      </div>
+              check
+            </i>
+            Close
+          </span>
+        </button>
+      </span>
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
+        class="tags"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -555,7 +531,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="btn-transparent btn btn-secondary btn-sm"
+            class="btn-transparent addTag btn btn-secondary btn-sm"
             type="button"
           >
             <i
@@ -603,12 +579,8 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="d-inline-flex align-items-top"
-    >
-      <div>
-        TicketAssigneeMock
-      </div>
+    <div>
+      TicketAssigneeMock
     </div>
   </div>
 </div>

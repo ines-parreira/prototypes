@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 import moment, {Moment} from 'moment-timezone'
 
-import DatePicker from '../../../../common/forms/DatePicker'
+import DatePicker from 'pages/common/forms/DatePicker'
 
 type Props = {
     children?: ReactNode
@@ -44,6 +44,7 @@ const TicketSnoozePicker = ({
                 startDate: snoozeDatetime,
                 endDate: snoozeDatetime,
                 ranges,
+                opens: 'center',
             }}
             toggle={toggle}
             rangesLabel="Remind me in"

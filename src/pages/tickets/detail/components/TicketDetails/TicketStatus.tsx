@@ -12,28 +12,32 @@ type Props = {
 }
 
 const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
-    const toClose = currentStatus !== TicketStatusEnum.Closed
+    const isClosed = currentStatus === TicketStatusEnum.Closed
 
     return (
-        <div className="d-inline-block mr-2">
+        <>
             <span id="change-status-button">
-                {toClose ? (
+                {isClosed ? (
+                    <IconButton
+                        size="small"
+                        onClick={() => setQuickStatus(currentStatus)}
+                    >
+                        check
+                    </IconButton>
+                ) : (
                     <Button
+                        size="small"
                         intent="secondary"
                         onClick={() => setQuickStatus(currentStatus)}
                     >
                         <ButtonIconLabel icon="check">Close</ButtonIconLabel>
                     </Button>
-                ) : (
-                    <IconButton onClick={() => setQuickStatus(currentStatus)}>
-                        check
-                    </IconButton>
                 )}
             </span>
             <Tooltip placement="bottom" target="change-status-button">
-                {toClose ? 'Close (press C)' : 'Reopen (press O)'}
+                {isClosed ? 'Reopen (press O)' : 'Close (press C)'}
             </Tooltip>
-        </div>
+        </>
     )
 }
 

@@ -245,9 +245,9 @@ export class TicketTags extends Component<Props, State> {
             this.props
         return (
             <div
-                className={`d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1${
-                    right ? ' justify-content-end' : ''
-                }`}
+                className={classnames(css.tags, {
+                    [css.right]: right,
+                })}
             >
                 {ticketTags
                     .sort((a: Map<any, any>, b: Map<any, any>) => {
@@ -293,9 +293,12 @@ export class TicketTags extends Component<Props, State> {
                             color="secondary"
                             type="button"
                             size="sm"
-                            className={classnames({
-                                'btn-transparent': transparent,
-                            })}
+                            className={classnames(
+                                {
+                                    'btn-transparent': transparent,
+                                },
+                                css.addTag
+                            )}
                         >
                             <i className="material-icons md-1 align-middle">
                                 add

@@ -252,16 +252,17 @@ const TicketHeader = ({
 
     return (
         <div className={classnames(css.component, className)} id="TicketHeader">
-            <div className="d-flex justify-content-between align-items-center mb-2">
+            <div className={css.title}>
                 <EditableTitle
-                    className="mr-2"
+                    className={css.editableTitleWrapper}
+                    inputClassName={css.editableTitle}
                     title={ticket.get('subject')}
                     placeholder="Subject"
                     update={(subject) => dispatch(setSubject(subject))}
                     focus={!ticket.get('id')}
                 />
 
-                <div className="d-flex justify-content-between align-items-center ml-3">
+                <div className={css.actions}>
                     <TicketSnooze datetime={snoozedUntil} timezone={timezone} />
 
                     <TicketNavigationArrowPagination
@@ -320,8 +321,8 @@ const TicketHeader = ({
                 </div>
             </div>
 
-            <div className="d-flex justify-content-between">
-                <div className={classnames(css.statusAndTags, 'd-inline-flex')}>
+            <div className={css.secondRow}>
+                <div className={css.statusAndTags}>
                     {isUpdate && (
                         <TicketStatus
                             currentStatus={ticket.get('status')}
@@ -337,24 +338,22 @@ const TicketHeader = ({
                         bindKeys
                     />
                 </div>
-                <div className="d-inline-flex align-items-top">
-                    <TicketAssignee
-                        menuDirection="right"
-                        direction="down"
-                        currentAssigneeUser={ticket.get('assignee_user')}
-                        currentAssigneeTeam={ticket.get('assignee_team')}
-                        profilePictureUrl={ticket.getIn([
-                            'assignee_user',
-                            'meta',
-                            'profile_picture_url',
-                        ])}
-                        setUser={(user) => void dispatch(setAgent(user))}
-                        setTeam={(team) => void dispatch(setTeam(team))}
-                        transparent
-                        bindKeys
-                        dropdownContainer={appNode ?? undefined}
-                    />
-                </div>
+                <TicketAssignee
+                    menuDirection="right"
+                    direction="down"
+                    currentAssigneeUser={ticket.get('assignee_user')}
+                    currentAssigneeTeam={ticket.get('assignee_team')}
+                    profilePictureUrl={ticket.getIn([
+                        'assignee_user',
+                        'meta',
+                        'profile_picture_url',
+                    ])}
+                    setUser={(user) => void dispatch(setAgent(user))}
+                    setTeam={(team) => void dispatch(setTeam(team))}
+                    transparent
+                    bindKeys
+                    dropdownContainer={appNode ?? undefined}
+                />
             </div>
 
             <MergeTicketsContainer

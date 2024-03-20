@@ -158,7 +158,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         <div className={css.titleWrapper}>
                                             <EditableTitle
                                                 ref={this.editableTitleRef}
-                                                className={classnames(
+                                                inputClassName={classnames(
                                                     css.title,
                                                     {
                                                         [css.withEmojiPicker]:

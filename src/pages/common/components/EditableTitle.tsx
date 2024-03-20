@@ -16,7 +16,8 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import css from './EditableTitle.less'
 
 type Props = {
-    className: string
+    className?: string
+    inputClassName?: string
     title: string
     placeholder?: string
     update: (value: string) => void
@@ -30,6 +31,7 @@ type Props = {
 const EditableTitle = (
     {
         className,
+        inputClassName,
         title,
         placeholder,
         update,
@@ -108,14 +110,14 @@ const EditableTitle = (
 
     return (
         <TextInput
-            className={classnames(css.component, {
+            className={classnames(className, css.component, {
                 [css['edit-mode']]: editMode || forceEditMode,
                 [css.isDisabled]: disabled,
             })}
             ref={setInputElement}
             tabIndex={1}
             isDisabled={disabled}
-            inputClassName={classnames(className, css.input, {
+            inputClassName={classnames(inputClassName, css.input, {
                 [css['edit-mode']]: editMode || forceEditMode,
             })}
             placeholder={placeholder}

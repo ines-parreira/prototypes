@@ -1,50 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketStatus component closed ticket 1`] = `
-<div
-  class="d-inline-block mr-2"
+<span
+  id="change-status-button"
 >
-  <span
-    id="change-status-button"
+  <button
+    aria-disabled="false"
+    class="wrapper wrapper small fill primary small"
+    type="button"
   >
-    <button
-      aria-disabled="false"
-      class="wrapper wrapper fill primary medium"
-      type="button"
+    <i
+      class="material-icons icon"
     >
-      <i
-        class="material-icons icon"
-      >
-        check
-      </i>
-    </button>
-  </span>
-</div>
+      check
+    </i>
+  </button>
+</span>
 `;
 
 exports[`TicketStatus component open ticket 1`] = `
-<div
-  class="d-inline-block mr-2"
+<span
+  id="change-status-button"
 >
-  <span
-    id="change-status-button"
+  <button
+    aria-disabled="false"
+    class="wrapper fill secondary small"
+    type="button"
   >
-    <button
-      aria-disabled="false"
-      class="wrapper fill secondary medium"
-      type="button"
+    <span
+      class="wrapper"
     >
-      <span
-        class="wrapper"
+      <i
+        class="material-icons icon isLeft small"
       >
-        <i
-          class="material-icons icon isLeft medium"
-        >
-          check
-        </i>
-        Close
-      </span>
-    </button>
-  </span>
-</div>
+        check
+      </i>
+      Close
+    </span>
+  </button>
+</span>
 `;

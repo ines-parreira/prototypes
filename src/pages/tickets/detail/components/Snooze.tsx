@@ -83,12 +83,15 @@ export default function Snooze({until, onUpdate}: Props) {
                 id="snooze-button"
                 intent="secondary"
                 onClick={handleClick}
+                size="small"
             >
                 <i className={cn(css.icon, 'material-icons')}>snooze</i>
             </Button>
-            <Tooltip placement="bottom-end" target="snooze-button">
-                Snooze ticket
-            </Tooltip>
+            {!showPicker && (
+                <Tooltip placement="bottom-end" target="snooze-button">
+                    Snooze ticket
+                </Tooltip>
+            )}
             <TicketSnoozePicker
                 datetime={until}
                 timezone={timezone}

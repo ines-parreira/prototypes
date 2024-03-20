@@ -2,7 +2,7 @@
 
 exports[`AddTagsAction action component should render the AddTagsAction action component 1`] = `
 <div
-  class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
+  class="tags"
 >
   <span
     class="badge-tag tagLabel badge badge-secondary"
@@ -34,7 +34,7 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
     <button
       aria-expanded="false"
       aria-haspopup="true"
-      class="btn btn-secondary btn-sm"
+      class="addTag btn btn-secondary btn-sm"
       type="button"
     >
       <i

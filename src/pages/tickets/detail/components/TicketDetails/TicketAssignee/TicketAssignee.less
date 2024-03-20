@@ -1,6 +1,10 @@
 :local {
     .toggle {
-        padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+        padding: 3px 8px 3px 6px;
+        box-sizing: content-box;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
     }
 
     .searchInput {
@@ -45,10 +49,6 @@
     }
 
     .dropdown {
-        :global(.dropdown-toggle) {
-            height: 2.4em;
-            display: inline-flex;
-            align-items: center;
-        }
+        align-self: start;
     }
 }

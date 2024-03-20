@@ -36,17 +36,19 @@ export const RecipientsLabel = ({recipients}: {recipients: string}) => (
 )
 
 export function AgentLabel({
-    name = '',
     className = '',
     maxWidth,
+    name = '',
     profilePictureUrl = '',
     shouldDisplayAvatar = false,
+    size = 26,
 }: {
-    name?: string
-    maxWidth?: string
     className?: string
+    maxWidth?: string
+    name?: string
     profilePictureUrl?: string | null
     shouldDisplayAvatar?: boolean
+    size?: number
 }) {
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
 
@@ -56,7 +58,7 @@ export function AgentLabel({
                 <Avatar
                     name={name}
                     url={profilePictureUrl}
-                    size={26}
+                    size={size}
                     className={css.avatar}
                 />
             ) : (
@@ -158,10 +160,12 @@ export const TagLabel = ({
     className,
     decoration,
     children,
+    title,
 }: {
     className?: string
     decoration?: Map<any, any>
     children?: ReactNode
+    title?: string
 }) => {
     const color =
         ((decoration || fromJS({})) as Map<any, any>).get('color') ||
@@ -181,6 +185,7 @@ export const TagLabel = ({
                       }
                     : {color}
             }
+            title={title}
         >
             {children}
         </ReactstrapBadge>

@@ -230,6 +230,7 @@ const TicketAssignee = ({
                         profilePictureUrl={profilePictureUrl}
                         maxWidth="100"
                         shouldDisplayAvatar
+                        size={24}
                     />
                 ) : currentAssigneeTeam ? (
                     <TeamLabel
@@ -310,6 +311,7 @@ const TicketAssignee = ({
                                         )}
                                         className={css.assigneeLabel}
                                         shouldDisplayAvatar
+                                        size={24}
                                     />
                                     <i
                                         className="material-icons md-2"
