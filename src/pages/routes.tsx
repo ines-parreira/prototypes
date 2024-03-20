@@ -1767,14 +1767,26 @@ export function ConvertContent() {
                     ADMIN_ROLE
                 )}
             />
-            <Route
-                exact
-                path={`${convertPathPrefix}/performance`}
-                component={memoizedWithUserRoleRequired(
-                    RevenueCampaignsStats as any,
-                    ADMIN_ROLE
-                )}
-            />
+            <Route exact path={`${convertPathPrefix}/performance`}>
+                <DefaultStatsFilters
+                    notReadyFallback={
+                        <Route
+                            render={() => (
+                                <App navbar={ConvertNavbar}>{null}</App>
+                            )}
+                        />
+                    }
+                >
+                    <Route
+                        exact
+                        path={`${convertPathPrefix}/performance`}
+                        component={memoizedWithUserRoleRequired(
+                            RevenueCampaignsStats as any,
+                            ADMIN_ROLE
+                        )}
+                    />
+                </DefaultStatsFilters>
+            </Route>
             <Route
                 path={`${convertPathPrefix}/performance/subscribe`}
                 exact

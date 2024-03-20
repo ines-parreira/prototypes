@@ -7,7 +7,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState} from 'state/types'
-import {integrationsState} from 'fixtures/integrations'
+import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -52,8 +52,10 @@ describe('<ConvertNavbar />', () => {
                 type: 'gorgias_chat',
                 meta: {
                     app_id: '101',
+                    shop_integration_id: shopifyIntegration.id,
                 },
             },
+            shopifyIntegration,
         ])
     )
 
@@ -170,7 +172,7 @@ describe('<ConvertNavbar />', () => {
             )
 
             expect(queryAllByText('Set up').length).toBe(0)
-            expect(queryAllByText('Performance').length).toBe(0)
+            expect(queryAllByText('Performance').length).toBe(1)
 
             expect(getAllByText('forum').length).toBe(2)
             expect(getAllByText('Campaigns').length).toBe(2)

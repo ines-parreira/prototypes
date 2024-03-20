@@ -15,7 +15,6 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {channelConnection} from 'fixtures/channelConnection'
 import {campaign} from 'fixtures/campaign'
-import * as useIsConvertUiDecouplingEnabledHook from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {useGetCampaignsForStore} from '../useGetCampaignsForStore'
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
@@ -68,14 +67,8 @@ describe('useGetCampaignsForStore', () => {
             channelConnection: channelConnection,
         } as any)
         useListCampaignMock.mockReturnValue({
-            data: [campaign],
-            isLoading: false,
-            isError: false,
+            data: [],
         } as any)
-        jest.spyOn(
-            useIsConvertUiDecouplingEnabledHook,
-            'useIsConvertUiDecouplingEnabled'
-        ).mockReturnValue(false)
     })
 
     describe('no integration is selected', () => {
@@ -119,40 +112,10 @@ describe('useGetCampaignsForStore', () => {
     })
 
     describe('a shopify integration with chat is selected', () => {
-        it('returns the ordered campaigns from the chat', () => {
-            const store = createStore(
-                (state) => state as RootState,
-                defaultState
-            )
-            const hookOptions = {
-                wrapper: (({children}) => (
-                    <Provider store={store}>{children}</Provider>
-                )) as ComponentType,
-            }
-            const {result} = renderHook(
-                () => useGetCampaignsForStore([2]),
-                hookOptions
-            )
-
-            expect(result.current).toEqual([
-                {
-                    id: '456',
-                    name: 'another campaign',
-                },
-                {
-                    id: '123',
-                    name: 'some campaign',
-                },
-            ])
-        })
-    })
-
-    describe('a shopify integration with chat is selected and decoupling launched', () => {
         it('returns the ordered campaigns from the api', () => {
-            jest.spyOn(
-                useIsConvertUiDecouplingEnabledHook,
-                'useIsConvertUiDecouplingEnabled'
-            ).mockReturnValue(true)
+            useListCampaignMock.mockReturnValue({
+                data: [campaign],
+            } as any)
 
             const store = createStore(
                 (state) => state as RootState,

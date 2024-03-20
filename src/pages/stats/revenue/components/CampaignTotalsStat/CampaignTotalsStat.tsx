@@ -16,7 +16,6 @@ import css from './CampaignTotalsStat.less'
 
 const FIRST_ROW_SIZE = 6
 const GRID_SIZE = 4
-const SKELETON_HEIGHT = 100
 
 const METRICS = {
     [CampaignsTotalsMetricNames.influencedRevenueShare]: {
@@ -74,16 +73,18 @@ export const CampaignTotalsStat = () => {
         userTimezone
     )
 
-    const statsVisible = !isFetching && !isError && data !== null
+    const isLoading = isFetching || isError || data === null
 
     return (
         <React.Fragment>
             <DashboardGridCell size={FIRST_ROW_SIZE}>
-                {statsVisible && (
-                    <MetricCard
-                        title={METRICS.revenue.title}
-                        hint={{title: METRICS.revenue.hint}}
-                    >
+                <MetricCard
+                    title={METRICS.revenue.title}
+                    hint={{title: METRICS.revenue.hint}}
+                >
+                    {isLoading ? (
+                        <Skeleton height={32} />
+                    ) : (
                         <div className={css.wrapper}>
                             <BigNumberMetric className={css.metric}>
                                 {data?.revenue}
@@ -94,57 +95,48 @@ export const CampaignTotalsStat = () => {
                                 >{`from total store revenue: ${data.gmv}`}</span>
                             )}
                         </div>
-                    </MetricCard>
-                )}
-                {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
+                    )}
+                </MetricCard>
             </DashboardGridCell>
             <DashboardGridCell size={FIRST_ROW_SIZE}>
-                {statsVisible && (
-                    <MetricCard
-                        title={METRICS.influencedRevenueShare.title}
-                        hint={{title: METRICS.influencedRevenueShare.hint}}
-                    >
-                        <BigNumberMetric>
-                            {data?.influencedRevenueShare}
-                        </BigNumberMetric>
-                    </MetricCard>
-                )}
-                {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
+                <MetricCard
+                    title={METRICS.influencedRevenueShare.title}
+                    hint={{title: METRICS.influencedRevenueShare.hint}}
+                >
+                    <BigNumberMetric isLoading={isLoading}>
+                        {data?.influencedRevenueShare}
+                    </BigNumberMetric>
+                </MetricCard>
             </DashboardGridCell>
             <DashboardGridCell size={GRID_SIZE}>
-                {statsVisible && (
-                    <MetricCard
-                        title={METRICS.impressions.title}
-                        hint={{title: METRICS.impressions.hint}}
-                    >
-                        <BigNumberMetric>{data?.impressions}</BigNumberMetric>
-                    </MetricCard>
-                )}
-                {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
+                <MetricCard
+                    title={METRICS.impressions.title}
+                    hint={{title: METRICS.impressions.hint}}
+                >
+                    <BigNumberMetric isLoading={isLoading}>
+                        {data?.impressions}
+                    </BigNumberMetric>
+                </MetricCard>
             </DashboardGridCell>
             <DashboardGridCell size={GRID_SIZE}>
-                {statsVisible && (
-                    <MetricCard
-                        title={METRICS.engagement.title}
-                        hint={{title: METRICS.engagement.hint}}
-                    >
-                        <BigNumberMetric>{data?.engagement}</BigNumberMetric>
-                    </MetricCard>
-                )}
-                {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
+                <MetricCard
+                    title={METRICS.engagement.title}
+                    hint={{title: METRICS.engagement.hint}}
+                >
+                    <BigNumberMetric isLoading={isLoading}>
+                        {data?.engagement}
+                    </BigNumberMetric>
+                </MetricCard>
             </DashboardGridCell>
             <DashboardGridCell size={GRID_SIZE}>
-                {statsVisible && (
-                    <MetricCard
-                        title={METRICS.campaignSalesCount.title}
-                        hint={{title: METRICS.campaignSalesCount.hint}}
-                    >
-                        <BigNumberMetric>
-                            {data?.campaignSalesCount}
-                        </BigNumberMetric>
-                    </MetricCard>
-                )}
-                {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
+                <MetricCard
+                    title={METRICS.campaignSalesCount.title}
+                    hint={{title: METRICS.campaignSalesCount.hint}}
+                >
+                    <BigNumberMetric isLoading={isLoading}>
+                        {data?.campaignSalesCount}
+                    </BigNumberMetric>
+                </MetricCard>
             </DashboardGridCell>
         </React.Fragment>
     )

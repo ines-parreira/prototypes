@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import _get from 'lodash/get'
+import {useParams} from 'react-router-dom'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 import {useGetTableStat} from 'pages/stats/revenue/hooks/stats/useGetTableStat'
@@ -7,6 +8,10 @@ import {useGetTableStat} from 'pages/stats/revenue/hooks/stats/useGetTableStat'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
+import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {ConvertRouteParams} from 'pages/convert/common/types'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {getIntegrationByIdAndType} from 'state/integrations/selectors'
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 import {useGetChatForStore} from '../../hooks/useGetChatForStore'
 import {useGetCurrencyForStore} from '../../hooks/useGetCurrencyForStore'
@@ -22,6 +27,9 @@ export const CampaignPerformanceTable = () => {
     const {campaigns, selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
 
+    const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
+        useParams<ConvertRouteParams>()
+
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
 
@@ -30,7 +38,18 @@ export const CampaignPerformanceTable = () => {
     )
 
     const currency = useGetCurrencyForStore(selectedIntegrations)
-    const chatIntegration = useGetChatForStore(selectedIntegrations[0])
+
+    const storeChatIntegration = useGetChatForStore(selectedIntegrations[0])
+    const routeChatIntegration = useAppSelector(
+        getIntegrationByIdAndType<GorgiasChatIntegration>(
+            parseInt(chatIntegrationId),
+            IntegrationType.GorgiasChat
+        )
+    )
+    const chatIntegration = useMemo(
+        () => routeChatIntegration || storeChatIntegration,
+        [routeChatIntegration, storeChatIntegration]
+    )
 
     const [offset, setOffset] = useState(0)
 

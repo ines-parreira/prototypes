@@ -13,6 +13,7 @@ export const RevenueFilters = () => {
     const {
         campaigns,
         integrations,
+        isStorePreSelected,
         selectedCampaigns,
         selectedIntegrations,
         selectedPeriod,
@@ -22,14 +23,16 @@ export const RevenueFilters = () => {
 
     return (
         <div className={css.container}>
-            <div className={css.filterItem}>
-                <IntegrationMultiSelect
-                    integrations={integrations}
-                    selected={selectedIntegrations}
-                    isRequired
-                    onChangeItem={onChangeIntegration}
-                />
-            </div>
+            {!isStorePreSelected && (
+                <div className={css.filterItem}>
+                    <IntegrationMultiSelect
+                        integrations={integrations}
+                        selected={selectedIntegrations}
+                        isRequired
+                        onChangeItem={onChangeIntegration}
+                    />
+                </div>
+            )}
 
             <div className={css.filterItem}>
                 <CampaignMultiSelect

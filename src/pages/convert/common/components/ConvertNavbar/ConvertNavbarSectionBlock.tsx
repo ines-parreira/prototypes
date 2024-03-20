@@ -15,11 +15,13 @@ type Props = {
     name: string
     isExpanded: boolean
     isOnboarded: boolean
+    hasStore: boolean
 }
 const FROM_LOCATION = 'convert-left-menu'
 const ConvertNavbarSectionBlock = ({
     chatIntegrationId,
     isOnboarded,
+    hasStore,
     ...props
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
@@ -33,7 +35,7 @@ const ConvertNavbarSectionBlock = ({
         >
             {isOnboarded || !isOnboardingEnabled ? (
                 <>
-                    {isOnboardingEnabled &&
+                    {hasStore &&
                         (isConvertSubscriber ? (
                             <div
                                 className={classNames(

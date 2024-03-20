@@ -2,7 +2,6 @@ import React from 'react'
 import {useCampaignStatsFilters} from 'pages/stats/revenue/hooks/useCampaignStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
 import {useGetRevenueShareChart} from 'pages/stats/revenue/hooks/stats/useGetRevenueShareChart'
@@ -36,30 +35,26 @@ export const CampaignRevenueShareStat = () => {
         userTimezone
     )
 
-    const statsVisible = !isFetching && !isError
+    const isLoading = isFetching || isError
 
     return (
         <DashboardGridCell size={12}>
-            {statsVisible && (
-                <ChartCard title={title} hint={{title: hint}}>
-                    <LineChart
-                        data={[
-                            {
-                                label: yAxisLabel,
-                                values: data || [],
-                            },
-                        ]}
-                        hasBackground
-                        yLabel={yAxisLabel}
-                        renderYTickLabel={renderTickLabelAsPercentage}
-                        _displayLegacyTooltip
-                        _renderLegacyTooltipLabel={
-                            renderTooltipLabelAsPercentage
-                        }
-                    />
-                </ChartCard>
-            )}
-            {!statsVisible && <Skeleton height={300} />}
+            <ChartCard title={title} hint={{title: hint}}>
+                <LineChart
+                    data={[
+                        {
+                            label: yAxisLabel,
+                            values: data || [],
+                        },
+                    ]}
+                    hasBackground
+                    yLabel={yAxisLabel}
+                    renderYTickLabel={renderTickLabelAsPercentage}
+                    _displayLegacyTooltip
+                    _renderLegacyTooltipLabel={renderTooltipLabelAsPercentage}
+                    isLoading={isLoading}
+                />
+            </ChartCard>
         </DashboardGridCell>
     )
 }

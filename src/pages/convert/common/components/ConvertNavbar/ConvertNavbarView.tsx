@@ -98,6 +98,7 @@ const ConvertNavbarView = () => {
                         key={key}
                         name={integration.name}
                         chatIntegrationId={integration.id}
+                        hasStore={!!integration.meta.shop_integration_id}
                         onToggle={() => {
                             handleToggle(key)
                         }}

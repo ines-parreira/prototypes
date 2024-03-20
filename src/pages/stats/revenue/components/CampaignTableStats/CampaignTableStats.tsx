@@ -12,7 +12,6 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import useMeasure from 'hooks/useMeasure'
 
-import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 import {CampaignTableColumn} from '../../types/CampaignTableColumn'
 import {CampaignTableContentCell} from '../../types/CampaignTableContentCell'
@@ -54,7 +53,6 @@ export const CampaignTableStats = ({
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
         OrderDirection.Desc
     )
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     const paginatedRows = useSortedAndPaginatedTableRows(rows, {
         orderKey,
@@ -131,9 +129,7 @@ export const CampaignTableStats = ({
     const renderTableBody = useCallback(() => {
         if (isLoading === false && paginatedRows.length === 0) {
             if (typeof chatIntegrationId === 'number') {
-                const url = isConvertUiDecouplingEnabled
-                    ? `/app/convert/${chatIntegrationId}/campaigns/new`
-                    : `/app/settings/channels/gorgias_chat/${chatIntegrationId}/campaigns/new`
+                const url = `/app/convert/${chatIntegrationId}/campaigns/new`
                 return (
                     <TableBodyRow>
                         <BodyCell colSpan={CAMPAIGN_TABLE_CELLS.length}>
@@ -160,13 +156,7 @@ export const CampaignTableStats = ({
         return isLoading
             ? paginatedRows.slice(0, ITEMS_PER_PAGE).map(renderRows)
             : paginatedRows.map(renderRows)
-    }, [
-        chatIntegrationId,
-        isConvertUiDecouplingEnabled,
-        isLoading,
-        paginatedRows,
-        renderRows,
-    ])
+    }, [chatIntegrationId, isLoading, paginatedRows, renderRows])
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {

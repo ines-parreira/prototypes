@@ -9,7 +9,9 @@ import {getStateWithPrice} from 'utils/paywallTesting'
 import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {useGetCampaignsForStore} from 'pages/stats/revenue/hooks/useGetCampaignsForStore'
-import {Campaign} from 'models/integration/types'
+
+import {campaign} from 'fixtures/campaign'
+import {Campaign} from 'models/convert/campaign/types'
 import ConvertCampaignsStats from '../CampaignsStats'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
@@ -57,12 +59,7 @@ describe('CampaignsStats', () => {
 
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
-        useGetCampaignsForStoreMock.mockReturnValue([
-            {
-                id: '123',
-                name: 'some campaign',
-            } as Campaign,
-        ])
+        useGetCampaignsForStoreMock.mockReturnValue([campaign as Campaign])
     })
 
     it('should render the paywall with modal for Convert non-subscriber', () => {

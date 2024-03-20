@@ -7,6 +7,7 @@ import {CampaignPreview} from 'models/convert/campaign/types'
 interface FilterContextSchema {
     campaigns: CampaignPreview[]
     integrations: Integration[]
+    isStorePreSelected: boolean
     selectedCampaigns: string[]
     selectedIntegrations: number[]
     selectedPeriod: {
@@ -20,6 +21,7 @@ interface FilterContextSchema {
 export const FiltersContext = createContext<FilterContextSchema>({
     campaigns: [],
     integrations: [],
+    isStorePreSelected: false,
     selectedCampaigns: [],
     selectedIntegrations: [],
     selectedPeriod: {
