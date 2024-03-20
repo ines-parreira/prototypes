@@ -12,6 +12,7 @@ export enum AccountStatus {
 
 export enum AccountSettingType {
     Access = 'access',
+    AgentCosts = 'agent-costs',
     AgentsTableConfig = 'agents-table-config',
     BusinessHours = 'business-hours',
     SatisfactionSurveys = 'satisfaction-surveys',
@@ -65,8 +66,20 @@ export type AccountSetting =
     | AccountSettingAccess
     | AccountSettingViewsVisibility
     | AccountSettingAutoMerge
+    | AccountSettingAgentCosts
     | AccountSettingAgentsTableConfig
     | AccountSettingInTicketSuggestion
+
+export type AccountSettingAgentCostType = 'yearly' | 'hourly'
+
+export type AccountSettingAgentCosts = {
+    id: number
+    type: AccountSettingType.AgentCosts
+    data: {
+        agent_cost_type: AccountSettingAgentCostType
+        agent_cost_per_ticket: number
+    }
+}
 
 export type AccountSettingBusinessHours = {
     id: number

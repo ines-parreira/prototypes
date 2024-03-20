@@ -161,15 +161,16 @@ const AutomateLandingPage = () => {
                         !isLoading && (
                             <DashboardGridCell size={12}>
                                 <AutomateSavingsCard
-                                    amountSaved={
-                                        (automatedInteractionsTrend?.data
-                                            ?.value ?? 0) *
+                                    automatedInteractions={
+                                        automatedInteractionsTrend?.data?.value
+                                    }
+                                    moneySavedPerInteraction={
                                         moneySavedPerInteraction
                                     }
-                                    teamTimeSaved={
+                                    resolutionTime={
                                         resolutionTimeTrend.data?.value
                                     }
-                                    customersTimeSaved={
+                                    firstResponseTime={
                                         firstResponseTimeTrend.data?.value
                                     }
                                 />

@@ -1,7 +1,11 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {hasAgentPrivileges, isAdmin} from 'utils'
 
 import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
@@ -9,20 +13,32 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './AutomateSavingsCard.less'
+import AutomateExploreDataModal, {
+    AutomateExploreDataModalHandle,
+} from './AutomateExploreDataModal'
 
 interface Props {
-    amountSaved: number
-    teamTimeSaved: Maybe<number>
-    customersTimeSaved: Maybe<number>
+    moneySavedPerInteraction: number
+    automatedInteractions: Maybe<number>
+    resolutionTime: Maybe<number>
+    firstResponseTime: Maybe<number>
 }
 
 export const AutomateSavingsCard = ({
-    amountSaved,
-    teamTimeSaved,
-    customersTimeSaved,
+    moneySavedPerInteraction,
+    automatedInteractions,
+    resolutionTime,
+    firstResponseTime,
 }: Props) => {
+    const exploreDataModal = useRef<AutomateExploreDataModalHandle>(null)
+
+    const amountSaved = moneySavedPerInteraction * (automatedInteractions ?? 0)
+
+    const user = useAppSelector(getCurrentUser)
+
     const hasAccessToROICalculator =
-        useFlags()[FeatureFlagKey.ObservabilityROICalculator]
+        useFlags()[FeatureFlagKey.ObservabilityROICalculator] &&
+        (isAdmin(user) || hasAgentPrivileges(user))
 
     return (
         <div className={css.container}>
@@ -51,9 +67,9 @@ export const AutomateSavingsCard = ({
                                 </div>
                                 <div>
                                     <div className={css.heading}>
-                                        {teamTimeSaved
+                                        {resolutionTime
                                             ? formatMetricValue(
-                                                  teamTimeSaved,
+                                                  resolutionTime,
                                                   'duration'
                                               )
                                             : '0h 0m'}
@@ -77,9 +93,9 @@ export const AutomateSavingsCard = ({
                             <div className={css.values}>
                                 <div>
                                     <div className={css.heading}>
-                                        {customersTimeSaved
+                                        {firstResponseTime
                                             ? formatMetricValue(
-                                                  customersTimeSaved,
+                                                  firstResponseTime,
                                                   'duration'
                                               )
                                             : '0h 0m'}
@@ -98,11 +114,23 @@ export const AutomateSavingsCard = ({
             </div>
             <div>
                 {hasAccessToROICalculator && (
-                    <Button fillStyle="ghost" intent="secondary">
-                        <ButtonIconLabel icon="calculate">
-                            Explore Data
-                        </ButtonIconLabel>
-                    </Button>
+                    <>
+                        <Button
+                            fillStyle="ghost"
+                            intent="secondary"
+                            onClick={() => exploreDataModal.current?.open()}
+                        >
+                            <ButtonIconLabel icon="calculate">
+                                Explore Data
+                            </ButtonIconLabel>
+                        </Button>
+                        <AutomateExploreDataModal
+                            monthlySupportTickets={automatedInteractions}
+                            firstResponseTime={firstResponseTime}
+                            resolutionTime={resolutionTime}
+                            ref={exploreDataModal}
+                        />
+                    </>
                 )}
             </div>
         </div>

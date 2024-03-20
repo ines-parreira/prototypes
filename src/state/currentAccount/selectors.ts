@@ -8,6 +8,7 @@ import {getTimezone} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
 import {
     AccountFeature,
+    AccountSettingAgentCosts,
     AccountSettingAgentsTableConfig,
     AccountSettingAutoMerge,
     AccountSettingBusinessHours,
@@ -144,6 +145,14 @@ export const getSurveysSettingsJS = createSelector(
         setting.isEmpty()
             ? undefined
             : (setting.toJS() as AccountSettingSatisfactionSurvey)
+)
+
+export const getAgentCostsSettings = createSelector(
+    createSettingByTypeSelector(AccountSettingType.AgentCosts),
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingAgentCosts)
 )
 
 export const DEPRECATED_getBusinessHoursSettings = createSettingByTypeSelector(
