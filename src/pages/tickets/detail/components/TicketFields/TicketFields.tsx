@@ -15,12 +15,14 @@ import {
 
 import TicketField from './TicketField'
 import css from './TicketFields.less'
+import useHeight from './components/hooks/useHeight'
 
 function TicketFields() {
     const dispatch = useAppDispatch()
     const ticketFieldState = useAppSelector(getTicketFieldState)
     const [showAllFields, setShowAllFields] = useState(false)
     const [ref, hasWrapped] = useHasWrapped<HTMLDivElement>()
+    const height = useHeight(ref)
     const hasAttemptedToCloseTicket = useAppSelector(
         getHasAttemptedToCloseTicket
     )
@@ -59,7 +61,7 @@ function TicketFields() {
         <div
             className={css.wrapper}
             style={{
-                height: showAllFields ? ref.current.scrollHeight : 24,
+                height: showAllFields ? height : 24,
             }}
         >
             <div
