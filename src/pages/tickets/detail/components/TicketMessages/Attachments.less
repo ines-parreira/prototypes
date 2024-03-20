@@ -1,3 +1,5 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local .wrapper {
     .label {
         display: block;
@@ -6,5 +8,11 @@
         color: var(--main-primary);
         font-weight: 500;
         font-size: 12px;
+    }
+
+    .attachments {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: @layout-spacing-xxs;
     }
 }
