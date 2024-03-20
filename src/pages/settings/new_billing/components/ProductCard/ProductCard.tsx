@@ -94,7 +94,7 @@ const ProductCard = ({
 
     const currentStatus = useMemo(() => {
         if (!isActive) {
-            return <Badge text="Inactive" type={BadgeType.Info} />
+            return null
         }
 
         if (product && isTrialPrice(product, type)) {
@@ -148,11 +148,11 @@ const ProductCard = ({
     const updateContainer = useMemo(
         () => (
             <Button
-                intent="primary"
+                intent="secondary"
                 onClick={() => history.push(`${BILLING_PROCESS_PATH}/${type}`)}
                 id={`productCardButton_${type}`}
             >
-                Update Plan
+                Manage
             </Button>
         ),
         [history, type]
@@ -230,8 +230,10 @@ const ProductCard = ({
                         {PRODUCT_INFO[type].icon}
                     </i>
                     <div>{PRODUCT_INFO[type].title}</div>
-                    {isActive && (
+                    {isActive ? (
                         <Badge text="Active" type={BadgeType.Success} />
+                    ) : (
+                        <Badge text="Inactive" type={BadgeType.Info} />
                     )}
                 </div>
                 <div>{currentStatus}</div>

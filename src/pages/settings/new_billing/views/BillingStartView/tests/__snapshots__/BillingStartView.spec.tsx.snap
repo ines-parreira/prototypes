@@ -51,16 +51,18 @@ exports[`BillingStartView should render a BillingStartView component and load th
           <div
             class="generalInfoItem"
           >
-            Your free trial started on
-             
-            <span>
-              August 23, 2017
-            </span>
-             and will expire on
-             
-            <span>
-              September 6, 2017
-            </span>
+            <div>
+              Your free trial started on
+               
+              <span>
+                August 23, 2017
+              </span>
+               and will expire on
+               
+              <span>
+                September 6, 2017
+              </span>
+            </div>
           </div>
           <div
             class="generalInfoItem"
@@ -96,14 +98,13 @@ exports[`BillingStartView should render a BillingStartView component and load th
                 <div>
                   Helpdesk
                 </div>
-              </div>
-              <div>
                 <span
                   class="badge info"
                 >
                   Inactive
                 </span>
               </div>
+              <div />
             </div>
             <div
               class="body"
@@ -149,14 +150,13 @@ exports[`BillingStartView should render a BillingStartView component and load th
                 <div>
                   Automate
                 </div>
-              </div>
-              <div>
                 <span
                   class="badge info"
                 >
                   Inactive
                 </span>
               </div>
+              <div />
             </div>
             <div
               class="body"
@@ -202,14 +202,13 @@ exports[`BillingStartView should render a BillingStartView component and load th
                 <div>
                   Voice
                 </div>
-              </div>
-              <div>
                 <span
                   class="badge info"
                 >
                   Inactive
                 </span>
               </div>
+              <div />
             </div>
             <div
               class="body"
@@ -255,14 +254,13 @@ exports[`BillingStartView should render a BillingStartView component and load th
                 <div>
                   SMS
                 </div>
-              </div>
-              <div>
                 <span
                   class="badge info"
                 >
                   Inactive
                 </span>
               </div>
+              <div />
             </div>
             <div
               class="body"
@@ -334,11 +332,11 @@ exports[`BillingStartView should render a BillingStartView component and load th
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="wrapper fill secondary medium"
                   id="productCardButton_convert"
                   type="button"
                 >
-                  Update Plan
+                  Manage
                 </button>
               </div>
               <div>
@@ -383,7 +381,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
         <div
           class="unsubscribe"
         >
-          If you have any questions regarding your subscription, please
+          If you have any questions, please
            
           <span
             class="text-primary contactUs"

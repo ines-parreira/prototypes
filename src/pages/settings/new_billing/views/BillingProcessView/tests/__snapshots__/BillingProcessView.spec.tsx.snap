@@ -470,18 +470,6 @@ exports[`UsageAndPlansView should render 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="unsubscribe"
-    >
-      If you have any questions regarding your subscription, please
-       
-      <span
-        class="text-primary contactUs"
-      >
-        contact us
-      </span>
-      .
-    </div>
   </div>
 </div>
 `;
