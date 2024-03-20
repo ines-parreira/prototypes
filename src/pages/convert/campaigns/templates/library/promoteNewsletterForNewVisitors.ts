@@ -16,7 +16,7 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
     onboarding: false,
     label: CampaignTemplateLabelType.PreventCartAbandonment,
     preview: assetsUrl('img/campaigns/library/promote-newsletter.png'),
-    getConfiguration: (): CampaignConfiguration => {
+    getConfiguration: (): Promise<CampaignConfiguration> => {
         const b = new CampaignConfigurationBuilder(
             PROMOTE_NEWSLETTER_FOR_NEW_VISITORS,
             {
@@ -24,6 +24,6 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
             } as CampaignConfiguration
         )
 
-        return b.build()
+        return Promise.resolve(b.build())
     },
 }

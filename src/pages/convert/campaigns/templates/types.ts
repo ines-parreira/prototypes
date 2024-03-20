@@ -1,3 +1,4 @@
+import {Map} from 'immutable'
 import {CampaignCreatePayload} from 'pages/convert/campaigns/types/Campaign'
 
 export type CampaignConfiguration = {
@@ -25,7 +26,7 @@ export type CampaignTemplate = {
     label: CampaignTemplateLabelType
     onboarding: boolean
     getConfiguration: (
-        storeIntegrationId: number,
-        chatIntegrationId: number
-    ) => CampaignConfiguration
+        storeIntegration: Map<string, any>,
+        chatIntegration: Map<string, any>
+    ) => Promise<CampaignConfiguration>
 }

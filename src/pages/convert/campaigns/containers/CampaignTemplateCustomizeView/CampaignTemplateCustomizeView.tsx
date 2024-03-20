@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import classnames from 'classnames'
@@ -27,6 +27,9 @@ import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat
 import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {CampaignDetailsHeader} from 'pages/convert/campaigns/components/CampaignDetailsHeader'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 const CampaignTemplateCustomizeView = () => {
     const {
@@ -35,6 +38,7 @@ const CampaignTemplateCustomizeView = () => {
     } = useParams<ConvertRouteTemplateParams>()
 
     const agents = useAppSelector(getHumanAgentsJS)
+    const dispatch = useAppDispatch()
 
     const template = templateSlug && CAMPAIGN_TEMPLATES[templateSlug]
 
@@ -83,7 +87,9 @@ const CampaignTemplateCustomizeView = () => {
         }
     )
 
-    const campaign = useMemo(() => {
+    const [campaign, setCampaign] = useState<Campaign>({} as Campaign)
+    const [isTemplateLoading, setIsTemplateLoading] = useState(false)
+    useEffect(() => {
         if (template) {
             if (Array.isArray(campaigns)) {
                 const campaign = campaigns.find(
@@ -91,22 +97,35 @@ const CampaignTemplateCustomizeView = () => {
                 )
 
                 if (campaign) {
-                    return campaign as Campaign
+                    setCampaign(campaign as Campaign)
                 }
             }
 
-            const draftCampaign = template.getConfiguration(
-                chatIntegrationId,
-                storeIntegration.get('id')
-            ) as Campaign
-            draftCampaign.language = defaultLanguage
-            return draftCampaign
+            setIsTemplateLoading(true)
+
+            template
+                .getConfiguration(storeIntegration, chatIntegration)
+                .then((draftCampaign) => {
+                    draftCampaign.language = defaultLanguage
+                    setCampaign(draftCampaign as Campaign)
+                    setIsTemplateLoading(false)
+                })
+                .catch((e) => {
+                    console.error(e)
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message:
+                                'Failed to load template. Please try again in a few seconds.',
+                        })
+                    )
+                })
         }
-        return {} as Campaign
     }, [
         campaigns,
-        chatIntegrationId,
+        chatIntegration,
         defaultLanguage,
+        dispatch,
         storeIntegration,
         template,
     ])
@@ -167,7 +186,9 @@ const CampaignTemplateCustomizeView = () => {
             <CampaignDetailsForm
                 agents={agents}
                 campaign={campaign}
-                isLoading={isLoading || areCampaignsLoading}
+                isLoading={
+                    isLoading || areCampaignsLoading || isTemplateLoading
+                }
                 isEditMode={!!campaign.id}
                 isShopifyStore={chatIsShopifyStore(chatIntegration)}
                 integration={chatIntegration}

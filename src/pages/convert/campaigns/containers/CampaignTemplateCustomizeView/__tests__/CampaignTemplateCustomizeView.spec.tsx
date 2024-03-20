@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, waitFor} from '@testing-library/react'
 import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
@@ -12,7 +12,7 @@ import {campaign} from 'fixtures/campaign'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {PRODUCT_CARD_SHOWCASE} from 'pages/convert/campaigns/templates/productCards'
+import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/cartAbandonment'
 import CampaignTemplateCustomizeView from '../CampaignTemplateCustomizeView'
 
 const mockStore = configureMockStore()
@@ -56,10 +56,10 @@ const defaultState = {
 }
 
 describe('CampaignTemplateCustomizeView', () => {
-    it('should render campaign form with template data', () => {
+    it('should render campaign form with template data', async () => {
         ;(useParams as jest.Mock).mockReturnValue({
             id: '123',
-            templateSlug: PRODUCT_CARD_SHOWCASE.slug,
+            templateSlug: CART_ABANDONMENT.slug,
         })
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection,
@@ -92,7 +92,9 @@ describe('CampaignTemplateCustomizeView', () => {
             </BrowserRouter>
         )
 
-        expect(getByText('Showcase products to cross-sell')).toBeInTheDocument()
-        expect(getByText('our fan-favorite selection')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(getByText(CART_ABANDONMENT.name)).toBeInTheDocument()
+            expect(getByText('ready to help you')).toBeInTheDocument()
+        })
     })
 })

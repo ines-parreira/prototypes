@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CampaignTemplates get template configuration 1`] = `
+{
+  "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>😉</div>",
+  "message_text": "Hold on! Get 10% off your first order with code test-code 😉",
+  "name": "Give 10% off for new visitors about to leave",
+  "status": "inactive",
+  "template_id": "discount-new-visitors",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 20,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "exit_intent",
+      "value": "true",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "lt",
+      "type": "visit_count",
+      "value": 3,
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 2`] = `
+{
+  "message_html": "<div>👋 Do you have any questions? <em>I&#x27;m online </em>and <strong>ready to help you</strong> 🙂</div>",
+  "message_text": "👋 Do you have any questions? I'm online and ready to help you 🙂",
+  "name": "Offer help to save the high-value carts",
+  "status": "inactive",
+  "template_id": "offer-help-on-cart-abandonment",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "during",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "cart_value",
+      "value": 100,
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 3`] = `
+{
+  "attachments": [
+    {
+      "contentType": "application/productCard",
+      "extra": {
+        "currency": "EUR",
+        "price": 9.99,
+        "product_id": 1,
+        "product_link": "https://shopify.myshopify.com/products/",
+      },
+      "name": "Product 1",
+      "size": 0,
+      "url": "src",
+    },
+  ],
+  "message_html": "<div>You&#x27;ve got great taste! Check out <strong>our fan-favorite selection</strong> 😍</div>",
+  "message_text": "You've got great taste! Check out our fan-favorite selection 😍",
+  "name": "Showcase products to cross-sell",
+  "status": "inactive",
+  "template_id": "product-card-showcase",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 15,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "cart_value",
+      "value": 50,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "device_type",
+      "value": "desktop",
+    },
+  ],
+}
+`;

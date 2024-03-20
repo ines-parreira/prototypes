@@ -19,7 +19,7 @@ export const CART_ABANDONMENT: CampaignTemplate = {
     label: CampaignTemplateLabelType.PreventCartAbandonment,
     onboarding: true,
     preview: assetsUrl('img/campaigns/preview/ready-to-help.png'),
-    getConfiguration: (): CampaignConfiguration => {
+    getConfiguration: (): Promise<CampaignConfiguration> => {
         const triggers = [
             {
                 id: ulid(),
@@ -51,6 +51,6 @@ export const CART_ABANDONMENT: CampaignTemplate = {
             trigger_rule: createTriggerRule(triggers),
         })
 
-        return b.build()
+        return Promise.resolve(b.build())
     },
 }
