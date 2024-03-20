@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {Container} from 'reactstrap'
 import {Link, NavLink, useParams} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
@@ -20,10 +19,11 @@ import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/types'
 
 import useCallbackRef from 'hooks/useCallbackRef'
-import {FeatureFlagKey} from 'config/featureFlags'
 import css from './TicketFields.less'
 
 type TicketFieldsTab = 'active' | 'archived'
+
+const MAX_TICKET_FIELDS = 25
 
 export default function TicketFields() {
     useTitle('Ticket fields')
@@ -32,8 +32,6 @@ export default function TicketFields() {
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
     const [listingNode, setListingNode] = useCallbackRef()
     const [landingNode, setLandingNode] = useCallbackRef()
-    const hasMoreTicketFields = useFlags()[FeatureFlagKey.MoreTicketFields]
-    const maxTicketFields = hasMoreTicketFields ? 25 : 4
 
     useInjectStyleToCandu(listingNode)
     useInjectStyleToCandu(landingNode)
@@ -84,7 +82,7 @@ export default function TicketFields() {
     const isLoading = isLoadingActive || isLoadingArchived
 
     const createFieldButton =
-        activeFields.length >= maxTicketFields ? (
+        activeFields.length >= MAX_TICKET_FIELDS ? (
             <Button isDisabled>Create Field</Button>
         ) : (
             <Link
@@ -180,13 +178,13 @@ export default function TicketFields() {
                                 <>
                                     {activeTab === 'active' &&
                                         activeFields.length >=
-                                            maxTicketFields && (
+                                            MAX_TICKET_FIELDS && (
                                             <Alert
                                                 type={AlertType.Info}
                                                 icon
                                                 className="m-4"
                                             >
-                                                {`You can only have ${maxTicketFields}
+                                                {`You can only have ${MAX_TICKET_FIELDS}
                                                  active fields
                                                 at a time. Please archive some
                                                 fields before creating a new
