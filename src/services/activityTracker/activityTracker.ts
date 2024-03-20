@@ -2,6 +2,7 @@ import BrowserEventTracker from '@gorgias/event-tracker-browser'
 
 import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
 import {isDevelopment} from 'utils/environment'
+import {reportError} from 'utils/errors'
 
 import {ActivityEvents, AGENT_ACTIVITY_HEALTHCHECK_INTERVAL} from './constants'
 import {checkIfTrackerIsEnabled} from './utils'
@@ -26,6 +27,12 @@ const activityTrackerInstance = BrowserEventTracker.initialize({
     },
     getApiHeaders: async () => {
         return await appAuthService.getAccessTokenHeaders()
+    },
+    reportError: (error, event) => {
+        // remove cast when types are corrected in the library
+        reportError(error as Error, {
+            extra: {event: event as Record<string, unknown>},
+        })
     },
 })
 

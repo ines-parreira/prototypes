@@ -305,12 +305,10 @@ export function logCallEnd(call: Call) {
         ticketId = (ticketIdQueryKey?.[2] as ListVoiceCallsParams)?.ticket_id
     }
 
-    if (ticketId) {
-        logActivityEvent(ActivityEvents.UserFinishedPhoneCall, {
-            entityId: Number(ticketId),
-            entityType: 'ticket',
-        })
-    }
+    logActivityEvent(ActivityEvents.UserFinishedPhoneCall, {
+        entityId: Number(ticketId),
+        entityType: 'ticket',
+    })
 }
 
 export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {

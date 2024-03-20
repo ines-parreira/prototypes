@@ -596,7 +596,7 @@ describe('getCallSid', () => {
     })
 })
 
-describe('logEndCall', () => {
+describe('logCallEnd', () => {
     it('should log the call end when call has a ticket_id param', () => {
         // reset original logCallEnd implementation
         const logCallEndSpy = jest.spyOn(utils, 'logCallEnd')
