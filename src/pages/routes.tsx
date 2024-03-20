@@ -1761,6 +1761,14 @@ export function ConvertContent() {
             />
             <Route
                 exact
+                path={`${convertPathPrefix}/campaigns/new/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
+                component={memoizedWithUserRoleRequired(
+                    CampaignTemplateCustomizeView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
                 path={`${convertPathPrefix}/campaigns/${CONVERT_ROUTING_CAMPAIGN_PARAM}`}
                 component={memoizedWithUserRoleRequired(
                     CampaignDetailsFactory as any,

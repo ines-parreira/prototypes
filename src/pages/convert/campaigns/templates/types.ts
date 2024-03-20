@@ -1,5 +1,6 @@
 import {Map} from 'immutable'
 import {CampaignCreatePayload} from 'pages/convert/campaigns/types/Campaign'
+import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 export type CampaignConfiguration = {
     template_id: string
@@ -20,11 +21,12 @@ export type CampaignTemplateSectionType = {
 export type CampaignTemplate = {
     slug: string
     name: string
-    description?: string
     preview: string
     estimation?: string
-    label: CampaignTemplateLabelType
+    description?: string
+    label?: CampaignTemplateLabelType
     onboarding: boolean
+    getWizardConfiguration?: () => WizardConfiguration
     getConfiguration: (
         storeIntegration: Map<string, any>,
         chatIntegration: Map<string, any>

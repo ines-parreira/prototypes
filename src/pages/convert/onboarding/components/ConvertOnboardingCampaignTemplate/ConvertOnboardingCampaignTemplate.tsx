@@ -51,12 +51,14 @@ const ConvertOnboardingCampaignTemplate = ({
                 </div>
                 <div className={css.content}>
                     <div className={css.header}>
-                        <div
-                            className={css.label}
-                            style={campaignLabelStyles[template.label]}
-                        >
-                            {template.label}
-                        </div>
+                        {template.label && (
+                            <div
+                                className={css.label}
+                                style={campaignLabelStyles[template.label]}
+                            >
+                                {template.label}
+                            </div>
+                        )}
                         {selected && (
                             <div className={css.selected}>
                                 <i

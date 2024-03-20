@@ -11,12 +11,12 @@ describe('ConvertOnboardingCampaignTemplate', () => {
         label: 'Increase Conversions',
         onboarding: true,
         getConfiguration: jest.fn(),
-    } as CampaignTemplate
+    }
 
     it('renders campaign template correctly', () => {
         const {getByText, getByAltText} = render(
             <ConvertOnboardingCampaignTemplate
-                template={template}
+                template={template as CampaignTemplate}
                 integrationId={1}
                 selected={true}
             />

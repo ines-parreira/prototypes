@@ -1,4 +1,4 @@
-// Promote newsletter or SMS sign-up page for new visitors about to leave
+// Suggest similar items for sold-out or back-ordered items
 
 import {ulid} from 'ulidx'
 import {assetsUrl} from 'utils'
@@ -17,28 +17,37 @@ import {
 import {CampaignConfiguration, CampaignTemplate} from '../types'
 import {CampaignConfigurationBuilder} from '../constructor'
 
-export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
-    slug: 'promote-newsletter-for-new-visitors',
-    name: 'Promote newsletter sign-up for new visitors about to leave',
+export const SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT: CampaignTemplate = {
+    slug: 'suggest-similar-products-for-sold-out',
+    name: 'Suggest similar items for sold-out or back-ordered items',
     description:
-        'Increase first-time purchases by reminding your specific offers for new shoppers',
+        'Offer several alternatives when a shopper is visiting the product of a sold-out item',
     onboarding: false,
-    preview: assetsUrl('img/campaigns/library/promote-newsletter.png'),
+    preview: assetsUrl(
+        'img/campaigns/library/suggest-similar-products-for-sold-out.png'
+    ),
     getWizardConfiguration: (): WizardConfiguration => {
         return {
-            defaultStepOpened: CampaignStepsKeys.Message,
+            defaultStepOpened: CampaignStepsKeys.Audience,
             stepConfiguration: {
+                [CampaignStepsKeys.Audience]: {
+                    banner: {
+                        type: BannerType.Warning,
+                        content:
+                            'Please <strong>update the URL trigger</strong> to target visitors on the product page of an out-of-stock product',
+                    },
+                },
                 [CampaignStepsKeys.Message]: {
                     banner: {
                         type: BannerType.Info,
                         content:
-                            'Before activating the campaign, add the correct URL links to your newsletter/SMS sign-up pages in your campaign message.',
+                            'Please <strong>select the similar products</strong> you want to recommend from your Shopify catalog.',
                     },
                 },
             },
             toolbarConfiguration: {
-                [TooltipActionType.Link]: {
-                    tooltipContent: 'Add sign-up links',
+                [TooltipActionType.Product]: {
+                    tooltipContent: 'Add up to 5 product cards',
                 },
             },
         }
@@ -47,27 +56,15 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
         const triggers = [
             {
                 id: ulid(),
-                type: CampaignTriggerType.SessionTime,
-                operator: CampaignTriggerOperator.Gt,
-                value: 10,
+                type: CampaignTriggerType.CurrentUrl,
+                operator: CampaignTriggerOperator.Contains,
+                value: '/products/ADDYOURURL',
             },
             {
                 id: ulid(),
                 type: CampaignTriggerType.TimeSpentOnPage,
                 operator: CampaignTriggerOperator.Gt,
                 value: 5,
-            },
-            {
-                id: ulid(),
-                type: CampaignTriggerType.ExitIntent,
-                operator: CampaignTriggerOperator.Eq,
-                value: true,
-            },
-            {
-                id: ulid(),
-                type: CampaignTriggerType.VisitCount,
-                operator: CampaignTriggerOperator.Lt,
-                value: 4,
             },
             {
                 id: ulid(),
@@ -78,12 +75,14 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
         ]
 
         const b = new CampaignConfigurationBuilder(
-            PROMOTE_NEWSLETTER_FOR_NEW_VISITORS,
+            SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT,
             {
-                name: PROMOTE_NEWSLETTER_FOR_NEW_VISITORS.name,
-                template_id: PROMOTE_NEWSLETTER_FOR_NEW_VISITORS.slug,
-                message_text: `🌟 Save $25 OFF your order over $75 when you join our email list or sign up for SMS alerts!\n\n(if you haven't already) 😉`,
-                message_html: `<div>🌟 Save <strong>$25 OFF</strong> your order over <strong>$75</strong> when you <strong><a href=\"\" target=\"_blank\">join our email list</a></strong> or <strong><a href=\"\" target=\"_blank\">sign up for SMS alerts</a></strong>!</div><div><br></div><div>(if you haven&#x27;t already) 😉</div>`,
+                name: SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT.name,
+                template_id: SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT.slug,
+                message_html:
+                    '<div>This one is sold out, but we have<strong> similar styles ready for you </strong>✨</div>',
+                message_text:
+                    'This one is sold out, but we have similar styles ready for you ✨',
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
