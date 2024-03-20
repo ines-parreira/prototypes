@@ -6,10 +6,31 @@ import {LayoutKeys} from '../constants'
 const createInitialConfig = (layoutKey: LayoutKeys, defaultConfig: Config) => {
     // this is a temporary value that will be fully replaced by the storedWidths value
     const navbarWidth = window.localStorage.getItem('navbar-width')
-    const ticketListWidth = window.localStorage.getItem('ticket-list-width')
+    let ticketListWidth = window.localStorage.getItem('ticket-list-width')
     const infobarWidth = window.localStorage.getItem('infobar-width')
 
-    const storedWidths = window.localStorage.getItem(layoutKey)
+    let storedWidths = window.localStorage.getItem(layoutKey)
+
+    if (ticketListWidth) {
+        const splitTicketListWidth = ticketListWidth.split(';')
+        if (
+            splitTicketListWidth.length === 2 &&
+            splitTicketListWidth[0] === 'v2'
+        ) {
+            ticketListWidth = splitTicketListWidth[1]
+        } else {
+            ticketListWidth = null
+        }
+    }
+
+    if (storedWidths) {
+        const splitStoredWidths = storedWidths.split(';')
+        if (splitStoredWidths.length === 2 && splitStoredWidths[0] === 'v2') {
+            storedWidths = splitStoredWidths[1]
+        } else {
+            storedWidths = null
+        }
+    }
 
     if (storedWidths) {
         const widths = storedWidths.split(',').map(Number)

@@ -17,11 +17,14 @@ const storePanelWidths = _debounce(
                 if ([LayoutKeys.TICKET, LayoutKeys.VIEW].includes(layoutKey)) {
                     window.localStorage.setItem(
                         'ticket-list-width',
-                        widths[1].toString()
+                        `v2;${widths[1]}`
                     )
                 }
 
-                window.localStorage.setItem(layoutKey, widths.toString())
+                window.localStorage.setItem(
+                    layoutKey,
+                    `v2;${widths.toString()}`
+                )
             })
         }
 

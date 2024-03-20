@@ -41,11 +41,11 @@ describe('createInitialConfig', () => {
                 case 'navbar-width':
                     return '1'
                 case 'ticket-list-width':
-                    return '2'
+                    return 'v2;2'
                 case 'infobar-width':
                     return '3'
                 case LayoutKeys.TICKET:
-                    return '4,5,6,7'
+                    return 'v2;4,5,6,7'
                 default:
                     return null
             }
@@ -67,7 +67,7 @@ describe('createInitialConfig', () => {
         jest.spyOn(window.localStorage, 'getItem').mockImplementation((key) => {
             switch (key) {
                 case LayoutKeys.TICKET:
-                    return '4,5,6,7'
+                    return 'v2;4,5,6,7'
                 default:
                     return null
             }
@@ -91,7 +91,7 @@ describe('createInitialConfig', () => {
                 case 'navbar-width':
                     return '1'
                 case 'ticket-list-width':
-                    return '2'
+                    return 'v2;2'
                 case 'infobar-width':
                     return '4'
                 default:
@@ -116,11 +116,11 @@ describe('createInitialConfig', () => {
                 case 'navbar-width':
                     return '1'
                 case 'ticket-list-width':
-                    return '2'
+                    return 'v2;2'
                 case 'infobar-width':
                     return '3'
                 case LayoutKeys.FULL_TICKET:
-                    return '4,5,6'
+                    return 'v2;4,5,6'
                 default:
                     return null
             }
