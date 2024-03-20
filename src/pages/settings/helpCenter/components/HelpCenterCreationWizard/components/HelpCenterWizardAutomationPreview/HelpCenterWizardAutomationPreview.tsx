@@ -65,6 +65,7 @@ const HelpCenterWizardAutomationPreview = ({
                 logoUrl={helpCenter.brand_logo_url}
             >
                 <HelpCenterPreviewHomePage
+                    layout={helpCenter.layout}
                     searchPlaceholder={
                         helpCenterTexts.searchComboboxInputPlaceholder
                     }

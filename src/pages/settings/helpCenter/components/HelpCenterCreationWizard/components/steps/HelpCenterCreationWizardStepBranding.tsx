@@ -134,6 +134,7 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
                         logoUrl={logoUrl}
                     >
                         <HelpCenterPreviewHomePage
+                            layout={newHelpCenter.layout}
                             primaryColor={newHelpCenter.primaryColor}
                             primaryFont={newHelpCenter.primaryFontFamily}
                         />

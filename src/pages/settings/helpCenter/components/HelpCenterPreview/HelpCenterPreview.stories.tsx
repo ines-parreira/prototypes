@@ -1,5 +1,6 @@
 import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
+import {HelpCenterLayout} from '../../types/layout.enum'
 import HelpCenterPreview from './HelpCenterPreview'
 import logoUrl from './assets/preview-story-example.png'
 import HelpCenterPreviewHomePage from './HelpCenterPreviewHomePage'
@@ -55,8 +56,24 @@ export const WithLogo: Story = {
     },
 }
 
-export const HomePagePreview: Story = {
+export const HomePageDefaultPreview: Story = {
     args: {
-        children: <HelpCenterPreviewHomePage primaryColor="#E03997" />,
+        children: (
+            <HelpCenterPreviewHomePage
+                layout={HelpCenterLayout.DEFAULT}
+                primaryColor="#E03997"
+            />
+        ),
+    },
+}
+
+export const HomePageOnePagerPreview: Story = {
+    args: {
+        children: (
+            <HelpCenterPreviewHomePage
+                layout={HelpCenterLayout.ONEPAGER}
+                primaryColor="#E03997"
+            />
+        ),
     },
 }

@@ -1,44 +1,12 @@
 import React from 'react'
 import classnames from 'classnames'
+import {HELP_CENTER_DEFAULT_LAYOUT} from '../../constants'
+import HelpCenterPreviewDefaultHomePage from './HelpCenterPreviewDefaultHomePage'
+import HelpCenterPreviewOnePagerHomePage from './HelpCenterPreviewOnePagerHomePage'
 import css from './HelpCenterPreviewHomePage.less'
 
-const HomePageSection = ({title}: {title: string}) => {
-    return (
-        <div className={css.sectionHeader}>
-            <span className={css.title}>{title}</span>
-
-            <span className={css.seeAll}>
-                See All
-                <i className={classnames('material-icons', css.icon)}>
-                    arrow_forward
-                </i>
-            </span>
-        </div>
-    )
-}
-
-const HomePageArticle = ({title}: {title: string}) => {
-    return (
-        <li className={classnames(css.item, css.articleItem)}>
-            <div className={css.itemArticleName}>{title}</div>
-            <p className={css.articleDescription}>
-                Viva Forevis aptent taciti sociosqu ad litora torquent. Si u
-                mundo tá muito paradis?
-            </p>
-        </li>
-    )
-}
-
-const HomePageCategory = ({title}: {title: string}) => {
-    return (
-        <li className={css.item}>
-            <div className={css.itemImage} />
-            <div className={css.itemCatName}>{title}</div>
-        </li>
-    )
-}
-
 type HelpCenterPreviewHomePageProps = {
+    layout: 'default' | '1-pager'
     primaryColor?: string
     primaryFont?: string
     searchPlaceholder?: string
@@ -46,14 +14,18 @@ type HelpCenterPreviewHomePageProps = {
 }
 
 const HelpCenterPreviewHomePage = ({
+    layout,
     primaryColor,
     primaryFont,
     searchPlaceholder,
     isSearchbar,
 }: HelpCenterPreviewHomePageProps) => {
+    const hasDefaultLayout = layout === HELP_CENTER_DEFAULT_LAYOUT
     return (
         <div
-            className={css.container}
+            className={classnames(css.container, {
+                [css.onePagerLayout]: !hasDefaultLayout,
+            })}
             style={
                 // React `style` accept only css properties
                 {
@@ -62,37 +34,14 @@ const HelpCenterPreviewHomePage = ({
                 } as React.CSSProperties
             }
         >
-            {isSearchbar && (
-                <div className={css.searchBar}>
-                    <i
-                        className={classnames(
-                            'material-icons',
-                            css.searchBarIcon
-                        )}
-                    >
-                        search
-                    </i>
-                    {searchPlaceholder}
-                </div>
+            {hasDefaultLayout ? (
+                <HelpCenterPreviewDefaultHomePage
+                    searchPlaceholder={searchPlaceholder}
+                    isSearchbar={isSearchbar}
+                />
+            ) : (
+                <HelpCenterPreviewOnePagerHomePage />
             )}
-
-            <div>
-                <HomePageSection title="Categories" />
-
-                <ul className={css.itemList}>
-                    <HomePageCategory title="Category name" />
-                    <HomePageCategory title="Category name" />
-                </ul>
-            </div>
-
-            <div>
-                <HomePageSection title="Articles" />
-
-                <ul className={classnames(css.itemList, css.verticalList)}>
-                    <HomePageArticle title="Article name" />
-                    <HomePageArticle title="Article name" />
-                </ul>
-            </div>
         </div>
     )
 }

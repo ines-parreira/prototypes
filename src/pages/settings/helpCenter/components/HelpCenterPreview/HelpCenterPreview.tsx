@@ -27,7 +27,7 @@ const HelpCenterPreview = ({children, name, logoUrl}: Props) => {
                     menu
                 </i>
             </div>
-            <div className={css.content}>{children}</div>
+            <div>{children}</div>
         </div>
     )
 }

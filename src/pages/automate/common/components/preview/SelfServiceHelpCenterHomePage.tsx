@@ -31,6 +31,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
     if (isOrderManagementUnavailable) {
         return (
             <HelpCenterPreviewHomePage
+                layout={helpCenter.layout}
                 searchPlaceholder={
                     helpCenterTexts.searchComboboxInputPlaceholder
                 }
