@@ -165,6 +165,7 @@ export const handleUsageBanner =
                     onClick: () => {
                         history.push('/app/settings/billing')
                     },
+                    allowHTML: true,
                 })
             )
         }

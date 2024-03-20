@@ -4,7 +4,7 @@ exports[`actions handleUsageBanner should dispatch notify if there is a notifica
 [
   {
     "payload": {
-      "allowHTML": false,
+      "allowHTML": true,
       "buttons": [],
       "closeButton": false,
       "dismissAfter": 0,
@@ -29,7 +29,7 @@ exports[`actions handleUsageBanner should hide and dispatch notify if there is a
   },
   {
     "payload": {
-      "allowHTML": false,
+      "allowHTML": true,
       "buttons": [],
       "closeButton": false,
       "dismissAfter": 0,
