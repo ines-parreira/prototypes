@@ -4,7 +4,9 @@ import {CSSTransition} from 'react-transition-group'
 import {Link} from 'react-router-dom'
 import {Components} from 'react-virtuoso'
 
+import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import TicketIcon from 'pages/common/components/TicketIcon'
+import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
 
 import {TicketPartial, TicketSummary} from '../types'
 import RelativeTime from './RelativeTime'
@@ -43,6 +45,7 @@ export default function Ticket({
     ['data-known-size']: dataKnownSize,
     ...transitionProps
 }: MergedProps) {
+    const {isTicketViewed, agentViewingMessage} = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
         () =>
             'channel' in ticket
@@ -74,6 +77,13 @@ export default function Ticket({
                         <TicketSkeleton />
                     ) : (
                         <>
+                            {isTicketViewed && (
+                                <ViewingIndicator
+                                    title={agentViewingMessage}
+                                    position="right"
+                                    className={css.viewingIndicator}
+                                />
+                            )}
                             <TicketIcon
                                 channel={ticket.channel}
                                 className={css.icon}

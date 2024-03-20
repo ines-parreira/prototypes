@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 
+import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {scrollToReactNode} from '../../../utils/keyboard'
 
@@ -78,16 +79,11 @@ export class RowContainer extends Component<Props> {
                         {
                             // display an eye on row if an agent is currently viewing this item
                             agentsViewing.size > 0 && (
-                                <div
-                                    className={css.viewers}
+                                <ViewingIndicator
                                     title={viewsUtils.agentsViewingMessage(
                                         agentsViewing
                                     )}
-                                >
-                                    <i className="material-icons">
-                                        remove_red_eye
-                                    </i>
-                                </div>
+                                />
                             )
                         }
                         <CheckBox

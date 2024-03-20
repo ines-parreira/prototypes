@@ -1,0 +1,34 @@
+@import '~css/new/util';
+
+:local {
+    .viewers {
+        @viewing-indicator-size: 30px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--neutral-grey-6);
+        width: 0;
+        height: 0;
+        border-top: @viewing-indicator-size solid var(--feedback-warning-1);
+        border-right: @viewing-indicator-size solid transparent;
+
+        i {
+            position: absolute;
+            top: -25px;
+            left: 2px;
+            font-size: 11px;
+        }
+
+        &.right {
+            left: unset;
+            right: 0;
+            border-left: @viewing-indicator-size solid transparent;
+            border-right: none;
+
+            i {
+                left: unset;
+                right: 2px;
+            }
+        }
+    }
+}
