@@ -54,10 +54,6 @@ const InfobarWidgets = ({
 
     const className = classnames(css.widgetsList, {
         editing: isEditing,
-        [css.dragging]: !!(
-            isEditing &&
-            widgetState.getIn(['_internal', 'drag', 'isDragging'], false)
-        ),
     })
 
     const genericSourcePath = getSourcePathFromContext(
@@ -159,7 +155,18 @@ const InfobarWidgets = ({
                 watchDrop
                 tag={null}
             >
-                <div className={className}>
+                <div
+                    className={className}
+                    data-dragging={
+                        !!(
+                            isEditing &&
+                            widgetState.getIn(
+                                ['_internal', 'drag', 'isDragging'],
+                                false
+                            )
+                        )
+                    }
+                >
                     {renderWidgets({source, isEditing, preparedDisplayList})}
                 </div>
             </DragWrapper>

@@ -77,9 +77,8 @@ export default function Card(props: Props) {
 
     const isExpandable =
         !isEditionMode && shouldDisplayHeader && shouldDisplayContent
-    // keep the unscoped class here to have drag and drop greying feature
-    const className = classnames(css.card, 'widget-card', {
-        'can-drop': isEditionMode && canDrop,
+
+    const className = classnames(css.card, {
         draggable: isDraggable,
         [css.closed]: !isOpen && !isEditionMode,
         [css.onlyContent]: !isEditionMode && isOnlyContent,
@@ -116,14 +115,10 @@ export default function Card(props: Props) {
                     </>
                 )}
                 <div
-                    // keep the unscoped class here to have drag and drop greying feature
-                    className={classnames(
-                        'widget-card-content',
-                        css.cardContent,
-                        {
-                            hidden: !shouldDisplayContent,
-                        }
-                    )}
+                    className={classnames(css.cardContent, {
+                        hidden: !shouldDisplayContent,
+                        [css.canDrop]: isEditionMode && canDrop,
+                    })}
                 >
                     {beforeContent}
                     {children}

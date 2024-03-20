@@ -67,7 +67,7 @@ describe('Card', () => {
         it('should add the "removeBorderTop" class if "hasNoBorderTop" is true', () => {
             render(<Card {...defaultProps} hasNoBorderTop={true} />)
 
-            expect(document.querySelector('.widget-card')).toHaveClass(
+            expect(document.querySelector('.card')).toHaveClass(
                 'removeBorderTop'
             )
         })
@@ -80,7 +80,7 @@ describe('Card', () => {
                     cardData={{...defaultProps.cardData, displayCard: false}}
                 />
             )
-            const container = document.querySelector('.widget-card')
+            const container = document.querySelector('.card')
 
             expect(container).toHaveClass('onlyContent')
             expect(container?.firstChild).toHaveClass('onlyContent')
@@ -91,7 +91,13 @@ describe('Card', () => {
                 <Card {...defaultProps} isOpen={false} isEditionMode={false} />
             )
 
-            expect(document.querySelector('.widget-card')).toHaveClass('closed')
+            expect(document.querySelector('.card')).toHaveClass('closed')
+        })
+
+        it('should add the "draggable" class if "isDraggable" is true', () => {
+            render(<Card {...defaultProps} isDraggable={true} />)
+
+            expect(document.querySelector('.card')).toHaveClass('draggable')
         })
 
         it('should add the "can-drop" class if "isEditionMode" is true and "canDrop" is true', () => {
@@ -99,25 +105,15 @@ describe('Card', () => {
                 <Card {...defaultProps} isEditionMode={true} canDrop={true} />
             )
 
-            expect(document.querySelector('.widget-card')).toHaveClass(
-                'can-drop'
-            )
-        })
-
-        it('should add the "draggable" class if "isDraggable" is true', () => {
-            render(<Card {...defaultProps} isDraggable={true} />)
-
-            expect(document.querySelector('.widget-card')).toHaveClass(
-                'draggable'
+            expect(document.querySelector('.cardContent')).toHaveClass(
+                'canDrop'
             )
         })
 
         it('should add the "hidden" class if "shouldDisplayContent" is false', () => {
             render(<Card {...defaultProps} shouldDisplayContent={false} />)
 
-            expect(document.querySelector('.widget-card-content')).toHaveClass(
-                'hidden'
-            )
+            expect(document.querySelector('.cardContent')).toHaveClass('hidden')
         })
     })
 

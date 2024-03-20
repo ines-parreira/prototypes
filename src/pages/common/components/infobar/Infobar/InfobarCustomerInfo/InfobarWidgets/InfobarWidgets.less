@@ -4,21 +4,9 @@
         flex-flow: row wrap;
         align-items: flex-start;
         align-content: flex-start;
-    }
-    .dragging {
-        // Leave some minimum space in the widget zone to drop things
-        min-height: 300px;
-        :global {
-            .widget-field {
-                border: 1px solid transparent !important;
-                cursor: default !important;
-            }
-            .widget-card:not(.can-drop) {
-                background-color: var(--neutral-grey-1);
-            }
-            .widget-card.can-drop > .widget-card-content {
-                background-color: var(--neutral-grey-0);
-            }
+        &[data-dragging='true'] {
+            // Leave some minimum space in the widget zone to drop things
+            min-height: 300px;
         }
     }
 }

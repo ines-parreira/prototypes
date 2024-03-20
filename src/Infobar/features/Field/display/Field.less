@@ -41,6 +41,14 @@
                     display: flex;
                 }
             }
+
+            [data-dragging='true'] & {
+                border: 1px solid transparent;
+                cursor: default;
+                .fieldTools {
+                    display: none;
+                }
+            }
         }
     }
 }

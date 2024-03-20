@@ -73,7 +73,7 @@ export default function Field<T extends string>({
     }
 
     // keep the unscoped class here to have drag and drop greying feature
-    const className = cs(`${css.field} widget-field draggable`, {
+    const className = cs(`${css.field} draggable`, {
         [css.fieldEditing]: isEditionMode,
     })
 
