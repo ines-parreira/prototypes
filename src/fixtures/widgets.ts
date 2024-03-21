@@ -1,6 +1,6 @@
-import {Card, List, Leaf} from 'models/widget/types'
+import {CardTemplate, ListTemplate, LeafTemplate} from 'models/widget/types'
 
-export const cardTemplate: Card = {
+export const cardTemplate: CardTemplate = {
     widgets: [
         {
             path: 'id',
@@ -168,7 +168,7 @@ export const cardTemplate: Card = {
     templatePath: '0.template.widgets.1.widgets.0',
 }
 
-export const listTemplate: List = {
+export const listTemplate: ListTemplate = {
     path: 'orders',
     type: 'list',
     widgets: [cardTemplate],
@@ -201,7 +201,7 @@ export const shopifyWidget = {
                 ],
                 type: 'card',
                 title: '{first_name} {last_name}',
-            },
+            } as CardTemplate,
             listTemplate,
         ],
     },
@@ -210,7 +210,7 @@ export const shopifyWidget = {
     updated_datetime: '2017-08-17T23:33:46.991886+00:00',
 }
 
-export const idTemplate: Leaf = {
+export const idTemplate: LeafTemplate = {
     path: 'id',
     type: 'text',
     title: 'Id',

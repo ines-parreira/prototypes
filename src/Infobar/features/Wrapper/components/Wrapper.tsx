@@ -33,7 +33,7 @@ import {
 import WrapperEditActions from 'Infobar/features/Wrapper/display/WrapperEditActions'
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 import {EXPAND_CONTAINER_MARKER} from 'Infobar/config/template'
-
+import {Template, WrapperTemplate} from 'models/widget/types'
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 
@@ -52,7 +52,7 @@ export const CUSTOMIZABLE_WIDGET_TYPES = [
 type Props = {
     source: Map<string, unknown> | undefined
     widget: Map<string, unknown>
-    template: Map<string, unknown>
+    template: WrapperTemplate
 }
 
 export default function Wrapper({widget, template, source}: Props) {
@@ -60,8 +60,8 @@ export default function Wrapper({widget, template, source}: Props) {
     const {isEditing} = useContext(EditionContext)
 
     const InfobarWidget = widgetReference.Widget
-    const absolutePath = template.get('absolutePath', []) as string[]
-    const templatePath = template.get('templatePath', '') as string
+    const absolutePath = template.absolutePath || []
+    const templatePath = template.templatePath || ''
 
     const widgetType = widget.get('type') as WidgetType
     const integrationId: number = widget.get('integration_id') as number
@@ -69,7 +69,7 @@ export default function Wrapper({widget, template, source}: Props) {
 
     const widgetName = getWidgetTitle({
         source: source?.toJS(),
-        template: template.toJS(),
+        template: template,
         widgetType,
         appId: widget.get('app_id') as string | undefined,
         integration: integration?.toJS(),
@@ -96,7 +96,7 @@ export default function Wrapper({widget, template, source}: Props) {
                 >
                     <WidgetPanel
                         widgetType={widgetType}
-                        customColor={template.getIn(['meta', 'color'])}
+                        customColor={template.meta?.color}
                     >
                         {!isEditing && (
                             <div id={widgetId} className={css.anchor} />
@@ -121,10 +121,9 @@ export default function Wrapper({widget, template, source}: Props) {
                                             widgetType
                                         )
                                             ? {
-                                                  color: template.getIn(
-                                                      ['meta', 'color'],
-                                                      ''
-                                                  ),
+                                                  color:
+                                                      template.meta?.color ||
+                                                      '',
                                               }
                                             : undefined
                                     }
@@ -162,31 +161,26 @@ export default function Wrapper({widget, template, source}: Props) {
                             isEditing={isEditing}
                             watchDrop
                         >
-                            {(
-                                template.get('widgets', fromJS([])) as Map<
-                                    number,
-                                    unknown
-                                >
-                            ).map((mappedWidget, index = 0) => {
-                                const passedTemplate = (
-                                    mappedWidget as Map<string, unknown>
-                                ).set(
-                                    'templatePath',
-                                    `${templatePath}.widgets.${index}`
-                                )
+                            {(template.widgets || []).map(
+                                (mappedWidget, index = 0) => {
+                                    const passedTemplate = {
+                                        ...mappedWidget,
+                                        templatePath: `${templatePath}.widgets.${index}`,
+                                    }
 
-                                return (
-                                    <InfobarWidget
-                                        key={`${
-                                            passedTemplate.get('path') as string
-                                        }-${index}`}
-                                        source={source}
-                                        parent={template}
-                                        widget={widget}
-                                        template={passedTemplate}
-                                    />
-                                )
-                            })}
+                                    return (
+                                        <InfobarWidget
+                                            key={`${
+                                                passedTemplate.path || ''
+                                            }-${index}`}
+                                            source={source}
+                                            parent={template}
+                                            widget={widget}
+                                            template={passedTemplate}
+                                        />
+                                    )
+                                }
+                            )}
                         </DragWrapper>
                     </WidgetPanel>
                 </div>
@@ -196,14 +190,17 @@ export default function Wrapper({widget, template, source}: Props) {
 }
 
 export function useIntegration(
-    absolutePath: string[],
+    absolutePath: Template['absolutePath'],
     widgetType: WidgetType,
     integration_id: number
 ) {
     const lastAbsolutePath = _last(absolutePath) || ''
     let integrationId = null
     // Check for uuid, and if it is not in the path, then the leaf is the integration id
-    if (!lastAbsolutePath.includes('-')) {
+    if (
+        typeof lastAbsolutePath === 'string' &&
+        !lastAbsolutePath.includes('-')
+    ) {
         integrationId = parseInt(lastAbsolutePath)
     } else {
         integrationId = integration_id

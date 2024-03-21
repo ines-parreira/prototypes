@@ -1,8 +1,9 @@
-import React, {useCallback, useMemo} from 'react'
-import {Map, List as ImmutableList, fromJS} from 'immutable'
+import React, {useMemo} from 'react'
+import {Map, fromJS} from 'immutable'
 
 import List from 'Infobar/features/List/display/List'
 import {isImmutable, isImmutableList} from 'common/utils'
+import {isCardTemplate, ListTemplate} from 'models/widget/types'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
@@ -11,7 +12,7 @@ import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCu
 type Props = {
     source: unknown
     widget: Map<string, unknown>
-    template: Map<unknown, unknown>
+    template: ListTemplate
     isEditing?: boolean
     isParentList?: boolean
     hasNoBorderTop?: boolean
@@ -27,38 +28,15 @@ function ListInfobarWidget({
 }: Props) {
     const InfobarWidget = widgetReference.Widget
 
-    const updatedTemplate = template.set(
-        'absolutePath',
-        (template.get('absolutePath', '') as ImmutableList<string>).concat([
-            '[]',
-        ])
-    )
+    let passedTemplate = template.widgets?.[0]
 
-    const passedTemplate = (
-        updatedTemplate.getIn(['widgets', '0'], fromJS([])) as Map<
-            unknown,
-            unknown
-        >
-    ).set(
-        'templatePath',
-        `${updatedTemplate.get('templatePath', '') as string}.widgets.0`
-    )
-
-    const isParentOfCard =
-        updatedTemplate.getIn(['widgets', 0, 'type'], '') === 'card'
-
+    const isParentOfCard = template.widgets?.[0].type === 'card'
     const hasOnlyContent =
         isParentOfCard &&
-        passedTemplate.getIn(['meta', 'displayCard'], true) === false
-
-    const limit = template.getIn(['meta', 'limit']) as
-        | number
-        | string
-        | undefined
-
-    const orderByString = template.getIn(['meta', 'orderBy']) as
-        | string
-        | undefined
+        isCardTemplate(passedTemplate) &&
+        passedTemplate.meta?.displayCard === false
+    const limit = template.meta?.limit
+    const orderByString = template.meta?.orderBy
 
     const orderBy = useMemo(
         () =>
@@ -82,37 +60,39 @@ function ListInfobarWidget({
             : []
     }, [source, hasOnlyContent, isParentOfCard])
 
-    const children = useCallback(
-        (childrenSources: Record<string, unknown>[]) =>
-            childrenSources.map((childSource, index) => (
-                <WidgetListContext.Provider
-                    value={{currentListIndex: index}}
-                    key={index}
-                >
-                    <InfobarWidget
-                        source={fromJS(childSource)}
-                        parent={updatedTemplate}
-                        widget={widget}
-                        template={passedTemplate}
-                        isOpen={index === 0}
-                        hasNoBorderTop={index === 0 && hasNoBorderTop}
-                    />
-                </WidgetListContext.Provider>
-            )),
-        [InfobarWidget, updatedTemplate, widget, passedTemplate, hasNoBorderTop]
-    )
+    if (!isImmutableList(source) || !source.size || !passedTemplate) return null
 
-    if (
-        !isImmutableList(source) ||
-        !source.size ||
-        !template.getIn(['widgets', '0'])
-    )
-        return null
+    const updatedTemplate = {
+        ...template,
+        absolutePath: (template.absolutePath || []).concat(['[]']),
+    }
+
+    passedTemplate = {
+        ...passedTemplate,
+        templatePath: `${template.templatePath || ''}.widgets.0`,
+    }
+
+    const children = (childrenSources: Record<string, unknown>[]) =>
+        childrenSources.map((childSource, index) => (
+            <WidgetListContext.Provider
+                value={{currentListIndex: index}}
+                key={index}
+            >
+                <InfobarWidget
+                    source={fromJS(childSource)}
+                    parent={updatedTemplate}
+                    widget={widget}
+                    template={passedTemplate}
+                    isOpen={index === 0}
+                    hasNoBorderTop={index === 0 && hasNoBorderTop}
+                />
+            </WidgetListContext.Provider>
+        ))
 
     return (
         <List
             isDraggable={!isParentList}
-            dataKey={`${template.get('path') as string}[]`}
+            dataKey={`${template.path || ''}[]`}
             isEditing={isEditing}
             listItems={trimmedSource}
             initialItemDisplayedNumber={limit ? Number(limit) : undefined}

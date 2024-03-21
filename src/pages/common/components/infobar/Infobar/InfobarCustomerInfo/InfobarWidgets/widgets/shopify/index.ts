@@ -1,4 +1,4 @@
-import {List, Map} from 'immutable'
+import {Template} from 'models/widget/types'
 
 import Customer from './Customer'
 import Item from './Item'
@@ -7,14 +7,8 @@ import ShippingAddress from './Order/ShippingAddress'
 import Fulfillment from './Fulfillment'
 import DraftOrder from './DraftOrder/DraftOrderWidget'
 
-const shopify = (args: {
-    template: Map<any, any>
-    source: Map<any, any>
-    parent: Map<any, any>
-}) => {
-    const path = (args.template.get('absolutePath', []) as List<string>).join(
-        '.'
-    )
+const shopify = (args: {template: Template}) => {
+    const path = (args.template.absolutePath || []).join('.')
 
     if (path.match(/integrations\.\d+\.customer$/)) {
         return Customer()

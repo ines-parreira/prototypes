@@ -21,6 +21,7 @@ import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCus
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
+import {Template} from 'models/widget/types'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
 import Placeholder from './widgets/Placeholder'
@@ -120,7 +121,7 @@ const InfobarWidgets = ({
             const title = getWidgetTitle({
                 source: (
                     source.getIn(
-                        item.getIn(['template', 'path']),
+                        item.getIn(['template', 'absolutePath']),
                         fromJS({})
                     ) as Maybe<Map<string, unknown>>
                 )?.toJS(),
@@ -202,14 +203,22 @@ function renderWidgets({
             )
         )
 
+        const passedSource = source.getIn(
+            newItem.getIn(['template', 'absolutePath'], []),
+            source
+        ) as Map<string, unknown>
+
         if (item.get('type') === 'placeholder') {
             return (
                 <Placeholder
                     isEditing={isEditing}
                     key={`${(
-                        newItem.getIn(['template', 'path'], []) as string[]
+                        newItem.getIn(
+                            ['template', 'absolutePath'],
+                            []
+                        ) as string[]
                     ).toString()}-${index}`}
-                    source={source}
+                    source={passedSource}
                     widget={newItem.get('widget') as Map<string, unknown>}
                     template={newItem.get('template') as Map<any, any>}
                 />
@@ -219,11 +228,15 @@ function renderWidgets({
         return (
             <InfobarWidget
                 key={`${(
-                    newItem.getIn(['template', 'path'], []) as string[]
+                    newItem.getIn(['template', 'absolutePath'], []) as string[]
                 ).toString()}-${index}`}
-                source={source}
+                source={passedSource}
                 widget={newItem.get('widget') as Map<string, unknown>}
-                template={newItem.get('template') as Map<unknown, unknown>}
+                template={
+                    (
+                        newItem.get('template') as Map<unknown, unknown>
+                    ).toJS() as Template
+                }
                 isOpen={newItem.get('open') as boolean}
             />
         )
@@ -249,7 +262,7 @@ function getPreparedDisplayList({
 
     // Create a list `prepareDisplayList` of item containing enough data to generate widget components.
     // For each widget OR customerIntegrationData found in displayList, prepare the widget OR retrieve the
-    // associated widget, set its template `path`, `templatePath` when needed
+    // associated widget, set its template `absolutePath`, `templatePath` when needed
     displayList.forEach((item, displayListIndex) => {
         let widget: Map<string, unknown> = fromJS({})
         let integration: Integration | undefined
@@ -382,7 +395,7 @@ function getPreparedDisplayList({
 
         const template = (
             widget.get('template', fromJS({})) as Map<string, unknown>
-        ).set('path', sourcePath)
+        ).set('absolutePath', sourcePath)
 
         if (!isEditing && !canDisplayWidget(template.toJS(), source)) {
             return
@@ -413,7 +426,7 @@ function getPreparedDisplayList({
             (widget = fromJS({})) => {
                 const template = (
                     widget.get('template', fromJS({})) as Map<string, unknown>
-                ).set('path', genericSourcePath)
+                ).set('absolutePath', genericSourcePath)
 
                 return fromJS({
                     widget,

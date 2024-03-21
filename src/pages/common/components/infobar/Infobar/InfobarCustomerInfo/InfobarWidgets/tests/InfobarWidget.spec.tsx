@@ -8,6 +8,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     BIGCOMMERCE_INTEGRATION_TYPE,
 } from 'constants/integration'
+import {Template} from 'models/widget/types'
 
 import InfobarWidget from '../InfobarWidget'
 
@@ -25,9 +26,9 @@ const defaultSource: Map<string, unknown> = fromJS({
     },
 })
 
-const defaultTemplate: Map<string, unknown> = fromJS({
+const defaultTemplate: Template = {
     type: 'card',
-    path: ['ticket', 'customer', 'integrations', '0'],
+    absolutePath: ['ticket', 'customer', 'integrations', '0'],
     title: 'Duh',
     widgets: [
         {
@@ -37,7 +38,7 @@ const defaultTemplate: Map<string, unknown> = fromJS({
             widgets: [],
         },
     ],
-})
+}
 
 const defaultProps: ComponentProps<typeof InfobarWidget> = {
     widget: defaultWidget,

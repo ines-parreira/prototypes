@@ -1,13 +1,13 @@
 import React from 'react'
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import _last from 'lodash/last'
+import {Map} from 'immutable'
 
 import {
     WOOCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {getIntegrationById} from 'state/integrations/selectors'
+import {WrapperTemplate} from 'models/widget/types'
 import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
@@ -20,77 +20,76 @@ import css from './Wrapper.less'
 
 type Props = {
     source: Map<string, unknown>
-    parent: Map<string, unknown>
     widget: Map<string, unknown>
-    template: Map<string, unknown>
+    template: WrapperTemplate
 }
 
-export default function Wrapper({widget, template, source, parent}: Props) {
+export default function Wrapper({widget, template, source}: Props) {
     const SourceWidget = widgetReference.Widget
-    const absolutePath = template.get('absolutePath') as string[]
-    const templatePath = template.get('templatePath') as string
-    const children = template.get('widgets', fromJS([])) as List<
-        Map<string, unknown>
-    >
+    const absolutePath = template.absolutePath || []
+    const templatePath = template.templatePath || ''
+    const children = template.widgets
     const widgetType = widget.get('type') as WidgetType
 
-    let integrationId: number
+    let integrationId: number | undefined | string
     if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
         integrationId = source?.getIn(['store', 'helpdesk_integration_id'])
     } else {
-        integrationId = parseInt(_last(absolutePath) || '', 10)
+        integrationId = absolutePath[absolutePath.length - 1]
     }
 
-    const integration = useAppSelector(getIntegrationById(integrationId))
+    const integration = useAppSelector(
+        getIntegrationById(
+            typeof integrationId === 'number'
+                ? integrationId
+                : parseInt(integrationId || '', 10)
+        )
+    )
 
-    if (children.isEmpty() && widget.get('type') !== STANDALONE_WIDGET_TYPE) {
+    if (!children?.length && widgetType !== STANDALONE_WIDGET_TYPE) {
         return null
     }
 
     const displayName = getWidgetTitle({
         source: source?.toJS(),
-        template: (
-            widget.get('template', fromJS({})) as Map<string, unknown>
-        ).toJS(),
+        template: template,
         widgetType: widgetType,
         appId: widget.get('app_id') as string | undefined,
         integration: integration?.toJS(),
     })
 
-    const type = parent.get('type') as WidgetType
-
     return (
         <div
             className={classnames('draggable', css.sourceWrapper)}
-            data-key={(template.get('path') as string[]).join('.')}
+            data-key={absolutePath.join('.')}
         >
-            <WidgetPanel widgetType={type}>
+            <WidgetPanel widgetType={widgetType}>
                 <div className={css.sourceWrapperHeader}>
                     <i className="material-icons">drag_indicator</i>
                     {displayName}
                 </div>
-                {widget.get('type') !== STANDALONE_WIDGET_TYPE && (
+                {widgetType !== STANDALONE_WIDGET_TYPE && (
                     <div>
                         <DragWrapper
                             group={{
-                                name: absolutePath.join('.'),
+                                name: absolutePath.join('.') || '',
                                 pull: true,
                                 put: false,
                             }}
                             isEditing
                         >
-                            {children.map((childWidget, index) => {
-                                if (!childWidget || typeof index !== 'number')
+                            {children?.map((childTemplate, index) => {
+                                if (!childTemplate || typeof index !== 'number')
                                     return null
-                                const passedTemplate = childWidget.set(
-                                    'templatePath',
-                                    `${templatePath}.widgets.${index}`
-                                )
+                                const passedTemplate = {
+                                    ...childTemplate,
+                                    templatePath: `${templatePath}.widgets.${index}`,
+                                }
 
                                 return (
                                     <SourceWidget
                                         key={`${
-                                            passedTemplate.get('path') as string
+                                            passedTemplate.path || ''
                                         }-${index}`}
                                         source={source}
                                         parent={template}

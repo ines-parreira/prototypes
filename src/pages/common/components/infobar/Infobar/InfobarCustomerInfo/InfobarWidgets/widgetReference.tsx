@@ -1,12 +1,13 @@
 import React, {FunctionComponent} from 'react'
-
 import {Map} from 'immutable'
 
+import {Template} from 'models/widget/types'
+
 export type WidgetProps = {
-    parent?: Map<any, any>
+    parent?: Template
     source?: Map<string, unknown>
     widget: Map<string, unknown>
-    template: Map<unknown, unknown>
+    template: Template
     isOpen?: boolean
     hasNoBorderTop?: boolean
 }

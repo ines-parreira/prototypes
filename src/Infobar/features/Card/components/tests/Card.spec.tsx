@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {Action} from 'redux'
-import {Map, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 import {act, render, screen} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
@@ -20,9 +20,12 @@ import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 import {canDrop} from 'pages/common/components/infobar/utils'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 
+import {CardTemplate, ListTemplate} from 'models/widget/types'
+import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Infobar/config/template'
 import Card, {listMetaFields, NO_DATA_TEXT} from '../Card'
 
 const mockStore = configureMockStore()
@@ -96,15 +99,12 @@ describe('Card', () => {
         }),
     } as RootState
     const defaultParentAbsolutePath = ['foo']
-    const defaultParentTemplate = (fromJS(listTemplate) as Map<any, any>).set(
-        'absolutePath',
-        defaultParentAbsolutePath
-    )
+    const defaultParentTemplate = {
+        ...listTemplate,
+        absolutePath: defaultParentAbsolutePath,
+    }
     const defaultAbsolutePath = ['foo', 'bar']
-    const defaultTemplate = (fromJS(cardTemplate) as Map<any, any>).set(
-        'absolutePath',
-        defaultAbsolutePath
-    )
+    const defaultTemplate = {...cardTemplate, absolutePath: defaultAbsolutePath}
     const defaultProps: ComponentProps<typeof Card> = {
         extensions: {},
         parent: defaultParentTemplate,
@@ -117,7 +117,7 @@ describe('Card', () => {
     }
 
     const legacyProps = {
-        template: defaultProps.template,
+        template: fromJS(defaultProps.template),
         source: defaultProps.source,
         isEditing: defaultProps.isEditing,
     }
@@ -138,9 +138,11 @@ describe('Card', () => {
                 <Provider store={mockStore(defaultState)}>
                     <Card
                         {...defaultProps}
-                        template={fromJS({
-                            templatePath: '0.template.widgets.0.something',
-                        })}
+                        template={
+                            {
+                                templatePath: '0.template.widgets.0.something',
+                            } as CardTemplate
+                        }
                     />
                 </Provider>
             )
@@ -176,21 +178,17 @@ describe('Card', () => {
 
             expect(InfobarWidgetMock).toHaveBeenCalledTimes(6)
 
-            const templatePath = defaultProps.template.get(
-                'templatePath',
-                ''
-            ) as string
+            const templatePath = defaultProps.template.templatePath || ''
 
             expect(InfobarWidgetMock).toHaveBeenNthCalledWith(
                 1,
                 {
                     ...expectedProps,
-                    template: (
-                        defaultProps.template.getIn(['widgets', 0]) as Map<
-                            any,
-                            any
-                        >
-                    ).set('templatePath', templatePath + '.widgets.0'),
+                    template: {
+                        ...defaultProps.template.widgets?.[0],
+                        templatePath: templatePath + '.widgets.0',
+                    },
+
                     isOpen: false,
                     hasNoBorderTop: false,
                 },
@@ -201,12 +199,10 @@ describe('Card', () => {
                 6,
                 {
                     ...expectedProps,
-                    template: (
-                        defaultProps.template.getIn(['widgets', 5]) as Map<
-                            any,
-                            any
-                        >
-                    ).set('templatePath', templatePath + '.widgets.5'),
+                    template: {
+                        ...defaultProps.template.widgets?.[5],
+                        templatePath: templatePath + '.widgets.5',
+                    },
                     isOpen: true,
                     hasNoBorderTop: false,
                 },
@@ -217,10 +213,7 @@ describe('Card', () => {
 
     describe('UICard params', () => {
         it('should provide templated title', () => {
-            const defaultTitle = defaultProps.template.get(
-                'title',
-                ''
-            ) as string
+            const defaultTitle = defaultProps.template.title || ''
             const title = 'wohhh?'
             getWidgetTitleMock.mockReturnValue(defaultTitle)
             renderTemplateMock.mockReturnValue(defaultTitle)
@@ -250,7 +243,7 @@ describe('Card', () => {
 
             expect(renderTemplateMock).toHaveBeenNthCalledWith(
                 1,
-                defaultProps.template.getIn(['meta', 'link'], ''),
+                defaultProps.template.meta?.link || '',
                 defaultProps.source?.toJS()
             )
             expect(getLastMockCall(UICardMock)[0].dynamicLink).toBe(link)
@@ -304,29 +297,39 @@ describe('Card', () => {
             )
 
             expect(getLastMockCall(UICardMock)[0].cardData).toEqual({
-                color: defaultProps.template.getIn(
-                    ['meta', 'color'],
-                    ''
-                ) as string,
-                displayCard: defaultProps.template.getIn([
-                    'meta',
-                    'displayCard',
-                ]) as boolean,
-                limit: Number(defaultProps.parent?.getIn(['meta', 'limit'])),
-                link: defaultProps.template.getIn(
-                    ['meta', 'link'],
-                    ''
-                ) as string,
-                orderBy: defaultProps.parent?.getIn(
-                    ['meta', 'orderBy'],
-                    ''
-                ) as string,
-                pictureUrl: defaultProps.template.getIn(
-                    ['meta', 'pictureUrl'],
-                    ''
-                ) as string,
-                title: defaultProps.template.get('title', '') as string,
+                color: defaultProps.template.meta?.color || '',
+                displayCard: defaultProps.template.meta?.displayCard,
+                limit: Number(
+                    (defaultProps.parent as ListTemplate).meta?.limit ||
+                        DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
+                ),
+                link: defaultProps.template.meta?.link || '',
+                orderBy:
+                    (defaultProps.parent as ListTemplate).meta?.orderBy || '',
+                pictureUrl: defaultProps.template.meta?.pictureUrl || '',
+                title: defaultProps.template.title || '',
             })
+        })
+
+        it('should default to true if displayCard is not set', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Card
+                        {...defaultProps}
+                        template={{
+                            ...defaultProps.template,
+                            meta: {
+                                ...(defaultProps.template.meta || {}),
+                                displayCard: undefined,
+                            },
+                        }}
+                    />
+                </Provider>
+            )
+
+            expect(getLastMockCall(UICardMock)[0].cardData.displayCard).toBe(
+                true
+            )
         })
 
         it('should provide the correct orderByOptions', () => {
@@ -374,10 +377,12 @@ describe('Card', () => {
                     <Provider store={mockStore(defaultState)}>
                         <Card
                             {...defaultProps}
-                            template={defaultProps.template.setIn(
-                                ['meta', 'displayCard'],
-                                false
-                            )}
+                            template={{
+                                ...defaultProps.template,
+                                meta: {
+                                    displayCard: false,
+                                },
+                            }}
                         />
                     </Provider>
                 )
@@ -392,10 +397,12 @@ describe('Card', () => {
                     <Provider store={mockStore(defaultState)}>
                         <Card
                             {...defaultProps}
-                            template={defaultProps.template.setIn(
-                                ['meta', 'displayCard'],
-                                false
-                            )}
+                            template={{
+                                ...defaultProps.template,
+                                meta: {
+                                    displayCard: false,
+                                },
+                            }}
                             isEditing
                         />
                     </Provider>
@@ -412,12 +419,19 @@ describe('Card', () => {
                     <Provider store={mockStore(defaultState)}>
                         <Card
                             {...defaultProps}
-                            template={defaultProps.template
-                                .set('title', '')
-                                .setIn(
-                                    ['meta', 'custom', 'buttons'],
-                                    fromJS([{label: 'ok', action: 'ok'}])
-                                )}
+                            template={{
+                                ...defaultProps.template,
+                                title: '',
+                                meta: {
+                                    custom: {
+                                        buttons: [
+                                            {
+                                                label: 'ok',
+                                            } as ButtonType,
+                                        ],
+                                    },
+                                },
+                            }}
                         />
                     </Provider>
                 )
@@ -463,10 +477,7 @@ describe('Card', () => {
                     <Provider store={mockStore(defaultState)}>
                         <Card
                             {...defaultProps}
-                            template={defaultProps.template.set(
-                                'widgets',
-                                fromJS([])
-                            )}
+                            template={{...defaultProps.template, widgets: []}}
                         />
                     </Provider>
                 )
@@ -484,9 +495,12 @@ describe('Card', () => {
                     <Provider store={mockStore(defaultState)}>
                         <Card
                             {...defaultProps}
-                            template={fromJS({
-                                templatePath: '0.template.widgets.0.something',
-                            })}
+                            template={
+                                {
+                                    templatePath:
+                                        '0.template.widgets.0.something',
+                                } as CardTemplate
+                            }
                         />
                     </Provider>
                 )
@@ -647,7 +661,7 @@ describe('Card', () => {
                 <Provider store={store}>
                     <Card
                         {...defaultProps}
-                        parent={fromJS(listTemplate)}
+                        parent={listTemplate}
                         isParentList
                     />
                 </Provider>

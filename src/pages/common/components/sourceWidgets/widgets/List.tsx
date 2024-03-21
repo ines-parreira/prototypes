@@ -2,13 +2,15 @@ import React from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
+import {Template} from 'models/widget/types'
+
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
 
 type Props = {
     source: Map<string, unknown>
     widget: Map<string, unknown>
-    template: Map<string, unknown>
+    template: Template
     isParentList: boolean
 }
 
@@ -19,24 +21,23 @@ export default function List({
     isParentList = false,
 }: Props) {
     const SourceWidget = widgetReference.Widget
-    const updatedTemplate = template.set(
-        'absolutePath',
-        (template.get('absolutePath') as string[]).concat(['[]'])
-    )
 
-    const passedTemplate = (
-        updatedTemplate.getIn(['widgets', '0']) as Map<string, unknown>
-    ).set(
-        'templatePath',
-        `${updatedTemplate.get('templatePath', '') as string}.widgets.0`
-    )
+    if (!template.widgets || !template.widgets[0]) return null
 
+    const passedTemplate = {
+        ...template.widgets[0],
+        templatePath: `${template.templatePath || ''}.widgets.0`,
+    }
+    const updatedTemplate = {
+        ...template,
+        absolutePath: template.absolutePath?.concat(['[]']),
+    }
     const className = classnames('list', {
         draggable: !isParentList,
     })
 
     return (
-        <div className={className} data-key={template.get('path')}>
+        <div className={className} data-key={template.path}>
             {source
                 .toList()
                 .take(1)

@@ -1,18 +1,12 @@
-import {List, Map} from 'immutable'
+import {Template} from 'models/widget/types'
 
 import Customer from './Customer'
 import OrderWidget from './OrderWidget'
 import Shipping from './Shipping'
 
-const bigcommerce = (args: {
-    template: Map<any, any>
-    source: Map<any, any>
-    parent: Map<any, any>
-}) => {
-    const path = (args.template.get('absolutePath', []) as List<string>).join(
-        '.'
-    )
-    const templatePath: string = args.template.get('templatePath', '')
+const bigcommerce = (args: {template: Template}) => {
+    const path = (args.template.absolutePath || []).join('.')
+    const templatePath = args.template.templatePath || ''
 
     if (path.match(/integrations\.\d+\.customer$/)) {
         return Customer()

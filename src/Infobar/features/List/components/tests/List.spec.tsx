@@ -6,7 +6,7 @@ import * as widgetsFixtures from 'fixtures/widgets'
 import * as ticketFixtures from 'fixtures/ticket'
 import {assumeMock} from 'utils/testing'
 import UIList from 'Infobar/features/List/display/List'
-import {Card, List} from 'models/widget/types'
+import {CardTemplate, ListTemplate} from 'models/widget/types'
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 
 import ListInfobarWidget from '../List'
@@ -53,15 +53,15 @@ describe('Infobar::Widgets::List', () => {
     const widget = fromJS(widgetsFixtures.shopifyWidget) as Map<string, unknown>
     const template = (
         widget.getIn(['template', 'widgets', 1]) as Map<string, unknown>
-    )
-        .set('templatePath', '0.template.widgets.1')
-        .set('absolutePath', [
-            'ticket',
-            'customer',
-            'integrations',
-            '5',
-            'orders',
-        ])
+    ).toJS() as ListTemplate
+    template.templatePath = '0.template.widgets.1'
+    template.absolutePath = [
+        'ticket',
+        'customer',
+        'integrations',
+        '5',
+        'orders',
+    ]
 
     const minProps: ComponentProps<typeof ListInfobarWidget> = {
         isEditing: false,
@@ -98,7 +98,7 @@ describe('Infobar::Widgets::List', () => {
 
     // Regression: https://linear.app/gorgias/issue/CRM-2864/typeerror-rsetsize-is-not-a-function
     it('should return null when source is not a list and has only content', () => {
-        const card: Card = {
+        const card: CardTemplate = {
             type: 'card',
             path: '3.template.widgets.0.card',
             widgets: [
@@ -109,7 +109,7 @@ describe('Infobar::Widgets::List', () => {
                 },
             ],
         }
-        const list: List = {
+        const list: ListTemplate = {
             type: 'list',
             path: '3.template',
             widgets: [card],
@@ -157,21 +157,18 @@ describe('Infobar::Widgets::List', () => {
             {}
         )
 
-        const updatedTemplate = minProps.template.set(
-            'absolutePath',
-            (template.get('absolutePath') as ImmutableList<string>).concat([
-                '[]',
-            ])
-        )
+        const updatedTemplate = {
+            ...template,
+            absolutePath: template.absolutePath?.concat(['[]']),
+        }
 
-        const passedTemplate = (
-            updatedTemplate.getIn(['widgets', '0']) as Map<unknown, unknown>
-        ).set(
-            'templatePath',
-            `${updatedTemplate.get('templatePath', '') as string}.widgets.0`
-        )
+        const passedTemplate = {
+            ...template.widgets[0],
+            templatePath: `${template.templatePath || ''}.widgets.0`,
+        }
 
-        expect(InfobarWidget).toHaveBeenCalledWith(
+        expect(InfobarWidget).toHaveBeenNthCalledWith(
+            1,
             expect.objectContaining({
                 widget: minProps.widget,
                 parent: updatedTemplate,
@@ -188,26 +185,29 @@ describe('Infobar::Widgets::List', () => {
             1,
             expect.objectContaining({
                 isDraggable: !minProps.isParentList,
-                dataKey: `${template.get('path') as string}[]`,
+                dataKey: `${template.path || ''}[]`,
                 listItems: source.toJS(),
-                initialItemDisplayedNumber: Number(
-                    template.getIn(['meta', 'limit'])
-                ),
+                initialItemDisplayedNumber: Number(template.meta?.limit),
                 orderBy: undefined,
                 isEditing: minProps.isEditing,
             }),
             {}
         )
 
-        let templateVariation = minProps.template.setIn(
-            ['widgets', '0', 'meta', 'displayCard'],
-            false
-        )
-
-        templateVariation = templateVariation.setIn(
-            ['meta', 'orderBy'],
-            '+name'
-        )
+        const templateVariation = {
+            ...template,
+            widgets: [
+                {
+                    ...template.widgets[0],
+                    meta: {
+                        ...(template.widgets[0] as CardTemplate).meta,
+                        displayCard: false,
+                    },
+                },
+                ...template.widgets.slice(1),
+            ],
+            meta: {...template.meta, orderBy: '+name'},
+        } as ListTemplate
 
         rerender(
             <ListInfobarWidget

@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {Map} from 'immutable'
 
 import {LEAF_TYPES} from 'models/widget/constants'
-import {isLeafType, LeafTypes} from 'models/widget/types'
+import {isLeafType, LeafTemplate, LeafTypes} from 'models/widget/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -50,7 +50,7 @@ type Props = {
     type: string
     isEditing: boolean
     widget: Map<string, unknown>
-    template: Map<string, unknown>
+    template: LeafTemplate
     copyableValue: string | null
 }
 
@@ -64,12 +64,12 @@ export default function Field({
 }: Props) {
     const dispatch = useAppDispatch()
 
-    const title = template.get('title') as string
-    const absolutePath = template.get('absolutePath') as string[]
-    const templatePath = template.get('templatePath') as string
+    const title = template.title || ''
+    const absolutePath = template.absolutePath || []
+    const templatePath = template.templatePath || ''
 
     const handleEditionStart = () =>
-        dispatch(startWidgetEdition(template.get('templatePath', '') as string))
+        dispatch(startWidgetEdition(template.templatePath || ''))
 
     const handleEditionStop = () => {
         dispatch(stopWidgetEdition())
@@ -83,14 +83,15 @@ export default function Field({
         dispatch(updateEditedWidget(formData))
     }
 
-    let path = template.get('path')
-    if (Array.isArray(path) && path.length) path = path[0]
     const availableTypes = useMemo(() => {
-        if (widget.get('type') === IntegrationType.Shopify && path === 'tags') {
+        if (
+            widget.get('type') === IntegrationType.Shopify &&
+            template.path === 'tags'
+        ) {
             return TYPE_OPTIONS
         }
         return TYPE_OPTIONS.filter((option) => option.value !== 'editableList')
-    }, [widget, path])
+    }, [widget, template.path])
 
     return (
         <UIField

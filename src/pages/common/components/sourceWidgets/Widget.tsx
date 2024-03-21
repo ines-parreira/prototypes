@@ -1,7 +1,9 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 
-import {prepareWidgetToDisplay} from '../infobar/utils'
+import {isListTemplate} from 'models/widget/types'
+
+import {updateAbsolutePathAndData} from '../infobar/utils'
 import Field from './widgets/Field'
 import List from './widgets/List'
 import Card from './widgets/Card'
@@ -14,22 +16,20 @@ export default function Widget({
     widget,
     template,
 }: WidgetProps) {
-    const {updatedTemplate, data, type, path} = prepareWidgetToDisplay(
+    const {updatedTemplate, data} = updateAbsolutePathAndData(
         template,
         source,
         parent
     )
+    const isParentList = isListTemplate(parent)
 
-    const isParentList = parent && parent.get('type') === 'list'
-
-    switch (type) {
+    switch (updatedTemplate.type) {
         case 'wrapper': {
             return (
                 <Wrapper
                     source={data || fromJS({})}
                     widget={widget}
                     template={updatedTemplate}
-                    parent={parent}
                 />
             )
         }
@@ -54,6 +54,6 @@ export default function Widget({
             )
         }
         default:
-            return <Field path={path} value={data} />
+            return <Field path={updatedTemplate.path || ''} value={data} />
     }
 }

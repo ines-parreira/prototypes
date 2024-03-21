@@ -47,49 +47,50 @@ export type ListMeta = {
 
 type baseTemplate = {
     order?: number
-    // for now, we rely on template object to set template path.
+    // for now, we rely on template object to set template/absolute path.
     // It should be a context instead
     templatePath?: string
+    absolutePath?: (number | string)[]
+    path?: string
 }
 
-export type Wrapper = baseTemplate & {
+export type WrapperTemplate = baseTemplate & {
     type: 'wrapper'
     title?: string
-    widgets: Array<Card | List>
+    widgets: Array<CardTemplate | ListTemplate>
     meta?: WrapperMeta
-    // The type of 'path' here is due to getPreparedDisplayList in InfobarWidgets.tsx
-    path: string[]
 }
 
-export type Card = baseTemplate & {
+export type CardTemplate = baseTemplate & {
     type: 'card'
-    // in the case card has a list as a parent, path is the path of the list
-    path?: string
     title?: string
     order?: number
-    widgets: Array<Card | List | Leaf>
+    widgets: Array<CardTemplate | ListTemplate | LeafTemplate>
     meta?: CardMeta
 }
 
-export type List = baseTemplate & {
+export type ListTemplate = baseTemplate & {
     type: 'list'
     title?: string
-    path: string
-    widgets: Array<Card | Leaf>
+    widgets: Array<CardTemplate | LeafTemplate>
     meta?: ListMeta
 }
 
-export type Leaf = baseTemplate & {
+export type LeafTemplate = baseTemplate & {
     type: LeafTypes
-    path: string
     title: string
-    // allows to access the widget property in any case
+    // TODO: remove this when we set proper typeguards
+    // this allows to access the properties in any case
     widgets?: undefined
 }
 
 export type TemplateTypes = Template['type']
 
-export type Template = Wrapper | Card | List | Leaf
+export type Template =
+    | WrapperTemplate
+    | CardTemplate
+    | ListTemplate
+    | LeafTemplate
 
 export type PartialTemplate = DeepPartial<Template>
 
@@ -99,4 +100,22 @@ export type FetchWidgetsOptions = ApiPaginationParams & {
         | 'order:desc'
         | 'created_datetime:asc'
         | 'created_datetime:desc'
+}
+
+export function isWrapperTemplate(
+    template?: Template
+): template is WrapperTemplate {
+    return template?.type === 'wrapper'
+}
+
+export function isCardTemplate(template?: Template): template is CardTemplate {
+    return template?.type === 'card'
+}
+
+export function isListTemplate(template?: Template): template is ListTemplate {
+    return template?.type === 'list'
+}
+
+export function isLeafTemplate(template?: Template): template is LeafTemplate {
+    return isLeafType(template?.type || '')
 }

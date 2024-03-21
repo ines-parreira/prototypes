@@ -1,5 +1,5 @@
 import {humanizeString} from 'utils'
-import {Wrapper} from 'models/widget/types'
+import {WrapperTemplate} from 'models/widget/types'
 import {IntegrationType} from 'models/integration/types'
 import {httpIntegration} from 'fixtures/integrations'
 import {
@@ -23,11 +23,11 @@ describe('helpers tests', () => {
         const baseProps = {
             source: {},
         }
-        const template: Wrapper = {
+        const template: WrapperTemplate = {
             type: 'wrapper',
             widgets: [{type: 'card', title: 'foo', path: '', widgets: []}],
             templatePath: '',
-            path: [''],
+            path: '',
         }
 
         describe('template title', () => {

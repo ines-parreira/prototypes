@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable'
 
+import {Template} from 'models/widget/types'
+
 import Customer from '../Customer'
 import Order from '../Order'
 
@@ -14,9 +16,14 @@ describe('magento2', () => {
         expect(
             magento2({
                 ...defaultArgs,
-                template: fromJS({
-                    absolutePath: ['customer', 'integrations', 123, 'customer'],
-                }),
+                template: {
+                    absolutePath: [
+                        'customer',
+                        'integrations',
+                        '123',
+                        'customer',
+                    ],
+                } as Template,
             })
         ).toEqual(Customer())
     })
@@ -25,15 +32,15 @@ describe('magento2', () => {
         expect(
             magento2({
                 ...defaultArgs,
-                template: fromJS({
+                template: {
                     absolutePath: [
                         'customer',
                         'integrations',
-                        123,
+                        '123',
                         'orders',
                         '[]',
                     ],
-                }),
+                } as Template,
             })
         ).toEqual(Order())
     })

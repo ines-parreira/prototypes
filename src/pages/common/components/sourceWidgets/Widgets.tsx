@@ -2,6 +2,7 @@ import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {Template} from 'models/widget/types'
 
 import css from './Widgets.less'
 import Widget from './Widget'
@@ -29,28 +30,27 @@ export default function Widgets({source, widgets}: Props) {
             <div className={css.sourceWidgetList}>
                 {widgets.map((widget, i) => {
                     if (!widget || typeof i !== 'number') return null
-                    let passedTemplate = (
+                    const sourcePath = (
+                        widget.get('sourcePath') as List<any>
+                    ).toJS() as string[]
+                    const passedTemplate: Template = (
                         widget.get('template', fromJS({})) as Map<
                             string,
                             unknown
                         >
-                    ).set(
-                        'templatePath',
-                        `${(widget.get('order') as number).toString()}.template`
-                    )
+                    ).toJS()
 
-                    const sourcePath = widget.get('sourcePath')
-                    passedTemplate = passedTemplate.set('path', sourcePath)
+                    passedTemplate.templatePath = `${(
+                        widget.get('order') as number
+                    ).toString()}.template`
+                    passedTemplate.absolutePath = sourcePath
 
                     return (
                         <Widget
-                            key={`${
-                                passedTemplate.get('path') as string
-                            }-${i.toString()}`}
-                            source={source}
+                            key={`${sourcePath.join('-')}-${i.toString()}`}
+                            source={source.getIn(sourcePath, source)}
                             widget={widget}
                             template={passedTemplate}
-                            parent={widget}
                         />
                     )
                 })}

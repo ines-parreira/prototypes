@@ -28,7 +28,7 @@ import {isImmutable} from 'common/utils'
 import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
 import * as utils from 'utils'
 import {reportError} from 'utils/errors'
-import {Template, Card} from 'models/widget/types'
+import {Template, CardTemplate} from 'models/widget/types'
 import {WidgetContextType} from 'state/widgets/types'
 import {getSourcePathFromContext} from 'state/widgets/utils'
 import {
@@ -103,7 +103,9 @@ export const isCustomerDataPresent = (data: any) => {
  * Remove last "[]" from the passed path
  * Ex: ticket.orders[] to ticket.orders
  */
-export function stripLastListsFromPath(path: string | string[] = []) {
+export function stripLastListsFromPath(
+    path: string | Template['absolutePath'] = []
+) {
     let newPath = path
 
     while (_last(newPath) === '[]') {
@@ -199,12 +201,12 @@ export function canDisplayWidget(widget: Template, source: Map<any, any>) {
         return false
     }
 
-    if (!widget.path.length) {
+    if (!widget.absolutePath?.length) {
         return false
     }
 
     // ex : ticket, customer, etc.
-    const initialSourceName = widget.path[0] as WidgetContextType
+    const initialSourceName = widget.absolutePath[0] as WidgetContextType
 
     const ready = areSourcesReady(
         fromJS({
@@ -213,20 +215,26 @@ export function canDisplayWidget(widget: Template, source: Map<any, any>) {
         initialSourceName
     )
 
-    return ready && !isWidgetEmpty(widget, source)
+    return ready && !isWidgetEmpty(widget, source.getIn(widget.absolutePath))
 }
 
 export function isWidgetEmpty(
     widget: Template,
-    source: Map<any, any>,
-    path: string[] = []
+    source: Map<any, any> | List<any> | undefined,
+    // we could find a way to not need a path here
+    // by always matching source with current template
+    path: Template['absolutePath'] = []
 ): boolean {
     switch (widget.type) {
         case 'wrapper': {
             const subWidgets = widget.widgets
             if (!subWidgets || !subWidgets.length) return true
             return subWidgets.every((subWidget) =>
-                isWidgetEmpty(subWidget, source, widget.path)
+                isWidgetEmpty(
+                    subWidget,
+                    source,
+                    widget.path ? [widget.path] : undefined
+                )
             )
         }
         case 'card': {
@@ -242,7 +250,9 @@ export function isWidgetEmpty(
             const subWidgets = widget.widgets
             if (!subWidgets || !subWidgets.length) return true
             const subPath = widget.path ? [...path, widget.path] : path
-            const data = source.getIn(subPath, fromJS([])) as List<any>
+            const data =
+                (source?.getIn(subPath, fromJS([])) as List<any> | undefined) ||
+                (fromJS([]) as List<any>)
             if (!List.isList(data)) return true
             return data.every((value, index) =>
                 subWidgets.every((subWidget) =>
@@ -255,13 +265,13 @@ export function isWidgetEmpty(
         }
         default: {
             const subPath = [...path, widget.path]
-            const data = source.getIn(subPath, null)
-            return data === null || data === ''
+            const data = source?.getIn(subPath)
+            return typeof data !== 'number' && !data
         }
     }
 }
 
-function hasCustomAction(widget: Card) {
+export function hasCustomAction(widget: CardTemplate) {
     const links = widget.meta?.custom?.links
     const buttons = widget.meta?.custom?.buttons
     return Boolean((links && links.length) || (buttons && buttons.length))
@@ -557,7 +567,7 @@ export function jsonToWidgets(
  */
 export function canDrop(
     group = '',
-    targetAbsolutePath: string | string[] = ''
+    targetAbsolutePath: string | Template['absolutePath'] = ''
 ) {
     // root source
     if (isRootSource(group)) {
@@ -575,51 +585,35 @@ export function canDrop(
 /**
  * Format some data from widget before it is display
  */
-export function prepareWidgetToDisplay(
-    template: Map<any, any> = fromJS({}),
+export function updateAbsolutePathAndData(
+    template: Template,
     source?: Map<any, any>,
-    parent?: Map<any, any>
+    parent?: Template
 ) {
     // build absolute path of widget
-    const parentPath =
-        !!parent && parent.get('absolutePath', parent.get('path', ''))
-    const ownPath = template.get('path', '')
+    const parentAbsolutePath = parent?.absolutePath
+    const ownPath = template.path
 
-    let absolutePath = template.get('path')
+    let absolutePath = template.absolutePath
 
-    if (parentPath) {
-        absolutePath = parentPath
+    if (parentAbsolutePath) {
+        absolutePath = parentAbsolutePath
 
         if (ownPath) {
             absolutePath = _concat(absolutePath, ownPath)
         }
     }
 
-    absolutePath = utils.toJS(absolutePath)
+    const updatedTemplate = {...template, absolutePath}
 
-    let updatedTemplate = template.set('absolutePath', absolutePath)
-    let path = updatedTemplate.get('path', '')
-
-    path = utils.toJS(path)
-
-    if (path && !_isArray(path)) {
-        path = [path]
-    }
-
-    updatedTemplate = updatedTemplate.set('path', path)
-
-    // get data of widget in shortcuts
-    const data = (path ? source?.getIn(path, undefined) : source) as
+    // get set of data related to new path
+    const data = (ownPath ? source?.get(ownPath, undefined) : source) as
         | Map<string, unknown>
         | undefined
-
-    const type = updatedTemplate.get('type', '')
 
     return {
         updatedTemplate,
         data,
-        type,
-        path,
     }
 }
 

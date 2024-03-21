@@ -1,12 +1,13 @@
 import React, {FunctionComponent} from 'react'
-
 import {Map} from 'immutable'
 
+import {Template} from 'models/widget/types'
+
 export type WidgetProps = {
-    parent: Map<string, unknown>
+    parent?: Template
     source: Map<string, unknown>
     widget: Map<string, unknown>
-    template: Map<any, any>
+    template: Template
 }
 
 // This is to avoid circular dependencies while doing recursion

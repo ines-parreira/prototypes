@@ -1,14 +1,9 @@
-import {List, Map} from 'immutable'
+import {Template} from 'models/widget/types'
+
 import Root from './Root'
 
-const http = (args: {
-    template: Map<any, any>
-    source: Map<any, any>
-    parent: Map<any, any>
-}) => {
-    const path = (args.template.get('absolutePath', []) as List<string>).join(
-        '.'
-    )
+const http = (args: {template: Template}) => {
+    const path = (args.template.absolutePath || []).join('.')
     /** path must match when there is a root array / list too
      * OK
      * ticket.customer.integrations.10

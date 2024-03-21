@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {Map, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
@@ -42,10 +42,8 @@ describe('Field', () => {
         }),
     } as RootState
     const defaultAbsolutePath = ['foo', 'bar']
-    const defaultTemplate = (fromJS(idTemplate) as Map<any, any>).set(
-        'absolutePath',
-        defaultAbsolutePath
-    )
+    const defaultTemplate = {...idTemplate, absolutePath: defaultAbsolutePath}
+
     const defaultProps: ComponentProps<typeof Field> = {
         value: 'foo value',
         type: LEAF_TYPES.TEXT,
@@ -106,7 +104,7 @@ describe('Field', () => {
             <Provider store={store}>
                 <Field
                     {...defaultProps}
-                    template={defaultTemplate.set('path', 'tags')}
+                    template={{...defaultTemplate, path: 'tags'}}
                 />
             </Provider>
         )

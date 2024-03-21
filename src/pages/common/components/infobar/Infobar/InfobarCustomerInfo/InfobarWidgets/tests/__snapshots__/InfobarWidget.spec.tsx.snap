@@ -30,32 +30,34 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
     isParentList={false}
     source={
       Immutable.Map {
-        "foo": "bar",
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.List [
+              Immutable.Map {
+                "foo": "bar",
+              },
+            ],
+          },
+        },
       }
     }
     template={
-      Immutable.Map {
-        "type": "card",
-        "path": [
+      {
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",
           "0",
         ],
         "title": "Duh",
-        "widgets": Immutable.List [
-          Immutable.Map {
+        "type": "card",
+        "widgets": [
+          {
             "path": "",
-            "type": "card",
             "title": "Foo container",
-            "widgets": Immutable.List [],
+            "type": "card",
+            "widgets": [],
           },
-        ],
-        "absolutePath": [
-          "ticket",
-          "customer",
-          "integrations",
-          "0",
         ],
       }
     }
@@ -92,32 +94,34 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
     isParentList={false}
     source={
       Immutable.Map {
-        "foo": "bar",
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.List [
+              Immutable.Map {
+                "foo": "bar",
+              },
+            ],
+          },
+        },
       }
     }
     template={
-      Immutable.Map {
-        "type": "card",
-        "path": [
+      {
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",
           "0",
         ],
         "title": "Duh",
-        "widgets": Immutable.List [
-          Immutable.Map {
+        "type": "card",
+        "widgets": [
+          {
             "path": "",
-            "type": "card",
             "title": "Foo container",
-            "widgets": Immutable.List [],
+            "type": "card",
+            "widgets": [],
           },
-        ],
-        "absolutePath": [
-          "ticket",
-          "customer",
-          "integrations",
-          "0",
         ],
       }
     }
@@ -154,32 +158,34 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
     isParentList={false}
     source={
       Immutable.Map {
-        "foo": "bar",
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.List [
+              Immutable.Map {
+                "foo": "bar",
+              },
+            ],
+          },
+        },
       }
     }
     template={
-      Immutable.Map {
-        "type": "card",
-        "path": [
+      {
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",
           "0",
         ],
         "title": "Duh",
-        "widgets": Immutable.List [
-          Immutable.Map {
+        "type": "card",
+        "widgets": [
+          {
             "path": "",
-            "type": "card",
             "title": "Foo container",
-            "widgets": Immutable.List [],
+            "type": "card",
+            "widgets": [],
           },
-        ],
-        "absolutePath": [
-          "ticket",
-          "customer",
-          "integrations",
-          "0",
         ],
       }
     }
@@ -216,32 +222,34 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
     isParentList={false}
     source={
       Immutable.Map {
-        "foo": "bar",
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.List [
+              Immutable.Map {
+                "foo": "bar",
+              },
+            ],
+          },
+        },
       }
     }
     template={
-      Immutable.Map {
-        "type": "card",
-        "path": [
+      {
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",
           "0",
         ],
         "title": "Duh",
-        "widgets": Immutable.List [
-          Immutable.Map {
+        "type": "card",
+        "widgets": [
+          {
             "path": "",
-            "type": "card",
             "title": "Foo container",
-            "widgets": Immutable.List [],
+            "type": "card",
+            "widgets": [],
           },
-        ],
-        "absolutePath": [
-          "ticket",
-          "customer",
-          "integrations",
-          "0",
         ],
       }
     }

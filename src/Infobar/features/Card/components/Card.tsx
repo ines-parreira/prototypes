@@ -1,5 +1,5 @@
 import React, {ComponentProps, ElementType, useContext, useMemo} from 'react'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {updateRecord} from 'utils/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,6 +10,8 @@ import {
     ListMeta,
     PartialTemplate,
     Template,
+    isListTemplate,
+    CardTemplate,
 } from 'models/widget/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
@@ -30,6 +32,7 @@ import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 import {
     canDrop,
+    hasCustomAction,
     isSimpleTemplateWidget,
 } from 'pages/common/components/infobar/utils'
 import UICard from 'Infobar/features/Card/display'
@@ -52,10 +55,10 @@ type Props = {
     }
     editionHiddenFields?: HiddenField[]
 
-    parent?: Map<any, any>
+    parent?: Template
     source?: Map<string, unknown> | undefined
     widget: Map<string, unknown>
-    template: Map<string, unknown>
+    template: CardTemplate
 
     isEditing: boolean
     isParentList: boolean
@@ -82,7 +85,7 @@ export default function Card(props: Props) {
         },
         editionHiddenFields,
         template,
-        parent = Map({}),
+        parent,
         source,
         widget,
         isParentList,
@@ -95,13 +98,11 @@ export default function Card(props: Props) {
     const dispatch = useAppDispatch()
     const widgetsState = useAppSelector(getWidgetsState)
 
-    const parentAbsolutePath = parent?.get('absolutePath', []) as string[]
-    const absolutePath = template.get('absolutePath', []) as string[]
-    const parentTemplatePath = parent?.get('templatePath', '') as string
-    const templatePath = template.get('templatePath', '') as string
-    const childWidgets = template.get('widgets', fromJS([])) as List<
-        Map<string, unknown>
-    >
+    const parentAbsolutePath = parent?.absolutePath || []
+    const absolutePath = template.absolutePath || []
+    const parentTemplatePath = parent?.templatePath || ''
+    const templatePath = template.templatePath || ''
+    const childTemplates = template.widgets || []
 
     const handleEditionStart = () => {
         dispatch(
@@ -128,7 +129,7 @@ export default function Card(props: Props) {
 
         if (isParentList) {
             const list: PartialTemplate = {
-                title: parent?.get('title') as string,
+                title: parent?.title,
                 type: 'list',
                 widgets: [card],
             }
@@ -160,66 +161,54 @@ export default function Card(props: Props) {
 
     const cardData: ComponentProps<typeof UICard>['cardData'] = useMemo(
         () => ({
-            title: template.get('title', '') as string,
-            link: template.getIn(['meta', 'link'], '') as string,
-            pictureUrl: template.getIn(['meta', 'pictureUrl'], '') as string,
-            color: template.getIn(['meta', 'color'], '') as string,
-            displayCard: template.getIn(
-                ['meta', 'displayCard'],
-                true
-            ) as boolean,
+            title: template.title || '',
+            link: template.meta?.link || '',
+            pictureUrl: template.meta?.pictureUrl || '',
+            color: template.meta?.color || '',
+            displayCard:
+                typeof template.meta?.displayCard === 'boolean'
+                    ? template.meta?.displayCard
+                    : true,
             // some legacy template could have a string in there
             limit: Number(
-                parent.getIn(
-                    ['meta', 'limit'],
+                (isListTemplate(parent) && parent.meta?.limit) ||
                     DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
-                ) as number | string
             ),
-            orderBy: parent.getIn(['meta', 'orderBy'], '') as string,
+            orderBy: (isListTemplate(parent) && parent.meta?.orderBy) || '',
         }),
         [template, parent]
     )
 
     const getCardTitle = () => {
-        return isRootWidget(template.get('templatePath', '') as string)
+        return isRootWidget(template.templatePath || '')
             ? getWidgetTitle({
                   source: source?.toJS(),
                   widgetType: widget.get('type') as WidgetType,
-                  template: template.toJS(),
+                  template,
                   appId: widget.get('app_id') as Maybe<string>,
                   integration: integrationContext.integration?.toJS(),
               })
-            : (template.get('title', '') as string)
+            : template.title || ''
     }
 
     const title = getCardTitle()
-    const link = template.getIn(['meta', 'link'])
+    const link = template.meta?.link || ''
     const onlyContent = cardData.displayCard === false
 
     const shouldDisplayHeader = () => {
         const hasTitle = Boolean(title)
-        const templateCustomLinks = template.getIn(
-            ['meta', 'custom', 'links'],
-            fromJS({})
-        ) as Map<string, unknown>
-        const templateCustomButtons = template.getIn(
-            ['meta', 'custom', 'buttons'],
-            fromJS({})
-        ) as Map<string, unknown>
-
         return (
             ((hasTitle ||
                 cardData.color ||
                 cardData.pictureUrl ||
-                templateCustomLinks.size > 0 ||
-                templateCustomButtons.size > 0) &&
+                hasCustomAction(template)) &&
                 !onlyContent) ||
             isEditing
         )
     }
 
     // display content (or at least space under card title) if we are in edition mode or if there is data to display
-    const shouldDisplayContent = isEditing || !childWidgets.isEmpty()
+    const shouldDisplayContent = isEditing || !!childTemplates.length
 
     // detect first non-text nested widget, to auto-expand
     let firstNonTextWidget = false
@@ -238,7 +227,7 @@ export default function Card(props: Props) {
         enrichedEditionHiddenField.push('pictureUrl', 'color')
     }
 
-    const orderByOptions = (childWidgets.toJS() as Template[])
+    const orderByOptions = childTemplates
         .filter(isSimpleTemplateWidget)
         .reduce((acc, {title = '', path}) => {
             ;['-', '+'].forEach((order) =>
@@ -251,7 +240,7 @@ export default function Card(props: Props) {
         }, [] as {value: string; label: string}[])
 
     const legacyProps = {
-        template,
+        template: fromJS(template),
         source,
         isEditing,
     }
@@ -275,7 +264,7 @@ export default function Card(props: Props) {
             extensions={mappedExtensions}
             editionHiddenFields={enrichedEditionHiddenField}
             customActions={
-                isRootWidget(template.get('templatePath') as string) ? (
+                isRootWidget(template.templatePath || '') ? (
                     <CustomActions {...legacyProps} />
                 ) : null
             }
@@ -318,19 +307,18 @@ export default function Card(props: Props) {
                         isEditing={isEditing}
                         watchDrop
                     >
-                        {childWidgets.map((w, i) => {
-                            const passedTemplate = w?.set(
-                                'templatePath',
-                                `${templatePath}.widgets.${i as number}`
-                            ) as Map<string, unknown>
+                        {childTemplates.map((childTemplate, i) => {
+                            const passedTemplate = {
+                                templatePath: `${templatePath}.widgets.${i}`,
+                                ...childTemplate,
+                            }
 
-                            const type = w?.get('type')
+                            const type = childTemplate.type
                             // find first non-text widget,
                             // to auto-expand.
                             if (type !== 'text' && !firstNonTextWidget) {
                                 firstNonTextWidget = true
                             }
-
                             // if Card has no header displayed
                             // and first child is another Card
                             // we need to remove border-top
@@ -344,9 +332,7 @@ export default function Card(props: Props) {
                             }
                             return (
                                 <InfobarWidget
-                                    key={`${
-                                        passedTemplate.get('path') as string
-                                    }-${i as number}`}
+                                    key={`${passedTemplate.path || ''}-${i}`}
                                     source={source}
                                     parent={template}
                                     widget={widget}

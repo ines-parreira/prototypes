@@ -7,7 +7,11 @@ import {Map} from 'immutable'
 
 import client from 'models/api/resources'
 import {fetchWidgets as fetchWidgetsRequest} from 'models/widget/resources'
-import {FetchWidgetsOptions, PartialTemplate} from 'models/widget/types'
+import {
+    FetchWidgetsOptions,
+    PartialTemplate,
+    Template,
+} from 'models/widget/types'
 import {
     Button,
     Link,
@@ -233,7 +237,7 @@ export function updateCustomActions(data: Link[] | Button[]) {
 
 export function removeEditedWidget(
     templatePath = '',
-    absolutePath: string[] = []
+    absolutePath: Template['absolutePath'] = []
 ) {
     return {
         type: types.REMOVE_EDITED_WIDGET,

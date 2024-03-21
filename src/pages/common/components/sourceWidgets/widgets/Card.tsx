@@ -1,10 +1,11 @@
 import React from 'react'
-import {fromJS, List, Map} from 'immutable'
+import {Map} from 'immutable'
 import classnames from 'classnames'
 import _last from 'lodash/last'
 
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {stripLastListsFromPath} from 'pages/common/components/infobar/utils'
+import {Template} from 'models/widget/types'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
@@ -13,14 +14,14 @@ import css from './Card.less'
 type Props = {
     source: Map<string, unknown>
     widget: Map<string, unknown>
-    template: Map<string, unknown>
+    template: Template
     isParentList: boolean
 }
 
 export default function Card({source, widget, template, isParentList}: Props) {
     const SourceWidget = widgetReference.Widget
-    const absolutePath = template.get('absolutePath') as string[]
-    const templatePath = template.get('templatePath') as string
+    const absolutePath = template.absolutePath || []
+    const templatePath = template.templatePath || ''
 
     let displayedTitle = stripLastListsFromPath(absolutePath)
     displayedTitle = _last(displayedTitle) || ''
@@ -30,7 +31,7 @@ export default function Card({source, widget, template, isParentList}: Props) {
             className={classnames(css.sourceWidgetCard, {
                 draggable: !isParentList,
             })}
-            data-key={template.get('path')}
+            data-key={template.path}
         >
             <div className={css.sourceWidgetCardMarginWrapper}>
                 <div className={css.sourceWidgetCardHeader}>
@@ -46,23 +47,17 @@ export default function Card({source, widget, template, isParentList}: Props) {
                         }}
                         isEditing
                     >
-                        {(
-                            template.get('widgets', fromJS([])) as List<
-                                Map<string, unknown>
-                            >
-                        ).map((childWidget, index) => {
+                        {(template.widgets || []).map((childWidget, index) => {
                             if (typeof index !== 'number') return null
-                            const passedTemplate = (
-                                childWidget as Map<string, unknown>
-                            ).set(
-                                'templatePath',
-                                `${templatePath}.widgets.${index}`
-                            )
+                            const passedTemplate = {
+                                ...childWidget,
+                                templatePath: `${templatePath}.widgets.${index}`,
+                            }
 
                             return (
                                 <SourceWidget
                                     key={`${
-                                        passedTemplate.get('path') as string
+                                        passedTemplate.path || ''
                                     }-${index}`}
                                     source={source}
                                     parent={template}

@@ -639,6 +639,17 @@ describe('widgets infobar utils', () => {
                 },
                 fromJS({foo: {bar: [{baz: null}]}}),
             ],
+            [
+                {
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        {type: 'wrapper', path: 'bar'},
+                        {type: 'card', path: 'baz'},
+                    ],
+                },
+                undefined,
+            ],
         ]
 
         it.each(emptyValues)(
@@ -670,7 +681,6 @@ describe('widgets infobar utils', () => {
             [
                 {
                     type: 'wrapper',
-                    path: 'foo',
                     widgets: [
                         {
                             type: 'list',
@@ -682,7 +692,7 @@ describe('widgets infobar utils', () => {
                         },
                     ],
                 },
-                fromJS({foo: {bar: [{baz: 'baz!', buz: ''}]}}),
+                fromJS({bar: [{baz: 'baz!', buz: ''}]}),
             ],
             [
                 {

@@ -391,7 +391,7 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
         expect(
-            mockedInfobarWidget.mock.calls[1][0].template.get('templatePath')
+            mockedInfobarWidget.mock.calls[1][0].template.templatePath
         ).toEqual('1.template')
     })
 

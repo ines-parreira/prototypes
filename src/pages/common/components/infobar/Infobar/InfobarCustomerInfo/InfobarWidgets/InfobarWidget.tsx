@@ -3,7 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 
 import {
     guessFieldValueFromRawData,
-    prepareWidgetToDisplay,
+    updateAbsolutePathAndData,
     stringifyRawData,
 } from 'pages/common/components/infobar/utils'
 import {EditionContext} from 'providers/infobar/EditionContext'
@@ -21,7 +21,6 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import Card from 'Infobar/features/Card'
-
 import Field from 'Infobar/features/Field'
 import Wrapper from 'Infobar/features/Wrapper'
 import ListWidget from 'Infobar/features/List'
@@ -49,11 +48,13 @@ export default function InfobarWidget({
     if (!infobarWidgetShouldRender(source)) {
         return null
     }
-    const preparedData = prepareWidgetToDisplay(template, source, parent)
-    const {updatedTemplate, type} = preparedData
-    let {data} = preparedData
 
-    const isParentList = (parent && parent.get('type') === 'list') || false
+    const preparedData = updateAbsolutePathAndData(template, source, parent)
+    const {updatedTemplate} = preparedData
+    let {data} = preparedData
+    const type = updatedTemplate.type
+
+    const isParentList = (parent && parent.type === 'list') || false
     const extensionMethodsByType = {
         [SHOPIFY_WIDGET_TYPE]: shopify,
         [RECHARGE_WIDGET_TYPE]: recharge,
@@ -120,7 +121,7 @@ export default function InfobarWidget({
 
     // DISPLAY
     let component = null
-    switch (type) {
+    switch (updatedTemplate.type) {
         case 'wrapper': {
             component = (
                 <Wrapper
