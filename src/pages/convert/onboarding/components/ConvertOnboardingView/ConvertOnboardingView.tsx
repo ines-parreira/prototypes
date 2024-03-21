@@ -226,7 +226,7 @@ const ConvertOnboardingView = () => {
                                     description="Create and launch your first campaign."
                                     action="Create Campaign"
                                     actionLink={`/app/convert/${chatIntegrationId}/setup/recommendations`}
-                                    isDisabled={!hasChat || !hasStore}
+                                    isDisabled={!hasChat}
                                     isCompleted={isOnboarded}
                                 />
 
