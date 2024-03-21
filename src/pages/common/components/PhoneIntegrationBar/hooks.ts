@@ -7,6 +7,7 @@ type ConnectionParameters = {
     ticketId: number | null
     customerName: string
     customerPhoneNumber: string
+    transferFromAgentId?: number | null
 }
 
 export function useConnectionParameters(call: Call): ConnectionParameters {
@@ -31,10 +32,18 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
             ? inboundCallCustomerPhoneNumber
             : (call.customParameters.get('To') as string)
 
+    const transferFromAgentIdToNumber = Number(
+        call.customParameters.get('transfer_from_agent_id')
+    )
+    const transferFromAgentId = isNaN(transferFromAgentIdToNumber)
+        ? null
+        : transferFromAgentIdToNumber
+
     return {
         integrationId,
         ticketId,
         customerName,
         customerPhoneNumber,
+        transferFromAgentId,
     }
 }

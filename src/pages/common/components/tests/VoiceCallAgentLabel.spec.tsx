@@ -6,7 +6,9 @@ import VoiceCallAgentLabel from '../VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 jest.mock('pages/common/utils/labels', () => ({
     AgentLabel: (props: ComponentProps<typeof AgentLabel>) => (
-        <p>AgentLabel {props.name}</p>
+        <p className={props.semibold ? 'semibold' : ''}>
+            AgentLabel {props.name}
+        </p>
     ),
 }))
 
@@ -35,9 +37,11 @@ describe('VoiceCallAgentLabel', () => {
             data: {name: 'Agent Name'},
             error: null,
         } as any)
-        renderComponent({agentId: 1, phoneNumber: '1234567890'})
+        renderComponent({agentId: 1, phoneNumber: '1234567890', semibold: true})
 
-        expect(screen.getByText('AgentLabel Agent Name')).toBeInTheDocument()
+        const label = screen.getByText('AgentLabel Agent Name')
+        expect(label).toBeInTheDocument()
+        expect(label).toHaveClass('semibold')
     })
 
     it('should render deleted agent when agent does not exist', () => {

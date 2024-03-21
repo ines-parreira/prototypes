@@ -1,15 +1,18 @@
-import React, {SyntheticEvent, useCallback} from 'react'
+import React, {SyntheticEvent, useCallback, useRef} from 'react'
 import {Call} from '@twilio/voice-sdk'
 import {useHistory, useLocation} from 'react-router-dom'
 import classNames from 'classnames'
 
+import moment from 'moment'
 import Button from 'pages/common/components/button/Button'
 import {declineCall} from 'hooks/integrations/phone/api'
+import useNow from 'ticket-list-view/hooks/useNow'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 import {useConnectionParameters} from '../hooks'
 
+import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import css from './IncomingPhoneCall.less'
 
 type Props = {
@@ -23,7 +26,17 @@ export default function IncomingPhoneCall({
 }: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
-    const {ticketId} = useConnectionParameters(call)
+
+    const {
+        integrationId,
+        customerName,
+        customerPhoneNumber,
+        transferFromAgentId,
+        ticketId,
+    } = useConnectionParameters(call)
+
+    const now = useNow()
+    const waitTimeStart = useRef(new Date())
 
     const openTicket = useCallback(() => {
         const isWhatsAppMigrationPage = location.pathname.startsWith(
@@ -34,8 +47,9 @@ export default function IncomingPhoneCall({
         }
     }, [history, ticketId, location])
 
-    const {integrationId, customerName, customerPhoneNumber} =
-        useConnectionParameters(call)
+    const formattedWaitTime = moment
+        .utc(moment(now).diff(moment(waitTimeStart.current)))
+        .format('mm:ss')
 
     return (
         <div
@@ -45,10 +59,22 @@ export default function IncomingPhoneCall({
         >
             <div className={css.inner}>
                 <PhoneIntegrationName integrationId={integrationId} primary />
-                <PhoneCustomerName
-                    name={customerName}
-                    phoneNumber={customerPhoneNumber}
-                />
+                <div className={css.callerDetails}>
+                    {transferFromAgentId && (
+                        <>
+                            <VoiceCallAgentLabel
+                                agentId={transferFromAgentId}
+                                className={css.agentLabel}
+                                semibold
+                            />
+                            <span>transferring</span>
+                        </>
+                    )}
+                    <PhoneCustomerName
+                        name={customerName}
+                        phoneNumber={customerPhoneNumber}
+                    />
+                </div>
                 <Button
                     data-testid="accept-call-button"
                     intent="secondary"
@@ -75,7 +101,12 @@ export default function IncomingPhoneCall({
                 </Button>
             </div>
             <PhoneInfobarWrapper primary>
-                <span>Incoming call...</span>
+                <span>
+                    {transferFromAgentId
+                        ? 'Incoming transfer...'
+                        : 'Incoming call...'}
+                </span>
+                <span>Waiting for {formattedWaitTime}</span>
             </PhoneInfobarWrapper>
         </div>
     )

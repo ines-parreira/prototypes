@@ -1,5 +1,5 @@
-import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+import {cleanup, fireEvent, render} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -14,8 +14,16 @@ import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
 import IncomingPhoneCall from '../IncomingPhoneCall'
+import * as hooks from '../../hooks'
 
 jest.mock('@twilio/voice-sdk')
+
+jest.mock(
+    'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
+    () =>
+        ({agentId}: {agentId: number}) =>
+            <div>VoiceCallAgentLabel {agentId}</div>
+)
 
 describe('<IncomingPhoneCall/>', () => {
     let store: MockStoreEnhanced
@@ -27,11 +35,14 @@ describe('<IncomingPhoneCall/>', () => {
         thunk,
     ])
 
-    const wrapper = (props: {children?: React.ReactNode}) => (
-        <Router history={history}>
-            <Provider store={store}>{props.children}</Provider>
-        </Router>
-    )
+    const renderComponent = (props: ComponentProps<typeof IncomingPhoneCall>) =>
+        render(
+            <Router history={history}>
+                <Provider store={store}>
+                    <IncomingPhoneCall {...props} />
+                </Provider>
+            </Router>
+        )
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -57,22 +68,13 @@ describe('<IncomingPhoneCall/>', () => {
         })
 
         mockFlags({})
-    })
-
-    it('should render', () => {
-        const call = mockIncomingCall(integrationId) as Call
-
-        const {container} = render(<IncomingPhoneCall call={call} />, {wrapper})
-
-        expect(container.firstChild).toMatchSnapshot()
+        cleanup()
     })
 
     it('should accept call', () => {
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
-            wrapper,
-        })
+        const {getByTestId} = renderComponent({call})
 
         fireEvent.click(getByTestId('accept-call-button'))
         expect(call.accept).toHaveBeenCalled()
@@ -85,9 +87,7 @@ describe('<IncomingPhoneCall/>', () => {
         mockedServer.onPost('/integrations/phone/call/declined').reply(201)
         mockedServer.onPost('/integrations/phone/call/cancelled').reply(201)
 
-        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
-            wrapper,
-        })
+        const {getByTestId} = renderComponent({call})
 
         fireEvent.click(getByTestId('decline-call-button'))
         expect(call.reject).toHaveBeenCalled()
@@ -113,9 +113,7 @@ describe('<IncomingPhoneCall/>', () => {
     it('should open ticket page', () => {
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
-            wrapper,
-        })
+        const {getByTestId} = renderComponent({call})
 
         fireEvent.click(getByTestId('incoming-phone-call'))
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
@@ -127,11 +125,56 @@ describe('<IncomingPhoneCall/>', () => {
 
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
-            wrapper,
-        })
+        const {getByTestId} = renderComponent({call})
 
         fireEvent.click(getByTestId('incoming-phone-call'))
         expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('should display waiting time', () => {
+        const call = mockIncomingCall(integrationId) as Call
+        jest.useFakeTimers()
+
+        const {getByText} = renderComponent({call})
+
+        expect(getByText('Waiting for 00:00')).toBeInTheDocument()
+        jest.advanceTimersByTime(1000)
+        expect(getByText('Waiting for 00:01')).toBeInTheDocument()
+        jest.advanceTimersByTime(3000)
+        expect(getByText('Waiting for 00:04')).toBeInTheDocument()
+    })
+
+    it('should display "incoming transfer"', () => {
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        jest.spyOn(hooks, 'useConnectionParameters').mockReturnValueOnce({
+            integrationId,
+            ticketId,
+            customerName: 'Bob',
+            customerPhoneNumber: '+25111111111',
+            transferFromAgentId: 3,
+        })
+
+        const {getByText} = renderComponent({call})
+
+        expect(getByText('Incoming transfer...')).toBeInTheDocument()
+        expect(getByText('VoiceCallAgentLabel 3')).toBeInTheDocument()
+    })
+
+    it('should not display "incoming transfer" if transferFromAgentId is null', () => {
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        jest.spyOn(hooks, 'useConnectionParameters').mockReturnValueOnce({
+            integrationId,
+            ticketId,
+            customerName: 'Bob',
+            customerPhoneNumber: '+25111111111',
+            transferFromAgentId: null,
+        })
+
+        const {queryByText, getByText} = renderComponent({call})
+
+        expect(queryByText('Incoming transfer...')).toBeNull()
+        expect(getByText('Incoming call...')).toBeInTheDocument()
     })
 })

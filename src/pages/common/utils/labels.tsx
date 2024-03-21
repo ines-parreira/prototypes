@@ -42,6 +42,7 @@ export function AgentLabel({
     profilePictureUrl = '',
     shouldDisplayAvatar = false,
     size = 26,
+    semibold,
 }: {
     className?: string
     maxWidth?: string
@@ -49,6 +50,7 @@ export function AgentLabel({
     profilePictureUrl?: string | null
     shouldDisplayAvatar?: boolean
     size?: number
+    semibold?: boolean
 }) {
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
 
@@ -72,7 +74,7 @@ export function AgentLabel({
 
             {name && (
                 <span
-                    className={css.name}
+                    className={classnames(css.name, {[css.semibold]: semibold})}
                     {...(typeof maxWidth !== 'undefined'
                         ? {style: {maxWidth: `${maxWidth}px`}}
                         : {})}

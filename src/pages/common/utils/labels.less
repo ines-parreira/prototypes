@@ -1,3 +1,5 @@
+@import (reference) '~css/typography.less';
+
 :local {
     .AgentLabel,
     .TeamLabel {
@@ -18,6 +20,10 @@
             font-weight: 500;
             white-space: nowrap;
             text-overflow: ellipsis;
+
+            &.semibold {
+                .body-semibold();
+            }
         }
     }
 

@@ -1,3 +1,5 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .container {
         display: flex;
@@ -38,6 +40,18 @@
                 line-height: 17px;
                 padding: 7px 12px;
             }
+        }
+
+        .agentLabel {
+            color: inherit;
+            margin-top: 2px;
+        }
+
+        .callerDetails {
+            display: flex;
+            align-items: center;
+            gap: @layout-spacing-xs;
+            flex-wrap: wrap;
         }
     }
 }

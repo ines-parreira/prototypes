@@ -292,6 +292,24 @@ describe('components utils: labels', () => {
             expect(avatar).toBeInTheDocument()
         })
 
+        it('should render the name of the agent because a name is passed', () => {
+            const {getByText} = render(<labels.AgentLabel name="Marie Curie" />)
+
+            const name = getByText('Marie Curie')
+            expect(name).toBeInTheDocument()
+            expect(name).not.toHaveClass('semibold')
+        })
+
+        it('should render the name of the agent with semibold style because the `semibold` option is passed', () => {
+            const {getByText} = render(
+                <labels.AgentLabel name="Marie Curie" semibold />
+            )
+
+            const name = getByText('Marie Curie')
+            expect(name).toBeInTheDocument()
+            expect(name).toHaveClass('semibold')
+        })
+
         it('should render the avatar because the `avatar` option is passed but no profile picture url is passed', () => {
             AvatarSpy.mockImplementation((() => (
                 <div data-testid="avatar" />

@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
+import classNames from 'classnames'
 import {useAgentDetails} from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 
@@ -10,19 +11,24 @@ import css from './VoiceCallAgentLabel.less'
 type AgentLabelProps = {
     agentId: number
     phoneNumber?: string
+    className?: string
+    semibold?: boolean
 }
 
 export default function VoiceCallAgentLabel({
     agentId,
     phoneNumber,
+    className,
+    semibold,
 }: AgentLabelProps) {
     const {data: agent, error} = useAgentDetails(agentId)
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
+
     if (axios.isAxiosError(error) && error.response?.status === 404) {
         return (
             <AgentLabel
                 name={`Deleted agent (${formattedPhoneNumber})`}
-                className={css.agentLabel}
+                className={classNames(css.agentLabel, className)}
             />
         )
     }
@@ -30,8 +36,9 @@ export default function VoiceCallAgentLabel({
     return (
         <AgentLabel
             name={agent?.name ?? formattedPhoneNumber}
-            className={css.agentLabel}
+            className={classNames(css.agentLabel, className)}
             shouldDisplayAvatar={false}
+            semibold={semibold}
         />
     )
 }
