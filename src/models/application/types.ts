@@ -5,6 +5,7 @@ export type Application = {
     status: string
     messaging_config: ApplicationMessagingConfig
     deactivated_datetime: string | null
+    supports_multiple_connections: boolean
 }
 
 export type ApplicationMessagingConfig = {

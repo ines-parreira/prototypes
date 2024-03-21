@@ -33,6 +33,7 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
 import {mapDefaults} from 'pages/integrations/mappers/mapDefaults'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
+import {getApplicationById} from 'services/applications'
 import IntegrationsList from './IntegrationsList'
 
 export enum Tab {
@@ -63,6 +64,9 @@ export default function AppDetail() {
         useAppSelector(getIntegrationsByAppId(appId))
     )
 
+    const supportsMultipleConnections = () =>
+        getApplicationById(appId)?.supports_multiple_connections || false
+
     useEffect(() => {
         async function loadAppDetails(appId: string) {
             try {
@@ -74,6 +78,7 @@ export default function AppDetail() {
                 setLoading(false)
             }
         }
+
         setLoading(true)
         void loadAppDetails(appId)
     }, [appId, preview])
@@ -127,13 +132,15 @@ export default function AppDetail() {
                     </Breadcrumb>
                 }
             >
-                <ConnectLink
-                    connectUrl={appItem.connectUrl}
-                    isApp
-                    integrationTitle={appItem.title}
-                >
-                    <Button>Add Account</Button>
-                </ConnectLink>
+                {extra === Tab.Connections && supportsMultipleConnections() && (
+                    <ConnectLink
+                        connectUrl={appItem.connectUrl}
+                        isApp
+                        integrationTitle={appItem.title}
+                    >
+                        <Button>Add Account</Button>
+                    </ConnectLink>
+                )}
             </PageHeader>
 
             {appItem.isConnected && (

@@ -16,6 +16,8 @@ import {Integration} from 'models/integration/types'
 import {RootState} from 'state/types'
 
 import {DEFAULT_VALUES} from 'pages/integrations/mappers/mapDefaults'
+import {Application, getApplicationById} from 'services/applications'
+import {applications as mockApplications} from 'fixtures/applications'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
@@ -25,6 +27,9 @@ const store = mockStore({
 const appId = '1234'
 const mockServer = new MockAdapter(client)
 
+jest.mock('services/applications', () => ({
+    getApplicationById: jest.fn(),
+}))
 jest.mock('state/notifications/actions', () => {
     const actions: {notify: unknown} = jest.requireActual(
         'state/notifications/actions'
@@ -144,6 +149,47 @@ describe(`App`, () => {
         expect(getByText('App Details')).toBeDefined()
         expect(getByText('Advanced')).toBeDefined()
         expect(getByText('Connections')).toBeDefined()
+    })
+
+    it('should render the connections tab with the button add connection for apps that support multiple connections', async () => {
+        mockServer
+            .onGet(`/api/apps/${appId}`)
+            .reply(200, {...dummyAppData, is_installed: true})
+        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
+
+        const mockedGetApplicationById =
+            getApplicationById as jest.Mock<Application>
+        const application = mockApplications[0]
+        application.id = appId
+        application.supports_multiple_connections = true
+        mockedGetApplicationById.mockReturnValue(application)
+        const store = mockStore({
+            integrations: fromJS({
+                currentAccount: fromJS({domain: '20-1 rpz'}),
+                integrations: [
+                    {
+                        id: 1,
+                        type: 'app',
+                        application_id: '1234',
+                        name: 'my app',
+                        meta: {address: '@myapp'},
+                    } as Integration,
+                ],
+            }),
+        } as unknown as RootState)
+
+        const {getByText} = renderWithRouter(
+            <Provider store={store}>
+                <App />
+            </Provider>,
+            {
+                path: '/integrations/app/:appId/:extra?',
+                route: `/integrations/app/${appId}/${Tab.Connections}`,
+            }
+        )
+
+        await screen.findAllByText(new RegExp(dummyAppData.name))
+        expect(getByText('Add Account')).toBeDefined()
     })
 
     it('should not render the connections tab with no integrations', async () => {

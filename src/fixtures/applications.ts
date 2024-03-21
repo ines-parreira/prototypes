@@ -17,6 +17,7 @@ export const applications: Application[] = [
         name: 'TikTok Shop',
         status: 'approved',
         deactivated_datetime: null,
+        supports_multiple_connections: false,
     },
     {
         id: 'rHLnDofy6o9Rlnc79OKprR0gGz847',
@@ -34,5 +35,6 @@ export const applications: Application[] = [
         name: 'Fake App',
         status: 'approved',
         deactivated_datetime: null,
+        supports_multiple_connections: false,
     },
 ]
