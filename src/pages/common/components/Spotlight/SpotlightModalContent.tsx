@@ -155,7 +155,6 @@ export const SpotlightModalContent = ({
                                         'spotlight-customer'
                                     )
                                 }}
-                                highlight={{}}
                             />
                         )
                     }
