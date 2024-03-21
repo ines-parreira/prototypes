@@ -11,8 +11,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {FeatureFlagKey} from '../../../../config/featureFlags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import css from './AutomateNavbarSectionBlock.less'
 import {
@@ -235,9 +234,6 @@ const AutomateNavbarSectionBlock = ({
                     <span className={cssNavbar['item-name']}>
                         {TRAIN_MY_AI}
                     </span>
-                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
-                        NEW
-                    </Badge>
                 </NavbarLink>
             </div>
         </NavbarSectionBlock>

@@ -265,11 +265,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               >
                 Train My AI
               </span>
-              <div
-                class="badge badge upperCase"
-              >
-                NEW
-              </div>
             </a>
           </div>
           <div
@@ -376,11 +371,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               >
                 Train My AI
               </span>
-              <div
-                class="badge badge upperCase"
-              >
-                NEW
-              </div>
             </a>
           </div>
         </div>
@@ -718,11 +708,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               >
                 Train My AI
               </span>
-              <div
-                class="badge badge upperCase"
-              >
-                NEW
-              </div>
             </a>
           </div>
         </div>
@@ -1217,11 +1202,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               >
                 Train My AI
               </span>
-              <div
-                class="badge badge upperCase"
-              >
-                NEW
-              </div>
             </a>
           </div>
           <div
@@ -1328,11 +1308,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               >
                 Train My AI
               </span>
-              <div
-                class="badge badge upperCase"
-              >
-                NEW
-              </div>
             </a>
           </div>
         </div>
@@ -1670,11 +1645,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               >
                 Train My AI
               </span>
-              <div
-                class="badge badge upperCase"
-              >
-                NEW
-              </div>
             </a>
           </div>
         </div>
