@@ -7,28 +7,42 @@ import Button from 'pages/common/components/button/Button'
 import {AgentLabel} from 'pages/common/utils/labels'
 import {getHumanAgentsJS} from 'state/agents/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentUserId} from 'state/currentUser/selectors'
 
 import DropdownSection from '../../dropdown/DropdownSection'
 import css from './CallTransferDropdown.less'
 
 type Props = Pick<
     ComponentProps<typeof Dropdown>,
-    'isOpen' | 'onToggle' | 'target' | 'placement'
->
+    'isOpen' | 'target' | 'placement'
+> & {
+    onTransferInitiated: () => void
+    setIsOpen: (isOpen: boolean) => void
+}
 
 export default function CallTransferDropdown({
     isOpen,
-    onToggle,
+    setIsOpen,
     target,
     placement = 'top',
+    onTransferInitiated,
 }: Props) {
-    const agents = useAppSelector(getHumanAgentsJS)
     const [selectedAgent, setSelectedAgent] = useState<number | null>(null)
+
+    const agents = useAppSelector(getHumanAgentsJS)
+    const currentAgentId = useAppSelector(getCurrentUserId)
+
+    const filteredAgents = agents.filter((agent) => agent.id !== currentAgentId)
+
+    const handleTransferCallInitiated = () => {
+        onTransferInitiated()
+        setIsOpen(false)
+    }
 
     return (
         <Dropdown
             isOpen={isOpen}
-            onToggle={onToggle}
+            onToggle={setIsOpen}
             target={target}
             placement={placement}
             className={css.container}
@@ -37,7 +51,7 @@ export default function CallTransferDropdown({
             <DropdownSearch />
             <DropdownBody className={css.dropdownBody}>
                 <DropdownSection title="Agents">
-                    {agents.map((option) => (
+                    {filteredAgents.map((option) => (
                         <DropdownItem
                             key={`agent-${option.id}`}
                             option={{
@@ -58,7 +72,11 @@ export default function CallTransferDropdown({
                 </DropdownSection>
             </DropdownBody>
             <div className={css.dropdownFooter}>
-                <Button className={css.cta} isDisabled={!selectedAgent}>
+                <Button
+                    className={css.cta}
+                    isDisabled={!selectedAgent}
+                    onClick={handleTransferCallInitiated}
+                >
                     Transfer call
                 </Button>
             </div>

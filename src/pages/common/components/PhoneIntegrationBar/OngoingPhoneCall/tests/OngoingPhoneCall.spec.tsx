@@ -24,16 +24,25 @@ jest.mock('../CallTransferDropdown', () => ({
     __esModule: true,
     default: ({
         isOpen,
-        onToggle,
+        setIsOpen,
+        onTransferInitiated,
     }: {
         isOpen: boolean
-        onToggle: (flag: boolean) => void
+        setIsOpen: (flag: boolean) => void
+        onTransferInitiated: () => void
     }) => (
         <div
             data-testid="transfer-dropdown"
             className={isOpen ? 'is-open' : 'is-hidden'}
-            onClick={() => onToggle(!isOpen)}
-        />
+            onClick={() => setIsOpen(!isOpen)}
+        >
+            <div
+                data-testid="confirm-transfer-button"
+                onClick={onTransferInitiated}
+            >
+                Transfer
+            </div>
+        </div>
     ),
 }))
 
@@ -220,5 +229,19 @@ describe('<OngoingPhoneCall/>', () => {
         expect(getByTestId('transfer-dropdown')).toHaveClass('is-hidden')
         fireEvent.click(getByTestId('transfer-call-button'))
         expect(getByTestId('transfer-dropdown')).toHaveClass('is-open')
+    })
+
+    it(`should display "Transferring" state after a transfer is initiated`, () => {
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({[FeatureFlagKey.CallTransfer]: true})
+
+        const {getByTestId, getByText} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>
+        )
+
+        fireEvent.click(getByTestId('confirm-transfer-button'))
+        expect(getByText('Transferring...')).toBeVisible()
     })
 })

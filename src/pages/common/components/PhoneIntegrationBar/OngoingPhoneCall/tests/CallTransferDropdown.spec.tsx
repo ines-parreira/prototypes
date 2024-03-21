@@ -12,11 +12,13 @@ import {mockStore} from 'utils/testing'
 import CallTransferDropdown from '../CallTransferDropdown'
 
 describe('CallTransferDropdown', () => {
-    const onToggle = jest.fn()
+    const setIsOpen = jest.fn()
+    const onTransferInitiated = jest.fn()
 
     const baseProps = {
         isOpen: true,
-        onToggle,
+        setIsOpen,
+        onTransferInitiated,
         target: createRef<HTMLElement>(),
     }
 
@@ -34,6 +36,9 @@ describe('CallTransferDropdown', () => {
                             {id: 4, name: 'Agent 4'},
                         ],
                     }),
+                    currentUser: fromJS({
+                        id: 2,
+                    }),
                 } as any)}
             >
                 <CallTransferDropdown {...props} />
@@ -42,10 +47,11 @@ describe('CallTransferDropdown', () => {
 
     afterEach(cleanup)
 
-    it('renders the dropdown body when isOpen is true', () => {
+    it(`renders the dropdown body when isOpen is true and doesn't display current agent`, () => {
         renderComponent()
         expect(screen.getByText('Agents')).toBeInTheDocument()
         expect(screen.getByText('Agent 1')).toBeInTheDocument()
+        expect(screen.queryByText('Agent 2')).not.toBeInTheDocument()
         expect(screen.getByText('Agent 4')).toBeInTheDocument()
     })
 
@@ -54,10 +60,10 @@ describe('CallTransferDropdown', () => {
         expect(screen.queryByText('Agents')).not.toBeInTheDocument()
     })
 
-    it('calls the onToggle function when the target element is clicked', () => {
+    it('calls the setIsOpen function when the target element is clicked', () => {
         renderComponent()
         fireEvent.click(screen.getByTestId('floating-overlay'))
-        expect(onToggle).toHaveBeenCalled()
+        expect(setIsOpen).toHaveBeenCalled()
     })
 
     it(`doesn't select more than one agent`, () => {
@@ -68,11 +74,11 @@ describe('CallTransferDropdown', () => {
         fireEvent.click(agent1)
         expect(within(agent1).getByText(/done/i)).toBeVisible()
 
-        const agent2 = screen.getByRole('option', {
-            name: /agent 2/i,
+        const agent3 = screen.getByRole('option', {
+            name: /agent 3/i,
         })
-        fireEvent.click(agent2)
-        expect(within(agent2).getByText(/done/i)).toBeVisible()
+        fireEvent.click(agent3)
+        expect(within(agent3).getByText(/done/i)).toBeVisible()
         expect(within(agent1).queryByText(/done/i)).toBeNull()
     })
 
@@ -90,5 +96,16 @@ describe('CallTransferDropdown', () => {
         expect(
             screen.getByRole('button', {name: /transfer call/i})
         ).not.toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('calls the onTransferInitiated function when the transfer button is clicked', () => {
+        renderComponent()
+        const agent1 = screen.getByRole('option', {
+            name: /agent 1/i,
+        })
+        fireEvent.click(agent1)
+        fireEvent.click(screen.getByRole('button', {name: /transfer call/i}))
+        expect(onTransferInitiated).toHaveBeenCalled()
+        expect(setIsOpen).toHaveBeenLastCalledWith(false)
     })
 })

@@ -53,6 +53,7 @@ export function OngoingPhoneCall({
     const {integrationId, customerName, customerPhoneNumber} =
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
+    const [isTransferring, setIsTransferring] = useState(false)
     const isCallHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
     const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
 
@@ -65,7 +66,7 @@ export function OngoingPhoneCall({
 
     const transferButtonRef = useRef<HTMLButtonElement>(null)
 
-    const onToggleHold = () => {
+    const handleToggleHold = () => {
         setIsOnHold((isOnHold) => !isOnHold)
     }
 
@@ -111,7 +112,8 @@ export function OngoingPhoneCall({
                         <CallTransferDropdown
                             target={transferButtonRef}
                             isOpen={isTransferDropdownOpen}
-                            onToggle={setIsTransferDropdownOpen}
+                            setIsOpen={setIsTransferDropdownOpen}
+                            onTransferInitiated={() => setIsTransferring(true)}
                         />
                     </>
                 )}
@@ -127,7 +129,7 @@ export function OngoingPhoneCall({
                     <IconButtonTooltip
                         intent="secondary"
                         data-testid="hold-call-button"
-                        onClick={onToggleHold}
+                        onClick={handleToggleHold}
                         icon={isOnHold ? 'pause_circle_outline' : 'pause'}
                     >
                         {isOnHold ? 'Take off hold' : 'Hold'}
@@ -155,7 +157,7 @@ export function OngoingPhoneCall({
                 </IconButton>
             </div>
             <PhoneInfobarWrapper>
-                <span>Connected</span>
+                <span>{isTransferring ? 'Transferring...' : 'Connected'}</span>
             </PhoneInfobarWrapper>
         </div>
     )
