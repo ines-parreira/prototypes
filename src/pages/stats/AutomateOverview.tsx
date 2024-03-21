@@ -24,6 +24,7 @@ import {
     useAutomationRateTrend,
     useDecreaseInResolutionTimeWithAutomationTrend,
     useFirstResponseTimeWithAutomationTrend,
+    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -38,6 +39,8 @@ import {TicketChannel} from 'business/types/ticket'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 
 import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrations'
+
+import {TimeSavedByAgentsMetric} from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
 
 import {
     AutomatedInteractionsMetric,
@@ -97,6 +100,8 @@ const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 export function AutomateOverview() {
     const [noActivityAlert, setNoActivityAlert] = useState(true)
     const [hide72HourAlert, set72HoursAlert] = useState(false)
+    const isTicketTimeToHandleEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
     const isAutomateOverviewChannelsFilter: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
@@ -143,6 +148,10 @@ export function AutomateOverview() {
         userTimezone
     )
     const automatedInteractionTrend = useAutomatedInteractionsTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         pageStatsFilters,
         userTimezone
     )
@@ -459,7 +468,7 @@ export function AutomateOverview() {
                 )}
 
                 <DashboardSection
-                    title="Impact"
+                    title="Performance"
                     titleExtra={
                         <TipsToggle
                             isVisible={!!areTipsVisible}
@@ -479,8 +488,9 @@ export function AutomateOverview() {
                             showTips={areTipsVisible}
                         />
                     </DashboardGridCell>
-
-                    <DashboardGridCell size={4}>
+                </DashboardSection>
+                <DashboardSection title="Impact">
+                    <DashboardGridCell size={6}>
                         <AutomationCostSavedMetric
                             trend={{
                                 ...automatedInteractionTrend,
@@ -497,19 +507,28 @@ export function AutomateOverview() {
                             }}
                         />
                     </DashboardGridCell>
-
-                    <DashboardGridCell size={4}>
+                    {isTicketTimeToHandleEnabled && (
+                        <DashboardGridCell size={6}>
+                            <TimeSavedByAgentsMetric
+                                automatedInteractionTrend={
+                                    automatedInteractionTrend
+                                }
+                                ticketHandleTimeTrend={ticketHandleTimeTrend}
+                            />
+                        </DashboardGridCell>
+                    )}
+                    <DashboardGridCell size={6}>
                         <DecreaseInResolutionTimeMetric
                             trend={decreaseInResolutionTimeWithAutomationTrend}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={4}>
+                    <DashboardGridCell size={6}>
                         <AutomationDecreaseInFirstResponseTimeMetric
                             trend={firstResponseTimeTrend}
                         />
                     </DashboardGridCell>
                 </DashboardSection>
-                <DashboardSection title="Performance">
+                <DashboardSection title="Performance over time">
                     <DashboardGridCell size={12}>
                         <ChartCard
                             {...getGreyAreaHint()}

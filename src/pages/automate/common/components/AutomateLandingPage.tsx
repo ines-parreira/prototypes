@@ -13,6 +13,7 @@ import {
     useFirstResponseTimeWithAutomationTrend,
     useResolutionTimeWithAutomationTrend,
 } from 'hooks/reporting/metricTrends'
+import {useTicketAverageHandleTimeMetric} from 'hooks/reporting/metrics'
 import {getTimezone} from 'state/currentUser/selectors'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
@@ -89,6 +90,10 @@ const AutomateLandingPage = () => {
         filters,
         userTimezone
     )
+    const handleTimePerAgent = useTicketAverageHandleTimeMetric(
+        filters,
+        userTimezone
+    )
 
     const handleViewFullReport = () => {
         history.push(`/app/stats/automate-overview?source=automate`)
@@ -97,7 +102,8 @@ const AutomateLandingPage = () => {
     const isLoading =
         automatedInteractionsTrend.isFetching ||
         resolutionTimeTrend.isFetching ||
-        firstResponseTimeTrend.isFetching
+        firstResponseTimeTrend.isFetching ||
+        handleTimePerAgent.isFetching
 
     if (isLoading) {
         return <Loader />
@@ -106,7 +112,7 @@ const AutomateLandingPage = () => {
     return (
         <StatsPage title="Automate" headerCanduId="header-my-automate">
             <DashboardSection
-                title="Impact"
+                title="Performance"
                 titleExtra={
                     <>
                         <div className={css.dashboardTitleContainer}>
@@ -172,6 +178,9 @@ const AutomateLandingPage = () => {
                                     }
                                     firstResponseTime={
                                         firstResponseTimeTrend.data?.value
+                                    }
+                                    handleTimePerAgent={
+                                        handleTimePerAgent.data?.value
                                     }
                                 />
                             </DashboardGridCell>

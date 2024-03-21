@@ -130,7 +130,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   <div
                     class="titleText heading-page-semibold"
                   >
-                    Impact
+                    Performance
                   </div>
                   <button
                     aria-disabled="false"
@@ -318,9 +318,26 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Impact
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -352,7 +369,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -384,7 +401,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -425,7 +442,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   <div
                     class="titleText heading-page-semibold"
                   >
-                    Performance
+                    Performance over time
                   </div>
                 </div>
                 <div
@@ -781,7 +798,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 <div
                   class="titleText heading-page-semibold"
                 >
-                  Impact
+                  Performance
                 </div>
                 <button
                   aria-disabled="false"
@@ -969,9 +986,26 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Impact
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -1003,7 +1037,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -1035,7 +1069,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -1076,7 +1110,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 <div
                   class="titleText heading-page-semibold"
                 >
-                  Performance
+                  Performance over time
                 </div>
               </div>
               <div
@@ -1411,7 +1445,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   <div
                     class="titleText heading-page-semibold"
                   >
-                    Impact
+                    Performance
                   </div>
                   <button
                     aria-disabled="false"
@@ -1599,9 +1633,26 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Impact
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -1633,7 +1684,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -1665,7 +1716,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -1706,7 +1757,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   <div
                     class="titleText heading-page-semibold"
                   >
-                    Performance
+                    Performance over time
                   </div>
                 </div>
                 <div
@@ -2062,7 +2113,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 <div
                   class="titleText heading-page-semibold"
                 >
-                  Impact
+                  Performance
                 </div>
                 <button
                   aria-disabled="false"
@@ -2250,9 +2301,26 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Impact
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -2284,7 +2352,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -2316,7 +2384,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -2357,7 +2425,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 <div
                   class="titleText heading-page-semibold"
                 >
-                  Performance
+                  Performance over time
                 </div>
               </div>
               <div
@@ -2692,7 +2760,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   <div
                     class="titleText heading-page-semibold"
                   >
-                    Impact
+                    Performance
                   </div>
                   <button
                     aria-disabled="false"
@@ -2880,9 +2948,26 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Impact
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -2914,7 +2999,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -2946,7 +3031,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   </div>
                   <div
                     class="cell"
-                    style="grid-column: span 4 / span 4;"
+                    style="grid-column: span 6 / span 6;"
                   >
                     <div
                       class="Card--wrapper--3AkmE card"
@@ -2987,7 +3072,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   <div
                     class="titleText heading-page-semibold"
                   >
-                    Performance
+                    Performance over time
                   </div>
                 </div>
                 <div
@@ -3343,7 +3428,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 <div
                   class="titleText heading-page-semibold"
                 >
-                  Impact
+                  Performance
                 </div>
                 <button
                   aria-disabled="false"
@@ -3531,9 +3616,26 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Impact
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -3565,7 +3667,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -3597,7 +3699,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 </div>
                 <div
                   class="cell"
-                  style="grid-column: span 4 / span 4;"
+                  style="grid-column: span 6 / span 6;"
                 >
                   <div
                     class="Card--wrapper--3AkmE card"
@@ -3638,7 +3740,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 <div
                   class="titleText heading-page-semibold"
                 >
-                  Performance
+                  Performance over time
                 </div>
               </div>
               <div
@@ -3969,7 +4071,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             <div
               class="titleText heading-page-semibold"
             >
-              Impact
+              Performance
             </div>
             <button
               aria-disabled="false"
@@ -4157,9 +4259,26 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            <div
+              class="titleText heading-page-semibold"
+            >
+              Impact
+            </div>
+          </div>
+          <div
+            class="wrapper"
+          >
             <div
               class="cell"
-              style="grid-column: span 4 / span 4;"
+              style="grid-column: span 6 / span 6;"
             >
               <div
                 class="Card--wrapper--3AkmE card"
@@ -4191,7 +4310,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             </div>
             <div
               class="cell"
-              style="grid-column: span 4 / span 4;"
+              style="grid-column: span 6 / span 6;"
             >
               <div
                 class="Card--wrapper--3AkmE card"
@@ -4223,7 +4342,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             </div>
             <div
               class="cell"
-              style="grid-column: span 4 / span 4;"
+              style="grid-column: span 6 / span 6;"
             >
               <div
                 class="Card--wrapper--3AkmE card"
@@ -4264,7 +4383,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             <div
               class="titleText heading-page-semibold"
             >
-              Performance
+              Performance over time
             </div>
           </div>
           <div

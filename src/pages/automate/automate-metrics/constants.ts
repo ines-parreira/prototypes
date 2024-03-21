@@ -2,6 +2,7 @@ export const DECREASE_IN_RESOLUTION_TIME = 'Decrease in resolution time'
 export const AUTOMATION_RATE_LABEL = 'Automation rate'
 export const AUTOMATED_INTERACTIONS_LABEL = 'Automated interactions'
 export const DECREASE_IN_FIRST_RESPONSE = 'Decrease in first response time'
+export const TIME_SAVED_BY_AGENTS = 'Overall time saved by agents'
 export const COST_SAVED = 'Cost saved'
 
 export const AGENT_COST_PER_TICKET = 3.1

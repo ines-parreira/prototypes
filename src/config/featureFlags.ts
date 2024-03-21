@@ -76,6 +76,7 @@ export enum FeatureFlagKey {
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityAIArticlesLibrary = 'observability-ai-articles-library',
     ObservabilityROICalculator = 'roi-calculator-for-automate',
+    ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
