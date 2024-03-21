@@ -33,7 +33,7 @@ export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
                     banner: {
                         type: BannerType.Warning,
                         content:
-                            'Before activating the campaign, <strong>add the URL of a relevant resource</strong> in your campaign message.',
+                            'Before activating the campaign, <strong>add the URL of a relevant resource</strong> in your message.',
                     },
                 },
             },

@@ -18,7 +18,7 @@ import {CampaignConfigurationBuilder} from '../constructor'
 
 export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
     slug: 'promote-quizzes-to-help-choose-products',
-    name: 'Promote quizzes that help visitors choose their products',
+    name: 'Promote educational content that help visitors choose their products',
     description:
         'Direct your new visitors to your quiz or gift finder, to help them in their first purchase',
     onboarding: false,
@@ -33,7 +33,7 @@ export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
                     banner: {
                         type: BannerType.Warning,
                         content:
-                            'Before activating the campaign, <strong>add the correct URL link to your quizz</strong> in your campaign message.',
+                            'Before activating the campaign, <strong>add the correct URL link to your quizz</strong> in your message.',
                     },
                 },
             },

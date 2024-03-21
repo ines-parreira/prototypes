@@ -15,7 +15,7 @@ import {CampaignConfigurationBuilder} from '../constructor'
 
 export const CONNECT_CUSTOMER_ON_CART_WITH_TEAM: CampaignTemplate = {
     slug: 'connect-customer-on-cart-with-team',
-    name: 'Connect customers on your cart page with your team',
+    name: 'Engage with customers on the cart page',
     description:
         'Prevent cart abandonment by reassuring your shoppers before checkout',
     onboarding: false,

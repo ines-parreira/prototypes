@@ -32,7 +32,7 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
                     banner: {
                         type: BannerType.Info,
                         content:
-                            'Before activating the campaign, add the correct URL links to your newsletter/SMS sign-up pages in your campaign message.',
+                            'Before activating the campaign, add the correct URL links to your newsletter/SMS sign-up pages in your message.',
                     },
                 },
             },

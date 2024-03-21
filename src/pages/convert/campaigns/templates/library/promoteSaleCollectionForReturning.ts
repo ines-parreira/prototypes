@@ -32,7 +32,7 @@ export const PROMOTE_SALE_COLLECTION: CampaignTemplate = {
                     banner: {
                         type: BannerType.Warning,
                         content:
-                            'Before activating the campaign, add the correct URL link to your sale collection page in your campaign message.',
+                            'Before activating the campaign, add the correct URL link to your sale collection page in your message.',
                     },
                 },
             },

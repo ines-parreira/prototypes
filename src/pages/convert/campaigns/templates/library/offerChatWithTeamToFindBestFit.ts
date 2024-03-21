@@ -14,7 +14,7 @@ import {CampaignConfigurationBuilder} from '../constructor'
 
 export const OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT: CampaignTemplate = {
     slug: 'offer-chat-with-team-to-find-best-fit',
-    name: 'Offer a chat with your team to find the best fit',
+    name: 'Drive conversations with your visitors to find the right product',
     description:
         'Remove purchase objections from visitors who are hesitating more than 15 seconds on a product page',
     onboarding: false,
