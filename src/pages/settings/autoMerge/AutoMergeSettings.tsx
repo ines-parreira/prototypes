@@ -61,9 +61,9 @@ export default function AutoMergeSettings() {
                             <span
                                 className={autoMergeSettingsCss.captionWrapper}
                             >
-                                When enabled this will auto-merge tickets that
-                                are from the same customer, open and are from an
-                                eligible channel.
+                                When enabled, this will auto-merge any new
+                                tickets that are from the same customer, open
+                                and are from an eligible channel.
                                 <br />
                                 <a
                                     href={'https://link.gorgias.com/b5y'}
