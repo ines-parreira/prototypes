@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {RootState} from '../../types'
-import {WidgetContextType} from '../types'
+import {WidgetEnvironment} from '../types'
 import {
     getContext,
     getSources,
@@ -121,10 +121,10 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                getWidgetsWithContext(WidgetContextType.Ticket)(state)
+                getWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqualImmutable(fromJS([{id: 1, context: 'ticket'}]))
             expect(
-                getWidgetsWithContext(WidgetContextType.Customer)(state)
+                getWidgetsWithContext(WidgetEnvironment.Customer)(state)
             ).toEqualImmutable(fromJS(items.slice(1)))
         })
 
@@ -138,7 +138,7 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                getWidgetsWithContext(WidgetContextType.Ticket)(state)
+                getWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqualImmutable(fromJS([]))
         })
 
@@ -149,7 +149,7 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                getWidgetsWithContext(WidgetContextType.Ticket)(state)
+                getWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqualImmutable(fromJS([]))
         })
 
@@ -160,7 +160,7 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                getWidgetsWithContext(WidgetContextType.Ticket)(state)
+                getWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqualImmutable(fromJS([]))
         })
 
@@ -191,7 +191,7 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                hasWidgetsWithContext(WidgetContextType.Ticket)(state)
+                hasWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqual(true)
         })
 
@@ -205,7 +205,7 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                hasWidgetsWithContext(WidgetContextType.Ticket)(state)
+                hasWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqual(false)
         })
 
@@ -216,7 +216,7 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                hasWidgetsWithContext(WidgetContextType.Ticket)(state)
+                hasWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqual(false)
         })
 
@@ -227,7 +227,7 @@ describe('widgets selectors', () => {
             } as RootState
 
             expect(
-                hasWidgetsWithContext(WidgetContextType.Ticket)(state)
+                hasWidgetsWithContext(WidgetEnvironment.Ticket)(state)
             ).toEqual(false)
         })
 

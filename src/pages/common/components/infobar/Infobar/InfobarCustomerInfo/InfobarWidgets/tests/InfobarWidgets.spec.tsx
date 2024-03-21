@@ -18,7 +18,7 @@ import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOM_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
@@ -123,7 +123,7 @@ describe('InfobarWidgets component', () => {
         {
             id: 3,
             type: STANDALONE_WIDGET_TYPE,
-            context: WidgetContextType.Ticket,
+            context: WidgetEnvironment.Ticket,
             template: {
                 type: 'wrapper',
                 widgets: [
@@ -151,7 +151,7 @@ describe('InfobarWidgets component', () => {
             id: 4,
             type: IntegrationType.Http,
             integration_id: httpIntegrationId,
-            context: WidgetContextType.Ticket,
+            context: WidgetEnvironment.Ticket,
             template: {
                 type: 'wrapper',
                 widgets: [
@@ -175,7 +175,7 @@ describe('InfobarWidgets component', () => {
         {
             id: 5,
             type: IntegrationType.Shopify,
-            context: WidgetContextType.Ticket,
+            context: WidgetEnvironment.Ticket,
             template: {
                 type: 'wrapper',
                 widgets: [
@@ -199,7 +199,7 @@ describe('InfobarWidgets component', () => {
         {
             id: 6,
             type: IntegrationType.Recharge,
-            context: WidgetContextType.Ticket,
+            context: WidgetEnvironment.Ticket,
             template: {
                 type: 'wrapper',
                 widgets: [
@@ -223,7 +223,7 @@ describe('InfobarWidgets component', () => {
         {
             id: 7,
             type: IntegrationType.BigCommerce,
-            context: WidgetContextType.Ticket,
+            context: WidgetEnvironment.Ticket,
             template: {
                 type: 'wrapper',
                 widgets: [
@@ -248,7 +248,7 @@ describe('InfobarWidgets component', () => {
             id: 8,
             type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
             app_id: appId,
-            context: WidgetContextType.Ticket,
+            context: WidgetEnvironment.Ticket,
             template: {
                 type: 'wrapper',
                 widgets: [
@@ -273,7 +273,7 @@ describe('InfobarWidgets component', () => {
             id: 9,
             type: WOOCOMMERCE_WIDGET_TYPE,
             integration_id: ecommerceIntegrationId,
-            context: WidgetContextType.Ticket,
+            context: WidgetEnvironment.Ticket,
             template: {
                 type: 'wrapper',
                 widgets: [
@@ -303,7 +303,7 @@ describe('InfobarWidgets component', () => {
             <Provider store={store}>
                 <InfobarWidgets
                     widgets={null}
-                    context={WidgetContextType.Ticket}
+                    context={WidgetEnvironment.Ticket}
                     source={baseSource}
                 />
             </Provider>
@@ -318,7 +318,7 @@ describe('InfobarWidgets component', () => {
                 <EditionContext.Provider value={{isEditing: false}}>
                     <InfobarWidgets
                         widgets={baseWidgets}
-                        context={WidgetContextType.Ticket}
+                        context={WidgetEnvironment.Ticket}
                         source={baseSource}
                         displayTabs
                     />
@@ -350,7 +350,7 @@ describe('InfobarWidgets component', () => {
                 <EditionContext.Provider value={{isEditing: true}}>
                     <InfobarWidgets
                         widgets={baseWidgets}
-                        context={WidgetContextType.Ticket}
+                        context={WidgetEnvironment.Ticket}
                         source={baseSource}
                     />
                 </EditionContext.Provider>
@@ -369,7 +369,7 @@ describe('InfobarWidgets component', () => {
                 <EditionContext.Provider value={{isEditing: true}}>
                     <InfobarWidgets
                         widgets={baseWidgets}
-                        context={WidgetContextType.Ticket}
+                        context={WidgetEnvironment.Ticket}
                         source={baseSource}
                     />
                 </EditionContext.Provider>
@@ -384,7 +384,7 @@ describe('InfobarWidgets component', () => {
                 <EditionContext.Provider value={{isEditing: true}}>
                     <InfobarWidgets
                         widgets={baseWidgets}
-                        context={WidgetContextType.Ticket}
+                        context={WidgetEnvironment.Ticket}
                         source={baseSource}
                     />
                 </EditionContext.Provider>
@@ -400,7 +400,7 @@ describe('InfobarWidgets component', () => {
             {
                 id: 666,
                 type: CUSTOM_WIDGET_TYPE,
-                context: WidgetContextType.Ticket,
+                context: WidgetEnvironment.Ticket,
                 template: {
                     type: 'wrapper',
                     widgets: [
@@ -454,7 +454,7 @@ describe('InfobarWidgets component', () => {
             <Provider store={store}>
                 <InfobarWidgets
                     widgets={widgets}
-                    context={WidgetContextType.Ticket}
+                    context={WidgetEnvironment.Ticket}
                     source={source}
                 />
             </Provider>

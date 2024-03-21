@@ -29,7 +29,7 @@ import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
 import * as utils from 'utils'
 import {reportError} from 'utils/errors'
 import {Template, CardTemplate} from 'models/widget/types'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {getSourcePathFromContext} from 'state/widgets/utils'
 import {
     CUSTOM_WIDGET_TYPE,
@@ -164,7 +164,7 @@ export function isBoolean(string: any) {
  */
 export function areSourcesReady(
     sources: Map<any, any>,
-    context: WidgetContextType,
+    context: WidgetEnvironment,
     everySources = false
 ): boolean {
     // for every source
@@ -206,7 +206,7 @@ export function canDisplayWidget(widget: Template, source: Map<any, any>) {
     }
 
     // ex : ticket, customer, etc.
-    const initialSourceName = widget.absolutePath[0] as WidgetContextType
+    const initialSourceName = widget.absolutePath[0] as WidgetEnvironment
 
     const ready = areSourcesReady(
         fromJS({
@@ -422,7 +422,7 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
  */
 export function jsonToWidgets(
     json: Record<string, unknown>,
-    context = WidgetContextType.Ticket
+    context = WidgetEnvironment.Ticket
 ) {
     const defaultWidgets: Map<any, any>[] = []
 

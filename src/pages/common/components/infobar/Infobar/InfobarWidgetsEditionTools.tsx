@@ -4,14 +4,14 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {startEditionMode, submitWidgets} from 'state/widgets/actions'
 import {StoreDispatch} from 'state/types'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import Button from 'pages/common/components/button/Button'
 
 import css from '../Infobar.less'
 
 type Props = {
     widgets: Map<any, any>
-    context: WidgetContextType
+    context: WidgetEnvironment
 } & ConnectedProps<typeof connector>
 
 export class InfobarWidgetsEditionTools extends React.Component<Props> {

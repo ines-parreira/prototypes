@@ -26,7 +26,7 @@ import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import * as types from './constants'
-import {Widget, WidgetContextType} from './types'
+import {Widget, WidgetEnvironment} from './types'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
@@ -64,7 +64,7 @@ export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     }
 }
 
-export function startEditionMode(context = WidgetContextType.Ticket) {
+export function startEditionMode(context = WidgetEnvironment.Ticket) {
     return {
         type: types.START_EDITION_MODE,
         context,
@@ -92,7 +92,7 @@ export function stopWidgetEdition() {
 
 export function generateAndSetWidgets(
     sources: Map<any, any>,
-    context = WidgetContextType.Ticket
+    context = WidgetEnvironment.Ticket
 ) {
     return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
         // generate template
@@ -119,7 +119,7 @@ export function setEditionAsDirty() {
     }
 }
 
-export function selectContext(context = WidgetContextType.Ticket) {
+export function selectContext(context = WidgetEnvironment.Ticket) {
     return {
         type: types.SELECT_CONTEXT,
         context,

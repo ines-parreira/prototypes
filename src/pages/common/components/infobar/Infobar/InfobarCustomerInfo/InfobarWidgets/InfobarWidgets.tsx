@@ -13,7 +13,7 @@ import {
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetContextType, WidgetType} from 'state/widgets/types'
+import {WidgetEnvironment, WidgetType} from 'state/widgets/types'
 import {getWidgetsState} from 'state/widgets/selectors'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {canDisplayWidget} from 'pages/common/components/infobar/utils'
@@ -34,7 +34,7 @@ import {widgetReference} from './widgetReference'
 widgetReference.Widget = InfobarWidget
 
 type Props = {
-    context: WidgetContextType
+    context: WidgetEnvironment
     source: Map<string, unknown>
     widgets: Maybe<List<Map<string, unknown>>>
     displayTabs?: boolean
@@ -277,12 +277,12 @@ function getPreparedDisplayList({
                 widgetType === STANDALONE_WIDGET_TYPE
             ) {
                 sourcePath = getSourcePathFromContext(
-                    widget.get('context') as WidgetContextType,
+                    widget.get('context') as WidgetEnvironment,
                     widgetType
                 ) as string[]
             } else if (widgetType === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE) {
                 sourcePath = getSourcePathFromContext(
-                    widget.get('context') as WidgetContextType,
+                    widget.get('context') as WidgetEnvironment,
                     widgetType
                 ) as string[]
 
@@ -296,7 +296,7 @@ function getPreparedDisplayList({
                 } else return
             } else if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
                 sourcePath = getSourcePathFromContext(
-                    widget.get('context') as WidgetContextType,
+                    widget.get('context') as WidgetEnvironment,
                     widgetType
                 ) as string[]
                 const integrationId = widget.get('integration_id') as number

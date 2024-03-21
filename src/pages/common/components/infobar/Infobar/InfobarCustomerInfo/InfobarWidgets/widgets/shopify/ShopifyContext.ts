@@ -1,6 +1,6 @@
 import {createContext} from 'react'
 
-export type WidgetContextType = {
+export type ShopifyContextType = {
     data_source: string | null
     widget_resource_ids: {
         target_id: number | null
@@ -8,7 +8,7 @@ export type WidgetContextType = {
     }
 }
 
-export const WidgetContext = createContext<WidgetContextType>({
+export const ShopifyContext = createContext<ShopifyContextType>({
     data_source: null,
     widget_resource_ids: {
         target_id: null,

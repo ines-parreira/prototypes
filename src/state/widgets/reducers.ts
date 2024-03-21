@@ -18,7 +18,7 @@ import {
 } from './utils'
 
 import * as types from './constants'
-import {WidgetsState, WidgetContextType} from './types'
+import {WidgetsState, WidgetEnvironment} from './types'
 
 export const initialState: WidgetsState = fromJS({
     items: [],
@@ -61,7 +61,7 @@ export default function reducer(
             const items = state.get('items', fromJS([]))
             const ticketWidgets = itemsWithContext(
                 items,
-                action.context as WidgetContextType
+                action.context as WidgetEnvironment
             )
 
             return state
@@ -96,7 +96,7 @@ export default function reducer(
                     'items',
                     itemsWithUpdatedWidgets(
                         items,
-                        action.context as WidgetContextType,
+                        action.context as WidgetEnvironment,
                         fromJS(action.items)
                     )
                 )
@@ -410,7 +410,7 @@ export default function reducer(
             const items = state.get('items', fromJS([])) as List<any>
             const updatedItems = itemsWithUpdatedWidgets(
                 items,
-                action.context as WidgetContextType,
+                action.context as WidgetEnvironment,
                 fromJS(action.items)
             )
 

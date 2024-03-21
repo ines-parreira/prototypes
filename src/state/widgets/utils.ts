@@ -4,14 +4,14 @@ import _cloneDeep from 'lodash/cloneDeep'
 
 import {DEFAULT_SOURCE_PATHS} from 'config'
 import {STANDALONE_WIDGET_TYPE} from './constants'
-import {WidgetContextType} from './types'
+import {WidgetEnvironment} from './types'
 
 /**
  * Return item from items list where context matches
  */
 export function itemsWithContext(
     items: List<any> = fromJS([]),
-    context: WidgetContextType
+    context: WidgetEnvironment
 ): List<any> {
     // TODO(customers-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w: Map<any, any>) => {
@@ -24,7 +24,7 @@ export function itemsWithContext(
 
 export function itemsWithoutContext(
     items: List<any> = fromJS([]),
-    context: WidgetContextType
+    context: WidgetEnvironment
 ): List<any> {
     // TODO(customers-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w: Map<any, any>) => {
@@ -39,7 +39,7 @@ export function itemsWithoutContext(
  * Return source paths for widgets.
  */
 export function getSourcePathFromContext(
-    context: WidgetContextType,
+    context: WidgetEnvironment,
     type = ''
 ) {
     // Using _cloneDeep so that we don't mess with the `DEFAULT_SOURCE_PATHS`
@@ -51,7 +51,7 @@ export function getSourcePathFromContext(
     // return the standalone context type
     if (!config) {
         return _cloneDeep(
-            DEFAULT_SOURCE_PATHS[WidgetContextType.Ticket][
+            DEFAULT_SOURCE_PATHS[WidgetEnvironment.Ticket][
                 STANDALONE_WIDGET_TYPE
             ]
         )
@@ -74,7 +74,7 @@ export function getSourcePathFromContext(
  */
 export function itemsWithUpdatedWidgets(
     items: List<any> = fromJS([]),
-    context: WidgetContextType,
+    context: WidgetEnvironment,
     newWidgets: List<any>
 ): List<any> {
     const otherWidgets = itemsWithoutContext(items, context)

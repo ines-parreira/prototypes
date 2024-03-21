@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {WidgetContext} from 'providers/infobar/WidgetContext'
+import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import useId from 'hooks/useId'
@@ -42,7 +42,7 @@ export function EditableListWidget({
 
     const {actionError} = useContext(ActionButtonContext)
     const {integrationId} = useContext(IntegrationContext)
-    const {data_source, widget_resource_ids} = useContext(WidgetContext)
+    const {data_source, widget_resource_ids} = useContext(ShopifyContext)
 
     const id = useId()
     const tooltipTargetID = 'editable-list-' + id + '-tooltip-target'

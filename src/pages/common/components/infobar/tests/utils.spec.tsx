@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 
 import {jsonToCovertToWidgets} from 'pages/common/components/infobar/tests/fixtures'
 import {getDateAndTimeFormat} from 'utils/datetime'
@@ -122,7 +122,7 @@ describe('widgets infobar utils', () => {
             fromJS({}),
         ]
 
-        const context = WidgetContextType.Ticket
+        const context = WidgetEnvironment.Ticket
 
         it('detection OK', () => {
             correct.forEach((input) => {
@@ -901,7 +901,7 @@ describe('widgets infobar utils', () => {
             expect(
                 utils.jsonToWidgets(
                     jsonToCovertToWidgets,
-                    WidgetContextType.Customer
+                    WidgetEnvironment.Customer
                 )
             ).toMatchSnapshot()
         })

@@ -21,7 +21,7 @@ import {
     CUSTOMER_EXTERNAL_DATA_KEY,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import daysToHours from 'utils/daysToHours'
 import hoursToSeconds from 'utils/hoursToSeconds'
 
@@ -150,7 +150,7 @@ export const TICKET_STATUSES = ['open', 'closed']
  * Widget related
  */
 export const DEFAULT_SOURCE_PATHS = {
-    [WidgetContextType.Ticket]: {
+    [WidgetEnvironment.Ticket]: {
         [CUSTOM_WIDGET_TYPE]: ['ticket', 'customer', 'data'],
         integrations: ['ticket', 'customer', 'integrations'],
         [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: [
@@ -165,7 +165,7 @@ export const DEFAULT_SOURCE_PATHS = {
             CUSTOMER_ECOMMERCE_DATA_KEY,
         ],
     },
-    [WidgetContextType.Customer]: {
+    [WidgetEnvironment.Customer]: {
         [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
         [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: [
@@ -176,7 +176,7 @@ export const DEFAULT_SOURCE_PATHS = {
         [WOOCOMMERCE_WIDGET_TYPE]: ['customer', CUSTOMER_ECOMMERCE_DATA_KEY],
     },
     //TODO(customers-migration): remove this property when we migrated widgets.
-    [WidgetContextType.User]: {
+    [WidgetEnvironment.User]: {
         [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
         [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: [

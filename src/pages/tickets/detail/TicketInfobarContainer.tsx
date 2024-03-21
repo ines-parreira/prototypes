@@ -6,7 +6,7 @@ import {useParams} from 'react-router-dom'
 import {RootState} from 'state/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as actions from 'state/widgets/actions'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {getSourcesWithCustomer, getWidgetsState} from 'state/widgets/selectors'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 
@@ -43,7 +43,7 @@ export const TicketInfobarContainer = ({
             ).toString()}
             customer={customer}
             widgets={widgets}
-            context={WidgetContextType.Ticket}
+            context={WidgetEnvironment.Ticket}
             isOnNewLayout={isOnNewLayout}
         />
     )

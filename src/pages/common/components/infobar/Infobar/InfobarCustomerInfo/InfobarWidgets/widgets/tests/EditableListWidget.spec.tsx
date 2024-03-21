@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import {ShopifyTags} from 'models/integration/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {fetchShopTags} from 'models/integration/resources/shopify'
-import {WidgetContext} from 'providers/infobar/WidgetContext'
+import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ActionButtonContext} from '../ActionButton'
 import {EditableListWidget} from '../EditableListWidget'
@@ -57,7 +57,7 @@ describe('<EditableListWidget/>', () => {
 
     it('should render an empty list because no options has been given', () => {
         const {container} = render(
-            <WidgetContext.Provider value={widgetContextValue}>
+            <ShopifyContext.Provider value={widgetContextValue}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <ActionButtonContext.Provider
                         value={actionButtonContextValue}
@@ -65,7 +65,7 @@ describe('<EditableListWidget/>', () => {
                         <EditableListWidget {...minProps} />
                     </ActionButtonContext.Provider>
                 </IntegrationContext.Provider>
-            </WidgetContext.Provider>
+            </ShopifyContext.Provider>
         )
 
         expect(container).toMatchSnapshot()
@@ -74,7 +74,7 @@ describe('<EditableListWidget/>', () => {
     it('should render a list with some tags in it', () => {
         minProps.selectedOptions = 'cool, super'
         const {container} = render(
-            <WidgetContext.Provider value={widgetContextValue}>
+            <ShopifyContext.Provider value={widgetContextValue}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <ActionButtonContext.Provider
                         value={actionButtonContextValue}
@@ -82,7 +82,7 @@ describe('<EditableListWidget/>', () => {
                         <EditableListWidget {...minProps} />
                     </ActionButtonContext.Provider>
                 </IntegrationContext.Provider>
-            </WidgetContext.Provider>
+            </ShopifyContext.Provider>
         )
 
         expect(container).toMatchSnapshot()
@@ -113,7 +113,7 @@ describe('<EditableListWidget/>', () => {
         ])('should call fetchShopTags()', (widget, tagsType) => {
             render(
                 <Provider store={mockStore(storeData)}>
-                    <WidgetContext.Provider value={widget}>
+                    <ShopifyContext.Provider value={widget}>
                         <IntegrationContext.Provider
                             value={integrationContextData}
                         >
@@ -122,7 +122,7 @@ describe('<EditableListWidget/>', () => {
                                 selectedOptions={'test1, test2'}
                             />
                         </IntegrationContext.Provider>
-                    </WidgetContext.Provider>
+                    </ShopifyContext.Provider>
                 </Provider>
             )
 

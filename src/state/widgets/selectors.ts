@@ -6,14 +6,14 @@ import {DEPRECATED_getActiveCustomer} from 'state/customers/selectors'
 import {getTicketState} from 'state/ticket/selectors'
 
 import {itemsWithContext} from './utils'
-import {WidgetContextType, WidgetsState} from './types'
+import {WidgetEnvironment, WidgetsState} from './types'
 
 export const getWidgetsState = (state: RootState): WidgetsState =>
     state.widgets || fromJS({})
 
 export const getContext = createSelector(
     getWidgetsState,
-    (state) => (state.get('currentContext') as WidgetContextType) || ''
+    (state) => (state.get('currentContext') as WidgetEnvironment) || ''
 )
 
 export const getWidgets = createSelector(
@@ -26,7 +26,7 @@ export const hasWidgets = createSelector(
     (widgets) => !widgets.isEmpty()
 )
 
-export const getWidgetsWithContext = (context?: WidgetContextType) =>
+export const getWidgetsWithContext = (context?: WidgetEnvironment) =>
     createSelector(
         getWidgets,
         getContext,
@@ -35,7 +35,7 @@ export const getWidgetsWithContext = (context?: WidgetContextType) =>
             itemsWithContext(widgets, context || currentContext)
     )
 
-export const hasWidgetsWithContext = (context?: WidgetContextType) =>
+export const hasWidgetsWithContext = (context?: WidgetEnvironment) =>
     createSelector(
         getWidgetsWithContext(context),
         (widgets) => !widgets.isEmpty()

@@ -36,7 +36,7 @@ import {Message} from './newMessage/types'
 import rootReducer from './reducers'
 import {Rule, RuleOperation, RulePriority} from './rules/types'
 import {UIState} from './ui/reducers'
-import {Widget, WidgetContextType, WidgetType} from './widgets/types'
+import {Widget, WidgetEnvironment, WidgetType} from './widgets/types'
 import {TwilioState} from './twilio/types'
 import {Notification} from './notifications/types'
 import {QueriesState} from './queries/types'
@@ -181,7 +181,7 @@ export type GorgiasAction = {
     discreet?: boolean
     counts?: Record<string, unknown>
     items?: Widget[]
-    context?: WidgetContextType
+    context?: WidgetEnvironment
     group?: string
     eventType?: 'add' | 'update'
     key?: string

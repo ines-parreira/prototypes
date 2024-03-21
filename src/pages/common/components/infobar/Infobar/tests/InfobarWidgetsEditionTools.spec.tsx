@@ -3,7 +3,7 @@ import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 
 import {StoreDispatch} from 'state/types'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 
 import {InfobarWidgetsEditionTools} from '../InfobarWidgetsEditionTools'
 
@@ -17,7 +17,7 @@ const commonProps: ComponentProps<typeof InfobarWidgetsEditionTools> = {
         },
     }),
     dispatch: jest.fn() as StoreDispatch,
-    context: WidgetContextType.Ticket,
+    context: WidgetEnvironment.Ticket,
 }
 
 describe('InfobarWidgetsEditionTools component', () => {

@@ -15,7 +15,7 @@ import * as customersActions from 'state/customers/actions'
 import {setCustomer} from 'state/ticket/actions'
 import * as widgetsActions from 'state/widgets/actions'
 import history from 'pages/history'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {ApiListResponsePagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -44,7 +44,7 @@ import InfobarCustomerActions from './InfobarCustomerActions'
 import {ActionButtonContext} from './InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 
 type Props = {
-    context: WidgetContextType
+    context: WidgetEnvironment
     customer: Map<any, any>
     identifier?: string
     isRouteEditingWidgets: boolean

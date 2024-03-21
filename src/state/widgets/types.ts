@@ -8,13 +8,11 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
-export enum WidgetContextType {
+export enum WidgetEnvironment {
     Ticket = 'ticket',
     Customer = 'customer',
     User = 'user',
 }
-
-export type WidgetContext = WidgetContextType | string
 
 export type WidgetType =
     | IntegrationType
@@ -26,7 +24,7 @@ export type WidgetType =
 export type Widget = {
     order: number
     type: WidgetType
-    context: WidgetContextType
+    context: WidgetEnvironment
     template: PartialTemplate
     created_datetime: string
     deactivated_datetime: Maybe<string>

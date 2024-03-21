@@ -2,7 +2,7 @@ import React, {useContext, useMemo} from 'react'
 import {Map} from 'immutable'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {WidgetContext} from 'providers/infobar/WidgetContext'
+import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
 import {InfobarAction} from '../../types'
 import {ShopifyActionType} from '../types'
@@ -22,7 +22,7 @@ type AfterTitleProps = {
 }
 
 export function AfterTitle({source}: AfterTitleProps) {
-    const {widget_resource_ids} = useContext(WidgetContext)
+    const {widget_resource_ids} = useContext(ShopifyContext)
     const payload = useMemo(() => {
         return {order_id: widget_resource_ids.target_id}
     }, [widget_resource_ids])

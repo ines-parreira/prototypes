@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import {agents} from 'fixtures/agents'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {startEditionMode, stopEditionMode} from 'state/widgets/actions'
 import {
     search,
@@ -116,7 +116,7 @@ jest.mock('hooks/useSearchRankScenario')
 ).mockImplementation(() => mockSearchRank)
 
 const commonProps: ComponentProps<typeof Infobar> = {
-    context: WidgetContextType.Ticket,
+    context: WidgetEnvironment.Ticket,
     customer: fromJS({
         id: 2,
     }),
@@ -174,7 +174,7 @@ describe('<Infobar/>', () => {
             <Provider store={store}>
                 <Infobar
                     {...commonProps}
-                    context={WidgetContextType.Customer}
+                    context={WidgetEnvironment.Customer}
                 />
             </Provider>
         )

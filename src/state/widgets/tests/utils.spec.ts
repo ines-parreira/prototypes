@@ -1,4 +1,4 @@
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
@@ -8,7 +8,7 @@ import {getSourcePathFromContext} from '../utils'
 describe('getSourcePathFromContext()', () => {
     it('should render defaultSourcePath for ticket context because unknown context type', () => {
         const sourcePath = getSourcePathFromContext(
-            'some_random_context' as WidgetContextType,
+            'some_random_context' as WidgetEnvironment,
             ''
         )
 
@@ -17,7 +17,7 @@ describe('getSourcePathFromContext()', () => {
 
     it('should render values of config because unknown widget type', () => {
         const sourcePath = getSourcePathFromContext(
-            WidgetContextType.Ticket,
+            WidgetEnvironment.Ticket,
             ''
         )
 
@@ -26,14 +26,14 @@ describe('getSourcePathFromContext()', () => {
 
     it('should not append to the same array', () => {
         const sourcePath = getSourcePathFromContext(
-            WidgetContextType.Ticket,
+            WidgetEnvironment.Ticket,
             CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
         ) as string[]
 
         sourcePath.push('1')
 
         const sourcePath2 = getSourcePathFromContext(
-            WidgetContextType.Ticket,
+            WidgetEnvironment.Ticket,
             CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
         ) as string[]
 
@@ -45,25 +45,25 @@ describe('getSourcePathFromContext()', () => {
 
     it('should render the sourcePath for standalone widget because of wrong widget type', () => {
         const sourcePath = getSourcePathFromContext(
-            WidgetContextType.Ticket,
+            WidgetEnvironment.Ticket,
             'abc_random_widget_type'
         )
 
         expect(sourcePath).toMatchSnapshot()
     })
     it.each([
-        [WidgetContextType.Ticket, CUSTOM_WIDGET_TYPE],
-        [WidgetContextType.Ticket, 'integrations'],
-        [WidgetContextType.Ticket, CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE],
-        [WidgetContextType.Customer, CUSTOM_WIDGET_TYPE],
-        [WidgetContextType.Customer, 'integrations'],
-        [WidgetContextType.Customer, CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE],
-        [WidgetContextType.User, CUSTOM_WIDGET_TYPE],
-        [WidgetContextType.User, 'integrations'],
-        [WidgetContextType.User, CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE],
+        [WidgetEnvironment.Ticket, CUSTOM_WIDGET_TYPE],
+        [WidgetEnvironment.Ticket, 'integrations'],
+        [WidgetEnvironment.Ticket, CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE],
+        [WidgetEnvironment.Customer, CUSTOM_WIDGET_TYPE],
+        [WidgetEnvironment.Customer, 'integrations'],
+        [WidgetEnvironment.Customer, CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE],
+        [WidgetEnvironment.User, CUSTOM_WIDGET_TYPE],
+        [WidgetEnvironment.User, 'integrations'],
+        [WidgetEnvironment.User, CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE],
     ])(
         'should render the correct sourcePath',
-        (widgetContextType: WidgetContextType, widgetType: string) => {
+        (widgetContextType: WidgetEnvironment, widgetType: string) => {
             const sourcePath = getSourcePathFromContext(
                 widgetContextType,
                 widgetType

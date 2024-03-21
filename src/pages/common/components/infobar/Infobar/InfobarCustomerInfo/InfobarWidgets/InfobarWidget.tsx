@@ -7,7 +7,10 @@ import {
     stringifyRawData,
 } from 'pages/common/components/infobar/utils'
 import {EditionContext} from 'providers/infobar/EditionContext'
-import {WidgetContext, WidgetContextType} from 'providers/infobar/WidgetContext'
+import {
+    ShopifyContext,
+    ShopifyContextType,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import {HiddenField} from 'Infobar/features/Card/display/CardEditForm'
 import {
     HTTP_WIDGET_TYPE,
@@ -92,7 +95,7 @@ export default function InfobarWidget({
 
     // Setting context
     let data_source = '' // type of object we are editing in widget, e.g. Customer | Order ...
-    let widget_resource_ids: WidgetContextType['widget_resource_ids'] = {
+    let widget_resource_ids: ShopifyContextType['widget_resource_ids'] = {
         target_id: null,
         customer_id: null,
     }
@@ -196,13 +199,13 @@ export default function InfobarWidget({
     }
 
     return (
-        <WidgetContext.Provider
+        <ShopifyContext.Provider
             value={{
                 data_source: data_source,
                 widget_resource_ids: widget_resource_ids,
             }}
         >
             {component}
-        </WidgetContext.Provider>
+        </ShopifyContext.Provider>
     )
 }

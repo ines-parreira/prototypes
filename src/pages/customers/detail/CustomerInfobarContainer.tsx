@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import {InfobarState} from 'state/infobar/types'
 import * as actions from 'state/widgets/actions'
-import {WidgetContextType} from 'state/widgets/types'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {
     DEPRECATED_getActiveCustomer,
     getActiveCustomerId,
@@ -27,7 +27,7 @@ export const CustomerInfobarContainer = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(actions.selectContext(WidgetContextType.Customer))
+        dispatch(actions.selectContext(WidgetEnvironment.Customer))
         void dispatch(actions.fetchWidgets())
     }, [dispatch])
 
@@ -44,7 +44,7 @@ export const CustomerInfobarContainer = ({
             identifier={identifier}
             customer={activeCustomer}
             widgets={widgets}
-            context={WidgetContextType.Customer}
+            context={WidgetEnvironment.Customer}
         />
     )
 }

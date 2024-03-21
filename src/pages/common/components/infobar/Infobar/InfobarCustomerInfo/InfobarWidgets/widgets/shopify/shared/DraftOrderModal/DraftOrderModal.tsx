@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 
-import {WidgetContext} from 'providers/infobar/WidgetContext'
+import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import {Product, Variant} from 'constants/integrations/types/shopify'
 import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
 import {
@@ -88,7 +88,7 @@ export function DraftOrderModalContainer({
     ConnectedProps<typeof connector>) {
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
-    const {widget_resource_ids} = useContext(WidgetContext)
+    const {widget_resource_ids} = useContext(ShopifyContext)
     const modalRef = useRef<HTMLDivElement>(null)
 
     const currentIntegration = useMemo(

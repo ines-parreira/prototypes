@@ -1,4 +1,4 @@
-import {Widget, WidgetContextType} from 'state/widgets/types'
+import {Widget, WidgetEnvironment} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
 
 export const shopifyWidgetFixture: Widget = {
@@ -6,7 +6,7 @@ export const shopifyWidgetFixture: Widget = {
     deactivated_datetime: null,
     uri: '/api/widgets/70/',
     order: 0,
-    context: WidgetContextType.User,
+    context: WidgetEnvironment.User,
     created_datetime: '2022-07-29T23:19:00.306812+00:00',
     app_id: null,
     template: {
@@ -157,7 +157,7 @@ export const httpWidgetFixture: Widget = {
     deactivated_datetime: null,
     uri: '/api/widgets/79/',
     order: 5,
-    context: WidgetContextType.User,
+    context: WidgetEnvironment.User,
     created_datetime: '2022-08-05T10:45:53.951255+00:00',
     app_id: null,
     template: {
@@ -187,7 +187,7 @@ export const externalDataWidgetFixture: Widget = {
     deactivated_datetime: null,
     uri: '/api/widgets/72/',
     order: 1,
-    context: WidgetContextType.User,
+    context: WidgetEnvironment.User,
     created_datetime: '2022-08-02T15:37:05.230566+00:00',
     app_id: '6193d9874c836e5cace49e11',
     template: {
