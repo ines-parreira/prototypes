@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {
+    shopifyBoolean,
     shopifyDateMetafield,
     shopifyDateTimeMetafield,
     shopifyFileReference,
@@ -129,6 +130,16 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.getByText(`gid://shopify/Metaobject/79372845099`))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyBoolean', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyBoolean()} />
+                </Provider>
+            )
+            expect(screen.getByText(`true`))
             expect(screen.getByRole('button'))
         })
     })

@@ -4,6 +4,7 @@ import {ShopifyMetafield} from '@gorgias/api-types'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import Badge from 'gorgias-design-system/Badge/Badge'
 import css from './Metafield.less'
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 export default function Metafield({metafield}: Props) {
     const namespace = metafield.namespace || ''
     const key = metafield.key || ''
+    const label = namespace ? `${namespace}.${key}` : key
 
     switch (metafield.type) {
         case 'url':
@@ -22,22 +24,27 @@ export default function Metafield({metafield}: Props) {
         case 'file_reference':
         case 'metaobject_reference':
         case 'mixed_reference': {
-            return (
-                <FieldWithCopyButton
-                    label={`${namespace}.${key}`}
-                    value={metafield.value}
-                />
-            )
+            return <FieldWithCopyButton label={label} value={metafield.value} />
         }
 
         case 'date':
         case 'date_time': {
             return (
-                <FieldWithCopyButton
-                    label={`${namespace}.${key}`}
-                    value={metafield.value}
-                >
+                <FieldWithCopyButton label={label} value={metafield.value}>
                     <DatetimeLabel dateTime={metafield.value} />
+                </FieldWithCopyButton>
+            )
+        }
+
+        case 'boolean': {
+            const value = metafield.value ? 'true' : 'false'
+            return (
+                <FieldWithCopyButton label={label} value={value}>
+                    <Badge
+                        label={value}
+                        color={'accessoryGreen'}
+                        className={css.badge}
+                    />
                 </FieldWithCopyButton>
             )
         }

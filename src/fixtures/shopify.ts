@@ -1,4 +1,5 @@
 import {
+    BooleanShopifyMetafield,
     DateShopifyMetafield,
     DateTimeShopifyMetafield,
     FileReferenceShopifyMetafield,
@@ -1632,4 +1633,11 @@ export const shopifyMixedReference = (): MixedReferenceShopifyMetafield => ({
     key: 'test_mixed',
     value: 'gid://shopify/Metaobject/79372845099',
     type: 'mixed_reference',
+})
+
+export const shopifyBoolean = (): BooleanShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_boolean',
+    value: true,
+    type: 'boolean',
 })
