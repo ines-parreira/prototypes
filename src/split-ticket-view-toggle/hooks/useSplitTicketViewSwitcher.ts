@@ -57,6 +57,10 @@ export default function useSplitTicketViewSwitcher() {
 
         previousIsSplitTicketViewEnabled.current = isSplitTicketViewEnabled
 
+        if (path.match(/^\/app\/ticket\/\d+\/edit-widgets$/)) {
+            return
+        }
+
         if (!isSplitTicketViewEnabled) {
             if (ticketId) {
                 history.replace(`/app/ticket/${ticketId}`)
@@ -73,10 +77,6 @@ export default function useSplitTicketViewSwitcher() {
                 return
             }
 
-            return
-        }
-
-        if (path.match(/^\/app\/ticket\/\d+\/edit-widgets$/)) {
             return
         }
 
