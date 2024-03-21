@@ -4,30 +4,6 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
 <div
   class="tags"
 >
-  <span
-    class="badge-tag tagLabel badge badge-secondary"
-  >
-    <span>
-      tag1
-      <i
-        class="remove material-icons cursor-pointer ml-1"
-      >
-        close
-      </i>
-    </span>
-  </span>
-  <span
-    class="badge-tag tagLabel badge badge-secondary"
-  >
-    <span>
-      tag2
-      <i
-        class="remove material-icons cursor-pointer ml-1"
-      >
-        close
-      </i>
-    </span>
-  </span>
   <div
     class="addTags dropdown"
   >
@@ -37,11 +13,16 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
       class="addTag btn btn-secondary btn-sm"
       type="button"
     >
-      <i
-        class="material-icons md-1 align-middle"
+      <span
+        class="wrapper"
       >
-        add
-      </i>
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          add
+        </i>
+        Add tags
+      </span>
     </button>
     <div
       aria-hidden="true"
@@ -80,5 +61,29 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
       />
     </div>
   </div>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+  >
+    <span>
+      tag1
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+  >
+    <span>
+      tag2
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
 </div>
 `;

@@ -19,6 +19,7 @@ import shortcutManager from 'services/shortcutManager'
 import {TagLabel} from 'pages/common/utils/labels'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import TextInput from 'pages/common/forms/input/TextInput'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './TicketTags.less'
 
@@ -249,65 +250,25 @@ export class TicketTags extends Component<Props, State> {
                     [css.right]: right,
                 })}
             >
-                {ticketTags
-                    .sort((a: Map<any, any>, b: Map<any, any>) => {
-                        const first = (a.get('name') as string).toLowerCase()
-                        const second = (b.get('name') as string).toLowerCase()
-
-                        return first > second ? 1 : second > first ? -1 : 0
-                    })
-                    .map((tag: Map<any, any>, i) => (
-                        <TagLabel
-                            key={i}
-                            decoration={tag.get('decoration')}
-                            className={css.tagLabel}
-                        >
-                            <span>
-                                {tag.get('name')}
-                                {!this.props.disabled && (
-                                    <i
-                                        className={classnames(
-                                            css.remove,
-                                            'material-icons cursor-pointer ml-1'
-                                        )}
-                                        onClick={() =>
-                                            removeTag(tag.get('name') as string)
-                                        }
-                                    >
-                                        close
-                                    </i>
-                                )}
-                            </span>
-                        </TagLabel>
-                    ))}
-
                 {!this.props.disabled && (
                     <Dropdown
                         className={css.addTags}
                         isOpen={this.state.dropdownOpen}
                         toggle={this.toggle}
                         group={false}
-                        key={+this.state.isLoading} //Force re-render so dropdown position is correct
                     >
                         <DropdownToggle
-                            color="secondary"
-                            type="button"
                             size="sm"
                             className={classnames(
                                 {
-                                    'btn-transparent': transparent,
+                                    [css.transparent]: transparent,
                                 },
                                 css.addTag
                             )}
                         >
-                            <i className="material-icons md-1 align-middle">
-                                add
-                            </i>
-                            {!ticketTags.size && (
-                                <strong className="ml-1 align-middle">
-                                    Add tags
-                                </strong>
-                            )}
+                            <ButtonIconLabel icon="add">
+                                Add tags
+                            </ButtonIconLabel>
                         </DropdownToggle>
                         <TagDropdownMenu
                             right={!!right}
@@ -339,6 +300,37 @@ export class TicketTags extends Component<Props, State> {
                         </TagDropdownMenu>
                     </Dropdown>
                 )}
+                {ticketTags
+                    .sort((a: Map<any, any>, b: Map<any, any>) => {
+                        const first = (a.get('name') as string).toLowerCase()
+                        const second = (b.get('name') as string).toLowerCase()
+
+                        return first > second ? 1 : second > first ? -1 : 0
+                    })
+                    .map((tag: Map<any, any>, i) => (
+                        <TagLabel
+                            key={i}
+                            decoration={tag.get('decoration')}
+                            className={css.tagLabel}
+                        >
+                            <span>
+                                {tag.get('name')}
+                                {!this.props.disabled && (
+                                    <i
+                                        className={classnames(
+                                            css.remove,
+                                            'material-icons cursor-pointer ml-1'
+                                        )}
+                                        onClick={() =>
+                                            removeTag(tag.get('name') as string)
+                                        }
+                                    >
+                                        close
+                                    </i>
+                                )}
+                            </span>
+                        </TagLabel>
+                    ))}
             </div>
         )
     }

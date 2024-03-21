@@ -4,42 +4,6 @@ exports[`TicketTags component should display current tags 1`] = `
 <div
   class="tags"
 >
-  <span
-    class="badge-tag tagLabel badge badge-secondary"
-  >
-    <span>
-      angry
-      <i
-        class="remove material-icons cursor-pointer ml-1"
-      >
-        close
-      </i>
-    </span>
-  </span>
-  <span
-    class="badge-tag tagLabel badge badge-secondary"
-  >
-    <span>
-      refund
-      <i
-        class="remove material-icons cursor-pointer ml-1"
-      >
-        close
-      </i>
-    </span>
-  </span>
-  <span
-    class="badge-tag tagLabel badge badge-secondary"
-  >
-    <span>
-      return
-      <i
-        class="remove material-icons cursor-pointer ml-1"
-      >
-        close
-      </i>
-    </span>
-  </span>
   <div
     class="addTags dropdown"
   >
@@ -49,11 +13,16 @@ exports[`TicketTags component should display current tags 1`] = `
       class="addTag btn btn-secondary btn-sm"
       type="button"
     >
-      <i
-        class="material-icons md-1 align-middle"
+      <span
+        class="wrapper"
       >
-        add
-      </i>
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          add
+        </i>
+        Add tags
+      </span>
     </button>
     <div
       aria-hidden="true"
@@ -92,5 +61,41 @@ exports[`TicketTags component should display current tags 1`] = `
       />
     </div>
   </div>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+  >
+    <span>
+      angry
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+  >
+    <span>
+      refund
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+  >
+    <span>
+      return
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
 </div>
 `;
