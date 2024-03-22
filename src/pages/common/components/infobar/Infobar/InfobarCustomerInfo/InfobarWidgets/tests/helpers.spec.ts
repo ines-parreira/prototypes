@@ -8,6 +8,7 @@ import {
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
+import {WidgetType} from 'state/widgets/types'
 
 import {getWidgetId, getWidgetTitle, LABELS} from '../helpers'
 
@@ -142,7 +143,7 @@ describe('helpers tests', () => {
                 expect(
                     getWidgetTitle({
                         ...baseProps,
-                        widgetType: IntegrationType.Phone,
+                        widgetType: IntegrationType.Phone as WidgetType,
                     })
                 ).toBe(humanizeString(IntegrationType.Phone))
             })

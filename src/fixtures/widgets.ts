@@ -1,4 +1,6 @@
+import {IntegrationType} from 'models/integration/constants'
 import {CardTemplate, ListTemplate, LeafTemplate} from 'models/widget/types'
+import {Widget, WidgetEnvironment} from 'state/widgets/types'
 
 export const cardTemplate: CardTemplate = {
     widgets: [
@@ -179,13 +181,12 @@ export const listTemplate: ListTemplate = {
     templatePath: '0.template.widgets.1',
 }
 
-export const shopifyWidget = {
-    deleted_datetime: null,
+export const shopifyWidget: Widget = {
     integration_id: null,
     deactivated_datetime: null,
     uri: '/api/widgets/2/',
     order: 0,
-    context: 'ticket',
+    context: WidgetEnvironment.Ticket,
     created_datetime: '2017-08-17T22:46:50.922473+00:00',
     template: {
         type: 'wrapper',
@@ -205,7 +206,7 @@ export const shopifyWidget = {
             listTemplate,
         ],
     },
-    type: 'shopify',
+    type: IntegrationType.Shopify,
     id: 2,
     updated_datetime: '2017-08-17T23:33:46.991886+00:00',
 }

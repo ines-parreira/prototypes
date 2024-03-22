@@ -30,6 +30,7 @@ import InfobarWidget from './InfobarWidget'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from './widgetReference'
+import {WidgetContextProvider} from './WidgetContext'
 
 widgetReference.Widget = InfobarWidget
 
@@ -168,7 +169,11 @@ const InfobarWidgets = ({
                         )
                     }
                 >
-                    {renderWidgets({source, isEditing, preparedDisplayList})}
+                    <Widgets
+                        source={source}
+                        isEditing={isEditing}
+                        preparedDisplayList={preparedDisplayList}
+                    />
                 </div>
             </DragWrapper>
         </>
@@ -177,7 +182,8 @@ const InfobarWidgets = ({
 
 export default memo(InfobarWidgets)
 
-function renderWidgets({
+// This is where we remove immutable and start using plain JS objects for now
+function Widgets({
     source,
     isEditing,
     preparedDisplayList,
@@ -192,55 +198,53 @@ function renderWidgets({
 
     // We create the components separately from the rest of the function because we want to assign `templatePath`
     // AFTER having sorted the results by `widget.order`.
-    return preparedDisplayList.map((item = fromJS({}), index) => {
-        if (typeof index === 'undefined') return null
+    return preparedDisplayList
+        .map((item = fromJS({}), index) => {
+            if (typeof index === 'undefined') return null
 
-        const newItem = item.set(
-            'template',
-            (item.get('template') as Map<string, unknown>).set(
-                'templatePath',
-                `${index}.template`
-            )
-        )
+            const template = {
+                ...((
+                    item.get('template') as Map<unknown, unknown>
+                ).toJS() as Template),
+                templatePath: `${index}.template`,
+            }
+            const passedSource = source.getIn(
+                template.absolutePath || [],
+                source
+            ) as Map<string, unknown>
+            const widget = item.get('widget') as Map<string, unknown>
 
-        const passedSource = source.getIn(
-            newItem.getIn(['template', 'absolutePath'], []),
-            source
-        ) as Map<string, unknown>
+            if (item.get('type') === 'placeholder') {
+                return (
+                    <WidgetContextProvider
+                        value={widget}
+                        key={`${
+                            template.absolutePath?.join('.') || ''
+                        }-${index}`}
+                    >
+                        <Placeholder
+                            isEditing={isEditing}
+                            source={passedSource}
+                            template={template}
+                        />
+                    </WidgetContextProvider>
+                )
+            }
 
-        if (item.get('type') === 'placeholder') {
             return (
-                <Placeholder
-                    isEditing={isEditing}
-                    key={`${(
-                        newItem.getIn(
-                            ['template', 'absolutePath'],
-                            []
-                        ) as string[]
-                    ).toString()}-${index}`}
-                    source={passedSource}
-                    widget={newItem.get('widget') as Map<string, unknown>}
-                    template={newItem.get('template') as Map<any, any>}
-                />
+                <WidgetContextProvider
+                    value={widget}
+                    key={`${template.absolutePath?.join('.') || ''}-${index}`}
+                >
+                    <InfobarWidget
+                        source={passedSource}
+                        template={template}
+                        isOpen={item.get('open') as boolean}
+                    />
+                </WidgetContextProvider>
             )
-        }
-
-        return (
-            <InfobarWidget
-                key={`${(
-                    newItem.getIn(['template', 'absolutePath'], []) as string[]
-                ).toString()}-${index}`}
-                source={passedSource}
-                widget={newItem.get('widget') as Map<string, unknown>}
-                template={
-                    (
-                        newItem.get('template') as Map<unknown, unknown>
-                    ).toJS() as Template
-                }
-                isOpen={newItem.get('open') as boolean}
-            />
-        )
-    })
+        })
+        .toJS() as React.JSX.Element
 }
 
 function getPreparedDisplayList({

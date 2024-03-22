@@ -27,6 +27,7 @@ import InfobarWidgets from '../InfobarWidgets'
 import {widgetReference} from '../widgetReference'
 import InfobarWidget from '../InfobarWidget'
 import Placeholder from '../widgets/Placeholder'
+import {WidgetContextProvider} from '../WidgetContext'
 
 // mock InfobarWidget component
 jest.mock('../InfobarWidget', () => ({
@@ -39,8 +40,18 @@ jest.mock('../widgets/Placeholder', () => ({
     default: jest.fn(() => <div>Placeholder</div>),
 }))
 
+jest.mock(
+    '../WidgetContext',
+    () =>
+        ({
+            ...jest.requireActual('../WidgetContext'),
+            WidgetContextProvider: jest.fn(({children}) => <>{children}</>),
+        } as Record<string, unknown>)
+)
+
 const mockedInfobarWidget = assumeMock(InfobarWidget)
 const mockedPlaceholder = assumeMock(Placeholder)
+const mockedWidgetContextProvider = assumeMock(WidgetContextProvider)
 
 describe('InfobarWidgets component', () => {
     beforeEach(() => {
@@ -326,21 +337,21 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
 
-        expect(mockedInfobarWidget.mock.calls[0][0].widget.get('type')).toEqual(
-            baseWidgets.getIn(['0', 'type'])
-        )
-        expect(mockedInfobarWidget.mock.calls[1][0].widget.get('type')).toEqual(
-            baseWidgets.getIn(['1', 'type'])
-        )
-        expect(mockedInfobarWidget.mock.calls[2][0].widget.get('type')).toEqual(
-            baseWidgets.getIn(['2', 'type'])
-        )
-        expect(mockedInfobarWidget.mock.calls[3][0].widget.get('type')).toEqual(
-            baseWidgets.getIn(['5', 'type'])
-        )
-        expect(mockedInfobarWidget.mock.calls[4][0].widget.get('type')).toEqual(
-            baseWidgets.getIn(['6', 'type'])
-        )
+        expect(
+            mockedWidgetContextProvider.mock.calls[0][0].value.get('type')
+        ).toEqual(baseWidgets.getIn(['0', 'type']))
+        expect(
+            mockedWidgetContextProvider.mock.calls[1][0].value.get('type')
+        ).toEqual(baseWidgets.getIn(['1', 'type']))
+        expect(
+            mockedWidgetContextProvider.mock.calls[2][0].value.get('type')
+        ).toEqual(baseWidgets.getIn(['2', 'type']))
+        expect(
+            mockedWidgetContextProvider.mock.calls[3][0].value.get('type')
+        ).toEqual(baseWidgets.getIn(['5', 'type']))
+        expect(
+            mockedWidgetContextProvider.mock.calls[4][0].value.get('type')
+        ).toEqual(baseWidgets.getIn(['6', 'type']))
         expect(mockedInfobarWidget.mock.calls.length).toEqual(5)
     })
 

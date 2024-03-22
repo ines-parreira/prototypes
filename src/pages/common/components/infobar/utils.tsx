@@ -424,7 +424,7 @@ export function jsonToWidgets(
     json: Record<string, unknown>,
     context = WidgetEnvironment.Ticket
 ) {
-    const defaultWidgets: Map<any, any>[] = []
+    const defaultWidgets: Map<string, unknown>[] = []
 
     try {
         const dataSourcePaths = [

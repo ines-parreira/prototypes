@@ -1,6 +1,7 @@
 import React, {useContext, ElementType} from 'react'
 import {fromJS, Map, List} from 'immutable'
 
+import {IntegrationType} from 'models/integration/constants'
 import {
     guessFieldValueFromRawData,
     updateAbsolutePathAndData,
@@ -13,15 +14,10 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import {HiddenField} from 'Infobar/features/Card/display/CardEditForm'
 import {
-    HTTP_WIDGET_TYPE,
-    MAGENTO2_WIDGET_TYPE,
-    RECHARGE_WIDGET_TYPE,
-    SHOPIFY_WIDGET_TYPE,
-    SMILE_WIDGET_TYPE,
-    YOTPO_WIDGET_TYPE,
-    BIGCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    CUSTOM_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import Card from 'Infobar/features/Card'
 import Field from 'Infobar/features/Field'
@@ -38,16 +34,17 @@ import bigcommerce from './widgets/bigcommerce'
 import woocommerce from './widgets/woocommerce'
 import {infobarWidgetShouldRender} from './predicates'
 import {WidgetProps} from './widgetReference'
+import {WidgetContext} from './WidgetContext'
 
 export default function InfobarWidget({
     parent,
     source,
-    widget,
     template,
     isOpen = false,
     hasNoBorderTop = false,
 }: WidgetProps) {
     const {isEditing} = useContext(EditionContext)
+    const widget = useContext(WidgetContext)
     if (!infobarWidgetShouldRender(source)) {
         return null
     }
@@ -59,14 +56,18 @@ export default function InfobarWidget({
 
     const isParentList = (parent && parent.type === 'list') || false
     const extensionMethodsByType = {
-        [SHOPIFY_WIDGET_TYPE]: shopify,
-        [RECHARGE_WIDGET_TYPE]: recharge,
-        [SMILE_WIDGET_TYPE]: smile,
-        [MAGENTO2_WIDGET_TYPE]: magento2,
-        [HTTP_WIDGET_TYPE]: http,
-        [YOTPO_WIDGET_TYPE]: yotpo,
-        [BIGCOMMERCE_WIDGET_TYPE]: bigcommerce,
+        [IntegrationType.Shopify]: shopify,
+        [IntegrationType.Recharge]: recharge,
+        [IntegrationType.Smile]: smile,
+        [IntegrationType.Magento2]: magento2,
+        [IntegrationType.Http]: http,
+        [IntegrationType.Yotpo]: yotpo,
+        [IntegrationType.BigCommerce]: bigcommerce,
+        [IntegrationType.Klaviyo]: undefined,
         [WOOCOMMERCE_WIDGET_TYPE]: woocommerce,
+        [CUSTOM_WIDGET_TYPE]: undefined,
+        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: undefined,
+        [STANDALONE_WIDGET_TYPE]: undefined,
     }
 
     const passedData = {
@@ -83,12 +84,7 @@ export default function InfobarWidget({
         Wrapper?: ElementType
         editionHiddenFields?: HiddenField[]
     } = {}
-    const extensionMethod =
-        extensionMethodsByType[
-            (widget as Map<string, keyof typeof extensionMethodsByType>).get(
-                'type'
-            )
-        ]
+    const extensionMethod = extensionMethodsByType[widget.type]
     if (extensionMethod) {
         extension = extensionMethod(passedData as any)
     }
@@ -129,7 +125,6 @@ export default function InfobarWidget({
             component = (
                 <Wrapper
                     source={data || fromJS({})}
-                    widget={widget}
                     template={updatedTemplate}
                 />
             )
@@ -145,7 +140,6 @@ export default function InfobarWidget({
                             Map<string, unknown>
                         >
                     }
-                    widget={widget}
                     template={updatedTemplate}
                     hasNoBorderTop={hasNoBorderTop}
                 />
@@ -154,7 +148,7 @@ export default function InfobarWidget({
         }
         case 'card': {
             data = fromJS(data || {})
-            if (widget.get('type') !== STANDALONE_WIDGET_TYPE) {
+            if (widget.type !== STANDALONE_WIDGET_TYPE) {
                 if (!Map.isMap(data)) {
                     return null
                 }
@@ -169,7 +163,6 @@ export default function InfobarWidget({
                     isEditing={isEditing}
                     isParentList={isParentList}
                     source={data}
-                    widget={widget}
                     template={updatedTemplate}
                     parent={parent}
                     isOpen={isOpen || !isParentList}
@@ -185,12 +178,7 @@ export default function InfobarWidget({
                 <Field
                     isEditing={isEditing}
                     type={type}
-                    value={guessFieldValueFromRawData(
-                        data,
-                        type,
-                        widget.get('type') as string
-                    )}
-                    widget={widget}
+                    value={guessFieldValueFromRawData(data, type, widget.type)}
                     template={updatedTemplate}
                     copyableValue={stringifyRawData(data, type)}
                 />

@@ -4,13 +4,14 @@ import {fromJS, List, Map} from 'immutable'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {Template} from 'models/widget/types'
 
+import {WidgetContextProvider} from '../infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 import css from './Widgets.less'
 import Widget from './Widget'
 import {widgetReference} from './widgetReference'
 
 type Props = {
     source: Map<string, unknown>
-    widgets: List<Map<string, unknown>>
+    widgets: Map<string, unknown>[]
 }
 
 // This is to avoid circular dependencies while doing recursion
@@ -46,12 +47,16 @@ export default function Widgets({source, widgets}: Props) {
                     passedTemplate.absolutePath = sourcePath
 
                     return (
-                        <Widget
+                        <WidgetContextProvider
                             key={`${sourcePath.join('-')}-${i.toString()}`}
-                            source={source.getIn(sourcePath, source)}
-                            widget={widget}
-                            template={passedTemplate}
-                        />
+                            value={widget}
+                        >
+                            <Widget
+                                key={`${sourcePath.join('-')}-${i.toString()}`}
+                                source={source.getIn(sourcePath, source)}
+                                template={passedTemplate}
+                            />
+                        </WidgetContextProvider>
                     )
                 })}
             </div>

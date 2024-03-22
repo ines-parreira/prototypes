@@ -9,6 +9,8 @@ import {
     jsonToTemplate,
     makeWrapper,
 } from 'pages/common/components/infobar/utils'
+import {IntegrationType} from 'models/integration/constants'
+
 import {GorgiasAction} from '../types'
 
 import {
@@ -255,7 +257,7 @@ export default function reducer(
                         const typeAlreadyPresent =
                             // Allow a single widget of each type excluding the mentioned
                             ![
-                                types.HTTP_WIDGET_TYPE,
+                                IntegrationType.Http,
                                 types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
                                 types.STANDALONE_WIDGET_TYPE,
                                 types.WOOCOMMERCE_WIDGET_TYPE,
@@ -272,7 +274,7 @@ export default function reducer(
                         // of the same type if they don't have the same integration_id
                         const integrationIdAlreadyPresent =
                             [
-                                types.HTTP_WIDGET_TYPE,
+                                IntegrationType.Http,
                                 types.WOOCOMMERCE_WIDGET_TYPE,
                             ].includes(type) &&
                             widget.get('type') === type &&

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
@@ -10,9 +10,9 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import {WrapperTemplate} from 'models/widget/types'
 import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
-import {WidgetType} from 'state/widgets/types'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
@@ -20,16 +20,16 @@ import css from './Wrapper.less'
 
 type Props = {
     source: Map<string, unknown>
-    widget: Map<string, unknown>
     template: WrapperTemplate
 }
 
-export default function Wrapper({widget, template, source}: Props) {
+export default function Wrapper({template, source}: Props) {
+    const widget = useContext(WidgetContext)
     const SourceWidget = widgetReference.Widget
     const absolutePath = template.absolutePath || []
     const templatePath = template.templatePath || ''
     const children = template.widgets
-    const widgetType = widget.get('type') as WidgetType
+    const widgetType = widget.type
 
     let integrationId: number | undefined | string
     if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
@@ -54,7 +54,7 @@ export default function Wrapper({widget, template, source}: Props) {
         source: source?.toJS(),
         template: template,
         widgetType: widgetType,
-        appId: widget.get('app_id') as string | undefined,
+        appId: widget.app_id,
         integration: integration?.toJS(),
     })
 
@@ -94,7 +94,6 @@ export default function Wrapper({widget, template, source}: Props) {
                                         source={source}
                                         parent={template}
                                         template={passedTemplate}
-                                        widget={widget}
                                     />
                                 )
                             })}

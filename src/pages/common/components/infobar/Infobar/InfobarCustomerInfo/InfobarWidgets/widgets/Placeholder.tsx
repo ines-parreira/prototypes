@@ -1,48 +1,50 @@
-import React, {Component, MouseEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {MouseEvent, useContext} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import {Template} from 'models/widget/types'
 import {getIntegrationById} from 'state/integrations/selectors'
 import {removeEditedWidget} from 'state/widgets/actions'
-import {RootState} from 'state/types'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 
+import {WidgetContext} from '../WidgetContext'
 import css from './Placeholder.less'
 
 const PLACEHOLDER_ACCENT_COLOR = 'var(--neutral-grey-4)'
 
-type OwnProps = {
+type Props = {
     source: Map<any, any>
-    widget: Map<any, any>
-    template: Map<any, any>
+    template: Template
     isEditing?: boolean
 }
 
-export class Placeholder extends Component<
-    OwnProps & ConnectedProps<typeof connector>
-> {
-    _deleteWidget = (evt: MouseEvent) => {
-        const {template, isEditing} = this.props
+export default function Placeholder({source, template, isEditing}: Props) {
+    const dispatch = useAppDispatch()
+    const widget = useContext(WidgetContext)
+    const integration = useAppSelector(
+        getIntegrationById(Number(widget.integration_id)) || null
+    )
 
-        const absolutePath: string[] = template.get('path')
-        const templatePath: string = template.get('templatePath')
+    const handleDeleteWidget = (evt: MouseEvent) => {
+        const absolutePath = template.absolutePath || []
+        const templatePath = template.templatePath || ''
 
         evt.stopPropagation()
 
         if (isEditing) {
-            this.props.dispatch(removeEditedWidget(templatePath, absolutePath))
+            dispatch(removeEditedWidget(templatePath, absolutePath))
         }
     }
 
-    _renderWidgetFor() {
-        const {source, template, widget, integration} = this.props
+    const renderWidgetFor = () => {
         const widgetName = getWidgetTitle({
             source: source?.toJS(),
-            widgetType: widget.get('type'),
-            appId: widget.get('app_id'),
-            template: template?.toJS(),
+            widgetType: widget.type,
+            appId: widget.app_id,
+            template,
             integration: integration?.toJS(),
         })
 
@@ -54,42 +56,26 @@ export class Placeholder extends Component<
         return widgetFor
     }
 
-    render() {
-        const {widget} = this.props
-
-        return (
-            <div className={classnames(css.wrapper, 'draggable')}>
-                <WidgetPanel
-                    widgetType={widget.get('type')}
-                    fallbackColor={PLACEHOLDER_ACCENT_COLOR}
-                >
-                    <div className={css.card}>
-                        <h5 className={css.title}>{this._renderWidgetFor()}</h5>
-                        <i
-                            className={classnames(
-                                css.delete,
-                                'material-icons',
-                                'text-danger'
-                            )}
-                            onClick={this._deleteWidget}
-                        >
-                            delete
-                        </i>
-                    </div>
-                </WidgetPanel>
-            </div>
-        )
-    }
+    return (
+        <div className={classnames(css.wrapper, 'draggable')}>
+            <WidgetPanel
+                widgetType={widget.type}
+                fallbackColor={PLACEHOLDER_ACCENT_COLOR}
+            >
+                <div className={css.card}>
+                    <h5 className={css.title}>{renderWidgetFor()}</h5>
+                    <i
+                        className={classnames(
+                            css.delete,
+                            'material-icons',
+                            'text-danger'
+                        )}
+                        onClick={handleDeleteWidget}
+                    >
+                        delete
+                    </i>
+                </div>
+            </WidgetPanel>
+        </div>
+    )
 }
-
-const connector = connect((state: RootState, ownProps: OwnProps) => {
-    const integrationId = ownProps.widget.get('integration_id')
-
-    return {
-        integration: integrationId
-            ? getIntegrationById(integrationId)(state)
-            : null,
-    }
-})
-
-export default connector(Placeholder)

@@ -189,8 +189,8 @@ export default function SourceWrapper({
     widgets,
 }: Props) {
     const [widgetsTemplate, setWidgetsTemplate] = useState<
-        List<Map<string, unknown>>
-    >(fromJS([]))
+        Map<string, unknown>[]
+    >([])
     const [availableTypes, setAvailableTypes] = useState<Set<string>>(
         fromJS([])
     )
@@ -201,8 +201,7 @@ export default function SourceWrapper({
         const context = widgets.get('currentContext', '')
 
         const shouldGenerateWidgets =
-            areSourcesReady(sources as any, context) &&
-            widgetsTemplate.isEmpty()
+            areSourcesReady(sources as any, context) && !widgetsTemplate.length
 
         // Generate widgets template from incoming json and use it to display source widgets (i.e. the things you can
         // drag into the infobar).
@@ -210,14 +209,13 @@ export default function SourceWrapper({
         // for which we want a widget per integration).
         if (!shouldGenerateWidgets) return
 
-        let newWidgetsTemplate = fromJS(
-            jsonToWidgets(sources.toJS(), context)
-        ) as List<any>
+        let newWidgetsTemplate = jsonToWidgets(sources.toJS(), context)
+
         const typesAlreadyDisplayed: string[] = []
 
         // Make sure we only have one `sourceWidget` per type, except for HTTP
-        newWidgetsTemplate = (
-            newWidgetsTemplate.map((widgetsTemplate: Map<any, any>) => {
+        newWidgetsTemplate = newWidgetsTemplate
+            .map((widgetsTemplate) => {
                 let ret = widgetsTemplate
                 const sourcePath = widgetsTemplate.get(
                     'sourcePath'
@@ -272,10 +270,10 @@ export default function SourceWrapper({
                 }
 
                 return ret
-            }) as List<any>
-        ).filter((w: Map<any, any>) => !!w) as List<any> // filter out null values
+            })
+            .filter((widget) => !!widget) as Map<string, unknown>[]
 
-        newWidgetsTemplate = newWidgetsTemplate.push(
+        newWidgetsTemplate.push(
             fromJS({
                 type: STANDALONE_WIDGET_TYPE,
                 order: 0, // Doesn’t matter
@@ -286,7 +284,7 @@ export default function SourceWrapper({
                 },
                 sourcePath: [''],
                 integration_id: null,
-            })
+            }) as Map<string, unknown>
         )
         typesAlreadyDisplayed.push(STANDALONE_WIDGET_TYPE)
 
@@ -332,13 +330,11 @@ export default function SourceWrapper({
                         </header>
                         <Widgets
                             source={sources}
-                            widgets={
-                                widgetsTemplate.filter(
-                                    (widgetsTemplate) =>
-                                        widgetsTemplate?.get('type') ===
-                                        widgetDataType.type
-                                ) as List<Map<string, unknown>>
-                            }
+                            widgets={widgetsTemplate.filter(
+                                (widgetsTemplate) =>
+                                    widgetsTemplate?.get('type') ===
+                                    widgetDataType.type
+                            )}
                         />
                     </section>
                 ) : null

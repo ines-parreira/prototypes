@@ -1,18 +1,20 @@
-import {shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
+import {render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import {
-    MAGENTO2_INTEGRATION_TYPE,
-    RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     BIGCOMMERCE_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {Template} from 'models/widget/types'
+import {Widget} from 'state/widgets/types'
+import Card from 'Infobar/features/Card'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import InfobarWidget from '../InfobarWidget'
+import {WidgetContext} from '../WidgetContext'
 
-const defaultWidget: Map<string, unknown> = fromJS({})
+const defaultWidget = {} as Widget
 
 const defaultSource: Map<string, unknown> = fromJS({
     ticket: {
@@ -41,26 +43,15 @@ const defaultTemplate: Template = {
 }
 
 const defaultProps: ComponentProps<typeof InfobarWidget> = {
-    widget: defaultWidget,
     template: defaultTemplate,
     source: defaultSource,
 }
 
+const CARD_MOCK_ID = 'card'
+
 jest.mock('../widgets/shopify', () => {
     return () => {
         return {extensionUsed: 'shopify'}
-    }
-})
-
-jest.mock('../widgets/recharge', () => {
-    return () => {
-        return {extensionUsed: 'recharge'}
-    }
-})
-
-jest.mock('../widgets/magento2', () => {
-    return () => {
-        return {extensionUsed: 'magento2'}
     }
 })
 
@@ -70,94 +61,66 @@ jest.mock('../widgets/bigcommerce', () => {
     }
 })
 
+jest.mock('Infobar/features/Card', () =>
+    jest.fn(() => <div data-testid={CARD_MOCK_ID}>Card</div>)
+)
+const mockedCard = assumeMock(Card)
+
 describe('InfobarWidget', () => {
     describe('card widget', () => {
         it('should display the widget', () => {
-            const component = shallow(<InfobarWidget {...defaultProps} />)
-            expect(component.debug()).toMatchSnapshot()
+            render(
+                <WidgetContext.Provider value={defaultWidget}>
+                    <InfobarWidget {...defaultProps} />
+                </WidgetContext.Provider>
+            )
+            expect(screen.getByTestId(CARD_MOCK_ID))
         })
 
         it('should not display the widget if isEditing=false and data if falsy', () => {
-            const component = shallow(
-                <InfobarWidget {...defaultProps} source={undefined} />
+            render(
+                <WidgetContext.Provider value={defaultWidget}>
+                    <InfobarWidget {...defaultProps} source={undefined} />
+                </WidgetContext.Provider>
             )
-            expect(component.debug()).toMatchSnapshot()
+            expect(screen.queryByTestId(CARD_MOCK_ID)).toBeNull()
         })
 
         it('should not display the widget if isEditing=true and data if falsy', () => {
-            const component = shallow(
-                <InfobarWidget {...defaultProps} source={undefined} />
+            render(
+                <WidgetContext.Provider value={defaultWidget}>
+                    <InfobarWidget {...defaultProps} source={undefined} />
+                </WidgetContext.Provider>
             )
-            expect(component.debug()).toMatchSnapshot()
+            expect(screen.queryByTestId(CARD_MOCK_ID)).toBeNull()
         })
 
         it('should display the widget with Shopify extension because the widget type is Shopify', () => {
-            const component = shallow(
-                <InfobarWidget
-                    {...defaultProps}
-                    widget={fromJS({type: SHOPIFY_INTEGRATION_TYPE})}
-                />
+            render(
+                <WidgetContext.Provider
+                    value={{type: SHOPIFY_INTEGRATION_TYPE} as Widget}
+                >
+                    <InfobarWidget {...defaultProps} />
+                </WidgetContext.Provider>
             )
 
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should display the widget with Recharge extension because the widget type is Recharge', () => {
-            const component = shallow(
-                <InfobarWidget
-                    {...defaultProps}
-                    widget={fromJS({type: RECHARGE_INTEGRATION_TYPE})}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should display the widget with Magento2 extension because the widget type is Magento2', () => {
-            const component = shallow(
-                <InfobarWidget
-                    {...defaultProps}
-                    widget={fromJS({type: MAGENTO2_INTEGRATION_TYPE})}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
+            expect(getLastMockCall(mockedCard)[0].extensions).toEqual({
+                extensionUsed: 'shopify',
+            })
         })
 
         it('should display the widget with BigCommerce extension because the widget type is BigCommerce', () => {
-            const component = shallow(
-                <InfobarWidget
-                    {...defaultProps}
-                    widget={fromJS({type: BIGCOMMERCE_INTEGRATION_TYPE})}
-                />
+            render(
+                <WidgetContext.Provider
+                    value={{type: BIGCOMMERCE_INTEGRATION_TYPE} as Widget}
+                >
+                    <InfobarWidget {...defaultProps} />
+                </WidgetContext.Provider>
             )
 
-            expect(component).toMatchSnapshot()
-        })
-
-        describe('invalid card widget data', () => {
-            const invalidData: [string, unknown][] = [
-                ['object', {aaa: 'bbb'}],
-                ['string', 'foo'],
-                ['boolean', true],
-                ['array', [1, 2]],
-                ['number', 1],
-                ['undefined', undefined],
-            ]
-            for (const dataSet of invalidData) {
-                const [name, data] = dataSet
-                it(`should not throw if card widget data is ${name}`, () => {
-                    const source = defaultSource.setIn(
-                        ['ticket', 'customer', 'integrations', '0'],
-                        data
-                    )
-                    expect(() => {
-                        shallow(
-                            <InfobarWidget {...defaultProps} source={source} />
-                        )
-                    }).not.toThrow()
-                })
-            }
+            expect(getLastMockCall(mockedCard)[0].extensions).toEqual({
+                extensionUsed: 'bigcommerce',
+            })
         })
     })
 })

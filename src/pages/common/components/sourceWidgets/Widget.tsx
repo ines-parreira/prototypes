@@ -10,12 +10,7 @@ import Card from './widgets/Card'
 import Wrapper from './widgets/Wrapper'
 import {WidgetProps} from './widgetReference'
 
-export default function Widget({
-    parent,
-    source,
-    widget,
-    template,
-}: WidgetProps) {
+export default function Widget({parent, source, template}: WidgetProps) {
     const {updatedTemplate, data} = updateAbsolutePathAndData(
         template,
         source,
@@ -28,7 +23,6 @@ export default function Widget({
             return (
                 <Wrapper
                     source={data || fromJS({})}
-                    widget={widget}
                     template={updatedTemplate}
                 />
             )
@@ -38,7 +32,6 @@ export default function Widget({
                 <List
                     isParentList={isParentList}
                     source={data || fromJS({})}
-                    widget={widget}
                     template={updatedTemplate}
                 />
             )
@@ -48,7 +41,6 @@ export default function Widget({
                 <Card
                     isParentList={isParentList}
                     source={data || fromJS({})}
-                    widget={widget}
                     template={updatedTemplate}
                 />
             )

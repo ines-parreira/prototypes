@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {Integration} from 'models/integration/types'
+import {Integration, IntegrationType} from 'models/integration/types'
 import {WidgetType} from 'state/widgets/types'
 import {
     removeEditedWidget,
@@ -20,7 +20,6 @@ import {AppContext} from 'providers/infobar/AppContext'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-    HTTP_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
@@ -36,13 +35,14 @@ import {EXPAND_CONTAINER_MARKER} from 'Infobar/config/template'
 import {Template, WrapperTemplate} from 'models/widget/types'
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
+import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 
 import css from './Wrapper.less'
 
 export const CUSTOMIZE_WIDGET_BUTTON_TEXT = 'Customize Widget'
 export const DELETE_WIDGET_BUTTON_TEXT = 'Delete Widget'
 export const CUSTOMIZABLE_WIDGET_TYPES = [
-    HTTP_WIDGET_TYPE,
+    IntegrationType.Http,
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
@@ -51,27 +51,31 @@ export const CUSTOMIZABLE_WIDGET_TYPES = [
 
 type Props = {
     source: Map<string, unknown> | undefined
-    widget: Map<string, unknown>
     template: WrapperTemplate
 }
 
-export default function Wrapper({widget, template, source}: Props) {
+export default function Wrapper({template, source}: Props) {
     const dispatch = useAppDispatch()
+    const widget = useContext(WidgetContext)
     const {isEditing} = useContext(EditionContext)
 
     const InfobarWidget = widgetReference.Widget
     const absolutePath = template.absolutePath || []
     const templatePath = template.templatePath || ''
 
-    const widgetType = widget.get('type') as WidgetType
-    const integrationId: number = widget.get('integration_id') as number
-    const integration = useIntegration(absolutePath, widgetType, integrationId)
+    const widgetType = widget.type
+    const integrationId = widget.integration_id
+    const integration = useIntegration(
+        absolutePath,
+        widgetType,
+        Number(integrationId)
+    )
 
     const widgetName = getWidgetTitle({
         source: source?.toJS(),
         template: template,
         widgetType,
-        appId: widget.get('app_id') as string | undefined,
+        appId: widget.app_id,
         integration: integration?.toJS(),
     })
     const widgetId = getWidgetId(widgetName)
@@ -79,7 +83,7 @@ export default function Wrapper({widget, template, source}: Props) {
     return (
         <AppContext.Provider
             value={{
-                appId: widget.get('app_id') as string,
+                appId: widget.app_id || null,
             }}
         >
             <IntegrationContext.Provider
@@ -175,7 +179,6 @@ export default function Wrapper({widget, template, source}: Props) {
                                             }-${index}`}
                                             source={source}
                                             parent={template}
-                                            widget={widget}
                                             template={passedTemplate}
                                         />
                                     )

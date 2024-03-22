@@ -9,17 +9,11 @@ import {widgetReference} from '../widgetReference'
 
 type Props = {
     source: Map<string, unknown>
-    widget: Map<string, unknown>
     template: Template
     isParentList: boolean
 }
 
-export default function List({
-    source,
-    widget,
-    template,
-    isParentList = false,
-}: Props) {
+export default function List({source, template, isParentList = false}: Props) {
     const SourceWidget = widgetReference.Widget
 
     if (!template.widgets || !template.widgets[0]) return null
@@ -48,7 +42,6 @@ export default function List({
                             source={d as Map<string, unknown>}
                             parent={updatedTemplate}
                             template={passedTemplate}
-                            widget={widget}
                         />
                     )
                 })}

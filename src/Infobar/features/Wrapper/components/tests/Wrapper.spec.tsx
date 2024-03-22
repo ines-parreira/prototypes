@@ -11,6 +11,7 @@ import {EditionContext} from 'providers/infobar/EditionContext'
 import {IntegrationType} from 'models/integration/types'
 import {WrapperTemplate} from 'models/widget/types'
 import * as actions from 'state/widgets/actions'
+import {Widget, WidgetType} from 'state/widgets/types'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
@@ -20,6 +21,7 @@ import {assumeMock, getLastMockCall} from 'utils/testing'
 import WrapperEditActions, {
     FormData,
 } from 'Infobar/features/Wrapper/display/WrapperEditActions'
+import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 
 import Wrapper, {CUSTOMIZABLE_WIDGET_TYPES, useIntegration} from '../Wrapper'
 
@@ -51,16 +53,18 @@ const store = mockStore({
     }),
 })
 
+const wrapperTemplate = {
+    type: 'wrapper',
+    widgets: [],
+} as WrapperTemplate
+
 const shopifyWidget = {
     id: 4,
     type: IntegrationType.Shopify,
     integration_id: 2,
-    template: {
-        type: 'wrapper',
-        widgets: [],
-    } as WrapperTemplate,
+    template: wrapperTemplate,
     order: 1,
-}
+} as Widget
 
 const shopifySource = fromJS({foo: 'foo value'})
 
@@ -68,12 +72,9 @@ const httpWidget = {
     id: 5,
     type: IntegrationType.Http,
     integration_id: 1,
-    template: {
-        type: 'wrapper',
-        widgets: [],
-    } as WrapperTemplate,
+    template: wrapperTemplate,
     order: 2,
-}
+} as Widget
 
 const httpSource = fromJS({bar: 'bar value'})
 
@@ -81,12 +82,9 @@ const customerExternalDataWidget = {
     id: 6,
     type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     app_id: '5dfgsadsasad',
-    template: {
-        type: 'wrapper',
-        widgets: [],
-    } as WrapperTemplate,
+    template: wrapperTemplate,
     order: 3,
-}
+} as Widget
 
 const customerExternalDataSource = fromJS({
     bar: 'bar value',
@@ -97,12 +95,9 @@ const woocommerceDataWidget = {
     id: 6,
     type: WOOCOMMERCE_WIDGET_TYPE,
     integration_id: 3,
-    template: {
-        type: 'wrapper',
-        widgets: [],
-    } as WrapperTemplate,
+    template: wrapperTemplate,
     order: 3,
-}
+} as Widget
 
 const woocommerceDataSource = fromJS({
     foo: 'bar',
@@ -134,17 +129,18 @@ describe('Wrapper', () => {
     it('should display (without an edit or a remove icon)', () => {
         const {container} = render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: false}}>
-                    <Wrapper
-                        template={{
-                            ...shopifyWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(shopifyWidget)}
-                        source={shopifySource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <EditionContext.Provider value={{isEditing: false}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={shopifySource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -154,17 +150,18 @@ describe('Wrapper', () => {
     it('should call the removeEditedWidget action on delete edit action', () => {
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <Wrapper
-                        template={{
-                            ...shopifyWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(shopifyWidget)}
-                        source={httpSource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <EditionContext.Provider value={{isEditing: true}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={httpSource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -181,20 +178,23 @@ describe('Wrapper', () => {
             const color = '#fff'
             const {getByTestId} = render(
                 <Provider store={store}>
-                    <EditionContext.Provider value={{isEditing: true}}>
-                        <Wrapper
-                            template={{
-                                ...httpWidget.template,
-                                meta: {
-                                    color,
-                                },
-                                templatePath: defaultTemplatePath,
-                                absolutePath: defaultAbsolutePath,
-                            }}
-                            widget={fromJS({...httpWidget, type})}
-                            source={shopifySource}
-                        />
-                    </EditionContext.Provider>
+                    <WidgetContext.Provider
+                        value={{...httpWidget, type: type as WidgetType}}
+                    >
+                        <EditionContext.Provider value={{isEditing: true}}>
+                            <Wrapper
+                                template={{
+                                    ...wrapperTemplate,
+                                    meta: {
+                                        color,
+                                    },
+                                    templatePath: defaultTemplatePath,
+                                    absolutePath: defaultAbsolutePath,
+                                }}
+                                source={shopifySource}
+                            />
+                        </EditionContext.Provider>
+                    </WidgetContext.Provider>
                 </Provider>
             )
 
@@ -208,20 +208,21 @@ describe('Wrapper', () => {
         const color = '#fff'
         const {getByTestId} = render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <Wrapper
-                        template={{
-                            ...shopifyWidget.template,
-                            meta: {
-                                color,
-                            },
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(shopifyWidget)}
-                        source={shopifySource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <EditionContext.Provider value={{isEditing: true}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                meta: {
+                                    color,
+                                },
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={shopifySource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -233,17 +234,18 @@ describe('Wrapper', () => {
     it('should render customer external data widget with the proper id', () => {
         const {container} = render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: false}}>
-                    <Wrapper
-                        template={{
-                            ...customerExternalDataWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(customerExternalDataWidget)}
-                        source={customerExternalDataSource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={customerExternalDataWidget}>
+                    <EditionContext.Provider value={{isEditing: false}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={customerExternalDataSource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -253,17 +255,18 @@ describe('Wrapper', () => {
     it('should render woocommerce widget with the proper id', () => {
         const {container} = render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: false}}>
-                    <Wrapper
-                        template={{
-                            ...woocommerceDataWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(woocommerceDataWidget)}
-                        source={woocommerceDataSource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={woocommerceDataWidget}>
+                    <EditionContext.Provider value={{isEditing: false}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={woocommerceDataSource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -273,17 +276,18 @@ describe('Wrapper', () => {
     it('should start widget edit on edit start', () => {
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <Wrapper
-                        template={{
-                            ...woocommerceDataWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(woocommerceDataWidget)}
-                        source={woocommerceDataSource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={woocommerceDataWidget}>
+                    <EditionContext.Provider value={{isEditing: true}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={woocommerceDataSource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -297,17 +301,18 @@ describe('Wrapper', () => {
     it('should stop widget edit on edit cancel', () => {
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <Wrapper
-                        template={{
-                            ...woocommerceDataWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(woocommerceDataWidget)}
-                        source={woocommerceDataSource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <EditionContext.Provider value={{isEditing: true}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={woocommerceDataSource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -322,17 +327,18 @@ describe('Wrapper', () => {
         }
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <Wrapper
-                        template={{
-                            ...woocommerceDataWidget.template,
-                            templatePath: defaultTemplatePath,
-                            absolutePath: defaultAbsolutePath,
-                        }}
-                        widget={fromJS(woocommerceDataWidget)}
-                        source={woocommerceDataSource}
-                    />
-                </EditionContext.Provider>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <EditionContext.Provider value={{isEditing: true}}>
+                        <Wrapper
+                            template={{
+                                ...wrapperTemplate,
+                                templatePath: defaultTemplatePath,
+                                absolutePath: defaultAbsolutePath,
+                            }}
+                            source={woocommerceDataSource}
+                        />
+                    </EditionContext.Provider>
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -365,7 +371,11 @@ describe('Wrapper', () => {
 })
 
 const wrapper = ({children}: {children: ReactNode}) => (
-    <Provider store={store}>{children}</Provider>
+    <Provider store={store}>
+        <WidgetContext.Provider value={shopifyWidget}>
+            {children}
+        </WidgetContext.Provider>
+    </Provider>
 )
 
 describe('useIntegration hook', () => {

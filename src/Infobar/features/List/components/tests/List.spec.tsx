@@ -67,7 +67,6 @@ describe('Infobar::Widgets::List', () => {
         isEditing: false,
         isParentList: false,
         source,
-        widget,
         template,
         hasNoBorderTop: true,
     }
@@ -170,7 +169,6 @@ describe('Infobar::Widgets::List', () => {
         expect(InfobarWidget).toHaveBeenNthCalledWith(
             1,
             expect.objectContaining({
-                widget: minProps.widget,
                 parent: updatedTemplate,
                 template: passedTemplate,
             }),

@@ -1,5 +1,4 @@
-import React, {useMemo} from 'react'
-import {Map} from 'immutable'
+import React, {useContext, useMemo} from 'react'
 
 import {LEAF_TYPES} from 'models/widget/constants'
 import {isLeafType, LeafTemplate, LeafTypes} from 'models/widget/types'
@@ -17,6 +16,7 @@ import {
 } from 'Infobar/features/Field/display/FieldEditForm'
 import {IntegrationType} from 'models/integration/constants'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
+import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'
@@ -49,7 +49,6 @@ type Props = {
     value: unknown
     type: string
     isEditing: boolean
-    widget: Map<string, unknown>
     template: LeafTemplate
     copyableValue: string | null
 }
@@ -60,9 +59,9 @@ export default function Field({
     value,
     type,
     copyableValue,
-    widget,
 }: Props) {
     const dispatch = useAppDispatch()
+    const widget = useContext(WidgetContext)
 
     const title = template.title || ''
     const absolutePath = template.absolutePath || []
@@ -85,7 +84,7 @@ export default function Field({
 
     const availableTypes = useMemo(() => {
         if (
-            widget.get('type') === IntegrationType.Shopify &&
+            widget.type === IntegrationType.Shopify &&
             template.path === 'tags'
         ) {
             return TYPE_OPTIONS

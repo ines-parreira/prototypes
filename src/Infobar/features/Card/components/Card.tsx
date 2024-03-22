@@ -21,7 +21,6 @@ import {
     stopWidgetEdition,
 } from 'state/widgets/actions'
 import {getWidgetsState} from 'state/widgets/selectors'
-import {WidgetType} from 'state/widgets/types'
 import StaticField from 'Infobar/features/Field/components/StaticField'
 import {
     CardEditFormState,
@@ -42,6 +41,7 @@ import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 
 export const NO_DATA_TEXT = 'No data'
 
@@ -57,7 +57,6 @@ type Props = {
 
     parent?: Template
     source?: Map<string, unknown> | undefined
-    widget: Map<string, unknown>
     template: CardTemplate
 
     isEditing: boolean
@@ -87,7 +86,6 @@ export default function Card(props: Props) {
         template,
         parent,
         source,
-        widget,
         isParentList,
         isEditing,
         isOpen,
@@ -95,6 +93,7 @@ export default function Card(props: Props) {
     } = props
     const InfobarWidget = widgetReference.Widget
     const integrationContext = useContext(IntegrationContext)
+    const widget = useContext(WidgetContext)
     const dispatch = useAppDispatch()
     const widgetsState = useAppSelector(getWidgetsState)
 
@@ -183,9 +182,9 @@ export default function Card(props: Props) {
         return isRootWidget(template.templatePath || '')
             ? getWidgetTitle({
                   source: source?.toJS(),
-                  widgetType: widget.get('type') as WidgetType,
+                  widgetType: widget.type,
                   template,
-                  appId: widget.get('app_id') as Maybe<string>,
+                  appId: widget.app_id,
                   integration: integrationContext.integration?.toJS(),
               })
             : template.title || ''
@@ -335,7 +334,6 @@ export default function Card(props: Props) {
                                     key={`${passedTemplate.path || ''}-${i}`}
                                     source={source}
                                     parent={template}
-                                    widget={widget}
                                     template={passedTemplate}
                                     isOpen={isOpen && firstNonTextWidget}
                                     hasNoBorderTop={hasNoBorderTop}

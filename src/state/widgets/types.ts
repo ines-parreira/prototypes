@@ -15,7 +15,14 @@ export enum WidgetEnvironment {
 }
 
 export type WidgetType =
-    | IntegrationType
+    | IntegrationType.Shopify
+    | IntegrationType.Recharge
+    | IntegrationType.Smile
+    | IntegrationType.Magento2
+    | IntegrationType.Http
+    | IntegrationType.Yotpo
+    | IntegrationType.BigCommerce
+    | IntegrationType.Klaviyo
     | typeof CUSTOM_WIDGET_TYPE
     | typeof CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
     | typeof STANDALONE_WIDGET_TYPE
@@ -27,11 +34,11 @@ export type Widget = {
     context: WidgetEnvironment
     template: PartialTemplate
     created_datetime: string
-    deactivated_datetime: Maybe<string>
+    deactivated_datetime: string | null
     id: number
-    integration_id: Maybe<number>
-    app_id: Maybe<string>
-    updated_datetime: Maybe<string>
+    integration_id: number | null
+    app_id?: string | null | undefined
+    updated_datetime: string | null
     uri: string
 }
 

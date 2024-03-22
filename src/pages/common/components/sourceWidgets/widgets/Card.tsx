@@ -13,12 +13,11 @@ import css from './Card.less'
 
 type Props = {
     source: Map<string, unknown>
-    widget: Map<string, unknown>
     template: Template
     isParentList: boolean
 }
 
-export default function Card({source, widget, template, isParentList}: Props) {
+export default function Card({source, template, isParentList}: Props) {
     const SourceWidget = widgetReference.Widget
     const absolutePath = template.absolutePath || []
     const templatePath = template.templatePath || ''
@@ -62,7 +61,6 @@ export default function Card({source, widget, template, isParentList}: Props) {
                                     source={source}
                                     parent={template}
                                     template={passedTemplate}
-                                    widget={widget}
                                 />
                             )
                         })}

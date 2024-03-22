@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {Map, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 
 import List from 'Infobar/features/List/display/List'
 import {isImmutable, isImmutableList} from 'common/utils'
@@ -11,7 +11,6 @@ import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCu
 
 type Props = {
     source: unknown
-    widget: Map<string, unknown>
     template: ListTemplate
     isEditing?: boolean
     isParentList?: boolean
@@ -21,7 +20,6 @@ type Props = {
 function ListInfobarWidget({
     isEditing = false,
     source,
-    widget,
     template,
     isParentList,
     hasNoBorderTop = false,
@@ -30,9 +28,8 @@ function ListInfobarWidget({
 
     let passedTemplate = template.widgets?.[0]
 
-    const isParentOfCard = template.widgets?.[0].type === 'card'
+    const isParentOfCard = isCardTemplate(passedTemplate)
     const hasOnlyContent =
-        isParentOfCard &&
         isCardTemplate(passedTemplate) &&
         passedTemplate.meta?.displayCard === false
     const limit = template.meta?.limit
@@ -81,7 +78,6 @@ function ListInfobarWidget({
                 <InfobarWidget
                     source={fromJS(childSource)}
                     parent={updatedTemplate}
-                    widget={widget}
                     template={passedTemplate}
                     isOpen={index === 0}
                     hasNoBorderTop={index === 0 && hasNoBorderTop}

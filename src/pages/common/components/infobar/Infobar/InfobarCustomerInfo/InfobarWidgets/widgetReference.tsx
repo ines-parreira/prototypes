@@ -6,7 +6,6 @@ import {Template} from 'models/widget/types'
 export type WidgetProps = {
     parent?: Template
     source?: Map<string, unknown>
-    widget: Map<string, unknown>
     template: Template
     isOpen?: boolean
     hasNoBorderTop?: boolean

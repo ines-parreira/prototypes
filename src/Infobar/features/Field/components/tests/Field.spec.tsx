@@ -15,6 +15,7 @@ import {
 } from 'state/widgets/actions'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import UIField from 'Infobar/features/Field/display'
+import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 import {LEAF_TYPES} from 'models/widget/constants'
 
 import Field, {TYPE_OPTIONS} from '../Field'
@@ -48,7 +49,6 @@ describe('Field', () => {
         value: 'foo value',
         type: LEAF_TYPES.TEXT,
         isEditing: false,
-        widget: fromJS(shopifyWidget),
         template: defaultTemplate,
         copyableValue: 'copyable value',
     }
@@ -58,10 +58,12 @@ describe('Field', () => {
     it('should default type to text if type is not an existing leaf type', () => {
         render(
             <Provider store={store}>
-                <Field
-                    {...defaultProps}
-                    type={'someone messed with the API again'}
-                />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field
+                        {...defaultProps}
+                        type={'someone messed with the API again'}
+                    />
+                </WidgetContext.Provider>
             </Provider>
         )
         expect(getLastMockCall(UIFieldMock)[0].type).toEqual(LEAF_TYPES.TEXT)
@@ -70,7 +72,9 @@ describe('Field', () => {
     it('should pass template title, value, type, isEditing to the UI field', () => {
         render(
             <Provider store={store}>
-                <Field {...defaultProps} />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} />
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -87,7 +91,9 @@ describe('Field', () => {
     it('should exclude editable list from type options', () => {
         render(
             <Provider store={store}>
-                <Field {...defaultProps} />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} />
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -102,10 +108,12 @@ describe('Field', () => {
     it('should include editableList in the type options for the tags path of a shopify widget ', () => {
         render(
             <Provider store={store}>
-                <Field
-                    {...defaultProps}
-                    template={{...defaultTemplate, path: 'tags'}}
-                />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field
+                        {...defaultProps}
+                        template={{...defaultTemplate, path: 'tags'}}
+                    />
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -116,7 +124,9 @@ describe('Field', () => {
     it('should set `valueShouldOverflow` to true if type is an editable list', () => {
         render(
             <Provider store={store}>
-                <Field {...defaultProps} type={LEAF_TYPES.EDITABLE_LIST} />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} type={LEAF_TYPES.EDITABLE_LIST} />
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -126,7 +136,9 @@ describe('Field', () => {
     it('should call correct actions with appropriate value', () => {
         render(
             <Provider store={store}>
-                <Field {...defaultProps} isEditing />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} isEditing />
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -159,7 +171,9 @@ describe('Field', () => {
     it("should not render a copy button if it's editing", () => {
         render(
             <Provider store={store}>
-                <Field {...defaultProps} isEditing />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} isEditing />
+                </WidgetContext.Provider>
             </Provider>
         )
 
@@ -169,7 +183,9 @@ describe('Field', () => {
     it("should render a copy button  with correct props if it's not editing and there is a copyable value", () => {
         render(
             <Provider store={store}>
-                <Field {...defaultProps} isEditing={false} />
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} isEditing={false} />
+                </WidgetContext.Provider>
             </Provider>
         )
 
