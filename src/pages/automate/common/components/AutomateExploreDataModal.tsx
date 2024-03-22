@@ -1,6 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {formatMetricValue} from 'pages/stats/common/utils'
+import {formatValue} from 'pages/settings/billing/automate/ROICalculator/utils'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -200,22 +201,7 @@ const AutomateExploreDataModal = forwardRef<
                                 }
                                 value={costValue}
                                 onChange={(val) => {
-                                    const inputNumber = Number(
-                                        val.replace(/[^0-9.]/g, '')
-                                    )
-
-                                    const hasDecimalTail = val.slice(-1) === '.'
-
-                                    const costValue = val
-                                        ? inputNumber.toLocaleString(
-                                              undefined,
-                                              {
-                                                  maximumFractionDigits: 2,
-                                              }
-                                          ) + (hasDecimalTail ? '.' : '')
-                                        : ''
-
-                                    setCostValue(costValue)
+                                    setCostValue(formatValue(val))
 
                                     setCostPerTicket(
                                         parseFloat(val) /
