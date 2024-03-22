@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketTags component should display current tags 1`] = `
+exports[`<TicketTags /> should display current tags 1`] = `
 <div
   class="tags"
 >

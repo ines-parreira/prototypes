@@ -335,7 +335,7 @@ const TicketHeader = ({
                         addTag={(tag) => dispatch(addTags(tag))}
                         removeTag={(tag) => dispatch(removeTag(tag))}
                         transparent
-                        bindKeys
+                        shouldBindKeys
                     />
                 </div>
                 <TicketAssignee

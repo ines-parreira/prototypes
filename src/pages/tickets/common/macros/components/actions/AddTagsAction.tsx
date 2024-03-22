@@ -8,14 +8,14 @@ type Props = {
     args: Map<string, string>
     dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
     index: number
-    disabled?: boolean
+    isDisabled?: boolean
     right?: boolean
     updateActionArgs: (index: number, args: Map<string, string>) => void
 }
 
 const AddTagsAction = ({
     args,
-    disabled,
+    isDisabled,
     dropdownContainer,
     index,
     right,
@@ -51,7 +51,7 @@ const AddTagsAction = ({
     return (
         <TicketTags
             ticketTags={ticketTags}
-            disabled={disabled}
+            isDisabled={isDisabled}
             addTag={addTag}
             removeTag={removeTag}
             right={!!right}
