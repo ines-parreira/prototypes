@@ -14,15 +14,10 @@ const ChurnMitigationOffer = ({canduContentId}: ChurnMitigationOfferProps) => {
                 <div className={css.container}>
                     <span>Need help staying with us?</span>
                     <span>
-                        Reach out to{' '}
-                        <a href="mailto:support@gorgias.com">
-                            support@gorgias.com
-                        </a>{' '}
-                        for a personalized churn mitigation offer!
-                        <br />
-                        We're here to make sure you get the most out of your
-                        experience with us. Let's work together to keep you
-                        happy and satisfied.
+                        If you would like to get help with the product, discuss
+                        potential offers, or share further feedback, please
+                        select “Accept Offer” below. Let's work together to keep
+                        you happy and satisfied.
                     </span>
                 </div>
             )}

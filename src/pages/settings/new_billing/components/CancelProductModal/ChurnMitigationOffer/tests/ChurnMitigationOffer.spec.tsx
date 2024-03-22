@@ -21,10 +21,11 @@ describe('ChurnMitigationOffer', () => {
         const defaultTextElement = container.querySelector('.container')
         expect(defaultTextElement).toBeInTheDocument()
         expect(defaultTextElement).toHaveTextContent(
-            'Need help staying with us?Reach out to support@gorgias.com ' +
-                'for a personalized churn mitigation offer!' +
-                "We're here to make sure you get the most out of your experience with us. " +
-                "Let's work together to keep you happy and satisfied."
+            'Need help staying with us?'
+        )
+        expect(defaultTextElement).toHaveTextContent(
+            'If you would like to get help with the product, discuss potential offers, or share further feedback,' +
+                " please select “Accept Offer” below. Let's work together to keep you happy and satisfied."
         )
     })
 })
