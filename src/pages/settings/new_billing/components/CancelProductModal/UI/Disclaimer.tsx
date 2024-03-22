@@ -9,10 +9,6 @@ type DisclaimerProps = {
 const Disclaimer = ({agreementChecked, onChange}: DisclaimerProps) => {
     return (
         <div className={css.container}>
-            <div>
-                Note that previous charges won't be refunded when you cancel
-                unless it is legally required. All amounts shown are in USD.
-            </div>
             <div className={css.disclaimerAgreement}>
                 <CheckBox
                     className={css.disclaimerCheckbox}
@@ -20,31 +16,18 @@ const Disclaimer = ({agreementChecked, onChange}: DisclaimerProps) => {
                     onChange={onChange}
                 >
                     <span>
-                        I agree to the Gorgias{' '}
+                        Gorgias is not required to issue you a refund when
+                        cancelling Services (as provided in our{' '}
                         <a
                             href="https://www.gorgias.com/legal/master-subscription-agreement"
                             target="_blank"
                             rel="noreferrer"
                         >
-                            Master Subscription Agreement
-                        </a>{' '}
-                        and{' '}
-                        <a
-                            href="https://www.gorgias.com/legal/terms-of-use"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Terms
+                            Agreement
                         </a>
-                        . Learn about how we use and protect your data in our{' '}
-                        <a
-                            href="https://www.gorgias.com/legal/privacy"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Privacy Policy
-                        </a>
-                        .
+                        ). Additionally, if you cancel your Subscription, you
+                        are required to pay any fees and/or overages incurred
+                        before your cancellation takes effect.
                     </span>
                 </CheckBox>
             </div>

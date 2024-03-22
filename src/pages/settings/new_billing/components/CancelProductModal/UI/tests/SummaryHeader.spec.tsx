@@ -9,8 +9,7 @@ describe('SummaryHeader', () => {
         )
 
         expect(container).toHaveTextContent(
-            'Please review the cancellation summary. ' +
-                "Once you confirm cancellation, you'll continue to have full access to all your active products" +
+            "Once you confirm cancellation, you'll continue to have full access" +
                 ' until the end of your billing cycle on February 14, 2024.'
         )
 
