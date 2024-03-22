@@ -6,6 +6,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {
     shopifyBoolean,
+    shopifyColor,
     shopifyDateMetafield,
     shopifyDateTimeMetafield,
     shopifyFileReference,
@@ -140,6 +141,16 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.getByText(`true`))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyColor', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyColor()} />
+                </Provider>
+            )
+            expect(screen.getByText(`#2b78b6`))
             expect(screen.getByRole('button'))
         })
     })

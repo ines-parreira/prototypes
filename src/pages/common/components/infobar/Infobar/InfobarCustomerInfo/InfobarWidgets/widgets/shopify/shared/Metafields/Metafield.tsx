@@ -49,6 +49,10 @@ export default function Metafield({metafield}: Props) {
             )
         }
 
+        case 'color': {
+            return <ColorMetafield label={label} value={metafield.value} />
+        }
+
         default: {
             return <></>
         }
@@ -74,6 +78,29 @@ function FieldWithCopyButton({
                     <CopyButton value={value} />
                 </span>
             </StaticField>
+        </div>
+    )
+}
+
+function ColorMetafield({label, value}: {label: string; value: string}) {
+    return (
+        <div className={css.field}>
+            <StaticField label={startCase(label)}>
+                <svg className={css.colorBadge}>
+                    <circle
+                        cx={7}
+                        cy={7}
+                        r={6.665}
+                        stroke={value}
+                        strokeWidth={0}
+                        fill={value}
+                    />
+                </svg>
+                <span className={css.colorValue}>{value}</span>
+            </StaticField>
+            <span className={css.copyButton}>
+                <CopyButton value={value} />
+            </span>
         </div>
     )
 }

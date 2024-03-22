@@ -1,5 +1,6 @@
 import {
     BooleanShopifyMetafield,
+    ColorShopifyMetafield,
     DateShopifyMetafield,
     DateTimeShopifyMetafield,
     FileReferenceShopifyMetafield,
@@ -1640,4 +1641,11 @@ export const shopifyBoolean = (): BooleanShopifyMetafield => ({
     key: 'test_boolean',
     value: true,
     type: 'boolean',
+})
+
+export const shopifyColor = (): ColorShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_boolean',
+    value: '#2b78b6',
+    type: 'color',
 })
