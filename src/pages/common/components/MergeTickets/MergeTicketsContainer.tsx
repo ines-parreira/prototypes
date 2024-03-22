@@ -12,7 +12,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {mergeTickets} from 'state/mergeTickets/actions'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import history from 'pages/history'
+import goToTicket from 'common/utils/goToTicket'
 
 import BuildFinalTicket from './BuildFinalTicket'
 import SelectTargetTicket from './SelectTargetTicket'
@@ -104,9 +104,11 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 (targetTicket as unknown as Map<any, any>).get('id'),
                 (finalTicket as unknown as Map<any, any>).toJS()
             )
-            .then((data) =>
-                history.push(`/app/ticket/${(data as {id: string}).id}`)
-            )
+            .then((data) => {
+                const ticketId = (data as {id: string}).id
+
+                goToTicket(ticketId)
+            })
             .catch(() => this.setState({isLoading: false}))
     }
 

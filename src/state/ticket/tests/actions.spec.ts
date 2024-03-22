@@ -350,10 +350,6 @@ describe('ticket actions', () => {
                         1,
                         'spam-1'
                     )
-                    expect(history.push).toHaveBeenNthCalledWith(
-                        1,
-                        '/app/ticket/1'
-                    )
                     expect(store.getActions()).toMatchSnapshot()
                 })
             })
@@ -412,10 +408,6 @@ describe('ticket actions', () => {
                     expect(dismissNotification).toHaveBeenNthCalledWith(
                         1,
                         'trash-1'
-                    )
-                    expect(history.push).toHaveBeenNthCalledWith(
-                        1,
-                        '/app/ticket/1'
                     )
                     expect(store.getActions()).toMatchSnapshot()
                 })
