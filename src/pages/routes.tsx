@@ -12,7 +12,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {logPageChange} from 'common/segment'
-import {ThemeProvider} from 'theme'
 import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
@@ -517,256 +516,254 @@ export function StatsRoutes() {
     useEffect(logPageChange, [location.pathname])
 
     return (
-        <ThemeProvider>
-            <DefaultStatsFilters
-                notReadyFallback={
-                    <Route
-                        render={() => (
-                            <App navbar={StatsNavbarContainer}>{null}</App>
-                        )}
+        <DefaultStatsFilters
+            notReadyFallback={
+                <Route
+                    render={() => (
+                        <App navbar={StatsNavbarContainer}>{null}</App>
+                    )}
+                />
+            }
+        >
+            <Switch>
+                <Route exact path={`${path}/`}>
+                    <Redirect
+                        to={`${path}/${
+                            hasLiveOverviewFeature
+                                ? 'live-overview'
+                                : 'support-performance-overview'
+                        }`}
                     />
-                }
-            >
-                <Switch>
-                    <Route exact path={`${path}/`}>
-                        <Redirect
-                            to={`${path}/${
-                                hasLiveOverviewFeature
-                                    ? 'live-overview'
-                                    : 'support-performance-overview'
-                            }`}
-                        />
-                    </Route>
-                    <Route
-                        exact
-                        path={`${path}/live-overview`}
-                        render={() => (
-                            <App
-                                content={LiveOverview}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/live-agents`}
-                        render={() => (
-                            <App
-                                content={LiveAgents}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/support-performance-overview`}
-                        render={() => (
-                            <App
-                                content={
-                                    flagLoading
-                                        ? Skeleton
-                                        : SupportPerformanceOverview
-                                }
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/support-performance-overview-legacy`}
-                        render={() => (
-                            <App
-                                content={DEPRECATED_SupportPerformanceOverview}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/busiest-times-of-days`}
-                        render={() => (
-                            <App
-                                content={SupportPerformanceBusiestTimesOfDays}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/ticket-fields`}
-                        render={() => (
-                            <App
-                                content={
-                                    flagLoading
-                                        ? Skeleton
-                                        : SupportPerformanceTicketInsights
-                                }
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/tags`}
-                        render={() => (
-                            <App
-                                content={SupportPerformanceTags}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/channels`}
-                        render={() => (
-                            <App
-                                content={SupportPerformanceChannels}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/support-performance-agents`}
-                        render={() => (
-                            <App
-                                content={
-                                    flagLoading
-                                        ? Skeleton
-                                        : SupportPerformanceAgents
-                                }
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/satisfaction`}
-                        render={() => (
-                            <App
-                                content={SupportPerformanceSatisfaction}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/revenue`}
-                        render={() => (
-                            <RevenueAddonApiClientProvider>
-                                <App
-                                    content={SupportPerformanceRevenue}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            </RevenueAddonApiClientProvider>
-                        )}
-                    />
-                    <Route exact path={`${path}/revenue/campaigns`}>
-                        <Redirect to={`${path}/convert/campaigns`} />
-                    </Route>
-                    <Route
-                        exact
-                        path={`${path}/convert/campaigns`}
-                        render={() => (
-                            <RevenueAddonApiClientProvider>
-                                <App
-                                    content={RevenueCampaignsStats}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            </RevenueAddonApiClientProvider>
-                        )}
-                    />
-                    <Route
-                        path={`${path}/convert/campaigns/subscribe`}
-                        exact
-                        render={() => (
-                            <App
-                                content={CampaignStatsPaywallView}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/macros`}
-                        render={() => (
-                            <App
-                                content={AutomateMacros}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/intents`}
-                        render={() => (
-                            <App
-                                content={AutomateIntents}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}
-                        render={() => (
-                            <App
-                                content={AutomateStatsPaywall}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-
-                    <Route
-                        exact
-                        path={`${path}/${ROUTE_OLD_PERFORMANCE_BY_FEATURES}`}
-                    >
-                        <Redirect
-                            to={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
-                        />
-                    </Route>
-                    <Route
-                        exact
-                        path={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
-                        render={() => (
-                            <HelpCenterApiClientProvider>
-                                <App
-                                    content={SelfServiceStatsPage}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            </HelpCenterApiClientProvider>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/help-center`}
-                        render={HelpCenterStatsRoutes}
-                    />
-                    <Route
-                        exact
-                        path={`${path}/voice-overview`}
-                        render={() => (
-                            <App
-                                content={VoiceOverview}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                    {displayVoiceAnalyticsV1 && (
-                        <Route
-                            exact
-                            path={`${path}/voice-agents`}
-                            render={() => (
-                                <App
-                                    content={VoiceAgents}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            )}
+                </Route>
+                <Route
+                    exact
+                    path={`${path}/live-overview`}
+                    render={() => (
+                        <App
+                            content={LiveOverview}
+                            navbar={StatsNavbarContainer}
                         />
                     )}
-                </Switch>
-            </DefaultStatsFilters>
-        </ThemeProvider>
+                />
+                <Route
+                    exact
+                    path={`${path}/live-agents`}
+                    render={() => (
+                        <App
+                            content={LiveAgents}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/support-performance-overview`}
+                    render={() => (
+                        <App
+                            content={
+                                flagLoading
+                                    ? Skeleton
+                                    : SupportPerformanceOverview
+                            }
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/support-performance-overview-legacy`}
+                    render={() => (
+                        <App
+                            content={DEPRECATED_SupportPerformanceOverview}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/busiest-times-of-days`}
+                    render={() => (
+                        <App
+                            content={SupportPerformanceBusiestTimesOfDays}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/ticket-fields`}
+                    render={() => (
+                        <App
+                            content={
+                                flagLoading
+                                    ? Skeleton
+                                    : SupportPerformanceTicketInsights
+                            }
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/tags`}
+                    render={() => (
+                        <App
+                            content={SupportPerformanceTags}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/channels`}
+                    render={() => (
+                        <App
+                            content={SupportPerformanceChannels}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/support-performance-agents`}
+                    render={() => (
+                        <App
+                            content={
+                                flagLoading
+                                    ? Skeleton
+                                    : SupportPerformanceAgents
+                            }
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/satisfaction`}
+                    render={() => (
+                        <App
+                            content={SupportPerformanceSatisfaction}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/revenue`}
+                    render={() => (
+                        <RevenueAddonApiClientProvider>
+                            <App
+                                content={SupportPerformanceRevenue}
+                                navbar={StatsNavbarContainer}
+                            />
+                        </RevenueAddonApiClientProvider>
+                    )}
+                />
+                <Route exact path={`${path}/revenue/campaigns`}>
+                    <Redirect to={`${path}/convert/campaigns`} />
+                </Route>
+                <Route
+                    exact
+                    path={`${path}/convert/campaigns`}
+                    render={() => (
+                        <RevenueAddonApiClientProvider>
+                            <App
+                                content={RevenueCampaignsStats}
+                                navbar={StatsNavbarContainer}
+                            />
+                        </RevenueAddonApiClientProvider>
+                    )}
+                />
+                <Route
+                    path={`${path}/convert/campaigns/subscribe`}
+                    exact
+                    render={() => (
+                        <App
+                            content={CampaignStatsPaywallView}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/macros`}
+                    render={() => (
+                        <App
+                            content={AutomateMacros}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/intents`}
+                    render={() => (
+                        <App
+                            content={AutomateIntents}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}
+                    render={() => (
+                        <App
+                            content={AutomateStatsPaywall}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+
+                <Route
+                    exact
+                    path={`${path}/${ROUTE_OLD_PERFORMANCE_BY_FEATURES}`}
+                >
+                    <Redirect
+                        to={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
+                    />
+                </Route>
+                <Route
+                    exact
+                    path={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
+                    render={() => (
+                        <HelpCenterApiClientProvider>
+                            <App
+                                content={SelfServiceStatsPage}
+                                navbar={StatsNavbarContainer}
+                            />
+                        </HelpCenterApiClientProvider>
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/help-center`}
+                    render={HelpCenterStatsRoutes}
+                />
+                <Route
+                    exact
+                    path={`${path}/voice-overview`}
+                    render={() => (
+                        <App
+                            content={VoiceOverview}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                {displayVoiceAnalyticsV1 && (
+                    <Route
+                        exact
+                        path={`${path}/voice-agents`}
+                        render={() => (
+                            <App
+                                content={VoiceAgents}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
+            </Switch>
+        </DefaultStatsFilters>
     )
 }
 
