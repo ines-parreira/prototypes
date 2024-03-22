@@ -49,6 +49,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
     const {
         canAddProductCard,
         canAddProductLink,
+        disableOutOfStockProducts,
         disableVariantSelection,
         onAddProductCardAttachment,
         onInsertProductLinkOpen,
@@ -195,6 +196,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                 </div>
             ) : (
                 <ShopifyProductLine
+                    disableOutOfStockProducts={disableOutOfStockProducts}
                     disableVariantStep={disableVariantSelection}
                     productClicked={handleAddProductLink}
                     onResetStoreChoice={

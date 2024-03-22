@@ -201,6 +201,7 @@ export const CampaignMessage = memo(
                         value={value}
                         attachments={attachments}
                         allowExternalChanges
+                        disableOutOfStockProducts={true}
                         disableProductCards={!isConvertSubscriber}
                         disableVariantSelection={isConvertSubscriber}
                         onChange={onChangeMessage}

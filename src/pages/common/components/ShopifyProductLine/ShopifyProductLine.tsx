@@ -19,16 +19,32 @@ import {IntegrationType} from 'models/integration/constants'
 import {Product, Variant} from 'constants/integrations/types/shopify'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Result from 'pages/common/forms/ProductSearchInput/Result'
+import Result, {
+    Props as ResultProps,
+} from 'pages/common/forms/ProductSearchInput/Result'
 
 import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import css from './ShopifyProductLine.less'
 
 type OwnProps = {
+    disableOutOfStockProducts?: boolean
     disableVariantStep?: boolean
     shopifyIntegration: Map<string, string>
     productClicked: (productCardDetails: ProductCardDetails) => void
     onResetStoreChoice?: () => void
+}
+
+const generateResultProps = (
+    disableOutOfStockProducts: boolean,
+    props: ResultProps
+): ResultProps => {
+    if (disableOutOfStockProducts) {
+        return props
+    }
+
+    // Force to be always available
+    props.stock.isAvailable = true
+    return props
 }
 
 const generateVariantName = (
@@ -52,6 +68,7 @@ const generateVariantName = (
 }
 
 export default function ShopifyProductLine({
+    disableOutOfStockProducts = false,
     disableVariantStep = false,
     shopifyIntegration,
     onResetStoreChoice,
@@ -271,15 +288,22 @@ export default function ShopifyProductLine({
                                     action
                                     className={classnames({
                                         [css.outOfStock]:
-                                            productDetails.stock.isAvailable ===
-                                            false,
+                                            disableOutOfStockProducts
+                                                ? productDetails.stock
+                                                      .isAvailable === false
+                                                : false,
                                     })}
                                     onClick={(event) => {
                                         event.preventDefault()
                                         handleProductClick(index)
                                     }}
                                 >
-                                    <Result {...productDetails} />
+                                    <Result
+                                        {...generateResultProps(
+                                            disableOutOfStockProducts,
+                                            productDetails
+                                        )}
+                                    />
                                 </ListGroupItem>
                             )
                         })}
@@ -305,8 +329,10 @@ export default function ShopifyProductLine({
                                         action
                                         className={classnames({
                                             [css.outOfStock]:
-                                                !productDetails.stock
-                                                    .isAvailable,
+                                                disableOutOfStockProducts
+                                                    ? !productDetails.stock
+                                                          .isAvailable
+                                                    : false,
                                         })}
                                         onClick={(event) => {
                                             event.preventDefault()
@@ -314,7 +340,12 @@ export default function ShopifyProductLine({
                                         }}
                                     >
                                         {clickedResult && (
-                                            <Result {...productDetails} />
+                                            <Result
+                                                {...generateResultProps(
+                                                    disableOutOfStockProducts,
+                                                    productDetails
+                                                )}
+                                            />
                                         )}
                                     </ListGroupItem>
                                 )
