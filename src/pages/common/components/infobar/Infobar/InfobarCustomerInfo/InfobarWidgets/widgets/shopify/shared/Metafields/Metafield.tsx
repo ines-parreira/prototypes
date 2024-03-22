@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {createRef} from 'react'
 import {startCase} from 'lodash'
-import {ShopifyMetafield} from '@gorgias/api-types'
+import {ShopifyMetafield} from '@gorgias/api-queries'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge from 'gorgias-design-system/Badge/Badge'
+import Tooltip from 'pages/common/components/Tooltip'
 import css from './Metafield.less'
 
 type Props = {
@@ -23,8 +24,15 @@ export default function Metafield({metafield}: Props) {
         case 'variant_reference':
         case 'file_reference':
         case 'metaobject_reference':
-        case 'mixed_reference': {
-            return <FieldWithCopyButton label={label} value={metafield.value} />
+        case 'mixed_reference':
+        case 'number_decimal':
+        case 'number_integer': {
+            return (
+                <FieldWithCopyButton
+                    label={`${namespace}.${key}`}
+                    value={String(metafield.value)}
+                />
+            )
         }
 
         case 'date':
@@ -51,6 +59,15 @@ export default function Metafield({metafield}: Props) {
 
         case 'color': {
             return <ColorMetafield label={label} value={metafield.value} />
+        }
+
+        case 'json': {
+            return (
+                <FieldWithCopyButtonAndTooltip
+                    label={`${namespace}.${key}`}
+                    value={metafield.value}
+                />
+            )
         }
 
         default: {
@@ -102,5 +119,35 @@ function ColorMetafield({label, value}: {label: string; value: string}) {
                 <CopyButton value={value} />
             </span>
         </div>
+    )
+}
+
+type FieldWithCopyButtonAndTooltipProps = {
+    children?: React.ReactNode
+    label: string
+    value: object
+}
+
+function FieldWithCopyButtonAndTooltip({
+    label,
+    value,
+    children,
+}: FieldWithCopyButtonAndTooltipProps) {
+    const ref = createRef<HTMLDivElement>()
+    const formattedJson = JSON.stringify(value, null, 4)
+    return (
+        <>
+            <div className={css.field} ref={ref}>
+                <StaticField label={startCase(label)}>
+                    {children ?? formattedJson}
+                    <span className={css.copyButton}>
+                        <CopyButton value={formattedJson} />
+                    </span>
+                </StaticField>
+            </div>
+            <Tooltip target={ref} placement="top">
+                <pre className={css.tooltip}>{formattedJson}</pre>
+            </Tooltip>
+        </>
     )
 }

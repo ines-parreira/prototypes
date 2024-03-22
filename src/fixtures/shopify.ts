@@ -4,9 +4,12 @@ import {
     DateShopifyMetafield,
     DateTimeShopifyMetafield,
     FileReferenceShopifyMetafield,
+    JsonShopifyMetafield,
     MetaobjectReferenceShopifyMetafield,
     MixedReferenceShopifyMetafield,
     MultiLineTextFieldShopifyMetafield,
+    NumberDecimalShopifyMetafield,
+    NumberIntegerShopifyMetafield,
     ShopifyMetafield,
     SingleLineTextFieldShopifyMetafield,
     VariantReferenceShopifyMetafield,
@@ -1648,4 +1651,25 @@ export const shopifyColor = (): ColorShopifyMetafield => ({
     key: 'test_boolean',
     value: '#2b78b6',
     type: 'color',
+})
+
+export const shopifyNumberDecimal = (): NumberDecimalShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_number_decimal',
+    value: '123.22',
+    type: 'number_decimal',
+})
+
+export const shopifyNumberInteger = (): NumberIntegerShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_number_integer',
+    value: 123,
+    type: 'number_integer',
+})
+
+export const shopifyJson = (): JsonShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: {foo: 'bar'},
+    type: 'json',
 })

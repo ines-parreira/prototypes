@@ -10,13 +10,16 @@ import {
     shopifyDateMetafield,
     shopifyDateTimeMetafield,
     shopifyFileReference,
+    shopifyJson,
     shopifyMetaobjectReference,
     shopifyMixedReference,
     shopifyMultiTextLineFieldMetafield,
+    shopifyNumberDecimal,
+    shopifyNumberInteger,
     shopifyProductVariantReference,
     shopifySingleTextLineFieldMetafield,
     shopifyUrlMetafield,
-} from '../../../../../../../../../../../../fixtures/shopify'
+} from 'fixtures/shopify'
 import Metafield from '../Metafield'
 
 describe('<MetaField/>', () => {
@@ -151,6 +154,36 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.getByText(`#2b78b6`))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyNumberDecimal', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyNumberDecimal()} />
+                </Provider>
+            )
+            expect(screen.getByText(`123.22`))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyNumberInteger', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyNumberInteger()} />
+                </Provider>
+            )
+            expect(screen.getByText(`123`))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyJson', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyJson()} />
+                </Provider>
+            )
+            expect(screen.queryByText(`foo`))
             expect(screen.getByRole('button'))
         })
     })
