@@ -1,48 +1,62 @@
-import React from 'react'
-import classnames from 'classnames'
-import {SourceAddress} from 'models/ticket/types'
+import React, {useRef, useState} from 'react'
 import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
 
-import {humanizeAddress} from 'state/ticket/utils'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+
+import SenderDropDownItem from './SenderDropDownItem'
 import css from './SenderSelectField.less'
 
-type Props = {
-    tabIndex?: number
-}
-
-const SenderSelectField = ({tabIndex}: Props) => {
-    const {selectedSender, selectedChannel, senders, selectSender} =
+const SenderSelectField = () => {
+    const {selectedSender, senders, selectSender} =
         useSendersForSelectedChannel()
+
+    const targetRef = useRef<HTMLDivElement>(null)
+    const floatingRef = useRef<HTMLDivElement>(null)
+
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
         <div className={css.field}>
-            <i className={classnames('material-icons', css.arrow)}>
-                keyboard_arrow_down
-            </i>
-            <select
-                className={css.select}
-                value={selectedSender?.address}
-                onChange={(event) => {
-                    const sender = senders.find(
-                        (sender) => sender.address === event.target.value
-                    )
-                    if (sender) {
-                        selectSender(sender)
-                    }
-                }}
-                tabIndex={tabIndex}
+            <SelectInputBox
+                className={css.wrapper}
+                floating={floatingRef}
+                label={selectedSender?.displayName}
+                onToggle={setIsOpen}
+                ref={targetRef}
             >
-                {senders.map((sender: SourceAddress) => (
-                    <option key={sender.address} value={sender.address}>
-                        {sender.name}{' '}
-                        {sender.address &&
-                            `(${humanizeAddress(
-                                sender.address,
-                                selectedChannel
-                            )})`}
-                    </option>
-                ))}
-            </select>
+                <SelectInputBoxContext.Consumer data-testid={`select`}>
+                    {(context) => (
+                        <Dropdown
+                            isOpen={isOpen}
+                            onToggle={() =>
+                                context ? context.onBlur() : undefined
+                            }
+                            ref={floatingRef}
+                            target={targetRef}
+                            value={selectedSender?.address}
+                            root={
+                                targetRef?.current?.parentElement
+                                    ? targetRef.current?.parentElement
+                                    : undefined
+                            }
+                        >
+                            <DropdownBody>
+                                {senders.map((sender) => (
+                                    <SenderDropDownItem
+                                        key={sender.address}
+                                        sender={sender}
+                                        onSelect={selectSender}
+                                    />
+                                ))}
+                            </DropdownBody>
+                        </Dropdown>
+                    )}
+                </SelectInputBoxContext.Consumer>
+            </SelectInputBox>
         </div>
     )
 }

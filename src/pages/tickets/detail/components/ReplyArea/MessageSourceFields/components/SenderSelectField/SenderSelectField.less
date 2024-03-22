@@ -1,33 +1,26 @@
-:local .field {
-    display: inline-block;
-    position: relative;
-
-    .arrow {
-        position: absolute;
-        // use a string otherwise LESS calculates `50% - 10px`
-        top: ~'calc(50% - 8px)';
-        right: 9px;
-        z-index: 1;
-
-        pointer-events: none;
+:local {
+    .field {
+        display: inline-block;
+        position: relative;
     }
 
-    .select {
-        -webkit-appearance: none;
-        appearance: none;
+    .wrapper {
+        & > div {
+            background: var(--neutral-grey-2);
+            border: 0 !important;
+            box-shadow: none !important;
+            height: 24px;
 
-        position: relative;
-        padding: 0.25em 24px 0.25em 0.76em;
-        margin: 0 4px 2px 0;
-        outline: none !important; // prevent outline from focus
-        background: var(--neutral-grey-2);
-        border: 0;
-        cursor: pointer;
+            & > div:first-child {
+                padding-top: 0;
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 24px;
+            }
 
-        color: var(--neutral-grey-6);
-        font-weight: 600;
-        font-size: 12px;
-        white-space: nowrap;
-        border-radius: 4px;
+            & > i {
+                padding-top: 3px;
+            }
+        }
     }
 }

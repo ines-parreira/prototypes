@@ -25,8 +25,19 @@ import {
 import {Integration, IntegrationType} from 'models/integration/types'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
-import {Channel, getChannels, isNewChannel, toChannel} from 'services/channels'
+import {
+    Channel,
+    ChannelLike,
+    getChannels,
+    isNewChannel,
+    toChannel,
+} from 'services/channels'
 import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
+import {humanizeAddress} from 'state/ticket/utils'
+
+export type Sender = SourceAddress & {
+    displayName: string
+}
 
 const LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION: Partial<
     Record<IntegrationType, TicketMessageSourceType[]>
@@ -174,20 +185,27 @@ function getReplyChannelsForTicket(
 }
 
 export function useSendersForSelectedChannel(): {
-    senders: SourceAddress[]
-    selectedSender: Maybe<SourceAddress>
+    senders: Sender[]
+    selectedSender: Maybe<Sender>
     selectedChannel: Maybe<Channel | TicketMessageSourceType>
-    selectSender: (sender: SourceAddress) => void
+    selectSender: (sender: Sender) => void
 } {
     const dispatch = useAppDispatch()
     const {selectedChannel} = useOutboundChannels()
     const senders = useAppSelector((state) =>
-        selectedChannel ? getSendersForChannel(selectedChannel)(state) : []
+        selectedChannel
+            ? getSendersForChannel(selectedChannel)(state).map(
+                  (sourceAddress) =>
+                      sourceAddressToSender(sourceAddress, selectedChannel)
+              )
+            : []
     )
     const from = useAppSelector(getNewMessageSourceProperty('from')).toJS()
-    const selectedSender = isSourceAddress(from) ? from : undefined
+    const selectedSender = isSourceAddress(from)
+        ? sourceAddressToSender(from, selectedChannel)
+        : undefined
 
-    const selectSender = (sender: SourceAddress) => {
+    const selectSender = (sender: Sender) => {
         dispatch(setSender(sender.address))
     }
 
@@ -278,6 +296,18 @@ function getLegacyReplySourcesForTicket(
     }
 
     return uniq(sources)
+}
+
+function sourceAddressToSender(
+    sourceAddress: SourceAddress,
+    channelLike: Maybe<ChannelLike>
+): Sender {
+    const {name, address} = sourceAddress
+    return {
+        name,
+        address,
+        displayName: `${name} (${humanizeAddress(address, channelLike)})`,
+    }
 }
 
 export const privateFunctions = {

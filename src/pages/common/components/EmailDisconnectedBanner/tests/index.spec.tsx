@@ -69,7 +69,6 @@ describe('EmailMigrationBanner', () => {
             ])
         )
         renderComponent('/app/settings/channels/email')
-        screen.debug()
         expect(screen.queryByText('test@gorgias.com')).toBeNull()
     })
 

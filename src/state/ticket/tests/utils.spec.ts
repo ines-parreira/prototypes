@@ -1562,6 +1562,12 @@ describe('ticket utils', () => {
             expect(humanizeAddress('+12133734253')).toEqual('+12133734253')
         })
 
+        it('formats correctly for non-legacy channels', () => {
+            expect(humanizeAddress('sendershop', 'tiktok-shop')).toEqual(
+                'sendershop'
+            )
+        })
+
         it('should run to lowercase on all other input', () => {
             expect(humanizeAddress('aNeMailAdDreSS@pRoVIder.io')).toEqual(
                 'anemailaddress@provider.io'

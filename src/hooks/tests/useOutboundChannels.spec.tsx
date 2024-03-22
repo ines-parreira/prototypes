@@ -585,6 +585,7 @@ describe('useSendersForSelectedChannel()', () => {
                 {
                     address: 'theshop',
                     name: 'The Shop',
+                    displayName: 'The Shop (theshop)',
                 },
             ])
         })
@@ -621,6 +622,7 @@ describe('useSendersForSelectedChannel()', () => {
                 expect(result.current?.selectedSender).toEqual({
                     address: 'sendershop',
                     name: 'Sender Shop',
+                    displayName: 'Sender Shop (sendershop)',
                 })
             })
 
@@ -655,10 +657,12 @@ describe('useSendersForSelectedChannel()', () => {
                 expect(result.current?.selectedSender).toEqual({
                     address: 'sendershop',
                     name: 'Sender Shop',
+                    displayName: 'Sender Shop (sendershop)',
                 })
                 result?.current.selectSender({
                     address: 'anothershop',
                     name: 'Another Shop',
+                    displayName: 'Another Shop (anothershop)',
                 })
                 expect(store.getActions()).toEqual([
                     {

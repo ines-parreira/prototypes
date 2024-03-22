@@ -483,10 +483,7 @@ export const getSendersForChannel =
                 )
             )
             .filter(isAppIntegration)
-            .map(({name, meta: {address}}) => ({
-                address,
-                name,
-            }))
+            .map(({name, meta: {address}}) => ({address, name}))
     }
 
 export const getChannelByTypeAndAddress = (
