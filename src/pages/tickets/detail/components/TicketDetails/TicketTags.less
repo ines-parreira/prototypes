@@ -1,11 +1,6 @@
 @import (reference) '~css/new/mixins';
 
 :local {
-    .wrapper {
-        transition: height 0.2s ease-out;
-        overflow: hidden;
-    }
-
     .tagLabel {
         padding: 4px 4px 4px 8px;
 
@@ -37,32 +32,26 @@
         }
     }
 
-    .displayMore {
+    .addTag {
+        border-radius: 4px;
         height: 24px;
-        cursor: pointer;
-        margin-left: unset;
+        padding: 0 8px;
+        color: var(--neutral-grey-5) !important; // overrides reactstrap
 
-        &:global.badge-tag {
-            padding: 4px 4px 4px 8px;
+        &.transparent {
+            background: unset;
+            border: unset;
+            box-shadow: unset;
         }
 
-        .icon {
-            font-size: 16px;
-            vertical-align: top;
+        &:hover,
+        &:focus {
+            background-color: var(--neutral-grey-2);
         }
-    }
 
-    .hidden {
-        display: none;
-    }
-
-    .tagsRow {
-        display: flex;
-        gap: 8px;
-    }
-
-    .tooltipContent {
-        margin-bottom: 0;
-        padding-left: 20px;
+        &:active {
+            background-color: var(--neutral-grey-3);
+            color: var(--neutral-grey-6) !important;
+        }
     }
 }

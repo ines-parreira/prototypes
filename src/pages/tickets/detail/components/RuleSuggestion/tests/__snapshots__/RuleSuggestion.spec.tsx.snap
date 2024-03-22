@@ -147,24 +147,15 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                     class="tagsSelect"
                   >
                     <div
-                      class="wrapper"
-                      style="height: 24px;"
+                      class="tags right"
                     >
-                      <div
-                        class="tagsRow"
+                      <span
+                        class="badge-tag tagLabel badge badge-secondary"
                       >
-                        <div
-                          class="tags right"
-                        >
-                          <span
-                            class="badge-tag tagLabel badge badge-secondary"
-                          >
-                            <span>
-                              auto-close
-                            </span>
-                          </span>
-                        </div>
-                      </div>
+                        <span>
+                          auto-close
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -345,24 +336,15 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                     class="tagsSelect"
                   >
                     <div
-                      class="wrapper"
-                      style="height: 24px;"
+                      class="tags right"
                     >
-                      <div
-                        class="tagsRow"
+                      <span
+                        class="badge-tag tagLabel badge badge-secondary"
                       >
-                        <div
-                          class="tags right"
-                        >
-                          <span
-                            class="badge-tag tagLabel badge badge-secondary"
-                          >
-                            <span>
-                              auto-close
-                            </span>
-                          </span>
-                        </div>
-                      </div>
+                        <span>
+                          auto-close
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>

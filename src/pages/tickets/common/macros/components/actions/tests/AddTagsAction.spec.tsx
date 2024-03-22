@@ -4,14 +4,8 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import useElementSize from 'hooks/useElementSize'
 import {RootState, StoreDispatch} from 'state/types'
 import AddTagsAction from '../AddTagsAction'
-
-jest.mock('hooks/useElementSize', () => jest.fn())
-
-const useElementSizeMock = useElementSize as jest.Mock
-useElementSizeMock.mockReturnValue([0, 160])
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)

@@ -73,7 +73,6 @@ import {
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
-import goToTicket from 'common/utils/goToTicket'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
@@ -333,7 +332,7 @@ export const setSpam =
                                     void dispatch(
                                         dismissNotification(`spam-${ticketId}`)
                                     )
-                                    goToTicket(ticketId)
+                                    history.push(`/app/ticket/${ticketId}`)
                                     return dispatch(
                                         fetchTicket(ticketId, {
                                             isCurrentlyOnTicket: true,
@@ -395,7 +394,7 @@ export const setTrashed =
                                                 `trash-${ticketId}`
                                             )
                                         )
-                                        goToTicket(ticketId)
+                                        history.push(`/app/ticket/${ticketId}`)
                                         return dispatch(
                                             fetchTicket(ticketId, {
                                                 isCurrentlyOnTicket: true,

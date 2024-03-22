@@ -13,8 +13,8 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
     >
       <input
         class="input editableTitle input"
-        id="input-text-3"
-        name="input-text-3"
+        id="input-text-4"
+        name="input-text-4"
         placeholder="Subject"
         tabindex="1"
         type="text"
@@ -97,7 +97,79 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           </span>
         </button>
       </span>
-      TicketTagsMock
+      <div
+        class="tags"
+      >
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="transparent addTag btn btn-secondary btn-sm"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                add
+              </i>
+              Add tags
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            >
+              <div
+                class="wrapper isFocused"
+              >
+                <input
+                  class="input"
+                  id="input-text-6"
+                  name="input-text-6"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+      </div>
     </div>
     <div>
       TicketAssigneeMock
@@ -137,7 +209,79 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
     <div
       class="statusAndTags"
     >
-      TicketTagsMock
+      <div
+        class="tags"
+      >
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="transparent addTag btn btn-secondary btn-sm"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                add
+              </i>
+              Add tags
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            >
+              <div
+                class="wrapper isFocused"
+              >
+                <input
+                  class="input"
+                  id="input-text-2"
+                  name="input-text-2"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+      </div>
     </div>
     <div>
       TicketAssigneeMock
@@ -159,8 +303,8 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
     >
       <input
         class="input editableTitle input"
-        id="input-text-6"
-        name="input-text-6"
+        id="input-text-8"
+        name="input-text-8"
         placeholder="Subject"
         tabindex="1"
         type="text"
@@ -223,7 +367,79 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
           </span>
         </button>
       </span>
-      TicketTagsMock
+      <div
+        class="tags"
+      >
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="transparent addTag btn btn-secondary btn-sm"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                add
+              </i>
+              Add tags
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            >
+              <div
+                class="wrapper isFocused"
+              >
+                <input
+                  class="input"
+                  id="input-text-10"
+                  name="input-text-10"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+      </div>
     </div>
     <div>
       TicketAssigneeMock
@@ -245,8 +461,8 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
     >
       <input
         class="input editableTitle input"
-        id="input-text-9"
-        name="input-text-9"
+        id="input-text-12"
+        name="input-text-12"
         placeholder="Subject"
         tabindex="1"
         type="text"
@@ -309,7 +525,79 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
           </span>
         </button>
       </span>
-      TicketTagsMock
+      <div
+        class="tags"
+      >
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="transparent addTag btn btn-secondary btn-sm"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                add
+              </i>
+              Add tags
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            >
+              <div
+                class="wrapper isFocused"
+              >
+                <input
+                  class="input"
+                  id="input-text-14"
+                  name="input-text-14"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+      </div>
     </div>
     <div>
       TicketAssigneeMock

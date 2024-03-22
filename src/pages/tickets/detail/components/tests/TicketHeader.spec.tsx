@@ -6,9 +6,8 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _omit from 'lodash/omit'
 import {useParams} from 'react-router-dom'
-import moment from 'moment'
 
-import useElementSize from 'hooks/useElementSize'
+import moment from 'moment'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {ticket} from 'fixtures/ticket'
 import * as notificationsActions from 'state/notifications/actions'
@@ -23,19 +22,12 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import TicketHeader from '../TicketHeader'
 import Snooze from '../Snooze'
 
-jest.mock('hooks/useElementSize', () => jest.fn())
-
-const useElementSizeMock = useElementSize as jest.Mock
-useElementSizeMock.mockReturnValue([0, 160])
-
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee',
     () => () => <div>TicketAssigneeMock</div>
 )
 
 jest.mock('services/shortcutManager')
-
-jest.mock('../TicketDetails/TicketTags', () => () => 'TicketTagsMock')
 
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(() => () => Promise.resolve()),
@@ -225,7 +217,7 @@ describe('<TicketHeader />', () => {
         )
 
         fireEvent.click(getByText(/more_vert/))
-        expect(getByText(/Delete/)).toBeInTheDocument()
+        expect(getByText(/Delete/)).toBeTruthy()
     })
 
     it('should not display the delete action for basic, lite and observer agents', () => {
@@ -247,7 +239,7 @@ describe('<TicketHeader />', () => {
 
         fireEvent.click(getByText(/more_vert/))
 
-        expect(queryByText(/Delete/)).not.toBeInTheDocument()
+        expect(queryByText(/Delete/)).toBeFalsy()
     })
 
     it('should not register the shortcut of the delete action for basic, lite and observer agents', () => {
@@ -273,7 +265,7 @@ describe('<TicketHeader />', () => {
             'TicketDetailContainer'
         )('DELETE_TICKET')
 
-        expect(queryByText(/You are about to /)).not.toBeInTheDocument()
+        expect(queryByText(/You are about to /)).toBeFalsy()
     })
 
     it('should log segment event', () => {

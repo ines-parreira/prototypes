@@ -22,13 +22,13 @@ describe('useHasWrapped', () => {
         const {result} = renderHook(useHasWrapped)
 
         act(() => {
-            const {ref} = result.current
+            const [ref] = result.current
             render(
                 <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
             )
         })
 
-        expect(result.current.hasWrapped).toBeFalsy()
+        expect(result.current[1]).toBeFalsy()
     })
 
     it('should synchronously set up ResizeObserver listener', () => {
@@ -37,7 +37,7 @@ describe('useHasWrapped', () => {
         const {result} = renderHook(useHasWrapped)
 
         act(() => {
-            const {ref} = result.current
+            const [ref] = result.current
             render(
                 <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
             )
@@ -56,7 +56,7 @@ describe('useHasWrapped', () => {
         const {result} = renderHook(useHasWrapped)
 
         act(() => {
-            const {ref} = result.current
+            const [ref] = result.current
             render(
                 <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
             )
@@ -81,8 +81,7 @@ describe('useHasWrapped', () => {
             resizeListener([{target}])
         })
 
-        expect(result.current.hasWrapped).toBeTruthy()
-        expect(result.current.numberOfWrappedElements).toEqual(1)
+        expect(result.current[1]).toBeTruthy()
     })
 
     it('should track multiple updates', () => {
@@ -95,7 +94,7 @@ describe('useHasWrapped', () => {
         const {result} = renderHook(useHasWrapped)
 
         act(() => {
-            const {ref} = result.current
+            const [ref] = result.current
             render(
                 <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
             )
@@ -120,18 +119,13 @@ describe('useHasWrapped', () => {
             resizeListener([{target}])
         })
 
-        expect(result.current.hasWrapped).toBeFalsy()
+        expect(result.current[1]).toBeFalsy()
 
         const updatedTarget = {
             children: [
                 {
                     getBoundingClientRect: () => ({
                         top: 10,
-                    }),
-                },
-                {
-                    getBoundingClientRect: () => ({
-                        top: 20,
                     }),
                 },
                 {
@@ -146,8 +140,7 @@ describe('useHasWrapped', () => {
             resizeListener([{target: updatedTarget}])
         })
 
-        expect(result.current.hasWrapped).toBeTruthy()
-        expect(result.current.numberOfWrappedElements).toEqual(2)
+        expect(result.current[1]).toBeTruthy()
     })
 
     //unskip this when this is solved https://github.com/testing-library/react-hooks-testing-library/issues/847
@@ -160,7 +153,7 @@ describe('useHasWrapped', () => {
         const hook = renderHook(useHasWrapped)
 
         act(() => {
-            const {ref} = hook.result.current
+            const [ref] = hook.result.current
             render(
                 <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
             )
