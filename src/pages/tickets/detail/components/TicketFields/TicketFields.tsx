@@ -21,7 +21,7 @@ function TicketFields() {
     const dispatch = useAppDispatch()
     const ticketFieldState = useAppSelector(getTicketFieldState)
     const [showAllFields, setShowAllFields] = useState(false)
-    const [ref, hasWrapped] = useHasWrapped<HTMLDivElement>()
+    const {ref, hasWrapped} = useHasWrapped<HTMLDivElement>()
     const height = useHeight(ref)
     const hasAttemptedToCloseTicket = useAppSelector(
         getHasAttemptedToCloseTicket

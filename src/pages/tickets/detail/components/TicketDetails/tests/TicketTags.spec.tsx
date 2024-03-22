@@ -4,27 +4,32 @@ import {Map, fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
 
-import {UserRole} from 'config/types/user'
 import {agents} from 'fixtures/agents'
-import client from 'models/api/resources'
+import useElementSize from 'hooks/useElementSize'
 
-import {SEARCH_ENDPOINT} from 'models/search/resources'
 import TicketTags from '../TicketTags'
 
 const mockStore = configureMockStore([thunk])
 
-describe('<TicketTags />', () => {
-    let mockServer: MockAdapter
+jest.mock('hooks/useElementSize')
 
+const mockNumberOfWrappedElements = 3
+
+jest.mock('hooks/useHasWrapped', () => () => ({
+    ref: {current: null},
+    hasWrapped: true,
+    numberOfWrappedElements: mockNumberOfWrappedElements,
+    width: 100,
+}))
+
+const useElementSizeMock = useElementSize as jest.Mock
+useElementSizeMock.mockReturnValue([160, 100])
+
+describe('<TicketTags />', () => {
     const user = fromJS(fromJS(agents[0])) as Map<any, any>
     const store = mockStore({
         currentUser: user,
-    })
-
-    beforeEach(() => {
-        mockServer = new MockAdapter(client)
     })
 
     const minProps: Omit<ComponentProps<typeof TicketTags>, 'transparent'> = {
@@ -34,6 +39,7 @@ describe('<TicketTags />', () => {
             {name: 'refund'},
             {name: 'angry'},
             {name: 'return'},
+            {name: 'customer'},
         ]),
     }
 
@@ -47,45 +53,21 @@ describe('<TicketTags />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should allow the tag creation to lead agent', async () => {
-        mockServer
-            .onPost(SEARCH_ENDPOINT)
-            .reply(200, {data: [{id: 1, name: 'exchange'}]})
-        const {getByText, getByPlaceholderText} = render(
+    it('should allow to show and hide overflowing tags', async () => {
+        const {container, getByText, getAllByText} = render(
             <Provider store={store}>
                 <TicketTags {...minProps} />
             </Provider>
         )
-
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
-            target: {value: 'Foo'},
-        })
-        await waitFor(() => expect(getByText(/Create/i)).toBeTruthy())
-    })
-
-    it('should restrict the tag creation to basic agent', async () => {
-        mockServer.onPost(SEARCH_ENDPOINT).reply(200, {data: []})
-
-        const {getByText, getByPlaceholderText} = render(
-            <Provider
-                store={mockStore({
-                    currentUser: user.setIn(
-                        ['role', 'name'],
-                        UserRole.BasicAgent
-                    ),
-                })}
-            >
-                <TicketTags {...minProps} />
-            </Provider>
+        const expandButton = getByText(
+            new RegExp(`${mockNumberOfWrappedElements - 1}`)
         )
+        expect(container.firstChild).toHaveStyle('height: 24px')
+        fireEvent.mouseOver(expandButton)
+        await waitFor(() => expect(getAllByText('refund')).toHaveLength(2))
+        await waitFor(() => expect(getAllByText('return')).toHaveLength(2))
 
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
-            target: {value: 'Foo'},
-        })
-        await waitFor(() =>
-            expect(getByText(/Couldn't find the tag: Foo/i)).toBeTruthy()
-        )
+        fireEvent.click(expandButton)
+        expect(container.firstChild).toHaveStyle('height: 100px')
     })
 })

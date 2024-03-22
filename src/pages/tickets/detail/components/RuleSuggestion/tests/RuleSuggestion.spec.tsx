@@ -1,11 +1,12 @@
 import React from 'react'
-
 import {fireEvent, screen, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import useElementSize from 'hooks/useElementSize'
 import {emailTicket} from 'state/ticket/tests/fixtures'
 import {billingState} from 'fixtures/billing'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
@@ -21,6 +22,11 @@ import RuleSuggestion, {
     getRuleSuggestionContent,
     isSuggestionEmpty,
 } from '../RuleSuggestion'
+
+jest.mock('hooks/useElementSize', () => jest.fn())
+
+const useElementSizeMock = useElementSize as jest.Mock
+useElementSizeMock.mockReturnValue([0, 160])
 
 jest.mock('state/newMessage/actions.ts')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())

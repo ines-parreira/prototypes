@@ -26,7 +26,10 @@ import {
 import {RootState, StoreState} from 'state/types'
 import {assumeMock, makeExecuteKeyboardAction} from 'utils/testing'
 
-import {TicketListActions} from '../TicketListActions'
+import {
+    SHORTCUT_MANAGER_COMPONENT_NAME,
+    TicketListActions,
+} from '../TicketListActions'
 
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('state/views/actions')
@@ -325,7 +328,7 @@ describe('TicketListActions component', () => {
 
         expect(shortcutManagerMock.bind).toHaveBeenCalled()
         const [[component, actions]] = shortcutManagerMock.bind.mock.calls
-        expect(component).toBe('TicketListActions')
+        expect(component).toBe(SHORTCUT_MANAGER_COMPONENT_NAME)
         expect(Object.keys(actions!)).toMatchSnapshot()
     })
 
@@ -339,7 +342,7 @@ describe('TicketListActions component', () => {
         unmount()
 
         expect(shortcutManagerMock.unbind).toHaveBeenLastCalledWith(
-            'TicketListActions'
+            SHORTCUT_MANAGER_COMPONENT_NAME
         )
     })
 

@@ -147,15 +147,24 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                     class="tagsSelect"
                   >
                     <div
-                      class="tags right"
+                      class="wrapper"
+                      style="height: 24px;"
                     >
-                      <span
-                        class="badge-tag tagLabel badge badge-secondary"
+                      <div
+                        class="tagsRow"
                       >
-                        <span>
-                          auto-close
-                        </span>
-                      </span>
+                        <div
+                          class="tags right"
+                        >
+                          <span
+                            class="badge-tag tagLabel badge badge-secondary"
+                          >
+                            <span>
+                              auto-close
+                            </span>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -336,15 +345,24 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                     class="tagsSelect"
                   >
                     <div
-                      class="tags right"
+                      class="wrapper"
+                      style="height: 24px;"
                     >
-                      <span
-                        class="badge-tag tagLabel badge badge-secondary"
+                      <div
+                        class="tagsRow"
                       >
-                        <span>
-                          auto-close
-                        </span>
-                      </span>
+                        <div
+                          class="tags right"
+                        >
+                          <span
+                            class="badge-tag tagLabel badge badge-secondary"
+                          >
+                            <span>
+                              auto-close
+                            </span>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

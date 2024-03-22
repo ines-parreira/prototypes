@@ -2,12 +2,12 @@ import {useEffect, useMemo, useState} from 'react'
 
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import useDebouncedValue from 'hooks/useDebouncedValue'
+import useElementSize from 'hooks/useElementSize'
 import usePrevious from 'hooks/usePrevious'
 
 import useTicketIds from '../hooks/useTicketIds'
 import {TICKET_HEIGHT} from '../constants'
 import {SortField, TicketPartial} from '../types'
-import useElementSize from './useElementSize'
 import useScrollOffset from './useScrollOffset'
 import {SortOrder} from './useSortOrder'
 import useStaleTickets from './useStaleTickets'
