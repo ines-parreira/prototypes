@@ -52,6 +52,9 @@ export const CAMPAIGN_TEMPLATES_LIST = Object.values(CAMPAIGN_TEMPLATES)
 export const ONBOARDING_CAMPAIGN_TEMPLATES_LIST = Object.values(
     CAMPAIGN_TEMPLATES
 ).filter((t) => t.onboarding)
+export const CAMPANY_LIBRARY_TEMPLATES_LIST = Object.values(
+    CAMPAIGN_TEMPLATES
+).filter((t) => !t.onboarding)
 
 const increaseConversionRate: CampaignTemplateSectionType = {
     title: 'Increase Conversion Rate',

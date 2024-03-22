@@ -81,7 +81,7 @@ export const PROMOTE_SALE_COLLECTION: CampaignTemplate = {
             name: PROMOTE_SALE_COLLECTION.name,
             template_id: PROMOTE_SALE_COLLECTION.slug,
             message_html:
-                '<div>Before you go, check out our <strong>latest items on sale for <a href="https://northsidegeneralstore.myshopify.com/collections/sale?utm_source=Gorgias&amp%3Bamp%3Butm_medium=ChatCampaign&amp%3Bamp%3Butm_campaign=[Push+for+conversions]+exit+intent+for+returning+customers%2C+suggest+sale+collection&amp%3Butm_medium=ChatCampaign&amp%3Butm_campaign=[Push+for+conversions]+exit+intent+for+returning+customers%2C+suggest+sale+collection&utm_medium=ChatCampaign&utm_campaign=%5BCL%5D%5BIncrease%20Conversion%20Rate%5D%20Promote%20your%20sale%20collection%2C%20for%20returning%20visitors%20about%20to%20leave" target="_blank">up to 30% OFF</a>!</strong>💸</div>',
+                '<div>Before you go, check out our <strong>latest items on sale for <a href="" target="_blank">up to 30% OFF</a>!</strong>💸</div>',
             message_text:
                 'Before you go, check out our latest items on sale for up to 30% OFF!💸',
             status: CampaignStatus.Inactive,

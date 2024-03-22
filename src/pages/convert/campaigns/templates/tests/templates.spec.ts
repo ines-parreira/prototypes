@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {shopifyIntegration} from 'fixtures/integrations'
 import client from 'models/api/resources'
 import {integrationDataItemProductFixture} from 'fixtures/shopify'
-import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from '../index'
+import {CAMPAIGN_TEMPLATES} from '../index'
 
 jest.mock('ulidx', () => ({
     ulid: jest.fn(() => 'ulid-generated-id'),
@@ -16,7 +16,7 @@ describe('CampaignTemplates', () => {
         mockServer = new MockAdapter(client)
     })
 
-    it.each(ONBOARDING_CAMPAIGN_TEMPLATES_LIST)(
+    it.each(Object.values(CAMPAIGN_TEMPLATES))(
         'get template configuration',
         async (template) => {
             mockServer

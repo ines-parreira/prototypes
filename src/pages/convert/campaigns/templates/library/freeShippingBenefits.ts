@@ -1,6 +1,8 @@
 // Highlight free shipping benefit for customers near the threshold & offer accessories
 
 import {ulid} from 'ulidx'
+import {Map} from 'immutable'
+
 import {assetsUrl} from 'utils'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
@@ -8,7 +10,6 @@ import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
 import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {
     WizardConfiguration,
     BannerType,
@@ -51,9 +52,9 @@ export const FREE_SHIPPING_BENEFITS: CampaignTemplate = {
             },
         }
     },
-    getConfiguration: (): Promise<CampaignConfiguration> => {
-        // TODO: Add attachments from the backend
-        const attachments = [] as CampaignAttachment[]
+    getConfiguration: async (
+        storeIntegration: Map<string, any>
+    ): Promise<CampaignConfiguration> => {
         const triggers = [
             {
                 id: ulid(),
@@ -89,8 +90,9 @@ export const FREE_SHIPPING_BENEFITS: CampaignTemplate = {
                 delay: 15000,
                 noReply: true,
             },
-            attachments,
         })
+
+        await b.attachProductCards(storeIntegration, 3)
 
         return Promise.resolve(b.build())
     },
