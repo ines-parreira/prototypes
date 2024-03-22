@@ -30,6 +30,7 @@ describe('<SpotlightCustomerRow/>', () => {
         id: 1,
         index: 1,
         onClick: mockOnClick,
+        highlight: {},
     }
 
     it('should render render customer information', () => {
@@ -68,5 +69,25 @@ describe('<SpotlightCustomerRow/>', () => {
         )
         userEvent.click(container.firstChild! as Element)
         expect(mockOnClick).toHaveBeenCalled()
+    })
+
+    it('should render a highlight when highlight is passed', () => {
+        const {getByText} = render(
+            <WrappedSpotlightCustomerRow
+                {...defaultProps}
+                highlight={{
+                    email: ['<em>some email</em>'],
+                    name: ['<em>some name</em>'],
+                    'channels.address': ['<em>+32 000 000</em>'],
+                }}
+            />
+        )
+
+        expect(getByText('some email')).toBeInTheDocument()
+        expect(getByText('some email').tagName.toLocaleLowerCase()).toBe('em')
+        expect(getByText('some name')).toBeInTheDocument()
+        expect(getByText('some name').tagName.toLocaleLowerCase()).toBe('em')
+        expect(getByText('+32 000 000')).toBeInTheDocument()
+        expect(getByText('+32 000 000').tagName.toLocaleLowerCase()).toBe('em')
     })
 })

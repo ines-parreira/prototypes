@@ -6,6 +6,7 @@ import SearchRankScenarioContext from 'pages/common/components/SearchRankScenari
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {isMacOs} from 'utils/platform'
 
+import {sanitizeHtmlDefault} from 'utils/html'
 import css from './SpotlightRow.less'
 
 type SpotlightRowProps = {
@@ -56,7 +57,10 @@ const SpotlightRow = ({
             onMouseEnter={onHover}
         >
             {!!icon && <div className={css.icon}>{icon}</div>}
-            <span className={css.title}>{title}</span>
+            <span
+                className={css.title}
+                dangerouslySetInnerHTML={{__html: sanitizeHtmlDefault(title)}}
+            />
             <div className={css.separator} />
             <span className={css.info}>{info}</span>
             {selected && (
