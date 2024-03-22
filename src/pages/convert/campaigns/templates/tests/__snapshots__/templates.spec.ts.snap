@@ -173,7 +173,7 @@ exports[`CampaignTemplates get template configuration 5`] = `
   "message_text": "You've got great taste. 🛒
 
 Is there anything else we can help you with before you check out? 💳",
-  "name": "Connect customers on your cart page with your team",
+  "name": "Engage with customers on the cart page",
   "status": "inactive",
   "template_id": "connect-customer-on-cart-with-team",
   "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
@@ -486,7 +486,7 @@ exports[`CampaignTemplates get template configuration 13`] = `
 {
   "message_html": "<div>🔍 I can help you<strong> find the best fit for you</strong>! What are you looking for?</div>",
   "message_text": "🔍 I can help you find the best fit for you! What are you looking for?",
-  "name": "Offer a chat with your team to find the best fit",
+  "name": "Drive conversations with your visitors to find the right product",
   "status": "inactive",
   "template_id": "offer-chat-with-team-to-find-best-fit",
   "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
@@ -513,7 +513,7 @@ exports[`CampaignTemplates get template configuration 14`] = `
   "message_text": "💡 Not sure which style to choose?
 
 Take our quiz or chat with our leather artisans now! 👇",
-  "name": "Promote quizzes that help visitors choose their products",
+  "name": "Promote educational content that help visitors choose their products",
   "status": "inactive",
   "template_id": "promote-quizzes-to-help-choose-products",
   "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
