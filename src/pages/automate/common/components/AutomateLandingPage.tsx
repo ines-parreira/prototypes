@@ -2,10 +2,13 @@ import React, {useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import classNames from 'classnames'
 import moment from 'moment'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useCallbackRef from 'hooks/useCallbackRef'
 import useAppSelector from 'hooks/useAppSelector'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     useAutomatedInteractionsTrend,
@@ -15,6 +18,7 @@ import {
 } from 'hooks/reporting/metricTrends'
 import {useTicketAverageHandleTimeMetric} from 'hooks/reporting/metrics'
 import {getTimezone} from 'state/currentUser/selectors'
+import {getAgentCostsSettings} from 'state/currentAccount/selectors'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import TipsToggle from 'pages/stats/TipsToggle'
@@ -62,13 +66,21 @@ const AutomateLandingPage = () => {
         },
     }
 
+    const hasAccessToROICalculator =
+        useFlags()[FeatureFlagKey.ObservabilityROICalculator]
+
+    const agentCosts = useAppSelector(getAgentCostsSettings)
+
+    const agentCostPerTicket =
+        hasAccessToROICalculator && agentCosts
+            ? agentCosts?.data.agent_cost_per_ticket
+            : AGENT_COST_PER_TICKET
+
     const history = useHistory()
     const costPerAutomatedInteraction = useGetCostPerAutomatedInteraction()
     const costPerBillableTicket = useGetCostPerBillableTicket()
     const moneySavedPerInteraction =
-        costPerBillableTicket +
-        AGENT_COST_PER_TICKET -
-        costPerAutomatedInteraction
+        costPerBillableTicket + agentCostPerTicket - costPerAutomatedInteraction
 
     const [isTipsVisible, setIsTipVisible] = useState(true)
 
