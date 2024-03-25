@@ -144,11 +144,6 @@ import TicketDetailLayout from 'ticket-page/components/TicketDetailLayout'
 import {CampaignsView} from 'pages/convert/campaigns/CampaignsView'
 import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignDetailsFactory'
 import {useIsConvertUiDecouplingEnabled} from './convert/common/hooks/useIsConvertUiDecouplingEnabled'
-import {
-    BundlesView,
-    BundleInstallView,
-    BundleDetailView,
-} from './settings/revenue/components/BundlesView'
 import OrderManagementViewContainer from './automate/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
 import TrackOrderFlowViewContainer from './automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
@@ -174,7 +169,7 @@ import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCente
 import ConvertOnboardingView from './convert/onboarding/components/ConvertOnboardingView'
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
 import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
-import ConvertOnboardingRecommendationsView from './convert/onboarding/components/ConvertOnboardingRecommendationsView'
+import ConvertOnboardingWizardView from './convert/onboarding/components/ConvertOnboardingWizardView'
 import CampaignTemplateCustomizeView from './convert/campaigns/containers/CampaignTemplateCustomizeView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
@@ -1718,15 +1713,15 @@ export function ConvertContent() {
             />
             <Route
                 exact
-                path={`${convertPathPrefix}/setup/recommendations`}
+                path={`${convertPathPrefix}/setup/wizard`}
                 component={memoizedWithUserRoleRequired(
-                    ConvertOnboardingRecommendationsView as any,
+                    ConvertOnboardingWizardView as any,
                     ADMIN_ROLE
                 )}
             />
             <Route
                 exact
-                path={`${convertPathPrefix}/setup/recommendations/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
+                path={`${convertPathPrefix}/setup/wizard/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
                 component={memoizedWithUserRoleRequired(
                     CampaignTemplateCustomizeView as any,
                     ADMIN_ROLE
@@ -1860,48 +1855,6 @@ export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
                         <App
                             content={memoizedWithUserRoleRequired(
                                 ClickTrackingPaywallView as any,
-                                ADMIN_ROLE,
-                                PageSection.Users
-                            )}
-                            navbar={SettingsNavbar}
-                        />
-                    )}
-                />
-                <Route
-                    path={`${path}/installations`}
-                    exact
-                    render={() => (
-                        <App
-                            content={memoizedWithUserRoleRequired(
-                                BundlesView as any,
-                                ADMIN_ROLE,
-                                PageSection.Users
-                            )}
-                            navbar={SettingsNavbar}
-                        />
-                    )}
-                />
-                <Route
-                    path={`${path}/installations/new`}
-                    exact
-                    render={() => (
-                        <App
-                            content={memoizedWithUserRoleRequired(
-                                BundleInstallView as any,
-                                ADMIN_ROLE,
-                                PageSection.Users
-                            )}
-                            navbar={SettingsNavbar}
-                        />
-                    )}
-                />
-                <Route
-                    path={`${path}/installations/:bundleId`}
-                    exact
-                    render={() => (
-                        <App
-                            content={memoizedWithUserRoleRequired(
-                                BundleDetailView as any,
                                 ADMIN_ROLE,
                                 PageSection.Users
                             )}

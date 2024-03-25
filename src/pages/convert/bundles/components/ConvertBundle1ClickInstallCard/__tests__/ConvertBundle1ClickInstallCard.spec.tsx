@@ -6,13 +6,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
-import {
-    RevenueBundle,
-    RevenueBundleInstallationMethodResponse,
-    RevenueBundleStatus,
-} from 'models/revenueBundles/types'
+
 import {IntegrationType} from 'models/integration/constants'
 import client from 'models/api/resources'
+import {convertBundle} from 'fixtures/convertBundle'
+import {
+    BundleInstallationMethodResponse,
+    BundleStatus,
+} from 'models/convert/bundle/types'
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
 
 const mockStore = configureMockStore([thunk])
@@ -40,13 +41,11 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
             <Provider store={mockStore(defaultState)}>
                 <ConvertBundle1ClickInstallCard
                     isConnectedToShopify={true}
-                    bundle={
-                        {
-                            id: 1,
-                            status: RevenueBundleStatus.Uninstalled,
-                            method: RevenueBundleInstallationMethodResponse.OneClick,
-                        } as unknown as RevenueBundle
-                    }
+                    bundle={{
+                        ...convertBundle,
+                        status: BundleStatus.Uninstalled,
+                        method: BundleInstallationMethodResponse.OneClick,
+                    }}
                 />
             </Provider>
         )
@@ -68,13 +67,11 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
             <Provider store={mockStore(defaultState)}>
                 <ConvertBundle1ClickInstallCard
                     isConnectedToShopify={true}
-                    bundle={
-                        {
-                            id: 1,
-                            status: RevenueBundleStatus.Installed,
-                            method: RevenueBundleInstallationMethodResponse.OneClick,
-                        } as unknown as RevenueBundle
-                    }
+                    bundle={{
+                        ...convertBundle,
+                        status: BundleStatus.Installed,
+                        method: BundleInstallationMethodResponse.OneClick,
+                    }}
                 />
             </Provider>
         )
@@ -99,13 +96,11 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
             <Provider store={mockStore(defaultState)}>
                 <ConvertBundle1ClickInstallCard
                     isConnectedToShopify={true}
-                    bundle={
-                        {
-                            id: 1,
-                            status: RevenueBundleStatus.Uninstalled,
-                            method: RevenueBundleInstallationMethodResponse.OneClick,
-                        } as unknown as RevenueBundle
-                    }
+                    bundle={{
+                        ...convertBundle,
+                        status: BundleStatus.Uninstalled,
+                        method: BundleInstallationMethodResponse.OneClick,
+                    }}
                     onChange={onChange}
                 />
             </Provider>
@@ -121,7 +116,7 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
 
     it('triggers onChange when uninstall button is clicked', async () => {
         mockedServer
-            .onPost('/api/revenue-addon-bundle/1/uninstall/')
+            .onPost(`/api/revenue-addon-bundle/${convertBundle.id}/uninstall/`)
             .reply(200, {})
 
         const onChange = jest.fn()
@@ -129,13 +124,11 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
             <Provider store={mockStore(defaultState)}>
                 <ConvertBundle1ClickInstallCard
                     isConnectedToShopify={true}
-                    bundle={
-                        {
-                            id: 1,
-                            status: RevenueBundleStatus.Installed,
-                            method: RevenueBundleInstallationMethodResponse.OneClick,
-                        } as unknown as RevenueBundle
-                    }
+                    bundle={{
+                        ...convertBundle,
+                        status: BundleStatus.Installed,
+                        method: BundleInstallationMethodResponse.OneClick,
+                    }}
                     onChange={onChange}
                 />
             </Provider>

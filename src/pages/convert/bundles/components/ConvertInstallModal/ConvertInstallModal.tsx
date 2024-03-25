@@ -5,23 +5,22 @@ import {IntegrationType} from 'models/integration/constants'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import Button from 'pages/common/components/button/Button'
-import {
-    RevenueBundleActionResponse,
-    RevenueBundleInstallationMethod,
-} from 'models/revenueBundles/types'
-import useAsyncFn from 'hooks/useAsyncFn'
-import client from 'models/api/resources'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {transformBundleError} from 'pages/settings/revenue/utils/transformBundleError'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {useAppNode} from 'appNode'
-import BundleManualInstallationCard from 'pages/settings/revenue/components/BundlesView/BundleManualInstallationCard'
+import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+
+import {
+    BundleActionResponse,
+    BundleInstallationMethod,
+    BundleStatus,
+} from 'models/convert/bundle/types'
 
 type Props = {
     isOpen: boolean
     integration: Map<string, string>
-    onSubmit: (data: RevenueBundleActionResponse) => void
+    initialBundleData?: BundleActionResponse
+    onSubmit: (data: BundleActionResponse) => void
     onClose: () => void
 }
 
@@ -30,26 +29,35 @@ const ConvertInstallModal = ({
     onSubmit,
     onClose,
     integration,
+    initialBundleData,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const appNode = useAppNode()
 
     const [installationMethod, setInstallationMethod] =
-        useState<RevenueBundleInstallationMethod>(
-            RevenueBundleInstallationMethod.OneClick
-        )
+        useState<BundleInstallationMethod>(BundleInstallationMethod.OneClick)
 
-    const [showManual, setShowManual] = useState<boolean>(false)
-    const [bundleData, setBundleData] = useState<
-        RevenueBundleActionResponse | undefined
-    >()
+    const [showManual, setShowManual] = useState(false)
 
-    const integrationId = useMemo((): number | null => {
-        if (!integration) {
-            return null
+    const [bundleData, setBundleData] = useState<BundleActionResponse>()
+
+    useEffect(() => {
+        setBundleData(initialBundleData)
+    }, [initialBundleData])
+
+    const integrationId = useMemo(
+        () => parseInt(integration.get('id')) || 0,
+        [integration]
+    )
+
+    const onInstall = (data: BundleActionResponse) => {
+        setBundleData(data)
+
+        if (installationMethod === BundleInstallationMethod.OneClick) {
+            onSubmit(data)
+        } else {
+            setShowManual(true)
         }
-        return parseInt(integration.get('id'))
-    }, [integration])
+    }
 
     const isManualMethodRequired = useMemo(() => {
         return (
@@ -60,59 +68,28 @@ const ConvertInstallModal = ({
     useEffect(() => {
         setInstallationMethod(
             isManualMethodRequired
-                ? RevenueBundleInstallationMethod.Manual
-                : RevenueBundleInstallationMethod.OneClick
+                ? BundleInstallationMethod.Manual
+                : BundleInstallationMethod.OneClick
         )
     }, [isManualMethodRequired])
 
-    const [{loading: isSubmitting}, installBundle] = useAsyncFn(async () => {
-        if (!integrationId) {
-            return
+    const {bundle} = useGetConvertBundle(integrationId)
+
+    useEffect(() => {
+        if (
+            bundle &&
+            bundle.status === BundleStatus.Installed &&
+            bundle.method === BundleInstallationMethod.Manual
+        ) {
+            setShowManual(true)
         }
+    }, [bundle])
 
-        let action = 'install'
-        let message = 'Bundle installed successfully'
-        if (installationMethod === RevenueBundleInstallationMethod.Manual) {
-            action = 'manual-install'
-            message = 'Ready for installation, please follow the instructions'
-        }
-
-        try {
-            const {data} = await client.post<RevenueBundleActionResponse>(
-                `/api/revenue-addon-bundle/${action}/`,
-                {
-                    integration_id: integrationId,
-                }
-            )
-
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: message,
-                })
-            )
-
-            setBundleData(data)
-
-            if (
-                installationMethod === RevenueBundleInstallationMethod.OneClick
-            ) {
-                onSubmit(data)
-            } else {
-                setShowManual(true)
-            }
-        } catch (e) {
-            void dispatch(
-                notify(
-                    transformBundleError(
-                        e,
-                        "We couldn't install the bundle. Please try again.",
-                        integrationId
-                    )
-                )
-            )
-        }
-    }, [integrationId, installationMethod])
+    const {isSubmitting, installBundle} = useInstallBundle(
+        integrationId,
+        installationMethod,
+        onInstall
+    )
 
     return (
         <Modal
@@ -131,7 +108,8 @@ const ConvertInstallModal = ({
                 {showManual ? (
                     <BundleManualInstallationCard
                         bundleCode={bundleData?.code}
-                        isConnected={!!integrationId}
+                        isConnected={false}
+                        isBordered={false}
                         isConnectedToShopify={
                             integration?.get('type') === IntegrationType.Shopify
                         }
@@ -146,14 +124,14 @@ const ConvertInstallModal = ({
                             value="one-click"
                             isSelected={
                                 installationMethod ===
-                                RevenueBundleInstallationMethod.OneClick
+                                BundleInstallationMethod.OneClick
                             }
                             isDisabled={isManualMethodRequired}
                             label="1-click installation for Shopify"
                             caption="Install the campaign bundle on your Shopify store in one click."
                             onClick={() => {
                                 setInstallationMethod(
-                                    RevenueBundleInstallationMethod.OneClick
+                                    BundleInstallationMethod.OneClick
                                 )
                             }}
                         />
@@ -162,13 +140,13 @@ const ConvertInstallModal = ({
                             className="mt-3"
                             isSelected={
                                 installationMethod ===
-                                RevenueBundleInstallationMethod.Manual
+                                BundleInstallationMethod.Manual
                             }
                             label="Manual install"
                             caption="Add the campaign bundle to non-Shopify stores, Shopify Headless, specific pages on a Shopify store, or any other website."
                             onClick={() => {
                                 setInstallationMethod(
-                                    RevenueBundleInstallationMethod.Manual
+                                    BundleInstallationMethod.Manual
                                 )
                             }}
                         />
@@ -194,7 +172,7 @@ const ConvertInstallModal = ({
                         onClick={installBundle}
                     >
                         {installationMethod ===
-                        RevenueBundleInstallationMethod.OneClick
+                        BundleInstallationMethod.OneClick
                             ? 'Install Bundle'
                             : 'Next'}
                     </Button>

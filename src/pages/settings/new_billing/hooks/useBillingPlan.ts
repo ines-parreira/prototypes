@@ -42,7 +42,6 @@ import {isGorgiasApiError} from 'models/api/types'
 import useGetConvertStatus, {
     convertStatusKeys,
 } from 'pages/settings/revenue/hooks/useGetConvertStatus'
-import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -85,7 +84,6 @@ export const useBillingPlans = ({
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isSubscriptionCanceled = currentSubscription.isEmpty()
     const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     const periodEnd = useMemo(
         () =>
@@ -517,11 +515,7 @@ export const useBillingPlans = ({
                     newProduct: selectedPlans[ProductType.Convert].plan,
                     periodEnd,
                     onClick: () => {
-                        if (isConvertUiDecouplingEnabled) {
-                            history.push('/app/convert')
-                        } else {
-                            history.push('/app/settings/convert/installations')
-                        }
+                        history.push('/app/convert')
                     },
                     interval,
                     isFreeTrial,
@@ -582,7 +576,6 @@ export const useBillingPlans = ({
         isFreeTrial,
         history,
         interval,
-        isConvertUiDecouplingEnabled,
         anyProductChanged,
         dispatch,
         dispatchBillingError,

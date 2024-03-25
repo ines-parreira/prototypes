@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
 import {useParams} from 'react-router-dom'
-import {useQueryClient} from '@tanstack/react-query'
 import {List} from 'immutable'
 import PageHeader from 'pages/common/components/PageHeader'
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,31 +8,22 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
-import {bundleKeys, useListBundles} from 'models/convert/bundle/queries'
-import {
-    RevenueBundleActionResponse,
-    RevenueBundleInstallationMethod,
-} from 'models/revenueBundles/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import client from 'models/api/resources'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import Button from 'pages/common/components/button/Button'
 import {IntegrationType} from 'models/integration/constants'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {transformBundleError} from 'pages/settings/revenue/utils/transformBundleError'
 import Loader from 'pages/common/components/Loader/Loader'
-import {convertStatusKeys} from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {
+    BundleInstallationMethod,
+    BundleStatus,
+} from 'models/convert/bundle/types'
 import ConvertBundleDetail from '../ConvertBundleDetail'
 import css from './ConvertBundleView.less'
 
 const ConvertBundleView = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: paramIntegrationId} =
         useParams<ConvertRouteParams>()
-
-    const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
 
     const chatIntegrationId = parseInt(paramIntegrationId || '')
     const chatIntegration = useAppSelector(
@@ -68,31 +58,19 @@ const ConvertBundleView = () => {
         [storeIntegrationId, chatIntegrationId]
     )
 
-    const {data: bundles, isLoading} = useListBundles({
-        enabled: !!storeIntegrationId || !!chatIntegrationId,
-    })
-
-    const bundle = useMemo(() => {
-        if (!bundles || !Array.isArray(bundles)) return undefined
-
-        return bundles.find((bundle) => {
-            return (
-                bundle.shop_integration_id === storeIntegrationId ||
-                bundle.shop_integration_id === chatIntegrationId
-            )
-        })
-    }, [bundles, storeIntegrationId, chatIntegrationId])
+    const {bundle, isLoading} = useGetConvertBundle(
+        storeIntegrationId,
+        chatIntegrationId
+    )
 
     const isInstalled = useMemo(
-        () => !!bundle && bundle.status === 'installed',
+        () => !!bundle && bundle.status === BundleStatus.Installed,
         [bundle]
     )
 
     // install
     const [installationMethod, setInstallationMethod] =
-        useState<RevenueBundleInstallationMethod>(
-            RevenueBundleInstallationMethod.OneClick
-        )
+        useState<BundleInstallationMethod>(BundleInstallationMethod.OneClick)
 
     const isManualMethodRequired = useMemo(() => {
         return (
@@ -104,7 +82,7 @@ const ConvertBundleView = () => {
     const showUpdatePermissionsBanner = useMemo(() => {
         if (
             !storeIntegration ||
-            installationMethod === RevenueBundleInstallationMethod.Manual
+            installationMethod === BundleInstallationMethod.Manual
         ) {
             return false
         }
@@ -126,57 +104,15 @@ const ConvertBundleView = () => {
     useEffect(() => {
         setInstallationMethod(
             isManualMethodRequired
-                ? RevenueBundleInstallationMethod.Manual
-                : RevenueBundleInstallationMethod.OneClick
+                ? BundleInstallationMethod.Manual
+                : BundleInstallationMethod.OneClick
         )
     }, [isManualMethodRequired])
 
-    const [{loading: isSubmitting}, installBundle] = useAsyncFn(async () => {
-        if (!integrationId) {
-            return
-        }
-
-        let action = 'install'
-        let message = 'Bundle installed successfully'
-        if (installationMethod === RevenueBundleInstallationMethod.Manual) {
-            action = 'manual-install'
-            message = 'Ready for installation, please follow the instructions'
-        }
-
-        try {
-            await client.post<RevenueBundleActionResponse>(
-                `/api/revenue-addon-bundle/${action}/`,
-                {
-                    integration_id: integrationId,
-                }
-            )
-
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: message,
-                })
-            )
-
-            await queryClient.invalidateQueries({
-                queryKey: bundleKeys.lists(),
-            })
-
-            await queryClient.invalidateQueries({
-                queryKey: convertStatusKeys.all(),
-            })
-        } catch (e) {
-            void dispatch(
-                notify(
-                    transformBundleError(
-                        e,
-                        "We couldn't install the bundle. Please try again.",
-                        integrationId
-                    )
-                )
-            )
-        }
-    }, [integrationId, installationMethod])
+    const {isSubmitting, installBundle} = useInstallBundle(
+        integrationId,
+        installationMethod
+    )
 
     return isLoading ? (
         <Loader message="Loading..." minHeight={'400px'} />
@@ -211,14 +147,14 @@ const ConvertBundleView = () => {
                                         value="one-click"
                                         isSelected={
                                             installationMethod ===
-                                            RevenueBundleInstallationMethod.OneClick
+                                            BundleInstallationMethod.OneClick
                                         }
                                         isDisabled={isManualMethodRequired}
                                         label="1-click install"
                                         caption="for Shopify stores (except headless)"
                                         onClick={() => {
                                             setInstallationMethod(
-                                                RevenueBundleInstallationMethod.OneClick
+                                                BundleInstallationMethod.OneClick
                                             )
                                         }}
                                     />
@@ -226,13 +162,13 @@ const ConvertBundleView = () => {
                                         value="manual"
                                         isSelected={
                                             installationMethod ===
-                                            RevenueBundleInstallationMethod.Manual
+                                            BundleInstallationMethod.Manual
                                         }
                                         label="Manual install"
                                         caption="for Shopify headless stores, Woocommerce, BigCommerce, Magento stores or custom websites"
                                         onClick={() => {
                                             setInstallationMethod(
-                                                RevenueBundleInstallationMethod.Manual
+                                                BundleInstallationMethod.Manual
                                             )
                                         }}
                                     />
@@ -245,7 +181,7 @@ const ConvertBundleView = () => {
                                     isDisabled={isSubmitDisabled}
                                 >
                                     {installationMethod ===
-                                    RevenueBundleInstallationMethod.OneClick
+                                    BundleInstallationMethod.OneClick
                                         ? 'Install'
                                         : 'Install manually'}
                                 </Button>

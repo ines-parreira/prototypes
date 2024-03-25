@@ -76,7 +76,7 @@ const ConvertOnboardingCampaignTemplate = ({
 
                     <div className={css.button}>
                         <Link
-                            to={`/app/convert/${integrationId}/setup/recommendations/${template.slug}`}
+                            to={`/app/convert/${integrationId}/setup/wizard/${template.slug}`}
                         >
                             <Button intent="primary" fillStyle="ghost">
                                 Customize

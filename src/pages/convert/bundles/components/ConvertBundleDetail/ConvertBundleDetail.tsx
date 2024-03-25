@@ -6,19 +6,15 @@ import {Link} from 'react-router-dom'
 import client from 'models/api/resources'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {
-    RevenueBundle,
-    RevenueBundleActionResponse,
-} from 'models/revenueBundles/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getIconFromType} from 'state/integrations/helpers'
-import BundleManualInstallationCard from 'pages/settings/revenue/components/BundlesView/BundleManualInstallationCard'
+import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
 import {bundleKeys} from 'models/convert/bundle/queries'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {Bundle} from 'models/convert/bundle/types'
+import {Bundle, BundleActionResponse} from 'models/convert/bundle/types'
 import {convertStatusKeys} from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
 import css from './ConvertBundleDetail.less'
@@ -53,7 +49,7 @@ const ConvertBundleDetail = ({
         if (!bundle) return
 
         client
-            .get<RevenueBundleActionResponse>(
+            .get<BundleActionResponse>(
                 `/api/revenue-addon-bundle/${bundle.id}/`
             )
             .then((response) => {
@@ -176,7 +172,7 @@ const ConvertBundleDetail = ({
             </p>
 
             <ConvertBundle1ClickInstallCard
-                bundle={bundle as RevenueBundle}
+                bundle={bundle}
                 isConnectedToShopify={isConnectedToShopify}
                 integrationId={integrationId}
                 onChange={handle1ClickInstall}
@@ -184,6 +180,7 @@ const ConvertBundleDetail = ({
 
             <BundleManualInstallationCard
                 bundleCode={code}
+                isBordered={true}
                 isConnected={Boolean(storeIntegration)}
                 isConnectedToShopify={isConnectedToShopify}
             />

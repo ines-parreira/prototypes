@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .pageHeaderContainer {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: var(--neutral-grey-0);
+    }
+
+    .container {
+        padding: @layout-spacing-m;
+        min-height: calc(100% - 136px);
+    }
+
+    .wizardProgressHeader {
+        max-width: 680px;
+        margin: @layout-spacing-m auto;
+    }
+}

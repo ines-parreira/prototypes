@@ -3,13 +3,9 @@
 
 :local {
     .container {
-        border: 1px solid var(--neutral-grey-3);
-        border-radius: 4px;
-
         .header {
             cursor: pointer;
             display: flex;
-            padding: 20px;
             column-gap: @layout-spacing-s;
             align-items: center;
 
@@ -31,7 +27,6 @@
     .content {
         display: flex;
         flex-direction: column;
-        padding: 4px 20px 20px;
         row-gap: @layout-spacing-m;
     }
 
@@ -60,6 +55,19 @@
                 bottom: -1px;
                 position: absolute;
             }
+        }
+    }
+
+    .isBordered {
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+
+        .content {
+            padding: 4px 20px 20px;
+        }
+
+        .header {
+            padding: 20px;
         }
     }
 }

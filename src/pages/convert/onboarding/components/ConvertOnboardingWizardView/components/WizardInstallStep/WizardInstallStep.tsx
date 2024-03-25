@@ -1,0 +1,93 @@
+import React, {useMemo} from 'react'
+import {Map} from 'immutable'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import {IntegrationType} from 'models/integration/constants'
+import useAppSelector from 'hooks/useAppSelector'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {BundleInstallationMethod} from 'models/convert/bundle/types'
+import css from './WizardInstallStep.less'
+
+const HEADLESS_INSTRUCTIONS_URL =
+    'https://developers.gorgias.com/docs/how-to-attach-gorgias-tracking-data-to-shopify-cart-and-checkout-attributes'
+
+type Props = {
+    integration: Map<any, any>
+    installationMethod: BundleInstallationMethod
+    setInstallationMethod: (method: BundleInstallationMethod) => void
+}
+
+const WizardInstallStep = ({
+    integration,
+    installationMethod,
+    setInstallationMethod,
+}: Props) => {
+    const storeIntegrationId = useMemo(() => {
+        const id =
+            !!integration &&
+            (integration.getIn(['meta', 'shop_integration_id']) as number)
+
+        return id || 0
+    }, [integration])
+
+    const storeIntegration = useAppSelector(
+        getIntegrationById(storeIntegrationId)
+    )
+
+    const isManualMethodRequired = useMemo(() => {
+        return (
+            storeIntegration &&
+            storeIntegration.get('type') !== IntegrationType.Shopify
+        )
+    }, [storeIntegration])
+
+    return (
+        <div className={css.layout}>
+            <h1 className={css.title}>Install the campaign bundle</h1>
+
+            <div className={css.description}>
+                Install the campaign bundle on your store to create and display
+                campaigns.
+            </div>
+
+            <PreviewRadioButton
+                value="one-click"
+                isSelected={
+                    installationMethod === BundleInstallationMethod.OneClick
+                }
+                isDisabled={isManualMethodRequired}
+                label="1-click installation for Shopify"
+                caption="Install the campaign bundle on your Shopify store in one click."
+                onClick={() => {
+                    setInstallationMethod(BundleInstallationMethod.OneClick)
+                }}
+            />
+            <PreviewRadioButton
+                value="manual"
+                isSelected={
+                    installationMethod === BundleInstallationMethod.Manual
+                }
+                className="mt-3"
+                label="Manual installation"
+                caption="Add the campaign bundle to non-Shopify stores, Shopify Headless, specific pages on a Shopify store, or any other website."
+                onClick={() => {
+                    setInstallationMethod(BundleInstallationMethod.Manual)
+                }}
+            />
+
+            <div className={css.headless}>
+                Is your store headless? In addition to the campaign bundle
+                installation, to track conversions from campaigns, please follow{' '}
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={HEADLESS_INSTRUCTIONS_URL}
+                >
+                    these instructions
+                </a>
+                .
+            </div>
+        </div>
+    )
+}
+
+export default WizardInstallStep

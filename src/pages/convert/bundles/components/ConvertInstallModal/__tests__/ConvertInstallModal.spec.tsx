@@ -1,13 +1,18 @@
 import React from 'react'
-import {render, fireEvent, screen, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
 import {RootState, StoreDispatch} from 'state/types'
-import client from 'models/api/resources'
+import {assumeMock} from 'utils/testing'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {
+    convertBundle,
+    installBundleMockImplementation,
+} from 'fixtures/convertBundle'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
 import ConvertInstallModal from '../ConvertInstallModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -19,11 +24,20 @@ const chatIntegration = fromJS({
 
 jest.mock('models/api/resources')
 
-const mockedServer = new MockAdapter(client)
+jest.mock('pages/convert/bundles/hooks/useGetConvertBundle')
+const useGetConvertBundleMock = assumeMock(useGetConvertBundle)
+
+jest.mock('pages/convert/bundles/hooks/useInstallBundle')
+const useInstallBundleMock = assumeMock(useInstallBundle)
 
 describe('ConvertInstallModal', () => {
     beforeEach(() => {
-        mockedServer.reset()
+        useGetConvertBundleMock.mockReturnValue({
+            bundle: convertBundle,
+            isLoading: false,
+        })
+
+        useInstallBundleMock.mockImplementation(installBundleMockImplementation)
     })
 
     it('renders without crashing', () => {
@@ -67,11 +81,7 @@ describe('ConvertInstallModal', () => {
         expect(onClose).toHaveBeenCalled()
     })
 
-    it('calls API when button is clicked', async () => {
-        mockedServer
-            .onPost('/api/revenue-addon-bundle/manual-install/')
-            .reply(200, {})
-
+    it('goes to the next step when button is clicked', async () => {
         const onSubmit = jest.fn()
 
         render(
@@ -89,7 +99,6 @@ describe('ConvertInstallModal', () => {
         fireEvent.click(installButton)
 
         await waitFor(() => {
-            expect(mockedServer.history['post'].length).toBe(1)
             expect(screen.getByText('Finish Setup')).toBeInTheDocument()
         })
 

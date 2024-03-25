@@ -61,7 +61,7 @@ const CampaignTemplateCustomizeView = () => {
         if (channelConnection && channelConnection.is_onboarded) {
             return `/app/convert/${chatIntegrationId}/campaigns`
         }
-        return `/app/convert/${chatIntegrationId}/setup/recommendations`
+        return `/app/convert/${chatIntegrationId}/setup/wizard`
     }, [channelConnection, chatIntegrationId])
 
     const defaultLanguage = useMemo<string>(() => {

@@ -11,7 +11,13 @@ import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks
 import history from 'pages/history'
 import {campaign} from 'fixtures/campaign'
 import {useListCampaigns} from 'models/convert/campaign/queries'
-import ConvertOnboardingRecommendationsView from '../ConvertOnboardingRecommendationsView'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {
+    convertBundle,
+    installBundleMockImplementation,
+} from 'fixtures/convertBundle'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
 
 const mockStore = configureMockStore()
 
@@ -26,6 +32,12 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 jest.mock('models/convert/campaign/queries')
 const useListCampaignMock = assumeMock(useListCampaigns)
 
+jest.mock('pages/convert/bundles/hooks/useGetConvertBundle')
+const useGetConvertBundleMock = assumeMock(useGetConvertBundle)
+
+jest.mock('pages/convert/bundles/hooks/useInstallBundle')
+const useInstallBundleMock = assumeMock(useInstallBundle)
+
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     ...(jest.requireActual('react-router-dom') as typeof routerDom),
@@ -38,7 +50,15 @@ const defaultState = {
     }),
 }
 
-describe('ConvertOnboardingRecommendationsView', () => {
+describe('ConvertOnboardingWizardView', () => {
+    beforeEach(() => {
+        useGetConvertBundleMock.mockReturnValue({
+            bundle: convertBundle,
+            isLoading: false,
+        })
+        useInstallBundleMock.mockImplementation(installBundleMockImplementation)
+    })
+
     it('updated channel connection on finish setup', () => {
         ;(useParams as jest.Mock).mockReturnValue({id: '123'})
         useGetOrCreateChannelConnectionMock.mockReturnValue({
@@ -64,7 +84,7 @@ describe('ConvertOnboardingRecommendationsView', () => {
         const {getByText} = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
-                    <ConvertOnboardingRecommendationsView />
+                    <ConvertOnboardingWizardView />
                 </Provider>
             </BrowserRouter>
         )
@@ -96,14 +116,16 @@ describe('ConvertOnboardingRecommendationsView', () => {
         render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
-                    <ConvertOnboardingRecommendationsView />
+                    <ConvertOnboardingWizardView />
                 </Provider>
             </BrowserRouter>
         )
 
         // Ensure redirection happens
         await waitFor(() => {
-            expect(spy.mock.calls).toEqual([['/app/convert/123/campaigns']])
+            expect(spy.mock.calls).toEqual([
+                ['/app/convert/123/campaigns#onboarding-complete'],
+            ])
         })
     })
 })

@@ -1,0 +1,25 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .title {
+        .heading-page-semibold();
+        margin-top: @layout-spacing-s;
+        margin-bottom: @layout-spacing-xs;
+        text-align: center;
+    }
+
+    .description {
+        text-align: center;
+        padding-bottom: @layout-spacing-xl;
+        color: var(--neutral-grey-5);
+    }
+
+    .templatesContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: @layout-spacing-s;
+        max-width: 1032px;
+        margin: 0 auto @layout-spacing-l;
+    }
+}

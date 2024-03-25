@@ -13,6 +13,7 @@ type Props = {
     bundleCode?: string
     isConnected: boolean
     isConnectedToShopify: boolean
+    isBordered: boolean
 }
 
 enum Tab {
@@ -24,6 +25,7 @@ const BundleManualInstallationCard = ({
     bundleCode,
     isConnected,
     isConnectedToShopify,
+    isBordered,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(!isConnected || !isConnectedToShopify)
     const [activeTab, setActiveTab] = useState<Tab>(
@@ -49,7 +51,12 @@ const BundleManualInstallationCard = ({
     ]
 
     return (
-        <div className={css.container}>
+        <div
+            className={classnames({
+                [css.container]: true,
+                [css.isBordered]: isBordered,
+            })}
+        >
             <div
                 className={css.header}
                 onClick={() => {
@@ -59,9 +66,9 @@ const BundleManualInstallationCard = ({
                 <div>
                     <div className={css.title}>Manual installation</div>
                     <div>
-                        To add the Campaign bundle on a Shopify store and to
-                        other e-commerce platforms or website, follow the
-                        instructions below. For more details,{' '}
+                        Install the campaign bundle on Shopify Headless stores,
+                        specific pages on a Shopify store, or any other website
+                        by following the instructions below. For more details,{' '}
                         <a
                             target="_blank"
                             rel="noopener noreferrer"
@@ -69,7 +76,8 @@ const BundleManualInstallationCard = ({
                         >
                             see this article
                         </a>
-                        .
+                        . You will still be able to access these instructions
+                        from the Installation tab after you finish setting up.
                     </div>
                 </div>
                 <IconButton

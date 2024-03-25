@@ -5,19 +5,20 @@ import client from 'models/api/resources'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {transformBundleError} from 'pages/settings/revenue/utils/transformBundleError'
-import {
-    RevenueBundle,
-    RevenueBundleInstallationMethodResponse,
-    RevenueBundleStatus,
-} from 'models/revenueBundles/types'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
+import {
+    Bundle,
+    BundleInstallationMethodResponse,
+    BundleStatus,
+} from 'models/convert/bundle/types'
 import css from './ConvertBundle1ClickInstallCard.less'
 
 type Props = {
     integrationId?: number
     isConnectedToShopify: boolean
-    bundle?: RevenueBundle
+    bundle?: Bundle
     onChange?: (isInstalled: boolean) => void
 }
 
@@ -30,8 +31,8 @@ const ConvertBundle1ClickInstallCard = ({
     const dispatch = useAppDispatch()
 
     const isOneClickInstalled =
-        bundle?.status === RevenueBundleStatus.Installed &&
-        bundle?.method === RevenueBundleInstallationMethodResponse.OneClick
+        bundle?.status === BundleStatus.Installed &&
+        bundle?.method === BundleInstallationMethodResponse.OneClick
 
     const [{loading: isUninstallSubmitting}, handleUninstall] =
         useAsyncFn(async () => {

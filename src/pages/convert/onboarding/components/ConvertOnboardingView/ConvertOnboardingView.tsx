@@ -17,7 +17,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 
-import {bundleKeys, useListBundles} from 'models/convert/bundle/queries'
+import {bundleKeys} from 'models/convert/bundle/queries'
 import history from 'pages/history'
 import {IntegrationType} from 'models/integration/constants'
 import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
@@ -25,6 +25,8 @@ import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {BundleStatus} from 'models/convert/bundle/types'
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
 import css from './ConvertOnboardingView.less'
 
@@ -89,10 +91,6 @@ const ConvertOnboardingView = () => {
         toJS(chatIntegration)
     )
 
-    const {data: bundles} = useListBundles({
-        enabled: hasChat || hasStore,
-    })
-
     const [isOnboarded, isSetup] = useMemo(() => {
         return [
             !!channelConnection && (channelConnection.is_onboarded ?? false),
@@ -100,17 +98,12 @@ const ConvertOnboardingView = () => {
         ]
     }, [channelConnection])
 
-    const isInstalled = useMemo(() => {
-        if (!bundles || !Array.isArray(bundles)) return false
+    const {bundle} = useGetConvertBundle(storeIntegrationId, chatIntegrationId)
 
-        const bundle = bundles.find((bundle) => {
-            return (
-                bundle.shop_integration_id === storeIntegrationId ||
-                bundle.shop_integration_id === chatIntegrationId
-            )
-        })
-        return !!bundle && bundle.status === 'installed'
-    }, [bundles, storeIntegrationId, chatIntegrationId])
+    const isInstalled = useMemo(
+        () => !!bundle && bundle.status === BundleStatus.Installed,
+        [bundle]
+    )
 
     const isSubscriber = useIsConvertSubscriber()
 
@@ -225,7 +218,7 @@ const ConvertOnboardingView = () => {
                                     title="Create your first campaigns"
                                     description="Create and launch your first campaign."
                                     action="Create Campaign"
-                                    actionLink={`/app/convert/${chatIntegrationId}/setup/recommendations`}
+                                    actionLink={`/app/convert/${chatIntegrationId}/setup/wizard`}
                                     isDisabled={!hasChat}
                                     isCompleted={isOnboarded}
                                 />
@@ -233,7 +226,11 @@ const ConvertOnboardingView = () => {
                                 {location.hash === '#later' && (
                                     <p className={classnames(css.text, 'mt-3')}>
                                         Need more help to set up Convert?{' '}
-                                        <a href={BOOK_CALL_URL}>
+                                        <a
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            href={BOOK_CALL_URL}
+                                        >
                                             Book an onboarding call
                                         </a>
                                         .
