@@ -149,7 +149,7 @@ exports[`CampaignTemplates get template configuration 4`] = `
       "id": "ulid-generated-id",
       "operator": "eq",
       "type": "exit_intent",
-      "value": true,
+      "value": "true",
     },
     {
       "id": "ulid-generated-id",
@@ -228,7 +228,7 @@ exports[`CampaignTemplates get template configuration 6`] = `
       "id": "ulid-generated-id",
       "operator": "eq",
       "type": "exit_intent",
-      "value": true,
+      "value": "true",
     },
     {
       "id": "ulid-generated-id",
@@ -256,7 +256,7 @@ exports[`CampaignTemplates get template configuration 7`] = `
   },
   "name": "Offer 10% discount for visitors with high-value carts",
   "status": "inactive",
-  "template_id": "offer-10-discount-for-visitors-with-high-value-cart",
+  "template_id": "offer-discount-for-high-value-cart",
   "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
   "triggers": [
     {

@@ -12,7 +12,9 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
 import {Language} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {Language as LanguageEnum} from 'constants/languages'
+
 import {useStepState} from '../../hooks/useStepState'
 import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
 
@@ -33,7 +35,8 @@ export const CampaignBasicStep = ({
     isPristine = true,
     isValid = false,
 }: Props) => {
-    const {campaign, isEditMode, updateCampaign} = useCampaignDetailsContext()
+    const {isEditMode} = useCampaignFormContext()
+    const {campaign, updateCampaign} = useCampaignDetailsContext()
     const {chatIntegration} = useIntegrationContext()
 
     const stateProps = useStepState({count, isPristine, isValid, isEditMode})

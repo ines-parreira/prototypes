@@ -21,6 +21,7 @@ import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifySto
 import {CampaignDetailsForm} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
 import {getHumanAgentsJS} from 'state/agents/selectors'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
@@ -31,7 +32,17 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 
-const CampaignTemplateCustomizeView = () => {
+type OwnProps = {
+    backUrl: string
+    successBackUrl?: string
+    backUrlTitle: string
+}
+
+const CampaignTemplateCustomizeBaseView = ({
+    backUrl,
+    successBackUrl,
+    backUrlTitle,
+}: OwnProps) => {
     const {
         [CONVERT_ROUTE_PARAM_NAME]: integrationId,
         [CONVERT_ROUTE_TEMPLATE_PARAM_NAME]: templateSlug,
@@ -56,13 +67,6 @@ const CampaignTemplateCustomizeView = () => {
     const {channelConnection, isLoading} = useGetOrCreateChannelConnection(
         toJS(chatIntegration)
     )
-
-    const backUrl = useMemo(() => {
-        if (channelConnection && channelConnection.is_onboarded) {
-            return `/app/convert/${chatIntegrationId}/campaigns`
-        }
-        return `/app/convert/${chatIntegrationId}/setup/wizard`
-    }, [channelConnection, chatIntegrationId])
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(
@@ -130,6 +134,13 @@ const CampaignTemplateCustomizeView = () => {
         template,
     ])
 
+    const wizardConfiguration: WizardConfiguration = useMemo(() => {
+        if (template && template?.getWizardConfiguration) {
+            return template.getWizardConfiguration()
+        }
+        return {} as WizardConfiguration
+    }, [template])
+
     const {mutateAsync: createCampaign} = useCreateCampaign()
     const {mutateAsync: updateCampaign} = useUpdateCampaign()
 
@@ -143,10 +154,10 @@ const CampaignTemplateCustomizeView = () => {
                         channel_connection_id: channelConnection.id,
                     },
                 ])
-                history.push(backUrl)
+                history.push(successBackUrl ?? backUrl)
             }
         },
-        [backUrl, channelConnection, createCampaign]
+        [backUrl, successBackUrl, channelConnection, createCampaign]
     )
 
     const handleUpdateCampaign = useCallback(
@@ -189,6 +200,7 @@ const CampaignTemplateCustomizeView = () => {
                 isLoading={
                     isLoading || areCampaignsLoading || isTemplateLoading
                 }
+                wizardConfiguration={wizardConfiguration}
                 isEditMode={!!campaign.id}
                 isShopifyStore={chatIsShopifyStore(chatIntegration)}
                 integration={chatIntegration}
@@ -199,7 +211,7 @@ const CampaignTemplateCustomizeView = () => {
                 header={
                     <CampaignDetailsHeader
                         backToHref={backUrl}
-                        title="Back to Campaigns recommendation"
+                        title={backUrlTitle}
                     />
                 }
             />
@@ -207,4 +219,4 @@ const CampaignTemplateCustomizeView = () => {
     )
 }
 
-export default CampaignTemplateCustomizeView
+export default CampaignTemplateCustomizeBaseView

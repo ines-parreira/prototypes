@@ -1,10 +1,13 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useMemo} from 'react'
 
 import {Map} from 'immutable'
 import {ulid} from 'ulidx'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+
 import {StatefulAccordion} from '../../components/StatefulAccordion'
 import {AdvancedTriggersForm} from '../../components/AdvancedTriggersForm'
 import {AdvancedTriggersSelect} from '../../components/AdvancedTriggersSelect'
@@ -44,15 +47,18 @@ export const CampaignAudienceStep = ({
     const {
         campaign,
         triggers,
-        isEditMode,
         updateCampaign,
         addTrigger,
         updateTrigger,
         deleteTrigger,
     } = useCampaignDetailsContext()
+    const {isEditMode, getStepConfiguration} = useCampaignFormContext()
     const campaignWithNoReply = campaign.meta?.noReply ?? false
     const campaignDelay = campaign.meta?.delay ?? 0
     const stateProps = useStepState({count, isPristine, isValid, isEditMode})
+    const stepConfiguration = useMemo(() => {
+        return getStepConfiguration(CampaignStepsKeys.Audience)
+    }, [getStepConfiguration])
 
     const shouldShowContactCsm = Object.values(triggers).some(
         (trigger) => !isAllowedToUpdateTrigger(trigger, isConvertSubscriber)
@@ -117,6 +123,7 @@ export const CampaignAudienceStep = ({
                 ])}
                 chatIntegrationId={integration.get('id')}
             />
+
             <div className="mb-4">
                 {shouldShowContactCsm && (
                     <Alert icon type={AlertType.Warning}>
@@ -126,6 +133,19 @@ export const CampaignAudienceStep = ({
                     </Alert>
                 )}
             </div>
+
+            {stepConfiguration && stepConfiguration.banner && (
+                <div
+                    className="mb-4 mt-4"
+                    data-testid="campaign-audience-step-info-banner"
+                >
+                    <ConvertInfoBanner
+                        type={stepConfiguration.banner.type}
+                        text={stepConfiguration.banner.content}
+                    />
+                </div>
+            )}
+
             <div className="mb-4">
                 <TriggersProvider
                     triggers={triggers}

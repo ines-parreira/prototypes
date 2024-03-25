@@ -12,8 +12,8 @@ import {campaign} from 'fixtures/campaign'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/cartAbandonment'
-import CampaignTemplateCustomizeView from '../CampaignTemplateCustomizeView'
+import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
+import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
 
 const mockStore = configureMockStore()
 
@@ -56,11 +56,7 @@ const defaultState = {
 }
 
 describe('CampaignTemplateCustomizeView', () => {
-    it('should render campaign form with template data', async () => {
-        ;(useParams as jest.Mock).mockReturnValue({
-            id: '123',
-            templateSlug: CART_ABANDONMENT.slug,
-        })
+    beforeEach(() => {
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection,
         } as any)
@@ -83,18 +79,65 @@ describe('CampaignTemplateCustomizeView', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
+    })
+
+    it('should render campaign form with template data and banners', async () => {
+        ;(useParams as jest.Mock).mockReturnValue({
+            id: '123',
+            templateSlug: SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.slug,
+        })
+
+        const {getByText, getByTestId, container} = render(
+            <BrowserRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignTemplateCustomizeLibraryView />
+                </Provider>
+            </BrowserRouter>
+        )
+        await waitFor(() => {
+            expect(
+                getByText(SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.name)
+            ).toBeInTheDocument()
+
+            expect(
+                container.getElementsByClassName('container isExpanded')
+            ).toHaveLength(1)
+
+            // Check if audience banner is in the document
+            const audienceBanner = getByTestId(
+                'campaign-audience-step-info-banner'
+            )
+            expect(audienceBanner).toBeInTheDocument()
+            expect(audienceBanner).toHaveTextContent(
+                'To target shoppers with a certain item in cart, please insert one of the Shopify product tag of the item to identify it.'
+            )
+
+            const messageBanner = getByTestId(
+                'campaign-message-step-info-banner'
+            )
+            expect(messageBanner).toBeInTheDocument()
+            expect(messageBanner).toHaveTextContent(
+                'Please select the bundle you want to recommend from your Shopify catalog.'
+            )
+        })
+    })
+
+    it('should render correct backUrl and backUrl text', async () => {
+        ;(useParams as jest.Mock).mockReturnValue({
+            id: '123',
+            templateSlug: SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.slug,
+        })
 
         const {getByText} = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
-                    <CampaignTemplateCustomizeView />
+                    <CampaignTemplateCustomizeLibraryView />
                 </Provider>
             </BrowserRouter>
         )
 
         await waitFor(() => {
-            expect(getByText(CART_ABANDONMENT.name)).toBeInTheDocument()
-            expect(getByText('ready to help you')).toBeInTheDocument()
+            expect(getByText('Back to campaigns library')).toBeInTheDocument()
         })
     })
 })

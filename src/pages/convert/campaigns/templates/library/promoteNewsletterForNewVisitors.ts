@@ -61,7 +61,7 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
                 id: ulid(),
                 type: CampaignTriggerType.ExitIntent,
                 operator: CampaignTriggerOperator.Eq,
-                value: true,
+                value: 'true',
             },
             {
                 id: ulid(),

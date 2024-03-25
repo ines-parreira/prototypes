@@ -11,7 +11,6 @@ import {
 export interface CampaignDetailsFormApi {
     campaign: Campaign
     triggers: CampaignTriggerMap
-    isEditMode: boolean
     updateCampaign: (key: string, payload: any) => void
     addTrigger: CreateTriggerFn
     updateTrigger: UpdateTriggerFn
@@ -22,7 +21,6 @@ export const CampaignDetailsFormContext = createContext<CampaignDetailsFormApi>(
     {
         campaign: {} as Campaign,
         triggers: {},
-        isEditMode: false,
         updateCampaign: () => null,
         addTrigger: () => null,
         updateTrigger: () => null,

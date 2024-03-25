@@ -1,5 +1,4 @@
 // Offer 10% discount for visitors with high-value carts
-
 import {ulid} from 'ulidx'
 import {Map} from 'immutable'
 import {assetsUrl} from 'utils'
@@ -19,7 +18,7 @@ import {CampaignConfiguration, CampaignTemplate} from '../types'
 import {CampaignConfigurationBuilder} from '../constructor'
 
 export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
-    slug: 'offer-10-discount-for-visitors-with-high-value-cart',
+    slug: 'offer-discount-for-high-value-cart',
     name: 'Offer 10% discount for visitors with high-value carts',
     description:
         'Push your shoppers with carts above your average order value to check out',

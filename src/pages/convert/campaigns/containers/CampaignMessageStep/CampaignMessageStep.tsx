@@ -6,6 +6,7 @@ import {User} from 'config/types/user'
 
 import RichField from 'pages/common/forms/RichField/RichField'
 import {Value} from 'pages/common/forms/SelectField/types'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
 import {useStepState} from '../../hooks/useStepState'
 import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
@@ -36,7 +37,8 @@ export const CampaignMessageStep = ({
     showContentWarning = false,
     onDeleteAttachment,
 }: Props) => {
-    const {campaign, isEditMode, updateCampaign} = useCampaignDetailsContext()
+    const {campaign, updateCampaign} = useCampaignDetailsContext()
+    const {isEditMode} = useCampaignFormContext()
     const stateProps = useStepState({count, isPristine, isValid, isEditMode})
 
     const [richArea, setRichArea] = useState<RichField | null>(null)

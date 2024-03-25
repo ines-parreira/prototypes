@@ -9,6 +9,9 @@ import {User} from 'config/types/user'
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
 
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
@@ -53,6 +56,11 @@ export const CampaignMessage = memo(
     }: Props): JSX.Element => {
         const {shopifyIntegration} = useIntegrationContext()
         const isAllowedToAddDiscountCode = useIsAllowedToAddDiscountCode()
+        const {getStepConfiguration} = useCampaignFormContext()
+        const stepConfiguration = useMemo(() => {
+            return getStepConfiguration(CampaignStepsKeys.Message)
+        }, [getStepConfiguration])
+
         const [previousFirstProductId, setPreviousFirstProductId] = useState<
             number | null
         >(null)
@@ -176,6 +184,7 @@ export const CampaignMessage = memo(
                         onChange={onSelectAgent}
                     />
                 </div>
+
                 {isConvertSubscriber && showContentWarning && (
                     <div className="mb-4 mt-4">
                         <Alert icon type={AlertType.Warning}>
@@ -195,6 +204,19 @@ export const CampaignMessage = memo(
                         </Alert>
                     </div>
                 )}
+
+                {stepConfiguration && stepConfiguration.banner && (
+                    <div
+                        className="mb-2 mt-4"
+                        data-testid="campaign-message-step-info-banner"
+                    >
+                        <ConvertInfoBanner
+                            type={stepConfiguration.banner.type}
+                            text={stepConfiguration.banner.content}
+                        />
+                    </div>
+                )}
+
                 <div className={css.textEditorWrapper}>
                     <TicketRichField
                         ref={(ref) => richAreaRef(ref)}

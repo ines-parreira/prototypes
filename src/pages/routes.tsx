@@ -170,7 +170,10 @@ import ConvertOnboardingView from './convert/onboarding/components/ConvertOnboar
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
 import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
 import ConvertOnboardingWizardView from './convert/onboarding/components/ConvertOnboardingWizardView'
-import CampaignTemplateCustomizeView from './convert/campaigns/containers/CampaignTemplateCustomizeView'
+import {
+    CampaignTemplateCustomizeRecommendationsView,
+    CampaignTemplateCustomizeLibraryView,
+} from './convert/campaigns/containers/CampaignTemplateCustomizeView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1723,7 +1726,7 @@ export function ConvertContent() {
                 exact
                 path={`${convertPathPrefix}/setup/wizard/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
                 component={memoizedWithUserRoleRequired(
-                    CampaignTemplateCustomizeView as any,
+                    CampaignTemplateCustomizeRecommendationsView as any,
                     ADMIN_ROLE
                 )}
             />
@@ -1755,7 +1758,7 @@ export function ConvertContent() {
                 exact
                 path={`${convertPathPrefix}/campaigns/new/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
                 component={memoizedWithUserRoleRequired(
-                    CampaignTemplateCustomizeView as any,
+                    CampaignTemplateCustomizeLibraryView as any,
                     ADMIN_ROLE
                 )}
             />
