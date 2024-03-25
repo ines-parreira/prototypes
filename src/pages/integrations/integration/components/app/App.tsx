@@ -34,6 +34,8 @@ import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
 import {mapDefaults} from 'pages/integrations/mappers/mapDefaults'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import {getApplicationById} from 'services/applications'
+import {fetchIntegrations} from 'state/integrations/actions'
+import useEffectOnce from 'hooks/useEffectOnce'
 import IntegrationsList from './IntegrationsList'
 
 export enum Tab {
@@ -47,6 +49,7 @@ function queryStringToBool(flag?: string): boolean {
 }
 
 export default function AppDetail() {
+    const dispatch = useAppDispatch()
     const {appId, extra = Tab.Details} = useParams<{
         appId: string
         extra?: string
@@ -63,6 +66,10 @@ export default function AppDetail() {
     const hasConnections = !isEmpty(
         useAppSelector(getIntegrationsByAppId(appId))
     )
+
+    useEffectOnce(() => {
+        void dispatch(fetchIntegrations())
+    })
 
     const supportsMultipleConnections = () =>
         getApplicationById(appId)?.supports_multiple_connections || false

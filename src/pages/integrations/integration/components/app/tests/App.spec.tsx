@@ -92,7 +92,7 @@ describe(`App`, () => {
         )
         await findAllByText(new RegExp(dummyAppData.name))
 
-        expect(mockServer.history.get.length).toEqual(1)
+        expect(mockServer.history.get.length).toEqual(2)
     })
 
     it('should render the advanced tab', async () => {
