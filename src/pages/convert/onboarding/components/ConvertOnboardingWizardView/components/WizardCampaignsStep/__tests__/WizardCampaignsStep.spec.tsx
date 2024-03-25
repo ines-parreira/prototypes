@@ -1,12 +1,18 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import {Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {assumeMock} from 'utils/testing'
 import {channelConnection} from 'fixtures/channelConnection'
 import {campaign} from 'fixtures/campaign'
 import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
+import {RootState, StoreDispatch} from 'state/types'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import WizardCampaignsStep from '../WizardCampaignsStep'
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
@@ -16,6 +22,13 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 
 jest.mock('models/convert/campaign/queries')
 const useListCampaignMock = assumeMock(useListCampaigns)
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+const defaultState: Partial<RootState> = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+}
 
 describe('WizardCampaignsStep', () => {
     const integration = Map({
@@ -36,7 +49,9 @@ describe('WizardCampaignsStep', () => {
 
     test('renders correctly with campaign templates', () => {
         const {getByText} = render(
-            <WizardCampaignsStep integration={integration} />
+            <Provider store={mockStore(defaultState)}>
+                <WizardCampaignsStep integration={integration} />
+            </Provider>
         )
 
         expect(

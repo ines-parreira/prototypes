@@ -6,6 +6,7 @@ import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignT
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
 import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {PlanName} from 'utils/paywalls'
 import {
     CampaignConfiguration,
     CampaignTemplate,
@@ -16,7 +17,13 @@ import {CampaignConfigurationBuilder} from './constructor'
 export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
     slug: 'discount-new-visitors',
     name: 'Give 10% off for new visitors about to leave',
-    estimation: '$100/month',
+    estimation: {
+        [PlanName.Starter]: '$3,000/month',
+        [PlanName.Basic]: '$9,000/month',
+        [PlanName.Pro]: '$14,000/month',
+        [PlanName.Advanced]: '$24,000/month',
+        [PlanName.Enterprise]: '$50,000/month',
+    },
     label: CampaignTemplateLabelType.IncreaseConversions,
     onboarding: true,
     preview: assetsUrl('img/campaigns/preview/discount-new-visitors.png'),

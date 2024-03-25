@@ -5,6 +5,7 @@ import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignT
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
 import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {PlanName} from 'utils/paywalls'
 import {
     CampaignConfiguration,
     CampaignTemplate,
@@ -15,7 +16,13 @@ import {CampaignConfigurationBuilder} from './constructor'
 export const CART_ABANDONMENT: CampaignTemplate = {
     slug: 'offer-help-on-cart-abandonment',
     name: 'Offer help to save the high-value carts',
-    estimation: '$100/month',
+    estimation: {
+        [PlanName.Starter]: '$400/month',
+        [PlanName.Basic]: '$1,000/month',
+        [PlanName.Pro]: '$4,000/month',
+        [PlanName.Advanced]: '$11,000/month',
+        [PlanName.Enterprise]: '$22,000/month',
+    },
     label: CampaignTemplateLabelType.PreventCartAbandonment,
     onboarding: true,
     preview: assetsUrl('img/campaigns/preview/ready-to-help.png'),

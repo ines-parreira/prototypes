@@ -22,7 +22,7 @@ export type CampaignTemplate = {
     slug: string
     name: string
     preview: string
-    estimation?: string
+    estimation?: {[key: string]: string}
     description?: string
     label?: CampaignTemplateLabelType
     onboarding: boolean

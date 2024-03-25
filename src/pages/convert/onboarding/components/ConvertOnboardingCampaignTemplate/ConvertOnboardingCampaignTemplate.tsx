@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {Link} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
@@ -7,6 +7,9 @@ import {
     CampaignTemplate,
     CampaignTemplateLabelType,
 } from 'pages/convert/campaigns/templates/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 import css from './ConvertOnboardingCampaignTemplate.less'
 
 type Props = {
@@ -38,54 +41,64 @@ const ConvertOnboardingCampaignTemplate = ({
     integrationId,
     selected,
 }: Props) => {
-    return (
-        <>
-            <div className={css.container}>
-                {template.estimation && (
-                    <div className={css.estimation}>
-                        Generates <b>{template.estimation}</b> on average
-                    </div>
-                )}
-                <div className={css.preview}>
-                    <img src={template.preview} alt={template.name} />
-                </div>
-                <div className={css.content}>
-                    <div className={css.header}>
-                        {template.label && (
-                            <div
-                                className={css.label}
-                                style={campaignLabelStyles[template.label]}
-                            >
-                                {template.label}
-                            </div>
-                        )}
-                        {selected && (
-                            <div className={css.selected}>
-                                <i
-                                    className="material-icons text-success"
-                                    style={{fontSize: 24}}
-                                >
-                                    check_circle
-                                </i>
-                            </div>
-                        )}
-                    </div>
-                    <div>
-                        <div className={css.title}>{template.name}</div>
-                    </div>
+    const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
 
-                    <div className={css.button}>
-                        <Link
-                            to={`/app/convert/${integrationId}/setup/wizard/${template.slug}`}
+    const estimatedRevenue = useMemo(() => {
+        const planName =
+            currentHelpdeskPrice &&
+            convertLegacyPlanNameToPublicPlanName(currentHelpdeskPrice.name)
+
+        if (template.estimation && planName && template.estimation[planName]) {
+            return template.estimation[planName]
+        }
+    }, [currentHelpdeskPrice, template])
+
+    return (
+        <div className={css.container}>
+            {estimatedRevenue && (
+                <div className={css.estimation}>
+                    Generates <b>{estimatedRevenue}</b> on average
+                </div>
+            )}
+            <div className={css.preview}>
+                <img src={template.preview} alt={template.name} />
+            </div>
+            <div className={css.content}>
+                <div className={css.header}>
+                    {template.label && (
+                        <div
+                            className={css.label}
+                            style={campaignLabelStyles[template.label]}
                         >
-                            <Button intent="primary" fillStyle="ghost">
-                                Customize
-                            </Button>
-                        </Link>
-                    </div>
+                            {template.label}
+                        </div>
+                    )}
+                    {selected && (
+                        <div className={css.selected}>
+                            <i
+                                className="material-icons text-success"
+                                style={{fontSize: 24}}
+                            >
+                                check_circle
+                            </i>
+                        </div>
+                    )}
+                </div>
+                <div>
+                    <div className={css.title}>{template.name}</div>
+                </div>
+
+                <div className={css.button}>
+                    <Link
+                        to={`/app/convert/${integrationId}/setup/wizard/${template.slug}`}
+                    >
+                        <Button intent="primary" fillStyle="ghost">
+                            Customize
+                        </Button>
+                    </Link>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

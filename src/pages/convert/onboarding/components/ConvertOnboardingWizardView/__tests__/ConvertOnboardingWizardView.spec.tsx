@@ -17,6 +17,8 @@ import {
     installBundleMockImplementation,
 } from 'fixtures/convertBundle'
 import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
 
 const mockStore = configureMockStore()
@@ -45,6 +47,8 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
     integrations: fromJS({
         integrations: [{id: 123, type: 'gorgias_chat'}],
     }),

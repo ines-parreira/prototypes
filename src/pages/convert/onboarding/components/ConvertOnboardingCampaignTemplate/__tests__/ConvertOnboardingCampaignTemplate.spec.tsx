@@ -1,7 +1,22 @@
 import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
+import {account} from 'fixtures/account'
+import {RootState, StoreDispatch} from 'state/types'
+import {billingState} from 'fixtures/billing'
+import {PlanName} from 'utils/paywalls'
 import ConvertOnboardingCampaignTemplate from '../ConvertOnboardingCampaignTemplate'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+const defaultState: Partial<RootState> = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+}
 
 describe('ConvertOnboardingCampaignTemplate', () => {
     const template = {
@@ -10,16 +25,23 @@ describe('ConvertOnboardingCampaignTemplate', () => {
         preview: 'test-preview.jpg',
         label: 'Increase Conversions',
         onboarding: true,
+        estimation: {
+            [PlanName.Starter]: '$1,000/month',
+            [PlanName.Basic]: '$2,000/month',
+            [PlanName.Pro]: '$3,000/month',
+        },
         getConfiguration: jest.fn(),
     }
 
     it('renders campaign template correctly', () => {
         const {getByText, getByAltText} = render(
-            <ConvertOnboardingCampaignTemplate
-                template={template as CampaignTemplate}
-                integrationId={1}
-                selected={true}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <ConvertOnboardingCampaignTemplate
+                    template={template as CampaignTemplate}
+                    integrationId={1}
+                    selected={true}
+                />
+            </Provider>
         )
 
         const campaignLabel = getByText(template.label)
@@ -33,5 +55,8 @@ describe('ConvertOnboardingCampaignTemplate', () => {
 
         const customizeButton = getByText('Customize')
         expect(customizeButton).toBeInTheDocument()
+
+        const estimation = getByText(template.estimation[PlanName.Basic])
+        expect(estimation).toBeInTheDocument()
     })
 })

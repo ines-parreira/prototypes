@@ -7,6 +7,7 @@ import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
 import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {CampaignTriggerDeviceTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
+import {PlanName} from 'utils/paywalls'
 import {
     CampaignConfiguration,
     CampaignTemplate,
@@ -17,7 +18,13 @@ import {CampaignConfigurationBuilder} from './constructor'
 export const PRODUCT_CARD_SHOWCASE: CampaignTemplate = {
     slug: 'product-card-showcase',
     name: 'Showcase products to cross-sell',
-    estimation: '$100/month',
+    estimation: {
+        [PlanName.Starter]: '$400/month',
+        [PlanName.Basic]: '$1,000/month',
+        [PlanName.Pro]: '$4,000/month',
+        [PlanName.Advanced]: '$11,000/month',
+        [PlanName.Enterprise]: '$22,000/month',
+    },
     label: CampaignTemplateLabelType.IncreaseAOV,
     onboarding: true,
     preview: assetsUrl('img/campaigns/preview/product-card.png'),
