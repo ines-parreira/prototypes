@@ -1,3 +1,5 @@
+import {AutomationPrice} from 'models/billing/types'
+
 export const convertSecondsToHours = (
     seconds?: string | number | null
 ): string => {
@@ -50,4 +52,21 @@ export const getFirstResponseTimeWithAutomate = (val: string | number) => {
         Number(val.toString().replace(/[^0-9.]/g, '')) || 0
     const firstResponseTimeWithAutomate = firstResponseTime * 0.7
     return Math.round(firstResponseTimeWithAutomate * 10) / 10 || '(X)'
+}
+
+export const getAutomateSubscriptionPrice = (
+    automateSubscriptionPrices: AutomationPrice[],
+    numberOfClosedTickets: number
+) => {
+    const numQuota = numberOfClosedTickets * 0.3
+    const sortedPrices = automateSubscriptionPrices.sort(
+        (a, b) => (a?.num_quota_tickets || 0) - (b?.num_quota_tickets || 0)
+    )
+    const firstPriceWithHigherQuota = sortedPrices.find(
+        (price) =>
+            price?.num_quota_tickets !== null &&
+            price?.num_quota_tickets > numQuota
+    )
+
+    return (firstPriceWithHigherQuota?.amount ?? 0) / 100
 }

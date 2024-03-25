@@ -18,6 +18,8 @@ import {
 import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
 import {formatCurrency} from 'pages/stats/common/utils'
+import {PlanInterval} from 'models/billing/types'
+import {getAutomationPrices} from 'state/billing/selectors'
 import {SUPPORT_METRICS_TYPES, SALARY_TYPES} from './constants'
 import css from './ROICalculator.less'
 import {
@@ -25,6 +27,7 @@ import {
     formatOnBlur,
     formatOnFocus,
     formatValue,
+    getAutomateSubscriptionPrice,
     getFirstResponseTimeWithAutomate,
     getResolutionTimeWithAutomate,
 } from './utils'
@@ -73,6 +76,8 @@ const ROICalculator = () => {
     const costPerAutomatedInteraction = useGetCostPerAutomatedInteraction()
     const costPerBillableTicket = useGetCostPerBillableTicket()
 
+    const automationPrices = useAppSelector(getAutomationPrices)
+
     const [metricsType, setMetricsType] = useState('monthly_support_tickets')
     const [salaryType, setSalaryType] = useState('annual_salary')
 
@@ -104,7 +109,7 @@ const ROICalculator = () => {
         [ticketsClosedTrend.data?.value]
     )
 
-    const [savedInPercentage, setSavedInPercentage] = useState('(x)')
+    const [savedInPercentage, setSavedInPercentage] = useState('0%')
 
     // Set the resolution time and determine if it's disabled
     useEffect(() => {
@@ -172,12 +177,22 @@ const ROICalculator = () => {
                 ? metricsNumber
                 : metricsNumber * 40 * 21)
 
+        const automateSubscriptionPrices = automationPrices.filter(
+            (price) => price.interval === PlanInterval.Month
+        )
+
+        const automateSubscriptionPrice = getAutomateSubscriptionPrice(
+            automateSubscriptionPrices,
+            numberOfTickets
+        )
+
         const costWithoutAutomate = Math.round(
             numberOfTickets * (agentCostPerTicket + costPerBillableTicket)
         )
 
         const costWithAutomate = Math.round(
-            numberOfTickets * (agentCostPerTicket + costPerBillableTicket) -
+            automateSubscriptionPrice +
+                numberOfTickets * (agentCostPerTicket + costPerBillableTicket) -
                 0.3 *
                     numberOfTickets *
                     (agentCostPerTicket +
@@ -186,14 +201,18 @@ const ROICalculator = () => {
         )
 
         setCostWithoutAutomate(
-            costWithoutAutomate > 0 ? costWithoutAutomate : '(X)'
+            costWithoutAutomate > 0 ? costWithoutAutomate : 0
         )
 
-        setCostWithAutomate(costWithAutomate > 0 ? costWithAutomate : '(X)')
+        setCostWithAutomate(costWithAutomate > 0 ? costWithAutomate : 0)
 
-        setSavedInPercentage(
-            `${Math.round((1 - costWithAutomate / costWithoutAutomate) * 100)}%`
-        )
+        if (costWithoutAutomate > 0) {
+            setSavedInPercentage(
+                `${Math.round(
+                    (1 - costWithAutomate / costWithoutAutomate) * 100
+                )}%`
+            )
+        }
     }, [
         metricsType,
         metricsValue,
@@ -202,6 +221,7 @@ const ROICalculator = () => {
         costPerBillableTicket,
         salaryType,
         salaryValue,
+        automationPrices,
     ])
 
     return (
