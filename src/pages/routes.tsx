@@ -130,7 +130,6 @@ import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
-import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
 import CampaginLibaryView from 'pages/convert/campaigns/components/CampaginLibaryView'
 
@@ -140,9 +139,11 @@ import {
     CONVERT_ROUTING_TEMPLATE_PARAM,
 } from 'pages/convert/common/constants'
 import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
-import TicketDetailLayout from 'ticket-page/components/TicketDetailLayout'
 import {CampaignsView} from 'pages/convert/campaigns/CampaignsView'
 import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignDetailsFactory'
+import {useSplitTicketPage} from '../tickets/pages/SplitTicketPage'
+import {useSplitViewPage} from '../tickets/pages/SplitViewPage'
+import {useTicketPage} from '../tickets/pages/TicketPage'
 import {useIsConvertUiDecouplingEnabled} from './convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import OrderManagementViewContainer from './automate/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
@@ -174,6 +175,7 @@ import {
     CampaignTemplateCustomizeRecommendationsView,
     CampaignTemplateCustomizeLibraryView,
 } from './convert/campaigns/containers/CampaignTemplateCustomizeView'
+import PanelLayout from './PanelLayout'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -191,6 +193,10 @@ export function AppRoutes() {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
 
+    const splitTicketLayoutProps = useSplitTicketPage()
+    const splitViewLayoutProps = useSplitViewPage()
+    const fullWidthTicketLayoutProps = useTicketPage()
+
     return (
         <Switch>
             <Route
@@ -204,6 +210,9 @@ export function AppRoutes() {
                     />
                 )}
             />
+            <Route path={`${path}/ticket/:ticketId`} exact>
+                <PanelLayout {...fullWidthTicketLayoutProps} />
+            </Route>
             <Route path={`${path}/customers`} render={CustomersRoutes} />
             <Route path={`${path}/customer`} render={CustomerRoutes} />
             <Route path={`${path}/users`} render={UsersRoutes} />
@@ -228,7 +237,14 @@ export function AppRoutes() {
                 )}
             />
             {!!hasSplitTicketView && (
-                <Route path={`${path}/views`} render={SplitTicketViewRoutes} />
+                <Route exact path={`${path}/views/:viewId?`}>
+                    <PanelLayout {...splitViewLayoutProps} />
+                </Route>
+            )}
+            {!!hasSplitTicketView && (
+                <Route exact path={`${path}/views/:viewId/:ticketId`}>
+                    <PanelLayout {...splitTicketLayoutProps} />
+                </Route>
             )}
             <Route>
                 <NoMatch />
@@ -412,11 +428,6 @@ export function UserRoutes({match: {path}}: RouteComponentProps) {
 export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
     return (
         <Switch>
-            <Route
-                path={`${path}/:ticketId`}
-                exact
-                render={TicketDetailLayout}
-            />
             <Route
                 path={`${path}/:ticketId/edit-widgets`}
                 exact
