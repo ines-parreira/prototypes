@@ -19,8 +19,9 @@ export const periodAndAgentOnlyFilters = (
 })
 
 const secondsToHours = (s: number) => s / 60 / 60
+
 export const calculateMetricPerHour = (metric: number, seconds: number) =>
-    metric / secondsToHours(seconds)
+    seconds === 0 ? 0 : metric / secondsToHours(seconds)
 
 export const useMessagesSentPerHour = (): Metric => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(

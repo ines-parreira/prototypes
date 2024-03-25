@@ -12,10 +12,6 @@ import {
 } from 'hooks/reporting/metricsPerDimension'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
-import {
-    matchAndCalculateAllEntries,
-    sortAllData,
-} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {OrderDirection} from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
@@ -26,6 +22,7 @@ import {
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {StatsFilters} from 'models/stat/types'
+import {matchAndCalculateAllEntries, sortAllData} from 'utils/reporting'
 
 export const useMessagesSentPerHourPerAgent = (
     statsFilters: StatsFilters,

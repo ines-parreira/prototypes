@@ -1,10 +1,20 @@
+import _difference from 'lodash/difference'
+import _orderBy from 'lodash/orderBy'
 import moment, {Moment} from 'moment'
+import {
+    MetricWithDecile,
+    QueryReturnType,
+} from 'hooks/reporting/useMetricPerDimension'
+import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
 
 import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageMember,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
@@ -241,4 +251,49 @@ export const renameCubeStringified = <T>(
     return JSON.parse(
         renameMember(JSON.stringify(query), sourceCube, targetCube)
     ) as T
+}
+
+export const calculatePercentage = (x: number, y: number) => (x / y) * 100
+
+export const matchAndCalculateAllEntries = (
+    dataA: Pick<MetricWithDecile, 'data'>,
+    dataB: Pick<MetricWithDecile, 'data'>,
+    calculate: (a: number, b: number) => number,
+    dataAIdField: string,
+    dataBIdField: string,
+    dataAMeasureField: string,
+    dataBMeasureField: string
+): QueryReturnType<HelpdeskMessageCubeWithJoins> =>
+    dataA.data?.allData.map((item) => {
+        const matchingValue = dataB.data?.allData.find(
+            (value) => value[dataBIdField] === item[dataAIdField]
+        )?.[dataBMeasureField]
+
+        return {
+            ...item,
+            [dataAMeasureField]: matchingValue
+                ? String(
+                      calculate(
+                          Number(item[dataAMeasureField]),
+                          Number(matchingValue)
+                      )
+                  )
+                : null,
+        }
+    }) ?? []
+
+export const sortAllData = (
+    allData: QueryReturnType<HelpdeskMessageCubeWithJoins>,
+    sortingField: string,
+    sorting?: OrderDirection
+) => {
+    const nonNullValues = allData.filter((item) => item[sortingField] !== null)
+
+    const sortedArray = _orderBy(
+        nonNullValues,
+        (v) => Number(v[sortingField]),
+        sorting
+    )
+
+    return sortedArray.concat(_difference(allData, nonNullValues))
 }

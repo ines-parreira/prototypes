@@ -1,6 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
 import LD from 'launchdarkly-react-client-sdk'
-import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import {
@@ -8,12 +7,15 @@ import {
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
+import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {HelpdeskMessageDimension} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {
+    HelpdeskMessageDimension,
+    HelpdeskMessageMeasure,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerDimension')
@@ -45,7 +47,8 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
             decile: 5,
             allData: [
                 {
-                    [TicketMeasure.TicketCount]: String(ticketsRepliedValue),
+                    [HelpdeskMessageMeasure.TicketCount]:
+                        String(ticketsRepliedValue),
                     [HelpdeskMessageDimension.SenderId]: String(agent.id),
                 },
             ],
@@ -92,7 +95,7 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
             data: {
                 allData: [
                     {
-                        [TicketMeasure.TicketCount]: String(
+                        [HelpdeskMessageMeasure.TicketCount]: String(
                             ticketsRepliedValue / (onlineTimeValue / 60 / 60)
                         ),
                         [HelpdeskMessageDimension.SenderId]: String(agent.id),
@@ -120,7 +123,7 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
             data: {
                 allData: [
                     {
-                        [TicketMeasure.TicketCount]: String(
+                        [HelpdeskMessageMeasure.TicketCount]: String(
                             ticketsRepliedValue / (onlineTimeValue / 60 / 60)
                         ),
                         [HelpdeskMessageDimension.SenderId]: String(agent.id),
@@ -234,8 +237,9 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
                 decile: 5,
                 allData: [
                     {
-                        [renameMemberEnriched(TicketMeasure.TicketCount)]:
-                            String(ticketsRepliedValue),
+                        [renameMemberEnriched(
+                            HelpdeskMessageMeasure.TicketCount
+                        )]: String(ticketsRepliedValue),
                         [renameMemberEnriched(
                             HelpdeskMessageDimension.SenderId
                         )]: String(agent.id),
@@ -284,11 +288,11 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
             data: {
                 allData: [
                     {
-                        [renameMemberEnriched(TicketMeasure.TicketCount)]:
-                            String(
-                                ticketsRepliedValue /
-                                    (onlineTimeValue / 60 / 60)
-                            ),
+                        [renameMemberEnriched(
+                            HelpdeskMessageMeasure.TicketCount
+                        )]: String(
+                            ticketsRepliedValue / (onlineTimeValue / 60 / 60)
+                        ),
                         [renameMemberEnriched(
                             HelpdeskMessageDimension.SenderId
                         )]: String(agent.id),

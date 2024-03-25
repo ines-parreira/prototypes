@@ -1,5 +1,13 @@
 import {TicketChannel} from 'business/types/ticket'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {
+    HelpdeskMessageDimension,
+    HelpdeskMessageMeasure,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    TicketDimension,
+    TicketMeasure,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {
     ReportingFilterOperator,
@@ -7,11 +15,14 @@ import {
 } from 'models/reporting/types'
 import {
     agentFilter,
+    calculatePercentage,
     formatReportingQueryDate,
     HelpCenterStatsFiltersMembers,
+    matchAndCalculateAllEntries,
     periodToReportingGranularity,
     renameCubeStringified,
     renameMember,
+    sortAllData,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
     withFilter,
@@ -173,6 +184,153 @@ describe('reporting utils', () => {
                 operator: ReportingFilterOperator.Set,
                 values: [],
             })
+        })
+    })
+
+    describe('calculatePercentage', () => {
+        it('should return percentage', () => {
+            const a = 5
+            const b = 10
+
+            expect(calculatePercentage(a, b)).toEqual((a / b) * 100)
+        })
+    })
+
+    describe('matchAndCalculateAllEntries', () => {
+        it('should match data from two sources and apply a calculation of selected metrics', () => {
+            const dataAIdField = HelpdeskMessageDimension.TicketId
+            const dataBIdField = TicketDimension.TicketId
+            const dataAMeasureField = HelpdeskMessageMeasure.MessageCount
+            const dataBMeasureField = TicketMeasure.TicketCount
+            const metricAData = {
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [
+                        {
+                            [dataAIdField]: '1',
+                            [dataAMeasureField]: '30',
+                        },
+                        {
+                            [dataAIdField]: '2',
+                            [dataAMeasureField]: '50',
+                        },
+                        {
+                            [dataAIdField]: '3',
+                            [dataAMeasureField]: '70',
+                        },
+                        {
+                            [dataAIdField]: '4',
+                            [dataAMeasureField]: '90',
+                        },
+                    ],
+                },
+            }
+            const metricBData = {
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [
+                        {
+                            [dataBIdField]: '1',
+                            [dataBMeasureField]: '100',
+                        },
+                        {
+                            [dataBIdField]: '2',
+                            [dataBMeasureField]: '200',
+                        },
+                        {
+                            [dataBIdField]: '3',
+                            [dataBMeasureField]: '300',
+                        },
+                    ],
+                },
+            }
+
+            const calculation = (a: number, b: number) => a + b
+
+            expect(
+                matchAndCalculateAllEntries(
+                    metricAData,
+                    metricBData,
+                    calculation,
+                    dataAIdField,
+                    dataBIdField,
+                    dataAMeasureField,
+                    dataBMeasureField
+                )
+            ).toEqual([
+                {
+                    [dataAIdField]: '1',
+                    [dataAMeasureField]: '130',
+                },
+                {
+                    [dataAIdField]: '2',
+                    [dataAMeasureField]: '250',
+                },
+                {
+                    [dataAIdField]: '3',
+                    [dataAMeasureField]: '370',
+                },
+                {
+                    [dataAIdField]: '4',
+                    [dataAMeasureField]: null,
+                },
+            ])
+        })
+    })
+
+    describe('sortAllData', () => {
+        it('should sort data by given metric', () => {
+            const idField = TicketDimension.TicketId
+            const metricField = HelpdeskMessageMeasure.MessageCount
+            const anotherMetricField = TicketMeasure.TicketCount
+
+            const data = [
+                {
+                    [idField]: '3',
+                    [metricField]: '370',
+                    [anotherMetricField]: '4730',
+                },
+                {
+                    [idField]: '1',
+                    [metricField]: '130',
+                    [anotherMetricField]: '4310',
+                },
+                {
+                    [idField]: '2',
+                    [metricField]: '250',
+                    [anotherMetricField]: '4520',
+                },
+                {
+                    [idField]: '4',
+                    [metricField]: null,
+                    [anotherMetricField]: '4520',
+                },
+            ]
+
+            expect(sortAllData(data, metricField)).toEqual([
+                {
+                    [idField]: '1',
+                    [metricField]: '130',
+                    [anotherMetricField]: '4310',
+                },
+                {
+                    [idField]: '2',
+                    [metricField]: '250',
+                    [anotherMetricField]: '4520',
+                },
+                {
+                    [idField]: '3',
+                    [metricField]: '370',
+                    [anotherMetricField]: '4730',
+                },
+                {
+                    [idField]: '4',
+                    [metricField]: null,
+                    [anotherMetricField]: '4520',
+                },
+            ])
         })
     })
 
