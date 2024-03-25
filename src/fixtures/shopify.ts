@@ -1,5 +1,6 @@
 import {
     BooleanShopifyMetafield,
+    CollectionReferenceShopifyMetafield,
     ColorShopifyMetafield,
     DateShopifyMetafield,
     DateTimeShopifyMetafield,
@@ -8,10 +9,13 @@ import {
     MetaobjectReferenceShopifyMetafield,
     MixedReferenceShopifyMetafield,
     MultiLineTextFieldShopifyMetafield,
+    PageReferenceShopifyMetafield,
+    ProductReferenceShopifyMetafield,
     NumberDecimalShopifyMetafield,
     NumberIntegerShopifyMetafield,
     ShopifyMetafield,
     SingleLineTextFieldShopifyMetafield,
+    UrlShopifyMetafield,
     VariantReferenceShopifyMetafield,
 } from '@gorgias/api-types'
 import {
@@ -1644,6 +1648,36 @@ export const shopifyBoolean = (): BooleanShopifyMetafield => ({
     key: 'test_boolean',
     value: true,
     type: 'boolean',
+})
+
+export const shopifyUrl = (url: string): UrlShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_boolean',
+    value: url,
+    type: 'url',
+})
+
+export const shopifyProductReference =
+    (): ProductReferenceShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_reference',
+        value: 'gid://shopify/Product/471971234070',
+        type: 'product_reference',
+    })
+
+export const shopifyCollectionReference =
+    (): CollectionReferenceShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_reference',
+        value: 'gid://shopify/Collection/471971234070',
+        type: 'collection_reference',
+    })
+
+export const shopifyPageReference = (): PageReferenceShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_reference',
+    value: 'gid://shopify/OnlineStorePage/471971234070',
+    type: 'page_reference',
 })
 
 export const shopifyColor = (): ColorShopifyMetafield => ({

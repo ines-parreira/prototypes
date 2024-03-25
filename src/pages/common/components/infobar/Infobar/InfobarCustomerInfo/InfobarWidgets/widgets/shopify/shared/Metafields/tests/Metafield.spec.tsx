@@ -2,10 +2,11 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
 import {
     shopifyBoolean,
+    shopifyCollectionReference,
     shopifyColor,
     shopifyDateMetafield,
     shopifyDateTimeMetafield,
@@ -14,13 +15,29 @@ import {
     shopifyMetaobjectReference,
     shopifyMixedReference,
     shopifyMultiTextLineFieldMetafield,
+    shopifyPageReference,
+    shopifyProductReference,
     shopifyNumberDecimal,
     shopifyNumberInteger,
     shopifyProductVariantReference,
     shopifySingleTextLineFieldMetafield,
+    shopifyUrl,
     shopifyUrlMetafield,
 } from 'fixtures/shopify'
+import {
+    IntegrationContext,
+    IntegrationContextType,
+} from 'providers/infobar/IntegrationContext'
 import Metafield from '../Metafield'
+
+const integrationContext: IntegrationContextType = {
+    integration: Map<string, unknown>(
+        fromJS({
+            name: 'test-store',
+        })
+    ),
+    integrationId: 1,
+}
 
 describe('<MetaField/>', () => {
     const mockStore = configureMockStore()
@@ -39,7 +56,7 @@ describe('<MetaField/>', () => {
                     <Metafield metafield={shopifyUrlMetafield()} />
                 </Provider>
             )
-            expect(screen.getByText(`https://google.ro`))
+            expect(screen.getByText(`google.ro`))
             expect(screen.getByRole('button'))
         })
 
@@ -184,6 +201,66 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.queryByText(`foo`))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyUrl less than 20 characters', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyUrl('https://gorgias.com')} />
+                </Provider>
+            )
+            expect(screen.getByText('gorgias.com'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyUrl more than 20 characters', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield
+                        metafield={shopifyUrl(
+                            'https://gorgias.com/app/customer/101'
+                        )}
+                    />
+                </Provider>
+            )
+            expect(screen.getByText('gorgias.com/app/cust...'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyProductReference', () => {
+            render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield metafield={shopifyProductReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+            expect(screen.getByText('471971234070'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyCollectionReference', () => {
+            render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield metafield={shopifyCollectionReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+            expect(screen.getByText('471971234070'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyPageReference', () => {
+            render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield metafield={shopifyPageReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+            expect(screen.getByText('471971234070'))
             expect(screen.getByRole('button'))
         })
     })

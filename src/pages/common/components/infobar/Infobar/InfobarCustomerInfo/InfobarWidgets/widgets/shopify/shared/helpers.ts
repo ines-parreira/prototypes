@@ -1,3 +1,5 @@
+import {ShopifyMetafieldType} from '@gorgias/api-types'
+
 const DEFAULT_SYMBOL = '$'
 
 /**
@@ -18,4 +20,41 @@ export default function getShopifyMoneySymbol(
     const symbol = currencyPart ? currencyPart.value : DEFAULT_SYMBOL
 
     return short && symbol.includes(DEFAULT_SYMBOL) ? DEFAULT_SYMBOL : symbol
+}
+
+export function shortenUrl(url: string) {
+    const result = url.replace(/(^\w+:|^)\/\//, '')
+    return url
+        ? result.length > 20
+            ? `${result.slice(0, 20)}...`
+            : result
+        : undefined
+}
+
+export function extractGid(url: string) {
+    if (!url) {
+        return undefined
+    }
+    const segments = url.split('/')
+    return segments && segments.length > 1
+        ? segments[segments.length - 1]
+        : undefined
+}
+
+export function prepareGidUrl(
+    type: ShopifyMetafieldType,
+    storeName: string,
+    gid: string
+) {
+    switch (type) {
+        case 'product_reference':
+            return `https://admin.shopify.com/store/${storeName}/products/${gid}`
+        case 'collection_reference':
+            return `https://admin.shopify.com/store/${storeName}/collections/${gid}`
+        case 'page_reference':
+            return `https://admin.shopify.com/store/${storeName}/pages/${gid}`
+        default: {
+            return undefined
+        }
+    }
 }

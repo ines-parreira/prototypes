@@ -1,11 +1,13 @@
-import React, {createRef} from 'react'
+import React, {createRef, useContext} from 'react'
 import {startCase} from 'lodash'
 import {ShopifyMetafield} from '@gorgias/api-queries'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge from 'gorgias-design-system/Badge/Badge'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Tooltip from 'pages/common/components/Tooltip'
+import {extractGid, prepareGidUrl, shortenUrl} from '../helpers'
 import css from './Metafield.less'
 
 type Props = {
@@ -13,12 +15,12 @@ type Props = {
 }
 
 export default function Metafield({metafield}: Props) {
+    const integrationContext = useContext(IntegrationContext)
     const namespace = metafield.namespace || ''
     const key = metafield.key || ''
     const label = namespace ? `${namespace}.${key}` : key
 
     switch (metafield.type) {
-        case 'url':
         case 'multi_line_text_field':
         case 'single_line_text_field':
         case 'variant_reference':
@@ -55,6 +57,33 @@ export default function Metafield({metafield}: Props) {
                     />
                 </FieldWithCopyButton>
             )
+        }
+
+        case 'product_reference':
+        case 'collection_reference':
+        case 'page_reference': {
+            const gid = extractGid(metafield.value)
+            const storeName = integrationContext?.integration?.get('name')
+            if (storeName && gid) {
+                const url = prepareGidUrl(
+                    metafield.type,
+                    storeName as string,
+                    gid
+                )
+                return url ? (
+                    <FieldWithCopyButton label={label} value={gid}>
+                        <a href={url}>{gid}</a>
+                    </FieldWithCopyButton>
+                ) : null
+            }
+            return null
+        }
+        case 'url': {
+            return metafield.value ? (
+                <FieldWithCopyButton label={label} value={metafield.value}>
+                    <a href={metafield.value}>{shortenUrl(metafield.value)}</a>
+                </FieldWithCopyButton>
+            ) : null
         }
 
         case 'color': {

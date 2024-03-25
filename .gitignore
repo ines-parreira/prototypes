@@ -29,6 +29,7 @@ node_modules
 .kateconfig
 .vscode/
 .idea
+*.iml
 
 # build files
 build/*
