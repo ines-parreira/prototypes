@@ -368,6 +368,7 @@ const BillingProcessView = ({
                             prices={helpdeskPrices}
                             selectedPlans={selectedPlans}
                             periodEnd={periodEnd}
+                            isTrialing={isTrialing}
                             setSelectedPlans={setSelectedPlans}
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel

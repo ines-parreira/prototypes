@@ -106,7 +106,33 @@ describe('ProductPlanSelection', () => {
         expect(CancelProductModalMock).not.toHaveBeenCalled()
     })
 
-    it('displays the cancel auto-renewal button if cancellation is available', () => {
+    it('does not display the cancel auto-renewal button if cancellation is available, but editing is not available', () => {
+        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
+            () => true
+        )
+        const {queryByText} = render(
+            <Provider store={store}>
+                <ProductPlanSelection {...props} editingAvailable={false} />
+            </Provider>
+        )
+        expect(queryByText('Cancel auto-renewal')).toBeNull()
+        expect(CancelProductModalMock).not.toHaveBeenCalled()
+    })
+
+    it('does not display the cancel auto-renewal button if cancellation is available and editing is available, but subscription is trialing', () => {
+        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
+            () => true
+        )
+        const {queryByText} = render(
+            <Provider store={store}>
+                <ProductPlanSelection {...props} isTrialing={true} />
+            </Provider>
+        )
+        expect(queryByText('Cancel auto-renewal')).toBeNull()
+        expect(CancelProductModalMock).not.toHaveBeenCalled()
+    })
+
+    it('displays the cancel auto-renewal button if cancellation is available, subscription is active and editing is available', () => {
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
             () => true
         )

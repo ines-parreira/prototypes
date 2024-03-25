@@ -162,7 +162,9 @@ const ProductPlanSelection = ({
     const isAutomatedHelpdeskCancellationFlowAvailable =
         useAutomatedHelpdeskCancellationFlowAvailable(
             currentSubscriptionProducts?.helpdesk || null
-        ) && editingAvailable
+        ) &&
+        editingAvailable &&
+        !isTrialing
 
     const handleOpen = useCallback(() => {
         const initialPlan =
