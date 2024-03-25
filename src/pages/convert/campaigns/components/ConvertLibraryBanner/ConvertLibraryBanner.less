@@ -1,0 +1,62 @@
+@import '~css/new/mixins';
+
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        background-color: var(--neutral-grey-1);
+        padding: 24px 88px 0 64px;
+        position: sticky;
+        bottom: 0;
+    }
+
+    .bannerContent {
+        display: flex;
+        justify-content: space-between;
+
+        @media @mobiles {
+            flex-direction: column;
+        }
+    }
+
+    .leftContent {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @media @mobiles {
+            margin-bottom: @layout-spacing-s;
+        }
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .content {
+        .body-regular();
+        color: var(--neutral-grey-5);
+        margin-bottom: @layout-spacing-l;
+        max-width: 480px;
+    }
+
+    .linkMargin {
+        margin-left: @layout-spacing-xs;
+    }
+
+    .preview {
+        height: 100%;
+        text-align: center;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            max-width: 428px;
+            width: 100%;
+        }
+    }
+}

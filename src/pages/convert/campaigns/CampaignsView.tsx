@@ -2,6 +2,8 @@ import React, {MouseEvent, useCallback, useMemo} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
 import {fromJS, Map} from 'immutable'
+import classnames from 'classnames'
+
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 
@@ -21,6 +23,7 @@ import {ConvertRouteParams} from '../common/types'
 import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
 import {Campaign} from './types/Campaign'
 import css from './CampaignsView.less'
+import ConvertLibraryBanner from './components/ConvertLibraryBanner'
 import {useUpdateCampaign} from './hooks/useUpdateCampaign'
 import {useCreateCampaign} from './hooks/useCreateCampaign'
 import {useDeleteCampaign} from './hooks/useDeleteCampaign'
@@ -31,10 +34,8 @@ export const CampaignsView = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
         useParams<ConvertRouteParams>()
 
-    const integration = useAppSelector(
-        getIntegrationById(parseInt(integrationId))
-    )
-
+    const chatIntegrationId = parseInt(integrationId)
+    const integration = useAppSelector(getIntegrationById(chatIntegrationId))
     const isCampaignLibraryEnabled = useIsConvertCampaignLibraryEnabled()
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
@@ -133,9 +134,18 @@ export const CampaignsView = () => {
         [isChannelConnectionLoading, areCampaignsLoading]
     )
 
+    const shouldDisplayBanner = useMemo(() => {
+        return (
+            !isLoading &&
+            isConvertSubscriber &&
+            isCampaignLibraryEnabled &&
+            allCampaigns.length < 8
+        )
+    }, [isLoading, isCampaignLibraryEnabled, isConvertSubscriber, allCampaigns])
+
     return (
         <CampaignListOptions>
-            <div className="full-width">
+            <div className={classnames('full-width', css.pageWrapper)}>
                 <PageHeader title={'Campaigns'}>
                     {isConvertSubscriber && isCampaignLibraryEnabled ? (
                         <>
@@ -172,6 +182,13 @@ export const CampaignsView = () => {
                     onDuplicateCampaign={handleDuplicateCampaign}
                     onUpdateCampaign={toggleCampaign}
                 />
+                {shouldDisplayBanner && (
+                    <div className={css.bannerWrapper}>
+                        <ConvertLibraryBanner
+                            integrationId={chatIntegrationId}
+                        />
+                    </div>
+                )}
             </div>
         </CampaignListOptions>
     )
