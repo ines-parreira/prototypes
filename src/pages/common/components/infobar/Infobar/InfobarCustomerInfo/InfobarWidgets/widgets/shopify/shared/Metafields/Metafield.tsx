@@ -1,5 +1,5 @@
 import React, {createRef, useContext} from 'react'
-import {startCase} from 'lodash'
+import {isArray, map, startCase} from 'lodash'
 import {ShopifyMetafield} from '@gorgias/api-queries'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
@@ -16,9 +16,7 @@ type Props = {
 
 export default function Metafield({metafield}: Props) {
     const integrationContext = useContext(IntegrationContext)
-    const namespace = metafield.namespace || ''
     const key = metafield.key || ''
-    const label = namespace ? `${namespace}.${key}` : key
 
     switch (metafield.type) {
         case 'multi_line_text_field':
@@ -31,7 +29,7 @@ export default function Metafield({metafield}: Props) {
         case 'number_integer': {
             return (
                 <FieldWithCopyButton
-                    label={`${namespace}.${key}`}
+                    label={key}
                     value={String(metafield.value)}
                 />
             )
@@ -40,7 +38,7 @@ export default function Metafield({metafield}: Props) {
         case 'date':
         case 'date_time': {
             return (
-                <FieldWithCopyButton label={label} value={metafield.value}>
+                <FieldWithCopyButton label={key} value={metafield.value}>
                     <DatetimeLabel dateTime={metafield.value} />
                 </FieldWithCopyButton>
             )
@@ -49,7 +47,7 @@ export default function Metafield({metafield}: Props) {
         case 'boolean': {
             const value = metafield.value ? 'true' : 'false'
             return (
-                <FieldWithCopyButton label={label} value={value}>
+                <FieldWithCopyButton label={key} value={value}>
                     <Badge
                         label={value}
                         color={'accessoryGreen'}
@@ -71,7 +69,7 @@ export default function Metafield({metafield}: Props) {
                     gid
                 )
                 return url ? (
-                    <FieldWithCopyButton label={label} value={gid}>
+                    <FieldWithCopyButton label={key} value={gid}>
                         <a href={url}>{gid}</a>
                     </FieldWithCopyButton>
                 ) : null
@@ -80,24 +78,29 @@ export default function Metafield({metafield}: Props) {
         }
         case 'url': {
             return metafield.value ? (
-                <FieldWithCopyButton label={label} value={metafield.value}>
+                <FieldWithCopyButton label={key} value={metafield.value}>
                     <a href={metafield.value}>{shortenUrl(metafield.value)}</a>
                 </FieldWithCopyButton>
             ) : null
         }
 
         case 'color': {
-            return <ColorMetafield label={label} value={metafield.value} />
+            return <ColorMetafield label={key} value={metafield.value} />
         }
 
         case 'json': {
             return (
                 <FieldWithCopyButtonAndTooltip
-                    label={`${namespace}.${key}`}
+                    label={key}
                     value={metafield.value}
                 />
             )
         }
+
+        case 'rich_text_field':
+            return (
+                <RichTextFieldMetafield label={key} value={metafield.value} />
+            )
 
         default: {
             return <></>
@@ -149,6 +152,28 @@ function ColorMetafield({label, value}: {label: string; value: string}) {
             </span>
         </div>
     )
+}
+
+function RichTextFieldMetafield({
+    label,
+    value,
+}: {
+    label: string
+    value: Record<string, unknown>
+}) {
+    const render = (node: Record<string, unknown>): string => {
+        if ('type' in node && 'value' in node && node.type === 'text') {
+            return String(node.value)
+        }
+
+        if (isArray(node.children)) {
+            return map(node.children, render).join(' ')
+        }
+
+        return ''
+    }
+
+    return <FieldWithCopyButton label={label} value={render(value)} />
 }
 
 type FieldWithCopyButtonAndTooltipProps = {

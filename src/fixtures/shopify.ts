@@ -13,6 +13,7 @@ import {
     ProductReferenceShopifyMetafield,
     NumberDecimalShopifyMetafield,
     NumberIntegerShopifyMetafield,
+    RichTextShopifyMetafield,
     ShopifyMetafield,
     SingleLineTextFieldShopifyMetafield,
     UrlShopifyMetafield,
@@ -1706,4 +1707,189 @@ export const shopifyJson = (): JsonShopifyMetafield => ({
     key: 'test_json',
     value: {foo: 'bar'},
     type: 'json',
+})
+
+export const shopifyRichTextField = (): RichTextShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_rich_text_field',
+    value: {
+        type: 'root',
+        children: [
+            {
+                type: 'paragraph',
+                children: [
+                    {
+                        type: 'text',
+                        value: 'adsa adasda asdasda',
+                    },
+                ],
+            },
+            {
+                type: 'heading',
+                children: [
+                    {
+                        type: 'text',
+                        value: 'b',
+                    },
+                ],
+                level: 1,
+            },
+            {
+                type: 'heading',
+                level: 2,
+                children: [
+                    {
+                        type: 'text',
+                        value: 'c',
+                    },
+                ],
+            },
+            {
+                type: 'heading',
+                level: 3,
+                children: [
+                    {
+                        type: 'text',
+                        value: 'd',
+                    },
+                ],
+            },
+            {
+                type: 'heading',
+                level: 4,
+                children: [
+                    {
+                        type: 'text',
+                        value: 'e',
+                    },
+                ],
+            },
+            {
+                type: 'heading',
+                level: 5,
+                children: [
+                    {
+                        type: 'text',
+                        value: 'f',
+                    },
+                ],
+            },
+            {
+                type: 'heading',
+                level: 6,
+                children: [
+                    {
+                        type: 'text',
+                        value: 'g',
+                    },
+                ],
+            },
+            {
+                listType: 'unordered',
+                type: 'list',
+                children: [
+                    {
+                        type: 'list-item',
+                        children: [
+                            {
+                                type: 'heading',
+                                level: 6,
+                                children: [
+                                    {
+                                        type: 'text',
+                                        value: 'h',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        type: 'list-item',
+                        children: [
+                            {
+                                type: 'text',
+                                value: 'i',
+                            },
+                        ],
+                    },
+                    {
+                        type: 'list-item',
+                        children: [
+                            {
+                                type: 'text',
+                                value: 'j',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                listType: 'ordered',
+                type: 'list',
+                children: [
+                    {
+                        type: 'list-item',
+                        children: [
+                            {
+                                type: 'heading',
+                                level: 1,
+                                children: [
+                                    {
+                                        type: 'text',
+                                        value: 'k',
+                                        italic: true,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        type: 'list-item',
+                        children: [
+                            {
+                                type: 'text',
+                                value: 'l',
+                            },
+                        ],
+                    },
+                    {
+                        type: 'list-item',
+                        children: [
+                            {
+                                type: 'text',
+                                value: 'm',
+                                bold: true,
+                            },
+                        ],
+                    },
+                    {
+                        type: 'list-item',
+                        children: [
+                            {
+                                type: 'text',
+                                value: '',
+                            },
+                            {
+                                url: 'https://google.ro',
+                                title: 'google',
+                                target: '_blank',
+                                type: 'link',
+                                children: [
+                                    {
+                                        type: 'text',
+                                        value: 'sadasda',
+                                    },
+                                ],
+                            },
+                            {
+                                type: 'text',
+                                value: '',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    type: 'rich_text_field',
 })

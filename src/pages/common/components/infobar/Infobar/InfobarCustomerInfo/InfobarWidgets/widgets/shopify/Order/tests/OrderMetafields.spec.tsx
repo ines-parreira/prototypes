@@ -82,7 +82,7 @@ describe('<OrderMetafields/>', () => {
         )
 
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
-        expect(screen.getByText('Test Namespace Test Key:')).toBeInTheDocument()
+        expect(screen.getByText('Test Key:')).toBeInTheDocument()
         expect(screen.getByText('test_value')).toBeInTheDocument()
     })
 })

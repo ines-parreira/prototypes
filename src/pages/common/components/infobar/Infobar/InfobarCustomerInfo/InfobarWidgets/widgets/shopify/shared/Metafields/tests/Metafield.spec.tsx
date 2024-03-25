@@ -20,6 +20,7 @@ import {
     shopifyNumberDecimal,
     shopifyNumberInteger,
     shopifyProductVariantReference,
+    shopifyRichTextField,
     shopifySingleTextLineFieldMetafield,
     shopifyUrl,
     shopifyUrlMetafield,
@@ -261,6 +262,32 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.getByText('471971234070'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyRichTextField', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyRichTextField()} />
+                </Provider>
+            )
+            expect(
+                screen.queryByText(
+                    'adsa adasda asdasda b c d e f g h i j k l m  sadasda'
+                )
+            )
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render empty with shopifyRichTextField', () => {
+            const metafield = shopifyRichTextField()
+            metafield.value = {}
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={metafield} />
+                </Provider>
+            )
+            expect(screen.queryByText('test_rich_text_field'))
             expect(screen.getByRole('button'))
         })
     })
