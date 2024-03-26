@@ -1,3 +1,4 @@
+import {AxiosError} from 'axios'
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
 
 import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
@@ -15,6 +16,19 @@ const ingestionEndpoint = isDevelopment()
           .split('.')
           .pop()!}/private/track`
 
+const reportSentryError = (error: unknown, event: unknown) => {
+    // remove cast when types are corrected in the library
+    const axiosError = error as AxiosError<{message: string; code: number}>
+    const sentryError = axiosError.response?.data?.message
+        ? new Error(
+              `Event ingestion error: ${axiosError.response.data.message}`
+          )
+        : (error as Error)
+    reportError(sentryError, {
+        extra: {event: event as Record<string, unknown>},
+    })
+}
+
 const appAuthService = new GorgiasAppAuthService()
 const activityTrackerInstance = BrowserEventTracker.initialize({
     endpoint: ingestionEndpoint,
@@ -28,12 +42,7 @@ const activityTrackerInstance = BrowserEventTracker.initialize({
     getApiHeaders: async () => {
         return await appAuthService.getAccessTokenHeaders()
     },
-    reportError: (error, event) => {
-        // remove cast when types are corrected in the library
-        reportError(error as Error, {
-            extra: {event: event as Record<string, unknown>},
-        })
-    },
+    reportError: reportSentryError,
 })
 
 activityTrackerInstance.createUserContext({
