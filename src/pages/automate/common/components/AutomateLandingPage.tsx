@@ -194,6 +194,7 @@ const AutomateLandingPage = () => {
                                     handleTimePerAgent={
                                         handleTimePerAgent.data?.value
                                     }
+                                    hasAgentCosts={!!agentCosts}
                                 />
                             </DashboardGridCell>
                         )}

@@ -66,6 +66,7 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    hasAgentCosts={false}
                     ref={modal}
                 />
             </Provider>
@@ -92,6 +93,46 @@ describe('<AutomateExploreDataModal />', () => {
         expect(yearly).toHaveAttribute('data-selected', 'true')
     })
 
+    it('should show **** when we have agent costs', () => {
+        const modal = React.createRef<AutomateExploreDataModalHandle>()
+
+        // Arrange
+        render(
+            <Provider
+                store={mockStore({
+                    currentAccount: fromJS({
+                        settings: [
+                            {
+                                id: 1,
+                                type: AccountSettingType.AgentCosts,
+                                data: {
+                                    agent_cost_per_ticket: 17.42,
+                                    agent_cost_type: 'yearly',
+                                },
+                            },
+                        ],
+                    }),
+                } as RootState)}
+            >
+                <AutomateExploreDataModal
+                    resolutionTime={3600}
+                    firstResponseTime={2400}
+                    monthlySupportTickets={2400}
+                    hasAgentCosts={true}
+                    ref={modal}
+                />
+            </Provider>
+        )
+
+        // Act
+        modal.current?.open()
+
+        // Assert
+        const agentCost = screen.getByTestId('agent-cost')
+
+        expect(agentCost).toHaveValue('****')
+    })
+
     it('should fallback to default values when no initial data is provided', () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 
@@ -102,6 +143,7 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    hasAgentCosts={false}
                     ref={modal}
                 />
             </Provider>
@@ -128,6 +170,7 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    hasAgentCosts={false}
                     ref={modal}
                 />
             </Provider>
@@ -154,6 +197,7 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    hasAgentCosts={false}
                     ref={modal}
                 />
             </Provider>
@@ -183,6 +227,7 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    hasAgentCosts={false}
                     ref={modal}
                 />
             </Provider>
