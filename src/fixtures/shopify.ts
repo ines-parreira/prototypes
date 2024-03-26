@@ -21,6 +21,7 @@ import {
     DimensionShopifyMetafield,
 } from '@gorgias/api-types'
 import {
+    RatingShopifyMetafield,
     VolumeShopifyMetafield,
     WeightShopifyMetafield,
 } from '@gorgias/api-queries'
@@ -1918,4 +1919,11 @@ export const shopifyVolume = (): VolumeShopifyMetafield => ({
     key: 'test_json',
     value: {value: '123', unit: 'us_fl_oz'},
     type: 'volume',
+})
+
+export const shopifyRating = (): RatingShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: {value: '4.5', scale_min: '0.5', scale_max: '5.0'},
+    type: 'rating',
 })

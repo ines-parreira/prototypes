@@ -27,6 +27,7 @@ import {
     shopifyDimension,
     shopifyWeight,
     shopifyVolume,
+    shopifyRating,
 } from 'fixtures/shopify'
 import {
     IntegrationContext,
@@ -338,6 +339,16 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.getByText('123 us fl oz'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyRating', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyRating()} />
+                </Provider>
+            )
+            expect(screen.getByText('4.5 out of 5.0'))
             expect(screen.getByRole('button'))
         })
     })

@@ -132,6 +132,12 @@ export default function Metafield({metafield}: Props) {
             return <FieldWithCopyButton label={key} value={copiableValue} />
         }
 
+        case 'rating': {
+            const {scale_max, value} = metafield.value
+            const copiableValue = `${value} out of ${scale_max}`
+            return <FieldWithCopyButton label={key} value={copiableValue} />
+        }
+
         default: {
             return <></>
         }
