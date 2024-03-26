@@ -35,6 +35,7 @@ describe('<SpotlightTicketRow/>', () => {
         id: 1,
         index: 1,
         onClick: mockOnClick,
+        highlight: {},
     }
 
     afterEach(() => {
@@ -187,5 +188,25 @@ describe('<SpotlightTicketRow/>', () => {
         )
 
         expect(document.querySelector('.title')?.textContent).toBe('')
+    })
+
+    it('should render ticket information with highlight items', () => {
+        const {getByText} = render(
+            <WrappedSpotlightTicketRow
+                {...defaultProps}
+                highlight={{
+                    subject: ['<em>subject</em>'],
+                    'messages.to.name': ['<em>to name</em>'],
+                    'messages.from.name': ['<em>from name</em>'],
+                }}
+            />
+        )
+
+        expect(getByText('subject')).toBeInTheDocument()
+        expect(getByText('subject').tagName.toLocaleLowerCase()).toEqual('em')
+        expect(getByText('to name')).toBeInTheDocument()
+        expect(getByText('to name').tagName.toLocaleLowerCase()).toEqual('em')
+        expect(getByText('from name')).toBeInTheDocument()
+        expect(getByText('from name').tagName.toLocaleLowerCase()).toEqual('em')
     })
 })

@@ -139,6 +139,7 @@ export const SpotlightModalContent = ({
                                         'spotlight-ticket'
                                     )
                                 }}
+                                highlight={{}}
                             />
                         )
                     } else if (searchItemsType === ViewType.CustomerList) {

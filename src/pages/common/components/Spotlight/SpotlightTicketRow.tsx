@@ -10,6 +10,8 @@ import {UserAssigneeLabel} from 'pages/common/utils/labels'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
+import {sanitizeHtmlDefault} from 'utils/html'
+import {ticketHighlightTransform} from 'pages/common/components/Spotlight/helpers'
 import SpotlightRow from './SpotlightRow'
 import css from './SpotlightTicketRow.less'
 
@@ -35,6 +37,17 @@ type SpotlightTicketRowProps = {
     onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
+    highlight: TicketHighlights
+}
+
+export type TicketHighlights = {
+    id?: string[]
+    subject?: string[]
+    'messages.body'?: string[]
+    'messages.from.name'?: string[]
+    'messages.from.address'?: string[]
+    'messages.to.name'?: string[]
+    'messages.to.address'?: string[]
 }
 
 const SpotlightTicketRow = ({
@@ -45,28 +58,43 @@ const SpotlightTicketRow = ({
     onHover,
     selected,
     onClick,
-}: SpotlightTicketRowProps) => (
-    <SpotlightRow
-        id={id}
-        index={index}
-        icon={<TicketIcon channel={item.channel} status={item.status} />}
-        title={item.subject || item.excerpt || ''}
-        info={
-            <SpotlightTicketInfo
-                customerName={item.customer!.name}
-                customerEmail={item.customer!.email}
-                customerId={item.customer!.id}
-                assignee={item.assignee_user}
-                date={item.created_datetime}
-            />
-        }
-        link={`/app/ticket/${item.id}`}
-        onCloseModal={onCloseModal}
-        onHover={onHover}
-        selected={selected}
-        onClick={onClick}
-    />
-)
+    highlight,
+}: SpotlightTicketRowProps) => {
+    const itemWithHighlights = useMemo(
+        () => ticketHighlightTransform(highlight, item),
+        [item, highlight]
+    )
+
+    return (
+        <SpotlightRow
+            id={id}
+            index={index}
+            icon={
+                <TicketIcon
+                    channel={itemWithHighlights.channel}
+                    status={itemWithHighlights.status}
+                />
+            }
+            title={
+                itemWithHighlights.subject || itemWithHighlights.excerpt || ''
+            }
+            info={
+                <SpotlightTicketInfo
+                    customerName={itemWithHighlights.customer.name}
+                    customerEmail={itemWithHighlights.customer.email}
+                    customerId={itemWithHighlights.customer.id}
+                    assignee={itemWithHighlights.assignee_user}
+                    date={itemWithHighlights.created_datetime}
+                />
+            }
+            link={`/app/ticket/${itemWithHighlights.id}`}
+            onCloseModal={onCloseModal}
+            onHover={onHover}
+            selected={selected}
+            onClick={onClick}
+        />
+    )
+}
 
 const SpotlightTicketInfo = ({
     customerName,
@@ -101,21 +129,29 @@ const SpotlightTicketInfo = ({
     }, [date, datetimeFormatShort, datetimeFormatShortWithYear])
 
     return (
-        <div className={css.ticketInfo}>
-            <span>
-                {customerName || customerEmail || `Customer #${customerId}`}
-            </span>
-            {!!assignee && (
-                <>
-                    <span className={css.infoSeparator}>•</span>
-                    <UserAssigneeLabel
-                        assigneeUser={fromJS(assignee)}
-                        size={24}
-                    />
-                </>
-            )}
-            <span className={css.separator} />
-            <span>{formattedDate}</span>
+        <div>
+            <div className={css.ticketInfo}>
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizeHtmlDefault(
+                            customerName ||
+                                customerEmail ||
+                                `Customer #${customerId}`
+                        ),
+                    }}
+                />
+                {!!assignee && (
+                    <>
+                        <span className={css.infoSeparator}>•</span>
+                        <UserAssigneeLabel
+                            assigneeUser={fromJS(assignee)}
+                            size={24}
+                        />
+                    </>
+                )}
+                <span className={css.separator} />
+                <span>{formattedDate}</span>
+            </div>
         </div>
     )
 }

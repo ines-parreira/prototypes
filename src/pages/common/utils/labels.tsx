@@ -22,6 +22,7 @@ import {Theme, useTheme} from 'theme'
 import {parseTimeDelta} from 'tickets/common/utils'
 import {getTextColorBasedOnBackground} from 'utils/colors'
 
+import {sanitizeHtmlDefault} from 'utils/html'
 import DatetimeLabel from './DatetimeLabel'
 import css from './labels.less'
 
@@ -339,7 +340,12 @@ export const UserAssigneeLabel = ({
                 size={size || 26}
                 className={css.assigneeLabelAvatar}
             />
-            <div className="d-inline-block">{assigneeUser.get('name')}</div>
+            <div
+                className="d-inline-block"
+                dangerouslySetInnerHTML={{
+                    __html: sanitizeHtmlDefault(assigneeUser.get('name')),
+                }}
+            />
         </div>
     )
 }

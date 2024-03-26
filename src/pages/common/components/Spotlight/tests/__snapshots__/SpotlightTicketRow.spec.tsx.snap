@@ -30,47 +30,49 @@ exports[`<SpotlightTicketRow/> should render a date from the current year withou
   <span
     class="info"
   >
-    <div
-      class="ticketInfo"
-    >
-      <span>
-        Jean Bon
-      </span>
-      <span
-        class="infoSeparator"
-      >
-        •
-      </span>
+    <div>
       <div
-        class="assigneeLabelContainer"
+        class="ticketInfo"
       >
+        <span>
+          Jean Bon
+        </span>
+        <span
+          class="infoSeparator"
+        >
+          •
+        </span>
         <div
-          class="component square assigneeLabelAvatar"
-          style="width: 24px; height: 24px;"
+          class="assigneeLabelContainer"
         >
           <div
-            class="initials"
-            style="width: 24px; height: 24px; font-size: 10px;"
+            class="component square assigneeLabelAvatar"
+            style="width: 24px; height: 24px;"
           >
-            <span
-              style="line-height: 26px;"
+            <div
+              class="initials"
+              style="width: 24px; height: 24px; font-size: 10px;"
             >
-              AP
-            </span>
+              <span
+                style="line-height: 26px;"
+              >
+                AP
+              </span>
+            </div>
+          </div>
+          <div
+            class="d-inline-block"
+          >
+            Alex Plugaru
           </div>
         </div>
-        <div
-          class="d-inline-block"
-        >
-          Alex Plugaru
-        </div>
+        <span
+          class="separator"
+        />
+        <span>
+          Nov 12th
+        </span>
       </div>
-      <span
-        class="separator"
-      />
-      <span>
-        Nov 12th
-      </span>
     </div>
   </span>
 </a>
@@ -106,47 +108,49 @@ exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
   <span
     class="info"
   >
-    <div
-      class="ticketInfo"
-    >
-      <span>
-        Jean Bon
-      </span>
-      <span
-        class="infoSeparator"
-      >
-        •
-      </span>
+    <div>
       <div
-        class="assigneeLabelContainer"
+        class="ticketInfo"
       >
+        <span>
+          Jean Bon
+        </span>
+        <span
+          class="infoSeparator"
+        >
+          •
+        </span>
         <div
-          class="component square assigneeLabelAvatar"
-          style="width: 24px; height: 24px;"
+          class="assigneeLabelContainer"
         >
           <div
-            class="initials"
-            style="width: 24px; height: 24px; font-size: 10px;"
+            class="component square assigneeLabelAvatar"
+            style="width: 24px; height: 24px;"
           >
-            <span
-              style="line-height: 26px;"
+            <div
+              class="initials"
+              style="width: 24px; height: 24px; font-size: 10px;"
             >
-              AP
-            </span>
+              <span
+                style="line-height: 26px;"
+              >
+                AP
+              </span>
+            </div>
+          </div>
+          <div
+            class="d-inline-block"
+          >
+            Alex Plugaru
           </div>
         </div>
-        <div
-          class="d-inline-block"
-        >
-          Alex Plugaru
-        </div>
+        <span
+          class="separator"
+        />
+        <span>
+          Jul 31st, 17
+        </span>
       </div>
-      <span
-        class="separator"
-      />
-      <span>
-        Jul 31st, 17
-      </span>
     </div>
   </span>
 </a>
@@ -182,47 +186,49 @@ exports[`<SpotlightTicketRow/> should render current date as "today" 1`] = `
   <span
     class="info"
   >
-    <div
-      class="ticketInfo"
-    >
-      <span>
-        Jean Bon
-      </span>
-      <span
-        class="infoSeparator"
-      >
-        •
-      </span>
+    <div>
       <div
-        class="assigneeLabelContainer"
+        class="ticketInfo"
       >
+        <span>
+          Jean Bon
+        </span>
+        <span
+          class="infoSeparator"
+        >
+          •
+        </span>
         <div
-          class="component square assigneeLabelAvatar"
-          style="width: 24px; height: 24px;"
+          class="assigneeLabelContainer"
         >
           <div
-            class="initials"
-            style="width: 24px; height: 24px; font-size: 10px;"
+            class="component square assigneeLabelAvatar"
+            style="width: 24px; height: 24px;"
           >
-            <span
-              style="line-height: 26px;"
+            <div
+              class="initials"
+              style="width: 24px; height: 24px; font-size: 10px;"
             >
-              AP
-            </span>
+              <span
+                style="line-height: 26px;"
+              >
+                AP
+              </span>
+            </div>
+          </div>
+          <div
+            class="d-inline-block"
+          >
+            Alex Plugaru
           </div>
         </div>
-        <div
-          class="d-inline-block"
-        >
-          Alex Plugaru
-        </div>
+        <span
+          class="separator"
+        />
+        <span>
+          Today
+        </span>
       </div>
-      <span
-        class="separator"
-      />
-      <span>
-        Today
-      </span>
     </div>
   </span>
 </a>
@@ -278,47 +284,49 @@ exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
   <span
     class="info"
   >
-    <div
-      class="ticketInfo"
-    >
-      <span>
-        Jean Bon
-      </span>
-      <span
-        class="infoSeparator"
-      >
-        •
-      </span>
+    <div>
       <div
-        class="assigneeLabelContainer"
+        class="ticketInfo"
       >
+        <span>
+          Jean Bon
+        </span>
+        <span
+          class="infoSeparator"
+        >
+          •
+        </span>
         <div
-          class="component square assigneeLabelAvatar"
-          style="width: 24px; height: 24px;"
+          class="assigneeLabelContainer"
         >
           <div
-            class="initials"
-            style="width: 24px; height: 24px; font-size: 10px;"
+            class="component square assigneeLabelAvatar"
+            style="width: 24px; height: 24px;"
           >
-            <span
-              style="line-height: 26px;"
+            <div
+              class="initials"
+              style="width: 24px; height: 24px; font-size: 10px;"
             >
-              AP
-            </span>
+              <span
+                style="line-height: 26px;"
+              >
+                AP
+              </span>
+            </div>
+          </div>
+          <div
+            class="d-inline-block"
+          >
+            Alex Plugaru
           </div>
         </div>
-        <div
-          class="d-inline-block"
-        >
-          Alex Plugaru
-        </div>
+        <span
+          class="separator"
+        />
+        <span>
+          Jul 31st, 17
+        </span>
       </div>
-      <span
-        class="separator"
-      />
-      <span>
-        Jul 31st, 17
-      </span>
     </div>
   </span>
 </a>
@@ -354,47 +362,49 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
   <span
     class="info"
   >
-    <div
-      class="ticketInfo"
-    >
-      <span>
-        jeanbon@gorgias.io
-      </span>
-      <span
-        class="infoSeparator"
-      >
-        •
-      </span>
+    <div>
       <div
-        class="assigneeLabelContainer"
+        class="ticketInfo"
       >
+        <span>
+          jeanbon@gorgias.io
+        </span>
+        <span
+          class="infoSeparator"
+        >
+          •
+        </span>
         <div
-          class="component square assigneeLabelAvatar"
-          style="width: 24px; height: 24px;"
+          class="assigneeLabelContainer"
         >
           <div
-            class="initials"
-            style="width: 24px; height: 24px; font-size: 10px;"
+            class="component square assigneeLabelAvatar"
+            style="width: 24px; height: 24px;"
           >
-            <span
-              style="line-height: 26px;"
+            <div
+              class="initials"
+              style="width: 24px; height: 24px; font-size: 10px;"
             >
-              AP
-            </span>
+              <span
+                style="line-height: 26px;"
+              >
+                AP
+              </span>
+            </div>
+          </div>
+          <div
+            class="d-inline-block"
+          >
+            Alex Plugaru
           </div>
         </div>
-        <div
-          class="d-inline-block"
-        >
-          Alex Plugaru
-        </div>
+        <span
+          class="separator"
+        />
+        <span>
+          Jul 31st, 17
+        </span>
       </div>
-      <span
-        class="separator"
-      />
-      <span>
-        Jul 31st, 17
-      </span>
     </div>
   </span>
 </a>
@@ -430,47 +440,49 @@ exports[`<SpotlightTicketRow/> should render without customer name and without e
   <span
     class="info"
   >
-    <div
-      class="ticketInfo"
-    >
-      <span>
-        Customer #34
-      </span>
-      <span
-        class="infoSeparator"
-      >
-        •
-      </span>
+    <div>
       <div
-        class="assigneeLabelContainer"
+        class="ticketInfo"
       >
+        <span>
+          Customer #34
+        </span>
+        <span
+          class="infoSeparator"
+        >
+          •
+        </span>
         <div
-          class="component square assigneeLabelAvatar"
-          style="width: 24px; height: 24px;"
+          class="assigneeLabelContainer"
         >
           <div
-            class="initials"
-            style="width: 24px; height: 24px; font-size: 10px;"
+            class="component square assigneeLabelAvatar"
+            style="width: 24px; height: 24px;"
           >
-            <span
-              style="line-height: 26px;"
+            <div
+              class="initials"
+              style="width: 24px; height: 24px; font-size: 10px;"
             >
-              AP
-            </span>
+              <span
+                style="line-height: 26px;"
+              >
+                AP
+              </span>
+            </div>
+          </div>
+          <div
+            class="d-inline-block"
+          >
+            Alex Plugaru
           </div>
         </div>
-        <div
-          class="d-inline-block"
-        >
-          Alex Plugaru
-        </div>
+        <span
+          class="separator"
+        />
+        <span>
+          Jul 31st, 17
+        </span>
       </div>
-      <span
-        class="separator"
-      />
-      <span>
-        Jul 31st, 17
-      </span>
     </div>
   </span>
 </a>
