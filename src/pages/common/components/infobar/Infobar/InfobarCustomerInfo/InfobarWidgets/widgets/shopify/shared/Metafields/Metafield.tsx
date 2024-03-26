@@ -5,6 +5,7 @@ import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge from 'gorgias-design-system/Badge/Badge'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Tooltip from 'pages/common/components/Tooltip'
 import {DateAndTimeFormatting} from 'constants/datetime'
@@ -136,6 +137,20 @@ export default function Metafield({metafield}: Props) {
             const {scale_max, value} = metafield.value
             const copiableValue = `${value} out of ${scale_max}`
             return <FieldWithCopyButton label={key} value={copiableValue} />
+        }
+
+        case 'money': {
+            const {amount, currency} = metafield.value
+            const copiableValue = `${amount} ${currency}`
+            return (
+                <FieldWithCopyButton label={key} value={copiableValue}>
+                    <MoneyAmount
+                        renderIfZero
+                        amount={String(amount)}
+                        currencyCode={currency ? currency : null}
+                    />
+                </FieldWithCopyButton>
+            )
         }
 
         default: {

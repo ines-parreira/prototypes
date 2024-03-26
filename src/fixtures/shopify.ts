@@ -24,6 +24,7 @@ import {
     RatingShopifyMetafield,
     VolumeShopifyMetafield,
     WeightShopifyMetafield,
+    MoneyShopifyMetafield,
 } from '@gorgias/api-queries'
 import {
     Image,
@@ -1926,4 +1927,11 @@ export const shopifyRating = (): RatingShopifyMetafield => ({
     key: 'test_json',
     value: {value: '4.5', scale_min: '0.5', scale_max: '5.0'},
     type: 'rating',
+})
+
+export const shopifyMoney = (): MoneyShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: {amount: '123', currency: 'USD'},
+    type: 'money',
 })

@@ -28,6 +28,7 @@ import {
     shopifyWeight,
     shopifyVolume,
     shopifyRating,
+    shopifyMoney,
 } from 'fixtures/shopify'
 import {
     IntegrationContext,
@@ -349,6 +350,16 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.getByText('4.5 out of 5.0'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyMoney', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyMoney()} />
+                </Provider>
+            )
+            expect(screen.getByText('$123.00'))
             expect(screen.getByRole('button'))
         })
     })
