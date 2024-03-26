@@ -116,7 +116,7 @@ describe('<MetaField/>', () => {
                     <Metafield metafield={shopifyDateMetafield()} />
                 </Provider>
             )
-            expect(screen.getByText(`02/06/2024`))
+            expect(screen.getByText(`Feb 6, 2024`))
             expect(screen.getByRole('button'))
         })
 
@@ -126,7 +126,8 @@ describe('<MetaField/>', () => {
                     <Metafield metafield={shopifyDateTimeMetafield()} />
                 </Provider>
             )
-            expect(screen.getByText(`02/06/2024`))
+            expect(screen.getByText(`Feb 6, 2024`))
+            expect(screen.getByText(`01:30 PM`))
             expect(screen.getByRole('button'))
         })
 

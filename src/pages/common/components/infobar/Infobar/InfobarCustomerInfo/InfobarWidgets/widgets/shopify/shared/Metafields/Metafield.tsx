@@ -7,6 +7,7 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge from 'gorgias-design-system/Badge/Badge'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Tooltip from 'pages/common/components/Tooltip'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import {extractGid, prepareGidUrl, shortenUrl} from '../helpers'
 import css from './Metafield.less'
 
@@ -35,11 +36,32 @@ export default function Metafield({metafield}: Props) {
             )
         }
 
-        case 'date':
+        case 'date': {
+            return (
+                <FieldWithCopyButton label={key} value={metafield.value}>
+                    <DatetimeLabel
+                        dateTime={metafield.value}
+                        hasTooltip={false}
+                        labelFormat={DateAndTimeFormatting.ShortDateWithYear}
+                    />
+                </FieldWithCopyButton>
+            )
+        }
         case 'date_time': {
             return (
                 <FieldWithCopyButton label={key} value={metafield.value}>
-                    <DatetimeLabel dateTime={metafield.value} />
+                    <DatetimeLabel
+                        dateTime={metafield.value}
+                        hasTooltip={false}
+                        labelFormat={DateAndTimeFormatting.ShortDateWithYear}
+                    />
+                    {' ('}
+                    <DatetimeLabel
+                        dateTime={metafield.value}
+                        hasTooltip={false}
+                        labelFormat={DateAndTimeFormatting.TimeDoubleDigitHour}
+                    />
+                    {')'}
                 </FieldWithCopyButton>
             )
         }
